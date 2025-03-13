@@ -1,0 +1,46 @@
+<style>
+
+</style>
+<nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="container breadcrumb text--xsmall">
+  <ol class="collection_breadcrumb__list breadcrumb__list" role="list">
+    <li class="breadcrumb__item">
+      <a class="breadcrumb__link" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+    </li>
+    <li class="breadcrumb__item">
+      <a class="breadcrumb__link" href="/pages/all-product-categories">All Product Categories</a>
+    </li>
+  </ol>
+</nav>
+
+<script>
+(() => {
+  const titles = '{{ collection.title }}'.split('~');
+  let c_handle = '';
+  const $titles = titles.map((c_title, idx) => {
+    c_handle += idx === 0 ? c_title : `-${c_title}`;
+    c_handle = c_handle
+      .toLowerCase()                  // Convert to lowercase
+      .replace(/[^a-z0-9\s-]/g, '')    // Remove special characters except spaces and hyphens
+      .trim()                          // Remove leading and trailing whitespace
+      .replace(/\s+/g, '-')            // Replace spaces with hyphens
+      .replace(/-+/g, '-');
+    const isLast = idx === titles.length - 1;
+    const listItem = isLast
+      ? `<li class="breadcrumb__item">
+          <span class="breadcrumb__link" aria-current="page">${c_title}</span>
+        </li>`
+      : `<li class="breadcrumb__item">
+          <a class="breadcrumb__link" href="/collections/${c_handle}">${c_title}</a>
+        </li>`;
+    return $(listItem);
+  });
+  $('.collection_breadcrumb__list').append($titles);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Collection banner",
+  "class": "shopify-section--collection-banner"
+}
+{% endschema %}

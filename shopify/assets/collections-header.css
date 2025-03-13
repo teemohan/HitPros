@@ -1,0 +1,26 @@
+.collections-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #1a1a1a;
+  margin-bottom: 32px;
+}
+
+.collections-header h2 {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 38.4px;
+  margin: 0;
+}
+
+.collections-header span {
+  font-size: 14px;
+  line-height: 16.8px;
+  color: #808080;
+}
+
+.collections-header p {
+  font-size: 16px;
+  line-height: 22.4px;
+  color: #1a1a1a;
+}

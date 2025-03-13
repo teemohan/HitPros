@@ -1,0 +1,594 @@
+{{ 'account-address.css' | asset_url | stylesheet_tag }}
+<template id="accountAddress">
+  <div class="account-main-container">
+    {% comment %} 新增、更新表单弹框 {% endcomment %}
+    <el-dialog
+      width="558px"
+      :title="isUpdate ? 'Edit Address': 'Add Address'"
+      :before-close="handleBeforeClose"
+      :visible.sync="dialogVisible"
+      :show-close="true"
+    >
+      <el-form
+        autocomplete="off"
+        label-width="0"
+        :status-icon="false"
+        :model="ruleForm"
+        :rules="rules"
+        :action="formAction"
+        :method="formMethod"
+        ref="ruleForm"
+      >
+        <input type="hidden" name="form_type" value="customer_address">
+        <input type="hidden" name="utf8" value="✓">
+        <input v-if="isUpdate" type="hidden" name="_method" value="put">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item prop="first_name">
+              <el-input
+                name="address[first_name]"
+                id="address-[first_name]"
+                v-model="ruleForm.first_name"
+                v-focus-input="ruleForm.first_name"
+              ></el-input>
+              <label for="address-[first_name]" class="el-label">
+                {{- 'customer.addresses.first_name' | t -}}
+                *</label
+              >
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="last_name">
+              <el-input
+                name="address[last_name]"
+                id="address-[last_name]"
+                v-model="ruleForm.last_name"
+                v-focus-input="ruleForm.last_name"
+              ></el-input>
+              <label for="address-[last_name]" class="el-label">
+                {{- 'customer.addresses.last_name' | t -}}
+                *</label
+              >
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-form-item prop="phone">
+            <el-input
+              name="address[phone]"
+              id="address-[phone]"
+              v-model="ruleForm.phone"
+              v-focus-input="ruleForm.phone"
+            ></el-input>
+            <label for="address-[phone]" class="el-label">
+              {{- 'customer.addresses.phone' | t -}}
+              *</label
+            >
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item prop="address1">
+            <el-input
+              name="address[address1]"
+              id="address-[address1]"
+              v-model="ruleForm.address1"
+              v-focus-input="ruleForm.address1"
+            ></el-input>
+            <label for="address-[address1]" class="el-label">
+              {{- 'customer.addresses.address1' | t -}}
+              *</label
+            >
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item prop="address2">
+            <el-input
+              name="address[address2]"
+              id="address-[address2]"
+              v-model="ruleForm.address2"
+              v-focus-input="ruleForm.address2"
+            ></el-input>
+            <label for="address-[address2]" class="el-label">
+              {{- 'customer.addresses.address2' | t -}}
+            </label>
+          </el-form-item>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item prop="city">
+              <el-input
+                name="address[city]"
+                id="address-[city]"
+                v-model="ruleForm.city"
+                v-focus-input="ruleForm.city"
+              ></el-input>
+              <label for="address-[city]" class="el-label">
+                {{- 'customer.addresses.city' | t -}}
+                *</label
+              >
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="zip">
+              <el-input
+                name="address[zip]"
+                id="address-[zip]"
+                v-model="ruleForm.zip"
+                @blur="handleAddressZipBlur"
+                v-focus-input="ruleForm.zip"
+              ></el-input>
+              <label for="address-[zip]" class="el-label">
+                {{- 'customer.addresses.zip' | t -}}
+                *</label
+              >
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item prop="province">
+              <el-select
+                v-focus-input="ruleForm.province"
+                v-model="ruleForm.province"
+                name="address[province]"
+                @change="handleAddressStateChange"
+                placeholder=""
+              >
+                <el-option
+                  v-for="item in stateOptions"
+                  :key="item[0]"
+                  :label="item[0]"
+                  :value="item[0]"
+                >
+                </el-option>
+              </el-select>
+              <label for="address-[province]" class="el-label">
+                {{- 'customer.addresses.province' | t -}}
+                *</label
+              >
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="country">
+              <el-input
+                readonly
+                name="address[country]"
+                id="address-[country]"
+                v-model="ruleForm.country"
+                v-focus-input="ruleForm.country"
+              ></el-input>
+              <label for="address-[country]" class="el-label">
+                {{- 'customer.addresses.country' | t -}}
+                *</label
+              >
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <div class="el-form-item">
+            <div class="checkbox-container">
+              <input
+                type="checkbox"
+                class="checkbox"
+                :value="ruleForm.default ? 1: 0"
+                :checked="ruleForm.default? true: false"
+                name="address[default]"
+                id="address-[default]"
+              >
+              <label for="address-[default]" class="text--subdued"> Save as default shipping address </label>
+            </div>
+          </div>
+        </el-row>
+      </el-form>
+      <div slot="footer">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            :loading="loading"
+            type="primary"
+            @click="submitForm('ruleForm')"
+            class="el-dialog--btn-comfirm"
+          >
+            Save
+          </el-button>
+          <div @click="handleBeforeClose" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+    {% comment %} 删除表单弹框 {% endcomment %}
+    <el-dialog
+      width="484px"
+      title="Remove Address"
+      :visible.sync="dialogVisibleRemove"
+      :show-close="true"
+      class="choose-dialog"
+    >
+      <div>Are you sure you want to remove this address?</div>
+      <div slot="footer" style="margin-top: 24px;">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            :loading="remove_loading"
+            @click="remove_loading = true"
+            type="primary"
+            class="el-dialog--btn-comfirm"
+            ref="remove_address_btn"
+          >
+            <form id="remove_address_form"  method="post" :action="removed_address_url">
+              <input type="hidden" name="_method" value="delete">
+              <button class="link">Remove</button>
+            </form>
+          </el-button>
+          <div @click="dialogVisibleRemove = false" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+    <header class="account-item-header-wrapper">
+      <div class="account-item-header">
+        <h1>My Address</h1>
+        <span @click="dialogVisible = true">Add</span>
+      </div>
+      <span class="account-item-num">
+        {{ customer.addresses.size }} 
+        {% if customer.addresses.size == 0 or customer.addresses.size == 1 %}
+          address 
+        {% else %}
+          addresses
+        {% endif %}
+      </span>
+    </header>
+    {% if customer.addresses.size > 0 %}
+      <div class="account-address-main">
+        {%- for address in customer.addresses -%}
+          {% if address.id == customer.default_address.id %}
+            <div class="account-address-item-container">
+              <div class="account-address-item address-default">
+                <div class="account-address-info-container">
+                  <div class="address-info">
+                    <div v-if="'{{ address.first_name }}' && '{{ address.last_name  }}' && '{{ address.phone }}'" class="account-address-info-item">
+                      {{ address.first_name }}
+                      {{ address.last_name }}
+
+                      {{ address.phone }}
+                    </div>
+                    <div class="account-address-info-item">
+                      <template v-if="'{{ address.street }}'">
+                        {{ address.street }}, 
+                      </template>
+                      <template v-if="'{{ address.city }}'">
+                        {{ address.city }}, 
+                      </template>
+                      <template v-if="'{{ address.province }}'">
+                        {{ address.province }},
+                      </template>
+                        {{ address.country }}
+                      <template v-if="'{{ address.zip }}'">
+                        ,{{ address.zip }}
+                      </template>
+                    </div>
+                  </div>
+                  <div class="account-address-action hidden-phone">
+                    <span @click="handleUpdateAddress('{{ address.id }}')"> Edit </span>
+                    <span class="dot"></span>
+                    <span @click="handleRemoveAddress('{{ address.url }}')">Remove</span>
+                  </div>
+                </div>
+                <span class="account-address-default">
+                  <span>Default Shipping Address</span>
+                </span>
+                <div class="account-address-action hidden-tablet-and-up">
+                  <span @click="handleUpdateAddress('{{ address.id }}')"> Edit </span>
+                  <span class="dot"></span>
+                  <span @click="handleRemoveAddress('{{ address.url }}')">Remove</span>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {%- endfor -%}
+        {%- for address in customer.addresses -%}
+          {% if address.id != customer.default_address.id %}
+            <div class="account-address-item-container">
+              <div class="account-address-item">
+                <div class="account-address-info-container">
+                  <div class="address-info">
+                    <div class="account-address-info-item">
+                      {{ address.first_name }}
+                      {{ address.last_name }}
+                      
+                      {{ address.phone }}
+                    </div>
+                    <div class="account-address-info-item">
+                      {{ address.street }}, {{ address.city }}, {{ address.province }}, {{ address.country }},
+                      {{ address.zip }}
+                    </div>
+                  </div>
+                  <div class="account-address-action hidden-phone">
+                    <span @click="handleUpdateAddress('{{ address.id }}')"> Edit </span>
+                    <span class="dot"></span>
+                    <span @click="handleRemoveAddress('{{ address.url }}')">Remove</span>
+                  </div>
+                </div>
+                <div class="account-address-action hidden-tablet-and-up">
+                  <span @click="handleUpdateAddress('{{ address.id }}')"> Edit </span>
+                  <span class="dot"></span>
+                  <span @click="handleRemoveAddress('{{ address.url }}')">Remove</span>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {%- endfor -%}
+      </div>
+    {% else %}
+      <div class="empty-notify">No records found.</div>
+    {% endif %}
+  </div>
+</template>
+
+<script>
+  (() => {
+    // 使用 DOM 元素解码 HTML 实体
+    function decodeHTMLEntities(str) {
+      let textarea = document.createElement('textarea');
+      textarea.innerHTML = str;
+      return textarea.value;
+    }
+    window.accountAddress = {
+      template: '#accountAddress',
+      delimiters: ['${', '}'],
+      mounted() {
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') {
+            if (this.dialogVisible) {
+              this.submitForm('ruleForm');
+            } else if(this.dialogVisibleRemove) {
+              this.$refs.remove_address_btn.$el.click();
+              $('#remove_address_form').submit();
+            }
+          }
+        });
+      },
+      data() {
+        const validatePhoneNumber = (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('Phone is required'));
+          } else {
+            const phone = libphonenumber.parsePhoneNumberFromString(value, 'US');
+            if(!phone || !phone.isValid()) return callback(new Error('Invalid phonenumber'));
+            return callback();
+          }
+        };
+
+        const validateZipCode = async (rule, value, callback) => {
+          if (!value) {
+            callback(new Error('ZIP Code is required'));
+          } else if (value.length !== 5) {
+            callback(new Error('Zip code must be 5 digits'));
+          } else {
+            try {
+              // 使用 getStateByZip 查询 ZIP Code 对应的州
+              const state = await getStateByZip(value);
+
+              if (!state || state.includes('Unable')) {
+                callback(new Error('The zip code is invalid.'));
+              } else if (this.ruleForm.province && state !== this.ruleForm.province) {
+                callback(new Error('Not matching with the state.'));
+              } else {
+                callback(); // 验证通过
+              }
+            } catch (error) {
+              console.error('Error validating ZIP Code:', error);
+              callback(new Error('An error occurred while validating the ZIP Code.'));
+            }
+          }
+        };
+
+        const validateState = (rule, value, callback) => {
+          if (!value) {
+            callback(new Error('Please select a state'));
+          } else if (this.ruleForm.zip && this.ruleForm.zip.length !== 5) {
+            callback(new Error('Does not match zip code.'));
+          } else {
+            callback();
+          }
+        };
+
+        const noWhitespaceValidator = (rule, value, callback) => {
+          if (!value || value.trim() === '') {
+            callback(new Error(rule.message));
+          } else {
+            callback();
+          }
+        };
+
+        const validateEnglishLettersOnly = (rule, value, callback) => {
+          const englishLetterPattern = /^[a-zA-Z]+$/; // 仅允许英文字母
+          if (!englishLetterPattern.test(value)) {
+            return callback(new Error('Special characters are not allowed'));
+          }
+          callback();
+        };
+
+        return {
+          loading: false,
+          remove_loading: false,
+          dialogVisibleRemove: false,
+          dialogVisible: false,
+          ruleForm: {
+            first_name: '',
+            last_name: '',
+            phone: '',
+            address1: '',
+            address2: '',
+            city: '',
+            zip: '',
+            province: '',
+            country: 'United States', // 默认值
+            default: false,
+          },
+          originRuleForm: {
+            first_name: '',
+            last_name: '',
+            phone: '',
+            address1: '',
+            address2: '',
+            city: '',
+            zip: '',
+            province: '',
+            country: 'United States', // 默认值
+            default: false,
+          },
+          formAction: '/account/addresses', // 表单提交的地址
+          formMethod: 'post', // 表单提交的地址
+          isUpdate: false, //是否更新表单
+          removed_address_url: '', // 删除表单的url
+          rules: {
+            first_name: [
+              { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
+              { validator: validateEnglishLettersOnly, trigger: 'blur' },
+            ],
+            last_name: [
+              { validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' },
+              { validator: validateEnglishLettersOnly, trigger: 'blur' },
+            ],
+            phone: [{ validator: validatePhoneNumber, trigger: 'blur' }],
+            address1: [
+              { validator: noWhitespaceValidator, message: 'Address1 is required', trigger: 'blur' }
+            ],
+            city: [
+              { validator: noWhitespaceValidator, message: 'City is required', trigger: 'blur' }
+            ],
+            province: [{ validator: validateState, trigger: 'change' }],
+            zip: [{ validator: validateZipCode, trigger: 'blur' }],
+          },
+          stateOptions: [ // 美国所有的州
+            ["Alabama", "Alabama"],
+            ["Alaska", "Alaska"],
+            ["American Samoa", "American Samoa"],
+            ["Arizona", "Arizona"],
+            ["Arkansas", "Arkansas"],
+            ["Armed Forces Americas", "Armed Forces Americas"],
+            ["Armed Forces Europe", "Armed Forces Europe"],
+            ["Armed Forces Pacific", "Armed Forces Pacific"],
+            ["California", "California"],
+            ["Colorado", "Colorado"],
+            ["Connecticut", "Connecticut"],
+            ["Delaware", "Delaware"],
+            ["District of Columbia", "Washington DC"],
+            ["Federated States of Micronesia", "Micronesia"],
+            ["Florida", "Florida"],
+            ["Georgia", "Georgia"],
+            ["Guam", "Guam"],
+            ["Hawaii", "Hawaii"],
+            ["Idaho", "Idaho"],
+            ["Illinois", "Illinois"],
+            ["Indiana", "Indiana"],
+            ["Iowa", "Iowa"],
+            ["Kansas", "Kansas"],
+            ["Kentucky", "Kentucky"],
+            ["Louisiana", "Louisiana"],
+            ["Maine", "Maine"],
+            ["Marshall Islands", "Marshall Islands"],
+            ["Maryland", "Maryland"],
+            ["Massachusetts", "Massachusetts"],
+            ["Michigan", "Michigan"],
+            ["Minnesota", "Minnesota"],
+            ["Mississippi", "Mississippi"],
+            ["Missouri", "Missouri"],
+            ["Montana", "Montana"],
+            ["Nebraska", "Nebraska"],
+            ["Nevada", "Nevada"],
+            ["New Hampshire", "New Hampshire"],
+            ["New Jersey", "New Jersey"],
+            ["New Mexico", "New Mexico"],
+            ["New York", "New York"],
+            ["North Carolina", "North Carolina"],
+            ["North Dakota", "North Dakota"],
+            ["Northern Mariana Islands", "Northern Mariana Islands"],
+            ["Ohio", "Ohio"],
+            ["Oklahoma", "Oklahoma"],
+            ["Oregon", "Oregon"],
+            ["Palau", "Palau"],
+            ["Pennsylvania", "Pennsylvania"],
+            ["Puerto Rico", "Puerto Rico"],
+            ["Rhode Island", "Rhode Island"],
+            ["South Carolina", "South Carolina"],
+            ["South Dakota", "South Dakota"],
+            ["Tennessee", "Tennessee"],
+            ["Texas", "Texas"],
+            ["Utah", "Utah"],
+            ["Vermont", "Vermont"],
+            ["Virgin Islands", "U.S. Virgin Islands"],
+            ["Virginia", "Virginia"],
+            ["Washington", "Washington"],
+            ["West Virginia", "West Virginia"],
+            ["Wisconsin", "Wisconsin"],
+            ["Wyoming", "Wyoming"]
+          ],
+          address_list: [
+            {% for address in customer.addresses %}
+              {
+                address_id: "{{ address.id }}",
+                data: {
+                  first_name: decodeHTMLEntities("{{ address.first_name }}"),
+                  last_name: decodeHTMLEntities("{{ address.last_name }}"),
+                  phone: decodeHTMLEntities("{{ address.phone }}"),
+                  address1: decodeHTMLEntities("{{ address.address1 }}"),
+                  address2: decodeHTMLEntities("{{ address.address2 }}"),
+                  city: decodeHTMLEntities("{{ address.city }}"),
+                  zip: decodeHTMLEntities("{{ address.zip }}"),
+                  province: decodeHTMLEntities("{{ address.province }}"),
+                  country: decodeHTMLEntities("{{ address.country }}"),
+                  default: {% if address.id == customer.default_address.id %}true{% else %}false{% endif %}
+                }
+              },
+            {% endfor %}
+          ]
+        };
+      },
+      methods: {
+        handleAddressStateChange() {
+          if(this.ruleForm.zip) {
+            this.$refs.ruleForm.validateField('zip');
+          }
+        },
+        handleAddressZipBlur() {
+          if(this.ruleForm.province) {
+            this.$refs.ruleForm.validateField('province');
+          }
+        },
+        submitForm(formName) { // 提交表单
+          if(!this.isUpdate && this.address_list.length == 20) {
+            this.$message({
+              showClose: true,
+              message: 'The number of addresses exceeds the limit',
+              type: 'warning',
+            });
+            return
+          }
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              this.loading = true;
+              this.$refs.ruleForm.$el.submit();
+            };
+          });
+        },
+        handleBeforeClose() { // 关闭弹框并重置表单
+          this.formAction = `/account/addresses`;
+          this.ruleForm = JSON.parse(JSON.stringify(this.originRuleForm));
+          this.dialogVisible = false;
+          setTimeout(() => {
+            this.isUpdate =  false;
+          }, 300)
+          this.$refs.ruleForm.clearValidate();
+        },
+        handleUpdateAddress(address_id) { // 更新表单
+          this.formAction = `/account/addresses/${address_id}`;
+          this.ruleForm = this.address_list.find(item => item.address_id == address_id).data;
+          this.dialogVisible = this.isUpdate = true;
+        },
+        handleRemoveAddress(address_url) { // 删除表单
+          this.removed_address_url = address_url;
+          this.dialogVisibleRemove = true;
+        },
+      },
+    };
+  })();
+</script>

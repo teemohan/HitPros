@@ -1,0 +1,69 @@
+{{ 'pc-sidebar.css' | asset_url | stylesheet_tag }}
+
+<template id="pcSidebar">
+  <div class="pc-main-nav">
+    <div class="pc-aside">
+      <div class="pc-aside-top">
+        <h3 title="{{ customer.name }}" class="ellipsis2">Hi ~ {{ customer.first_name }}</h3>
+        <h4>id # {{ customer.id }}</h4>
+      </div>
+      <div class="pc-aside-main">
+        <div class="aside-main-list" v-for="(item, idx) in menuList" :key="idx">
+          <h4>${ item.linkTitle }</h4>
+          <ul>
+            <li v-for="(link, idx1) in item.child" :key="idx1">
+              <a :href="`{{ routes.account_url }}?slug=${link.linkSlug}`">${ link.linkName }</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="pc-aside-bottom">
+        <div @click="logout">
+          <a href="javascript:void(0)" data-no-instant>Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  (() => {
+    window.pcSidebar = {
+      template: '#pcSidebar',
+      delimiters: ['${', '}'],
+      data() {
+        return {
+          linkActiveIdx: {
+            idx: 0,
+            idx1: 0,
+          },
+          menuList: [
+            {
+              linkTitle: 'Orders',
+              child: [
+                { linkName: 'My Orders', linkSlug: 'account-orders', isActive: false },
+                { linkName: 'My List', linkSlug: 'account-wish', isActive: false },
+                { linkName: 'Customer Service', linkSlug: 'account-service', isActive: false },
+              ],
+            },
+            {
+              linkTitle: 'Account',
+              child: [
+                { linkName: 'My Account', linkSlug: 'account-info', isActive: true },
+                {% unless customer.b2b? %}
+                  { linkName: 'My Addresses', linkSlug: 'account-address', isActive: false },
+                {% endunless %}
+              ],
+            },
+          ],
+        };
+      },
+      methods: {
+        logout(event) {
+          event.stopPropagation();
+          Cookies.remove('cart'); // 购物车相关
+          window.location.href = '/account/logout';
+        },
+      },
+    };
+  })();
+</script>

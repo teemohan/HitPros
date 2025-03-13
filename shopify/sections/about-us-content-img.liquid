@@ -1,0 +1,217 @@
+<style>
+  .about-us-content-img-section.margin-top {
+    margin-top: -30px;
+  }
+  .about-content-img {
+  }
+  .about-content-img__container {
+    display: flex;
+    gap: 60px;
+    justify-content: space-between;
+    padding: 30px 0;
+  }
+  .about-content-img__title {
+    font-size: 32px;
+    line-height: 38.4px;
+  }
+  .about-content-img__title ul {
+    font-size: 24px;
+    line-height: 28.8px;
+  }
+  .about-content-img__title ul li {
+    list-style: disc;
+  }
+  .about-content-img__right {
+    flex-shrink: 0;
+  }
+  .about-content-img__features {
+    margin-top: 32px;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #0a2b6f;
+  }
+  .about-content-img__description {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #666666;
+  }
+  .about-content-img__button {
+    margin-top: 32px;
+  }
+  .about-content-img__button a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    font-weight: 700;
+    height: 36px;
+    border-radius: 99px;
+    background: #0a2b6f;
+    color: #fff;
+  }
+  @media screen and (max-width: 1200px) {
+    .about-content-img__title ul {
+      font-size: 18px;
+    }
+    .about-content-img__description {
+      font-size: 16px;
+    }
+    .about-content-img__button {
+      margin-top: 24px;
+    }
+    .about-content-img__img {
+      max-width: 400px;
+    }
+    .about-content-img__container {
+      gap: 30px;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    .about-content-img__container {
+      flex-direction: column-reverse;
+      gap: 17px;
+    }
+    .about-content-img.img-inner .about-content-img__right {
+      display: none;
+    }
+    .about-content-img__title {
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    .about-content-img__left .about-content-img__img {
+      margin-top: 16px;
+    }
+    .about-content-img__features,
+    .about-content-img__description {
+      font-size: 10px;
+      line-height: 10px;
+      margin-top: 16px;
+    }
+    .about-content-img__button {
+      margin-top: 20px;
+    }
+    .about-content-img__button a {
+      width: 100%;
+      border-radius: 0;
+      font-size: 14px;
+      font-weight: bold;
+      height: 30px;
+    }
+    .about-content-img__title ul {
+      font-size: 12px;
+      padding-left: 25px;
+      margin-top: 6px;
+    }
+    .about-content-img__title ul li {
+      line-height: 1.5;
+    }
+  }
+</style>
+
+<section class="{{ section.id }}">
+  <div class="about-content-img {% if section.settings.img_text_inner == '1' %}img-inner{% endif %}">
+    <div class="container">
+      <div class="about-content-img__container">
+        <div class="about-content-img__left">
+          <div class="about-content-img__title">
+            <div>{{ section.settings.title }}</div>
+          </div>
+          {% if section.settings.img_text_inner == '1' %}
+            <div class="about-content-img__img hidden-tablet-and-up">
+              <img src="{{ section.settings.right_image | img_url: 'x340' }}" alt="{{ section.settings.title }}">
+            </div>
+          {% endif %}
+          {% if section.settings.features != blank %}
+            <div class="about-content-img__features">
+              <div>{{ section.settings.features }}</div>
+            </div>
+          {% endif %}
+          {% if section.settings.description != blank %}
+            <div class="about-content-img__description">
+              <div>{{ section.settings.description }}</div>
+            </div>
+          {% endif %}
+          {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+            <div class="about-content-img__button">
+              <a href="{{ section.settings.button_link }}" class="btn btn-primary">
+                {{- section.settings.button_text -}}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+        <div class="about-content-img__right">
+          <div class="about-content-img__img">
+            <img src="{{ section.settings.right_image | img_url: 'x340' }}" alt="{{ section.settings.title }}">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  (() => {
+    $('.about-us-content-img-section').eq(0).addClass('margin-top');
+  })();
+</script>
+{% schema %}
+{
+  "name": "about-content-img",
+  "class": "about-us-content-img-section",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "select",
+      "id": "img_text_inner",
+      "label": "Img Text Inner",
+      "options": [
+        {
+          "value": "1",
+          "label": "yes"
+        },
+        {
+          "value": "0",
+          "label": "no"
+        }
+      ],
+      "default": "0"
+    },
+    {
+      "type": "text",
+      "id": "features",
+      "label": "Features"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Right image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "about-content-img"
+    }
+  ]
+}
+{% endschema %}

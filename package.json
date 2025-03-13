@@ -1,0 +1,22 @@
+{
+  "name": "nothsky-supply",
+  "scripts": {
+    "start": "start.bat",
+    "pull": "pull.bat",
+   "pushignore": "pushignore.bat",
+    "merge": "merge.bat",
+    "change-test": "change-test.bat",
+    "change-live": "change-live.bat",
+    "tw": "npx tailwindcss -i ./config.css -o ./shopify/assets/shopify-style.css --watch"
+
+  },
+  "devDependencies": {
+    "@shopify/prettier-plugin-liquid": "^1.3.0",
+    "del-cli": "^5.1.0",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.4",
+    "tailwindcss": "^3.3.3",
+    "uglify-js": "^3.17.4",
+    "uglifycss": "^0.0.29"
+  }
+}

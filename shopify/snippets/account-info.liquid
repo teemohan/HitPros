@@ -1,0 +1,2158 @@
+{{ 'account-info.css' | asset_url | stylesheet_tag }}
+{{ 'customer-register.css' | asset_url | stylesheet_tag }}
+<template id="accountInfo">
+  <div class="account-info-block">
+    {% comment %} 新增地址表单弹框 {% endcomment %}
+    <el-dialog
+      title="Add Address"
+      width="558px"
+      :before-close="handleBeforeCloseAddressDialog"
+      :visible.sync="dialogVisible.address"
+      :show-close="true"
+    >
+      <div class="dialog-tips">Please fill the fields below:</div>
+      <el-form
+        autocomplete="off"
+        label-width="0"
+        :status-icon="false"
+        :model="addressRuleForm"
+        :rules="addressRules"
+        :action="addressFormAction"
+        :method="addressFormMethod"
+        ref="addressRuleForm"
+      >
+        <input type="hidden" name="form_type" value="customer_address">
+        <input type="hidden" name="utf8" value="✓">
+        <input v-if="isAddressUpdate" type="hidden" name="_method" value="put">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item prop="first_name">
+              <el-input
+                name="address[first_name]"
+                id="address-[first_name]"
+                v-model="addressRuleForm.first_name"
+                v-focus-input="addressRuleForm.first_name"
+              ></el-input>
+              <label for="address-[first_name]" class="el-label">
+                {{- 'customer.addresses.first_name' | t -}}
+                *</label
+              >
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="last_name">
+              <el-input
+                name="address[last_name]"
+                id="address-[last_name]"
+                v-model="addressRuleForm.last_name"
+                v-focus-input="addressRuleForm.last_name"
+              ></el-input>
+              <label for="address-[last_name]" class="el-label">
+                {{- 'customer.addresses.last_name' | t -}}
+                *</label
+              >
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-form-item prop="phone">
+            <el-input
+              name="address[phone]"
+              id="address-[phone]"
+              v-model="addressRuleForm.phone"
+              v-focus-input="addressRuleForm.phone"
+            ></el-input>
+            <label for="address-[phone]" class="el-label">
+              {{- 'customer.addresses.phone' | t -}}
+              *</label
+            >
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item prop="address1">
+            <el-input
+              name="address[address1]"
+              id="address-[address1]"
+              v-model="addressRuleForm.address1"
+              v-focus-input="addressRuleForm.address1"
+            ></el-input>
+            <label for="address-[address1]" class="el-label">
+              {{- 'customer.addresses.address1' | t -}}
+              *</label
+            >
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item prop="address2">
+            <el-input
+              name="address[address2]"
+              id="address-[address2]"
+              v-model="addressRuleForm.address2"
+              v-focus-input="addressRuleForm.address2"
+            ></el-input>
+            <label for="address-[address2]" class="el-label">
+              {{- 'customer.addresses.address2' | t -}}
+            </label>
+          </el-form-item>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item prop="city">
+              <el-input
+                name="address[city]"
+                id="address-[city]"
+                v-model="addressRuleForm.city"
+                v-focus-input="addressRuleForm.city"
+              ></el-input>
+              <label for="address-[city]" class="el-label">
+                {{- 'customer.addresses.city' | t -}}
+                *</label
+              >
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="zip">
+              <el-input
+                name="address[zip]"
+                id="address-[zip]"
+                v-model="addressRuleForm.zip"
+                @blur="handleAddressZipBlur"
+                v-focus-input="addressRuleForm.zip"
+              ></el-input>
+              <label for="address-[zip]" class="el-label">
+                {{- 'customer.addresses.zip' | t -}}
+                *</label
+              >
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item prop="province">
+              <el-select
+                v-focus-input="addressRuleForm.province"
+                v-model="addressRuleForm.province"
+                name="address[province]"
+                @change="handleAddressStateChange"
+                placeholder=""
+              >
+                <el-option
+                  v-for="item in stateOptions"
+                  :key="item[0]"
+                  :label="item[0]"
+                  :value="item[0]"
+                >
+                </el-option>
+              </el-select>
+              <label for="address-[province]" class="el-label">
+                {{- 'customer.addresses.province' | t -}}
+                *</label
+              >
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="country">
+              <el-input
+                readonly
+                name="address[country]"
+                id="address-[country]"
+                v-model="addressRuleForm.country"
+                v-focus-input="addressRuleForm.country"
+              ></el-input>
+              <label for="address-[country]" class="el-label">
+                {{- 'customer.addresses.country' | t -}}
+                *</label
+              >
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <div class="el-form-item">
+            <div class="checkbox-container">
+              <input
+                type="checkbox"
+                class="checkbox"
+                :value="addressRuleForm.default ? 1: 0"
+                :checked="addressRuleForm.default? true: false"
+                name="address[default]"
+                id="address-[default]"
+              >
+              <label for="address-[default]" class="text--subdued"> Save as default shipping address </label>
+            </div>
+          </div>
+        </el-row>
+      </el-form>
+      <div slot="footer">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            :loading="dialogLoading.address"
+            type="primary"
+            @click="submitForm('addressRuleForm')"
+            class="el-dialog--btn-comfirm"
+          >
+            Save
+          </el-button>
+          <div @click="handleBeforeCloseAddressDialog" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+    {% comment %} 新增、更新用户名称表单弹框 {% endcomment %}
+    <el-dialog
+      title="Update Name"
+      width="484px"
+      :before-close="handleBeforeCloseNameDialog"
+      :visible.sync="dialogVisible.name"
+      :show-close="true"
+    >
+      <el-form
+        autocomplete="off"
+        label-width="0"
+        :status-icon="false"
+        :model="nameRuleForm"
+        :rules="nameRules"
+        ref="nameRuleForm"
+      >
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item prop="first_name">
+              <el-input
+                id="name-[first_name]"
+                maxlength="150"
+                v-model="nameRuleForm.first_name"
+                v-focus-input="nameRuleForm.first_name"
+              ></el-input>
+              <label for="name-[first_name]" class="el-label"> First Name *</label>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="last_name">
+              <el-input
+                id="name-[last_name]"
+                maxlength="150"
+                v-model="nameRuleForm.last_name"
+                v-focus-input="nameRuleForm.last_name"
+              ></el-input>
+              <label for="name-[last_name]" class="el-label"> Last Name *</label>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            :loading="dialogLoading.name"
+            type="primary"
+            @click="submitForm('nameRuleForm')"
+            class="el-dialog--btn-comfirm"
+          >
+            Save
+          </el-button>
+          <div @click="handleBeforeCloseNameDialog" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+    {% comment %} 新增、更新公司名称表单弹框 {% endcomment %}
+    <el-dialog
+      title="Update Company Name"
+      width="484px"
+      :before-close="handleBeforeCloseCompanyDialog"
+      :visible.sync="dialogVisible.company"
+      :show-close="true"
+    >
+      <el-form
+        autocomplete="off"
+        label-width="0"
+        :status-icon="false"
+        :model="companyNameForm"
+        :rules="companyNameRules"
+        ref="companyNameRuleForm"
+      >
+        <el-row>
+          <el-form-item prop="name">
+            <el-input
+              id="company-[name]"
+              maxlength="150"
+              v-model="companyNameForm.name"
+              v-focus-input="companyNameForm.name"
+            ></el-input>
+            <label for="company-[name]" class="el-label">Company Name *</label>
+          </el-form-item>
+        </el-row>
+      </el-form>
+      <div slot="footer">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            :loading="dialogLoading.company"
+            type="primary"
+            @click="handleCompanyUpdate"
+            class="el-dialog--btn-comfirm"
+          >
+            Save
+          </el-button>
+          <div @click="handleBeforeCloseCompanyDialog" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+    {% comment %} 新增、更新职业名称表单弹框 {% endcomment %}
+    <el-dialog
+      title="Update Industry"
+      width="484px"
+      :before-close="handleBeforeCloseIndustryDialog"
+      :visible.sync="dialogVisible.industry"
+      :show-close="true"
+      :close-on-click-modal="false"
+    >
+      <el-form
+        autocomplete="off"
+        label-width="0"
+        :status-icon="false"
+        :model="industryForm"
+        :rules="industryRules"
+        ref="industryRuleForm"
+      >
+        <el-row>
+          <el-form-item class="common-select" prop="industry">
+            <el-select
+              :popper-append-to-body="false"
+              id="industry[name]"
+              ref="industrySelect"
+              v-model="industryForm.industry"
+              placeholder=""
+              v-focus-input="industryForm.industry"
+            >
+              <el-option
+                v-for="item in industryOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+                <div class="common-dropdown-item" @click="handleButtonClick($event, item)">
+                  <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                  <div>${ item.value }</div>
+                  <el-input
+                    placeholder="Please enter your single"
+                    maxlength="150"
+                    v-if="showIndustryEdit && item.value == 'Other'"
+                    v-model="industryForm.industry"
+                  ></el-input>
+                </div>
+              </el-option>
+            </el-select>
+            <label for="industry[name]" class="el-label">Industry</label>
+          </el-form-item>
+        </el-row>
+      </el-form>
+      <div slot="footer">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            :loading="dialogLoading.industry"
+            type="primary"
+            @click="handleIndustryUpdate"
+            class="el-dialog--btn-comfirm"
+          >
+            Save
+          </el-button>
+          <div @click="handleBeforeCloseIndustryDialog" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+    {% comment %} 选择、新增默认地址弹框 {% endcomment %}
+    <el-dialog
+      title="Update Shipping Address"
+      width="484px"
+      :before-close="handleBeforeCloseDefaultAddressDialog"
+      :visible.sync="dialogVisible.defaultAddress"
+      :show-close="true"
+    >
+      <div class="text-btn-container">
+        <span
+          class="text-btn-action"
+          @click="handleAddAddress"
+        >
+          {% render 'icon' with 'v3-plus' %}Add Shipping Address
+        </span>
+      </div>
+      <div class="form-default-address-title">Default Shipping Address</div>
+      <div class="form-address-item form-select-wrapper default">
+        <el-checkbox
+          @change="handleAddressCheckboxChange(defaultAddress)"
+          v-model="defaultAddress.default"
+        ></el-checkbox>
+        <div class="form-address-item-info" @click="handleAddressCheckboxChange(defaultAddress)">
+          <div>${ defaultAddress.name }</div>
+          <div class="ellipsis">${ defaultAddress.address }</div>
+        </div>
+      </div>
+      <div class="form-select-wrapper" :class="[`${address_list.length > 1 ? 'size-over2': undefined}`]">
+        <ul>
+          <li
+            class="form-address-item"
+            v-for="(item, idx) in address_list"
+            :key="idx"
+          >
+            <el-checkbox @change="handleAddressCheckboxChange(item)" v-model="item.default"></el-checkbox>
+            <div class="form-address-item-info" @click="handleAddressCheckboxChange(item)">
+              <div>${ item.name }</div>
+              <div class="ellipsis">${ item.address }</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div slot="footer">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            ref="default_address_btn"
+            type="primary"
+            :loading="dialogLoading.defaultAddress"
+            @click="dialogLoading.defaultAddress = true"
+            class="el-dialog--btn-comfirm"
+          >
+            <form id="default_address_form" method="post" :action="`/account/addresses/${default_address_id}`">
+              <input type="hidden" name="form_type" value="customer_address">
+              <input type="hidden" name="utf8" value="✓">
+              <input type="hidden" name="_method" value="put">
+              <input
+                type="hidden"
+                value="1"
+                name="address[default]"
+              >
+              <button>Save</button>
+            </form>
+          </el-button>
+          <div @click="handleBeforeCloseDefaultAddressDialog" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+    {% comment %} 加入公司弹框 {% endcomment %}
+    <el-dialog
+      title="Join Company"
+      class="join-dialog"
+      width="484px"
+      :class="{
+        'large-width' : joinProgress == 2 && !existCompany
+      }"
+      :before-close="handleBeforeCloseJoinDialog"
+      :visible.sync="dialogVisible.join"
+      :show-close="true"
+    >
+      <div class="setps">
+        <div @click="handleBackStep(joinProgress >= 2, 1)" class="step active" :class="{ 'next-active': joinProgress >= 2 }">
+          <div class="text"><i class="line"></i><span>1</span>Step1</div>
+        </div>
+        <div @click="handleBackStep(joinProgress >= 3, 2)" class="step" :class="{ 'next-active': joinProgress >= 3, active: joinProgress >= 2 }">
+          <div class="text"><i class="line"></i><span>2</span>Step2</div>
+        </div>
+        <div class="step" :class="{ active: joinProgress >= 3 }">
+          <div class="text"><span>3</span>Step3</div>
+        </div>
+      </div>
+      <div class="join-progress-1" v-show="joinProgress === 1">
+        <el-row>
+          <div @click="changeJoinMethod(1)" class="checkbox-row" :class="{ 'checkbox-row-checked': existCompany}">
+            <svg v-if="!existCompany" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="15" cy="15" r="14" fill="white" stroke="#B9B9B9" stroke-width="2"/>
+            </svg>
+            <svg v-else width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="15" cy="15" r="15" fill="#0A2B6F"/>
+            <path d="M21.1875 11.0625L13.3125 18.9375L9.375 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Join an existing company
+          </div>
+        </el-row>
+        <el-row>
+          <div @click="changeJoinMethod(2)" class="checkbox-row" :class="{ 'checkbox-row-checked': newCompany}">
+            <svg v-if="!newCompany" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="15" cy="15" r="14" fill="white" stroke="#B9B9B9" stroke-width="2"/>
+            </svg>
+            <svg v-else  width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="15" cy="15" r="15" fill="#0A2B6F"/>
+            <path d="M21.1875 11.0625L13.3125 18.9375L9.375 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Create a new company
+          </div>
+        </el-row>
+      </div>
+      <div class="join-progress-2" :class="{ 'progress2-form-wrapper' : !existCompany }" v-show="joinProgress === 2">
+        <template v-if="existCompany">
+          <el-form
+            autocomplete="off"
+            label-width="0"
+            :status-icon="false"
+            :model="searchCompanyCodeForm"
+            :rules="searchCompanyRules"
+            ref="searchCompanyRuleForm"
+          >
+            <el-form-item prop="searchCompanyCode">
+              <el-select
+                id="searchCompanyCode"
+                v-model="searchCompanyCodeForm.searchCompanyCode"
+                filterable
+                remote
+                placeholder=""
+                :popper-append-to-body="false"
+                @hook:mounted="removeReadOnly"
+                @visible-change="removeReadOnlyVisible"
+                @blur="removeReadOnly"
+                @focus="removeReadOnlyFocus"
+                :remote-method="companyRemoteSearch"
+                :loading="codeSearchLoading">
+                <el-option
+                  v-for="item in companyOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+              <label for="searchCompanyCode" class="el-label" :class="{ 'label--focus': elSelectFocus }">Company Authorization Code*</label>
+            </el-form-item>
+          </el-form>
+        </template>
+        <template v-else>
+          <el-form
+            autocomplete="off"
+            label-width="0"
+            :status-icon="false"
+            :model="addCompanyForm"
+            :rules="addCompanyFormRules"
+            ref="addCompanyRuleForm"
+          >
+            <el-row class="join-progress-2-title">
+              Company Name
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" :xs="{ span: 24 }">
+                <el-form-item prop="companyName">
+                  <el-input
+                    id="addCompanyForm[companyName]"
+                    v-model="addCompanyForm.companyName"
+                    v-focus-input="addCompanyForm.companyName"
+                  ></el-input>
+                  <label for="addCompanyForm[companyName]" class="el-label">Company Name*</label>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12" :xs="{ span: 24 }">
+                <el-form-item class="common-select" prop="industry">
+                  <el-select
+                    ref="addCompanyFormRef"
+                    id="addCompanyForm[industry]"
+                    v-model="addCompanyForm.industry"
+                    placeholder=""
+                    @blur="selectBlur"
+                    v-focus-input="addCompanyForm.industry"
+                  >
+                    <el-option
+                      v-for="item in industryOptions1"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    >
+                      <div class="common-dropdown-item" @click="handleButtonClick1($event, item)">
+                        <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                        <div>${ item.value }</div>
+                        <el-input
+                          placeholder="Please enter your single"
+                          maxlength="150"
+                          v-if="showIndustryEdit1 && item.value == 'Other'"
+                          v-model="addCompanyForm.industry"
+                        ></el-input>
+                      </div>
+                    </el-option>
+                  </el-select>
+                  <label for="addCompanyForm[industry]" class="el-label">Industry*</label>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row class="join-progress-2-title">
+              Company Address
+            </el-row>
+            <el-form-item prop="address1">
+              <el-input
+                id="addCompanyForm[address1]"
+                v-model="addCompanyForm.address1"
+                v-focus-input="addCompanyForm.address1"
+              ></el-input>
+              <label for="addCompanyForm[address1]" class="el-label">Street Address*</label>
+            </el-form-item>
+            <el-form-item prop="address2">
+              <el-input
+                id="addCompanyForm[address2]"
+                v-model="addCompanyForm.address2"
+                v-focus-input="addCompanyForm.address2"
+              ></el-input>
+              <label for="addCompanyForm[address2]" class="el-label">Suite，Building，Department，etc.</label>
+            </el-form-item>
+            <el-row :gutter="20">
+              <el-col :span="8" :xs="{ span: 24 }">
+                <el-form-item prop="city">
+                  <el-input
+                    id="addCompanyForm[city]"
+                    v-model="addCompanyForm.city"
+                    v-focus-input="addCompanyForm.city"
+                  ></el-input>
+                  <label for="addCompanyForm[city]" class="el-label">City*</label>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8" :xs="{ span: 24 }">
+                <el-form-item prop="state">
+                  <el-select
+                    v-focus-input="addCompanyForm.state"
+                    v-model="addCompanyForm.state"
+                    @change="handleCompanyStateChange"
+                    id="addCompanyForm[state]"
+                    placeholder=""
+                  >
+                    <el-option
+                      v-for="item in stateOptions"
+                      :key="item[0]"
+                      :label="item[0]"
+                      :value="item[1]"
+                    >
+                    </el-option>
+                  </el-select>
+                  <label for="addCompanyForm[state]" class="el-label">State*</label>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8" :xs="{ span: 24 }">
+                <el-form-item prop="zipCode">
+                  <el-input
+                    id="addCompanyForm[zipCode]"
+                    @blur="handleCompanyZipBlur"
+                    v-model="addCompanyForm.zipCode"
+                    v-focus-input="addCompanyForm.zipCode"
+                  ></el-input>
+                  <label for="addCompanyForm[zipCode]" class="el-label">ZIP Code*</label>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </template>
+      </div>
+      <div class="join-progress-3" v-show="joinProgress === 3">
+        <div class="join-progress-3-box">
+          <div class="join-progress-3-icon">
+            <img class="hidden-phone" src="https://cdn.shopify.com/s/files/1/0871/4056/5299/files/wancheng-13.png?v=1736405925" alt="">
+            
+            <svg class="hidden-lap-and-up" width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="25" cy="25" r="25" fill="#1BBC3B"/>
+            <path d="M35.3125 18.4375L22.1875 31.5625L15.625 25" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="join-progress-3-content">
+            <template v-if="existCompany">
+              Your request to join this company has been submitted and is pending account admin's approval.
+            </template>
+            <template v-else>
+              Success! Your company has been created.
+            </template>
+          </div>
+          <div class="join-progress-3-back" @click="handleBeforeCloseJoinDialog">
+            Back
+          </div>
+        </div>
+      </div>
+      <div slot="footer">
+        <div class="el-form-btn dialog-form-btn" v-if="joinProgress < 3">
+          <el-button
+            v-if="joinProgress === 1"
+            type="primary"
+            @click="handleJoinNext"
+            class="el-dialog--btn-comfirm"
+          >
+            Next
+          </el-button>
+          <el-button
+            v-if="joinProgress === 2 && existCompany"
+            :loading="dialogLoading.join"
+            :disabled="dialogLoading.join"
+            type="primary"
+            @click="handleJoinExistCompany"
+            class="el-dialog--btn-comfirm existCompany"
+          >
+            Apply to Join
+          </el-button>
+          <el-button
+            v-if="joinProgress === 2 && newCompany"
+            :loading="dialogLoading.join"
+            :disabled="dialogLoading.join"
+            type="primary"
+            @click="handleCreateCompany"
+            class="el-dialog--btn-comfirm newCompany"
+          >
+            Submit
+          </el-button>
+          <div @click="handleBeforeCloseJoinDialog" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+
+    {% comment %} 更新公司地址弹框 {% endcomment %}
+    <el-dialog
+      title="Update Company Address"
+      width="484px"
+      :before-close="handleBeforeCloseCADialog"
+      :visible.sync="dialogVisible.defaultCompanyAddress"
+      :show-close="true"
+    >
+      <el-form
+        autocomplete="off"
+        label-width="0"
+        :status-icon="false"
+        :model="companyAddressForm"
+        :rules="companyAddressRules"
+        ref="companyAddressRuleForm"
+      >
+        <el-form-item prop="address1">
+          <el-input
+            id="companyAddressForm[address1]"
+            v-model="companyAddressForm.address1"
+            v-focus-input="companyAddressForm.address1"
+          ></el-input>
+          <label for="companyAddressForm[address1]" class="el-label">Street Address*</label>
+        </el-form-item>
+        <el-form-item prop="address2">
+          <el-input
+            id="companyAddressForm[address2]"
+            v-model="companyAddressForm.address2"
+            v-focus-input="companyAddressForm.address2"
+          ></el-input>
+          <label for="companyAddressForm[address2]" class="el-label">Suite，Building，Department，etc.</label>
+        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="8" :xs="{ span: 24 }">
+            <el-form-item prop="city">
+              <el-input
+                id="companyAddressForm[city]"
+                v-model="companyAddressForm.city"
+                v-focus-input="companyAddressForm.city"
+              ></el-input>
+              <label for="companyAddressForm[city]" class="el-label">City*</label>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :xs="{ span: 24 }">
+            <el-form-item prop="zoneCode">
+              <el-select
+                v-focus-input="companyAddressForm.zoneCode"
+                v-model="companyAddressForm.zoneCode"
+                @change="handleCompanyAddressStateChange"
+                id="companyAddressForm[zoneCode]"
+                placeholder=""
+              >
+                <el-option
+                  v-for="item in stateOptions"
+                  :key="item[0]"
+                  :label="item[0]"
+                  :value="item[1]"
+                >
+                </el-option>
+              </el-select>
+              <label for="companyAddressForm[state]" class="el-label">State*</label>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :xs="{ span: 24 }">
+            <el-form-item prop="zip">
+              <el-input
+                id="companyAddressForm[zip]"
+                @blur="handleCompanyAddressZipBlur"
+                v-model="companyAddressForm.zip"
+                v-focus-input="companyAddressForm.zip"
+              ></el-input>
+              <label for="companyAddressForm[zip]" class="el-label">ZIP Code*</label>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            :loading="dialogLoading.companyAddressUpdate"
+            type="primary"
+            @click="handleUpdateCompanyAddress"
+            class="el-dialog--btn-comfirm newCompany"
+          >
+            Submit
+          </el-button>
+          <div @click="handleBeforeCloseCADialog" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+    <div class="account-info-left">
+      <div class="common-header-title account-info-header">Personal information</div>
+      <div class="account-info-line">
+        <div class="account-info-line-1">
+          <p>USER NAME</p>
+          <span @click="dialogVisible.name = true" class="account-info-edit">Edit</span>
+        </div>
+        <div :title="`${ originalNameRuleForm.first_name} ${ originalNameRuleForm.last_name}`" class="account-info-line-2 ellipsis">${ originalNameRuleForm.first_name} ${ originalNameRuleForm.last_name}</div>
+        <div class="account-info-line-3">ID # {{ customer.id }}</div>
+      </div>
+
+      <div class="account-info-line">
+        <div class="account-info-line-1">
+          <p>EMAIL</p>
+        </div>
+        <div class="account-info-line-2">{{ customer.email }}</div>
+      </div>
+
+      <div class="account-info-line">
+        <div class="account-info-line-1">
+          <p>PASSWORD</p>
+          <span class="account-info-edit" @click="handleToResetPass">Edit</span>
+        </div>
+        <div class="account-info-line-2">*******************</div>
+      </div>
+    </div>
+    <div class="account-info-center">
+      {% if customer.b2b? %}
+        <div class="common-header-title account-info-header">
+          Default Shipping Address
+          <span @click="dialogVisible.defaultCompanyAddress = true" class="common-block-btn edit"> Edit </span>
+        </div>
+        <div class="account-info-line">
+          <div class="account-info-line-1">
+            <p>ADDRESS1</p>
+          </div>
+          <div class="account-info-line-2">
+            ${ originalCompanyAddressForm.address1 }
+          </div>
+        </div>
+        <div class="account-info-line">
+          <div class="account-info-line-1">
+            <p>ADDRESS2</p>
+          </div>
+          <div class="account-info-line-2">
+            ${ originalCompanyAddressForm.address2 }
+          </div>
+        </div>
+        <div class="account-info-line">
+          <div class="account-info-line-1">
+            <p>ZIP CODE</p>
+          </div>
+          <div class="account-info-line-2">
+            ${ originalCompanyAddressForm.zip }
+          </div>
+        </div>
+        <div class="account-info-line">
+          <div class="account-info-line-1">
+            <p>CITY</p>
+          </div>
+          <div class="account-info-line-2">
+            ${ originalCompanyAddressForm.city }
+          </div>
+        </div>
+        <div class="account-info-line">
+          <div class="account-info-line-1">
+            <p>STATE</p>
+          </div>
+          <div class="account-info-line-2">
+            ${ originalCompanyAddressForm.zoneCode }
+          </div>
+        </div>
+      {% else %}
+        <div class="common-header-title account-info-header">
+          Default Shipping Address
+          {% if customer.default_address != blank %}
+            <span @click="dialogVisible.defaultAddress = true" class="common-block-btn edit"> Edit </span>
+          {% else %}
+            <span @click="dialogVisible.address = true" class="common-block-btn"> Add </span>
+          {% endif %}
+        </div>
+        {% if customer.default_address != blank %}
+          {% if customer.default_address.first_name != blank %}
+            <div class="account-info-line">
+              <div class="account-info-line-1">
+                <p>NAME</p>
+              </div>
+              <div class="account-info-line-2">
+                {{ customer.default_address.first_name }}
+                {{ customer.default_address.last_name }}
+              </div>
+            </div>
+          {% endif %}
+          {% if customer.default_address.phone != blank %}
+            <div class="account-info-line">
+              <div class="account-info-line-1">
+                <p>PHONE</p>
+              </div>
+              <div class="account-info-line-2">
+                {{ customer.default_address.phone }}
+              </div>
+            </div>
+          {% endif %}
+          <div class="account-info-line">
+            <div class="account-info-line-1">
+              <p>ADDRESS</p>
+            </div>
+            <div class="account-info-line-2">
+              {% if customer.default_address.street != blank %}
+                {{ customer.default_address.street }},
+              {% endif %}
+              {% if customer.default_address.city != blank %}
+                {{ customer.default_address.city }},
+              {% endif %}  
+              {% if customer.default_address.province != blank %}
+                {{ customer.default_address.province }},
+              {% endif %}  
+                {{ customer.default_address.country }}
+            </div>
+          </div>
+          {% if customer.default_address.zip != blank %}
+            <div class="account-info-line">
+              <div class="account-info-line-1">
+                <p>ZIP CODE</p>
+              </div>
+              <div class="account-info-line-2">
+                {{ customer.default_address.zip }}
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="account-info-right">
+      <div class="common-header-title account-info-header">Company Information</div>
+      <template v-if="!currentCompany.id && companyAuthStatus">
+        <template v-if="companyAuthStatus.state === 0">
+          <div class="company-apply-text">
+            The application for joining the company is currently under review.
+          </div>
+        </template>
+        <template v-else-if="companyAuthStatus.state === 2">
+          <div class="text-btn-container">
+            <span @click="dialogVisible.join = true" class="text-btn-action">
+            {% render 'icon' with 'v3-plus' %}Join a company
+            </span>
+          </div>
+          <div class="company-reject-reason" v-if="reasonShow && companyAuthStatus.reason">
+            <div><span>Reject:</span> ${ companyAuthStatus.reason }</div>
+              <span @click="handleCloseReason">
+                {% render 'icon' with 'reason-close' %}
+              </span>
+          </div>
+        </template>
+      </template>
+      <template v-if="currentCompany.id">
+        <div class="account-info-line">
+          <div class="account-info-line-1">
+            <p>COMPANY NAME</p>
+            <span v-if="currentCompany.isMainContact" @click="dialogVisible.company = true" class="account-info-edit">Edit</span>
+          </div>
+          <div class="account-info-line-2">
+            ${ currentCompany.name }
+          </div>
+        </div>
+        <div class="account-info-line">
+          <div class="account-info-line-1">
+            <p>COMPANY AUTHORIZATION CODE:</p>
+          </div>
+          <div class="account-info-line-2 companyid-show">
+            <span class="companyid-show-text"> 
+              <template v-if="showCompanyId">
+                ${ currentCompany.id }
+              </template>
+              <template v-else>
+                {% render 'icon' with 'company-id-hidden' %}
+              </template>
+            </span>
+
+            <span @click="showCompanyId = !showCompanyId" class="companyid-show-icon">
+              {% render 'icon' with 'company-eye' %}
+            </span>
+          </div>
+        </div>
+        <div class="account-info-line">
+          <div class="account-info-line-1">
+            <p>INDUSTRY</p>
+            <span v-if="currentCompany.isMainContact"  @click="dialogVisible.industry = true" class="account-info-edit">Edit</span>
+          </div>
+          <div class="account-info-line-2">
+            ${ currentCompany.industry }
+          </div>
+        </div>
+        <div class="account-info-line">
+          <div class="account-info-line-1">
+            <p>PAYMENT TERMS</p>
+          </div>
+          <div class="account-info-line-2">
+            ${ companyTerms.name ? companyTerms.name : 'N/A' }
+          </div>
+        </div>
+        <div v-if="currentCompany.isMainContact"  class="account-info-line">
+          <div class="account-info-line-1">
+            <p>COMPANY USERS</p>
+            <span @click="navToCompanyList" class="account-info-edit">Manage</span>
+          </div>
+          <div class="account-company-line-list">
+            <div v-if="currentCompany.pendingNums > 0" @click="navToCompanyList">
+              <div><span>${ currentCompany.pendingNums }</span> pending authorization requests</div>
+              {% render 'icon' with 'manage-arrow' %}
+            </div>
+            <div class="user-auth" @click="navToCompanyList">
+              <div><span>${ currentCompany.passNums }</span> authorized company users</div>
+              {% render 'icon' with 'manage-arrow' %}
+            </div>
+          </div> 
+        </div>
+      </template>
+    </div>
+  </div>
+</template>
+<script>
+  (() => {
+    const ip = Cookies.get('ip');
+    if(ip) {
+      dataLayer.push({
+        'event': 'custom_account_viewed',
+        'zip': '{{ customer.default_address.zip  }}',   
+        'username': '{{customer.name }}',
+        'email':'{{customer.email }}',
+        'ip': ip
+      });
+    }
+    
+    // 使用 DOM 元素解码 HTML 实体, 转义字符
+    function decodeHTMLEntities(str) {
+      let textarea = document.createElement('textarea');
+      textarea.innerHTML = str;
+      return textarea.value;
+    }
+    window.accountInfo = {
+      template: '#accountInfo',
+      delimiters: ['${', '}'],
+      async created() {
+        this.getMainContact();
+        this.getAuthStatus();
+        this.getCompanyTerms();
+      },
+      mounted() {
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') {
+            if (this.dialogVisible.industry) {
+              this.$refs.industrySelect.blur()
+              this.handleIndustryUpdate();
+            } else if (this.dialogVisible.company) {
+              this.handleCompanyUpdate();
+            } else if (this.dialogVisible.name) {
+              this.submitForm('nameRuleForm');
+            } else if (this.dialogVisible.defaultAddress) {
+              this.$refs.default_address_btn.$el.click();
+              $('#default_address_form').submit();
+            }
+          }
+        });
+
+        if(this.currentCompany.industry) {
+          this.industryOptions.find(item => item.value === this.currentCompany.industry).isSelected = true;
+        }
+      },
+      data() {
+        const validateCompanyName = async (rule, value, callback) => {
+          try {
+            const response = await fetch(`https://app.northskysupply.com/web/companies?name=${value}`);
+            const res = await response.json();
+            if (res.code === 200) {
+              callback(); 
+            } else {
+              callback(new Error('Company already existed.'));
+            }
+          } catch (error) {
+            callback(new Error('Validation failed due to a network error.'));
+          }
+        };
+        const validatePhoneNumber = (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('Phone is required'));
+          } else {
+            const phone = libphonenumber.parsePhoneNumberFromString(value, 'US');
+            if(!phone || !phone.isValid()) return callback(new Error('Invalid phonenumber'));
+            return callback();
+          }
+        };
+
+        const validateZipCode = async (rule, value, callback) => {
+          if (!value) {
+            callback(new Error('ZIP Code is required'));
+          } else if (value.length !== 5) {
+            callback(new Error('Zip code must be 5 digits'));
+          } else {
+            try {
+              // 使用 getStateByZip 查询 ZIP Code 对应的州
+              const state = await getStateByZip(value);
+              if (!state || state.includes('Unable')) {
+                callback(new Error('The zip code is invalid.'));
+              } else if (this.addressRuleForm.province && state !== this.addressRuleForm.province) {
+                callback(new Error('Not matching with the state.'));
+              } else {
+                callback(); // 验证通过
+              }
+            } catch (error) {
+              console.error('Error validating ZIP Code:', error);
+              callback(new Error('An error occurred while validating the ZIP Code.'));
+            }
+          }
+        };
+
+        const validateState = (rule, value, callback) => {
+          if (!value) {
+            callback(new Error('Please select a state'));
+          } else if (this.addressRuleForm.zip.length && this.addressRuleForm.zip.length !== 5) {
+            callback(new Error('Does not match zip code.'));
+          } else {
+            callback();
+          }
+        };
+
+        const validateCompanyZipCode = async (rule, value, callback) => {
+          if (!value) {
+            callback(new Error('ZIP Code is required'));
+          } else if (value.length !== 5) {
+            callback(new Error('Zip code must be 5 digits'));
+          } else {
+            try {
+              // 使用 getStateByZip 查询 ZIP Code 对应的州
+              const state = await getStateByZip(value);
+              const stateName = this.stateOptions.find(item => item[1] == this.addCompanyForm.state);
+              if (!state || state.includes('Unable')) {
+                callback(new Error('The zip code is invalid.'));
+              } else if (stateName && state !== stateName[0]) {
+                callback(new Error('Not matching with the state.'));
+              } else {
+                callback(); // 验证通过
+              }
+            } catch (error) {
+              console.error('Error validating ZIP Code:', error);
+              callback(new Error('An error occurred while validating the ZIP Code.'));
+            }
+          }
+        };
+
+        const validateCompanyState = async (rule, value, callback) => {
+          if (!value) {
+            callback(new Error('Please select a state'));
+          } else if (this.addCompanyForm.zipCode && this.addCompanyForm.zipCode.length !== 5) {
+            callback(new Error('Does not match zip code.'));
+          } else {
+            callback();
+          }
+        };
+
+        const validateCompanyAddressZipCode = async (rule, value, callback) => {
+          if (!value) {
+            callback(new Error('ZIP Code is required'));
+          } else if (value.length !== 5) {
+            callback(new Error('Zip code must be 5 digits'));
+          } else {
+            try {
+              // 使用 getStateByZip 查询 ZIP Code 对应的州
+              const state = await getStateByZip(value);
+              const stateName = this.stateOptions.find(item => item[1] == this.companyAddressForm.zoneCode);
+              if (!state || state.includes('Unable')) {
+                callback(new Error('The zip code is invalid.'));
+              } else if (stateName && state !== stateName[0]) {
+                callback(new Error('Not matching with the state.'));
+              } else {
+                callback(); // 验证通过
+              }
+            } catch (error) {
+              console.error('Error validating ZIP Code:', error);
+              callback(new Error('An error occurred while validating the ZIP Code.'));
+            }
+          }
+        };
+
+        const validateCompanyAddressState = async (rule, value, callback) => {
+          if (!value) {
+            callback(new Error('Please select a state'));
+          } else if (this.companyAddressForm.zip.length !== 5) {
+            callback(new Error('Does not match zip code.'));
+          } else {
+            callback();
+          }
+        };
+
+        const noWhitespaceValidator = (rule, value, callback) => {
+          if (!value || value.trim() === '') {
+            callback(new Error(rule.message));
+          } else {
+            callback();
+          }
+        };
+
+        const validateEnglishLettersOnly = (rule, value, callback) => {
+          const englishLetterPattern = /^[a-zA-Z]+$/; // 仅允许英文字母
+          if (!englishLetterPattern.test(value)) {
+            return callback(new Error('Special characters are not allowed'));
+          }
+          callback();
+        };
+
+        const validateCompanySearch = async (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('Company Authentication Code is required'));
+          }
+        };
+
+        const companyCodeValidator = async (rule, value, callback) => {
+          if (!value || value.trim() === '') {
+            callback(new Error('Company Authentication Code is required'));
+            return;
+          }
+          try {
+            const response = await fetch(`https://app.northskysupply.com/web/companies/${value}/name`);
+            const res = await response.json();
+            if (res.code === 200) {
+              this.validCompanyData = {
+                companyId: value,
+                companyName: res.data.companyName
+              }
+              callback(); 
+            } else {
+              callback(new Error('This code does not exist, please check and try again.'));
+            }
+          } catch (error) {
+            callback(new Error('Validation failed due to a network error.'));
+          }
+        };
+        return {
+          elSelectFocus: false,
+          reasonShow: false,
+          companyOptions: [],
+          companyTerms: {},
+          companyAuthStatus: null,
+          showIndustryEdit: false, // 是否是其他职业
+          showIndustryEdit1: false, // 是否是其他职业
+          industry: '',
+          industry1: '',
+          codeSearchLoading: false,
+          industryOptions: [
+            { isSelected: false, value: 'Manufacturing', label: 'Manufacturing' },
+            { isSelected: false, value: 'Warehousing', label: 'Warehousing' },
+            { isSelected: false, value: 'Transportation', label: 'Transportation' },
+            { isSelected: false, value: 'Government / Municipality', label: 'Government / Municipality' },
+            { isSelected: false, value: 'Hospitality', label: 'Hospitality' },
+            { isSelected: false, value: 'Healthcare', label: 'Healthcare' },
+            { isSelected: false, value: 'Retail/Commercial', label: 'Retail/Commercial' },
+            { isSelected: false, value: 'Property Management', label: 'Property Management' },
+            { isSelected: false, value: 'Professional Services', label: 'Professional Services' },
+            { isSelected: false, value: 'Construction', label: 'Construction' },
+            { isSelected: false, value: 'Mining', label: 'Mining' },
+            { isSelected: false, value: 'Agriculture', label: 'Agriculture' },
+            { isSelected: false, value: 'Education', label: 'Education' },
+            { isSelected: false, value: 'Energy / Oil & Gas', label: 'Energy / Oil & Gas' },
+            { isSelected: false, value: 'Food & Beverage', label: 'Food & Beverage' },
+            { isSelected: false, value: 'Personal Use', label: 'Personal Use' },
+            { isSelected: false, value: 'Other', label: 'Other' },
+          ],
+          industryOptions1: [
+            { isSelected: false, value: 'Manufacturing', label: 'Manufacturing' },
+            { isSelected: false, value: 'Warehousing', label: 'Warehousing' },
+            { isSelected: false, value: 'Transportation', label: 'Transportation' },
+            { isSelected: false, value: 'Government / Municipality', label: 'Government / Municipality' },
+            { isSelected: false, value: 'Hospitality', label: 'Hospitality' },
+            { isSelected: false, value: 'Healthcare', label: 'Healthcare' },
+            { isSelected: false, value: 'Retail/Commercial', label: 'Retail/Commercial' },
+            { isSelected: false, value: 'Property Management', label: 'Property Management' },
+            { isSelected: false, value: 'Professional Services', label: 'Professional Services' },
+            { isSelected: false, value: 'Construction', label: 'Construction' },
+            { isSelected: false, value: 'Mining', label: 'Mining' },
+            { isSelected: false, value: 'Agriculture', label: 'Agriculture' },
+            { isSelected: false, value: 'Education', label: 'Education' },
+            { isSelected: false, value: 'Energy / Oil & Gas', label: 'Energy / Oil & Gas' },
+            { isSelected: false, value: 'Food & Beverage', label: 'Food & Beverage' },
+            { isSelected: false, value: 'Personal Use', label: 'Personal Use' },
+            { isSelected: false, value: 'Other', label: 'Other' },
+          ],
+          originalAddCompanyForm: {
+            companyName: '',
+            industry: '',
+            address1: '',
+            address2: '',
+            zipCode: '',
+            city: '',
+            state: '',
+          },
+          addCompanyForm: {
+            companyName: '',
+            industry: '',
+            address1: '',
+            address2: '',
+            zipCode: '',
+            city: '',
+            state: '',
+          },
+          currentCompany: {
+            isMainContact: false,
+            id: '{{ customer.current_company.id }}',
+            name: decodeHTMLEntities('{{ customer.current_company.name }}'),
+            industry: decodeHTMLEntities('{{ customer.current_company.metafields.company.industry }}')
+          },
+          joinProgress: 1, // 加入公司的步骤
+          existCompany: false, // 是否是加入现有公司
+          newCompany: false, // 是否加入一个新公司
+          dialogVisible: {
+            // 弹框框控制
+            join: false,
+            address: false,
+            company: false,
+            name: false,
+            industry: false,
+            defaultAddress: false,
+            defaultCompanyAddress: false
+          },
+          showCompanyId: false,
+          dialogLoading: {
+            // 表单save loading
+            companyAddressUpdate: false,
+            address: false,
+            join: false,
+            company: false,
+            industry: false,
+            name: false,
+            defaultAddress: false,
+          },
+          searchCompanyCodeForm: {
+            // 搜索公司表单
+            searchCompanyCode: '',
+          },
+          validCompanyData: {},
+          originalAddressRuleForm: {
+            //原始地址表单
+            first_name: '',
+            last_name: '',
+            phone: '',
+            address1: '',
+            address2: '',
+            city: '',
+            zip: '',
+            province: '',
+            country: 'United States', // 默认值
+            default: false,
+          },
+          addressFormAction: '/account/addresses', // 表单提交的地址
+          addressFormMethod: 'post', // 表单提交的地址
+          isAddressUpdate: false, //是否更新表单
+          addressRuleForm: {
+            first_name: '',
+            last_name: '',
+            phone: '',
+            address1: '',
+            address2: '',
+            city: '',
+            zip: '',
+            province: '',
+            country: 'United States', // 默认值
+            default: false,
+          },
+          originalCompanyAddressForm: {
+            address1: decodeHTMLEntities("{{ customer.current_location.shipping_address.address1 }}"),
+            address2: decodeHTMLEntities("{{ customer.current_location.shipping_address.address2 }}"),
+            city: decodeHTMLEntities("{{ customer.current_location.shipping_address.city }}"),
+            zip: decodeHTMLEntities("{{ customer.current_location.shipping_address.zip }}"),
+            zoneCode: decodeHTMLEntities("{{ customer.current_location.shipping_address.province_code }}"),
+            countryCode: 'US'
+          },
+          companyAddressForm: {
+            address1: decodeHTMLEntities("{{ customer.current_location.shipping_address.address1 }}"),
+            address2: decodeHTMLEntities("{{ customer.current_location.shipping_address.address2 }}"),
+            city: decodeHTMLEntities("{{ customer.current_location.shipping_address.city }}"),
+            zip: decodeHTMLEntities("{{ customer.current_location.shipping_address.zip }}"),
+            zoneCode: decodeHTMLEntities("{{ customer.current_location.shipping_address.province_code }}"),
+            countryCode: 'US'
+          },
+          originalNameRuleForm: {
+            //原始名字表单
+            first_name: decodeHTMLEntities("{{ customer.first_name }}"),
+            last_name: decodeHTMLEntities("{{ customer.last_name }}"),
+          },
+          nameRuleForm: {
+            first_name: decodeHTMLEntities("{{ customer.first_name }}"),
+            last_name: decodeHTMLEntities("{{ customer.last_name }}"),
+          },
+          industry: "",
+          searchCompanyRules: {
+            // 搜索公司Code校验
+            searchCompanyCode: [ 
+              { validator: companyCodeValidator, trigger: 'change' } 
+            ],
+          },
+          addCompanyFormRules: {
+            // 新增公司校验
+            companyName: [
+              { validator: noWhitespaceValidator, message: 'Company Name is required', trigger: 'blur' },
+              { validator: validateCompanyName, trigger: 'blur' },
+            ],
+            industry: [
+              { validator: noWhitespaceValidator, message: 'Industry is required', trigger: 'change' }
+            ],
+            address1: [
+              { validator: noWhitespaceValidator, message: 'Street Address is required', trigger: 'blur' }
+            ],
+            city: [{ validator: noWhitespaceValidator, message: 'City is required', trigger: 'blur' }],
+            state: [{ validator: validateCompanyState, trigger: 'change' }],
+            zipCode: [{ validator: validateCompanyZipCode, trigger: 'blur' }],
+          },
+          companyAddressRules: {
+            address1: [
+              { validator: noWhitespaceValidator, message: 'Street Address is required', trigger: 'blur' }
+            ],
+            city: [{ validator: noWhitespaceValidator, message: 'City is required', trigger: 'blur' }],
+            zoneCode: [{ validator: validateCompanyAddressState, trigger: 'change' }],
+            zip: [{ validator: validateCompanyAddressZipCode, trigger: 'blur' }],
+          },
+          addressRules: {
+            // 地址校验
+            first_name: [
+              { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
+              { validator: validateEnglishLettersOnly, trigger: 'blur' },
+            ],
+            last_name: [
+              { validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' },
+              { validator: validateEnglishLettersOnly, trigger: 'blur' },
+            ],
+            phone: [{ validator: validatePhoneNumber, trigger: 'blur' }],
+            address1: [
+              { validator: noWhitespaceValidator, message: 'Address1 is required', trigger: 'blur' }
+            ],
+            city: [
+              { validator: noWhitespaceValidator, message: 'City is required', trigger: 'blur' }
+            ],
+            province: [{ validator: validateState, trigger: 'change' }],
+            zip: [{ validator: validateZipCode, trigger: 'blur' }],
+          },
+          companyNameRules: {
+            name: [
+              { validator: noWhitespaceValidator, message: 'CompanyName is required', trigger: 'blur' }
+            ],
+          },
+          industryRules: {
+            industry: [
+              { validator: noWhitespaceValidator, message: 'Industry is required', trigger: 'change' }
+            ],
+          },
+          nameRules: {
+            // 名字校验
+            first_name: [
+              { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
+              { validator: validateEnglishLettersOnly, trigger: 'blur' },
+            ],
+            last_name: [
+              { validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' },
+              { validator: validateEnglishLettersOnly, trigger: 'blur' },
+            ],
+          },
+          stateOptions: [
+            ["Alabama", "AL"],
+            ["Alaska", "AK"],
+            ["Arizona", "AZ"],
+            ["Arkansas", "AR"],
+            ["California", "CA"],
+            ["Colorado", "CO"],
+            ["Connecticut", "CT"],
+            ["Delaware", "DE"],
+            ["Florida", "FL"],
+            ["Georgia", "GA"],
+            ["Hawaii", "HI"],
+            ["Idaho", "ID"],
+            ["Illinois", "IL"],
+            ["Indiana", "IN"],
+            ["Iowa", "IA"],
+            ["Kansas", "KS"],
+            ["Kentucky", "KY"],
+            ["Louisiana", "LA"],
+            ["Maine", "ME"],
+            ["Maryland", "MD"],
+            ["Massachusetts", "MA"],
+            ["Michigan", "MI"],
+            ["Minnesota", "MN"],
+            ["Mississippi", "MS"],
+            ["Missouri", "MO"],
+            ["Montana", "MT"],
+            ["Nebraska", "NE"],
+            ["Nevada", "NV"],
+            ["New Hampshire", "NH"],
+            ["New Jersey", "NJ"],
+            ["New Mexico", "NM"],
+            ["New York", "NY"],
+            ["North Carolina", "NC"],
+            ["North Dakota", "ND"],
+            ["Ohio", "OH"],
+            ["Oklahoma", "OK"],
+            ["Oregon", "OR"],
+            ["Pennsylvania", "PA"],
+            ["Rhode Island", "RI"],
+            ["South Carolina", "SC"],
+            ["South Dakota", "SD"],
+            ["Tennessee", "TN"],
+            ["Texas", "TX"],
+            ["Utah", "UT"],
+            ["Vermont", "VT"],
+            ["Virginia", "VA"],
+            ["Washington", "WA"],
+            ["West Virginia", "WV"],
+            ["Wisconsin", "WI"],
+            ["Wyoming", "WY"],
+            ["American Samoa", "AS"],
+            ["Armed Forces Americas", "AA"],
+            ["Armed Forces Europe", "AE"],
+            ["Armed Forces Pacific", "AP"],
+            ["District of Columbia", "DC"],
+            ["Federated States of Micronesia", "FM"],
+            ["Guam", "GU"],
+            ["Marshall Islands", "MH"],
+            ["Northern Mariana Islands", "MP"],
+            ["Puerto Rico", "PR"],
+            ["Virgin Islands", "VI"],
+            ["Palau", "PW"]
+          ],
+          showIndustryEdit: false, // 是否是其他职业
+          industryForm: {
+            originalIndustry: decodeHTMLEntities("{{ customer.current_company.metafields.company.industry }}"), //原始行业名称
+            industry: decodeHTMLEntities("{{ customer.current_company.metafields.company.industry }}"),
+          },
+          companyNameForm: {
+            originalCompany: decodeHTMLEntities("{{ customer.current_company.name }}"), //原始公司名称
+            name: decodeHTMLEntities("{{ customer.current_company.name }}"),
+          },
+          defaultAddress: {
+            address_id: decodeHTMLEntities("{{ customer.default_address.id }}"),
+            default: true,
+            name: decodeHTMLEntities("{{ customer.default_address.name }} - {{ customer.default_address.phone }}"),
+            address: decodeHTMLEntities(`{{ customer.default_address.street }}, {{ customer.default_address.city }}, {{ customer.default_address.province }}, {{ customer.default_address.country }}, {{ customer.default_address.zip }}`)
+          },
+          address_list: [
+            {% for address in customer.addresses %}
+              {% if address.id != customer.default_address.id %}
+                {
+                  address_id: decodeHTMLEntities("{{ address.id }}"),
+                  default: false,
+                  name: decodeHTMLEntities("{{ address.name }} - {{ address.phone }}"),
+                  address: decodeHTMLEntities(`{{ address.street }}, {{ address.city }}, {{ address.province }}, {{ address.country }}, {{ address.zip }}`)
+                }
+                {% unless forloop.last %}, {% endunless %}
+              {% endif %}
+            {% endfor %}
+          ]
+        };
+      },
+      computed: {
+        default_address_id() {
+          if(this.defaultAddress.default) {
+            return this.defaultAddress.address_id;
+          } else {
+            return this.address_list.find(item => item.default).address_id;
+          }
+        }
+      },
+      watch: {
+        "industryForm.industry"(newVal, oldVal) {
+          const industry = this.industryOptions.find((item) => item.value == 'Other');
+          if(industry.isSelected) {
+            this.industry = newVal;
+          }
+        },
+        "addCompanyForm.industry"(newVal, oldVal) {
+          const industry = this.industryOptions1.find((item) => item.value == 'Other');
+          if(industry.isSelected) {
+            this.industry1 = newVal;
+          }
+        },
+        existCompany(newVal, oldVal) {
+          if(this.newCompany && newVal) {
+            this.newCompany = false;
+          }
+        },
+        newCompany(newVal, oldVal) {
+          if(this.existCompany && newVal) {
+            this.existCompany = false;
+          }
+        }
+      },
+      methods: {
+        removeReadOnlyVisible(bol) {
+          this.$nextTick(() => {
+            document.getElementById('searchCompanyCode').removeAttribute("readOnly");
+            if(!bol) {
+              document.getElementById('searchCompanyCode').blur();
+            }
+          })
+        },
+        removeReadOnlyFocus() {
+          if (this.companyOptions.length > 0) {
+            this.searchCompanyCodeForm.searchCompanyCode = this.companyOptions[0].value;
+          }
+          this.$nextTick(() => {
+            document.getElementById('searchCompanyCode').removeAttribute("readOnly");
+          })
+          this.elSelectFocus = true;
+        },
+        removeReadOnly() {
+          if (this.companyOptions.length > 0) {
+            this.searchCompanyCodeForm.searchCompanyCode = this.companyOptions[0].value;
+          }
+          this.$nextTick(() => {
+            document.getElementById('searchCompanyCode').removeAttribute("readOnly");
+          })
+          if(this.searchCompanyCodeForm.searchCompanyCode) {
+            this.elSelectFocus = true;
+          } else {
+            this.elSelectFocus = false;
+          }
+        },
+        async handleUpdateCompanyAddress() {
+          const valid = await this.$refs.companyAddressRuleForm.validate();
+          if (valid) {
+            this.dialogLoading.companyAddressUpdate = true;
+            try {
+              const response = await fetch('https://app.northskysupply.com/web/companies/locations', {
+                method: 'PUT',
+                body: JSON.stringify({
+                  locationId: +'{{ customer.current_location.id }}',
+                  ...this.companyAddressForm
+                }),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+              const res = await response.json();
+              if (res.code === 200) {
+                this.$message({
+                  showClose: true,
+                  message: 'updated successfully',
+                  type: 'success',
+                });
+                this.originalCompanyAddressForm = {
+                  ...this.companyAddressForm
+                };
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: res.msg,
+                  type: 'warning',
+                });
+              }
+            } catch (error) {
+              console.error(error); 
+            } finally {
+              this.dialogLoading.companyAddressUpdate = this.dialogVisible.defaultCompanyAddress = false;
+            }
+          }
+        },
+        async companyRemoteSearch(query) {
+          this.$refs.searchCompanyRuleForm.clearValidate();
+          if (query !== '') {
+            this.codeSearchLoading = true;
+            try {
+              const response = await fetch(`https://app.northskysupply.com/web/companies/${query}/name`);
+              const res = await response.json();
+              if (res.code === 200) {
+                this.companyOptions = [{
+                  value: query,
+                  label: res.data.companyName
+                }]
+              }
+            } catch (error) {
+            } finally {
+              this.codeSearchLoading = false;
+            }
+          } else {
+            this.companyOptions = [];
+          }
+        },
+        async getCompanyTerms() {
+          const companyld = '{{ customer.current_company.id }}';
+          if(companyld) {
+            try {
+              const response = await fetch(`https://app.northskysupply.com/web/companies/${companyld}/payment-terms-template`);
+              const res = await response.json();
+              if(res.code == 200) {
+                this.companyTerms = res.data.paymentTermsTemplate ? res.data.paymentTermsTemplate : {};
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        },
+        async getMainContact() {
+          const customerId = '{{ customer.id }}';
+          if(customerId) {
+            try {
+              const response = await fetch(`https://app.northskysupply.com/web/tob/customers/${customerId}/is-main-contact`);
+              const res = await response.json();
+              if(res.code == 200) {
+                this.currentCompany = {
+                  ...this.currentCompany,
+                  ...res.data
+                };
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        },
+        async getAuthStatus() {
+          const customerId = '{{ customer.id }}';
+          if(customerId) {
+            try {
+              const response = await fetch(`https://app.northskysupply.com/web/company/validations/state?customerId=${customerId}`);
+              const res = await response.json();
+              if(res.code == 200) {
+                this.companyAuthStatus = res.data ? res.data : { state: 2 };
+                if(this.companyAuthStatus.state == 2) {
+                  const reasonShowResponse = await fetch(`https://app.northskysupply.com/web/tob/customers/${customerId}/tip`);
+                  const reasonShowRes = await reasonShowResponse.json();
+                  this.reasonShow = reasonShowRes.data;
+                }
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        },
+        selectBlur() {
+          if (this.showIndustryEdit1) {
+            this.$refs.addCompanyRuleForm.clearValidate(["industry"]);
+          }
+        },
+        navToCompanyList() {
+          window.location.href= "/account?slug=account-company-user";
+        },
+        handleAddressStateChange() {
+          if(this.addressRuleForm.zip) {
+            this.$refs.addressRuleForm.validateField('zip');
+          }
+        },
+        handleAddressZipBlur() {
+          if(this.addressRuleForm.province) {
+            this.$refs.addressRuleForm.validateField('province');
+          }
+        },
+        handleCompanyAddressStateChange() {
+          if(this.companyAddressForm.zip) {
+            this.$refs.companyAddressRuleForm.validateField('zip');
+          }
+        },
+        handleCompanyAddressZipBlur() {
+          if(this.companyAddressForm.zoneCode) {
+            this.$refs.companyAddressRuleForm.validateField('zoneCode');
+          }
+        },
+        changeJoinMethod(type) {
+          if(type == 1) {
+            this.searchCompanyCodeForm = {
+              searchCompanyCode: ''
+            };
+            this.$refs.searchCompanyRuleForm?.clearValidate();
+            this.$refs.addCompanyRuleForm?.resetFields();
+            this.existCompany = true;
+            this.newCompany = false;
+          } else {
+            this.addCompanyForm = {
+              companyName: '',
+              industry: '',
+              address1: '',
+              address2: '',
+              zipCode: '',
+              city: '',
+              state: ''
+            };
+            this.$refs.searchCompanyRuleForm?.clearValidate();
+            this.$refs.addCompanyRuleForm?.resetFields();
+            this.existCompany = false;
+            this.newCompany = true;
+          }
+        },
+        handleSearchCompanyCode() {
+          this.$refs.searchCompanyRuleForm.validateField('searchCompanyCode');
+        },
+        async handleJoinExistCompany() {
+          try {
+            const valid = await this.$refs.searchCompanyRuleForm.validate();
+            if (valid) {
+              this.dialogLoading.join = true;
+              try {
+                const response = await fetch('https://app.northskysupply.com/web/tob/customers/to-join-company', {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    customerId: '{{ customer.id }}',
+                    email: "{{ customer.email }}",
+                    companyId: this.validCompanyData.companyId,
+                    companyName: this.validCompanyData.companyName
+                  }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                });
+                const res = await response.json();
+                if (res.code === 200) {
+                  this.joinProgress = 3;
+                  this.companyAuthStatus = { state: 0 };
+                } else {
+                  this.$message({
+                    showClose: true,
+                    message: res.msg,
+                    type: 'warning',
+                  });
+                }
+              } catch (error) {
+                console.error(error); 
+              } finally {
+                this.dialogLoading.join = false;
+              }
+            }
+          } catch (error) {
+          }
+        },
+        handleCreateCompany() {
+          this.$refs.addCompanyRuleForm.validate(async (valid) => {
+            if (valid) {
+              this.dialogLoading.join = true;
+              try {
+                const response = await fetch('https://app.northskysupply.com/web/tob/customers/to-create-company', {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    customerId: "{{ customer.id }}",
+                    email: "{{ customer.email }}",
+                    ...this.addCompanyForm
+                  }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                });
+                const res = await response.json();
+                if (res.code === 200) {
+                  this.joinProgress = 3;
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 1000);
+                } else {
+                  this.$message({
+                    showClose: true,
+                    message: res.msg,
+                    type: 'warning',
+                  });
+                }
+              } catch (error) {
+                console.error(error); 
+              } finally {
+                this.dialogLoading.join = false;
+              }
+            }
+          });
+        },
+        handleCompanyStateChange() {
+          if(this.addCompanyForm.zipCode) {
+            this.$refs.addCompanyRuleForm.validateField('zipCode');
+          }
+        },
+        handleCompanyZipBlur() {
+          if(this.addCompanyForm.province) {
+            this.$refs.addCompanyRuleForm.validateField('province');
+          }
+        },
+        handleBackStep(allow, step) {
+          if(allow) {
+            this.joinProgress = step;
+          }
+        },
+        handleJoinNext() {
+          this.joinProgress = this.joinProgress + 1;
+        },
+        handleBeforeCloseJoinDialog() {
+          // 初始化数据并且清除错误
+          this.joinProgress = 1;
+          this.addCompanyForm = {
+            ...this.originalAddCompanyForm
+          }
+          this.searchCompanyCodeForm = {
+            searchCompanyCode: ''
+          };
+          this.companyOptions = [];
+          this.validCompanyData = {};
+          this.$refs.searchCompanyRuleForm?.clearValidate();
+          this.$refs.addCompanyRuleForm?.resetFields();
+          this.dialogVisible.join = false;
+        },
+        handleAddAddress() {
+          this.dialogVisible.defaultAddress = false;
+          this.dialogVisible.address = true;
+        },
+        submitForm(formName) {
+          // 除地址外，网络请求更新的表单要请求成功后 让原始表单等于更新的表单
+          // 提交表单
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              if (formName == 'addressRuleForm') {
+                // 地址
+                if({{ customer.addresses.size }} == 20) {
+                  this.$message({
+                    showClose: true,
+                    message: 'The number of addresses exceeds the limit',
+                    type: 'warning',
+                  });
+                  return
+                }
+                this.dialogLoading.address = true;
+                this.$refs.addressRuleForm.$el.submit();
+              } else if (formName == 'nameRuleForm') {
+                //名字
+                this.nameUpdate();
+              }
+            }
+          });
+        },
+        handleBeforeCloseCADialog() {
+          // 关闭公司地址弹框
+          this.dialogVisible.defaultCompanyAddress = false;
+          this.$refs.companyAddressRules?.clearValidate();
+          this.companyAddressForm = {
+            ...this.originalCompanyAddressForm
+          }
+        },
+        handleBeforeCloseAddressDialog() {
+          // 关闭地址弹框并重置表单
+          this.addressFormAction = `/account/addresses`;
+          this.addressRuleForm = JSON.parse(JSON.stringify(this.originalAddressRuleForm));
+          this.dialogVisible.address = this.isAddressUpdate = false;
+          this.$refs.addressRuleForm.clearValidate();
+        },
+        handleBeforeCloseNameDialog() {
+          // 名字弹框关闭
+          this.nameRuleForm = JSON.parse(JSON.stringify(this.originalNameRuleForm));
+          this.dialogVisible.name = false;
+          this.$refs.nameRuleForm.clearValidate();
+        },
+        handleBeforeCloseCompanyDialog() {
+          // 公司名字弹框关闭
+          this.companyNameForm.name = this.companyNameForm.originalCompany;
+          this.dialogVisible.company = false;
+        },
+        handleBeforeCloseIndustryDialog() {
+          // 行业名字弹框关闭
+          this.industryForm.industry = this.industryForm.originalIndustry;
+          this.dialogVisible.industry = false;
+        },
+        handleBeforeCloseDefaultAddressDialog() {
+          // 默认地址弹框关闭
+          this.defaultAddress.default = true;
+          this.dialogVisible.defaultAddress = false;
+        },
+        async handleCloseReason() {
+          try {
+            const customerId = '{{ customer.id }}';
+            const response = await fetch(`https://app.northskysupply.com/web/tob/customers/${customerId}/tip`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const res = await response.json();
+            if (res.code === 200) {
+              this.reasonShow = false;
+            } else {
+              this.$message({
+                showClose: true,
+                message: res.msg,
+                type: 'warning',
+              });
+            }
+          } catch (error) {
+            console.error(error); 
+          }
+        },
+        async nameUpdate() {
+          // 更新用户名字
+          this.dialogLoading.name = true;
+          try {
+            const res = await fetch('https://app.northskysupply.com/web/customer', {
+              method: 'PUT',
+              body: JSON.stringify(
+                {
+                  customerId: '{{ customer.id }}',  
+                  firstname: this.nameRuleForm.first_name,
+                  lastname: this.nameRuleForm.last_name,
+                }
+              ),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const data = await res.json();
+            if (data.code == 200) {
+              this.$message({
+                showClose: true,
+                message: 'Name Updated.',
+                type: 'success',
+              });
+              const ip = Cookies.get('ip');
+              if(ip) {
+                dataLayer.push({
+                  'event': 'custom_account_information_updated',
+                  'zip': '{{ customer.default_address.zip  }}',
+                  'username': '{{customer.name }}',
+                  'email': '{{customer.email }}',
+                  'information_change': JSON.stringify({
+                    'first_name': `${this.originalNameRuleForm.first_name}|${this.nameRuleForm.first_name}`,
+                    'last_name': `${this.originalNameRuleForm.last_name}|${this.nameRuleForm.last_name}`
+                  }),
+                  'ip': ip
+                });
+              }
+              this.originalNameRuleForm = JSON.parse(JSON.stringify(this.nameRuleForm));
+              this.dialogLoading.name = this.dialogVisible.name = false;
+            }
+          } catch (error) {
+            console.log(error);
+          } finally {
+            window.location.reload();
+          }
+        },
+        async handleCompanyUpdate() {
+          // 更新公司名字
+          this.dialogLoading.company = true;
+          const companyId = '{{ customer.current_company.id }}';
+          try {
+            const res = await fetch(`https://app.northskysupply.com/web/companies/${companyId}`, {
+              method: 'PUT',
+              body: JSON.stringify(
+                {
+                  name: this.companyNameForm.name,
+                }
+              ),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const data = await res.json();
+            if (data.code == 200) {
+              this.$message({
+                showClose: true,
+                message: 'Company updated.',
+                type: 'success',
+              });
+              const companyName = this.companyNameForm.name ? this.companyNameForm.name: 'N/A';
+              const ip = Cookies.get('ip');
+              if(ip) {
+                dataLayer.push({
+                  'event': 'custom_account_information_updated',
+                  'zip': '{{ customer.default_address.zip  }}',   
+                  'username': '{{customer.name }}',
+                  'email': '{{customer.email }}',
+                  'information_change': JSON.stringify({
+                    'company': `${this.companyNameForm.originalCompany}|${companyName}`,
+                  }),
+                  'ip': ip
+                });
+              }
+              this.companyNameForm.originalCompany = this.companyNameForm.name;
+              window.location.reload();
+            } else {
+              this.$message({
+                showClose: true,
+                message: data.msg,
+                type: 'warning',
+              });
+            }
+          } catch (error) {
+            this.$message({
+              showClose: true,
+              message: error,
+              type: 'warning',
+            });
+          } finally {
+            this.dialogLoading.company = this.dialogVisible.company = false;
+          }
+        },
+        handleButtonClick(event, industryItem) {
+          event.stopPropagation(); // 阻止冒泡，防止关闭
+          if (industryItem.isSelected) return;
+          this.industryOptions.map((item) => (item.isSelected = false));
+          const industry = this.industryOptions.find((item) => item.value == industryItem.value);
+          if (industryItem.value == 'Other') {
+            this.showIndustryEdit = true;
+            this.industryForm.industry = this.industry;
+          } else {
+            this.showIndustryEdit = false;
+            this.industryForm.industry = industry.value;
+            this.$refs.industrySelect.blur(); // 关闭菜单
+          }
+          industry.isSelected = true;
+        },
+        handleButtonClick1(event, industryItem) {
+          event.stopPropagation(); // 阻止冒泡，防止关闭
+          if (industryItem.isSelected) return;
+          this.industryOptions1.map((item) => (item.isSelected = false));
+          const industry = this.industryOptions1.find((item) => item.value == industryItem.value);
+          if (industryItem.value == 'Other') {
+            this.showIndustryEdit1 = true;
+            this.addCompanyForm.industry = this.industry1;
+          } else {
+            this.showIndustryEdit1 = false;
+            this.addCompanyForm.industry = industry.value;
+            this.$refs.addCompanyFormRef.blur(); // 关闭菜单
+          }
+          industry.isSelected = true;
+        },
+        async handleIndustryUpdate() {
+          // 更新行业名字
+          this.dialogLoading.industry = true;
+          const companyId = '{{ customer.current_company.id }}';
+          try {
+            const res = await fetch(`https://app.northskysupply.com/web/companies/${companyId}`, {
+              method: 'PUT',
+              body: JSON.stringify(
+                {
+                  industry: this.industryForm.industry
+                }
+              ),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const data = await res.json();
+            if (data.code == 200) {
+              this.$message({
+                showClose: true,
+                message: 'Industry updated.',
+                type: 'success',
+              });
+              const industry = this.industryForm.industry;
+              const ip = Cookies.get('ip');
+              if(ip) {
+                dataLayer.push({
+                  'event': 'custom_account_information_updated',
+                  'zip': '{{ customer.default_address.zip  }}',   
+                  'username': '{{customer.name }}',
+                  'email': '{{customer.email }}',
+                  'information_change': JSON.stringify({
+                    'industry': `${this.industryForm.originalIndustry}|${industry}`,
+                  }),
+                  'ip': ip
+                });
+              }
+              this.industryForm.originalIndustry = this.industryForm.industry;
+              window.location.reload();
+            } else {
+              this.$message({
+                showClose: true,
+                message: data.msg,
+                type: 'warning',
+              });
+            }
+          } catch (error) {
+            console.log(error);
+          } finally {
+            this.dialogLoading.industry = this.dialogVisible.industry = false;
+          }
+        },
+        handleAddressCheckboxChange(address) {
+          this.defaultAddress.default = false;
+          this.address_list.map(item => item.default = false);
+          address.default = true;
+        },
+        handleToResetPass() {
+          Cookies.set();
+          window.location.href = '/account/login#recover';
+        },
+      },
+    };
+  })();
+</script>

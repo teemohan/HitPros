@@ -1,0 +1,789 @@
+<style>
+  .mini-cart {
+    min-width: 600px;
+    max-width: 700px;
+  }
+  .mini-cart .drawer__header {
+    padding: 18px 20px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #142A6B;
+    line-height: 32px;
+    background-color: #F4F8FC;
+    border-bottom: unset;
+  }
+  .mini-cart .product-item-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mini-cart .drawer__header button svg path {
+    fill: #191B1E;
+  }
+  .mini-cart .drawer__content {
+    padding: 20px;
+  }
+  .mini-cart .line-item__content-wrapper {
+    margin-top: 0;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #E6E6E6;
+  }
+  .drawer__footer button {
+    text-transform: unset !important;
+  }
+  .mini-cart .line-item__image-wrapper {
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    border-radius: 2px;
+  }
+  .mini-cart .line-item__remove-button {
+    display: flex;
+    width: 100px;
+    margin: 0;
+    align-self: flex-end;
+    font-size: 14px;
+    text-decoration-color: inherit;
+    color: var(--my-blue);
+  }
+  .mini-cart .quantity-selector__button,
+  .mini-cart .quantity-selector__input {
+    height: 36px;
+  }
+  .mini-cart .line-item__remove-button:hover {
+    text-decoration-color: inherit;
+  }
+  .mini-cart .line-item__image-wrapper img {
+    object-fit: contain;
+  }
+  .mini-cart__drawer-footer {
+    padding: 20px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: unset;
+  }
+  .mini-cart__actions {
+    margin-bottom: 14px;
+  }
+  .mini-cart .line-item-price {
+    font-weight: 600;
+    font-size: 20px;
+    color: #191B1E;
+    line-height: 1;
+  }
+  .mini-cart .line-item__info {
+    display: flex;
+    flex: 1;
+    margin-right: 30px;
+    flex-direction: column;
+  }
+  .mini-cart .line-item__quantity {
+    margin-top: auto;
+    display: flex;
+    gap: 14px;
+  }
+  .mini-cart .product-item-meta-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+    align-items: center;
+  }
+  .mini-cart .line-item-title {
+    font-size: 14px;
+    color: #132A6A;
+    line-height: 16px;
+  }
+
+  .mini-cart .line-item-title:hover,
+  .mini-cart .line-item-title:active {
+    text-decoration: underline;
+  }
+  .mini-cart .product-item-meta-top .model {
+    background: #FFFFFF;
+    color: #999999;
+  }
+
+  .mini-cart .line-item-vendor {
+    font-weight: 600;
+    color: #191B1E;
+  }
+
+  .mini-cart .line-item__price-list-container {
+    min-width: 100px;
+  }
+  .mini-cart .line-item__price-list-container .line-item-price-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .mini-cart .line-item-price-list .line-item-compare {
+    font-size: 12px;
+    color: #999999;
+  }
+
+  .mini-cart .line-item-price-list .line-discount-percentage {
+    font-size: 12px;
+    color: #E62D35;
+  }
+
+  .mini-cart .line-item__property {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    gap: 4px;
+  }
+
+  .cart-button.cart-checkout {
+    background: #f1c041;
+    position: relative;
+  }
+  .cart-button.cart-button {
+    position: relative;
+    height: 36px;
+    border-radius: 2px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+  }
+  .cart-button.cart-login-checkout {
+    background-color: var(--my-blue);
+    color: #fff;
+  }
+  .cart-button.cart-login {
+    background-color: var(--my-yellow);
+    color: var(--my-blue);
+  }
+  @media screen and (max-width: 740px) {
+    .mini-cart .line-item__remove-button {
+      width: auto;
+    }
+    .mini-cart {
+      max-width: 350px;
+      min-width: unset;
+    }
+    .mini-cart .drawer__content {
+      padding: 20px 10px;
+    }
+    .mini-cart .line-item__image-wrapper {
+      width: 100px;
+      height: 100px;
+      margin-right: 10px;
+    }
+    .mini-cart .line-item__property {
+      flex-direction: column;
+    }
+    .mini-cart .product-item-meta {
+      gap: 8px;
+    }
+    .mini-cart .line-item__quantity,
+    .mini-cart .line-item-price {
+      margin-top: 16px;
+    }
+    .mini-cart .line-item__quantity .quantity-selector {
+      justify-content: space-between;
+    }
+    .mini-cart .line-item__remove-button {
+      font-size: 12px;
+    }
+  }
+</style>
+{% assign province_code = customer.default_address.province_code %}
+{% if province_code == blank %}
+  {% assign province_code = 'DC' %}
+{% endif %}
+{% assign zip = customer.default_address.zip %}
+<cart-drawer section="{{ section.id }}" data-zip="{{ zip }}" data-province-code="{{ province_code }}" id="mini-cart" class="mini-cart drawer">
+  <span class="drawer__overlay"></span>
+
+  {% if customer.b2b? %}
+    {% assign province_code = customer.current_location.shipping_address.province_code %}
+    {% assign zip = customer.current_location.shipping_address.zip %}
+  {% else %}
+    {% assign province_code = customer.default_address.province_code | default: 'DC'  %}
+    {% assign zip = customer.default_address.zip | default: 20500 %}
+  {% endif %}
+
+  {% for line_item in cart.items %}
+    <div class="visually-hidden" data-cart='{
+      "MATNR": "{{ line_item.sku }}",
+      "ZQTY": {{ line_item.quantity }},
+      "Z004": "{{ province_code }}",
+      "Z002": "US",
+      "POST_CODE2": {{ zip }}
+    }'></div>
+  {% endfor %}
+
+  <header class="drawer__header">
+    <p class="drawer__title">
+      {%- case settings.cart_icon -%}
+        {%- when 'shopping_bag' -%}
+          {%- render 'icon' with 'header-cart' -%}
+
+        {%- when 'shopping_cart' -%}
+          {%- render 'icon' with 'header-shopping-cart' -%}
+
+        {%- when 'tote_bag' -%}
+          {%- render 'icon' with 'header-tote-bag' -%}
+      {%- endcase -%}
+      {%- if cart.item_count == 0 -%}
+        {{- 'cart.general.title' | t -}}
+      {%- else -%}
+        {{- 'cart.general.item_count' | t: count: cart.item_count -}}
+      {%- endif -%}
+    </p>
+    <button type="button" class="drawer__close-button" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+      {%- render 'icon' with 'close' -%}
+    </button>
+  </header>
+
+  {%- if cart.item_count == 0 -%}
+    <div class="drawer__content drawer__content--center">
+      <p>{{ 'cart.general.empty' | t }}</p>
+
+      <div class="button-wrapper">
+        <a href="{{ section.settings.empty_button_link }}" class="button button--primary">{{ 'cart.general.start_shopping' | t }}</a>
+      </div>
+    </div>
+  {%- else -%}
+    <div class="drawer__content">
+      {%- if settings.cart_show_free_shipping_threshold and settings.cart_free_shipping_threshold != '' -%}
+        {%- assign free_shipping_thresholds = settings.cart_free_shipping_threshold | remove: ' ' | split: ',' -%}
+        {%- assign has_found_matching_threshold = false -%}
+
+        {%- if free_shipping_thresholds.size > 1 -%}
+          {%- for threshold in free_shipping_thresholds -%}
+            {%- assign threshold_parts = threshold | split: ':' -%}
+            {%- assign currency_code = threshold_parts | first | upcase -%}
+
+            {%- if currency_code == cart.currency.iso_code -%}
+              {%- assign free_shipping_calculated_threshold = threshold_parts | last -%}
+              {%- assign has_found_matching_threshold = true -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign free_shipping_calculated_threshold = free_shipping_thresholds | last -%}
+          {%- assign has_found_matching_threshold = true -%}
+        {%- endif -%}
+
+        {%- if has_found_matching_threshold -%}
+          {%- assign threshold_in_cents = free_shipping_calculated_threshold | times: 100 -%}
+
+          <free-shipping-bar threshold="{{ threshold_in_cents }}" class="shipping-bar" style="--progress: {{ cart.total_price | times: 1.0 | divided_by: threshold_in_cents | at_most: 1 }}">
+            {%- if cart.total_price >= threshold_in_cents -%}
+              <span class="shipping-bar__text text--small">{{ 'cart.general.free_shipping' | t }}</span>
+            {%- else -%}
+              {%- capture remaining_amount -%}{{ cart.total_price | minus: threshold_in_cents | abs | money }}{%- endcapture -%}
+              <span class="shipping-bar__text text--small">{{ 'cart.general.free_shipping_remaining_html' | t: remaining_amount: remaining_amount }}</span>
+            {%- endif -%}
+
+            <span class="shipping-bar__progress"></span>
+          </free-shipping-bar>
+        {%- endif -%}
+      {%- endif -%}
+
+      <form id="mini-cart-form" action="{{ routes.cart_url }}" novalidate method="post">
+        <input type="hidden" name="checkout">
+
+        {%- for line_item in cart.items -%}
+          {% liquid
+          assign quantity_discount_json = line_item.product.metafields.product.quantity_discount
+          assign quantity_discounts = quantity_discount_json.value
+          assign first_moq = quantity_discounts.first.moq | times: 1
+          
+          if quantity_discounts.size > 0 and line_item.quantity >= first_moq
+            for discount in quantity_discounts
+              assign moq = discount.moq | times: 1
+              if line_item.quantity < moq
+                break
+              endif
+              assign discount_value = discount.discount | times: 1
+              assign computed_final_line_price = line_item.original_price | times: discount_value
+              assign computed_final_line_price_total = line_item.original_price | times: discount_value | times: line_item.quantity
+            endfor
+          else
+            assign computed_final_line_price = line_item.original_price
+            assign computed_final_line_price_total = line_item.original_price | times: line_item.quantity
+          endif
+          assign computed_subtotal = computed_subtotal | plus: computed_final_line_price_total
+        %}
+          <line-item class="line-item" data-sku="{{ line_item.sku }}">
+            <div class="line-item__content-wrapper">
+              <a href="{{ line_item.url }}" class="line-item__image-wrapper" tabindex="-1" aria-hidden="true">
+                <span class="line-item__loader" hidden>
+                  <span class="line-item__loader-spinner spinner" hidden>{% render 'icon' with 'spinner', width: 16, height: 16, stroke_width: 6 %}</span>
+                  <span class="line-item__loader-mark" hidden>{% render 'icon' with 'check', width: 20, height: 20 %}</span>
+                </span>
+                <img src="{{ line_item.image | image_url }}" width="auto" height="auto">
+              </a>
+
+              <div class="line-item__info">
+                <div class="product-item-meta">
+                  <div class="product-item-meta-top">
+                    {%- if line_item.product.metafields.product.brand.value != blank
+                      and line_item.product.metafields.product.brand.value != 'null'
+                      and line_item.product.metafields.product.brand.value != '-'
+                    -%}
+                      <span class="line-item-vendor">
+                        {{- line_item.product.metafields.product.brand.value -}}
+                      </span>
+                    {%- endif -%}
+                    {% if line_item.product.metafields.product.manufacturer_model_number != blank %}
+                      <span class="model"
+                        >Model: {{ line_item.product.metafields.product.manufacturer_model_number }}
+                      </span>
+                    {% endif %}
+                    {% assign stock_num = line_item.product.variants.first.inventory_quantity %}
+                    {% assign varid = section.id | append: "-" | append: line_item.product.variants.first.id %}
+                    {% render 'stock-label', stock_num: stock_num, varid: varid, class: 'hidden-phone' %}
+                  </div>
+                  <a href="{{ line_item.url }}" class="line-item-title ellipsis2">
+                    {{- line_item.product.title -}}
+                  </a>
+                  {% render 'stock-label',
+                    stock_num: stock_num,
+                    varid: varid,
+                    class: 'hidden-tablet-and-up'
+                  %}
+                  <ul class="product-item-meta__property list--unstyled text--subdued text--xsmall" role="list">
+                    <span class="loading-container">
+                      {% render 'icon' with 'loading' %}
+                    </span>
+                    <li class="line-item__property date"></li>
+                  </ul>
+                </div>
+
+                <div class="hidden-tablet-and-up line-item-price-list price">
+                  {% if line_item.variant.compare_at_price > line_item.variant.price %}
+                    {% assign price = line_item.variant.price
+                      | money_without_currency
+                      | replace: ',', ''
+                      | times: 1
+                    %}
+                    {% assign compare_at_price = line_item.variant.compare_at_price
+                      | money_without_currency
+                      | replace: ',', ''
+                      | times: 1
+                    %}
+                    {% assign discount_difference = compare_at_price | minus: price %}
+                    {% assign discount_percentage = discount_difference
+                      | divided_by: compare_at_price
+                      | times: 100
+                      | ceil
+                    %}
+                    <div class="line-item-compare-wrapper">
+                      <s class="line-item-compare">
+                        {{- line_item.variant.compare_at_price | money -}}
+                      </s>
+                      <span class="line-discount-percentage">{{ discount_percentage }}%OFF</span>
+                    </div>
+                    <span class="line-item-price">{{ computed_final_line_price_total | money }}</span>
+                  {% else %}
+                    <div class="line-item-price">{{ computed_final_line_price_total | money }}</div>
+                  {% endif %}
+                </div>
+
+                {%- assign max_allowed_quantity = '' -%}
+                {%- assign allow_more = true -%}
+
+                {%- if line_item.variant.inventory_management == 'shopify' and line_item.variant.inventory_policy == 'deny' and line_item.variant.inventory_quantity <= line_item.quantity -%}
+                  {%- assign max_allowed_quantity = line_item.variant.inventory_quantity -%}
+                  {%- assign allow_more = false -%}
+                {%- endif -%}
+
+                <line-item-quantity class="line-item__quantity">
+                  <div class="quantity-selector quantity-selector--small">
+
+                    {% assign moq_value = line_item.product.metafields.product.moq | plus: 0 %}
+                    {% if line_item.product.metafields.product.moq != blank and moq_value < line_item.quantity %}
+                      <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
+                          {%- render 'icon' with 'minus' -%}
+                      </a>
+                    {% elsif line_item.product.metafields.product.moq == blank %}
+                        <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
+                            {%- render 'icon' with 'minus' -%}
+                        </a>
+                    {% else %}
+                        <span class="disabled-link quantity-selector__button">
+                            {%- render 'icon' with 'minus' -%}
+                        </span>
+                    {% endif %}
+
+                    <input 
+                      is="line-input-number" 
+                      class="quantity-selector__input text--xsmall" 
+                      autocomplete="off" type="text"
+                      inputmode="numeric"
+                      data-input-varid="{{ varid }}"
+                      name="updates[]" data-line="{{ forloop.index }}"
+                      value="{{ line_item.quantity }}"
+                      data-moq="{% if line_item.product.metafields.product.moq != blank %}{{ line_item.product.metafields.product.moq }}{% else %}1{% endif %}"
+                      data-max="{% if line_item.product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ line_item.product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
+                      min="1"
+                      max="1000000"
+                      value="{% if product.metafields.product.moq != blank %} {{ product.metafields.product.moq }} {% else %} 1 {% endif %}" 
+                      size="{{ line_item.quantity | append: '' | size | at_least: 2 }}" 
+                      aria-label="{{ 'cart.general.change_quantity' | t | escape }}"
+                    >
+                    {%- if allow_more -%}
+                      <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | plus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.increase_quantity' | t | escape }}" data-no-instant>
+                        {%- render 'icon' with 'plus' -%}
+                      </a>
+                    {%- else -%}
+                      <span class="quantity-selector__button" aria-label="{{ 'cart.general.no_more_stock' | t | escape }}" data-tooltip="{{ 'cart.general.no_more_stock' | t | escape }}">
+                        {%- render 'icon' with 'plus' -%}
+                      </span>
+                    {%- endif -%}
+                  </div>
+
+                  <a href="{{ line_item.url_to_remove }}" class="line-item__remove-button link text--subdued text--xxsmall" data-no-instant>{{ 'cart.general.remove' | t }}</a>
+                </line-item-quantity>
+              </div>
+
+              <div class="line-item__price-list-container hidden-phone">
+                <div class="line-item-price-list">
+                  {% if line_item.variant.compare_at_price > line_item.variant.price %}
+                    {% assign price = line_item.variant.price
+                      | money_without_currency
+                      | replace: ',', ''
+                      | times: 1
+                    %}
+                    {% assign compare_at_price = line_item.variant.compare_at_price
+                      | money_without_currency
+                      | replace: ',', ''
+                      | times: 1
+                    %}
+                    {% assign discount_difference = compare_at_price | minus: price %}
+                    {% assign discount_percentage = discount_difference
+                      | divided_by: compare_at_price
+                      | times: 100
+                      | ceil
+                    %}
+                    <span class="line-item-price">{{ line_item.variant.price | money }}</span>
+                    <span class="line-discount-percentage">{{ discount_percentage }}%OFF</span>
+                    <s class="line-item-compare">{{- line_item.variant.compare_at_price | money -}}</s>
+                  {% else %}
+                    <div class="line-item-price">{{ computed_final_line_price | money }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </line-item>
+        {%- endfor -%}
+      </form>
+
+      <div class="hidden-mini-cart-price visually-hidden" data-original-price="{{ cart.original_total_price }}" data-computed-subtotal="{{ computed_subtotal }}"></div>
+      {%- if section.settings.show_recommendations -%}
+        <cart-drawer-recommendations section-id="{{ section.id }}" product-id="{{ cart.items.first.product_id }}" class="mini-cart__recommendations">
+          {%- assign acceptable_recommendations_count = 0 -%}
+
+          {%- for product in recommendations.products -%}
+            {%- assign matching_product = cart.items | where: 'product_id', product.id | first -%}
+
+            {%- if matching_product == blank -%}
+              {%- assign acceptable_recommendations_count = acceptable_recommendations_count | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if recommendations.performed -%}
+            {%- if acceptable_recommendations_count > 0 -%}
+              <div class="mini-cart__recommendations-inner">
+                {%- if section.settings.recommendations_title != blank -%}
+                  <p class="mini-cart__recommendations-heading heading heading--small hidden-pocket">{{ section.settings.recommendations_title | escape }}</p>
+                  <p class="mini-cart__recommendations-heading heading heading--xsmall text--subdued hidden-lap-and-up">{{ section.settings.recommendations_title | escape }}</p>
+                {%- endif -%}
+
+                <div class="scroller">
+                  <div class="scroller__inner">
+                    <div class="mini-cart__recommendations-list">
+                      {%- assign shown_products_count = 0 -%}
+
+                      {%- for product in recommendations.products -%}
+                        {%- if shown_products_count >= 6 -%}
+                          {%- break -%}
+                        {%- endif -%}
+
+                        {%- assign matching_product = cart.items | where: 'product_id', product.id -%}
+
+                        {%- if matching_product.size == 0 -%}
+                          {%- assign shown_products_count = shown_products_count | plus: 1 -%}
+                          {%- render 'product-item', product: product, reduced_content: true, reduced_font_size: true, hide_secondary_image: true, sizes_attribute: '(max-width: 740px) 65px, 92px' -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- else -%}
+            <div class="mini-cart__recommendations-inner">
+              <div class="spinner">
+                {%- render 'icon' with 'spinner', stroke_width: 3, width: 40, height: 40 -%}
+              </div>
+            </div>
+          {%- endif -%}
+        </cart-drawer-recommendations>
+      {%- endif -%}
+    </div>
+
+    <footer class="mini-cart__drawer-footer drawer__footer drawer__footer--tight">
+      {%- capture shipping_tax_note -%}{{ 'cart.general.shipping_tax_note' | t }}{%- endcapture -%}
+
+      {%- if cart.cart_level_discount_applications != blank -%}
+        <ul class="mini-cart__discount-list list--unstyled" role="list">
+          {%- for discount_application in cart.cart_level_discount_applications -%}
+            <li class="mini-cart__discount">
+              <span class="mini-cart__discount-badge discount-badge">{%- render 'icon' with 'discount-badge' -%}{{ discount_application.title }}</span>
+              <span class="mini-cart__discount-price text--xsmall text--subdued">-{{ discount_application.total_allocated_amount | money }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if section.settings.show_order_note or shipping_tax_note != '' -%}
+        <div class="mini-cart__actions text--subdued text--xsmall">
+          {%- if section.settings.show_order_note -%}
+            <button type="button" is="toggle-button" id="order-note-toggle" class="link" data-action="toggle-order-note" aria-controls="mini-cart-note" aria-expanded="false">
+              {%- if cart.note == blank -%}
+                {{- 'cart.general.add_order_note' | t -}}
+              {%- else -%}
+                {{- 'cart.general.edit_order_note' | t -}}
+              {%- endif -%}
+            </button>
+          {%- endif -%}
+
+          {%- if shipping_tax_note != '' -%}
+            <span>{{ shipping_tax_note }}</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_checkout_button -%}
+        {% if customer %}
+          <button is="loader-button" form="mini-cart-form" type="submit" class="cart-checkout-button cart-button checkout-button button button--primary button--full" name="checkout">
+            Checkout
+          </button>
+        {% else %}
+          <a
+            href="/account/login"
+            class="cart-button cart-login button--full"
+          >
+            Sign in and Checkout
+          </a>
+          <button is="loader-button" form="mini-cart-form" type="submit" class="cart-checkout-button cart-button cart-login-checkout checkout-button button button--primary button--full" name="checkout">
+            Checkout as Guest
+          </button>
+        {% endif %}
+      {%- else -%}
+        <a href="{{ routes.cart_url }}" class="button button--primary button--full" data-no-instant>{{ 'cart.general.go_to_cart' | t }}</a>
+      {%- endif -%}
+    </footer>
+  {%- endif -%}
+</cart-drawer>
+<script>
+  (() => {
+    async function getDeleveryDate(deliveryParams) { //获取交期数据
+      try {
+        const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
+                const resHeader = await responseHeader.json();
+                const headersData = resHeader.data;
+        const response = await fetch('https://openapi.northskysupply.com/openapi/adlink/delivery-calculation/batch', {
+          method: 'POST',
+          body: JSON.stringify(deliveryParams),
+          headers:{
+            'Content-Type':'application/json',
+            ...headersData
+          }
+        })
+        return await response.json();
+      } catch(err) {
+        console.error(err)
+      }
+    }
+
+    function formatDate(timestamp, timezoneOffset = -5) {
+      // 创建 Date 对象（默认会使用 UTC 时间）
+      const date = new Date(+timestamp);
+      // 调整时区：将日期偏移到 GMT-5
+      const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
+      // 获取年份、月份和日期
+      const year = localTime.getFullYear();
+      const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      const month = monthNames[localTime.getMonth()];
+      const day = localTime.getDate();
+      // 确定日期后缀
+      let suffix = '';
+      if (day >= 11 && day <= 13) {
+        suffix = 'th'; // 特殊情况：11th, 12th, 13th
+      } else {
+        switch (day % 10) {
+          case 1: suffix = 'st'; break; // 1, 21, 31
+          case 2: suffix = 'nd'; break; // 2, 22
+          case 3: suffix = 'rd'; break; // 3, 23
+          default: suffix = 'th'; break; // 其他情况
+        }
+      }
+      // 返回格式化后的日期
+      return `${month} ${day}${suffix}, ${year}`;
+    }
+
+    async function initDeleveryDate() { // 查一组交期数据
+      const line_item_delivery = $('[data-cart]').map(function() {
+        return $(this).data('cart');
+      }).get();
+      if(line_item_delivery.length == 0) return
+      $('.drawer__content .line-item .loading-container').show(); // loading 按钮隐藏
+      $('.mini-cart .line-item__property').hide();
+      const deleveryDate = await getDeleveryDate(line_item_delivery);
+      deleveryDate.map(line_item => {
+        // item.availableInventoryCount 库存
+        let $deliveryTime
+        const $lineItem = $(`.line-item[data-sku='${line_item.sku}']`);
+        let stockDateStart;
+        let stockDateEnd;
+        if (
+          line_item.transitInventoryDeliveryTimeStampMin &&
+          line_item.transitInventoryDeliveryTimeStampMax &&
+          line_item.outOfStockDeliveryTimeStampMin &&
+          line_item.outOfStockDeliveryTimeStampMax
+        ) {
+          stockDateStart = +line_item.transitInventoryDeliveryTimeStampMin;
+          stockDateEnd = +line_item.outOfStockDeliveryTimeStampMax;
+        } else if(
+          line_item.transitInventoryDeliveryTimeStampMin &&
+          line_item.transitInventoryDeliveryTimeStampMax &&
+          !line_item.outOfStockDeliveryTimeStampMin &&
+          !line_item.outOfStockDeliveryTimeStampMax
+        ) {
+          stockDateStart = +line_item.transitInventoryDeliveryTimeStampMin;
+          stockDateEnd = +line_item.transitInventoryDeliveryTimeStampMax;
+        } else if(
+          !line_item.transitInventoryDeliveryTimeStampMin &&
+          !line_item.transitInventoryDeliveryTimeStampMax &&
+          line_item.outOfStockDeliveryTimeStampMin &&
+          line_item.outOfStockDeliveryTimeStampMax
+        ){
+          stockDateStart = +line_item.outOfStockDeliveryTimeStampMin;
+          stockDateEnd = +line_item.outOfStockDeliveryTimeStampMax;
+        }
+        if(line_item.availableInventoryCount == 0) {
+          $deliveryTime = $(`
+            <span>Expected to arrive between ${formatDate(stockDateStart)} and ${formatDate(stockDateEnd)}.</span>
+          `);
+        } else if(line_item.availableInventoryCount >= line_item.demandQuantity) { // 现货大于0，并且现货>=需求
+          $deliveryTime = $(`
+            <span>Expected to arrive on ${formatDate(line_item.availableInventoryDeliveryTimeStamp)}.</span>
+          `);
+        } else { // 现货大于0，并且需求大于现货
+          $deliveryTime = $(`
+            <span>Partial expected to arrive on ${formatDate(line_item.availableInventoryDeliveryTimeStamp)}.</span>
+            <span>The remaining balance is expected to arrive between ${formatDate(stockDateStart)} and ${formatDate(stockDateEnd)}.</span>
+          `);
+        }
+        $lineItem.find('.loading-container').hide();
+        $lineItem.find('.line-item__property.date').show().html($deliveryTime);
+      })
+    }
+    function getDiscount () {  // 获取折扣然后跳转
+      const amount_original = parseFloat($('.hidden-mini-cart-price').data("original-price"));
+      const amount_current = parseFloat($('.hidden-mini-cart-price').data("computed-subtotal"));
+      const amount_difference = (amount_original - amount_current) / 100;
+      const formData = {
+        customerId: Number({{ customer.id }}),
+        amount: amount_difference
+      };
+      if(formData.amount == 0) {
+        window.location.href = '/checkout?discount=0';
+        return
+      }
+      fetch('https://app.northskysupply.com/web/discount/save', {
+        method: 'POST',
+        body: JSON.stringify(formData),
+        headers:{
+          'Content-Type':'application/json',
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.code == 200) {
+          const discountCode = data.data.title;
+          window.location.href = `/checkout?discount=${discountCode}`; 
+        }
+      })
+      .catch(error => {
+          // 处理错误
+      });
+    }
+
+    document.addEventListener('cart-rendered', function () {
+      $('.quantity-selector__input').on('keydown', function(event) {
+        if (event.key === 'Enter') {
+          event.preventDefault(); // 阻止默认行为
+        }
+      });
+      $('.cart-checkout-button').click(function(event) {  // checkout按钮
+        event.preventDefault();
+        Cookies.set('remove-property', 'true');
+        getDiscount();
+      })
+      initDeleveryDate(); // 初始化交期
+    });
+  })();
+</script>
+{% schema %}
+{
+  "name": "Cart drawer",
+  "class": "shopify-section--mini-cart",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Free shipping notice can be configured in global cart settings."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_order_note",
+      "label": "Show order note",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_checkout_button",
+      "label": "Show checkout button",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "empty_button_link",
+      "label": "Empty button link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "header",
+      "content": "Cross-sell",
+      "info": "Dynamic recommendations are based on the items in your cart. They change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_recommendations",
+      "label": "Show cart recommendations",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "recommendations_title",
+      "label": "Recommendations heading",
+      "default": "You may also like"
+    }
+  ]
+}
+{% endschema %}

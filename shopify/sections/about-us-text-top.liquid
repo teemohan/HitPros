@@ -1,0 +1,135 @@
+<style>
+    .{{ section.id }} .about-img-bac {
+      position: relative;
+      {% if section.settings.image %}
+        background-image: url("{{ section.settings.image | image_url }}");
+      {% endif %}
+      height: 600px;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-color: #F6F6F6;
+    }
+    .{{ section.id }} .about-img-bac.right {
+      justify-content: flex-end;
+    }
+    .{{ section.id }} .about-img-bac.left {
+      justify-content: flex-start;
+    }
+    .{{ section.id }} .about-img-bac.center {
+      justify-content: center;
+    }
+    .{{ section.id }} .about-img-bac.right .paragraph {
+      width: 50%;
+    }
+
+    .{{ section.id }} .about-img-bac.right .paragraph{
+      text-align: left;
+    }
+    .{{ section.id }} .about-img-bac.left .paragraph{
+      text-align: left;
+    }
+    .{{ section.id }} .about-img-bac.center .paragraph{
+      text-align: center;
+    }
+
+    .{{ section.id }} .about-img-bac .paragraph {
+      color: {{ section.settings.text_color }};
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 140%;
+      word-wrap: break-word; /* 兼容性更好的属性 */
+      overflow-wrap: break-word; /* 最新的属性 */
+    }
+
+  @media screen and (max-width: 740px) {
+    .{{ section.id }} .paragraph {
+      font-size: 14px!important;
+      padding: 16px;
+      {% if section.settings.text_bottom_phone %}
+        background-color: #fff;
+        font-weight: 600;
+      {% endif %}
+    }
+  }
+</style>
+
+<div class="{{ section.id }} section-padding-bottom">
+  <div class="container">
+    {% if section.settings.text_bottom_phone %}
+      <div class="about-img-bac hidden-phone  {{ section.settings.paragraph_position }}">
+        <div class="paragraph">{{ section.settings.paragraph }}</div>
+      </div>
+      <div class="about-img-bac-phone">
+        <img class="hidden-tablet-and-up" loading="lazy" src="{{ section.settings.image | image_url }}" width="auto" height="auto">
+        <div class="hidden-tablet-and-up paragraph">{{ section.settings.paragraph }}</div>
+      </div>
+    {% else %}
+      <div class="about-img-bac {{ section.settings.paragraph_position }}">
+        <div class="hidden-phone paragraph">{{ section.settings.paragraph }}</div>
+        <div class="hidden-tablet-and-up paragraph">{{ section.settings.phone_paragraph }}</div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "about text top",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "paragraph",
+      "label": "paragraph"
+    },
+    {
+      "type": "richtext",
+      "id": "phone_paragraph",
+      "label": "phone paragraph"
+    },
+    {
+      "type": "checkbox",
+      "id": "text_bottom_phone",
+      "label": "is Text Bottom in Phone",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "text color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "paragraph_position",
+      "label": "Paragraph position",
+      "options": [
+        {
+          "value": "left",
+          "label": "left"
+        },
+        {
+          "value": "center",
+          "label": "center"
+        },
+        {
+          "value": "right",
+          "label": "right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "presets": [{
+    "name": "about text top"
+  }]
+}
+{% endschema %}

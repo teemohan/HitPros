@@ -1,0 +1,1041 @@
+{{ 'main-cart.css' | asset_url | stylesheet_tag }}
+
+<nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="container breadcrumb text--xsmall">
+  <ol class="collection_breadcrumb__list breadcrumb__list" role="list">
+    <li class="breadcrumb__item">
+      <a class="breadcrumb__link" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+    </li>
+    <li class="breadcrumb__item">
+      <span class="breadcrumb__link" aria-current="page">Cart</span>
+    </li>
+  </ol>
+</nav>
+
+<section>
+  <div class="{{ section.id }} container">
+    {%- if cart.item_count == 0 -%}
+      <div class="empty-state text-container">
+        <h1 class="heading h1">{{ 'cart.general.title' | t }}</h1>
+        <p class="text--large">{{ 'cart.general.empty' | t }}</p>
+        <div class="button-wrapper">
+          <a href="{{ section.settings.empty_button_link }}" class="button button--primary">
+            {{- 'cart.general.start_shopping' | t -}}
+          </a>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if cart.item_count > 0 -%}
+      <div class="page-content page-content--fluid">
+        <div class="main-cart-box">
+          <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
+            <input type="hidden" name="checkout">
+
+            <div class="cart__content">
+              <h3 class="cart__content-header">cart</h3>
+              <div class="main-cart-table">
+                <table class="line-item-table table table--loose">
+                  <tbody class="line-item-table__list">
+                    {% liquid
+                      assign computed_subtotal = 0
+                    %}
+                    {%- for line_item in cart.items -%}
+                      {% liquid
+                        assign quantity_discount_json = line_item.product.metafields.product.quantity_discount
+                        assign quantity_discounts = quantity_discount_json.value
+                        assign first_moq = quantity_discounts.first.moq | times: 1
+                        
+                        if quantity_discounts.size > 0 and line_item.quantity >= first_moq
+                          for discount in quantity_discounts
+                            assign moq = discount.moq | times: 1
+                            if line_item.quantity < moq
+                              break
+                            endif
+                            assign discount_value = discount.discount | times: 1
+                            assign computed_final_line_price = line_item.original_price | times: discount_value
+                            assign computed_final_line_price_total = line_item.original_price | times: discount_value | times: line_item.quantity
+                          endfor
+                        else
+                          assign computed_final_line_price = line_item.original_price
+                          assign computed_final_line_price_total = line_item.original_price | times: line_item.quantity
+                        endif
+                        assign computed_subtotal = computed_subtotal | plus: computed_final_line_price_total
+                      %}
+                      <tr
+                        class="line-item"
+                        data-sku="{{ line_item.sku }}"
+                        data-price="{{ line_item.original_price }}"
+                        data-qty="{{ line_item.quantity }}"
+                      >
+                        <td class="line-item__product">
+                          <div class="line-item__content-wrapper">
+                            <a
+                              href="{{ line_item.url }}"
+                              class="line-item__image-wrapper"
+                              tabindex="-1"
+                              aria-hidden="true"
+                            >
+                              <img
+                                class="line-item__image"
+                                width="auto"
+                                height="auto"
+                                src="{{ line_item.image | image_url }}"
+                              >
+                            </a>
+                            <div class="product-item-meta">
+                              <div>
+                                <div class="product-item-meta-top">
+                                  {%- if line_item.product.metafields.product.brand.value != blank
+                                    and line_item.product.metafields.product.brand.value != 'null'
+                                    and line_item.product.metafields.product.brand.value != '-'
+                                  -%}
+                                    <span class="line-item-vendor">
+                                      {{- line_item.product.metafields.product.brand.value -}}
+                                    </span>
+                                  {%- endif -%}
+                                  {% if line_item.product.metafields.product.manufacturer_model_number != blank %}
+                                    <span class="model"
+                                      >Model: {{ line_item.product.metafields.product.manufacturer_model_number }}
+                                    </span>
+                                  {% endif %}
+                                  {% assign stock_num = line_item.product.variants.first.inventory_quantity %}
+                                  {% assign varid = line_item.product.variants.first.id %}
+                                  {% render 'stock-label', stock_num: stock_num, varid: varid, class: 'hidden-phone' %}
+                                </div>
+                                <a href="{{ line_item.url }}" class="line-item-title">
+                                  {{- line_item.product.title -}}
+                                </a>
+                              </div>
+                              {% render 'stock-label',
+                                stock_num: stock_num,
+                                varid: varid,
+                                class: 'hidden-tablet-and-up'
+                              %}
+
+                              {%- capture line_item_properties -%}
+                                {%- unless line_item.product.has_only_default_variant -%}
+                                  <span class="product-item-meta__property text--subdued text--xsmall">{{ line_item.variant.title }}</span>
+                                {%- endunless -%}
+  
+                                {%- if line_item.selling_plan_allocation -%}
+                                  <span class="product-item-meta__property text--subdued text--xsmall">{{ line_item.selling_plan_allocation.selling_plan.name }}</span>
+                                {%- endif -%}
+
+                                <ul class="product-item-meta__property list--unstyled text--subdued text--xsmall" role="list">
+                                  <span class="loading-container">
+                                    {% render 'icon' with 'loading' %}
+                                  </span>
+                                  <li class="line-item__property date"></li>
+                                </ul>
+                              {%- endcapture -%}
+                              <div class="line-item-bottom">
+                                {%- if line_item_properties != blank -%}
+                                  <div class="product-item-meta__property-list">
+                                    {{- line_item_properties -}}
+                                  </div>
+                                {%- endif -%}
+                                <div class="product-item-meta__price-list-container hidden-phone">
+                                  <div class="line-item-price-list">
+                                    {% if line_item.variant.compare_at_price > line_item.variant.price %}
+                                      {% assign price = line_item.variant.price
+                                        | money_without_currency
+                                        | replace: ',', ''
+                                        | times: 1
+                                      %}
+                                      {% assign compare_at_price = line_item.variant.compare_at_price
+                                        | money_without_currency
+                                        | replace: ',', ''
+                                        | times: 1
+                                      %}
+                                      {% assign discount_difference = compare_at_price | minus: price %}
+                                      {% assign discount_percentage = discount_difference
+                                        | divided_by: compare_at_price
+                                        | times: 100
+                                        | ceil
+                                      %}
+                                      <span class="line-item-price" line-item-data data-quantity="{{ line_item.quantity }}" data-price="{{ line_item.variant.price }}">{{ line_item.variant.price | money }}</span>
+                                      <s class="line-item-compare">
+                                        {{- line_item.variant.compare_at_price | money -}}
+                                      </s>
+                                      <span class="line-discount-percentage">{{ discount_percentage }}%OFF</span>
+                                    {% else %}
+                                      <div class="line-item-price" line-item-data data-quantity="{{ line_item.quantity }}" data-price="{{ computed_final_line_price }}">{{ computed_final_line_price | money }}</div>
+                                    {% endif %}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            {%- assign max_allowed_quantity = '' -%}
+                            {%- assign allow_more = true -%}
+                            {%- if line_item.variant.inventory_management == 'shopify'
+                              and line_item.variant.inventory_policy == 'deny'
+                              and line_item.variant.inventory_quantity <= line_item.quantity
+                            -%}
+                              {%- assign max_allowed_quantity = line_item.variant.inventory_quantity -%}
+                              {%- assign allow_more = false -%}
+                            {%- endif -%}
+
+                            {%- capture quantity_selector_inner -%}
+                              <div class="quantity-selector  quantity-selector--small">
+                                {% assign moq_value = line_item.product.metafields.product.moq | plus: 0 %}
+                                {% if line_item.product.metafields.product.moq != blank and moq_value < line_item.quantity %}
+                                  <a href="javascript:void(0)" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button quantity-selector__minus" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
+                                    {%- render 'icon' with 'minus' -%}
+                                  </a>
+                                {% elsif line_item.product.metafields.product.moq == blank %}
+                                  <a href="javascript:void(0)" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button quantity-selector__minus" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
+                                    {%- render 'icon' with 'minus' -%}
+                                  </a>
+                                {% else %}
+                                  <span class="disabled-link quantity-selector__button">
+                                    {%- render 'icon' with 'minus' -%}
+                                  </span>
+                                {% endif %}
+  
+                                <input onpaste="return false" data-sku="{{ line_item.sku }}" min="1" 
+                                  data-max="{% if line_item.product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ line_item.product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
+                                  max="1000000" is="input-number" class="quantity-selector__input text--xsmall" 
+                                  autocomplete="off" type="text" inputmode="numeric" data-line="{{ forloop.index }}" value="{{ line_item.quantity }}" data-cart="1" data-input-varid="{{ line_item.variant_id }}" data-varid="{{ line_item.variant_id }}" data-moq="{% if line_item.product.metafields.product.moq != blank %}{{ line_item.product.metafields.product.moq }}{% else %}1{% endif %}" {% if max_allowed_quantity != '' %}max="{{ max_allowed_quantity }}"{% endif %} size="{{ line_item.quantity | append: '' | size | at_least: 2 }}" aria-label="{{ 'cart.general.change_quantity' | t | escape }}">
+      
+                                {%- if allow_more -%}
+                                  <a href="javascript:void(0)" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity }}&line={{ forloop.index }}" href="#" class="quantity-selector__button quantity-selector__plus" aria-label="{{ 'cart.general.increase_quantity' | t | escape }}" data-no-instant>
+                                    {%- render 'icon' with 'plus' -%}
+                                  </a>
+                                {%- else -%}
+                                  <span class="quantity-selector__button" aria-label="{{ 'cart.general.no_more_stock' | t | escape }}" data-tooltip="{{ 'cart.general.no_more_stock' | t | escape }}">
+                                    {%- render 'icon' with 'plus' -%}
+                                  </span>
+                                {%- endif -%}
+                              </div>
+                              <a href="{{ line_item.url_to_remove }}" class="hidden-phone remove_link line-item__remove-button link text--subdued text--xsmall" data-no-instant>{{ 'cart.general.remove' | t }}</a>
+                            {%- endcapture -%}
+                          </div>
+                        </td>
+
+                        <td class="line-item__price-list-container">
+                          <div class="line-item-right">
+                            <a
+                              href="{{ line_item.url_to_remove }}"
+                              class="remove_link hidden-tablet-and-up line-item__remove-button link text--subdued text--xsmall"
+                              data-no-instant
+                            >
+                              {{- 'cart.general.remove' | t -}}
+                            </a>
+                            <div class="price hidden-phone">{{ computed_final_line_price_total | money }}</div>
+                            <div class="hidden-tablet-and-up line-item-price-list price">
+                              {% if line_item.variant.compare_at_price > line_item.variant.price %}
+                                {% assign price = line_item.variant.price
+                                  | money_without_currency
+                                  | replace: ',', ''
+                                  | times: 1
+                                %}
+                                {% assign compare_at_price = line_item.variant.compare_at_price
+                                  | money_without_currency
+                                  | replace: ',', ''
+                                  | times: 1
+                                %}
+                                {% assign discount_difference = compare_at_price | minus: price %}
+                                {% assign discount_percentage = discount_difference
+                                  | divided_by: compare_at_price
+                                  | times: 100
+                                  | ceil
+                                %}
+                                <div class="line-item-compare-wrapper">
+                                  <s class="line-item-compare">
+                                    {{- line_item.variant.compare_at_price | money -}}
+                                  </s>
+                                  <span class="line-discount-percentage">{{ discount_percentage }}%OFF</span>
+                                </div>
+                                <span class="line-item-price">{{ computed_final_line_price_total | money }}</span>
+                              {% else %}
+                                <div class="line-item-price">{{ computed_final_line_price_total | money }}</div>
+                              {% endif %}
+                            </div>
+                            <line-item-quantity class="line-item-quantity" data-key="{{ line_item.key }}">
+                              {{ quantity_selector_inner }}
+                            </line-item-quantity>
+                          </div>
+                        </td>
+                      </tr>
+                    {%- endfor -%}
+                  </tbody>
+                </table>
+              </div>
+              {%- assign items_requiring_shipping = cart.items | where: 'requires_shipping' -%}
+
+              {%- if section.settings.show_shipping_estimator and items_requiring_shipping.size > 0 -%}
+                <div class="shipping-estimator">
+                  <button
+                    type="button"
+                    is="toggle-button"
+                    class="shipping-estimator__toggle-button collapsible-toggle heading heading--small"
+                    aria-controls="shipping-estimator"
+                    aria-expanded="false"
+                  >
+                    {{- 'cart.shipping_estimator.estimate_shipping' | t -}}
+                    {%- render 'icon' with 'chevron' -%}
+                  </button>
+
+                  <collapsible-content id="shipping-estimator" class="collapsible">
+                    <shipping-estimator class="shipping-estimator__form" role="form">
+                      <div class="input-row">
+                        <div class="input">
+                          <label class="input__block-label" for="shipping-estimator[country]">
+                            {{- 'cart.shipping_estimator.country' | t -}}
+                          </label>
+                          <div class="select-wrapper">
+                            <select
+                              class="select"
+                              is="country-selector"
+                              name="shipping-estimator[country]"
+                              id="shipping-estimator[country]"
+                              aria-owns="shipping-estimator-province-wrapper"
+                              {% if customer and customer.default_address %}
+                                data-default="{{ customer.default_address.country }}"
+                              {% endif %}
+                            >
+                              {{ country_option_tags }}
+                            </select>
+                            {%- render 'icon' with 'chevron' -%}
+                          </div>
+                        </div>
+
+                        <div id="shipping-estimator-province-wrapper" class="input" hidden>
+                          <label class="input__block-label" for="shipping-estimator[province]">
+                            {{- 'cart.shipping_estimator.province' | t -}}
+                          </label>
+                          <div class="select-wrapper">
+                            <select
+                              class="select"
+                              name="shipping-estimator[province]"
+                              id="shipping-estimator[province]"
+                              {% if customer and customer.default_address %}
+                                data-default="{{ customer.default_address.province }}"
+                              {% endif %}
+                            ></select>
+                            {%- render 'icon' with 'chevron' -%}
+                          </div>
+                        </div>
+
+                        <div class="input">
+                          <label class="input__block-label" for="shipping-estimator[zip]">
+                            {{- 'cart.shipping_estimator.zip_code' | t -}}
+                          </label>
+                          <input
+                            type="text"
+                            class="input__field"
+                            name="shipping-estimator[zip]"
+                            id="shipping-estimator[zip]"
+                          >
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        is="loader-button"
+                        class="form__submit form__submit--closer button button--primary"
+                      >
+                        {{ 'cart.shipping_estimator.submit' | t }}
+                      </button>
+                    </shipping-estimator>
+                  </collapsible-content>
+                </div>
+              {%- endif -%}
+            </div>
+
+            <div class="button-action hidden-tablet-and-up">
+              {% if customer %}
+                <button
+                  type="submit"
+                  is="loader-button"
+                  id="cart-checkout-button"
+                  data-disabled="0"
+                  class="cart-checkout-button cart-button cart-checkout button--full"
+                  name="checkout"
+                >
+                  Checkout
+                </button>
+              {% else %}
+                <a
+                  href="/account/login"
+                  class="cart-button cart-login button--full"
+                >
+                  Sign in and Checkout
+                </a>
+                <button
+                  type="submit"
+                  is="loader-button"
+                  id="cart-checkout-button"
+                  data-disabled="0"
+                  class="cart-checkout-button cart-button cart-login-checkout button--full"
+                  name="checkout"
+                >
+                  Checkout as Guest
+                </button>
+              {% endif %}
+            </div>
+
+            <div class="cart__aside">
+              <safe-sticky offset="24" class="cart__aside-inner">
+                <div class="cart__recap">
+                  <div class="cart__aside-title">Order Summary</div>
+                  {%- for block in section.blocks -%}
+                    {%- case block.type -%}
+                      {%- when 'totals' -%}
+                        <div class="cart__recap-block" {{ block.shopify_attributes }}>
+                          <div class="cart__total-container">
+                            <div class="title">Subtotal</div>
+                            <div class="text subtotal computed-subtotal" data-price="{{ computed_subtotal }}">{{ computed_subtotal | money }}</div>
+                          </div>
+                          <div class="cart__total-container">
+                            <div class="title">Estimated Tax</div>
+                            <div class="text tax"></div>
+                          </div>
+                          <div class="cart__total-container">
+                            <div class="title">Estimated Shipping</div>
+                            <div class="text computed_shipping_money"></div>
+                          </div>
+                        </div>
+
+                      {%- when 'express_checkout_buttons' -%}
+                        {%- if additional_checkout_buttons -%}
+                          <div class="cart__recap-block" {{ block.shopify_attributes }}>
+                            <div class="additional-checkout-buttons additional-checkout-buttons--vertical">
+                              {{- content_for_additional_checkout_buttons -}}
+                            </div>
+                          </div>
+                        {%- endif -%}
+
+                      {%- when '@app' -%}
+                        <div class="cart__recap-block">
+                          {%- render block -%}
+                        </div>
+                    {%- endcase -%}
+                  {%- endfor -%}
+                  <div class="cart__total-container cart__total-container1">
+                    <div class="title">Estimated Total</div>
+                    <div class="text computed-total subtotal"></div>
+                  </div>
+                  <div class="cart__total-text">
+                    {{ section.settings.text }}
+                  </div>
+                  {% comment %}
+                    {%- for block in section.blocks -%}
+                      {%- case block.type -%}
+                        {%- when 'order_note' -%}
+                          <div class="cart__recap-note" {{ block.shopify_attributes }}>
+                            <button
+                              type="button"
+                              is="toggle-button"
+                              id="order-note-toggle"
+                              class="link text--subdued"
+                              aria-controls="cart-note"
+                              aria-expanded="{% if block.settings.open_by_default %}true{% else %}false{% endif %}"
+                            >
+                              {%- if cart.note == '' -%}
+                                {{- 'cart.general.add_order_note' | t -}}
+                              {%- else -%}
+                                {{- 'cart.general.edit_order_note' | t -}}
+                              {%- endif -%}
+                            </button>
+
+                            <collapsible-content
+                              id="cart-note"
+                              class="collapsible"
+                              {% if block.settings.open_by_default %}
+                                open
+                              {% endif %}
+                            >
+                              <div class="cart__order-note">
+                                <textarea
+                                  is="cart-note"
+                                  aria-owns="order-note-toggle"
+                                  name="note"
+                                  class="input__field input__field--textarea"
+                                  rows="3"
+                                  placeholder="{{ 'cart.general.order_note_placeholder' | t }}"
+                                  aria-label="{{ 'cart.general.order_note' | t | escape }}"
+                                ></textarea>
+                              </div>
+                            </collapsible-content>
+                          </div>
+                      {%- endcase -%}
+                    {%- endfor -%}
+                  {% endcomment %}
+
+                  <div class="button-action hidden-phone">
+                    {% if customer %}
+                      <button
+                        type="submit"
+                        is="loader-button"
+                        id="cart-checkout-button"
+                        data-disabled="0"
+                        class="cart-checkout-button cart-button cart-checkout button--full"
+                        name="checkout"
+                      >
+                        Checkout
+                      </button>
+                    {% else %}
+                      <a
+                        href="/account/login"
+                        class="cart-button cart-login button--full"
+                      >
+                        Sign in and Checkout
+                      </a>
+                      <button
+                        type="submit"
+                        is="loader-button"
+                        id="cart-checkout-button"
+                        data-disabled="0"
+                        class="cart-checkout-button cart-button cart-login-checkout button--full"
+                        name="checkout"
+                      >
+                        Checkout as Guest
+                      </button>
+                    {% endif %}
+                  </div>
+                </div>
+
+                {%- if section.settings.show_payment_methods and shop.enabled_payment_types.size > 0 -%}
+                  <div class="cart__payment-methods">
+                    <span class="cart__payment-methods-label text--xsmall text--subdued">
+                      {{- 'cart.general.we_accept' | t -}}
+                    </span>
+
+                    <div class="payment-methods-list payment-methods-list--center">
+                      {% for type in shop.enabled_payment_types %}
+                        {{ type | payment_type_svg_tag }}
+                      {% endfor %}
+                    </div>
+                  </div>
+                {%- endif -%}
+              </safe-sticky>
+            </div>
+          </form>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+<script>
+  (() => {
+    const ip = Cookies.get('ip');
+    if(ip) {
+      // Page Viewed
+      dataLayer.push({
+        'event': 'custom_cart_viewed',
+        'zip': '{{ customer.default_address.zip  }}',   
+        'username': '{{ customer.name }}',
+        'email':'{{ customer.email }}',
+        'ip': ip
+      });
+    }
+  })();
+
+  // 获取默认state code,如果有地址就获取,没地址就固定DC
+
+  
+  {% if customer.b2b? %}
+    {% assign province_code = customer.current_location.shipping_address.province_code %}
+    {% assign zip = customer.current_location.shipping_address.zip %}
+  {% else %}
+    {% assign province_code = customer.default_address.province_code | default: 'DC'  %}
+    {% assign zip = customer.default_address.zip | default: 20500 %}
+  {% endif %}
+  (() => {
+    $('.quantity-selector__input').on('keydown', function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // 阻止默认行为
+      }
+    });
+  })();
+
+  (() => {
+    const line_item_delivery = [];
+    {% for line_item in cart.items %}
+      line_item_delivery.push({
+        MATNR: '{{ line_item.sku }}',
+        ZQTY: {{ line_item.quantity }},
+        Z004: '{{ province_code }}',
+        Z002: 'US',
+        POST_CODE2: {{ zip }}
+      });
+    {% endfor %}
+
+    async function getDeleveryDate(deliveryParams) { //获取交期数据
+      try {
+         const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
+                const resHeader = await responseHeader.json();
+                const headersData = resHeader.data;
+        const response = await fetch('https://openapi.northskysupply.com/openapi/adlink/delivery-calculation/batch', {
+          method: 'POST',
+          body: JSON.stringify(deliveryParams),
+          headers:{
+            'Content-Type':'application/json',
+            ...headersData
+          }
+        })
+        return await response.json();
+      } catch(err) {
+        console.error(err)
+      }
+    }
+
+    function formatDate(timestamp, timezoneOffset = -5) {
+      // 创建 Date 对象（默认会使用 UTC 时间）
+      const date = new Date(+timestamp);
+      // 调整时区：将日期偏移到 GMT-5
+      const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
+      // 获取年份、月份和日期
+      const year = localTime.getFullYear();
+      const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      const month = monthNames[localTime.getMonth()];
+      const day = localTime.getDate();
+      // 确定日期后缀
+      let suffix = '';
+      if (day >= 11 && day <= 13) {
+        suffix = 'th'; // 特殊情况：11th, 12th, 13th
+      } else {
+        switch (day % 10) {
+          case 1: suffix = 'st'; break; // 1, 21, 31
+          case 2: suffix = 'nd'; break; // 2, 22
+          case 3: suffix = 'rd'; break; // 3, 23
+          default: suffix = 'th'; break; // 其他情况
+        }
+      }
+      // 返回格式化后的日期
+      return `${month} ${day}${suffix}, ${year}`;
+    }
+
+
+    async function initDeleveryDate(line_item_delivery) { // 查一组交期数据
+      if(line_item_delivery.length == 0) return
+      $('.line-item-table .line-item .loading-container').show(); // loading 按钮隐藏
+      $('.line-item__property').hide();
+      const deleveryDate = await getDeleveryDate(line_item_delivery);
+      deleveryDate.map(line_item => {
+        // item.availableInventoryCount 库存
+        let $deliveryTime
+        const $lineItem = $(`.line-item[data-sku='${line_item.sku}']`);
+        let stockDateStart;
+        let stockDateEnd;
+        if (
+          line_item.transitInventoryDeliveryTimeStampMin &&
+          line_item.transitInventoryDeliveryTimeStampMax &&
+          line_item.outOfStockDeliveryTimeStampMin &&
+          line_item.outOfStockDeliveryTimeStampMax
+        ) {
+          stockDateStart = +line_item.transitInventoryDeliveryTimeStampMin;
+          stockDateEnd = +line_item.outOfStockDeliveryTimeStampMax;
+        } else if(
+          line_item.transitInventoryDeliveryTimeStampMin &&
+          line_item.transitInventoryDeliveryTimeStampMax &&
+          !line_item.outOfStockDeliveryTimeStampMin &&
+          !line_item.outOfStockDeliveryTimeStampMax
+        ) {
+          stockDateStart = +line_item.transitInventoryDeliveryTimeStampMin;
+          stockDateEnd = +line_item.transitInventoryDeliveryTimeStampMax;
+        } else if(
+          !line_item.transitInventoryDeliveryTimeStampMin &&
+          !line_item.transitInventoryDeliveryTimeStampMax &&
+          line_item.outOfStockDeliveryTimeStampMin &&
+          line_item.outOfStockDeliveryTimeStampMax
+        ){
+          stockDateStart = +line_item.outOfStockDeliveryTimeStampMin;
+          stockDateEnd = +line_item.outOfStockDeliveryTimeStampMax;
+        }
+        if(line_item.availableInventoryCount == 0) {
+          $deliveryTime = $(`
+            <span>Expected to arrive between ${formatDate(stockDateStart)} and ${formatDate(stockDateEnd)}.</span>
+          `);
+        } else if(line_item.availableInventoryCount >= line_item.demandQuantity) { // 现货大于0，并且现货>=需求
+          $deliveryTime = $(`
+            <span>Expected to arrive on ${formatDate(line_item.availableInventoryDeliveryTimeStamp)}.</span>
+          `);
+        } else { // 现货大于0，并且需求大于现货
+          $deliveryTime = $(`
+            <span>Partial expected to arrive on ${formatDate(line_item.availableInventoryDeliveryTimeStamp)}.</span>
+            <span>The remaining balance is expected to arrive between ${formatDate(stockDateStart)} and ${formatDate(stockDateEnd)}.</span>
+          `);
+        }
+        $lineItem.find('.loading-container').hide();
+        $lineItem.find('.line-item__property.date').show().html($deliveryTime);
+      })
+    }
+    initDeleveryDate(line_item_delivery); // 初始化交期
+  })();
+
+  (() => {
+    // js/helper/currency.js
+    function formatMoney(cents, format = '') {
+      if (typeof cents === 'string') {
+        cents = cents.replace('.', '');
+      }
+      const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/,
+        formatString = format || window.themeVariables.settings.moneyFormat;
+      function defaultTo(value2, defaultValue) {
+        return value2 == null || value2 !== value2 ? defaultValue : value2;
+      }
+      function formatWithDelimiters(number, precision, thousands, decimal) {
+        precision = defaultTo(precision, 2);
+        thousands = defaultTo(thousands, ',');
+        decimal = defaultTo(decimal, '.');
+        if (isNaN(number) || number == null) {
+          return 0;
+        }
+        number = (number / 100).toFixed(precision);
+        let parts = number.split('.'),
+          dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+          centsAmount = parts[1] ? decimal + parts[1] : '';
+        return dollarsAmount + centsAmount;
+      }
+      let value = '';
+      switch (formatString.match(placeholderRegex)[1]) {
+        case 'amount':
+          value = formatWithDelimiters(cents, 2);
+          break;
+        case 'amount_no_decimals':
+          value = formatWithDelimiters(cents, 0);
+          break;
+        case 'amount_with_space_separator':
+          value = formatWithDelimiters(cents, 2, ' ', '.');
+          break;
+        case 'amount_with_comma_separator':
+          value = formatWithDelimiters(cents, 2, '.', ',');
+          break;
+        case 'amount_with_apostrophe_separator':
+          value = formatWithDelimiters(cents, 2, "'", '.');
+          break;
+        case 'amount_no_decimals_with_comma_separator':
+          value = formatWithDelimiters(cents, 0, '.', ',');
+          break;
+        case 'amount_no_decimals_with_space_separator':
+          value = formatWithDelimiters(cents, 0, ' ');
+          break;
+        case 'amount_no_decimals_with_apostrophe_separator':
+          value = formatWithDelimiters(cents, 0, "'");
+          break;
+      }
+      if (formatString.indexOf('with_comma_separator') !== -1) {
+        return formatString.replace(placeholderRegex, value);
+      } else {
+        return formatString.replace(placeholderRegex, value);
+      }
+    }
+
+    async function getShippingCost() {  // 算运费
+      const skus = [];
+      {% for line_item in cart.items %}
+        skus.push({
+          nums: +'{{ line_item.quantity }}',
+          skuAmount: +('{{ line_item.original_price | money_without_currency  }}'.replace(/,/g, '')),
+          skuCode: '{{ line_item.sku }}'
+        });
+      {% endfor %}
+      if(skus.length == 0) return
+      const orderAmount = +('{{ cart.total_price | money_without_currency }}'.replace(/,/g, ''));
+      {% if customer.default_address.zip != blank %}
+        const deliveryAddress = {
+          city: "{{ customer.default_address.city }}",
+          province: "{{ customer.default_address.province }}",
+          street: "{{ customer.default_address.address1 }}",
+          zipCode: "{{ customer.default_address.zip }}"
+        };
+      {% else %}
+        const deliveryAddress = {  // 收货地址, 固定
+          city: "Washington",
+          province: "District of Columbia",
+          street: "1600 Pennsylvania Avenue NW",
+          zipCode: "20500"
+        };
+      {% endif %}
+      const sendAddress = { // 发货地址, 固定
+        city: "Houston",
+        province: "Texas",
+        street: "2425 Broad St",
+        zipCode: "77087"
+      };
+      const shippingParam = {
+        deliveryAddress,
+        sendAddress,
+        orderAmount,
+        skus
+      }
+      const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
+      const resHeader = await responseHeader.json();
+      const headersData = resHeader.data;
+      const response = await fetch('https://app.northskysupply.com/web/openapi/costs', {
+        method: 'POST',
+        body: JSON.stringify(shippingParam),
+        headers:{
+          'Content-Type':'application/json',
+          ...headersData
+        }
+      })
+      const res = await response.json();
+      if(res.code == 0) {
+        return res.data[0].costs
+      } else {
+        return 0
+      }
+    }
+
+    // 初始化算钱
+    async function getProvincesDataAndCompute() {
+      const today = new Date();
+      const year = today.getFullYear(); // 获取年份
+      const month = today.getMonth() + 1; // 获取月份（从0开始，所以要+1）
+      const date = today.getDate(); // 获取日期
+      const lines = [];
+      $('[line-item-data]').each((idx, item) => {
+        lines.push({
+          quantity: +$(item).data("quantity"),
+          amount: +$(item).data("price") * +$(item).data("quantity"),
+          taxCode: "PT118906"
+        });
+      });
+      {% if customer.default_address.zip %}
+        const singleLocation = {
+          line1: "{{ customer.default_address.address1 }}",
+          city: "{{ customer.default_address.city }}",
+          region: "{{ province_code }}",
+          country: "US",
+          postalCode: "{{ customer.default_address.zip }}",
+        };
+      {% else %}
+        const singleLocation = {  // 收货地址, 固定
+          line1: "1600 Pennsylvania Avenue NW",
+          city: "Washington",
+          region: "{{ province_code }}",
+          country: "US",
+          postalCode: "20500"
+        };
+      {% endif %}
+      const taxParam = {
+        lines,
+        type: "SalesOrder",
+        date: `${year}-${month}-${date}`,
+        customerCode: "ABC",
+        addresses: {
+          singleLocation
+        },
+        commit: false,
+        currencyCode: "USD"
+      }
+      try {
+        const response = await fetch('https://app.northskysupply.com/web/tax', {
+          method: 'POST',
+          body: JSON.stringify(taxParam),
+          headers:{
+            'Content-Type':'application/json'
+          }
+        })
+        const res = await response.json();
+        if(res.code === 200) {
+          const shipping_money = await getShippingCost(); // 计算运费
+          $('.computed_shipping_money').text(`$${shipping_money}`);
+          const computed_subtotal = $('.computed-subtotal').data('price'); // 获取计算总额
+          const tax_money = Math.ceil(res.data.totalTax); // 计算税费
+          const total = +computed_subtotal + shipping_money * 100 + tax_money;
+          $('.cart__total-container .tax').text(`${formatMoney(tax_money)}`);
+          $('.cart__total-container1 .computed-total').text(`${formatMoney(total)}`); // 计算总额（总计）
+        }
+      } catch (error) {
+        console.error("Failed to fetch provinces data:", error);
+      }
+    }
+    getProvincesDataAndCompute();
+  })();
+
+  (() => {
+    $('.cart-checkout-button').attr('data-disabled', '0');
+    $('.cart-checkout-button').click(function(event) {  // checkout按钮
+      event.preventDefault();
+      const disabled = $('.cart-checkout-button').attr('data-disabled');
+      if(disabled == 1) {
+        alert('Please wait for the shopping cart to refresh')
+        return
+      }
+      getDiscount();
+    })
+    function getDiscount () {  // 获取折扣然后跳转
+      const amount_original = parseFloat('{{ cart.original_total_price }}');
+      const amount_current = parseFloat('{{ computed_subtotal }}');
+      const amount_difference = (amount_original - amount_current) / 100;
+      const formData = {
+        customerId: Number({{ customer.id }}),
+        amount: amount_difference
+      };
+      if(formData.amount == 0) {
+        window.location.href = '/checkout?discount=0';
+        return
+      }
+      fetch('https://app.northskysupply.com/web/discount/save', {
+        method: 'POST',
+        body: JSON.stringify(formData),
+        headers:{
+          'Content-Type':'application/json',
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.code == 200) {
+          const discountCode = data.data.title;
+          window.location.href = `/checkout?discount=${discountCode}`; 
+        }
+      })
+      .catch(error => {
+          // 处理错误
+      });
+    }
+  })();
+
+  (() => {
+    let isDisabledInput = false;  // 调用一次函数就拉倒了
+    function disabledInput(key) {  // 禁用输入和加减
+      const $lineItemQuantitys = $('.line-item-quantity');
+      const $mobileLineItemQuantitys = $('.line-item__quantity');
+      const filteredItems = $lineItemQuantitys.filter(function() {
+        return $(this).data('key') != key;
+      });
+      const mobileFilteredItems = $mobileLineItemQuantitys.filter(function() {
+        return $(this).data('key') != key;
+      });
+      // 对过滤后的元素进行操作
+      filteredItems.find('.quantity-selector__button').unbind("click");
+      filteredItems.find('.quantity-selector__input').attr('disabled', 'disabled');
+      filteredItems.find('.remove_link').off('click');
+      filteredItems.find('.remove_link, .quantity-selector__button, .quantity-selector__input').click(() => {
+        alert('Please wait');
+      });
+
+      mobileFilteredItems.find('.quantity-selector__button').unbind("click");
+      mobileFilteredItems.find('.quantity-selector__input').attr('disabled', 'disabled');
+      mobileFilteredItems.find('.remove_link').off('click');
+      mobileFilteredItems.find('.remove_link, .quantity-selector__button, .quantity-selector__input').click(() => {
+        alert('Please wait');
+      });
+    }
+
+    function debounce(func, wait) { // 防抖
+      let timeout;
+      return function(...args) {
+        const context = this;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          func.apply(context, args);
+        }, wait);
+      };
+    }
+
+    const debouncedItemValueChange = debounce(async (href) => {
+      window.location.href = href
+    }, 400);
+
+    $('.quantity-selector__plus').on('click', function() { //加
+      let href = $(this).data('href');
+      const line = +href.split('&')[1].split('=')[1];
+      const inputElement = $('input[data-line="' + line + '"]');
+      if(+inputElement.val() == 1000000) {
+        return
+      }
+      const quantity = +inputElement.val() + 1;
+      href = `/cart/change?quantity=${quantity}&line=${line}`;
+      inputElement.val(quantity);
+      const $lineItemQuantity = $(this).closest('.line-item-quantity');
+      if(!isDisabledInput) { // 卡扣
+        disabledInput($lineItemQuantity.data('key'))
+        isDisabledInput = true
+      }
+      debouncedItemValueChange(href);
+    });
+    
+    $('.quantity-selector__minus').on('click', function() { //减
+      let href = $(this).data('href');
+      const line = +href.split('&')[1].split('=')[1];
+      const inputElement = $('input[data-line="' + line + '"]');
+      const moq = +$(inputElement).data('moq');
+      let quantity = +inputElement.val() - 1;
+      if(quantity < moq) {
+        quantity = moq
+      }
+      href = `/cart/change?quantity=${quantity}&line=${line}`;
+      inputElement.val(quantity)
+      const $lineItemQuantity = $(this).closest('.line-item-quantity');
+      if(!isDisabledInput) {  // 卡扣
+        disabledInput($lineItemQuantity.data('key'))
+        isDisabledInput = true
+      }
+      debouncedItemValueChange(href);
+    });
+  })()
+</script>
+
+{% schema %}
+{
+  "name": "Cart",
+  "blocks": [
+    {
+      "type": "totals",
+      "name": "Totals",
+      "limit": 1
+    },
+    {
+      "type": "order_note",
+      "name": "Order note",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "express_checkout_buttons",
+      "name": "Express checkout buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Make payment faster with accelerated payment buttons. [Learn more](https://shopify.dev/themes/pricing-payments/accelerated-checkout)"
+        }
+      ]
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "text"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping_estimator",
+      "label": "Show shipping rates calculator",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shipping_estimator_default_country",
+      "label": "Default country",
+      "info": "If the customer is logged in, the country of their shipping address will be used.",
+      "default": "United States"
+    },
+    {
+      "type": "url",
+      "id": "empty_button_link",
+      "label": "Empty button link",
+      "default": "/collections/all"
+    }
+  ]
+}
+{% endschema %}

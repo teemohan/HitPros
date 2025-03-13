@@ -1,0 +1,10 @@
+@media screen and (min-width: 741px) {
+  .categories .product-categories-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media screen and (max-width: 740px) { 
+  .categories .product-categories-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

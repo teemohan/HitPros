@@ -1,0 +1,417 @@
+<!doctype html>
+
+{%- assign direction = 'ltr' -%}
+{%- case request.locale.iso_code -%}
+  {%- when 'ar', 'arc', 'dv', 'fa', 'ha', 'he', 'kwh', 'ks', 'ku', 'ps', 'ur', 'yi' -%}
+    {%- assign direction = 'rtl' -%}
+{%- endcase -%}
+
+<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ direction }}">
+  <head>
+    <meta charset="utf-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0"
+    >
+    <meta name="theme-color" content="{{ settings.header_background }}">
+
+    <title>
+      {% if page_title == blank -%}
+        {{- shop.name -}}
+      {%- else -%}
+        {{- page_title -}}
+        {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- endif %}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon -%}
+      <link rel="shortcut icon" href="{{ settings.favicon | img_url: '96x96' }}" type="image/png">
+    {%- endif -%}
+
+
+    {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+    {%- unless settings.heading_font.system? and settings.text_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+
+    {%- comment -%}Preload important resources{%- endcomment -%}
+    <link rel="preload" as="style" href="{{ 'theme.css' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'vendor.js' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'element.js' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'global.min.css' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'theme-v3.css' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'el-reset.css' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'theme.js' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'jquery.min.js' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'js-cookie.js' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'swiper.min.js' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'vue.js' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'element.js' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'element-ui-locale.js' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'zip-code.js' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'lib-phone.js' | asset_url }}">
+
+    {%- if request.page_type == 'product' -%}
+      {%- assign selected_media = product.selected_variant.featured_media | default: product.featured_media -%}
+
+      <link rel="preload" as="fetch" href="{{ product.url }}.js" crossorigin>
+      <link
+        rel="preload"
+        as="image"
+        imagesizes="(max-width: 999px) calc(100vw - 48px), 640px"
+        imagesrcset="{% render 'image-attributes', image: selected_media, sizes: '400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800', sizes_only: true %}"
+      >
+
+      {%- if product.media.size > 1 -%}
+        <link rel="preload" as="script" href="{{ 'flickity.js' | asset_url }}">
+      {%- endif -%}
+    {%- elsif request.page_type == 'collection' and collection.image -%}
+      <link
+        rel="preload"
+        as="image"
+        media="(max-width: 740px)"
+        imagesizes="100vw"
+        imagesrcset="{% render 'image-attributes', image: collection.image, sizes: '400,500,600,700,800,900,1000', height_constraint: 600, crop: 'center', sizes_only: true %}"
+      >
+      <link
+        rel="preload"
+        as="image"
+        media="(min-width: 741px)"
+        imagesizes="100vw"
+        imagesrcset="{% render 'image-attributes', image: collection.image, sizes: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600', sizes_only: true %}"
+      >
+    {%- endif -%}
+                  <!-- Start of HubSpot Embed Code -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47344356.js"></script>
+<!-- End of HubSpot Embed Code -->
+
+    {% render 'social-meta-tags' %}
+    {% render 'microdata-schema' %}
+    {% render 'css-variables', direction: direction %}
+    {% render 'js-variables', direction: direction %}
+
+    <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'element.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'global.min.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'theme-v3.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'el-reset.css' | asset_url }}">
+
+    <script>
+      if('{{ customer.id }}'){
+        var dataLayer = [];
+        dataLayer.push({
+          'user_id':'{{ customer.id }}'
+        })
+      }
+    </script>
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PVCDGR5P');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-M7M24J6J');
+    </script>
+    
+
+
+    <script src="{{ 'js-cookie.js' | asset_url }}"></script>
+    <script src="{{ 'swiper.min.js' | asset_url }}"></script>
+    <script src="{{ 'jquery.min.js' | asset_url }}"></script>
+    <script src="{{ 'vendor.js' | asset_url }}"></script>
+    <script src="{{ 'vue.js' | asset_url }}"></script>
+    <script src="{{ 'element.js' | asset_url }}"></script>
+    <script src="{{ 'element-ui-locale.js' | asset_url  }}"></script>
+    <script src="{{ 'zip-code.js' | asset_url }}"></script>
+    <script src="{{ 'lib-phone.js' | asset_url }}"></script>
+    <script>
+      ELEMENT.locale(ELEMENT.lang.en)
+    </script>
+    <script>
+      $.get('https://www.cloudflare.com/cdn-cgi/trace', (data) => {
+        const ipMatch = data.match(/ip=([\d.]+)/);
+        const ip = ipMatch[1];
+        Cookies.set('ip', ip, { expires: 365 * 10 });
+      });
+    </script>
+
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+    {{ content_for_header }}
+
+  </head>
+
+  {%- assign feature_classes = '' -%}
+
+  {%- if settings.show_image_zoom -%}
+    {% assign feature_classes = feature_classes | append: ' features--image-zoom' %}
+  {%- endif -%}
+
+  <body class="no-focus-outline {{ feature_classes }}" data-instant-allow-query-string>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-PVCDGR5P"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-M7M24J6J"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    {%- comment -%}Common SVG definitions that we are re-using in several places{%- endcomment -%}
+    <svg class="visually-hidden">
+      <linearGradient id="rating-star-gradient-half">
+        <stop offset="50%" stop-color="rgb(var(--product-star-rating))" />
+        <stop offset="50%" stop-color="rgb(var(--product-star-rating))" stop-opacity="0.4" />
+      </linearGradient>
+    </svg>
+
+    <a href="#main" class="visually-hidden skip-to-content">{{ 'general.accessibility.skip_to_content' | t }}</a>
+    <loading-bar class="loading-bar"></loading-bar>
+
+    {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
+      {%- section 'announcement-bar' -%}
+      {%- section 'popup' -%}
+      {%- section 'header' -%}
+      {%- section 'jd-backtop' -%}
+      {%- section 'vue-message' -%}
+
+      {%- unless settings.cart_type == 'page' or request.page_type == 'cart' -%}
+        {%- section 'mini-cart' -%}
+      {%- endunless -%}
+    {%- endif -%}
+    {%- capture template_class_name -%}
+    page-{{ template.name }}{% if template.suffix %}-{{ template.suffix }}{% endif %}
+    {%- endcapture -%}
+    <div id="main" role="main" class="anchor {{ template_class_name }}">
+      {%- comment -%}
+        IMPLEMENTATION NOTE: on collection and search page, the theme was designed to show on mobile the filter bar and/or sort
+          by at the very top of the page. However, due to the fact that sections are isolated, I had to move the code
+          here. Then, the collection section, based on the selected settings, will eventually hide those elements in CSS
+      {%- endcomment -%}
+      {{ content_for_layout }}
+      {%- unless request.page_type == 'index' or request.page_type == 'password' or request.page_type == 'gift_card' -%}
+        {%- section 'static-text-with-icons' -%}
+        {%- section 'static-newsletter' -%}
+      {%- endunless -%}
+    </div>
+
+    {% sections 'footer-group' %}
+
+    {% render 'globo.form.custom' %}
+
+    <script src="//code.tidio.co/dzwcvyci274aolrpev5ilpboec1objxi.js" async></script>
+
+
+  </body>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      $('#createAccount').click(function() {
+        const ip = Cookies.get('ip');
+        if(ip) {
+          dataLayer.push({
+            'event': 'custom_create_account_clicked',
+            'zip': '{{ customer.default_address.zip  }}',
+            'industry': '{{ customer.metafields.custom.domesticcustomserviceid  }}',
+            'username': '{{ customer.name }}',
+            'email':'{{ customer.email }}',
+            'company':'{{ customer.metafields.custom.overseascustomserviceid  }}',
+            'ip': ip
+          });
+        }
+      })
+    })
+
+    window.addEventListener('beforeunload', function () {
+      if('{{ customer.id }}') return
+      let currentPath = window.location.pathname;
+      if (currentPath === '/account/login' || currentPath === '/account/register') {
+        currentPath = 'index';
+      }
+      Cookies.set('pagePath', currentPath);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // document.tidioIdentify = {
+      //   distinct_id: '{{ customer.id }}', // Unique visitor ID in your system
+      //   email: '{{ customer.email }}', // visitor email
+      //   name: '{{ customer.name }}', // Visitor name
+      //   phone: '{{ customer.phone }}', //Visitor phone
+      // };
+      // Page Viewed
+      const ip = Cookies.get('ip');
+      if(ip) {
+        dataLayer.push({
+          'event': 'custom_page_viewed',
+          'zip': '{{ customer.default_address.zip  }}',
+          'initial_landing_page_url': window.location.href,
+          'username': '{{ customer.name }}',
+          'email':'{{ customer.email }}',
+          'ip': ip
+        });
+      }
+
+      // tidio begin
+      // function onTidioChatApiReady(args) {
+      //     console.log('messageFromVisitor', args);
+      //     const message = args.message || (args.data && args.data.message);
+      //     if (message) {
+      //         const visitorData = getVisitorData();
+        
+      //         const onlineOperators = visitorData.operators.filter(op => op.isOnline);
+            
+      //         const operatorInfo = onlineOperators.map(op => ({
+      //             id: op.id,
+      //             name: op.name,
+      //             avatarSrc: op.avatarSrc
+      //         }));
+            
+      //         fetch('https://assist-bot.northskysupply.com/todio/ask', {
+      //             method: 'POST',
+      //             headers: { 'Content-Type': 'application/json' },
+      //             body: JSON.stringify({
+      //                 ask: message,
+      //                 visitorId: visitorData.id,
+      //                 visitorName: visitorData.name,
+      //                 visitorEmail: visitorData.email,
+      //                 visitorPhone: visitorData.phone,
+      //                 message: visitorData.messages,
+      //                 operators: operatorInfo,
+      //             })
+      //         })
+      //         .then(response => response.json())
+      //         .then(res => {
+      //             if (res.code === 200 && res.data) {
+      //                 window.tidioChatApi.messageFromOperator(res.data);
+      //             }
+      //         })
+      //         .catch(error => {
+      //             console.error("Fetch error:", error);
+      //         });
+      //     }
+      // }
+
+      // function getVisitorData() {
+      //       const tidioState = localStorage.getItem("tidio_state_dzwcvyci274aolrpev5ilpboec1objxi");
+      //       const tidioData = tidioState ? JSON.parse(tidioState) : {};
+      //       return {
+      //           id: tidioData?.visitor?.id || '{{ customer.id }}',
+      //           name: tidioData?.visitor?.name || '{{ customer.name }}',
+      //           email: tidioData?.visitor?.email || '{{ customer.email }}',
+      //           phone: tidioData?.visitor?.phone || '{{ customer.phone }}',
+      //           operators: tidioData?.operators || [],
+      //           messages: Array.isArray(tidioData?.messages)
+      //               ? tidioData.messages.sort((a, b) => b.time_sent - a.time_sent).slice(0, 6)
+      //               : []
+      //       };
+      // }
+      
+      // if (window.tidioChatApi) {
+      //     window.tidioChatApi.on('messageFromVisitor', onTidioChatApiReady);
+      // } else {
+      //     document.addEventListener('tidioChat-messageFromVisitor', onTidioChatApiReady);
+      // }
+        // tidio end
+
+    })
+
+
+    //Session Started
+    const SESSION_KEY = 'session_start';
+
+    // 添加 session_start
+    function addSessionStart() {
+      if (!localStorage.getItem(SESSION_KEY)) {
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ timestamp: Date.now() }));
+        const ip = Cookies.get('ip');
+        if(ip) {
+          dataLayer.push({
+            'event': 'custom_session_started',
+            'zip': '{{ customer.default_address.zip  }}',
+            'username': '{{ customer.name }}',
+            'email':'{{ customer.email }}',
+            'ip': ip
+          });
+        }
+      }
+    }
+    // 仅在离开域名时移除 session_start
+    // function removeSessionStart() {
+    //   if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+    //     // 页面刷新不移除
+    //     return;
+    //   }
+    //   const nextPageDomain = document.activeElement?.href || '';
+    //   const currentDomain = window.location.origin;
+
+    //   if (!nextPageDomain.includes(currentDomain)) {
+    //     console.log('Leaving site, removing session:', localStorage.getItem(SESSION_KEY));
+    //     localStorage.removeItem(SESSION_KEY);
+    //   }
+    // }
+
+
+    function removeSessionStart() {
+      if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+        // 页面刷新不移除
+        return;
+      }
+    
+    // 获取即将跳转的目标 URL
+      const nextPageDomain = document.activeElement?.href || document.referrer || ''; // 使用 window.location.href 获取当前 URL
+      const currentDomain = window.location.origin;
+    
+      //console.log(nextPageDomain)
+      if ( nextPageDomain.includes('/account') || nextPageDomain.includes('multipass') || nextPageDomain.includes('northskysupply')) {
+        //console.log('Logout detected, keeping session');
+        return;
+      }
+      if (!nextPageDomain.includes(currentDomain)) {
+        //console.log('Leaving site, removing session:', localStorage.getItem(SESSION_KEY));
+        localStorage.removeItem(SESSION_KEY);
+      }
+    }
+
+    // 页面加载时添加
+    document.addEventListener('DOMContentLoaded', addSessionStart);
+
+    // 页面卸载时判断是否需要移除
+    window.addEventListener('beforeunload', function(){
+      removeSessionStart()
+    });
+  </script>
+  {{ "//cdn.shopify.com/s/files/1/0773/5273/0914/files/footer.js?v=1718022933" | script_tag }}
+</html>

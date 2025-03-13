@@ -1,0 +1,171 @@
+<style>
+  .wishlist {
+    border: 1px solid var(--my-blue);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0 10px;
+  }
+
+  .ti-heart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  @media screen and (max-width:999px) {
+    .wishlist {
+      width: 36px;
+      height: 36px;
+    }
+    .wishlist svg {
+      width: 14px;
+    }
+  }
+
+</style>
+
+<div id="btn-wishlist">
+  {% if customer %}
+    <button class="btn-wishlist wishlist" @click="toggleWish">
+      <span data-toggle="tooltip" class="ti-heart" v-if="isDelete === 1">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          fill="none"
+          version="1.1"
+          width="20"
+          height="18"
+          viewBox="0 0 20 18"
+        >
+          <g><path d="M10.5494,1.67758L9.99759,2.24804L9.44575,1.6751C7.29622,-0.549658,3.79963,-0.559579,1.64046,1.65526L1.62118,1.6751C-0.540394,3.90979,-0.540394,7.52347,1.62118,9.76064L9.10597,17.6155C9.59034,18.1215,10.3807,18.1289,10.8748,17.6329L10.8916,17.6155L18.3788,9.76064C20.5404,7.52595,20.5404,3.91227,18.3788,1.6751C16.2293,-0.549658,12.7327,-0.559579,10.5735,1.65278L10.5494,1.67758Z" fill="#0A3164" fill-opacity="1"/></g>
+        </svg>
+      </span>
+      <span data-toggle="tooltip" class="ti-heart" v-else>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          fill="none"
+          version="1.1"
+          width="20"
+          height="18"
+          viewBox="0 0 20 18"
+        >
+          <g><path d="M1.64046,1.65526C3.61363,-0.368788,6.70374,-0.534858,8.86198,1.14948C9.06542,1.30825,9.26058,1.48346,9.44575,1.6751L9.99759,2.24804L10.5494,1.67758L10.5735,1.65278C10.7568,1.46498,10.9497,1.29319,11.1507,1.1374C13.3166,-0.541934,16.4118,-0.360801,18.3788,1.6751C20.5404,3.91227,20.5404,7.52595,18.3788,9.76064L10.8916,17.6155L10.8748,17.6329C10.3807,18.1289,9.59034,18.1215,9.10597,17.6155L1.62118,9.76064C-0.540394,7.52347,-0.540394,3.90979,1.62118,1.6751L1.64046,1.65526ZM11.9869,3.06815L11.9839,3.0713L9.99447,5.12778L8.00527,3.06256Q6.98263,2.00412,5.54145,2.00032Q4.10088,1.99653,3.07256,3.05136L3.05562,3.0688Q2,4.16013,2,5.71694Q2,7.2744,3.05948,8.37093L9.99894,15.6534L16.9311,8.38071Q18,7.27561,18,5.7188Q18,4.16134,16.9405,3.06481Q15.9157,2.00413,14.4741,2.00001Q13.0333,1.9959,12.0048,3.04968L11.9869,3.06815Z" fill-rule="evenodd" fill="#0A3164" fill-opacity="1"/></g>
+        </svg>
+      </span>
+    </button>
+
+  {% else %}
+    <a class="wishlist" href="/account/login">
+      <span data-toggle="tooltip" title="Add to Wishlist" class="ti-heart">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          fill="none"
+          version="1.1"
+          width="20"
+          height="18"
+          viewBox="0 0 20 18"
+        >
+          <g><path d="M1.64046,1.65526C3.61363,-0.368788,6.70374,-0.534858,8.86198,1.14948C9.06542,1.30825,9.26058,1.48346,9.44575,1.6751L9.99759,2.24804L10.5494,1.67758L10.5735,1.65278C10.7568,1.46498,10.9497,1.29319,11.1507,1.1374C13.3166,-0.541934,16.4118,-0.360801,18.3788,1.6751C20.5404,3.91227,20.5404,7.52595,18.3788,9.76064L10.8916,17.6155L10.8748,17.6329C10.3807,18.1289,9.59034,18.1215,9.10597,17.6155L1.62118,9.76064C-0.540394,7.52347,-0.540394,3.90979,1.62118,1.6751L1.64046,1.65526ZM11.9869,3.06815L11.9839,3.0713L9.99447,5.12778L8.00527,3.06256Q6.98263,2.00412,5.54145,2.00032Q4.10088,1.99653,3.07256,3.05136L3.05562,3.0688Q2,4.16013,2,5.71694Q2,7.2744,3.05948,8.37093L9.99894,15.6534L16.9311,8.38071Q18,7.27561,18,5.7188Q18,4.16134,16.9405,3.06481Q15.9157,2.00413,14.4741,2.00001Q13.0333,1.9959,12.0048,3.04968L11.9869,3.06815Z" fill-rule="evenodd" fill="#0A3164" fill-opacity="1"/></g>
+        </svg>
+      </span>
+    </a>
+  {% endif %}
+</div>
+
+<script>
+  (() => {
+    new Vue({
+      el: '#btn-wishlist',
+      delimiters: ['${', '}'],
+      data() {
+        return {
+          isDelete: 0,
+          customerId: Number(`{{ customer.id }}`),
+          productId: Number(`{{ product.id }}`),
+          sku: `{{ product.selected_or_first_available_variant.sku }}`
+        };
+      },
+      mounted() {   
+        {% if customer %}       
+          this.initWish();
+        {% endif %}
+      },
+      methods: {
+        // 查询是否添加过心愿单
+        initWish() {
+          // 查询是否添加过心愿单
+          const formData = {
+            customerId: this.customerId,
+            productId: this.productId,
+            sku: this.sku
+          };
+          fetch('https://app.northskysupply.com/web/wish/select', {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers:{
+              'Content-Type':'application/json',
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            // 处理响应
+            if (data.code == 200) {
+              this.isDelete = data.data.isDelete
+            }
+          })
+          .catch(error => {
+            // 处理错误
+            this.$message({
+              showClose: true,
+              message: error,
+              type: 'error'
+          });
+          });
+        },
+
+        toggleWish() {
+          // 添加或取消心愿单
+          const formData = {
+            customerId: this.customerId,
+            productId: this.productId,
+            sku: this.sku,
+            productNum: 1
+          };
+          // 发送请求
+          fetch('https://app.northskysupply.com/web/wish/' + (this.isDelete === 1 ? 'clear' : 'save'), {
+              method: 'POST',
+              body: JSON.stringify(formData),
+              headers:{
+              'Content-Type':'application/json',
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.code === 200) { // 刷新心愿单数量
+              if(data.data.cancel) {
+                this.isDelete = 0;
+              }
+              if(data.data.wish) {
+                this.isDelete = 1;
+              }
+              document.dispatchEvent(new CustomEvent('wish-refreash'));
+            } else {
+              // 处理失败情况
+              this.$message({
+                showClose: true,
+                message: data.msg,
+                type: 'error'
+              });
+          }
+          })
+        }
+      }
+    })
+  })();
+</script>

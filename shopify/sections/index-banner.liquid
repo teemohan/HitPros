@@ -1,0 +1,156 @@
+<style>
+  .index-slide {
+    margin-top: 16px;
+  }
+  .index-slide .swiper {
+    position: relative;
+    user-select: none;
+  }
+  .index-slide .swiper-slide {
+    position: relative;
+    max-height: 400px;
+    background: #F2F6FC;
+  }
+  .index-slide .prevnext-buttons {
+    z-index: 3;
+    position: absolute;
+    display: none;
+    gap: 12px;
+    right: 32px;
+    bottom: 38px;
+  }
+  .index-slide .swiper .swiper-button-prev, .index-slide .swiper .swiper-button-next {
+    width: 32px;
+    height: 32px;
+    position: unset;
+    margin: unset;
+    background: var(--my-yellow);
+  }
+  .swiper-button-next.swiper-button-disabled, .swiper-button-prev.swiper-button-disabled {
+    background: #DCE5F9!important;
+    opacity: 1;
+  }
+  .index-slide .swiper .swiper-button-prev {
+    transform: scaleX(-1);
+  }
+  .index-slide .swiper .swiper-button-prev::after, .index-slide .swiper .swiper-button-next::after {
+    content: '';
+  }
+  @media screen and (min-width: 1001px) {
+    .index-slide .swiper-pagination {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      bottom: 48px;
+    }
+    .index-slide .swiper-pagination .swiper-pagination-bullet {
+      margin: 0;
+      width: 60px;
+      height: 2px;
+    }
+  }    
+  @media screen and (max-width: 1200px) {
+    .index-slide .swiper-slide {
+      max-height: unset;
+    }
+    .index-slide .swiper-pagination {
+      bottom: 30px;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    .index-slide .prevnext-buttons {
+      gap: 16px;
+      right: 16px;
+      bottom: 16px;
+    }
+    .index-slide .swiper .swiper-button-prev, .index-slide .swiper .swiper-button-next {
+      width: 24px;
+      height: 24px;
+    }
+  }
+</style>
+<section class="index-slide container section-gap">
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      {% for slide in section.blocks %}
+        {% assign block_settings = slide.settings %}
+        <div class="swiper-slide {{ block_settings.text_position }}">
+          <a href="{{ block_settings.url }}">
+            <img class="hidden-phone" src="{{ block_settings.slide_bac_img | image_url }}" width="auto" height="auto">
+            <img class="hidden-tablet-and-up" src="{{ block_settings.slide_mobile_bac_img | image_url }}" width="auto" height="auto">
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="prevnext-buttons">
+      <div class="swiper-button-prev">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="10" height="16" viewBox="0 0 10 16"><g transform="matrix(0,-1,1,0,-16,16)"><path d="M0,16L8.18605,26L16,16L0,16Z" fill="#FFFFFF" fill-opacity="1"/></g></svg>
+      </div>
+      <div class="swiper-button-next">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="10" height="16" viewBox="0 0 10 16"><g transform="matrix(0,-1,1,0,-16,16)"><path d="M0,16L8.18605,26L16,16L0,16Z" fill="#FFFFFF" fill-opacity="1"/></g></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+  (() => {
+    new Swiper(".index-slide .swiper", {
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true
+      },
+      autoplay: {
+        delay: 20000, // 间隔时间
+      },
+      speed: 800, // 切换速度
+      effect: 'slide', // 切换效果
+      on: {
+        init: function() {
+          if (this.slides.length > 1) {
+            $(".index-slide .prevnext-buttons").css('display', 'flex')
+          }
+        }
+      },
+      navigation: {
+        nextEl: ".index-slide .swiper-button-next",
+        prevEl: ".index-slide .swiper-button-prev",
+      },
+    });
+  })();
+</script>
+{% schema %}
+  {
+    "name": "Index SlideShow",
+    "settings": [],
+    "blocks" : [{
+      "name": "Slide",
+      "type": "slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "slide_bac_img",
+          "label": "Slide Bac Img",
+          "info": "1440 x 400 recommend"
+        },
+        {
+          "type": "image_picker",
+          "id": "slide_mobile_bac_img",
+          "label": "Slide Mobile Bac Img",
+          "info": "750 x 800 recommend"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Url"
+        }
+      ]
+    }],
+    "presets": [
+      {
+        "name": "Index SlideShow"
+      }
+    ]
+  }
+{% endschema %}

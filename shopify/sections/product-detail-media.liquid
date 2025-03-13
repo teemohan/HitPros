@@ -1,0 +1,138 @@
+<style>
+  .product-media-detail-wrapper {
+  }
+  .product-media-detail-wrapper .product-img-list {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+  .product-media-detail-wrapper .product-img-list img {
+    align-self: center;
+  }
+  .product-media-detail-wrapper .product-video {
+    position: relative;
+    padding: 24px 24px 60px;
+    background-color: #fff;
+  }
+  .product-media-detail-wrapper .product-video::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    left: 0;
+    height: 200px;
+    background-color: var(--my-blue);
+    bottom: 0;
+  }
+  .product-media-detail-wrapper .product-video h3 {
+    position: relative;
+    font-size: 24px;
+    color: var(--my-blue);
+    margin: 0;
+    line-height: 1;
+    padding-bottom: 20px;
+  }
+  .product-media-detail-wrapper .product-video h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    width: 130px;
+    background-color: var(--my-yellow);
+  }
+  .product-media-detail-wrapper .product-video .video-container {
+    position: relative;
+    z-index: 2;
+    margin-top: 40px;
+  }
+  .product-media-detail-wrapper .product-video .video-container .play-control {
+    cursor: pointer;
+    display: flex;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .product-media-detail-wrapper .product-video .video-container .img {
+    position: relative;
+    display: block;
+  }
+  .product-media-detail-wrapper .product-video .video-container .img::before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .4);
+  }
+
+  .product-media-detail-wrapper .product-video .video-container video {
+    display: none;
+  }
+
+  .product-media-detail-wrapper .product-video .video-container.show-video .img {
+    display: none;
+  }
+  .product-media-detail-wrapper .product-video .video-container.show-video video {
+    display: block;
+  }
+  @media(max-width:999px) {
+    .product-media-detail-wrapper .product-video {
+      padding: 12px 12px 40px;
+    }
+    .product-media-detail-wrapper .product-video .video-container {
+      margin-top: 20px;
+    }
+    .product-media-detail-wrapper .product-video h3 {
+      font-size: 18px;
+    }
+    .product-media-detail-wrapper .product-video .video-container .play-control svg {
+      width: 36px;
+    }
+    .product-media-detail-wrapper .product-video::after {
+      height: 160px;
+    }
+  }
+</style>
+<div class="container section-padding-top section-padding-bottom">
+  {% render 'index-cus-header' header_title: section.settings.title %}
+  {% for media in product.media %}
+    {% if media.media_type == 'video' %}
+      {% assign media_video = media %}
+    {% endif %}
+  {% endfor %}
+  <more-product-media data-exist-video="{% if media_video %}true{% endif %}">
+    <div class="product-img-list"></div>
+    {% if media_video != blank %}
+      <div class="product-video">
+        <h3>Video Showcase</h3>
+        <div class="video-container">
+          <div class="img">
+            <img src="{{ media_video.preview_image | image_url }}" width="100%" height="100%">
+            <span class="play-control">
+              {% render 'icon' with 'video-play' %}
+            </span>
+          </div>
+          {{ media_video | video_tag: controls: true, loop: true, width: '100%' }}
+        </div>
+      </div>
+    {% endif %}
+  </more-product-media>
+</div>
+
+{% schema %}
+{
+  "name": "Product Media Detail",
+  "class": "product-media-detail-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "More Details"
+    }
+  ],
+  "presets": [{
+    "name": "Product Media Detail"
+  }]
+}
+{% endschema %}

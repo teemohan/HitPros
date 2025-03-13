@@ -1,0 +1,154 @@
+<div class="product-mobile-sku-line">
+  <product-item
+  data-customer-id="{{- customer.id -}}"
+  data-product-id="{{- product.id -}}"
+  data-sku="{{- product.selected_or_first_available_variant.sku -}}"
+  class="index-product-item product-item {% unless product.available %}product-item--sold-out{% endunless %}"
+  {% if reveal %}
+    reveal
+  {% endif %}
+  >
+  <div class="favorite-button-wrapper">
+    {% if customer %}
+      <button class="favorite-button" data-action="favorite">
+        {% render 'icon' with 'v3-favorited' %}
+        {% render 'icon' with 'v3-unfavorited' %}
+        <span class="unfavorited-text hidden-phone">Add to List</span>
+        <span class="favorited-text hidden-phone">In My List</span>
+      </button>
+    {% else %}
+      <button class="favorite-button" data-action="toLogin">
+        {% render 'icon' with 'v3-unfavorited' %}
+        {% render 'icon' with 'v3-favorited' %}
+        <span class="hidden-phone">Add to List</span>
+      </button>
+    {% endif %}
+  </div>
+  <div class="product-item__image-wrapper {% if settings.show_secondary_image and product.media.size > 1 and hide_secondary_image != true %}product-item__image-wrapper--multiple{% endif %}">
+    <a
+      href="{{ product.url }}"
+      class="product-item__aspect-ratio aspect-ratio {% if settings.product_image_size != 'natural' %}aspect-ratio--{{ settings.product_image_size }}{% endif %}"
+      style="padding-bottom: {{ 100.0 | divided_by: product.featured_image.aspect_ratio }}%; --aspect-ratio: {{ product.featured_image.aspect_ratio }}"
+    >
+      {% if product.metafields.custom.feature_tag.value %}
+        <div class="cus-label">
+          <span>{{ product.metafields.custom.feature_tag.value }}</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            fill="none"
+            version="1.1"
+            width="45.5"
+            height="45"
+            viewBox="0 0 45.5 45"
+          >
+            <defs><filter id="master_svg0_56_36451" filterUnits="objectBoundingBox" color-interpolation-filters="sRGB" x="-4" y="-3" width="44" height="47"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/><feOffset dy="1" dx="0"/><feGaussianBlur stdDeviation="1"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3199999928474426 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter></defs><g><g transform="matrix(0,1,-1,0,8.5,-4.5)"><path d="M6.5,2L16.5,8.5L16.5,2L6.5,2Z" fill="#990000" fill-opacity="1"/></g><g filter="url(#master_svg0_56_36451)"><path d="M6.5,32.8638L24.5,41L42.5,32.8638L42.5,2L6.5,2L6.5,32.8638Z" fill="#DF1616" fill-opacity="1"/></g></g>
+          </svg>
+        </div>
+      {% endif %}
+      <img
+        width="auto"
+        height="auto"
+        class="product-item__primary-image"
+        loading="lazy"
+        data-media-id="{{ product.featured_image.id | escape }}"
+        sizes="{{ sizes_attribute }}"
+        {% render 'image-attributes',
+          image: product.featured_image,
+          sizes: '200,300,400,500,600,700,800,900,1000,1100,1200'
+        %}
+      >
+      {% comment %}
+        {%- if settings.product_color_display == 'swatch' -%}
+          {%- assign featured_image = product.variants | map: 'featured_image' -%}
+  
+          {%- for media in featured_image -%}
+            {%- unless media == product.featured_image -%}
+              <img class="product-item__primary-image" hidden data-media-id="{{ media.id | escape }}" loading="lazy" sizes="{{ sizes_attribute }}" {% render 'image-attributes', image: media, sizes: '200,300,400,500,600,700,800,900,1000,1100,1200' %}>
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {% endcomment %}
+  
+      {%- if settings.show_secondary_image and product.media.size > 1 and hide_secondary_image != true -%}
+        {%- assign next_media = product.media[product.featured_image.position] | default: product.media[1] -%}
+        <img
+          width="auto"
+          height="auto"
+          class="product-item__secondary-image"
+          loading="lazy"
+          sizes="{{ sizes_attribute }}"
+          {% render 'image-attributes', image: next_media, sizes: '200,300,400,500,600,700,800,900,1000,1100,1200' %}
+        >
+      {%- endif -%}
+    </a>
+    <div>
+      <span class="product-item-meta__vendor">
+        {%- if product.metafields.product.brand.value != blank
+          and product.metafields.product.brand.value != 'null'
+          and product.metafields.product.brand.value != '-'
+        -%}
+          {{ product.metafields.product.brand }}
+        {% endif %}
+      </span>
+  
+      <a href="{{ product.url }}" title="{{ product.title }}" class="product-item-meta__title my-14 ellipsis2">
+        {{- product.title -}}
+      </a>
+    </div>
+  </div>
+  
+  <div class="product-item__info {% if show_cta %}product-item__info--with-button{% endif %} {% if reduced_font_size %}text--small{% endif %}">
+    <div class="product-item-meta">
+      <div class="product-item-meta__price-list-container">
+        {% if product.compare_at_price > product.price %}
+          {% assign price = product.price | money_without_currency | replace: ',', '' | times: 1 %}
+          {% assign compare_at_price = product.compare_at_price
+            | money_without_currency
+            | replace: ',', ''
+            | times: 1
+          %}
+          {% assign discount_difference = compare_at_price | minus: price %}
+          {% assign discount_percentage = discount_difference | divided_by: compare_at_price | times: 100 | ceil %}
+        {% endif %}
+        <div class="price-list price-list--centered">
+          {% if product.price < product.compare_at_price -%}
+            <span class="price">
+              <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
+              {{- product.price | money -}}
+            </span>
+            <span class="compare-price">
+              <s>{{ product.compare_at_price | money }}</s>
+              <span>{{ discount_percentage }}%OFF</span>
+            </span>
+          {%- else -%}
+            <span class="price">
+              <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
+              {{- product.price | money -}}
+            </span>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  
+    {%- capture form_id -%}product_form_{{ section.id }}_{{ block.id }}_{{ product.id }}_{% increment product_form_index %}{%- endcapture -%}
+    {%- form 'product', product, is: 'product-form', id: form_id, class: 'product-item__quick-form' -%}
+      <input
+        type="hidden"
+        name="quantity"
+        value="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+      >
+      <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+      <input type="hidden" disabled name="sku" value="{{ product.selected_or_first_available_variant.sku }}">
+      <button
+        is="loader-button"
+        type="submit"
+        class="button {{ template.name }} {% if template.name != 'index' %}yellow{% endif %} button--outline button--text button--full {% if section.settings.desktop_products_per_row >= 5 %}button--small{% endif %}"
+      >
+        {{ 'product.form.add_to_cart' | t }}
+        {% render 'icon' with 'product-item-cart' %}
+      </button>
+    {%- endform -%}
+  </div>
+  </product-item>
+</div>

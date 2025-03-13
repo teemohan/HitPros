@@ -1,0 +1,10 @@
+.header-bottom-wrapper {
+  background-color: #0A2B6F;
+}
+
+.header-bottom {
+  display: flex;
+  gap: 14px;
+  height: 50px;
+  align-items: center;
+}

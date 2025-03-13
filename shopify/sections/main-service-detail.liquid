@@ -1,0 +1,226 @@
+<style>
+  .three-line-ellipsis {
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* 超出几行省略 */
+    overflow: hidden;
+  }
+  .service-detail {
+    padding-top: 24px;
+    padding-bottom: 32px;
+    font-size: 14px;
+  }
+  .service-detail .skeleton-wrapper {
+    margin-top: 16px;
+    padding: 16px;
+    background: #fff;
+  }
+  .service-detail .back {
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--my-blue);
+    margin-bottom: 24px;
+  }
+  .service-detail .service-main {
+    background-color: #fff;
+  }
+  .service-detail .service-main header {
+    padding: 16px 32px;
+    border-bottom: 1px solid var(--my-border);
+    font-size: 14px;
+    color: var(--my-grey);
+    display: flex;
+    gap: 32px;
+  }
+  .service-detail .service-main header div {
+    display: flex;
+    gap: 8px;
+  }
+  .service-detail .service-main header div span {
+    color: var(--my-black);
+  }
+  .service-detail .service-main main {
+    padding: 16px 32px;
+  }
+  .service-detail .service-main main .main {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+  .service-detail .service-main main .main .row {
+    display: grid;
+    -webkit-display: grid;
+    grid-template-columns: 174px 252px 1fr;
+  }
+  .service-detail .service-main main .main .col span {
+    font-size: 14px;
+    text-transform: capitalize;
+    color: var(--my-grey);
+  }
+  .service-detail .service-main main .main .col p {
+    margin-top: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 120%;
+    color: var(--my-black);
+  }
+  .service-detail .service-main main .main .row:nth-child(3) .col:nth-child(2) {
+    grid-column: span 2;
+  }
+
+  .service-detail span.status-0 {
+    color: var(--my-grey) !important;
+  }
+  .service-detail span.status-1 {
+    color: var(--my-green) !important;
+  }
+  .service-detail span.status-2 {
+    color: #ce1314 !important;
+  }
+  .service-detail span.status-3 {
+    color: var(--my-grey) !important;
+  }
+  .service-detail .detail {
+    overflow-wrap: break-word;
+  }
+  @media screen and (max-width: 740px) {
+    .service-detail .back {
+      margin-bottom: 16px;
+    }
+    .service-detail .service-main header {
+      padding: 24px 16px;
+      flex-direction: column;
+      gap: 16px;
+      font-size: 12px;
+    }
+    .service-detail .service-main main {
+      padding: 32px 16px;
+    }
+    .service-detail .service-main main .main .col span,
+    .service-detail .service-main main .main .col p {
+      font-size: 12px;
+    }
+    .service-detail .service-main main .main .row {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .service-detail .service-main main .main {
+      gap: 16px;
+    }
+  }
+</style>
+
+<section id="service-detail" class="service-detail container">
+  <h3 class="back">
+    <a href="/account?slug=account-service">&lt;&nbsp;Back</a>
+  </h3>
+  <div class="skeleton-wrapper" v-if="loading">
+    <el-skeleton :rows="6" :animated="true" />
+  </div>
+  <div v-else class="service-main">
+    <header>
+      <div>request number: <span>${ detail.id }</span></div>
+      <div>Date: <span>${ detail.createdAt }</span></div>
+      <div>State: <span :class="" `status-${detail.status}`>${ statusMap[detail.status] } </span></div>
+    </header>
+    <main>
+      <div class="main">
+        <div class="row">
+          <div class="col">
+            <span>name</span>
+            <p>${ detail.name }</p>
+          </div>
+          <div class="col">
+            <span>Email</span>
+            <p>${ detail.email }</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <span>Phone</span>
+            <p>${ detail.phone }</p>
+          </div>
+          <div class="col">
+            <span>Order Numbers</span>
+            <p>${ detail.orderNumber }</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <span>category</span>
+            <p>${ categoryMap[detail.category] }</p>
+          </div>
+          <div class="col">
+            <span>Details</span>
+            <p class="detail">${ detail.details }</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</section>
+<script>
+  (() => {
+    // 获取当前页面的 URL 参数
+    const searchParams = new URLSearchParams(window.location.search);
+    const idFromURL = searchParams.get('id');
+
+    new Vue({
+      el: '#service-detail',
+      delimiters: ['${', '}'],
+      data() {
+        return {
+          loading: true,
+          categoryMap: {
+            0: 'Order Modification',
+            1: 'Refund',
+            2: 'Return and Refund',
+          },
+          statusMap: {
+            0: 'Pending',
+            1: 'After-sales acceptance',
+            2: 'After-sale rejection',
+            3: 'After-sale cancel',
+          },
+          queryParam: {
+            email: '{{ customer.email }}',
+            id: idFromURL,
+          },
+          detail: {},
+        };
+      },
+      created() {
+        this.initDetail();
+      },
+      methods: {
+        initDetail() {
+          fetch(
+            `https://app.northskysupply.com/web/after/sales/details?email=${this.queryParam.email}&id=${this.queryParam.id}`,
+            {
+              method: 'GET',
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              this.detail = data.data;
+              this.loading = false;
+            });
+        },
+      },
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "service detail",
+  "presets": [
+    {
+      "name": "service detail"
+    }
+  ]
+}
+{% endschema %}

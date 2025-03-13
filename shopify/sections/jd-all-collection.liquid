@@ -1,0 +1,107 @@
+<div class="{{ section.id }} container categories">
+  <div class="product-categories-list">
+  </div>
+</div>
+<script>
+  (() => {
+    function calculateTotalCount(data) {
+      let total = 0;
+      function traverse(node) {
+        if (node.isLeaf) {
+          total += node.count || 0; // 如果有count字段，累加
+        } else if (node.children) {
+          node.children.forEach(child => traverse(child)); // 遍历子节点
+        }
+      }
+      data.forEach(item => traverse(item)); // 遍历数组的每个顶层元素
+      return total;
+    }
+    async function getAllList() {
+      try {
+        const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
+        const resHeader = await responseHeader.json();
+        const headersData = resHeader.data;
+        const response = await fetch('https://app.northskysupply.com/web/openapi/adlink/product/collection/tree?order=1', {
+          method: 'GET', // or 'POST' depending on the endpoint
+          headers: {
+            'Content-Type': 'application/json',
+            ...headersData, // Spread the headersData object into the headers
+          },
+        });
+        const { data } = await response.json();
+        $('.all-collection-count').text(calculateTotalCount(data));
+        const categories = data.map(collection => {
+          const handle = collection.name
+            .toLowerCase()                  // Convert to lowercase
+            .replace(/[^a-z0-9\s-]/g, '')    // Remove special characters except spaces and hyphens
+            .trim()                          // Remove leading and trailing whitespace
+            .replace(/\s+/g, '-')            // Replace spaces with hyphens
+            .replace(/-+/g, '-');
+          const $categoriesItem = $(`
+            <a href="/collections/${handle}" class="product-categories-item">
+              <img loading="lazy" src="${collection?.img || ''}" alt="${collection.name}" width="auto" height="auto">
+              <span>${collection.name}</span>
+            </a>
+          `);
+          return $categoriesItem
+        });
+        $('.product-categories-list').html(categories);
+      } catch(err) {
+        console.error(err)
+      }
+    };
+    getAllList();
+  })();
+</script>
+{% schema %}
+{
+  "name": "all-collection",
+  "class": "section-padding-bottom",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "Top Product Categories"
+    },
+    {
+      "type": "text",
+      "id": "product_num",
+      "label": "Product Num"
+    },
+    {
+      "type": "text",
+      "id": "desc",
+      "label": "Desc"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "categories-item",
+      "name": "categories Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "title"
+        },
+        {
+          "type": "text",
+          "id": "num",
+          "label": "num"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "all-collection"
+    }
+  ]
+}
+{% endschema %}

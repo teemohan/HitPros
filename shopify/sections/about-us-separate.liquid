@@ -1,0 +1,49 @@
+<style>
+  .{{ section.id }} .about-separate {
+    padding: {{ section.settings.gap_top }}px 0 {{ section.settings.gap_bottom }}px 0;
+  }
+  .about-separate__line {
+    width: 100%;
+    height: 1px;
+    background-color: #0a2b6f;
+  }
+  @media screen and (max-width: 740px) {
+    .about-separate {
+      display: none;
+    }
+  }
+</style>
+
+<section class="{{ section.id }}">
+  <div class="about-separate">
+    <div class="container">
+      <div class="about-separate__line"></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "about-separate",
+  "settings": [
+    {
+      "type": "number",
+      "id": "gap_top",
+      "label": "Gap Top",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "gap_bottom",
+      "label": "Gap Bottom",
+      "default": 0
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "about-separate"
+    }
+  ]
+}
+{% endschema %}

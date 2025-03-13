@@ -1,0 +1,136 @@
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+
+{%- assign use_recommendations = true -%}
+{%- if section.settings.products.count > 0 -%}
+  {%- assign use_recommendations = false -%}
+{%- endif -%}
+
+<div
+  class="product-recommendations {{ section.id }}"
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{section.settings.recommendations_count}}"
+>
+  <div class="container">
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      {% render 'index-cus-header', header_title: section.settings.title %}
+      <div class="IndexBestswiper">
+        <div class="swiper-button-prev hidden-pocket">
+          {% render 'icon' with 'swiper-arrow-prev' %}
+        </div>
+        <div class="swiper {{ section.id }}-IndexBestswiper">
+          <div class="swiper-wrapper">
+            {%- if use_recommendations -%}
+              {%- for product in recommendations.products -%}
+                <div class="swiper-slide">
+                  {%- render 'index-product-item', product: product -%}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              {%- for product in section.settings.products -%}
+                <div class="swiper-slide">
+                  {%- render 'index-product-item', product: product -%}
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        <div class="swiper-button-next hidden-pocket">
+          {% render 'icon' with 'swiper-arrow-next' %}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (() => {
+    const handleIntersection = (entries, observer) => {
+      if (!entries[0].isIntersecting) return;
+      observer.unobserve(productRecommendationsSection);
+      const url = productRecommendationsSection.dataset.url;
+      fetch(url)
+        .then((response) => response.text())
+        .then((text) => {
+          const html = document.createElement('div');
+          html.innerHTML = text;
+          const recommendations = html.querySelector('.product-recommendations');
+
+          if (recommendations && recommendations.innerHTML.trim().length) {
+            productRecommendationsSection.innerHTML = recommendations.innerHTML;
+            var alsolikeSwiper = new Swiper(`.{{ section.id }}-IndexBestswiper`, {
+              observer: true,
+              observeParents: true,
+              breakpoints: {
+                0: {
+                  spaceBetween: 12,
+                  slidesPerView: 2,
+                },
+                740: {
+                  spaceBetween: 12,
+                  slidesPerView: 2,
+                },
+                1200: {
+                  spaceBetween: 12,
+                  slidesPerView: 4,
+                },
+              },
+              pagination: {
+                el: '.{{ section.id }} .swiper-pagination',
+                clickable: true,
+              },
+              navigation: {
+                nextEl: `.{{ section.id }} .swiper-button-next`,
+                prevEl: `.{{ section.id }} .swiper-button-prev`,
+              },
+            });
+          }
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    };
+    const productRecommendationsSection = document.querySelector('.product-recommendations');
+    const observer = new IntersectionObserver(handleIntersection, { rootMargin: '0px 0px 200px 0px' });
+    observer.observe(productRecommendationsSection);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product recommendation",
+  "class": "shopify-section--product-recommendation section-gap section-padding swiper-list-wrapper",
+  "templates": ["product"],
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Dynamic recommendations change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products). You can manually select products by adding content."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Recommended for you"
+    },
+    {
+      "type": "range",
+      "id": "recommendations_count",
+      "min": 7,
+      "max": 12,
+      "label": "Recommendations count",
+      "default": 7
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Manual products",
+      "info": "When selected, automatic recommendations do not show.",
+      "limit": 10
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product recommendation"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,86 @@
+<style>
+  @media screen and (max-width: 740px) {
+    .{{ section.id }} .swiper {
+      overflow: unset;
+    }
+  }
+</style>
+<div class="{{ section.id }}">
+  <div class="container">
+    {% render 'index-cus-header', header_title: section.settings.title, header_url: section.settings.btn_link %}
+    <div class="IndexBestswiper">
+      <div class="swiper-button-prev hidden-pocket">
+        {% render 'icon' with 'swiper-arrow-prev' %}
+      </div>
+      <div class="swiper {{ section.id }}-IndexBestswiper">
+        <div class="swiper-wrapper">
+          {% for article in section.settings.blog.articles %}
+            <div class="swiper-slide">
+              {% render 'article-common-item', article: article %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <div class="swiper-button-next hidden-pocket">
+        {% render 'icon' with 'swiper-arrow-next' %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    new Swiper(`.{{ section.id }}-IndexBestswiper`, {
+      observer: true,
+      observeParents: true,
+      breakpoints: {
+        0: {
+          spaceBetween: 8,
+          slidesPerView: 1,
+        },
+        740: {
+          spaceBetween: 12,
+          slidesPerView: 2,
+        },
+        1200: {
+          spaceBetween: 24,
+          slidesPerView: 2.6,
+        },
+      },
+      pagination: {
+        el: '.{{ section.id }} .swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: `.{{ section.id }} .swiper-button-next`,
+        prevEl: `.{{ section.id }} .swiper-button-prev`,
+      },
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "h-blogs",
+  "class": "section-padding swiper-list-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "Blogs"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "blog"
+    }
+  ],
+  "presets": [
+    {
+      "name": "h-blogs"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,352 @@
+{{ 'el-reset.css' | asset_url | stylesheet_tag }}
+{{ 'customer-login.css' | asset_url | stylesheet_tag }}
+<div class="hidden-mask-wrapper"></div>
+<section id="login-wrapper" class="el-reset-from">
+  <div class="form-container">
+    <div class="form-box" v-show="!show_recover">
+      <h3 class="block-title">Sign In</h3>
+      <div class="block-text" >
+        Don’t have an account?<a id="createAccount" class="block-url" href="{{ routes.account_register_url }}">Create an Account</a>
+      </div>
+      <el-form
+        autocomplete="off"
+        label-width="0"
+        :status-icon="false"
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        class="form-wrapper"
+      >
+        <el-row>
+          <el-form-item prop="email">
+            <el-input id="login_email" v-model="ruleForm.email" v-focus-input="ruleForm.email"></el-input>
+            <label for="login_email" class="el-label">Email*</label>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item class="line-input" prop="password">
+            <el-input
+              autocomplete="new-password"
+              id="login_pass"
+              v-model="ruleForm.password"
+              v-focus-input="ruleForm.password"
+              :type="!showPass? 'password': 'text'"
+            ></el-input>
+            <label for="login_pass" class="el-label">Password*</label>
+            <span class="text-show" @click="showPass = !showPass">
+              <template v-if="!showPass">Show</template>
+              <template v-else>Hide</template>
+            </span>
+          </el-form-item>
+        </el-row>
+        <div class="el-form-btn">
+          <el-button :loading="loading" id="login-btn" type="primary" @click="submitForm('ruleForm')">Sign In</el-button>
+        </div>
+        <div class="el-form-link">
+          <span
+            id="forgetPwd"
+            @click="show_recover = true"
+            >Forgot Password</span
+          >
+        </div>
+      </el-form>
+    </div>
+
+    <div class="form-box recover-form-box" v-show="show_recover">
+      <h3 class="block-title">Reset Password</h3>
+      <template v-if="!sendEmail">
+        <el-form
+          autocomplete="off"
+          label-width="0"
+          :status-icon="false"
+          :model="recoverRuleForm"
+          :rules="recoverRules"
+          ref="recoverRuleForm"
+          class="form-wrapper"
+          action="/account/recover"
+          method="post"
+          name="recover"
+        >
+          <input type="hidden" name="form_type" value="recover_customer_password"
+          ><input type="hidden" name="utf8" value="✓">
+          <el-row>
+            <el-form-item prop="email">
+              <el-input
+                type="email"
+                name="email"
+                v-model="recoverRuleForm.email"
+                v-focus-input="recoverRuleForm.email"
+              ></el-input>
+              <label for="recover_email" class="el-label">Email*</label>
+            </el-form-item>
+          </el-row>
+          <div class="el-form-btn">
+            <el-button :loading="recoverLoading" id="resetpwd" type="primary" @click="submitRecoverForm('recoverRuleForm')"
+              >Send Email</el-button
+            >
+          </div>
+          <div class="el-form-link">
+            <span>Go back to</span>
+            <span class="text-underline" @click="backToSignIn"> Sign In</span>
+          </div>
+        </el-form>
+      </template>
+      <template v-else>
+        <div class="emial-container">
+          {% render 'icon' with 'v3-email' %}
+          <span>${ recoverRuleForm.email }</span>
+        </div>
+        <div class="block-text-wrapper">
+          <div class="block-text">
+            An e-mail has been sent to your address with instructions to recover your password.
+          </div>
+        </div>
+        <div class="el-form-btn">
+          <button @click="backToSignIn" class="el-button el-button--primary">Go back to Sign In</button>
+        </div>
+      </template>
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    // 轮询执行的函数，定期检查 returnUrl 是否符合条件
+    function startPolling() {
+      setInterval(() => {
+        const params = new URLSearchParams(window.location.search);
+        const returnUrl = params.get('return_url');
+        if (returnUrl === '/account' || returnUrl === '/account?slug=account-info') {
+          if('{{ customer.id }}') {
+            $('body').addClass('no-scroll');
+            $('.hidden-mask-wrapper').addClass('show');
+            window.location.href = '/account?slug=account-info';
+          }
+        }
+      }, 600);
+    }
+    startPolling();
+    Vue.directive('focus-input', {
+      inserted(el, binding, vnode) {
+        const inputEl = el.querySelector('input');
+        if (!inputEl) return;
+        const $label = $(inputEl).closest('.el-form-item__content').find('label');
+        
+        const toggleLabelFocus = () => {
+          // Only remove the focus class if input is not focused and empty
+          if ($(inputEl).val().length === 0 && !inputEl.matches(':focus')) {
+            $label.removeClass('label--focus');
+          }
+        };
+
+        inputEl.addEventListener('focus', () => {
+          $label.addClass('label--focus');
+        });
+
+        inputEl.addEventListener('blur', () => {
+          setTimeout(toggleLabelFocus, 100); // Delay to check focus state
+        });
+
+        if (binding.value) {
+          $label.addClass('label--focus');
+        } else {
+          $label.removeClass('label--focus');
+        }
+      },
+      update(el, binding, vnode) {
+        const inputEl = el.querySelector('input');
+        if (!inputEl) return;
+        const $label = $(inputEl).closest('.el-form-item__content').find('label');
+        if (binding.value) {
+          $label.addClass('label--focus');
+        } else if (!inputEl.matches(':focus')) {
+          $label.removeClass('label--focus');
+        }
+      },
+    });
+    const returnUrl = Cookies.get('pagePath');
+    new Vue({
+      el: '#login-wrapper',
+      delimiters: ['${', '}'],
+      data() {
+        let returnTo = document.referrer;
+        if(returnTo.includes('/account/register')) {
+          returnTo = `${window.location.origin}/account?slug=account-info`;
+        }
+        const checkEmail = (rule, value, callback) => {
+          // 邮箱格式的正则表达式
+          const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+          if (value == '') {
+            callback(new Error('Email is required.'));
+          } else if (!emailPattern.test(value)) {
+            callback(new Error('Please enter a valid email address.'));
+          } else {
+            callback(); // 验证通过
+          }
+        };
+        const checkPass = (rule, value, callback) => {
+          if (value === '') {
+            callback(new Error('Password is required.'));
+          } else {
+            callback();
+          }
+        };
+        return {
+          ruleForm: {
+            email: '',
+            password: '',
+            returnTo
+          },
+          rules: {
+            email: [{ validator: checkEmail, trigger: 'blur' }],
+            password: [{ validator: checkPass, trigger: 'blur' }],
+          },
+          recoverRuleForm: {
+            email: '',
+          },
+          recoverRules: {
+            email: [{ validator: checkEmail, trigger: 'blur' }],
+          },
+          loading: false,
+          recoverLoading: false,
+          sendEmail: false,
+          show_recover: false,
+          showPass: false,
+        };
+      },
+      mounted() {
+        if (window.location.hash === '#recover') {
+          // 恢复密码标记
+          this.show_recover = true;
+        }
+        $('#login-wrapper').show(); // 等vue挂在再显示dom
+        if (Cookies.get('email_send') == 'true') {
+          // 如果发送了邮箱恢复密码则下次挂在的时候显示
+          this.show_recover = this.sendEmail = true;
+          Cookies.remove('email_send');
+        }
+        if ('{{ customer.email }}') {
+          // 再次查找登录的邮箱
+          this.recoverRuleForm.email = '{{ customer.email }}';
+        } else if (Cookies.get('recover_customer_email')) {
+          // 下次进来恢复密码的时候，优先手动发送的邮箱
+          this.recoverRuleForm.email = Cookies.get('recover_customer_email');
+        }
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') {
+            if (this.show_recover) {
+              this.submitRecoverForm('recoverRuleForm');
+            } else {
+              this.submitForm('ruleForm');
+            }
+          }
+        });
+      },
+      methods: {
+        backToSignIn() {
+          this.show_recover = this.sendEmail = false;
+        },
+        async submit() {
+          this.loading = true;
+          try {
+            const res = await fetch('https://app.northskysupply.com/web/login', {
+              method: 'POST',
+              body: JSON.stringify(this.ruleForm),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const data = await res.json();
+            if (data.code == 200) {
+              const ip = Cookies.get('ip');
+              if(ip) {
+                //Sign-in Completed
+                dataLayer.push({
+                  'event': 'custom_sign_in_completed',
+                  'zip': data.data.userInfo.zip,   
+                  'first_name':data.data.userInfo.firstname, 
+                  'last_name': data.data.userInfo.lastname,
+                  'username': data.data.userInfo.username,
+                  'email': data.data.userInfo.email,
+                  'industry': data.data.userInfo.industry,
+                  'ip': ip
+                });
+              }
+              const cartRes = await fetch(`https://app.northskysupply.com/web/shopping/cart?email=${this.ruleForm.email}`);
+              const cartData = await cartRes.json();
+              if(cartData.data.length > 0) {
+                Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 });  // 登录的时候查一下，customer对应的cart cookie
+              }
+              const email = this.ruleForm.email
+              window.location.href = data.data.redirectUrl;
+              
+            } else {
+              this.$message({
+                showClose: true,
+                message: data.msg,
+                type: 'warning',
+              });
+            }
+          } catch (error) {
+            this.$message({
+              showClose: true,
+              message: error,
+              type: 'error',
+            });
+          } finally {
+            this.loading = false;
+          }
+        },
+        submitForm(formName) {
+          // 校验登录表单
+          this.$refs[formName].validate((valid) => {
+            if (valid) this.submit();
+          });
+        },
+        submitRecoverForm(formName) {
+          // 校验恢复邮箱表单
+          this.$refs[formName].validate(async (valid) => {
+            if (valid) {
+              this.recoverLoading = true;
+              try {
+                const response = await fetch(
+                  `https://app.northskysupply.com/web/check/register?email=${this.recoverRuleForm.email}`
+                );
+                const res = await response.json();
+                if (!res.data.registered) {
+                  this.$message({
+                    showClose: true,
+                    message: 'This email is not registered',
+                    type: 'warning',
+                  });
+                } else {
+                  Cookies.set('email_send', 'true');
+                  Cookies.set('recover_customer_email', this.recoverRuleForm.email);
+                  this.$refs.recoverRuleForm.$el.submit();
+                }
+              } catch (error) {
+                console.log(error);
+              } finally {
+                this.recoverLoading = false;
+              }
+            }
+          });
+        },
+      },
+    });
+  })();
+</script>
+
+<!-- <script>
+  $('#forgetPwd').click(function(){
+    
+  })
+</script> -->
+
+{% schema %}
+{
+  "name": "Customer login",
+  "class": "shopify-section--main-customers-login"
+}
+{% endschema %}

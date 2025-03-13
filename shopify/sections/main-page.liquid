@@ -1,0 +1,190 @@
+<style>
+  @media screen and (min-width: 741px) {
+    .page-link {
+      font-weight: 700;
+      color: var(--my-blue)!important;
+    }
+    .page-link1 {
+      font-weight: 400;
+      color: var(--my-black)!important;
+    }
+    .page-header__text-wrapper {
+      text-align: left;
+      max-width: unset;
+      margin-top: 68px !important;
+      margin-bottom: 0;
+    }
+    .page-header__text-wrapper .heading {
+      margin-bottom: 10px !important;
+      text-transform: capitalize;
+    }   
+    .page-content {
+      max-width: unset !important;
+      line-height: 1.3 !important;
+      color: var(--my-grey);
+    }
+    
+    .page_conent .heading{
+      margin: 0 80px 32px !important;
+      padding-bottom: 32px;
+    }
+    {% if page.content != blank %}
+      .page_conent .page-content{
+        padding: 0 80px;
+      }
+      .page_conent{
+        padding: 80px 0;
+        margin-bottom: 32px;
+      }
+    {%- endif -%}
+  }
+  
+  @media screen and (max-width: 740px) {
+    .page-header__text-wrapper {
+      text-align: left;
+      max-width: unset;
+      margin-top: 46px;
+      margin-bottom: 0;
+    }
+    .page-header__text-wrapper .heading {
+      font-size: 20px !important;
+      margin-bottom: 15px !important;
+      text-transform: capitalize;
+    }   
+    .page-content {
+      max-width: unset !important;
+      font-size: 14px !important;
+      line-height: 1.3 !important;
+      color: var(--my-grey);
+    }
+    .page_conent .heading{
+      font-size: 28px !important;
+      padding: 16px !important;
+      margin-bottom: 16px;
+    }
+    {% if page.content != blank %}
+      .page_conent .page-content{
+        padding: 0 16px;
+      }
+      .page_conent{
+        padding-bottom: 16px;
+      }
+    {%- endif -%}
+    
+  }
+  .page_conent .page-content strong{
+    font-weight: 800;
+  }
+  .page_conent{
+    background: #fff;
+    margin-bottom: 32px;
+  }
+  .page_conent .heading{
+    font-weight: 900;
+    color: var(--my-blue);
+    border-bottom: 1px solid var(--my-border);
+  }
+</style>
+
+<section>
+  <div class="container">
+    <div class="page-header">
+      <nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="breadcrumb breadcrumb--floating text--xsmall">
+        <ol class="breadcrumb__list" role="list">
+          <li class="breadcrumb__item">
+            <a class="breadcrumb__link" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+          </li>
+
+          {% if section.settings.secondary-directory != blank %}
+            <li class="breadcrumb__item">
+              <a class="breadcrumb__link" href="{{ section.settings.secondary-directory-link }}" >{{ section.settings.secondary-directory }}</a>
+            </li>
+            <li class="breadcrumb__item">
+              <span class="breadcrumb__link" aria-current="page">{{ section.settings.third-directory }}</span>
+            </li>
+            {% else %}
+            <li class="breadcrumb__item">
+              <span class="breadcrumb__link" aria-current="page">{{ page.title }}</span>
+            </li>
+          {% endif %}
+        </ol>
+      </nav>
+
+      <div class=" page-header__text-wrapper text-container">
+        
+
+        {%- if template.suffix contains 'contact' or template.suffix contains 'faq' -%}
+          <div class="page_conent">
+            {%- if section.settings.show_title -%}
+              <h1 class="heading h2 my-48">{{ page.title }}</h1>
+            {%- endif -%}
+            {{- page.content -}}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- unless template.suffix contains 'contact' or template.suffix contains 'faq' -%}
+      <div class="page_conent page-header__text-wrapper">
+        {%- if section.settings.show_title -%}
+          <h1 class="heading h2 my-48">{{ page.title }}</h1>
+        {%- endif -%}
+        {% if page.content != blank %}
+        <div class="page-content page-content--{{ section.settings.page_width }} rte my-16">
+          {{- page.content -}}
+        </div>
+        {% endif %}
+      </div>
+    {%- endunless -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page",
+  "class": "shopify-section--main-page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "page_width",
+      "label": "Page width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "text",
+      "id": "secondary-directory",
+      "label": "Secondary directory"
+    },
+    {
+      "type": "url",
+      "id": "secondary-directory-link",
+      "label": "Secondary directory link"
+    },
+    {
+      "type": "text",
+      "id": "third-directory",
+      "label": "Third directory"
+    }
+  ]
+}
+{% endschema %}

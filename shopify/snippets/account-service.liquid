@@ -1,0 +1,664 @@
+{{ 'el-reset.css' | asset_url | stylesheet_tag }}
+{{ 'theme-v3.css' | asset_url | stylesheet_tag }}
+<style>
+  .account-service-filter {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 60px;
+  }
+  .service-input {
+    flex: 1;
+    min-width: 160px;
+    max-width: 50%;
+  }
+  .account-service-filter > span {
+    font-size: 14px;
+    color: #1a1a1a;
+    line-height: 21px;
+    margin-right: 20px;
+  }
+  .myf,
+  .myf .el-date-editor.el-input,
+  .account-service-filter-item .el-select {
+    flex: 1;
+  }
+  .account-service-filter-item {
+    flex: 1;
+    min-width: 200px;
+  }
+  .account-service-filter .select-date .el-input__prefix {
+    display: none;
+  }
+  .account-service-filter-separator {
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+  }
+  .account-service-list {
+    margin-top: 30px;
+  }
+  .account-service-item {
+    border-radius: 2px;
+    transition: all 0.3s;
+    border: 1px solid #e6e6e6;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+  }
+  .account-service-item:hover {
+    box-shadow: 0 2px 12px #0000001a;
+  }
+  .account-service-item-header {
+    padding: 0 16px;
+    height: 36px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    justify-content: space-between;
+    background: #f4f8fc;
+  }
+  .account-service-item-header span {
+    font-size: 12px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .account-service-item-header div {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .account-service-item-header span:nth-child(1) {
+    color: gray;
+  }
+  .account-service-item-body {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+  }
+
+  .account-service-wrapper .el-pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  .account-service-wrapper .el-pagination .el-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .account-service-item-body-title {
+    font-size: 12px;
+    color: #999999;
+  }
+  .account-service-item-body-content {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .account-service-item-body-content a {
+    color: #e0a609;
+    text-decoration: underline;
+  }
+  .related-order {
+    cursor: pointer;
+  }
+  .account-service-item-body-content a.related-order {
+    color: #000000;
+    text-decoration: underline;
+  }
+  .copy-icon {
+    cursor: pointer;
+  }
+  .account-service-wrapper__empty {
+    margin-top: 30px;
+  }
+  .account-service-filter-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+  }
+  .account-service-filter-item > span:first-child {
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .account-service-filter-item .clear-icon {
+    position: absolute;
+    right: 26px;
+    cursor: pointer;
+  }
+  .myf {
+    display: flex;
+  }
+  @media screen and (max-width: 1400px) {
+    .account-service-filter {
+      gap: 20px;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    .account-service-filter > span {
+      font-size: 12px;
+      flex-shrink: 0;
+      margin-right: 10px;
+    }
+    .account-service-filter-separator {
+      margin: 0 5px;
+      font-size: 10px;
+    }
+    .account-service-filter input {
+      padding: 0 5px !important;
+      font-size: 10px;
+      height: 25px;
+    }
+    .account-service-filter i {
+      display: flex;
+      align-items: center;
+    }
+    .account-service-filter .select-date {
+      width: fit-content;
+    }
+    .account-service-filter .select-date input {
+      width: 80px;
+    }
+    .account-service-item-header {
+      flex-direction: column;
+      gap: 0;
+      height: fit-content;
+      padding: 6px 16px;
+    }
+    .account-service-item-header span {
+      font-size: 14px;
+    }
+    .account-service-item-header div {
+      width: 100%;
+    }
+    .account-service-item-header .base-left {
+      margin-left: auto;
+    }
+    .account-service-item-body {
+      flex-direction: column;
+    }
+    .account-service-item-body > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .account-service-item-body-content {
+      font-size: 12px;
+    }
+    .account-service-filter-item .el-input__suffix {
+      display: none;
+    }
+    .account-service-filter-item .clear-icon {
+      right: 20px;
+    }
+    .account-service-item-body-content__id {
+      text-decoration: underline;
+    }
+    .account-service-item-body-content__status {
+      color: #e0a609;
+    }
+
+    .account-service-filter{
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+</style>
+{% raw %}
+  <template id="accountService">
+    <div class="account-main-container account-service">
+      <header class="account-item-header-wrapper">
+        <div class="account-item-header">
+          <h1>Customer Service</h1>
+        </div>
+        <span class="account-item-num">{{ total }} {{ total == 0 || total == 1 ? 'request' : 'requests' }}</span>
+      </header>
+      <div class="account-service-wrapper" >
+        <div class="account-service-filter">
+          <div class="account-service-filter-item">
+            <span>Filter by:</span>
+            <el-select v-model="requestType" placeholder="Request Type" class="select-option" @change="handleChange">
+              <el-option label="Refund Only" value="Refund Only"></el-option>
+              <el-option label="Refund & Return" value="Refund & Return"></el-option>
+            </el-select>
+            <span class="clear-icon" @click="clearFilter" v-if="requestType"><svg t="1731666033595" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4304" width="16" height="16"><path d="M801.856 734.016 579.904 512l222.016-222.016c18.816-18.816 18.88-49.152 0.064-67.968-18.752-18.752-49.216-18.752-67.904 0L512 444.032 289.92 222.016c-18.688-18.752-49.088-18.752-67.904 0C203.328 240.768 203.328 271.232 222.144 290.048L444.096 512l-222.016 221.952c-18.816 18.752-18.816 49.152-0.064 67.968C231.424 811.392 243.84 816 256 816s24.576-4.608 33.92-14.016L512 579.968l222.08 222.016c9.408 9.344 21.696 14.016 33.92 14.016 12.288 0 24.576-4.608 33.92-14.016C820.672 783.104 820.736 752.768 801.856 734.016z" p-id="4305" fill="#cccccc"></path></svg></span>
+          </div>
+          <div class="myf">
+            <el-date-picker
+            v-model="startTime"
+            type="date"
+            placeholder="Start Time"
+            class="select-date"
+              @change="handleChange"
+          ></el-date-picker>
+          <div class="account-service-filter-separator">—</div>
+          <el-date-picker
+            v-model="endTime"
+            type="date"
+            placeholder="End Time"
+            class="select-date"
+            :picker-options="endTimePickerOptions"
+              @change="handleChange"
+          ></el-date-picker>
+          </div>
+          <el-input class="service-input" @change="handleNameInput" @clear="handleNameClear" v-model="relatedOrderId" placeholder="Order Number" clearable></el-input>
+        </div>
+        <div class="skeleton-wrapper" v-if="isFetching">
+          <el-skeleton :rows="6" :animated="true" />
+        </div>
+        <div v-else>
+          <div class="account-service-list" v-if="serviceList.length > 0">
+            <div class="account-service-item" @click="showOrderDetail(item.requestId)" v-for="(item, index) in serviceList" :key="index">
+              <div class="account-service-item-header">
+                <div>
+                  <span>Request Number:</span>
+                  <span class="order-number base-left">
+                    <a :href="`/pages/refund-details?requestId=${item.requestId}`">{{ item.requestId }}</a>
+                  </span>
+                  <span class="copy-icon" @click="copyToClipboard(item.requestId)">
+                    <svg
+                      t="1729757775593"
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="1857"
+                      width="12"
+                      height="12"
+                    >
+                      <path d="M924 862a40 40 0 0 1 0-80 20 20 0 0 0 20-20V100a20 20 0 0 0-20-20H262a20 20 0 0 0-20 20 40 40 0 0 1-80 0A100 100 0 0 1 262 0h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100z" fill="#808080" p-id="1858"></path><path d="M762 1024H100A100 100 0 0 1 0 924V262a100 100 0 0 1 100-100h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100zM100 242a20 20 0 0 0-20 20v662a20 20 0 0 0 20 20h662a20 20 0 0 0 20-20V262a20 20 0 0 0-20-20z" fill="#808080" p-id="1859"></path><path d="M431 807a40 40 0 0 1-40-40V419a40 40 0 0 1 80 0v348a40 40 0 0 1-40 40z" fill="#808080" p-id="1860"></path><path d="M605 633H257a40 40 0 0 1 0-80h348a40 40 0 0 1 0 80z" fill="#808080" p-id="1861"></path>
+                    </svg>
+                  </span>
+                </div>
+                <div>
+                  <span>Request Time:</span>
+                  <span class="base-left">{{ formatDate(+item.createTimestamp) }}</span>
+                </div>
+              </div>
+              <div class="account-service-item-body">
+                <div>
+                  <span class="account-service-item-body-title">Request Type</span>
+                  <div class="account-service-item-body-content">{{ item.refundType == '1' ? 'Refund Only' : 'Refund & Return' }}</div>
+                </div>
+                <div>
+                  <span class="account-service-item-body-title">Refund Amount</span>
+                  <div class="account-service-item-body-content">{{  getCurrencySymbol(item.currencyType) }}{{ item.refundAmount }}</div>
+                </div>
+                <div>
+                  <span class="account-service-item-body-title">Status</span>
+                  <div class="account-service-item-body-content account-service-item-body-content__status">{{ getStatusText(item.status) }}</div>
+                </div>
+                <div>
+                  <span class="account-service-item-body-title">Related Order ID</span>
+                  <div class="account-service-item-body-content account-service-item-body-content__id">
+                    <a class="related-order" href="javascript:void(0);" @click.prevent="navToOrderDetail(item.refundOrderId)">{{ item.refundOrderId }}</a>
+                    <span class="copy-icon" @click="copyToClipboard(item.refundOrderId)">
+                    <svg
+                      t="1729757775593"
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="1857"
+                      width="12"
+                      height="12"
+                    >
+                      <path d="M924 862a40 40 0 0 1 0-80 20 20 0 0 0 20-20V100a20 20 0 0 0-20-20H262a20 20 0 0 0-20 20 40 40 0 0 1-80 0A100 100 0 0 1 262 0h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100z" fill="#808080" p-id="1858"></path><path d="M762 1024H100A100 100 0 0 1 0 924V262a100 100 0 0 1 100-100h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100zM100 242a20 20 0 0 0-20 20v662a20 20 0 0 0 20 20h662a20 20 0 0 0 20-20V262a20 20 0 0 0-20-20z" fill="#808080" p-id="1859"></path><path d="M431 807a40 40 0 0 1-40-40V419a40 40 0 0 1 80 0v348a40 40 0 0 1-40 40z" fill="#808080" p-id="1860"></path><path d="M605 633H257a40 40 0 0 1 0-80h348a40 40 0 0 1 0 80z" fill="#808080" p-id="1861"></path>
+                    </svg>
+                  </span></div>
+            
+                </div>
+                <div>
+                  <span class="account-service-item-body-title">Operate</span>
+                  <div>
+                    <div v-html="getOperateBtn(item.status)" class="account-service-item-body-content" @click="handleCancel(item.requestId,item.status)"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <el-pagination
+            v-if="total > 0"
+            background
+            layout="prev, pager, next"
+            :current-page.sync="currentPage"
+            :page-size="pageSize"
+            :total="total"
+            @current-change="handlePageChange"
+          ></el-pagination>
+          <div class="account-service-wrapper__empty empty-notify" v-if="serviceList.length === 0">
+            <div>
+              No records found.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+{% endraw %}
+<script>
+  (() => {
+    window.accountService = {
+      template: '#accountService',
+      data() {
+        return {
+          isFetching: true,
+          loading: false,
+          serviceList: [], // 全量数据
+          list_loading: true,
+          requestType: '',
+          startTime: '',
+          endTime: '',
+          endTimePickerOptions: {
+            disabledDate(time) {
+              // 禁止选择超过当前日期的时间
+              return time.getTime() > Date.now();
+            },
+          },
+          currentPage: 1, // 当前页码
+          pageSize: 20, // 每页显示条目数
+          total: 0, // 总条目数
+          relatedOrderId: "",
+          currencySymbols: {
+            USD: '$', // 美元
+            EUR: '€', // 欧元
+            GBP: '£', // 英镑
+            JPY: '¥', // 日元
+            CNY: '¥', // 人民币
+            AUD: '$', // 澳大利亚元
+            CAD: '$', // 加拿大元
+            CHF: 'CHF', // 瑞士法郎
+            NZD: '$', // 新西兰元
+            INR: '₹', // 印度卢比
+            RUB: '₽', // 俄罗斯卢布
+            KRW: '₩', // 韩元
+            SGD: '$', // 新加坡元
+            HKD: '$', // 港元
+            SEK: 'kr', // 瑞典克朗
+            NOK: 'kr', // 挪威克朗
+            TRY: '₺', // 土耳其里拉
+            MXN: '$', // 墨西哥比索
+            BRL: 'R$', // 巴西雷亚尔
+            ZAR: 'R', // 南非兰特
+          },
+        };
+      },
+      created() {
+        const orderId = new URLSearchParams(new URL(window.location.href).search).get("orderId");
+        this.relatedOrderId = orderId ? orderId: "";
+        window.history.replaceState(null, null, "/account?slug=account-service");
+        let params = {
+          pageNo: this.currentPage,
+          pageSize: this.pageSize,
+          userEmail: '{{ customer.email }}',
+          relatedOrderId: this.relatedOrderId
+        };
+        this.getList(params);
+      },
+      methods: {
+        handleNameClear() {
+          this.currentPage = 1;
+          const requestTypeValue =
+            this.requestType === 'Refund Only' ? [1] : this.requestType === 'Refund & Return' ? [2] : [];
+          let params = {
+            pageNo: this.currentPage,
+            pageSize: this.pageSize,
+            userEmail: '{{ customer.email }}',
+            requestType: requestTypeValue, // 注意，不需要用数组包装
+            startTime: this.formatDateTime(this.startTime),
+            endTime: this.formatDateTime(this.endTime),
+          };
+          this.getList(params);
+        },
+        async navToOrderDetail(orderName) {
+          event.stopPropagation();
+          try {
+            const res = await fetch('https://app.northskysupply.com/web/order?orderName='+orderName, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            if (!res.ok) {
+              throw new Error(`Error: ${res.status} - ${res.statusText}`);
+            }
+            if (res.status === 200) {
+              const data = await res.json();
+              const oId = data.data.orderId.match(/\d+$/)[0];
+              window.location.href='/pages/order-details?id='+oId
+            }
+          } catch (error) {
+            console.error('Request failed', error);
+          }
+        },
+        handleNameInput() {
+          this.currentPage = 1;
+          const requestTypeValue =
+            this.requestType === 'Refund Only' ? [1] : this.requestType === 'Refund & Return' ? [2] : [];
+          let params = {
+            pageNo: this.currentPage,
+            pageSize: this.pageSize,
+            userEmail: '{{ customer.email }}',
+            relatedOrderId: this.relatedOrderId,
+            requestType: requestTypeValue, // 注意，不需要用数组包装
+            startTime: this.formatDateTime(this.startTime),
+            endTime: this.formatDateTime(this.endTime),
+          };
+          this.getList(params);
+        },
+        async getList(params) {
+          try {
+            const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
+            const resHeader = await responseHeader.json();
+            const headersData = resHeader.data;
+            const res = await fetch('https://app.northskysupply.com/web/openapi/shopify/refund/page', {
+              method: 'POST',
+              body: JSON.stringify({
+                pageNo: params.pageNo,
+                pageSize: params.pageSize,
+                userEmail: params.userEmail,
+                requestType: params.requestType,
+                startTime: params.startTime,
+                endTime: params.endTime,
+                relatedOrderId: params.relatedOrderId
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+                ...headersData
+              },
+            });
+            if (!res.ok) {
+              throw new Error(`Error: ${res.status} - ${res.statusText}`);
+            }
+
+            const data = await res.json();
+            // 设置 serviceList 数据
+            this.serviceList = data.data.list;
+            this.total = Number(data.data.total);
+
+            this.isFetching = false;
+          } catch (error) {
+            console.error('Request failed', error);
+          }
+        },
+        handlePageChange(page) {
+          this.currentPage = page;
+          const requestTypeValue =
+          this.requestType === 'Refund Only' ? [1] : this.requestType === 'Refund & Return' ? [2] : [];
+          let params = {
+            pageNo: this.currentPage,
+            pageSize: this.pageSize,
+            relatedOrderId: this.relatedOrderId,
+            userEmail: '{{ customer.email }}',
+            requestType: requestTypeValue, // 保持当前的过滤类型
+            startTime: this.formatDateTime(this.startTime),
+            endTime: this.formatDateTime(this.endTime),
+          };
+
+          this.getList(params);
+        },
+        handleChange() {
+          // 当选择框发生改变时，将当前页重置为第一页
+          this.currentPage = 1;
+          const requestTypeValue =
+            this.requestType === 'Refund Only' ? [1] : this.requestType === 'Refund & Return' ? [2] : [];
+          let params = {
+            pageNo: this.currentPage,
+            pageSize: this.pageSize,
+            userEmail: '{{ customer.email }}',
+            relatedOrderId: this.relatedOrderId,
+            requestType: requestTypeValue, // 注意，不需要用数组包装
+            startTime: this.formatDateTime(this.startTime),
+            endTime: this.formatDateTime(this.endTime),
+          };
+          this.getList(params);
+        },
+        formatDateTime(dateStr) {
+          if (!dateStr) return '';
+          // 将日期字符串转换为 Date 对象
+          const d = new Date(dateStr);
+          const year = d.getFullYear();
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const day = String(d.getDate()).padStart(2, '0');
+          return `${year}-${month}-${day}`;
+        },
+        getStatusText(status) {
+          switch (status) {
+            case 1:
+              return 'Auditing';
+            case 2:
+              return 'Pending create shipping Label';
+            case 4:
+              return 'Rejected';
+            case 3:
+              return 'Approved';
+            case 5:
+              return 'Cancelled';
+            default:
+              return 'Unknown Status';
+          }
+        },
+        getOperateBtn(status) {
+          if (status === 1) {
+           return `<a href="javascript:void(0);" >Cancel</a>`;
+          } else {
+             return '-';
+            
+          }
+        },
+        handleCancel(orderId, status) {
+          if (status === 1 || status === 2) {
+            // 阻止父元素事件冒泡
+            event.stopPropagation();
+
+            // 如果用户输入了取消原因，调用接口取消订单
+            this.cancelOrderRequest(orderId);
+          } else {
+            return false;
+          }
+        },
+        async cancelOrderRequest(orderId) {
+          try {
+            const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
+            const resHeader = await responseHeader.json();
+            const headersData = resHeader.data;
+            const res = await fetch('https://app.northskysupply.com/web/openapi/shopify/refund/cancel', {
+              method: 'POST',
+              body: JSON.stringify({
+                requestId: orderId,
+                userEmail: '{{ customer.email }}'
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+                ...headersData
+              },
+            });
+
+            if (!res.ok) {
+              throw new Error(`Error: ${res.status} - ${res.statusText}`);
+            }
+            if (res.status === 200) {
+              this.$message({
+                message: 'This request is cancelled.',
+                type: 'success',
+              });
+              const requestTypeValue =
+                this.requestType === 'Refund Only' ? [1] : this.requestType === 'Refund & Return' ? [2] : [];
+
+              // 更新列表，确保当前数据是最新的
+              let params = {
+                pageNo: this.currentPage,
+                pageSize: this.pageSize,
+                userEmail: '{{ customer.email }}',
+                requestType: requestTypeValue,
+                startTime: this.formatDateTime(this.startTime),
+                endTime: this.formatDateTime(this.endTime),
+              };
+              this.getList(params);
+            }
+
+            const data = await res.json();
+            return data;
+          } catch (error) {
+            console.error('Request failed', error);
+          }
+        },
+        getCurrencySymbol(currencyType) {
+          return this.currencySymbols[currencyType] || 'Unknown Currency';
+        },
+        showOrderDetail(requestId) {
+          window.location.href = `pages/refund-details?requestId=${requestId}`;
+        },
+        copyToClipboard(name) {
+          if (name) {
+            //阻止父元素事件冒泡
+            event.stopPropagation();
+            const el = document.createElement('textarea');
+            el.value = name;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            this.$message({
+              message: 'Copied to clipboard',
+              type: 'success',
+            });
+          }
+        },
+        formatDate(dateString) {
+          const localTime = new Date(dateString);
+          // 格式化月份（缩写并加点）
+          const monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
+          const month = monthNames[localTime.getMonth()];
+          // 格式化日期和年份
+          const day = localTime.getDate();
+          const year = localTime.getFullYear();
+          // 格式化小时（12 小时制）
+          let hours = localTime.getHours();
+          const period = hours >= 12 ? 'PM' : 'AM';
+          hours = hours % 12 || 12; // 转为 12 小时制
+          const minutes = String(localTime.getMinutes()).padStart(2, '0');
+          const seconds = String(localTime.getSeconds()).padStart(2, '0');
+          // 返回格式化后的日期字符串
+          return `${month} ${day}, ${year} at ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${period}`;
+        },
+        clearFilter() {
+          this.requestType = '';
+          let params = {
+            pageNo: 1,
+            pageSize: this.pageSize,
+            userEmail: '{{ customer.email }}',
+            startTime: '',
+            relatedOrderId: this.relatedOrderId,
+            endTime: '',
+          };
+          this.getList(params);
+        },
+      },
+    };
+  })();
+</script>

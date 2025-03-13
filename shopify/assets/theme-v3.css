@@ -1,0 +1,374 @@
+.overlay-wrapper {
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(180deg, #f8f8f8, #fffc 32.29%, #fff);
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #808080;
+  text-decoration-line: underline;
+}
+.footer-arrow-top {
+  transform: rotate(270deg)!important;
+}
+.overlay-wrapper .overlay-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1;
+  transform: translateY(-18px);
+  color: var(--my-blue);
+}
+.overlay-wrapper .overlay-action.view-less {
+  margin-top: 12px;
+  transform: translateY(0);
+}
+.overlay-wrapper .overlay-action svg {
+  transform: rotate(90deg);
+}
+
+.overlay-wrapper .overlay-action svg path {
+  fill: var(--my-blue);
+}
+.overlay-wrapper.relative{
+  position: relative;
+  background: none;
+  height: auto;
+}
+.overlay-wrapper .view-less,
+.overlay-wrapper.relative .view-more {
+  display: none;
+}
+.overlay-wrapper.relative .view-less {
+  display: flex;
+}
+
+.block-title {
+  font-weight: bold;
+  margin: 0;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--my-blue);
+}
+
+.block-text {
+  font-weight: 400;
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--my-black);
+}
+
+
+.text-btn-container .text-btn-action {
+  text-decoration: underline;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #E0A609;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  background-color: #808080;
+  border-radius: 100%;
+}
+
+.block-url {
+  text-decoration: underline;
+}
+
+.form-wrapper {
+  margin-top: 28px;
+}
+
+/* 输入框带右侧文字*/
+.line-input .el-input__inner {
+  padding-right: 60px;
+}
+
+.line-input .text-show {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #333;
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+  user-select: none;
+}
+
+.el-form-link {
+  display: flex;
+  gap: 3px;
+  justify-content: center;
+  margin-top: 16px;
+  font-weight: 400;
+  font-size: 14px;
+  color: #333333;
+  text-decoration-line: underline;
+  cursor: pointer;
+}
+
+.el-form-link .text-underline {
+  text-decoration: underline;
+}
+
+.recover-form-box .el-form-link {
+  text-decoration: none;
+}
+
+/* 表单自定义错误提示-start*/
+.el-form-error-common {
+  transform-origin: top;
+  transform: scaleY(0) translateY(2px);
+  transition: all .1s ease-out;
+}
+
+.el-form-error-common.fold-in {
+  transform: scaleY(1) translateY(0);
+}
+
+/* 全局标题*/
+.common-header-title {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--my-blue);
+}
+
+.common-block-btn {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  gap: 10px;
+  width: 28px;
+  height: 16px;
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--my-yellow);
+  text-decoration: underline;
+}
+
+.common-block-btn.edit {
+  color: var(--my-black);
+}
+
+.common-block-btn.edit svg {
+  display: none;
+}
+
+.form-container {
+  padding: 16px;
+}
+
+
+/* 交期*/
+
+.line-item__property {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  line-height: 14px;
+}
+.line-item__property span {
+  width: 100%;
+  line-height: 1.4;
+}
+.line-item__property span:nth-child(1) {
+  color: #999999;
+}
+
+.line-item__property span:nth-child(2) {
+  color: #999999;
+}
+
+.line-item__property span:nth-child(3) {
+  color: var(--my-red);
+}
+
+/* 产品tab标签*/
+
+
+.stock-label-container {
+  display: flex;
+}
+
+.stock-tag {
+  font-size: 12px;
+  border-radius: 2px;
+  display: inline-flex;
+  height: 16px;
+  line-height: 16px;
+  padding: 0 4px;
+}
+
+.stock-tag.coming-stock {
+  background-color: #F3F8FC;
+  color: #0A2B6F;
+}
+.stock-tag.instock-ready {
+  background-color: #D4ECD6;
+  color: #26A230;
+}
+.stock-tag.instock-partial {
+  background-color: #D4ECD6;
+  color: #26A230;
+}
+/* 价格*/
+.cus-price-list {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cus-price-list .price {
+  font-weight: bold;
+  font-size: 22px;
+  color: var(--my-blue);
+}
+
+.cus-price-list .discount-price {
+  display: flex;
+  gap: 4px;
+  flex-direction: column;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.cus-price-list .discount-price span:nth-child(1) {
+  color: #999999;
+  text-decoration: line-through;
+}
+
+.cus-price-list .discount-price span:nth-child(2) {
+  color: #E72435;
+}
+
+.cus-price-list .compare_price {
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 900;
+  color: var(--my-blue);
+}
+@media screen and (min-width: 741px) {
+  .overlay-wrapper .overlay-action {
+    gap: 0;
+  }
+  .overlay-wrapper .overlay-action span {
+    margin-left: 10px;
+  }
+}
+/* 表单自定义错误提示-end*/
+@media screen and (min-width: 741px) {
+  .form-container {
+    border-top: 1px solid rgba(226, 226, 226, 0.5);
+    padding: 60px 0 130px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #F7F7F7;
+  }
+  .form-box {
+    background-color: #fff;
+    border: 1px solid #CCCCCC;
+    border-radius: 2px;
+    max-width: 408px;
+    padding: 36px 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-box .block-text {
+    margin-top: 16px;
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .cus-price-list {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .overlay-wrapper {
+    font-size: 12px;
+  }
+  .cus-price-list .price {
+    display: flex;
+    line-height: 1;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cus-price-list .discount-price {
+    flex-direction: row;
+    margin-top: 3px;
+    gap: 4px;
+    line-height: 1;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .cus-price-list .discount-price span:nth-child(1) {
+    color: #999999;
+    text-decoration-line: line-through;
+  }
+
+  .cus-price-list .discount-price span:nth-child(2) {
+    color: #E62D35;
+  }
+
+  .form-box {
+    min-width: auto !important;
+  }
+  .el-select-dropdown__item {
+    font-size: 12px;
+  }
+  .common-header-title {
+    font-size: 18px;
+  }
+  .stock-tag {
+    height: auto;
+  }
+  .form-box .block-text {
+    font-size: 12px;
+    margin-top: 12px;
+  }
+
+  .text-btn-container .text-btn-action {
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .form-wrapper {
+    margin-top: 18px;
+  }
+
+  .el-form-item {
+    margin-bottom: 24px;
+  }
+
+  .el-form-link {
+    font-size: 12px;
+    margin-top: 12px;
+  }
+
+  .el-reset-from .el-form-btn .el-button {
+    font-size: 14px;
+  }
+
+  .el-reset-from .el-label {
+    font-size: 12px;
+  }
+}

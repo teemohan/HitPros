@@ -1,0 +1,1 @@
+shopify theme login --store testhitpros.myshopify.com

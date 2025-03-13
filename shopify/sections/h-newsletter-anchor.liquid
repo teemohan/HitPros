@@ -1,0 +1,51 @@
+{% unless customer %}
+  {{ 'h-newsletter-anchor.css' | asset_url | stylesheet_tag }}
+  <div class="h-newsletter-anchor-wrapper section-gap">
+    <div class="container">
+      <div class="h-newsletter-anchor">
+        <div class="h-newsletter-text-wrapper">
+          <div class="h-newsletter-text">
+            <div class="h-newsletter-title">{{ section.settings.title }}</div>
+            <div class="h-newsletter-tip">{{ section.settings.tip }}</div>
+          </div>
+          <a href="/account/login" class="h-newsletter-btn">Stay Updated</a>
+        </div>
+        <div class="h-newsletter-social">
+          {%- render 'social-media' -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endunless %}
+
+{% schema %}
+{
+  "tag": "section",
+  "name": "h-newsletter-anchor",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "New products added regularly."
+    },
+    {
+      "type": "text",
+      "id": "tip",
+      "label": "Tip",
+      "default": "Don't miss out – subscribe for updates!"
+    },
+    {
+      "type": "text",
+      "id": "btn_title",
+      "label": "Btn Title",
+      "default": "Subscribe"
+    }
+  ],
+  "presets": [
+    {
+      "name": "h-newsletter-anchor"
+    }
+  ]
+}
+{% endschema %}

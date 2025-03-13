@@ -1,0 +1,140 @@
+<style>
+  .about-ways {
+  }
+  .about-ways__title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 38.4px;
+    margin-bottom: 30px;
+  }
+  .about-ways__content {
+    display: flex;
+  }
+  .about-ways__content .ways-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-basis: 0;
+    flex-grow: 1;
+    padding: 0 20px 30px;
+  }
+  .ways-item__title {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 36px;
+    margin: 32px 0;
+  }
+  .ways-item__description {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #666;
+  }
+  @media screen and (max-width: 740px) {
+    .about-ways__title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .about-ways__content {
+      flex-direction: column;
+      gap: 20px;
+    }
+    .about-ways__content .ways-item {
+      flex-direction: row;
+      padding: 0;
+      text-align: left;
+      gap: 20px;
+    }
+    .ways-item__image {
+      flex-shrink: 0;
+    }
+    .ways-item__image img {
+      width: 50px;
+    }
+    .ways-item__title {
+      font-size: 18px;
+      margin: 0;
+      line-height: 1;
+    }
+    .ways-item__description {
+      font-size: 10px;
+      margin-top: 8px;
+      line-height: 1.2;
+    }
+    .about-ways__container {
+      padding-bottom: 20px;
+    }
+  }
+</style>
+
+<section class="{{ section.id }}">
+  <div class="about-ways">
+    <div class="container">
+      <div class="about-ways__container">
+        <div class="about-ways__title">
+          {{ section.settings.title }}
+        </div>
+        <div class="about-ways__content">
+          {% for block in section.blocks %}
+            <div class="ways-item">
+              <div class="ways-item__image">
+                <img src="{{ block.settings.item_image |  img_url: '80x80' }}" alt="">
+              </div>
+              <div class="ways-item__text">
+                <div class="ways-item__title">
+                  {{ block.settings.item_title }}
+                </div>
+                <div class="ways-item__description">
+                  {{ block.settings.description }}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "about-ways",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "ways_item",
+      "type": "content",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "item_image",
+          "label": "Item image"
+        },
+        {
+          "type": "text",
+          "id": "item_title",
+          "label": "Item title"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "about-ways"
+    }
+  ]
+}
+{% endschema %}

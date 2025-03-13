@@ -1,0 +1,42 @@
+{{ 'product-anchor-sticky.css' | asset_url | stylesheet_tag }}
+<div class="container">
+  <div class="product-anchor-sticky">
+    <div class="product-anchor">
+      <span data-target-id="feature-imgs-wrapper" class="product-anchor-item">Details</span>
+      <span data-target-id="product-information-wrapper" class="product-anchor-item active">Product Information</span>
+    </div>
+  </div>
+</div>
+<script>
+  (() => {
+    $('.product-anchor .product-anchor-item').click(function () {
+      if (!$(this).hasClass('active')) {
+        $(this).addClass('active').siblings().removeClass('active');
+        $('.product-anchor-sticky').removeClass('show');
+      }
+      $('.product-anchor-active span').text($(this).find('span').text());
+      const targetId = $(this).data('target-id');
+      const $target = $(`.${targetId}`);
+      $('html, body').animate(
+        {
+          scrollTop: $target.offset().top - $('.shopify-section--header').outerHeight() - $('.product-sticky-form').outerHeight(),
+        },
+        600
+      );
+    });
+    $('.product-anchor-active').click(function () {
+      $('.product-anchor-sticky').toggleClass('show');
+    });
+  })();
+</script>
+{% schema %}
+{
+  "name": "Product Anchor Sticky",
+  "class": "product-anchor-sticky-wrapper",
+  "presets": [
+    {
+      "name": "Product Anchor Sticky"
+    }
+  ]
+}
+{% endschema %}

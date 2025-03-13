@@ -1,0 +1,170 @@
+<style>
+    @media screen and (min-width:1000px){
+        #shopify-section-{{ section.id }}{
+            margin-top: {{ section.settings.pc_top }}px;
+            margin-bottom: {{ section.settings.pc_bottom }}px;
+        }
+        #shopify-section-{{ section.id }} .head_title{
+            font-size: 48px;
+        }
+        #shopify-section-{{ section.id }} .selection_process{
+            display:flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            row-gap: 80px;
+            column-gap: 56px;
+            margin-top: 80px;
+        }
+        #shopify-section-{{ section.id }} .icon svg{
+            width: 48px;
+            height: 48px;
+        }
+        #shopify-section-{{ section.id }} .title{
+            font-size: 32px;
+            margin-top: 24px;
+        }
+        #shopify-section-{{ section.id }} .content{
+            font-size: 16px;
+            margin-top: 16px;
+        }
+    }
+
+    #shopify-section-{{ section.id }} .head_title{
+        color: var(--Text-primary, #000);
+        text-align: center;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 120%;
+    }
+   
+    #shopify-section-{{ section.id }} .desc{
+        width: calc(50% - 28px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #shopify-section-{{ section.id }} .icon{
+        display: flex;
+    }
+    
+    #shopify-section-{{ section.id }} .title{
+        text-align: center;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 130%; /* 41.6px */
+    }
+    #shopify-section-{{ section.id }} .content{
+        text-align: center;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%; /* 24px */
+    }
+    @media screen and (max-width:999px){
+        #shopify-section-{{ section.id }}{
+            margin-top: {{ section.settings.mobile_top }}px;
+            margin-bottom: {{ section.settings.mobile_bottom }}px;
+        }
+        #shopify-section-{{ section.id }} .head_title{
+            font-size: 24px;
+        }
+        #shopify-section-{{ section.id }} .selection_process{
+            display:grid;
+            grid-template-columns: repeat(1,1fr);
+            gap: 24px;
+            margin-top: 30px;
+        }
+        #shopify-section-{{ section.id }} .desc{
+            width: 100%;
+        }
+        #shopify-section-{{ section.id }} .icon svg{
+            width: 24px;
+            height: 24px;
+        }
+        #shopify-section-{{ section.id }} .title{
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        #shopify-section-{{ section.id }} .content{
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: left;
+        }
+    }
+</style>
+<div class="container">
+    <h2 class="head_title">{{ section.settings.title }}</h2>
+    <div class="selection_process">
+        {% for block in section.blocks %}
+            <div class="desc">
+                <div class="icon">{{ block.settings.icon }}</div>
+                <div class="title">{{ block.settings.title }}</div>
+                <div class="content">{{ block.settings.content }}</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% schema %}
+{
+    "name": "Selection Process",
+    "class": "selection-process",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "title"
+        },
+        {
+            "type": "number",
+            "id": "pc_top",
+            "label": "pc top",
+            "default": 128
+        },
+        {
+            "type": "number",
+            "id": "pc_bottom",
+            "label": "pc bottom",
+            "default": 128
+        },
+        {
+            "type": "number",
+            "id": "mobile_top",
+            "label": "mobile top",
+            "default": 60
+        },
+        {
+            "type": "number",
+            "id": "mobile_bottom",
+            "label": "mobile bottom",
+            "default": 60
+        }
+    ],
+    "blocks": [
+        {
+            "name": "text",
+            "type": "text",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "icon",
+                    "label": "icon"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "title"
+                },
+                {
+                    "type": "text",
+                    "id": "content",
+                    "label": "content"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Selection Process"
+        }
+    ]
+}
+{% endschema %}

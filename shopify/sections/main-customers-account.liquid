@@ -1,0 +1,142 @@
+{{ 'main-customers-account.css' | asset_url | stylesheet_tag }}
+{{ 'customer-register.css' | asset_url | stylesheet_tag }}
+{% liquid
+  render 'account-service'
+  render 'account-info'
+  render 'account-sidebar'
+  render 'account-address'
+  render 'account-orders'
+  render 'account-company-user'
+  render 'account-wish'
+%}
+
+{% for block in section.blocks %}
+  {% if block.type == 'order_tips' and customer.orders.size == 0 %}
+    <div class="order-tips">
+      <span>First order?</span>
+      <span class="save">Save {{ block.settings.save }}</span>
+      <span>with code</span>
+      <span class="code">{{ block.settings.code }}</span>
+    </div>
+  {% endif %}
+{% endfor %}
+
+<section id="account-section" class="account-section el-reset-from" data-email="{{ customer.email }}">
+  <template>
+    <account-sidebar @menuchange="handleMenuChange" />
+  </template>
+  <keep-alive>
+    <component :is="linkSlug"></component>
+  </keep-alive>
+</section>
+<script>
+  (() => {
+    Vue.directive('focus-input', {
+      inserted(el, binding, vnode) {
+        const inputEl = el.querySelector('input') || el.querySelector('textarea');
+        if (!inputEl) return;
+        const $label = $(inputEl).closest('.el-form-item__content').find('label');
+        const toggleLabelFocus = () => {
+          // Only remove the focus class if input is not focused and empty
+          if ($(inputEl).val().length === 0 && !inputEl.matches(':focus')) {
+            $label.removeClass('label--focus');
+          }
+        };
+        inputEl.addEventListener('focus', () => {
+          $label.addClass('label--focus');
+        });
+
+        inputEl.addEventListener('blur', () => {
+          setTimeout(toggleLabelFocus, 100); // Delay to check focus state
+        });
+
+        if (binding.value) {
+          $label.addClass('label--focus');
+        } else {
+          $label.removeClass('label--focus');
+        }
+      },
+      update(el, binding, vnode) {
+        const inputEl = el.querySelector('input');
+        if (!inputEl) return;
+        const $label = $(inputEl).closest('.el-form-item__content').find('label');
+        if (binding.value) {
+          $label.addClass('label--focus');
+        } else if (!inputEl.matches(':focus')) {
+          $label.removeClass('label--focus');
+        }
+      },
+    });
+    new Vue({
+      el: '#account-section',
+      delimiters: ['${', '}'],
+      components: {
+        accountSidebar,
+        accountInfo,
+        accountAddress,
+        accountOrders,
+        accountService,
+        accountWish,
+        accountCompanyUser
+      },
+      data() {
+        return {
+          linkSlug: 'account-info',
+        };
+      },
+      mounted() {
+        const queryString = window.location.search;
+        // 将查询字符串解析为对象
+        const params = new URLSearchParams(queryString);
+        const linkSlug = params.get('slug');
+        this.linkSlug = linkSlug ? linkSlug : 'account-info';
+      },
+      methods: {
+        handleMenuChange(linkSlug) {
+          this.linkSlug = linkSlug;
+        },
+      },
+    });
+  })();
+</script>
+{% schema %}
+{
+  "name": "Customer account",
+  "class": "container",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "order_tips",
+      "name": "Order Tips",
+      "settings": [
+        {
+          "type": "text",
+          "id": "save",
+          "label": "Save",
+          "default": "10%"
+        },
+        {
+          "type": "text",
+          "id": "code",
+          "label": "Code",
+          "default": "FIRST10"
+        }
+      ]
+    },
+    {
+      "type": "liquid",
+      "name": "Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "liquid",
+          "label": "Liquid",
+          "info": "Add app snippets or other Liquid code to create advanced customizations."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

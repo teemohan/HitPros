@@ -1,0 +1,209 @@
+<style>
+  .index-subscribe {
+    display: grid;
+    -webkit-display: grid;
+    gap: 32px;
+    padding: 32px;
+    grid-template-columns: auto 1fr 1fr;
+    align-items: center;
+    background-color: #fff;
+  }
+  .index-subscribe .form {
+    justify-self: end;
+    width: 560px;
+  }
+  .index-subscribe .newsletter__form {
+    margin: 0;
+  }
+  .index-subscribe .newsletter__form .input-row {
+    gap: 0;
+    border: 2px solid #FFC200;
+    border-radius: 2px;
+  }
+  .index-subscribe .newsletter__form .input__field {
+    border: none;
+  }
+  .index-subscribe .newsletter__form .input__field:focus {
+    border: none;
+    box-shadow: unset;
+  }
+  .index-subscribe .newsletter__form .input-row .input:nth-child(2) button {
+    background-color: #FFC200;
+    padding: 0 25px;
+    text-transform: unset!important;
+    font-size: 16px!important;
+    letter-spacing: unset!important;
+  }
+  .index-subscribe .newsletter__form .input-row .input:nth-child(2) button .loader-button__text {
+    color: var(--my-blue);
+    font-weight: 900!important;
+  }
+  .index-subscribe > span {
+    width: 92px;
+    height: 92px;
+    background-color: #FFC200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .index-subscribe > .info {
+    max-width: 630px;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .index-subscribe > .info h3 {
+    font-size: 32px;
+    margin: 0;
+    font-weight: 900;
+    color: var(--my-blue);
+  }
+  .index-subscribe > .info p {
+    font-size: 18px;
+    color: #1A1A1A;;
+  }
+  @media screen and (max-width: 1100px) {
+    .index-subscribe {
+      align-items: unset;
+      grid-template-columns: repeat(10, 1fr);
+    }
+    .index-subscribe > .info {
+      padding-left: 16px;
+      grid-column: span 9;
+    }
+    .index-subscribe > .form {
+      display: flex;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--my-border);
+      width: 100%;
+      grid-column: span 10;
+    }
+    .index-subscribe .newsletter__form .input-row {
+      display: grid;
+      -webkit-display: grid;
+      grid-template-columns: 1fr auto;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    :root {
+      --form-input-field-height: 32px;
+    }
+    .index-subscribe .form {
+      width: 100%;
+    }
+    .index-subscribe .newsletter__form .input-row button {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .index-subscribe .newsletter__form .input-row > .input {
+      height: 32px;
+      margin-top: 0!important;
+    }
+    .index-subscribe  input:focus-within~.input__label, .index-subscribe .is-filled~.input__label {
+      top: calc((var(--form-input-field-height) / 2));
+    }
+    .index-subscribe .newsletter__form .input-row > .input input {
+      padding: 0 12px;
+    }
+    :root {
+      --form-input-field-height: 32px;
+    }
+    .index-subscribe {
+      padding: 16px 12px;
+      gap: 0;
+    }
+    .index-subscribe > .info h3 {
+      font-size: 18px;
+    }
+    .index-subscribe > .info p {
+      font-size: 14px;
+    }
+    .index-subscribe > span {
+      width: 48px;
+      height: 48px;
+    }
+  }
+  #shopify-section-{{section.id}} .index-subscribe .newsletter__form .input__field,#shopify-section-{{section.id}} .index-subscribe .newsletter__form .input__label{
+    background: #f8f8f8;
+  }
+</style>
+<div class="container">
+  <div class="index-subscribe section-gap">
+    <span class="hidden-pocket">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="60" height="60" viewBox="0 0 60 60"><g><path d="M33.784,47.5976L51.4191,54.9352L60,0L0,33.8958L15.7435,41.0393L53.784,7.79235L23.2429,44.4158L22.8374,60L33.784,47.5976Z" fill="#FFFFFF" fill-opacity="1"/></g></svg>
+    </span>
+    <span class="hidden-lap-and-up">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="40" height="40" viewBox="0 0 60 60"><g><path d="M33.784,47.5976L51.4191,54.9352L60,0L0,33.8958L15.7435,41.0393L53.784,7.79235L23.2429,44.4158L22.8374,60L33.784,47.5976Z" fill="#FFFFFF" fill-opacity="1"/></g></svg>
+    </span>
+    <div class="info">
+      <h3>{{ section.settings.title }}</h3>
+      <p>{{ section.settings.desc }}</p>
+    </div>
+    <div class="form">
+      {%- assign newsletter_id = 'newsletter-' | append: section.id -%}
+      {%- form 'customer', id: newsletter_id, class: 'form newsletter__form' -%}
+        {%- if form.posted_successfully? -%}
+          <script>
+            window.addEventListener('DOMContentLoaded', () => {
+              if (history.scrollRestoration) {
+                history.scrollRestoration = 'manual'; // Prevent the browser to scroll on captcha page
+              }
+
+              document.getElementById('shopify-section-{{ section.id }}').scrollIntoView();
+            });
+          </script>
+
+          <div class="form__banner banner banner--success">
+            <span class="banner__ribbon">{% render 'icon' with 'form-success' %}</span>
+            <p class="banner__content">{{ 'general.newsletter.success' | t }}</p>
+          </div>
+        {%- else -%}
+          {%- if form.errors -%}
+            <div class="form__banner banner banner--error">
+              <span class="banner__ribbon">{% render 'icon' with 'form-error' %}</span>
+              <p class="banner__content">{{ form.errors.messages['email'] }}</p>
+            </div>
+          {%- endif -%}
+
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input type="hidden" name="contact[context]" value="{{ newsletter_id }}">
+
+          <div class="input-row">
+            <div class="input">
+              <input type="email" id="newsletter[{{ section.id }}][contact][email]" name="contact[email]" class="input__field" required>
+              <label for="newsletter[{{ section.id }}][contact][email]" class="input__label">E-mail address</label>
+            </div>
+
+            <div class="input">
+              <button type="submit" is="loader-button" class="button button--primary">Subscribe</button>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "index-subscribe",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title"
+    },
+    {
+      "type": "text",
+      "id": "desc",
+      "label": "desc"
+    }
+  ],
+  "presets": [
+    {"name": "index-subscribe"}
+  ]
+}
+{% endschema %}

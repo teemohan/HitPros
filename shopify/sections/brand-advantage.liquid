@@ -1,0 +1,240 @@
+<style>
+    @media screen and (min-width:741px){
+        #shopify-section-{{ section.id }}{
+            margin-top: {{ section.settings.pc_top }}px;
+            margin-bottom: {{ section.settings.pc_bottom }}px;
+        }
+        #shopify-section-{{ section.id }} .northSky_select_advantage{
+            grid-template-columns: 44% 50%;
+            gap: 6%;
+        }
+        #shopify-section-{{ section.id }} .head_title{
+            font-size: 40px;
+        }
+        #shopify-section-{{ section.id }} .head_content{
+            font-size: 18px;
+            margin-top: 16px;
+        }
+        #shopify-section-{{ section.id }} .icon svg{
+            width: 48px;
+            height: 48px;
+        }
+        #shopify-section-{{ section.id }} .title{
+            font-size: 20px;
+        }
+        #shopify-section-{{ section.id }} .content{
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        #shopify-section-{{ section.id }} .icon_with_title:not(:last-child) {
+            margin-bottom: 50px;
+        }
+        #shopify-section-{{ section.id }} .icon{
+            margin-right: 40px;
+        }
+        /* #shopify-section-{{ section.id }} .icon_with_title{
+            gap: 40px;
+        }
+        #shopify-section-{{ section.id }} .desc{
+            gap: 50px;
+        } */
+        #shopify-section-{{ section.id }} .icon_with_title:not(:last-child) .icon::before{
+            top: 60px;
+        }
+    }
+
+    @media screen and (max-width:999px){
+        #shopify-section-{{ section.id }} .northSky_select_advantage{
+            display: grid;
+            grid-template-columns: repeat(1,1fr);
+        }
+        #shopify-section-{{ section.id }} .head_title{
+            text-align: center;
+        }
+        #shopify-section-{{ section.id }} .head_content{
+            text-align: center;
+        }
+    }
+
+    @media screen and (max-width:740px){
+        #shopify-section-{{ section.id }}{
+            margin-top: {{ section.settings.mobile_top }}px;
+            margin-bottom: {{ section.settings.mobile_bottom }}px;
+        }
+        #shopify-section-{{ section.id }} .northSky_select_advantage{
+            display: grid;
+            grid-template-columns: repeat(1,1fr);
+            gap: 24px;
+        }
+        #shopify-section-{{ section.id }} .head_title{
+            font-size: 24px;
+            text-align: center;
+        }
+        #shopify-section-{{ section.id }} .head_content{
+            font-size: 16px;
+            margin-top: 12px;
+            text-align: center;
+        }
+        #shopify-section-{{ section.id }} .icon svg{
+            width: 24px;
+            height: 24px;
+        }
+        #shopify-section-{{ section.id }} .title{
+            font-size: 16px;
+        }
+        #shopify-section-{{ section.id }} .content{
+            font-size: 12px;
+            margin-top: 8px;
+        }
+        #shopify-section-{{ section.id }} .icon_with_title{
+            gap: 18px;
+        }
+        #shopify-section-{{ section.id }} .desc{
+            gap: 24px;
+        }
+        #shopify-section-{{ section.id }} .icon_with_title:not(:last-child) .icon::before{
+            top: 30px;
+        }
+    }
+
+    #shopify-section-{{ section.id }} .northSky_select_advantage{
+        display: grid;
+    }
+    #shopify-section-{{ section.id }} .head_title{
+        color: var(--Text-primary, #000);
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 120%; /* 48px */
+    }
+    #shopify-section-{{ section.id }} .head_content{
+        color: var(--Text-primary, #000);
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%; /* 27px */
+    }
+    
+    #shopify-section-{{ section.id }} .icon{
+        position: relative;
+    }
+    #shopify-section-{{ section.id }} .icon_with_title:not(:last-child) .icon::before{
+        content: '';
+        position: absolute;
+        background: #FABE00;
+        width: 1px;
+        height: 70%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    #shopify-section-{{ section.id }} .title{
+        color: var(--Text-primary, #000);
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 140%; /* 28px */
+    }
+    #shopify-section-{{ section.id }} .content{
+        color: var(--Text-primary, #000);
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%; /* 24px */
+    }
+    #shopify-section-{{ section.id }} .icon_with_title{
+        display: flex;
+    }
+    #shopify-section-{{ section.id }} .desc{
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+<div class="container">
+    <div class="northSky_select_advantage">
+        <div>
+            <h2 class="head_title">{{ section.settings.title }}</h2>
+            <div class="head_content hidden-phone">{{ section.settings.content }}</div>
+            <div class="head_content hidden-tablet-and-up">{{ section.settings.content | strip_html }}</div>
+        </div>
+        <div class="desc">
+            {% for block in section.blocks %}
+                <div class="icon_with_title">
+                    <div class="icon">{{ block.settings.icon }}</div>
+                    <div>
+                        <div class="title">{{ block.settings.title }}</div>
+                        <div class="content">{{ block.settings.content }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% schema %}
+{
+    "name": "NorthSky Select Advantage",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "title"
+        },
+        {
+            "type": "richtext",
+            "id": "content",
+            "label": "content"
+        },
+        {
+            "type": "number",
+            "id": "pc_top",
+            "label": "pc top",
+            "default": 128
+        },
+        {
+            "type": "number",
+            "id": "pc_bottom",
+            "label": "pc bottom",
+            "default": 128
+        },
+        {
+            "type": "number",
+            "id": "mobile_top",
+            "label": "mobile top",
+            "default": 60
+        },
+        {
+            "type": "number",
+            "id": "mobile_bottom",
+            "label": "mobile bottom",
+            "default": 60
+        }
+    ],
+    "blocks": [
+        {
+            "name": "text",
+            "type": "text",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "icon",
+                    "label": "icon"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "title"
+                },
+                {
+                    "type": "text",
+                    "id": "content",
+                    "label": "content"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "NorthSky Select Advantage"
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,63 @@
+{{"about-us-bottom.css" | asset_url | stylesheet_tag}}
+
+<div class="about-bottom-all section-padding-top section-padding-bottom">
+  <div class="about-bottom-box container">
+    <div class="about-bottom-wrapper">
+      <div class="about-bottom-left">
+        {%- if section.settings.title != blank -%}
+        <div class="about-bottom-title my-48">{{ section.settings.title }}</div>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="about-bottom-text my-16">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+
+      <div class="about-bottom-right">
+        {%- if section.settings.image -%}
+          <img class="graphic-right__image hidden-phone" loading="lazy" src="{{ section.settings.image | img_url: '1400x'}}">
+        {%- else -%}
+        {{- 'image' | placeholder_svg_tag: 'graphic-right__image placeholder-background hidden-phone' -}}
+        {%- endif -%}
+
+        {%- if section.settings.m_image -%}
+          <img class="graphic-right__image hidden-tablet-and-up" loading="lazy" src="{{ section.settings.m_image | img_url: '690x'}}">
+        {%- else -%}
+        {{- 'image' | placeholder_svg_tag: 'graphic-right__image placeholder-background hidden-tablet-and-up' -}}
+        {%- endif -%}
+
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "about-bottom-image",
+  "settings": [
+    {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info": "1400 x 620px recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "m_image",
+        "label": "Mobile Image",
+        "info": "690 x 800px recommended"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "title"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text"
+      }
+  ],
+  "presets": [{
+    "name": "about-bottom-image"
+  }]
+}
+{% endschema %}

@@ -1,0 +1,870 @@
+<style>
+  .company-page .breadcrumb__list {
+    padding: 0;
+    padding-bottom: 24px;
+  }
+  .account-company-search {
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #1A1A1A;
+  }
+  .account-company-search .text-btn-container {
+    margin-bottom: 0;
+  }
+  .account-company-search .search-input {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .account-company-search .search-input span {
+    font-weight: 600;
+  }
+  .account-company-user-line.unauth .auth-action .dot {
+    margin: 0 16px;
+  }
+  .account-company-user-line.unauth .auth-action > span {
+    cursor: pointer;
+  }
+  .account-company-user-line.unauth .auth-action > :first-child {
+    color: #E65F5A;
+  }
+  .account-company-user-line.unauth .auth-action > :last-child {
+    color: #142A6B;
+  }
+  .account-company-user-line.auth .auth-action .remove {
+    color: #666666;
+  }
+  .account-company-user-line .el-tooltip.unpass {
+    color: #E65F5A;
+  }
+  .account-company-user-line .el-dropdown {
+    color: #000;
+    cursor: pointer;
+  }
+  .account-company-user-line .el-dropdown .el-icon--right {
+    margin-left: 20px;
+  }
+  .wraning-prompt {
+    text-align: center;
+    padding: 0 16px;
+    word-break: break-word;
+  }
+  .wraning-prompt svg {
+    width: 48px;
+    height: 48px;
+  }
+  @media screen and (min-width: 741px) {
+    .account-company-user-line {
+      display: flex;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .account-company-line-title {
+      padding: 12px 48px;
+      background: #F3F3F3;
+      font-weight: 500;
+      font-size: 12px;
+      color: #333333;
+      display: flex;
+    }
+    .account-company-line-title
+    .account-company-user-line .user-info {
+      display: flex;
+      gap: 20px;
+    }
+    .account-company-line-title .user-info,
+    .account-company-line-title .user-role {
+      flex: 1;
+    }
+    .account-company-user-line .user-info > span:last-child {
+      margin-left: 20px;
+    }
+    .account-company-line-title .auth-action {
+      width: 140px;
+    }
+    .account-company-user-line .user-role.user-role-unauth {
+      color: #142A6B;
+    }
+    .account-company-user-line .user-role button {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-weight: 600;
+      color: #142A6B;
+    }
+    .account-company-user-line.unauth {
+      margin: 10px 0;
+      background-color: #F4F8FC;
+      padding: 18px 48px;
+    }
+    .account-company-user-line.auth {
+      padding: 18px 48px;
+      border-top: 1px solid #EAEEF1;
+    }
+    .account-company-user-line .auth-action {
+      width: 140px;
+      display: flex;
+      align-items: center;
+      text-decoration: underline;
+    }
+    .account-company-user-line .user-info,
+    .account-company-user-line .user-role{
+      flex: 1;
+    }
+    .account-company-user-line .el-button--text {
+      font-weight: 500;
+    }
+    .account-company-search .stufix-icon .el-input__inner {
+      width: 250px;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    .account-company-user-line.admin .line-body .line-row:nth-child(2) {
+      display: none;
+    }
+    .account-company-user-line.admin .line-body .line-row:nth-child(1) .line-col {
+      border-bottom: none;
+    }
+    .account-company-user-line .auth-action {
+      width: auto;
+      display: flex;
+      align-items: center;
+      text-decoration: underline;
+    }
+    .account-company-user-line .line-body {
+      max-height: 0;
+      overflow-y: hidden;
+      transition: all .3s ease;
+    }
+    .account-company-user-line .line-body.show {
+      max-height: 100px;
+    }
+    .account-company-user-line .el-dropdown .el-icon--right {
+      margin-left: 12px;
+    }
+    .account-company-user-line .user-line-info {
+      display: flex;
+      margin-right: 20px;
+      flex: 1;
+      justify-content: space-between;
+    }
+    .account-company-user-line.unauth .auth-action .dot {
+      width: 4px;
+      height: 4px;
+      margin: 0 8px;
+    }
+    .account-company-search {
+      margin-bottom: 20px;
+    }
+    .account-company-user-line {
+      border-radius: 2px;
+      margin-bottom: 16px;
+      border: 1px solid #D9D9D9;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 14px;
+    }
+    .account-company-user-line .el-dropdown button {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 500;
+      color: #142A6B;
+    }
+    .account-company-user-line .line-col-flex {
+      display: flex;
+      justify-content: space-between;
+    }
+    .account-company-user-line .line-col-flex svg {
+      width: 10px;
+      height: 6px;
+    }
+    .account-company-user-line .el-button--text {
+      font-size: 12px;
+    }
+    .account-company-user-line .line-row {
+      padding: 0 10px;
+    }
+    .account-company-user-line .line-col {
+      padding: 12px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between; 
+    }
+    .account-company-user-line .line-col.line-border {
+      border-bottom: 1px solid #F0F0F0;
+    }
+    .account-company-user-line.auth .line-title {
+      background: #F3F8FC;
+    }
+    .account-company-user-line.unauth .line-title{
+      background: #FFFBEC;
+    }
+    .account-company-user-line.unauth .line-title span:first-child {
+      color: #0A2B6F;
+    }
+    .account-company-user-line .el-dropdown,
+    .account-company-user-line .el-dropdown-menu__item
+    {
+      font-size: 12px;
+    }
+    .account-company-search {
+      font-size: 12px;
+    }
+    .account-company-search .search-input {
+      gap: 12px;
+    }
+    .account-company-search .el-input__inner {
+      width: 210px;
+    }
+  }
+</style>
+{% raw %}
+<template id="accountCompany">
+  <div class="account-main-container el-reset-from">
+    <el-dialog
+      width="484px"
+      title="Admin Permissions Alert"
+      :visible.sync="dialogVisibleAdminAuth"
+      :show-close="true"
+    >
+      <div class="wraning-prompt">
+        <svg width="108" height="89" viewBox="0 0 108 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M57.9051 2.82262L106.782 81.348C108.742 84.4964 106.478 88.5722 102.769 88.5722H5.01536C1.30684 88.5722 -0.957081 84.4964 1.00262 81.348L49.8796 2.82262C51.7294 -0.149207 56.0552 -0.149207 57.9051 2.82262ZM57.4372 30.8656C57.4372 28.9789 55.9223 27.4492 54.0534 27.4492C52.1846 27.4492 50.6697 28.9789 50.6697 30.8656V57.2261C50.6697 59.1129 52.1846 60.6426 54.0534 60.6426C55.9223 60.6426 57.4372 59.1129 57.4372 57.2261V30.8656ZM53.9997 64.0801C51.2707 64.0801 49.0583 66.3165 49.0583 69.0752C49.0583 71.8339 51.2707 74.0703 53.9997 74.0703C56.7288 74.0703 58.9411 71.8339 58.9411 69.0752C58.9411 66.3165 56.7288 64.0801 53.9997 64.0801Z" fill="#FABE00"/>
+        </svg>
+        <div>
+          Company is limited to one admin account. If you set this account to admin, you will lose your current admin permissions. Please confirm you wish to proceed.
+        </div>
+      </div>
+      <div slot="footer" style="margin-top: 24px;">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            type="primary"
+            @click="handleAuthChange"
+            :loading="authLoading"
+            class="el-dialog--btn-comfirm"
+          >
+            Confirm
+          </el-button>
+          <div @click="dialogVisibleAdminAuth = false" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog
+      width="484px"
+      title="Remove User"
+      :visible.sync="dialogVisibleRemove"
+      :show-close="true"
+    >
+      <div class="wraning-prompt">
+        <div>
+          Are you sure to remove the user?
+        </div>
+      </div>
+      <div slot="footer" style="margin-top: 24px;">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            type="primary"
+            @click="handleRemoveUser"
+            :loading="removeingLoading"
+            class="el-dialog--btn-comfirm"
+          >
+            Confirm
+          </el-button>
+          <div @click="dialogVisibleRemove = false" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog
+      width="484px"
+      title="Reject Reason"
+      :visible.sync="dialogVisibleReason"
+      :show-close="true"
+    >
+      <el-form
+        autocomplete="off"
+        label-width="0"
+        :status-icon="false"
+        :model="reasonForm"
+        :rules="reasonFormRules"
+        ref="reasonForm"
+      >
+        <el-form-item prop="reasonContent">
+          <el-input
+            id="reason-[content]"
+            v-model="reasonForm.reasonContent"
+            maxlength="100"
+            v-focus-input="reasonForm.reasonContent"
+          ></el-input>
+          <label for="reason-[content]" class="el-label">Reject Reason*</label>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" style="margin-top: 24px;">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            type="primary"
+            :loading="rejectLoading"
+            @click="handleRejectUser"
+            class="el-dialog--btn-comfirm"
+          >
+            Reject
+          </el-button>
+          <div @click="dialogVisibleReason = false" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog
+      width="484px"
+      title="Search Account"
+      :visible.sync="dialogVisibleSearch"
+      :show-close="true"
+    >
+      <el-form
+        autocomplete="off"
+        label-width="0"
+        :status-icon="false"
+        :model="userSearchForm"
+        :rules="userSearchFormRules"
+        ref="userSearchForm"
+      >
+        <el-form-item prop="email">
+          <el-input
+            id="userSearchForm[email]"
+            v-model="userSearchForm.email"
+            v-focus-input="userSearchForm.email"
+          ></el-input>
+          <label for="userSearchForm[email]" class="el-label">Email*</label>
+        </el-form-item>
+        <el-form-item prop="role">
+          <el-select
+            ref="searchSel"
+            id="userSearchForm[role]"
+            v-model="userSearchForm.role"
+            placeholder=""
+            v-focus-input="userSearchForm.role"
+          >
+            <el-option
+              v-for="item in roleOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+              <div class="common-dropdown-item" @click="handleRoleClick($event, item)">
+                <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                <div>{{ item.label }}</div>
+              </div>
+            </el-option>
+          </el-select>
+          <label for="userSearchForm[role]" class="el-label">role</label>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" style="margin-top: 24px;">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            type="primary"
+            :loading="userSearchLoading"
+            @click="handleSaveUser"
+            class="el-dialog--btn-comfirm"
+          >
+            Save
+          </el-button>
+          <div @click="dialogVisibleSearch = false" class="el-dialog--btn-cancel">Cancel</div>
+        </div>
+      </div>
+    </el-dialog>
+
+    <nav class="hidden-phone breadcrumb company-page text--xsmall">
+      <ol class="breadcrumb__list" role="list">
+        <li class="breadcrumb__item">
+          <a class="breadcrumb__link" href="/account?slug=account-info">My Account</a>
+        </li>
+        <li class="breadcrumb__item">
+          <span class="breadcrumb__link" aria-current="page">Manage Company Users</span>
+        </li>
+      </ol>
+    </nav>
+
+
+    <header class="account-item-header-wrapper">
+      <div class="account-item-header hidden-phone">
+        <h1>Manage Company Users</h1>
+      </div>
+      <span class="account-item-num">{{ total }} {{ total > 1 ? 'members' : 'member'}}</span>
+    </header>
+    <div class="account-company-search">
+      <div class="search-input">
+        <span>Search:</span>
+        <el-input
+          v-model="queryParam.queryCondition"
+          clearable
+          @keyup.enter.native="handleSearchUser"
+          placeholder="user name or email address"
+          clearable
+          @change="handleSearchUser"
+        >
+        </el-input>
+      </div>
+      <div class="text-btn-container">
+        <span class="text-btn-action" @click="dialogVisibleSearch = true">
+          <svg t="1729742003684" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1558" width="16" height="16" class="icon"><path d="M512 1024C229.229714 1024 0 794.733714 0 511.963429 0 229.193143 229.229714-0.036571 512-0.036571 794.770286-0.036571 1024 229.193143 1024 511.963429 1024 794.733714 794.770286 1024 512 1024ZM512 73.142857C269.641143 73.142857 73.142857 269.641143 73.142857 512 73.142857 754.358857 269.641143 950.857143 512 950.857143 754.358857 950.857143 950.857143 754.358857 950.857143 512 950.857143 269.641143 754.358857 73.142857 512 73.142857ZM548.571429 731.428571 475.428571 731.428571 475.428571 548.571429 292.571429 548.571429 292.571429 475.392 475.428571 475.392 475.428571 292.534857 548.571429 292.534857 548.571429 475.392 731.428571 475.392 731.428571 548.571429 548.571429 548.571429 548.571429 731.428571Z" p-id="1559" fill="#E0A609"></path></svg>Add
+        </span>
+      </div>
+    </div>
+    <div class="skeleton-wrapper" v-if="list_loading">
+      <el-skeleton :rows="6" :animated="true" />
+    </div>
+    <template v-else-if="accountCompanyUsers.length > 0">
+      <div class="account-company-main hidden-phone">
+        <div class="account-company-line-title">
+          <div class="user-info">User</div>
+          <div class="user-role">Role</div>
+          <div class="auth-action">Operation</div>
+        </div>
+        <div v-for="(item, idx) in accountCompanyUsers" class="account-company-user-line" :class="[`${item.state == 0 ? 'unauth': 'auth'}` ]">
+          <div class="user-info">
+            <span>{{ item.firstname }} {{ item.lastname }}</span><span>{{ item.email }}</span>
+          </div>
+          <div class="user-role">
+            <template v-if="item.reason">
+              <el-tooltip effect="light" :content="item.reason" placement="right">
+                <span class="unpass">{{ item.customerId == queryParam.customerId ? 'Admin': 'Member' }}</span>
+              </el-tooltip>
+            </template>
+            <template v-else>
+              <template v-if="item.customerId == queryParam.customerId">
+                <span>Admin</span>
+              </template>
+              <template v-else>
+                <el-dropdown @command="beforeAuthChange" trigger="click">
+                  <template v-if="item.operateRecord">
+                    <el-tooltip effect="dark" :content="item.operateRecord" placement="right">
+                      <span>
+                        Member
+                        <i class="el-icon-arrow-down el-icon--right"></i>
+                      </span>
+                    </el-tooltip>
+                  </template>
+                  <template v-else>
+                    <span>
+                      Member
+                      <i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                  </template>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item :command="{ role: 'Member', item }">Member</el-dropdown-item>
+                    <el-dropdown-item :command="{ role: 'Admin', item }">Admin</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </template>
+            </template>
+          </div>
+          <div class="auth-action">
+            <template v-if="item.state == 0">
+              <span @click="handleBeforeRejectUser(item)">Reject</span>
+              <span class="dot"></span>
+              <el-button :loading="item.approveLoading" type="text" @click="handleAuthUser(item)">Approve</el-button>
+            </template>
+            <template v-else>
+              <el-button v-if="item.customerId != queryParam.customerId" class="remove" :loading="item.removeLoading" type="text" @click="handleBeforeRemoveUser(item)">Remove</el-button>
+            </template>
+          </div>
+        </div>
+      </div>
+      <div class="account-company-main hidden-tablet-and-up">
+        <div v-for="(item, idx) in accountCompanyUsers" class="account-company-user-line" :class="[`${item.state == 0 ? 'unauth': 'auth'}`, `${item.customerId == queryParam.customerId ? 'admin': 'member'}` ]">
+          <div class="line-row line-title" @click="item.show = !item.show">
+            <div class="line-col line-col-flex">
+              <div class="user-line-info">
+                <span>{{ item.firstname }} {{ item.lastname }}</span>
+                <span>{{ item.email }}</span>
+              </div>
+              <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11 11.6875C10.7563 11.6875 10.5938 11.6063 10.4313 11.4438L0.68125 1.69375C0.35625 1.36875 0.35625 0.88125 0.68125 0.55625C1.00625 0.23125 1.49375 0.23125 1.81875 0.55625L11 9.7375L20.1812 0.55625C20.5062 0.23125 20.9938 0.23125 21.3188 0.55625C21.6438 0.88125 21.6438 1.36875 21.3188 1.69375L11.5688 11.4438C11.4063 11.6063 11.2437 11.6875 11 11.6875Z" fill="black"/>
+              </svg>
+            </div>
+          </div>
+          <div class="line-body" :class="{
+            show: item.show
+          }">
+            <div class="line-row">
+              <div class="line-col line-border">
+                <span>Role</span>
+                <template v-if="item.reason">
+                  <el-tooltip effect="light" :content="item.reason" placement="right">
+                    <span class="unpass">{{ item.customerId == queryParam.customerId ? 'Admin': 'Member' }}</span>
+                  </el-tooltip>
+                </template>
+                <template v-else>
+                  <template v-if="item.customerId == queryParam.customerId">
+                    <span>Admin</span>
+                  </template>
+                  <template v-else>
+                    <el-dropdown @command="beforeAuthChange" trigger="click">
+                      <span v-if="item.operateRecord">
+                        Member
+                        <i class="el-icon-arrow-down el-icon--right"></i>
+                      </span>
+                      <span v-else>
+                        Member
+                        <i class="el-icon-arrow-down el-icon--right"></i>
+                      </span>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item :command="{ role: 'Member', item }">Member</el-dropdown-item>
+                        <el-dropdown-item :command="{ role: 'Admin', item }">Admin</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown>
+                  </template>
+                </template>
+              </div>
+            </div>
+            <div class="line-row" >
+              <div class="line-col">
+                <span>Operation</span>
+                <div class="auth-action">
+                  <template v-if="item.state == 0">
+                    <span @click="handleBeforeRejectUser(item)">Reject</span>
+                    <span class="dot"></span>
+                    <el-button :loading="item.approveLoading" type="text" @click="handleAuthUser(item)">Approve</el-button>
+                  </template>
+                  <template v-else>
+                    <el-button v-if="item.customerId != queryParam.customerId" class="remove" :loading="item.removeLoading" type="text" @click="handleBeforeRemoveUser(item)">Remove</el-button>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :current-page.sync="queryParam.page"
+        :page-size="queryParam.pageSize"
+        :total="total"
+        @current-change="handlePageChange"
+      >
+      </el-pagination>
+    </template>
+    <template v-else>
+      <div class="empty-notify">
+        <p>No User found.</p>
+      </div>
+    </template>
+  </div>
+</template>
+{% endraw %}
+
+<script>
+  (() => {
+    window.accountCompanyUser = {
+      template: '#accountCompany',
+      data() {
+        return {
+          removeingItem: null,
+          needRemoveItem: null,
+          roleOptions: [
+            { isSelected: true, value: 'Member', label: 'Member' },
+          ],
+          list_loading: false,
+          removeingLoading: false,
+          dialogVisibleRemove: false,
+          dialogVisibleSearch: false,
+          userSearchLoading: false,
+          adminAuth: null,
+          dialogVisibleAdminAuth: false,
+          dialogVisibleReason: false,
+          rejectLoading: false,
+          authLoading: false,
+          total: 0,
+          reasonForm: {
+            reasonContent: '',
+          },
+          reasonFormRules: {
+            reasonContent: [
+              { required: true, message: 'Please enter the reject reason', trigger: 'blur' },
+            ],
+          },
+          userSearchForm: {
+            role: 'Member',
+            email: '',
+          },
+          userSearchFormRules: {
+            email: [
+              { required: true, message: 'Please enter the email', trigger: 'blur' },
+              { type: 'email', message: 'Please enter the correct email', trigger: 'blur' },
+            ],
+            role: [
+              { required: true, message: 'Please select the role', trigger: 'blur' },
+            ],
+          },
+          accountCompanyUsers: [],
+          queryParam: {
+            companyId: '{{ customer.current_company.id }}',
+            customerId: '{{ customer.id }}',
+            page: 1,
+            pageSize: 20,
+            queryCondition: ''
+          }
+        };
+      },
+      created() {
+        this.getList();
+      },
+      methods: {
+        handleSearchUser() {
+          this.queryParam.page = 1;
+          this.getList();
+        },
+        async handleAuthChange(){
+          this.authLoading = true;
+          try {
+            const response = await fetch('https://app.northskysupply.com/web/companies/contacts/main-contact', {
+              method: 'PUT',
+              body: JSON.stringify({
+                customerId: this.adminAuth.customerId,
+                companyId: "{{ customer.current_company.id }}",
+                mainCustomerId: "{{ customer.id }}",
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const res = await response.json();
+            if (res.code === 200) {
+              this.$message({
+                showClose: true,
+                message: 'Successfully Changed',
+                type: 'success',
+              });
+              setTimeout(() => {
+                window.location.href = '/account?slug=account-info';
+              }, 2000)
+            } else {
+              this.$message({
+                showClose: true,
+                message: res.msg,
+                type: 'warning',
+              });
+            }
+          } catch (error) {
+            console.error(error); 
+          } finally {
+            this.authLoading = false;
+          }
+        },
+        beforeAuthChange(payload) {
+          const { role, item } = payload;
+          if (role === 'Admin') {
+            this.dialogVisibleAdminAuth = true;
+            this.adminAuth = item;
+          }
+        },
+        async getList() {
+          this.list_loading = true;
+          try {
+            const response = await fetch(
+              `https://app.northskysupply.com/web/company/validations?companyId=${this.queryParam.companyId}&customerId=${this.queryParam.customerId}&page=${this.queryParam.page}&pageSize=${this.queryParam.pageSize}&queryCondition=${this.queryParam.queryCondition}`
+            );
+            const res = await response.json();
+            if(res.code == 200) {
+              res.data.list.map(item => {
+                item.admin = item.customerId == this.queryParam.customerId ? true: false;
+                item.approveLoading = false;
+                item.removeLoading = false;
+              })
+              this.accountCompanyUsers = res.data.list.map(item => {
+                item.show = false;
+                return item
+              });
+              this.total = res.data.total;
+            }
+          } catch (error) {
+            console.error(error);
+          } finally {
+            this.list_loading = false;
+          }
+        },
+        handleRoleClick(event, roleItem) {
+          event.stopPropagation(); // 阻止冒泡，防止关闭
+          this.$refs.searchSel.blur(); // 关闭菜单
+        },
+        async handleRemoveUser() {
+          this.removeingLoading = true;
+          try {
+            const response = await fetch('https://app.northskysupply.com/web/company/validations/remove', {
+              method: 'DELETE',
+              body: JSON.stringify({
+                id: this.needRemoveItem.id,
+                customerId: '{{ customer.id }}',
+                companyId: '{{ customer.current_company.id }}'
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const res = await response.json();
+            if (res.code === 200) {
+              this.$message({
+                showClose: true,
+                message: 'Successfully Removed',
+                type: 'success',
+              });
+              this.queryParam.page = 1;
+              this.getList();
+            } else {
+              this.$message({
+                showClose: true,
+                message: res.msg,
+                type: 'warning',
+              });
+            }
+          } catch (error) {
+            console.error(error); 
+          } finally {
+            this.dialogVisibleRemove = false;
+            this.removeingLoading = false;
+          }
+        },
+        handleSaveUser() {
+          this.$refs.userSearchForm.validate(async (valid) => {
+            if (valid) {
+              this.userSearchLoading = true;
+              try {
+                const response = await fetch('https://app.northskysupply.com/web/companies/contacts', {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    companyId: '{{ customer.current_company.id }}',
+                    newContactEmail: this.userSearchForm.email,
+                    email: '{{ customer.email }}',
+                    firstname: '{{ customer.first_name }}',
+                    lastname: '{{ customer.last_name }}',
+                  }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                });
+                const res = await response.json();
+                if (res.code === 200) {
+                  this.$message({
+                    message: 'Saved',
+                    type: 'success',
+                  });
+                  this.getList();
+                } else {
+                  this.$message({
+                    showClose: true,
+                    message: res.msg,
+                    type: 'warning',
+                  });
+                }
+              } catch (error) {
+                console.error(error); 
+              } finally {
+                this.userSearchLoading = false;
+                this.dialogVisibleSearch = false;
+              }
+            }
+          });
+        },
+        handleBeforeRejectUser(item) {
+          this.removeingItem = item;
+          this.dialogVisibleReason = true;
+        },
+        handleBeforeRemoveUser(item) {
+          this.needRemoveItem = item;
+          this.dialogVisibleRemove = true;
+        },
+        async handleAuthUser(item) {
+          item.approveLoading = true;
+          try {
+            const response = await fetch('https://app.northskysupply.com/web/company/validations/pass', {
+              method: 'PUT',
+              body: JSON.stringify({
+                id: item.id,
+                companyId: '{{ customer.current_company.id }}',
+                customerId: item.customerId,
+                email: '{{ customer.email }}',
+                firstname: '{{ customer.first_name }}',
+                lastname: '{{ customer.last_name }}',
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const res = await response.json();
+            if (res.code === 200) {
+              this.$message({
+                showClose: true,
+                message: 'Approved.',
+                type: 'success',
+              });
+              this.getList();
+            } else {
+              this.$message({
+                showClose: true,
+                message: res.msg,
+                type: 'warning',
+              });
+            }
+          } catch (error) {
+            console.error(error); 
+          } finally {
+            item.approveLoading = false;
+          }
+        },
+        handleRejectUser() {
+          this.$refs.reasonForm.validate(async (valid) => {
+            if (valid) {
+              this.rejectLoading = true;
+              try {
+                const response = await fetch('https://app.northskysupply.com/web/company/validations/reject', {
+                  method: 'PUT',
+                  body: JSON.stringify({
+                    id: this.removeingItem.id,
+                    companyId: '{{ customer.current_company.id }}',
+                    email: '{{ customer.email }}',
+                    firstname: '{{ customer.first_name }}',
+                    lastname: '{{ customer.last_name }}',
+                    reason: this.reasonForm.reasonContent
+                  }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                });
+                const res = await response.json();
+                if (res.code === 200) {
+                  this.$message({
+                    showClose: true,
+                    message: 'Successfully Rejected',
+                    type: 'success',
+                  });
+                  this.getList();
+                } else {
+                  this.$message({
+                    showClose: true,
+                    message: res.msg,
+                    type: 'warning',
+                  });
+                }
+              } catch (error) {
+                console.error(error); 
+              } finally {
+                this.reasonForm.reasonContent = '',
+                this.removeingItem = null;
+                this.rejectLoading = false;
+                this.dialogVisibleReason = false;
+              }
+            }
+          });
+        },
+        handlePageChange(newPage) {
+          this.queryParam.page = newPage;
+          this.getList();
+        },
+      },
+    };
+  })();
+</script>

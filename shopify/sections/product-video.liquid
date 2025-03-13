@@ -1,0 +1,99 @@
+<style>
+  .product-video-wrapper  {
+    margin: 40px 0;
+  }
+  .product-video-wrapper h2 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .product-video-wrapper h2 span{
+    font-size: 32px;
+    font-weight: bold;
+    line-height: normal;
+    color: #0B2C66;
+    display: inline-flex;
+    padding-bottom: 10px;
+    border-bottom: 4px solid #F4BF18;
+  }
+  @media screen and (max-width: 740px) {
+    .product-video-wrapper  {
+      margin: 20px 0;
+    }
+    .product-video-wrapper h2 {
+      margin-bottom: 10px;
+    }
+    .product-video-wrapper h2 span{
+      font-size: 16px;
+    }
+    .video-wrapper__poster-content svg {
+      width: 36px;
+      height: 36px;
+    }
+  }
+</style>
+
+{%- for media in product.media -%}
+  {% case media.media_type %}
+    {%- when 'video' -%}
+      <div class="product-video-wrapper">
+        <h2>
+          <span>Video Showcase</span>
+        </h2>
+        <native-video
+          class="video-wrapper video-wrapper--native"
+          style="--aspect-ratio: 375 / 210"
+        >
+          {%- unless section.settings.enable_video_autoplay -%}
+            <div class="video-wrapper__poster">
+              <img
+                width="auto"
+                height="auto"
+                class="video-wrapper__poster-image"
+                loading="lazy"
+                sizes="(max-width: 999px) calc(100vw - 48px), 640px"
+                {% render 'image-attributes',
+                  image: media.preview_image,
+                  sizes: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200'
+                %}
+              >
+
+              <div class="video-wrapper__poster-content">
+                <button
+                  type="button"
+                  class="video-wrapper__play-button"
+                  title="{{ 'general.accessibility.play_video' | t | escape }}"
+                >
+                  {%- render 'icon' with 'play', width: 72, height: 72 -%}
+                </button>
+              </div>
+            </div>
+          {%- endunless -%}
+
+          <template>
+            {{-
+              media
+              | video_tag:
+                image_size: '1024x',
+                controls: true,
+                autoplay: true,
+                muted: section.settings.enable_video_autoplay,
+                loop: section.settings.enable_video_looping
+            -}}
+          </template>
+        </native-video>
+      </div>
+    {% endcase %}
+  {% endfor %}
+{% schema %}
+{
+  "name": "product video",
+  "class": "container",
+  "settings": [
+      
+  ],
+  "presets": [
+    {"name": "product video"}
+  ]
+}
+{% endschema %}

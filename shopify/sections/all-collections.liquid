@@ -1,0 +1,123 @@
+<style>
+  .categories .product-categories-list .product-categories-item .hidden-img {
+    opacity: 0;
+    width: 100%;
+  }
+  .categories .product-categories-list .product-categories-item.product-categories-item-hidden {
+    border-color: transparent;
+  }
+</style>
+<div class="{{ section.id }} container categories">
+  <div class="index-cus-header">
+    <h2>{{ section.settings.title }}</h2>
+    <a class="hidden-phone" href="{{ section.settings.btn_link }}">
+      {{ section.settings.btn_title }}
+      {% render 'icon' with 'header-arrow' %}
+    </a>
+    <a class="hidden-tablet-and-up" href="{{ section.settings.btn_link }}"> View All </a>
+  </div>
+  <div class="product-categories-list">
+    {% assign c_numebr = section.settings.collection_number %}
+    {% for i in (1..c_numebr) %}
+      <a href="#" class="product-categories-item product-categories-item-hidden">
+        <img class="hidden-img" width="auto" height="auto">
+        <span></span>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+<script>
+(() => {
+  async function getAllList() {
+    try {
+      // 获取头部信息
+      const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
+      const resHeader = await responseHeader.json();
+      const headersData = resHeader.data;
+
+      // 获取分类数据
+      const response = await fetch('https://app.northskysupply.com/web/openapi/adlink/product/collection/tree', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          ...headersData,
+        },
+      });
+      const { data } = await response.json();
+      // 生成分类元素
+      const categories = data.slice(0, 10).map(collection => {
+        const handle = collection.name
+          .toLowerCase()                  // 转小写
+          .replace(/[^a-z0-9\s-]/g, '')    // 去除特殊字符
+          .trim()                          // 去掉首尾空格
+          .replace(/\s+/g, '-')            // 替换空格为 "-"
+          .replace(/-+/g, '-');            // 合并多余的 "-"
+        
+        const anchor = document.createElement('a');
+        anchor.href = `/collections/${handle}`;
+        anchor.className = 'product-categories-item';
+
+        const img = document.createElement('img');
+        img.loading = 'lazy';
+        img.src = collection?.img || '';
+        img.alt = collection.name;
+        img.width = 'auto';
+        img.height = 'auto';
+
+        const span = document.createElement('span');
+        span.textContent = collection.name;
+
+        anchor.appendChild(img);
+        anchor.appendChild(span);
+
+        return anchor;
+      });
+
+      // 插入到目标列表中
+      const categoriesList = document.querySelector('.product-categories-list');
+      categoriesList.innerHTML = ''; // 清空原有内容
+      categories.forEach(category => categoriesList.appendChild(category));
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  // 调用函数
+  getAllList();
+})();
+</script>
+{% schema %}
+{
+  "name": "index-all-collection",
+  "class": "section-gap",
+  "settings": [
+    {
+      "type": "number",
+      "id": "collection_number",
+      "label": "Collection Number",
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "Top Product Categories"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Btn Url"
+    },
+    {
+      "type": "text",
+      "id": "btn_title",
+      "label": "Btn Title",
+      "default": "View All Product Categories"
+    }
+  ],
+  "presets": [
+    {
+      "name": "index-all-collection"
+    }
+  ]
+}
+{% endschema %}

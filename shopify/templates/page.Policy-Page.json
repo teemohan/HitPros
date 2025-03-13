@@ -1,0 +1,34 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "seo_h1_title_mpeTPj": {
+      "type": "seo-h1-title",
+      "settings": {
+        "title": "Hassle Free Returns"
+      }
+    },
+    "return_shpping_PWP9FM": {
+      "type": "return-shpping",
+      "settings": {
+        "title1": "Hassle-Free Returns",
+        "title2": "Shipping and Order Processing",
+        "title_highlight": "1",
+        "link1": "shopify:\/\/pages\/hassle-free-return-policy",
+        "link2": "shopify:\/\/pages\/shipping-and-order-processing",
+        "page": "hassle-free-return-policy"
+      }
+    }
+  },
+  "order": [
+    "seo_h1_title_mpeTPj",
+    "return_shpping_PWP9FM"
+  ]
+}

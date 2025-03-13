@@ -1,0 +1,38 @@
+{{ 'collections-header.css' | asset_url | stylesheet_tag }}
+<h1 style="display: none;">Defined by Erica: All Product Categories </h1>
+<div class="collections-header">
+  <h2>{{ section.settings.title }}</h2>
+  <div class="all-collection-num"><span class="all-collection-count"></span> <span>products</span></div>
+  <p>
+    {{ section.settings.desc }}
+  </p>
+</div>
+{% schema %}
+{
+  "name": "collection-header",
+  "class": "container",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "Top Product Categories"
+    },
+    {
+      "type": "text",
+      "id": "product_num",
+      "label": "Product Num"
+    },
+    {
+      "type": "text",
+      "id": "desc",
+      "label": "Desc"
+    }
+  ],
+  "presets": [
+    {
+      "name": "collection-header"
+    }
+  ]
+}
+{% endschema %}

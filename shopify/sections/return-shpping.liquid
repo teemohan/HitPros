@@ -1,0 +1,126 @@
+<style>
+  .return-shipping-wrapper,
+  .page-contents {
+    margin-top: 30px;
+  }
+  .return-shipping-titles {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+  .return-shipping-title {
+    font-weight: 400;
+    font-size: 20px;
+    color: #1A1A1A;
+    text-decoration-line: underline;
+  }
+  .return-shipping-title.highlight {
+    color: var(--my-blue);
+    font-weight: 700;
+  }
+  .page-contents h3 {
+    margin: 0;
+    margin-bottom: 16px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #1A1A1A;
+  }
+  .page-contents p {
+    font-weight: 400;
+    font-size: 14px;
+    color: #000;
+    line-height: 24px;
+    margin-bottom: 24px;
+  }
+  .page-contents a {
+    color: var(--my-blue);
+  }
+  @media screen and (max-width:740px){
+    .return-shipping-wrapper, .page-contents {
+      margin-top: 20px;
+    }
+    .return-shipping-titles {
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0;
+    }
+    .return-shipping-title {
+      font-size: 16px;
+    }
+    .page-contents h3 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+    .page-contents p {
+      font-size: 12px;
+    }
+  }
+</style>
+<div class="container">
+  <div class="return-shipping-titles">
+    <h2 class="return-shipping-title {% if section.settings.title_highlight == '1' %}highlight{% endif %}">
+      <a href="{{ section.settings.link1 }}">{{ section.settings.title1 }}</a>
+    </h2>
+    <h2 class="return-shipping-title {% if section.settings.title_highlight == '2' %}highlight{% endif %}">
+      <a href="{{ section.settings.link2 }}">{{ section.settings.title2 }}</a>
+    </h2>
+  </div>
+  <div class="page-contents">
+    {{- section.settings.page.content -}}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "return&shipping",
+  "class": "return-shipping-wrapper section-padding-bottom",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title1",
+      "label": "title1",
+      "default": "Hassle-Free Returns"
+    },
+    {
+      "type": "text",
+      "id": "title2",
+      "label": "title2",
+      "default": "Shipping and Order Processing"
+    },
+    {
+      "type": "select",
+      "id": "title_highlight",
+      "label": "Title Highlight",
+      "options": [
+        {
+          "value": "1",
+          "label": "Title1"
+        },
+        {
+          "value": "2",
+          "label": "Title2"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "url",
+      "id": "link1",
+      "label": "Link1"
+    },
+    {
+      "type": "url",
+      "id": "link2",
+      "label": "Link2"
+    },
+    { 
+      "type": "page",
+      "id": "page",
+      "label": "Page"
+    }
+  ],
+  "presets": [
+    {"name": "return&shipping"}
+  ]
+}
+{% endschema %}

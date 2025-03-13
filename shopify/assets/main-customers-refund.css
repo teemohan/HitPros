@@ -1,0 +1,14 @@
+.request-id {
+  font-weight: 700;
+}
+.order-id {
+  font-weight: 400;
+}
+.request-id,
+.status-item p,
+.status-item a {
+  color: #1A1A1A;
+}
+.order-status {
+  background: #F8F8F8;
+}

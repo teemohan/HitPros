@@ -1,0 +1,972 @@
+{{ 'el-reset.css' | asset_url | stylesheet_tag }}
+{{ 'theme-v3.css' | asset_url | stylesheet_tag }}
+{{ 'main-customers-orders.css' | asset_url | stylesheet_tag }}
+{{ 'main-customers-refund.css' | asset_url | stylesheet_tag }}
+<style>
+  .refund-detail-wrapper {
+    display: none;
+  }
+            .table-body .order-line-item-wrapper:last-child {
+              border: none;
+            }
+            .order-line-item-wrapper {
+              display: flex;
+              gap: 20px;
+            }
+            .order-line-item-wrapper .order-line-item {
+              flex: 1;
+            }
+
+            .{{ section.id }} .order-item{
+              display: flex;
+              gap: 16px;
+            }
+            .{{ section.id }} .order-main{
+              flex-grow: 1;
+              display: flex;
+              flex-direction: column;
+            }
+            .{{ section.id }} .order-action{
+              height: 50px;
+              background: #f2f2f2;
+              flex-direction: row;
+              align-items: center;
+              padding-left: 20px;
+              justify-content: space-between;
+            }
+            .{{ section.id }} .order-main-wrapper{
+              width: 100%;
+            }
+            .select-all-wrapper{
+              display: flex;
+              gap: 10px;
+            }
+            .next-btn-wrapper{
+              height: 100%;
+            }
+            .order-action .next-btn-wrapper button{
+              height: 100%;
+              border: none;
+              background:#cccccc;
+              border-radius: 0;
+              width: 120px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-weight: bold;
+              font-size: 14px;
+              color: #142A6B;
+              line-height: 21px;
+            }
+            .order-action .next-btn-wrapper button[disabled]{
+              opacity: 0.5;
+              cursor: not-allowed;
+            }
+            .refund-qty-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+
+        .order-more-info label {
+          display: block;
+          font-weight: bold;
+        }
+
+        .refund-reason {
+          width: 100%;
+          padding: 5px;
+          margin-top: 5px;
+        }
+
+        .additional-details {
+          position: relative;
+        }
+
+        textarea {
+          width: 100%;
+          height: 80px;
+          padding: 10px;
+          margin-top: 5px;
+        }
+
+        .char-count {
+          position: absolute;
+          right: 10px;
+          bottom: 10px;
+          font-size: 0.9em;
+          color: #888;
+        }
+
+    .attachment-preview {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .uploaded-image-container {
+      position: relative;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    .uploaded-image {
+      height: 80px;
+      border-radius: 2px;
+      object-fit: cover;
+      border: 1px solid #ccc;
+    }
+    .remove-attachment {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 2px 5px;
+    }
+    .order-header{
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      flex:1;
+    }
+    .order-more-info__status{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 252px;
+      padding: 14px;
+      border: 1px solid #E6E6E6;
+      border-radius: 2px;
+      margin-bottom: 20px;
+      gap:20px;
+    }
+    .order-more-info__details{
+      border: 1px solid #E6E6E6;
+      border-radius: 2px;
+      background: #F8F8F8;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 252px;
+    }
+    .order-more-info__details-item{
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+          word-wrap: break-word;
+    }
+    .order-more-info__details-item >div:first-child{
+      font-size: 12px;
+      color: #999999;
+    }
+    .order-main-delivery{
+      display: flex;
+    }
+    .order-main-delivery__left{
+      width: 10px;
+      height: 100%;
+      background: #D5DEF0;
+    }
+    .order-main-delivery__right{
+      background: #F4F8FC ;
+      flex-grow: 1;
+      padding: 20px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .order-main-delivery__right img{
+          height: 70px;
+    }
+    .order-main-delivery__id{
+      display: flex;
+    align-items: center;
+    gap: 10px;
+    }
+    .order-main-delivery__id span:first-child{
+      color: #808080 ;
+    }
+    .delivery-actions{
+      color: #808080;
+      text-decoration: underline;
+      display: flex;
+      gap: 20px;
+    }
+    .order-main-delivery__preview{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap:10px;
+      flex-direction: column;
+    }
+    .fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: pointer;
+  }
+
+  .fullscreen-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+  }
+  .delivery-preview{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .return-policy a{
+    text-decoration: underline;
+    font-size: 14px;
+    color: #1a1a1a;
+  }
+  .copy-icon{
+    cursor: pointer;
+  }
+  .attachment-list{
+    display: flex;
+    flex-wrap: wrap;
+    word-break: break-word;
+    gap: 10px;
+  }
+  .attachment-list>div{
+    cursor: pointer;
+  }
+  .statusClass_4{
+    background: #CCCCCC;
+  }
+  .order-more-info__status.statusClass_4{
+    margin-bottom: 0;
+    border: none;
+  }
+  .order-more-info__status-container:has(.statusClass_4){
+    border: 1px solid #E6E6E6;
+    margin-bottom: 20px;
+  }
+  .rejection-reason{
+    padding: 14px;
+  }
+  .rejection-reason p{
+        word-break: break-all;
+  }
+  .rejection-reason.no-reason{
+    display: none;
+  }
+  .order-more-info__status.statusClass_1{
+    background: #FEF9EC;
+  }
+  .order-more-info__status.statusClass_3{
+    background: #EEF9EC;
+  }
+  .order-more-info__status.statusClass_1 strong{
+    color: #E0A609;
+  }
+  .order-more-info__status.statusClass_3 strong{
+    color: #407238;
+  }
+  .order-cancel_button{
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end
+  }
+  .order-more-info__status-container{
+        width: 252px;
+  }
+  .order-cancel_button a{
+    border: 1px solid #142A6B;
+    border-radius: 2px;
+    color: #142A6B;
+    width: 120px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+  }
+  .order-header__container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .order-header__container>div:last-child{
+    width: 254px;
+  }
+  @media screen and (max-width: 740px) {
+       .{{ section.id }} .order-main-table{
+         padding:0;
+       }
+       .status-item p{
+         margin-left: auto;
+       }
+       .{{ section.id }} .order-main-table{
+         border: none;
+       }
+       .{{ section.id }} .order-status-wrapper{
+         margin-bottom: 15px;
+         border: 1px solid var(--my-border);
+       }
+       .{{ section.id }} .table-body{
+         border: 1px solid var(--my-border);
+         padding: 0 10px;
+       }
+       .{{ section.id }}  .order-line-item-wrapper{
+         padding: 15px 0;
+         flex-direction: column;
+       }
+       .order-status{
+         padding: 10px;
+       }
+       .order-line-item-wrapper__inner{
+         flex-direction: column;
+         gap:0;
+       }
+       .order-line-item-wrapper__inner-checkbox{
+         flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap:5px;
+       }
+       .product-detail{
+         gap: 5px;
+       }
+       .product-detail p{
+         line-height: 1.3;
+         color: #142A6B;
+       }
+       .{{ section.id }} .layout-container{
+     margin-top: 10px;
+     padding-bottom: 0;
+     display: flex;
+     flex-direction: column;
+   }
+   .order-line-item-wrapper .hidden-tablet-and-up .item-info{
+     flex-direction: row;
+     align-items: center;
+     justify-content: space-between;
+   }
+   .order-more-info__reason{
+    gap:10px;
+   }
+   .additional-details{
+    gap:10px;
+   }
+   .attachment{
+    flex-wrap: wrap;
+    gap:10px;
+   }
+   .additional-details textarea{
+    height: 100px;
+    line-height: 1.2;
+   }
+   .order-total-estimate{
+    padding: 10px 0;
+   }
+   .{{ section.id }} .order-total{
+    padding: 10px 0;
+   }
+   .{{ section.id }} .order-total>div{
+    width: 100%;
+   }
+   .order-total>div>p{
+    font-size: 14px;
+   }
+   .{{ section.id }} .order-item{
+    flex-direction: column-reverse;
+   }
+   .order-more-info__status{
+    width: 100%;
+   }
+   .order-more-info__details{
+    width: 100%;
+   }
+   .order-main-delivery{
+    flex-direction: column;
+   }
+   .order-main-delivery__left{
+    width: 100%;
+    height: 5px;
+   }
+   .order-main-delivery__right{
+    padding: 15px 10px;
+   }
+  }
+</style>
+<section id="order_section" class="order-section refund-detail-wrapper el-reset-from {{ section.id }}">
+  <div class="order-header__container">
+    <div class="order-header">
+      <div>
+        <span>Type:</span>
+        <strong>${ requestData.refundOrder?.refundType == 1 ? 'Refund Only' : 'Refund & Return' }</strong>
+      </div>
+      <div class="return-policy">
+        <a href="{{ section.settings.policy_url }}">View Policy</a>
+      </div>
+    </div>
+    <div class="hidden-phone"></div>
+  </div>
+
+  <div class="order-item" :data-id="requestData.refundOrder?.requestId">
+    
+    <div class="order-main">
+      <div class="order-main-wrapper">
+        <div class="order-main-table">
+          <div class="order-status-wrapper">
+            <div class="order-status">
+              <div class="status-item">
+                <span>Request Number:</span>
+                <p class="request-id">${ requestData.refundOrder?.requestId }</p>
+                <span class="copy-icon" @click="copyToClipboard(requestData.refundOrder?.requestId)">
+                  <svg
+                    t="1729757775593"
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="1857"
+                    width="12"
+                    height="12"
+                  >
+                    <path d="M924 862a40 40 0 0 1 0-80 20 20 0 0 0 20-20V100a20 20 0 0 0-20-20H262a20 20 0 0 0-20 20 40 40 0 0 1-80 0A100 100 0 0 1 262 0h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100z" fill="#808080" p-id="1858"></path><path d="M762 1024H100A100 100 0 0 1 0 924V262a100 100 0 0 1 100-100h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100zM100 242a20 20 0 0 0-20 20v662a20 20 0 0 0 20 20h662a20 20 0 0 0 20-20V262a20 20 0 0 0-20-20z" fill="#808080" p-id="1859"></path><path d="M431 807a40 40 0 0 1-40-40V419a40 40 0 0 1 80 0v348a40 40 0 0 1-40 40z" fill="#808080" p-id="1860"></path><path d="M605 633H257a40 40 0 0 1 0-80h348a40 40 0 0 1 0 80z" fill="#808080" p-id="1861"></path>
+                  </svg>
+                </span>
+              </div>
+              <div class="status-item">
+                <span>Related Order Number:</span>
+                <a :href="oUrl" class="order-id">${ requestData.refundOrder?.refundOrderId }</a>
+                <span class="copy-icon" @click="copyToClipboard(requestData.refundOrder?.refundOrderId)">
+                  <svg
+                    t="1729757775593"
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="1857"
+                    width="12"
+                    height="12"
+                  >
+                    <path d="M924 862a40 40 0 0 1 0-80 20 20 0 0 0 20-20V100a20 20 0 0 0-20-20H262a20 20 0 0 0-20 20 40 40 0 0 1-80 0A100 100 0 0 1 262 0h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100z" fill="#808080" p-id="1858"></path><path d="M762 1024H100A100 100 0 0 1 0 924V262a100 100 0 0 1 100-100h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100zM100 242a20 20 0 0 0-20 20v662a20 20 0 0 0 20 20h662a20 20 0 0 0 20-20V262a20 20 0 0 0-20-20z" fill="#808080" p-id="1859"></path><path d="M431 807a40 40 0 0 1-40-40V419a40 40 0 0 1 80 0v348a40 40 0 0 1-40 40z" fill="#808080" p-id="1860"></path><path d="M605 633H257a40 40 0 0 1 0-80h348a40 40 0 0 1 0 80z" fill="#808080" p-id="1861"></path>
+                  </svg>
+                </span>
+              </div>
+              <div class="status-item">
+                <span>Request Date:</span>
+                <p>${ formatDate(+requestData.refundOrder?.createTimestamp) }</p>
+              </div>
+            </div>
+          </div>
+          <div class="skeleton-wrapper" v-if="isFetching">
+          <el-skeleton :rows="6" :animated="true" />
+        </div>
+          <div class="table-body">
+            <div
+              v-for="(order, index) in requestData.orderSkus"
+              :key="order.id"
+              class="order-line-item-wrapper"
+              :data-variant="order.variant_id"
+            >
+              <div
+                class="order-line-item layout-container"
+              >
+                <div class="product-info-wrapper">
+                  <span class="title hidden-phone">ITEM # ${ index+1 }</span>
+                  <div class="product-info">
+                    <div class="product-img">
+                      <img
+                        :src="order.skuImg"
+                        alt="Product Image"
+                      >
+                    </div>
+                    <div class="product-detail">
+                      <span class="title hidden-tablet-and-up">ITEM # ${ index+1 }</span>
+                      <p class="ellipsis3 product-title">
+                        <a :href="order.skuInfoUrl">${ order.skuTitle }</a>
+                      </p>
+                      <span class="product-sku">MODEL: ${ order.skuModel } </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="hidden-phone item-info">
+                  <span class="title">REFUND QTY</span>
+                  <span>${ order.skuCount }</span>
+                </div>
+                <div class="hidden-phone item-info">
+                  <span class="title">REFUND AMOUNT</span>
+                  <span> ${ getCurrencySymbol(order.currencyType) } ${ order.skuPrice } </span>
+                </div>
+              </div>
+            </div>
+            <div class="order-total">
+              <div>
+                <span>Total Amount:</span>
+                <p>
+                  ${ requestData.refundOrder?.currencyType } ${ getCurrencySymbol(requestData.refundOrder?.currencyType)
+                  } ${ requestData.refundOrder?.refundAmount }
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="requestData.refundOrder?.status == 1"
+          class="order-cancel_button"
+        >
+          <a
+            href="javascript:void(0);"
+            @click="cancelRequest(requestData.refundOrder?.requestId,requestData.refundOrder?.status)"
+            >Cancel</a
+          >
+        </div>
+      </div>
+      <div class="order-main-delivery" v-if="requestData.refundOrderDelivery">
+        <div class="order-main-delivery__left"></div>
+        <div class="order-main-delivery__right">
+          <div class="order-main-delivery__id">
+            <span>Tracking Number:</span>
+            <span>${ requestData.refundOrderDelivery?.deliveryNo }</span>
+            <span class="copy-icon" @click="copyToClipboard(requestData.refundOrderDelivery?.deliveryNo)">
+              <svg
+                t="1729757775593"
+                class="icon"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                p-id="1857"
+                width="12"
+                height="12"
+              >
+                <path d="M924 862a40 40 0 0 1 0-80 20 20 0 0 0 20-20V100a20 20 0 0 0-20-20H262a20 20 0 0 0-20 20 40 40 0 0 1-80 0A100 100 0 0 1 262 0h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100z" fill="#808080" p-id="1858"></path><path d="M762 1024H100A100 100 0 0 1 0 924V262a100 100 0 0 1 100-100h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100zM100 242a20 20 0 0 0-20 20v662a20 20 0 0 0 20 20h662a20 20 0 0 0 20-20V262a20 20 0 0 0-20-20z" fill="#808080" p-id="1859"></path><path d="M431 807a40 40 0 0 1-40-40V419a40 40 0 0 1 80 0v348a40 40 0 0 1-40 40z" fill="#808080" p-id="1860"></path><path d="M605 633H257a40 40 0 0 1 0-80h348a40 40 0 0 1 0 80z" fill="#808080" p-id="1861"></path>
+              </svg>
+            </span>
+          </div>
+          <div class="order-main-delivery__preview">
+            <div
+              v-for="(order, index) in requestData.refundOrderDelivery?.fileUrl"
+              :key="index"
+              class="delivery-preview"
+            >
+              <template v-if="isImage(order)">
+                <!-- 渲染图片缩略图 -->
+                <img :src="order" alt="图片预览">
+                <div class="delivery-actions">
+                  <a href="javascript:void(0);" @click="viewImage(order)">View</a>
+                  <a :href="order" download="image.jpg" target="_blank">Download</a>
+                </div>
+              </template>
+              <template v-else>
+                <!-- 根据文件类型显示不同的图标 -->
+                <div class="file-icon" v-html="getFileIcon(order)"></div>
+                <div class="delivery-actions">
+                  <a :href="order" download target="_blank">Download</a>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+        <!-- 全屏预览弹窗 -->
+        <div v-if="showFullScreen" class="fullscreen-overlay" @click="closeFullScreen">
+          <img :src="fullScreenImage" class="fullscreen-image" alt="Full Screen Image">
+        </div>
+      </div>
+    </div>
+    
+    <div class="order-more-info">
+      <div class="order-more-info__status-container">
+        <div class="order-more-info__status" :class="statusClass">
+          <span>STATUS</span>
+          <strong>${ getStatusText(requestData.refundOrder?.status) }</strong>
+        </div>
+        <div
+          class="rejection-reason"
+          :class="rejctClass(requestData.refundOrder?.commentForCustomer)"
+        >
+          <p>${ requestData.refundOrder?.commentForCustomer }</p>
+        </div>
+
+       
+      </div>
+      <div class="order-more-info__details">
+        <div v-if="requestData.refundOrder?.refundType" class="order-more-info__details-item">
+          <div>REASON</div>
+          <div>${ requestData.refundOrder?.refundReason }</div>
+          
+        </div>
+        <div v-if="requestData.refundOrder?.refundReasonDescription" class="order-more-info__details-item">
+          <div>ADDITIONAL DETAILS</div>
+          <div>${ requestData.refundOrder?.refundReasonDescription }</div>
+        </div>
+        <!--
+          <div class="order-more-info__details-item">
+              <div>ADDITIONAL DETAILS</div>
+          </div>
+        -->
+        <div v-if="requestData.refundOrder?.refundFileUrl.length" class="order-more-info__details-item">
+          <div>ATTACHMENT</div>
+          <div class="attachment-list">
+            <div v-for="(fileUrl, index) in requestData.refundOrder?.refundFileUrl" :key="index">
+              <div v-if="isImage(fileUrl)">
+                <!-- 显示图片缩略图，点击跳转查看大图 -->
+                <a :href="fileUrl" target="_blank">
+                  <img :src="fileUrl" alt="图片预览" style="width: 100px; height: auto; cursor: pointer;">
+                </a>
+              </div>
+              <div v-else>
+                <!-- 显示非图片文件的图标，点击下载文件 -->
+                <a :href="fileUrl" download>
+                  <div v-html="getFileIcon(fileUrl)" class="file-icon"></div>
+                  <!-- 替换为实际的图标样式 -->
+                  <!-- <p>${ getFileName(fileUrl) }</p> -->
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  (() => {
+    new Vue({
+      el: '#order_section',
+      delimiters: ['${', '}'],
+      data() {
+        return {
+          isFetching: true,
+          requestData: {},
+          param: null,
+          orderId: 0,
+          refundQty: 1, // 初始值设置为 1
+          refundAmount: 0,
+          orderItems: [],
+          orderMain: {},
+          refundReason: '',
+          ordersItemsIds: [],
+          params: {},
+          oUrl:'',
+          refundFileUrl: [],
+          attachmentPreviewUrls: [],
+          currencySymbols: {
+            USD: '$', // 美元
+            EUR: '€', // 欧元
+            GBP: '£', // 英镑
+            JPY: '¥', // 日元
+            CNY: '¥', // 人民币
+            AUD: '$', // 澳大利亚元
+            CAD: '$', // 加拿大元
+            CHF: 'CHF', // 瑞士法郎
+            NZD: '$', // 新西兰元
+            INR: '₹', // 印度卢比
+            RUB: '₽', // 俄罗斯卢布
+            KRW: '₩', // 韩元
+            SGD: '$', // 新加坡元
+            HKD: '$', // 港元
+            SEK: 'kr', // 瑞典克朗
+            NOK: 'kr', // 挪威克朗
+            TRY: '₺', // 土耳其里拉
+            MXN: '$', // 墨西哥比索
+            BRL: 'R$', // 巴西雷亚尔
+            ZAR: 'R', // 南非兰特
+          },
+          showFullScreen: false, // 控制全屏弹窗显示
+          fullScreenImage: '', // 存储当前点击的图片 URL
+        };
+      },
+      async mounted() {
+        if(!'{{ customer.email }}') {
+          window.location.href = '/404'
+          return
+        }
+        $('.refund-detail-wrapper').show();
+        const orderId = window.location.href.split('=')[1];
+        const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
+        const resHeader = await responseHeader.json();
+        const headersData = resHeader.data;
+        try {
+          const response = await fetch('https://app.northskysupply.com/web/openapi/shopify/refund/info', {
+            method: 'POST',
+            body: JSON.stringify({
+              requestId: orderId,
+              userEmail: '{{ customer.email }}'
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+              ...headersData, // Spread the headersData object into the headers
+            },
+          })
+          const res = await response.json();
+          if(res.msg == 'success') {
+            const imgsData = res.data.orderSkus.map(async (item) => {
+              const imgData = await fetch(`https://app.northskysupply.com/web/product/featured-image?sku=${item.skuCode}`)
+              const imgDataRes = await imgData.json();
+              return {
+                sku: item.skuCode,
+                img: imgDataRes.data.img
+              }
+            })
+            const imgsRes = await Promise.all(imgsData);
+            res.data.orderSkus.map(item => {
+              item.skuImg = imgsRes.find(skuData => skuData.sku == item.skuCode).img;
+            })
+            this.requestData = res.data;
+            this.getOrderId(this.requestData.refundOrder?.refundOrderId).then(oId => {
+              this.oUrl = '/pages/order-details?id='+oId
+            }).catch(error => {
+              console.error('Failed to get order ID', error);
+            });
+            this.isFetching = false;
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      },
+      watch: {
+        orderItems(newVal) {
+          // 当 orderItems 有值时，确保操作 DOM 元素
+          if (newVal.length > 0) {
+            this.$nextTick(() => {
+              let orders = window.location.href.split('=').slice(2);
+              if (orders.length > 0) {
+                orders = orders.map((item) => Number(item.split('&')[0]));
+                this.ordersItemsIds = orders;
+                $('.order-line-item-wrapper').each(function () {
+                  let variant = Number($(this).data('variant'));
+                  if (!orders.includes(variant)) {
+                    $(this).attr('data-visible', 'false'); // 设置为隐藏
+                    $(this).remove();
+                  } else {
+                    $(this).attr('data-visible', 'true'); // 设置为显示
+                  }
+                });
+                this.$nextTick(() => {
+                  this.calculateTotalRefundAmount(); // 页面加载完成后，计算总退款金额
+                });
+              }
+            });
+          }
+        },
+      },
+      computed: {
+        filteredOrderItems() {
+          let orders = window.location.href.split('=').slice(2);
+          if (orders.length > 0) {
+            orders = orders.map((item) => Number(item.split('&')[0]));
+            // 筛选出符合条件的 orderItems
+            return this.orderItems.filter((item) => orders.includes(item.variant_id));
+          }
+          return [];
+        },
+        statusClass() {
+          return `statusClass_${this.requestData.refundOrder?.status}`;
+        },
+      },
+      methods: {
+        calculateTotalRefundAmount() {
+          let totalRefundAmount = 0;
+          const currencySymbol = this.currencySymbols[this.orderMain.currency] || '$';
+          this.filteredOrderItems.forEach((item) => {
+            const numericRefundAmount = parseFloat(
+              item.refundAmount.replace(currencySymbol, '').replace(/[^0-9.]/g, '')
+            );
+            // 累加到 totalRefundAmount
+            if (!isNaN(numericRefundAmount)) {
+              totalRefundAmount += numericRefundAmount;
+            }
+          });
+          // 更新总退款金额的绑定
+          this.refundAmount = `${this.orderMain.currency} ${currencySymbol}${totalRefundAmount.toFixed(2)}`;
+        },
+
+        formatDate(dateString) {
+          const localTime = new Date(dateString);
+          // 格式化月份（缩写并加点）
+          const monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
+          const month = monthNames[localTime.getMonth()];
+          // 格式化日期和年份
+          const day = localTime.getDate();
+          const year = localTime.getFullYear();
+          // 格式化小时（12 小时制）
+          let hours = localTime.getHours();
+          const period = hours >= 12 ? 'PM' : 'AM';
+          hours = hours % 12 || 12; // 转为 12 小时制
+          const minutes = String(localTime.getMinutes()).padStart(2, '0');
+          const seconds = String(localTime.getSeconds()).padStart(2, '0');
+          // 返回格式化后的日期字符串
+          return `${month} ${day}, ${year} at ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${period}`;
+        },
+        getCurrencySymbol(currencyType) {
+          return this.currencySymbols[currencyType] || 'Unknown Currency';
+        },
+        getStatusText(status) {
+          switch (status) {
+            case 1:
+              return 'Auditing';
+            case 2:
+              return 'Pending shipping label creation';
+            case 4:
+              return 'Rejected';
+            case 3:
+              return 'Approved';
+            case 5:
+              return 'Cancelled';
+            default:
+              return 'Unknown Status';
+          }
+        },
+        viewImage(imageUrl) {
+          this.fullScreenImage = imageUrl;
+          this.showFullScreen = true;
+        },
+        closeFullScreen() {
+          this.showFullScreen = false;
+          this.fullScreenImage = '';
+        },
+        copyToClipboard(name) {
+          if (name) {
+            const el = document.createElement('textarea');
+            el.value = name;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            this.$message({
+              message: 'Copied to clipboard',
+              type: 'success',
+            });
+          }
+        },
+        isImage(fileUrl) {
+          return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(fileUrl);
+        },
+        getFileIcon(fileUrl) {
+          if (/\.(doc|docx)$/i.test(fileUrl)) {
+            return `<svg t="1731392215850" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1090" width="50" height="50"><path d="M535.119473 0h69.599248v95.247413C729.226717 96.331138 853.614299 93.92286 977.881468 96.331138a40.459078 40.459078 0 0 1 44.914393 45.516463c2.047037 234.566322 0 469.614299 1.204139 703.819379-1.204139 24.082785 2.287865 50.694262-11.318909 72.248354-16.978363 12.041392-38.893697 10.837253-58.761994 12.041392h-349.200376V1023.518344h-72.248354C354.980245 990.886171 177.490122 960.541863 0 928.752587V95.488241C178.33302 63.578551 356.786453 32.511759 535.119473 0z" fill="#2A5699" p-id="1091"></path><path d="M604.718721 131.010348H988.598307v761.979304H604.718721v-95.247413h302.479774v-48.165569H604.718721v-59.002822h302.479774v-48.16557H604.718721v-59.002822h302.479774v-48.165569H604.718721v-60.206961h302.479774V428.673565H604.718721v-60.206961h302.479774v-46.96143H604.718721v-59.604892h302.479774V214.336783H604.718721zM240.827846 341.373471c22.156162-1.324553 44.19191-2.287865 66.348071-3.492003 15.533396 80.4365 31.30762 160.632173 48.165569 240.827845 13.125118-82.724365 27.695202-165.087488 41.783632-247.571025 23.239887-0.842897 46.479774-2.167451 69.719661-3.612418-26.370649 115.356538-49.369708 231.796802-78.148636 346.430856-19.386642 10.355597-48.165569 0-71.52587 1.204139C301.034807 596.169332 283.093133 517.779868 269.245532 438.667921c-13.606773 76.944497-31.30762 153.16651-46.841016 229.508937-22.39699-1.204139-44.793979-2.528692-67.311383-4.094073-19.266228-104.760113-42.024459-208.918156-60.206962-313.919097 19.868297-0.963311 39.857008-1.806209 60.206962-2.528693 12.041392 75.860771 25.648166 151.360301 36.124177 227.341487 16.135466-77.907808 32.873001-155.695202 49.610536-233.603011z" fill="#FFFFFF" p-id="1092"></path></svg>`; // Word文件的图标样式
+          } else if (/\.(xls|xlsx)$/i.test(fileUrl)) {
+            return `<svg t="1731391554679" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1339" width="50" height="50"><path d="M535.601129 0h68.997178v95.247413h349.200376c19.747883 0.842897 41.301976 0 58.400753 12.041392 12.041392 17.580433 10.596425 39.977422 12.041392 60.206962q-0.963311 310.186265 0 619.890875c0 34.67921 3.130762 70.080903-3.97366 104.158043-4.575729 24.805268-33.715898 25.407338-53.10254 26.250235H605.32079V1023.518344h-72.248353C355.100659 991.006585 177.490122 960.541863 0 928.752587V95.367827C178.573848 63.578551 357.147695 32.270931 535.601129 0z" fill="#207245" p-id="1340"></path><path d="M604.598307 131.010348h383.879586v750.058326H604.598307v-71.405457h93.079962v-83.326434h-93.079962v-48.165569h93.079962v-82.844779h-93.079962v-47.5635h93.079962v-83.446848h-93.079962v-48.16557h93.079962v-82.724365h-93.079962v-48.165569h93.079962v-82.844779h-93.079962z" fill="#FFFFFF" p-id="1341"></path><path d="M744.278457 202.415804h162.799624v83.326435H744.278457z" fill="#207245" p-id="1342"></path><path d="M344.504233 314.039511q39.616181-2.889934 79.111948-4.936971-46.600188 97.655691-93.802446 195.190969c31.90969 66.588899 64.662277 132.455315 96.331138 199.52587l-84.289746-5.418626c-19.747883-49.73095-43.830668-97.655691-58.039511-149.674507-15.774224 48.165569-38.412041 94.043274-56.594544 141.365946-25.407338 0-50.935089-1.444967-76.342427-2.528692 29.862653-60.206961 58.761994-120.413923 89.587959-179.777987-26.250235-61.290687-54.908749-121.377234-81.881468-182.427093l76.703669-4.455316c17.339605 46.600188 36.124177 92.477893 50.573848 140.282221 16.135466-50.694262 39.254939-98.257761 58.64158-147.145814z" fill="#FFFFFF" p-id="1343"></path><path d="M744.278457 333.426152h162.799624v83.326435H744.278457zM744.278457 464.316087h162.799624v83.446848H744.278457zM744.278457 595.326435h162.799624v83.326434H744.278457zM744.278457 726.336783h162.799624v83.326434H744.278457z" fill="#207245" p-id="1344"></path></svg>`; // Excel文件的图标样式
+          } else if (/\.(pdf)$/i.test(fileUrl)) {
+            return `<svg t="1731392271323" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1301" width="50" height="50"><path d="M535.198324 0h69.53853v95.276816c124.175945 0.677323 248.351891-1.354647 373.205159 0.677324a40.6394 40.6394 0 0 1 45.154889 45.154889c1.919083 234.579649 0 469.272186 1.128872 703.851835-1.128872 24.044979 2.257744 50.686363-11.288722 72.022049-17.045971 12.417595-38.946092 11.288722-58.814243 11.288722H604.962628v95.276816h-72.925146C354.917429 990.924044 177.458715 960.557381 0 928.723184V95.502591C178.361812 63.555507 356.836512 32.51152 535.198324 0z" fill="#A33639" p-id="1302"></path><path d="M604.736854 130.949179h383.816558v762.101642h-383.816558v-95.276816h302.42487v-47.638408H604.736854v-59.491567h302.42487V643.457171H604.736854v-60.056002h302.42487v-47.638409H604.736854v-59.491566h302.42487V428.971447H604.736854v-59.830228h302.42487v-47.638408H604.736854V261.898357h302.42487v597.17341H604.736854z" fill="#FFFFFF" p-id="1303"></path><path d="M645.489141 529.66685h302.424871v47.638409H645.489141zM645.489141 611.510087h302.424871v47.638408H645.489141zM645.489141 693.353324h302.424871v47.638408H645.489141zM596.383199 775.19656h351.530813v47.638409H596.383199z" fill="#A33639" p-id="1304"></path><path d="M180.619557 317.325984c59.265792 2.822181 130.949179-24.044979 180.619557 21.335685 46.961085 58.475582 34.54349 165.831331-35.107927 200.713483-24.722302 12.982031-53.169882 11.288722-80.037041 10.272737v130.949179L180.619557 675.065594c-0.903098-119.208908-1.128872-238.530702 0-357.73961z" fill="#FFFFFF" p-id="1305"></path><path d="M245.642597 377.720648c21.448572-1.015985 48.089957-5.079925 62.539522 15.578437a82.407673 82.407673 0 0 1 1.467534 73.263808c-12.417595 22.577445-40.526513 20.771249-62.313747 23.367655-2.257744-37.365671-2.03197-74.731342-1.693309-112.2099zM885.713152 379.865505a83.988094 83.988094 0 0 1-48.315732-19.642376 460.57987 460.57987 0 0 0-77.666409 24.835189c-20.3197 36.011024-39.171866 54.411641-55.540514 54.411641a17.384632 17.384632 0 0 1-9.821188-2.596406 19.416602 19.416602 0 0 1-11.288723-17.723294c0-5.870136 1.354647-22.577445 63.329733-49.105942a467.917539 467.917539 0 0 0 34.656377-81.278801c-7.902106-15.691324-24.835189-54.298754-13.094918-73.941131a20.658362 20.658362 0 0 1 20.206813-10.498511 21.900121 21.900121 0 0 1 17.045971 8.466541c8.466542 11.288722 7.789218 36.688347-3.27373 73.376695A196.988204 196.988204 0 0 0 842.70312 338.661669a221.14607 221.14607 0 0 1 41.090949-4.515489c30.705325 0.677323 35.333701 15.014001 34.656377 23.59343 0 22.577445-21.56146 22.577445-32.624407 22.577444z m-185.022159 42.106935l2.257745-0.564436a45.154889 45.154889 0 0 0 23.932091-16.820197 56.443612 56.443612 0 0 0-26.189836 17.384633z m93.357734-200.261934h-2.144858a4.402602 4.402602 0 0 0-2.82218 0.677323 52.492559 52.492559 0 0 0 4.176827 33.866167 53.282769 53.282769 0 0 0 0.790211-34.54349zM790.210561 317.551758v1.24176l-0.677323-0.677324c-5.418587 14.336677-11.288722 28.44758-18.061956 42.332709l1.128872-0.677323V361.239114A346.338 346.338 0 0 1 812.788006 348.595745l-0.677324-0.564436h1.806196a196.310881 196.310881 0 0 1-23.706317-30.479551z m94.599493 34.769265a66.151913 66.151913 0 0 0-18.174843 1.693308 50.686363 50.686363 0 0 0 20.997024 6.660347 26.076949 26.076949 0 0 0 13.885128-1.580422c-0.451549-2.596406-3.273729-6.773233-17.158858-6.773233z" fill="#A33639" p-id="1306"></path></svg>`;
+          } else if (/\.(mp4)$/i.test(fileUrl)) {
+            return `<svg t="1731901529367" class="icon" viewBox="0 0 1365 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1506" width="50" height="50"><path d="M256.006827 42.669796a42.666382 42.666382 0 1 1 85.332764 0v938.660408a42.666382 42.666382 0 1 1-85.332764 0zM554.671502 383.147526c0-23.039846 16.213225-33.279778 37.546417-23.039847l227.838481 114.345905c41.813055 21.333191 40.959727 55.466297 0 75.94616l-33.279778 17.066553-193.705376 96.426024c-21.333191 10.239932-38.399744 0-38.399744-23.039847z" fill="#333333" p-id="1507"></path><path d="M0.008533 384.000853A41.813055 41.813055 0 0 1 41.821588 341.334471h255.998293a42.666382 42.666382 0 0 1 43.51971 42.666382 41.813055 41.813055 0 0 1-41.813054 42.666383h-255.998294A42.666382 42.666382 0 0 1 0.008533 384.000853zM0.008533 639.999147A41.813055 41.813055 0 0 1 41.821588 597.332764h255.998293a42.666382 42.666382 0 0 1 43.51971 42.666383 41.813055 41.813055 0 0 1-41.813054 42.666382h-255.998294A42.666382 42.666382 0 0 1 0.008533 639.999147zM1024.001707 384.000853a41.813055 41.813055 0 0 1 41.813054-42.666382h255.998294a42.666382 42.666382 0 0 1 41.813054 42.666382 41.813055 41.813055 0 0 1-41.813054 42.666383h-255.998294a42.666382 42.666382 0 0 1-41.813054-42.666383zM1024.001707 639.999147a41.813055 41.813055 0 0 1 41.813054-42.666383h255.998294a42.666382 42.666382 0 0 1 41.813054 42.666383 41.813055 41.813055 0 0 1-41.813054 42.666382h-255.998294a42.666382 42.666382 0 0 1-41.813054-42.666382z" fill="#333333" p-id="1508"></path><path d="M1024.001707 42.669796a42.666382 42.666382 0 1 1 85.332764 0v938.660408a42.666382 42.666382 0 1 1-85.332764 0z" fill="#333333" p-id="1509"></path><path d="M1262.933447 0.003413H102.407851A101.54599 101.54599 0 0 0 0.008533 101.549403v820.047866A103.252645 103.252645 0 0 0 102.407851 1023.996587h1160.525596a101.54599 101.54599 0 0 0 102.399318-101.54599V101.549403A103.252645 103.252645 0 0 0 1262.933447 0.003413z m17.066553 870.394198a68.266212 68.266212 0 0 1-67.412884 68.266211H152.754182a68.266212 68.266212 0 0 1-67.412884-68.266211V153.602389a68.266212 68.266212 0 0 1 67.412884-68.266211h1059.832934a68.266212 68.266212 0 0 1 67.412884 68.266211z" fill="#333333" p-id="1510"></path></svg>`;
+          } 
+          else {
+            return 'icon-default'; // 其他文件的默认图标样式
+          }
+        },
+        getFileName(fileUrl) {
+          const fileName = fileUrl.split('/').pop();
+          return fileName.split('?')[0];
+        },
+        cancelRequest(orderId, status) {
+          if (status === 1 || status === 2) {
+            //阻止父元素事件冒泡
+            event.stopPropagation();
+ 
+            // 如果用户输入了取消原因，调用接口取消订单
+            this.cancelOrderRequest(orderId)
+            .then(() => {
+              // 刷新页面
+              window.location.reload();
+            })
+            .catch(() => {
+              // 失败时弹出失败提示框
+              this.$message({
+                message: 'Cancel order request failed',
+                type: 'error',
+              });
+            });
+
+          } else {
+            return false;
+          }
+        },
+        //更具ordername获取orderid
+        async getOrderId(orderName) {
+          try {
+            const res = await fetch('https://app.northskysupply.com/web/order?orderName='+orderName, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+
+            if (!res.ok) {
+              throw new Error(`Error: ${res.status} - ${res.statusText}`);
+            }
+            if (res.status === 200) {
+             const data = await res.json();
+            return data.data.orderId.match(/\d+$/)[0];
+            
+            }
+            
+          } catch (error) {
+            console.error('Request failed', error);
+          }
+        },
+        async cancelOrderRequest(orderId) {
+          try {
+            const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
+            const resHeader = await responseHeader.json();
+            const headersData = resHeader.data;
+            const res = await fetch('https://app.northskysupply.com/web/openapi/shopify/refund/cancel', {
+              method: 'POST',
+              body: JSON.stringify({
+                requestId: orderId,
+                userEmail: '{{ customer.email }}'
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+                ...headersData
+              },
+            });
+
+            if (!res.ok) {
+              throw new Error(`Error: ${res.status} - ${res.statusText}`);
+            }
+            if (res.status === 200) {
+              this.$message({
+                message: 'Cancel order request success',
+                type: 'success',
+              });
+            }
+            const data = await res.json();
+            return data;
+          } catch (error) {
+            console.error('Request failed', error);
+          }
+        },
+        rejctClass(comment) {
+          if (!comment) {
+            return 'no-reason';
+          }
+        },
+      },
+    });
+  })();
+</script>
+{% schema %}
+{
+  "name": "Refund Detail",
+  "class": "shopify-section--main-customers-order container",
+  "settings": [
+    {
+      "type": "url",
+      "id": "policy_url",
+      "label": "Policy URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "refund-detail"
+    }
+  ]
+}
+{% endschema %}

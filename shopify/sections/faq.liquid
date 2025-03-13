@@ -1,0 +1,202 @@
+
+<style>
+  .section_faqs{
+    background: #fff;
+    padding: 32px 0 32px 0;
+  }
+  .section_faqs .description{
+    font-weight: 400;
+    font-size: 12px;
+    color: #ABABAB;
+    
+  }
+  .section_faqs .faqs-content{
+    display: grid;
+    -webkit-display: grid;
+  }
+  .section_faqs .faqs-content .faqs{
+    border: 1px solid #CCCCCC;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  .section_faqs .faqs-content .faqs:active{
+    border: 1px solid #132A6A;
+    background: #fff;
+  }
+  .section_faqs .faqs-content .faqs:active .faq_title{
+    text-decoration: underline;
+  }
+  .section_faqs .faqs-content .faqs:hover{
+    border: 1px solid #132A6A;
+  }
+  .section_faqs .faqs-content .faqs:hover .faq_title{
+    text-decoration: underline;
+  }
+  .section_faqs .faqs-content .faq_title{
+    font-weight: 400;
+    color: #132A6A;
+  }
+
+  #shopify-section-{{ section.id }} .desc .head_title{
+    font-weight: 600;
+    color: #142A6B;
+    margin-bottom: 0;
+  }
+  @media screen and (min-width:1300px) {
+    .section_faqs .faqs-content{
+      grid-template-columns: repeat(4,1fr);
+      grid-gap: 16px;
+      padding: 0 32px;
+    }
+    .section_faqs .faqs-content .faqs{
+      padding: 14%;
+    }
+  }
+  @media screen and (min-width:1000px) and (max-width:1299px){
+    .section_faqs .faqs-content{
+      grid-template-columns: repeat(3,1fr);
+      grid-gap: 16px;
+      padding: 0 32px;
+    }
+    .section_faqs .faqs-content .faqs{
+      padding: 10%;
+    }
+  }
+  @media screen and (min-width:1000px){
+    #shopify-section-{{ section.id }} .desc{
+      border-radius: 2px;
+      border: 1px solid rgba(204, 204, 204, 0.5);
+     
+    }
+    .page-page-faq{
+      background: #F7F7F7;
+    }
+    #shopify-section-{{ section.id }} .desc .head_title{
+      background: #F4F8FC;
+      font-size: 16px;
+      line-height: 32px;
+      padding: 10px 16px;
+      text-transform: uppercase;
+    }
+    .section_faqs .description{
+      padding:0 16px 32px;
+    }
+    .section_faqs .faqs-content .faq_title{
+      padding-left: 16px;
+    }
+    #shopify-section-{{ section.id }} .content{
+      padding-bottom: 32px;
+    }
+  }
+  @media screen and (max-width:999px){
+    .section_faqs .faqs-content{
+      grid-template-columns: repeat(2,1fr);
+      grid-gap: 8px;
+    }
+    .section_faqs .faqs-content .faqs{
+      padding: 40px 10px;
+      flex-direction: column;
+    }
+    .section_faqs .faqs-content .icon{
+      display: flex;
+    }
+    .section_faqs .faqs-content .faq_title{
+      font-size: 14px !important;
+      text-align: center;
+      padding-top: 18px;
+    }
+    .section_faqs .description{
+      padding:0 0 16px;
+    }
+    .section_faqs .faqs-content .icon svg{
+      width: 60px;
+      height: 60px;
+    }
+    .section_faqs{
+      padding: 16px 0 0;
+      margin-bottom: 0;
+    }
+    #shopify-section-{{ section.id }} .desc{
+      margin-bottom: 42px;
+    }
+    #shopify-section-{{ section.id }} .desc .head_title{
+      text-transform: capitalize;
+      font-size: 24px;
+      line-height: 28px;
+    }
+  }
+</style>
+
+
+<section class="section {% if template.name == 'page' and template.suffix contains 'faq' %}section--tight{% endif %} {% unless blends_with_background %}section--flush{% endunless %}">
+  <div class="content">
+    <div class="container">
+      <div class="desc">
+        <h4 class="head_title">{{ section.settings.title }}</h4>
+        <div class="section_faqs">
+          {% if section.settings.description != blank %}
+            <div class="description my-16">{{section.settings.description}}</div>
+          {% endif %}
+          <div class="faqs-content">
+            {% for block in section.blocks %}
+              <a class="faqs" href="{{block.settings.link}}">
+                <div class="icon">{{block.settings.icon}}</div>
+                <div class="faq_title my-18">{{block.settings.title}}</div>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "class": "shopify-section--faq",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "FAQ"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "description"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+            "type": "textarea",
+            "id": "icon",
+            "label": "icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "link",
+          "label": "link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ"
+    }
+  ]
+}
+{% endschema %}

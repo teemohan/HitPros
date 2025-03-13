@@ -1,0 +1,69 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "show_title": false,
+        "page_width": "medium"
+      }
+    },
+    "faq_details_J89L9A": {
+      "type": "faq-details",
+      "blocks": {
+        "message_D6Bfak": {
+          "type": "message",
+          "settings": {
+            "question": "How do I place an order?",
+            "answer": "<p>Visit Track Order to check the status of an order at any time.<br\/><br\/>Skyline dispatches many items within 1 business day from when the order is placed. However, certain items may take longer to process. Look for the shipping information located on the product page to see when a specific item is expected to ship. *Note: Some products will also include an \"Expected Arrival\" time frame. <br\/><br\/>Upon the shipment of an item, an email notification will be sent with the tracking number and an estimated delivery date. Once shipped, most items are delivered within 2-5 business days.<\/p>"
+          }
+        },
+        "message_N46KBC": {
+          "type": "message",
+          "settings": {
+            "question": "Where do you ship from?",
+            "answer": "<p>Visit Track Order to check the status of an order at any time.<br\/><br\/>Skyline dispatches many items within 1 business day from when the order is placed. However, certain items may take longer to process. Look for the shipping information located on the product page to see when a specific item is expected to ship. *Note: Some products will also include an \"Expected Arrival\" time frame. <br\/><br\/>Upon the shipment of an item, an email notification will be sent with the tracking number and an estimated delivery date. Once shipped, most items are delivered within 2-5 business days.<\/p>"
+          }
+        },
+        "message_mUT4Wx": {
+          "type": "message",
+          "settings": {
+            "question": "How can I expedite my shipment?",
+            "answer": "<p>Visit Track Order to check the status of an order at any time.<br\/><br\/>Skyline dispatches many items within 1 business day from when the order is placed. However, certain items may take longer to process. Look for the shipping information located on the product page to see when a specific item is expected to ship. *Note: Some products will also include an \"Expected Arrival\" time frame. <br\/><br\/>Upon the shipment of an item, an email notification will be sent with the tracking number and an estimated delivery date. Once shipped, most items are delivered within 2-5 business days.<\/p>"
+          }
+        },
+        "message_FqUrw6": {
+          "type": "message",
+          "settings": {
+            "question": "Can I select my own shipping company and use my own account?",
+            "answer": "<p>Visit Track Order to check the status of an order at any time.<br\/><br\/>Skyline dispatches many items within 1 business day from when the order is placed. However, certain items may take longer to process. Look for the shipping information located on the product page to see when a specific item is expected to ship. *Note: Some products will also include an \"Expected Arrival\" time frame. <br\/><br\/>Upon the shipment of an item, an email notification will be sent with the tracking number and an estimated delivery date. Once shipped, most items are delivered within 2-5 business days.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "message_D6Bfak",
+        "message_N46KBC",
+        "message_mUT4Wx",
+        "message_FqUrw6"
+      ],
+      "settings": {
+        "heading": "Ordering",
+        "icon": "<svg t=\"1731467984396\" class=\"icon\" viewbox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" p-id=\"2425\" width=\"50\" height=\"50\"><path d=\"M508.778 26.228c-269.053 0-487.942 218.891-487.942 487.942s218.891 487.942 487.942 487.942 487.942-218.877 487.942-487.93-218.891-487.956-487.942-487.956zM687.241 769.57c-172.769 0-429.534-274.05-429.534-417.997 0-57.549 49.616-96.489 91.027-96.489 43.787 0 118.415 126.279 118.415 152.986 0 18.814-8.124 32.126-14.637 42.831-5.066 8.301-8.055 13.489-8.383 19.47 6.718 21.012 85.333 99.396 107.534 107.287 5.899-0.518 13.366-4.41 21.259-8.519 12.37-6.445 27.771-14.473 46.586-14.473 30.078 0 158.748 83.927 158.748 118.429 0.014 65.604-37.37 96.475-91.013 96.475z\" fill=\"#142A6B\" p-id=\"2426\"><\/path><\/svg>",
+        "title": "Still have questions?",
+        "contact_information": "<p>Northsky Supply customer <br\/>serviceteam is here to help.<br\/><br\/>Phone: (855)289-9689<br\/>Email: 395579414@mail.com<br\/><br\/>Monday - Friday: 6am - 9am(CT)<br\/>Saturday: 7am - 5pm(CT)<\/p><p><a href=\"\/pages\/contact-us\" title=\"contact us\">Contcat Us<\/a><\/p>"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq_details_J89L9A"
+  ]
+}

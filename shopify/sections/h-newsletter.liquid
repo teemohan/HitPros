@@ -1,0 +1,108 @@
+{{ 'h-newsletter.css' | asset_url | stylesheet_tag }}
+
+<div class="container">
+  <div class="h-newsletter">
+    <div class="h-newsletter-text-wrapper">
+      <div class="h-newsletter-text-inner">
+        {%- render 'icon' with 'newsletter-email' -%}
+        <div class="h-newsletter-text">
+          <div class="h-newsletter-title">{{ section.settings.title }}</div>
+          <div class="h-newsletter-tip hidden-pocket">{{ section.settings.tip }}</div>
+        </div>
+      </div>
+      {%- form 'customer', id: 'form-newsletter', class: 'footer__newsletter-form form' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="form__banner banner banner--success">
+            <span class="banner__ribbon">{% render 'icon' with 'form-success' %}</span>
+            <p class="banner__content">Thank you for subscribing! You'll receive our latest new product updates</p>
+          </div>
+        {%- else -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="newsletter-input-row">
+            <input
+              placeholder="Your email address"
+              type="email"
+              id="footer[contact][email]"
+              name="contact[email]"
+              class="input__field input__field--text"
+            >
+            <button
+              type="submit"
+              class="newsleftter-btn input__submit-icon tap-area"
+              title="{{ 'footer.newsletter.submit' | t }}"
+            >
+              Stay Updated
+            </button>
+          </div>
+          {%- if form.errors -%}
+            <div class="form__banner banner banner--error">
+              <span class="banner__ribbon">{% render 'icon' with 'form-error' %}</span>
+              <p class="banner__content">
+                {{ form.errors.translated_fields.email }}
+                {{ form.errors.messages.email }}
+              </p>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+    <div class="h-newsletter-social hidden-pocket">
+      {%- render 'social-media' -%}
+    </div>
+  </div>
+</div>
+<script>
+  (() => {
+    const inputEl = document.querySelector('.newsletter-input-row .input__field');
+    inputEl.addEventListener('focus', () => {
+      if ($('.h-newsletter .banner--error').length) {
+        $('.h-newsletter .banner--error').hide();
+      }
+    });
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('customer_posted') === 'true' || urlParams.get('contact[tags]') === 'newsletter') {
+      // 获取当前 URL
+      const url = window.location.href;
+      // 查找 '?contact' 的位置
+      const newUrl = url.split('?')[0];
+      // 使用 history.replaceState 更新 URL，但不刷新页面
+      window.history.replaceState(null, null, newUrl);
+      document.documentElement.scrollTop = document.body.scrollTop = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      );
+    }
+  })();
+</script>
+{% schema %}
+{
+  "tag": "section",
+  "name": "h-newsletter",
+  "class": "h-newsletter-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Subscribe our Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "tip",
+      "label": "Tip",
+      "default": "Pellentesque eu nibh eget mauris congue mattis matti."
+    },
+    {
+      "type": "text",
+      "id": "btn_title",
+      "label": "Btn Title",
+      "default": "Subscribe"
+    }
+  ],
+  "presets": [
+    {
+      "name": "h-newsletter"
+    }
+  ]
+}
+{% endschema %}

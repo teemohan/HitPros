@@ -1,0 +1,44 @@
+{{"our-advantage.css" | asset_url | stylesheet_tag}}
+
+<div class="container">
+  <div class="our-advantage">
+    {% for block in section.blocks %}
+      <div class="our-advantage-item">
+        {{ block.settings.icon }}
+        {{ block.settings.title }}
+      </div>
+      {% unless forloop.last %}
+        <span class="line hidden-pocket"></span>
+      {% endunless %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "our-advantage",
+  "class": "section-gap",
+  "max_blocks": 4,
+  "settings": [
+  ],
+  "blocks": [{
+    "type": "block",
+    "name": "Block",
+    "settings": [
+      {
+        "type": "html",
+        "id": "icon",
+        "label": "Icon"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "title"
+      }
+    ]
+  }],
+  "presets": [{
+    "name": "Our Advantage"
+  }]
+}
+{% endschema %}

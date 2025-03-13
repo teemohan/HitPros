@@ -1,0 +1,90 @@
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+<style>
+  .index-product-item .product-item__quick-form .button:hover {
+    background-color: var(--my-blue);
+    color: #fff;
+  }
+  .index-product-item .product-item__quick-form .button:hover path {
+    fill: #fff;
+  }
+  .shopify-section--recently-viewed-products {
+    display: none;
+  }
+  @media screen and (max-width: 740px) {
+    .{{ section.id }} .swiper {
+      overflow: unset;
+    }
+    .shopify-section--recently-viewed-products {
+      overflow: hidden;
+    }
+  }
+</style>
+<recently-viewed-products
+  section-id="{{ section.id }}"
+  products-count="20"
+  {% if request.page_type == 'product' %}
+    exclude-product-id="{{ product.id | escape }}"
+  {% endif %}
+>
+  {%- if request.page_type == 'search' and search.performed and search.results_count > 0 -%}
+    <div class="{{ section.id }} recently-viewed">
+      <div class="container">
+        {% render 'index-cus-header', header_title: section.settings.title %}
+        <div class="IndexBestswiper">
+          <div class="swiper-button-prev hidden-pocket">
+            {% render 'icon' with 'swiper-arrow-prev' %}
+          </div>
+          <div class="swiper {{ section.id }}-IndexBestswiper">
+            <div class="swiper-wrapper">
+              {%- assign parsed_terms = search.terms | split: ' OR ' -%}
+              {%- for parsed_term in parsed_terms -%}
+                {%- assign id = parsed_term | split: 'id:' | last | times: 1 -%}
+                {%- for product in search.results -%}
+                  {%- if product.id == id -%}
+                    <div class="swiper-slide">
+                      {%- render 'index-product-item-search', product: product -%}
+                    </div>
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endfor -%}
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+          <div class="swiper-button-next hidden-pocket">
+            {% render 'icon' with 'swiper-arrow-next' %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+</recently-viewed-products>
+
+{% schema %}
+{
+  "name": "Index Recently",
+  "class": "shopify-section--recently-viewed-products section-gap",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "Recently Viewed"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "collection"
+    },
+    {
+      "type": "paragraph",
+      "content": "If there is no browsing history, it will be collected by default. If there is, the browsing history will be displayed."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Index Recently viewed products"
+    }
+  ]
+}
+{% endschema %}

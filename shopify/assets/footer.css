@@ -1,0 +1,335 @@
+.footer__item-title {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #1A1A1A;
+}
+
+.footer .footer-main {
+  background-color: #F2F2F2;
+  padding: 60px 0;
+}
+
+.footer__aside {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 0;
+}
+.footer-desc {
+  font-size: 14px;
+  line-height: 21px;
+  color: #575757;
+  margin-top: 16px;
+}
+.footer__copyright {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  color: #808080;
+}
+
+.footer-contact {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.footer-contact a {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  color: var(--my-black);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--my-yellow);
+}
+
+.footer__copyright {
+  margin-top: 0;
+}
+
+@media screen and (min-width: 741px) {
+  .footer__aside a {
+    text-decoration: none !important;
+  }
+
+  .footer__aside a:hover {
+    text-decoration: underline !important;
+  }
+
+  .footer .linklist__item a:hover {
+    text-decoration: underline;
+    text-decoration: underline;
+  }
+
+  .footer .linklist__item:not(:first-child) {
+    padding-top: 2px
+  }
+
+  .footer__item--social-media .footer__item-content {
+    line-height: 29.72px !important;
+  }
+
+  .footer__item--newsletter .footer__item-content {
+    line-height: 29.72px !important;
+  }
+
+  .footer .social-media {
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .footer .social-media__item {
+    box-shadow: unset;
+  }
+
+  .footer .social-media__link {
+    height: 28px;
+    width: 28px;
+    border-radius: 100%;
+    background: var(--my-blue);
+  }
+
+  .footer .social-media__link svg path {
+    fill: #fff;
+  }
+
+  .footer .social-media__item:hover .social-media__link {
+    color: unset !important;
+  }
+
+  .footer .social-media__item:before {
+    background: unset !important;
+  }
+
+  .footer .social-media__item:hover::before {
+    -webkit-clip-path: unset !important;
+    clip-path: unset !important;
+    transform: unset !important;
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .footer__item--links .footer__item-title .details_icon {
+    display: flex;
+    align-items: center;
+  }
+
+  .footer__item-content .linklist {
+    gap: 16px;
+    padding-left: 16px;
+    margin-top: 16px !important;
+  }
+
+  .footer__item-title.open .details_icon {
+    transform: rotate(90deg);
+    transition: all .3s ease;
+  }
+
+  .footer .footer-main {
+    background-color: #F2F2F2;
+    padding: 12px 0 24px;
+  }
+  .footer__copyright {
+    font-size: 12px;
+  }
+  .footer__aside {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+    padding: 10px 0;
+    margin-top: 0;
+  }
+
+  .footer__aside a {
+    text-decoration: none !important;
+  }
+
+  .footer__aside a:hover {
+    text-decoration: underline !important;
+  }
+
+  .footer-policy {
+    width: 65%;
+    line-height: 29.72px !important;
+  }
+
+  .footer__item-list {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .footer__item-list .footer__item:first-child {
+    order: 1;
+  }
+
+  .footer__item-list .footer__item:nth-child(1) {
+    order: 2;
+  }
+
+  .footer__item-list .footer__item:nth-child(2) {
+    order: 3;
+  }
+
+  .footer__item-list .footer__item:last-child {
+    order: 4;
+  }
+
+  .footer__item-list .footer__image {
+    order: 5;
+    margin: 16px auto 0;
+  }
+
+  .footer__item-list .footer__item--social-media {
+    display: none;
+  }
+
+  .footer .linklist__item a {}
+
+  .footer .linklist__item a:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  .footer .linklist__item:not(:first-child) {
+    padding-top: 2px
+  }
+
+  .footer__item--newsletter .footer__item-content {
+    line-height: 29.72px !important;
+  }
+
+  .footer__item--newsletter {
+    order: -1;
+    border-bottom: 1px solid var(--my-white);
+    padding-bottom: 30px;
+  }
+
+
+  .connect-box {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  .connect-box .footer__item-content {
+    line-height: 29.72px !important;
+  }
+
+
+  .footer .social-media {
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .footer .social-media__item {
+    box-shadow: unset;
+  }
+
+  .footer .social-media__link {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  .footer .social-media__link svg path {
+    fill: #000;
+  }
+
+  .footer .social-media__item:hover .social-media__link {
+    color: unset !important;
+  }
+
+  .footer__copyright,
+  .footer__payment-methods {
+    margin-top: 0;
+  }
+
+  .footer .social-media__item:before {
+    background: unset !important;
+  }
+
+  .footer .social-media__item:hover::before {
+    -webkit-clip-path: unset !important;
+    clip-path: unset !important;
+    transform: unset !important;
+  }
+
+  .footer__item--links svg {
+    transition: all .3s;
+  }
+
+  .details_iconActive svg {
+    transform: rotate(180deg) !important;
+    transition: all .3s;
+  }
+
+  .footer__item--links .footer__item-title .details_icon::before,
+  .footer__item--links .footer__item-title .details_icon::after {
+    display: none;
+  }
+
+  .footer__item-content_link {
+    display: none;
+    margin-top: 0;
+  }
+
+  .footer__item {
+    padding: 16px 0;
+    border-bottom: 1px solid #00000033
+  }
+
+  .footer__item--links .footer__item-title {
+    cursor: pointer;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .footer__item--links .linklist__item a {
+    font-size: 14px !important;
+  }
+
+  .footer__item-list {
+    gap: 0;
+  }
+
+  .footer__inner .connect-box {
+    margin-top: 2px;
+  }
+
+  .footer__inner .connect-box .footer__item-title {
+    font-size: 16px !important;
+    margin-bottom: 16px;
+  }
+
+  .footer__inner .connect-box .footer__item-content {
+    font-size: 14px !important;
+  }
+
+  .footer .social-media {
+    gap: 10px;
+    margin-top: 24px;
+    justify-content: center;
+  }
+
+  .footer .social-media__item {
+    box-shadow: unset;
+  }
+
+  .footer .social-media__link {
+    height: 28px;
+    width: 28px;
+    border-radius: 100%;
+    background: var(--my-blue);
+  }
+
+  .footer .social-media__link svg path {
+    fill: #fff;
+  }
+
+  #localization_form_footer {
+    margin-bottom: 20px;
+  }
+}
