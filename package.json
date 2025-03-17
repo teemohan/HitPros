@@ -1,12 +1,12 @@
 {
   "name": "nothsky-supply",
   "scripts": {
-    "start": "start.bat",
-    "pull": "pull.bat",
-   "pushignore": "pushignore.bat",
-    "merge": "merge.bat",
-    "change-test": "change-test.bat",
-    "change-live": "change-live.bat",
+    "start": "bash ./start.sh",
+    "pull": "bash ./pull.sh",
+    "pushignore": "bash ./pushignore.sh",
+    "merge": "bash ./merge.sh",
+    "change-test": "bash ./change-test.sh",
+    "change-live": "bash ./change-live.sh",
     "tw": "npx tailwindcss -i ./config.css -o ./shopify/assets/shopify-style.css --watch"
 
   },
