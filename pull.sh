@@ -5,17 +5,17 @@ CURRENT_DIR=$(pwd)
 BASE_PATH="${CURRENT_DIR}/"
 
 # 构建 file 的绝对路径
-file="${BASE_PATH}shopify/.shopifyignore"
-search_string="assets/*"
+# file="${BASE_PATH}shopify/.shopifyignore"
+# search_string="assets/*"
 
-echo "npm run pull"
-if grep -q "$search_string" "$file"; then
-    echo "=================="
-else
-    echo "删除 .shopifyignore 文件"
-    rm "$file"
-    #printf $search_string > "$file"
-fi
+# echo "npm run pull"
+# if grep -q "$search_string" "$file"; then
+#     echo "=================="
+# else
+#     echo "删除 .shopifyignore 文件"
+#     rm "$file"
+#     #printf $search_string > "$file"
+# fi
 # 尝试进入 shopify 目录
 shopify_dir="${BASE_PATH}shopify/"
 echo "Navigating to shopify directory: $shopify_dir"
