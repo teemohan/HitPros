@@ -298,93 +298,116 @@
         `);
         skuListPcWrapper = $(`<div class="sku-pc-wrapper hidden-phone"></div>`);
         const skuListMobileWrapper = $(`<div class="sku-m-swiper hidden-tablet-and-up"></div>`);
-        $('.product-list__inner > .product-sku-line-data').each(function () {
-          // 将sku line放入到sku-wrapper中
-          if (spuItem.skus.includes($(this).data('sku'))) {
-            // 处理属性
-            const salesFakeJson = $(this).data('sales'); // 销售属性
-            const commonFakeJson = $(this).data('common'); // 公共属性
-            const salesMap = handleFakeObj(salesFakeJson);
-            const commonMap = handleFakeObj(commonFakeJson);
-            const mergedMap = new Map([...salesMap, ...commonMap]);
-            // 价格
-            const price = $(this).data('price');
-            const compareAtPrice = $(this).data('compare-at-price');
-            const savings = $(this).data('savings');
-            const priceItem = `
-              <div class="price-item">
-                <span class="sku-price">${price !== undefined ? price : ''}</span>
-                ${compareAtPrice ? `<span class="sku-compare-at-price">${compareAtPrice}</span>` : ''}
-                ${savings ? `<span class="sku-savings">${savings}OFF</span>` : ''}
-              </div>
-            `;
-            // 数量
-            const stockMax = $(this).data('max');
-            const value = $(this).data('moq');
-            const min = $(this).data('moq');
-            const exceedsWarning = stockMax ? '<div class="max-quantity-warning">exceeds maximum stock</div>' : '';
-            const quantityItem = `
-              <div class="quantity-item" data-max="${stockMax}">
-                <div class="quantity-wrapper">
-                  <button class="quantity-btn quantity-btn-minus">-</button>
-                  <input type="text" data-min="${min}" max="1000000" value="${value}">
-                  <button class="quantity-btn quantity-btn-plus">+</button>
-                </div>
-                ${exceedsWarning}
-              </div>
-            `;
-            // 操作按钮inventory-type
-            const operateItem = `
-              <div class="operate-item">
-                <a class="visually-hidden" href="${$(this).data('href')}">
-                  {% render 'icon' with 'sku-detail' %}
-                </a>
-                ${
-                  $(this).data('inventory-type') != 'deny'
-                    ? `<button class="add-to-cart" data-variant-id="${$(this).data('variant-id')}">
-                    <span class="cart-container">
-                      {% render 'icon' with 'sku-cart' %}
-                    </span>
-                    <div class="loading-wrapper">
-                      <span class="loading-container">
-                        {% render 'icon' with 'loading' %}
-                      </span>
-                    </div>
-                  </button>`
-                    : `<button class="add-to-cart sold-out" data-variant-id="${$(this).data('variant-id')}">
-                    <span class="cart-container">
-                      {% render 'icon' with 'sku-cart' %}
-                    </span>
-                  </button>`
-                }
-              </div>
-            `;
-            const normalHeaderData = `<div class="common-data-wrapper">${priceItem}${quantityItem}${operateItem}</div>`;
-            const spuValueWrapper = $(`<div></div>`); // 不定的spu-key
-            spuKey.forEach((key) => {
-              let value = mergedMap.get(key) ? mergedMap.get(key) : '-';
-              if(key == 'Model') {
-                value = $(this).data('model');
-              } else if(key == 'Sales Unit Package') {
-                value = $(this).data('package');
-              }
+        // 针对每个 sku 进行循环
+        spuItem.skus.forEach(function (sku) {
+          // 从页面中查找匹配 data-sku 的元素（假设每个 sku 只对应一个 .product-sku-line-data）
+          const $dataElem = $('.product-sku-line-data').filter(function () {
+            return $(this).data('sku') === sku;
+          });
 
-              const valueItem = $(`<span class="spu-value">${value}</span>`);
-              valueItem.appendTo(spuValueWrapper);
-            });
-            let skuLine;
-            skuLine = $(`
-              <div class="product-sku-line" data-href="${$(this).data('href')}" data-sku="${$(this).data('sku')}">
-                ${spuValueWrapper.html()}${normalHeaderData}
+          // 如果找不到对应的元素，则跳过此 sku
+          if (!$dataElem.length) return;
+
+          // 处理销售属性和公共属性（假设这两个字段是 JSON 字符串或伪 JSON 数据）
+          const salesFakeJson = $dataElem.data('sales'); // 销售属性
+          const commonFakeJson = $dataElem.data('common'); // 公共属性
+          const salesMap = handleFakeObj(salesFakeJson);
+          const commonMap = handleFakeObj(commonFakeJson);
+          const mergedMap = new Map([...salesMap, ...commonMap]);
+
+          // 处理价格数据
+          const price = $dataElem.data('price');
+          const compareAtPrice = $dataElem.data('compare-at-price');
+          const savings = $dataElem.data('savings');
+          const priceItem = `
+            <div class="price-item">
+              <span class="sku-price">${price !== undefined ? price : ''}</span>
+              ${compareAtPrice ? `<span class="sku-compare-at-price">${compareAtPrice}</span>` : ''}
+              ${savings ? `<span class="sku-savings">${savings}OFF</span>` : ''}
+            </div>
+          `;
+
+          // 处理数量数据
+          const stockMax = $dataElem.data('max');
+          const moq = $dataElem.data('moq');
+          const exceedsWarning = stockMax ? '<div class="max-quantity-warning">exceeds maximum stock</div>' : '';
+          const quantityItem = `
+            <div class="quantity-item" data-max="${stockMax}">
+              <div class="quantity-wrapper">
+                <button class="quantity-btn quantity-btn-minus">-</button>
+                <input type="text" data-min="${moq}" max="1000000" value="${moq}">
+                <button class="quantity-btn quantity-btn-plus">+</button>
               </div>
-            `);
-            // 生成新的skuline
-            const mobileSkuLine = $(this).find('.product-mobile-sku-line');
-            $(this).remove(); // 老的skuline只是保存数据，删除自身
-            skuLine.appendTo(skuListPcWrapper);
-            mobileSkuLine.appendTo(skuListMobileWrapper);
-          }
+              ${exceedsWarning}
+            </div>
+          `;
+
+          // 处理操作按钮（加入购物车或显示售罄）
+          const href = $dataElem.data('href');
+          const variantId = $dataElem.data('variant-id');
+          const inventoryType = $dataElem.data('inventory-type');
+          const operateItem = `
+            <div class="operate-item">
+              <a class="visually-hidden" href="${href}">
+                {% render 'icon' with 'sku-detail' %}
+              </a>
+              ${
+                inventoryType !== 'deny'
+                  ? `<button class="add-to-cart" data-variant-id="${variantId}">
+                      <span class="cart-container">
+                        {% render 'icon' with 'sku-cart' %}
+                      </span>
+                      <div class="loading-wrapper">
+                        <span class="loading-container">
+                          {% render 'icon' with 'loading' %}
+                        </span>
+                      </div>
+                    </button>`
+                  : `<button class="add-to-cart sold-out" data-variant-id="${variantId}">
+                      <span class="cart-container">
+                        {% render 'icon' with 'sku-cart' %}
+                      </span>
+                    </button>`
+              }
+            </div>
+          `;
+
+          // 整合公共数据区域
+          const normalHeaderData = `<div class="common-data-wrapper">${priceItem}${quantityItem}${operateItem}</div>`;
+
+          // 根据 spuKey 来生成对应的属性值显示区域
+          const $spuValueWrapper = $('<div></div>');
+          spuKey.forEach(function (key) {
+            // 默认取 mergedMap 中对应的值，否则显示 '-' 
+            let value = mergedMap.get(key) ? mergedMap.get(key) : '-';
+            // 针对特定的 key 做特殊处理
+            if (key === 'Model') {
+              value = $dataElem.data('model');
+            } else if (key === 'Sales Unit Package') {
+              value = $dataElem.data('package');
+            }
+            $('<span class="spu-value"></span>').text(value).appendTo($spuValueWrapper);
+          });
+
+          // 生成新的 SKU 行
+          const skuLine = $(`
+            <div class="product-sku-line" data-href="${href}" data-sku="${sku}">
+              ${$spuValueWrapper.html()}
+              ${normalHeaderData}
+            </div>
+          `);
+
+          // 获取移动端的 sku line（如果存在），假设其在原始元素内部
+          const $mobileSkuLine = $dataElem.find('.product-mobile-sku-line');
+
+          // 将生成的 sku 行添加到相应的 PC 与移动端包装器中
+          skuLine.appendTo(skuListPcWrapper);
+          $mobileSkuLine.appendTo(skuListMobileWrapper);
+
+          // 移除原始的 .product-sku-line-data 节点，避免重复
+          $dataElem.remove();
         });
+
         skuListPcWrapper.appendTo(skuWrapper.find('.product-sku-wrapper-inner'));
         skuListMobileWrapper.appendTo(skuWrapper.find('.product-sku-wrapper-inner'));
         return skuWrapper;
