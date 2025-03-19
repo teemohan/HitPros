@@ -284,16 +284,6 @@
         "type": "shopify:\/\/apps\/ft-frequently-bought-together\/blocks\/widget-embed\/f96a0d1a-35b8-40ef-ad54-1cb7fb011e11",
         "disabled": false,
         "settings": {}
-      },
-      "13070091535480640111": {
-        "type": "shopify:\/\/apps\/attrac\/blocks\/app-embed\/b783956d-47a9-4434-91ad-4ec960bd74b0",
-        "disabled": false,
-        "settings": {}
-      },
-      "6023461868751542726": {
-        "type": "shopify:\/\/apps\/bsure-checkout-rules\/blocks\/embed\/01dc9f18-0935-422b-a3f7-3d2458585368",
-        "disabled": false,
-        "settings": {}
       }
     }
   },

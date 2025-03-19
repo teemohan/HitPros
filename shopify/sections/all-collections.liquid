@@ -30,17 +30,11 @@
 (() => {
   async function getAllList() {
     try {
-      // 获取头部信息
-      const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-      const resHeader = await responseHeader.json();
-      const headersData = resHeader.data;
-
       // 获取分类数据
-      const response = await fetch('https://app.northskysupply.com/web/openapi/adlink/product/collection/tree', {
+      const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/adlink/product/collection/tree', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          ...headersData,
         },
       });
       const { data } = await response.json();

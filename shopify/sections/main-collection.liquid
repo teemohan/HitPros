@@ -196,18 +196,12 @@
     async function getSpuList() { // 获取spu和sku的组合
       try {
         {% if collection.handle == 'all' %}
-          const fetchUrl = "https://app.northskysupply.com/web/openapi/adlink/product/collection/spu";
+          const fetchUrl = "https://doc-sp.northskysupply.com/web/openapi/adlink/product/collection/spu";
         {% else %}
-          const fetchUrl = `https://app.northskysupply.com/web/openapi/adlink/product/collection/spu?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}`;
+          const fetchUrl = `https://doc-sp.northskysupply.com/web/openapi/adlink/product/collection/spu?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}`;
         {% endif %}
-        const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-        const resHeader = await responseHeader.json();
-        const headersData = resHeader.data;
         const response = await fetch(fetchUrl, {
           method: 'GET', // or 'POST' depending on the endpoint
-          headers: {
-            ...headersData, // Spread the headersData object into the headers
-          },
         });
         const res = await response.json();
         if(res.code == 200) {
@@ -740,16 +734,10 @@
       setWrapperLoading(false); // 隐藏页面loading
     }
     async function initCategoriesList() { // 获取下一级类目
-      const baseURL = `https://app.northskysupply.com/web/openapi/adlink/product/collection/collection?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}&order=1`;
+      const baseURL = `https://doc-sp.northskysupply.com/web/openapi/adlink/product/collection/collection?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}&order=1`;
       try {
-        const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-        const resHeader = await responseHeader.json();
-        const headersData = resHeader.data;
         const response = await fetch(baseURL, {
           method: 'GET', // or 'POST' depending on the endpoint
-          headers: {
-            ...headersData, // Spread the headersData object into the headers
-          },
         });
         const res = await response.json();
         if (res.code === 200) {

@@ -621,7 +621,7 @@
         async handleAuthChange(){
           this.authLoading = true;
           try {
-            const response = await fetch('https://app.northskysupply.com/web/companies/contacts/main-contact', {
+            const response = await fetch('https://doc-sp.northskysupply.com/web/companies/contacts/main-contact', {
               method: 'PUT',
               body: JSON.stringify({
                 customerId: this.adminAuth.customerId,
@@ -666,7 +666,7 @@
           this.list_loading = true;
           try {
             const response = await fetch(
-              `https://app.northskysupply.com/web/company/validations?companyId=${this.queryParam.companyId}&customerId=${this.queryParam.customerId}&page=${this.queryParam.page}&pageSize=${this.queryParam.pageSize}&queryCondition=${this.queryParam.queryCondition}`
+              `https://doc-sp.northskysupply.com/web/company/validations?companyId=${this.queryParam.companyId}&customerId=${this.queryParam.customerId}&page=${this.queryParam.page}&pageSize=${this.queryParam.pageSize}&queryCondition=${this.queryParam.queryCondition}`
             );
             const res = await response.json();
             if(res.code == 200) {
@@ -694,7 +694,7 @@
         async handleRemoveUser() {
           this.removeingLoading = true;
           try {
-            const response = await fetch('https://app.northskysupply.com/web/company/validations/remove', {
+            const response = await fetch('https://doc-sp.northskysupply.com/web/company/validations/remove', {
               method: 'DELETE',
               body: JSON.stringify({
                 id: this.needRemoveItem.id,
@@ -733,7 +733,7 @@
             if (valid) {
               this.userSearchLoading = true;
               try {
-                const response = await fetch('https://app.northskysupply.com/web/companies/contacts', {
+                const response = await fetch('https://doc-sp.northskysupply.com/web/companies/contacts', {
                   method: 'POST',
                   body: JSON.stringify({
                     companyId: '{{ customer.current_company.id }}',
@@ -780,7 +780,7 @@
         async handleAuthUser(item) {
           item.approveLoading = true;
           try {
-            const response = await fetch('https://app.northskysupply.com/web/company/validations/pass', {
+            const response = await fetch('https://doc-sp.northskysupply.com/web/company/validations/pass', {
               method: 'PUT',
               body: JSON.stringify({
                 id: item.id,
@@ -820,7 +820,7 @@
             if (valid) {
               this.rejectLoading = true;
               try {
-                const response = await fetch('https://app.northskysupply.com/web/company/validations/reject', {
+                const response = await fetch('https://doc-sp.northskysupply.com/web/company/validations/reject', {
                   method: 'PUT',
                   body: JSON.stringify({
                     id: this.removeingItem.id,

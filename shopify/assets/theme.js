@@ -3759,15 +3759,11 @@
                   keyword: searchStr,
                   size: 10
                 };
-                const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-                const resHeader = await responseHeader.json();
-                const headersData = resHeader.data;
-                const response = await fetch('https://app.northskysupply.com/web/openapi/suggest', {
+                const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/suggest', {
                   method: 'POST',
                   body: JSON.stringify(formData),
                   headers: {
                     'Content-Type': 'application/json',
-                    ...headersData
                   },
                 });
                 const res = await response.json();
@@ -3897,14 +3893,8 @@
           },
           async getAllList() {
             try {
-              const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-              const resHeader = await responseHeader.json();
-              const headersData = resHeader.data;
-              const response = await fetch('https://app.northskysupply.com/web/openapi/adlink/product/collection/tree', {
+              const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/adlink/product/collection/tree', {
                 method: 'GET', // or 'POST' depending on the endpoint
-                headers: {
-                  ...headersData, // Spread the headersData object into the headers
-                },
               });
               const { data } = await response.json();
               // 递归函数，用于遍历数据并为每个节点生成handle
@@ -3986,14 +3976,8 @@
           },
           async getAllList() {
             try {
-              const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-              const resHeader = await responseHeader.json();
-              const headersData = resHeader.data;
-              const response = await fetch('https://app.northskysupply.com/web/openapi/adlink/product/collection/tree', {
+              const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/adlink/product/collection/tree', {
                 method: 'GET', // or 'POST' depending on the endpoint
-                headers: {
-                  ...headersData, // Spread the headersData object into the headers
-                },
               });
               const { data } = await response.json();
               // 递归函数，用于遍历数据并为每个节点生成handle
@@ -6957,7 +6941,7 @@
                 value: attrItem.values.find((valueItem) => valueItem.isSelected).value,
               })),
             };
-            const response = await fetch('https://app.northskysupply.com/web/product/select-attrs', {
+            const response = await fetch('https://doc-sp.northskysupply.com/web/product/select-attrs', {
               method: 'POST',
               body: JSON.stringify(formData),
               headers: {
@@ -7002,7 +6986,7 @@
         })),
       };
       try {
-        const response = await fetch('https://app.northskysupply.com/web/product/select-attrs', {
+        const response = await fetch('https://doc-sp.northskysupply.com/web/product/select-attrs', {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -7075,7 +7059,7 @@
     }
     async getProductAttrs() {
       try {
-        const response = await fetch(`https://app.northskysupply.com/web/spu/selection-attrs?sku=${this.sku}`);
+        const response = await fetch(`https://doc-sp.northskysupply.com/web/spu/selection-attrs?sku=${this.sku}`);
         const res = await response.json();
         if (res.code != 200) {
           window.vue_message.$message({
@@ -7929,15 +7913,11 @@
                     return;
                   }
                   try {
-                    const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-                const resHeader = await responseHeader.json();
-                const headersData = resHeader.data;
-                    const response = await fetch('https://openapi.northskysupply.com/openapi/adlink/delivery-calculation', {
+                    const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/adlink/delivery-calculation', {
                       method: 'POST',
                       body: JSON.stringify(deliveryParam),
                       headers: {
                         'Content-Type': 'application/json',
-                        ...headersData
                       },
                     });
                     const res = await response.json();
@@ -7995,7 +7975,7 @@
       };
       const status = $(this).find('.favorite-button').hasClass('favorited') ? 1 : 0;
       try {
-        const response = await fetch('https://app.northskysupply.com/web/wish/' + (status == 1 ? 'clear' : 'save'), {
+        const response = await fetch('https://doc-sp.northskysupply.com/web/wish/' + (status == 1 ? 'clear' : 'save'), {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -8024,7 +8004,7 @@
         sku: $(this).data('sku'),
       };
       try {
-        const response = await fetch('https://app.northskysupply.com/web/wish/select', {
+        const response = await fetch('https://doc-sp.northskysupply.com/web/wish/select', {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -8227,7 +8207,7 @@
       };
       const status = $(this).find('.favorite-button').hasClass('favorited') ? 1 : 0;
       try {
-        const response = await fetch('https://app.northskysupply.com/web/wish/' + (status == 1 ? 'clear' : 'save'), {
+        const response = await fetch('https://doc-sp.northskysupply.com/web/wish/' + (status == 1 ? 'clear' : 'save'), {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -8256,7 +8236,7 @@
         sku: $(this).data('sku'),
       };
       try {
-        const response = await fetch('https://app.northskysupply.com/web/wish/select', {
+        const response = await fetch('https://doc-sp.northskysupply.com/web/wish/select', {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -8781,7 +8761,7 @@
     async connectedCallback() {
       const email = $(this).data('email');
       if(email) {
-        const cartRes = await fetch(`https://app.northskysupply.com/web/shopping/cart?email=${email}`);
+        const cartRes = await fetch(`https://doc-sp.northskysupply.com/web/shopping/cart?email=${email}`);
         const cartData = await cartRes.json();
         if(cartData.data.length > 0) {
           Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 });  // 登录的时候查一下，customer对应的cart cookie
@@ -8801,7 +8781,7 @@
         const email = $(this).data('email');
         if(email) {
           const cartCookie = Cookies.get('cart');
-          fetch('https://app.northskysupply.com/web/shopping/cart/save ', {
+          fetch('https://doc-sp.northskysupply.com/web/shopping/cart/save ', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

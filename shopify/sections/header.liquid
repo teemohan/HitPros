@@ -631,7 +631,7 @@
     function getWishCount() {
       {% if customer %}
         const customerId = +"{{ customer.id }}"
-        fetch(`https://app.northskysupply.com/web/wish/nums?customerId=${customerId}`)
+        fetch(`https://doc-sp.northskysupply.com/web/wish/nums?customerId=${customerId}`)
         .then(response => response.json())
         .then(data => {
           if(data.data.nums) {

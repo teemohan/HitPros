@@ -1047,7 +1047,7 @@
       data() {
         const validateCompanyName = async (rule, value, callback) => {
           try {
-            const response = await fetch(`https://app.northskysupply.com/web/companies?name=${value}`);
+            const response = await fetch(`https://doc-sp.northskysupply.com/web/companies?name=${value}`);
             const res = await response.json();
             if (res.code === 200) {
               callback(); 
@@ -1197,7 +1197,7 @@
             return;
           }
           try {
-            const response = await fetch(`https://app.northskysupply.com/web/companies/${value}/name`);
+            const response = await fetch(`https://doc-sp.northskysupply.com/web/companies/${value}/name`);
             const res = await response.json();
             if (res.code === 200) {
               this.validCompanyData = {
@@ -1602,7 +1602,7 @@
           if (valid) {
             this.dialogLoading.companyAddressUpdate = true;
             try {
-              const response = await fetch('https://app.northskysupply.com/web/companies/locations', {
+              const response = await fetch('https://doc-sp.northskysupply.com/web/companies/locations', {
                 method: 'PUT',
                 body: JSON.stringify({
                   locationId: +'{{ customer.current_location.id }}',
@@ -1641,7 +1641,7 @@
           if (query !== '') {
             this.codeSearchLoading = true;
             try {
-              const response = await fetch(`https://app.northskysupply.com/web/companies/${query}/name`);
+              const response = await fetch(`https://doc-sp.northskysupply.com/web/companies/${query}/name`);
               const res = await response.json();
               if (res.code === 200) {
                 this.companyOptions = [{
@@ -1661,7 +1661,7 @@
           const companyld = '{{ customer.current_company.id }}';
           if(companyld) {
             try {
-              const response = await fetch(`https://app.northskysupply.com/web/companies/${companyld}/payment-terms-template`);
+              const response = await fetch(`https://doc-sp.northskysupply.com/web/companies/${companyld}/payment-terms-template`);
               const res = await response.json();
               if(res.code == 200) {
                 this.companyTerms = res.data.paymentTermsTemplate ? res.data.paymentTermsTemplate : {};
@@ -1675,7 +1675,7 @@
           const customerId = '{{ customer.id }}';
           if(customerId) {
             try {
-              const response = await fetch(`https://app.northskysupply.com/web/tob/customers/${customerId}/is-main-contact`);
+              const response = await fetch(`https://doc-sp.northskysupply.com/web/tob/customers/${customerId}/is-main-contact`);
               const res = await response.json();
               if(res.code == 200) {
                 this.currentCompany = {
@@ -1692,12 +1692,12 @@
           const customerId = '{{ customer.id }}';
           if(customerId) {
             try {
-              const response = await fetch(`https://app.northskysupply.com/web/company/validations/state?customerId=${customerId}`);
+              const response = await fetch(`https://doc-sp.northskysupply.com/web/company/validations/state?customerId=${customerId}`);
               const res = await response.json();
               if(res.code == 200) {
                 this.companyAuthStatus = res.data ? res.data : { state: 2 };
                 if(this.companyAuthStatus.state == 2) {
-                  const reasonShowResponse = await fetch(`https://app.northskysupply.com/web/tob/customers/${customerId}/tip`);
+                  const reasonShowResponse = await fetch(`https://doc-sp.northskysupply.com/web/tob/customers/${customerId}/tip`);
                   const reasonShowRes = await reasonShowResponse.json();
                   this.reasonShow = reasonShowRes.data;
                 }
@@ -1769,7 +1769,7 @@
             if (valid) {
               this.dialogLoading.join = true;
               try {
-                const response = await fetch('https://app.northskysupply.com/web/tob/customers/to-join-company', {
+                const response = await fetch('https://doc-sp.northskysupply.com/web/tob/customers/to-join-company', {
                   method: 'POST',
                   body: JSON.stringify({
                     customerId: '{{ customer.id }}',
@@ -1806,7 +1806,7 @@
             if (valid) {
               this.dialogLoading.join = true;
               try {
-                const response = await fetch('https://app.northskysupply.com/web/tob/customers/to-create-company', {
+                const response = await fetch('https://doc-sp.northskysupply.com/web/tob/customers/to-create-company', {
                   method: 'POST',
                   body: JSON.stringify({
                     customerId: "{{ customer.id }}",
@@ -1938,7 +1938,7 @@
         async handleCloseReason() {
           try {
             const customerId = '{{ customer.id }}';
-            const response = await fetch(`https://app.northskysupply.com/web/tob/customers/${customerId}/tip`, {
+            const response = await fetch(`https://doc-sp.northskysupply.com/web/tob/customers/${customerId}/tip`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -1962,7 +1962,7 @@
           // 更新用户名字
           this.dialogLoading.name = true;
           try {
-            const res = await fetch('https://app.northskysupply.com/web/customer', {
+            const res = await fetch('https://doc-sp.northskysupply.com/web/customer', {
               method: 'PUT',
               body: JSON.stringify(
                 {
@@ -2010,7 +2010,7 @@
           this.dialogLoading.company = true;
           const companyId = '{{ customer.current_company.id }}';
           try {
-            const res = await fetch(`https://app.northskysupply.com/web/companies/${companyId}`, {
+            const res = await fetch(`https://doc-sp.northskysupply.com/web/companies/${companyId}`, {
               method: 'PUT',
               body: JSON.stringify(
                 {
@@ -2096,7 +2096,7 @@
           this.dialogLoading.industry = true;
           const companyId = '{{ customer.current_company.id }}';
           try {
-            const res = await fetch(`https://app.northskysupply.com/web/companies/${companyId}`, {
+            const res = await fetch(`https://doc-sp.northskysupply.com/web/companies/${companyId}`, {
               method: 'PUT',
               body: JSON.stringify(
                 {

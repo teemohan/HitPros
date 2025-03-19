@@ -688,11 +688,8 @@
         }
         $('.refund-detail-wrapper').show();
         const orderId = window.location.href.split('=')[1];
-        const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-        const resHeader = await responseHeader.json();
-        const headersData = resHeader.data;
         try {
-          const response = await fetch('https://app.northskysupply.com/web/openapi/shopify/refund/info', {
+          const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/shopify/refund/info', {
             method: 'POST',
             body: JSON.stringify({
               requestId: orderId,
@@ -700,13 +697,12 @@
             }),
             headers: {
               'Content-Type': 'application/json',
-              ...headersData, // Spread the headersData object into the headers
             },
           })
           const res = await response.json();
           if(res.msg == 'success') {
             const imgsData = res.data.orderSkus.map(async (item) => {
-              const imgData = await fetch(`https://app.northskysupply.com/web/product/featured-image?sku=${item.skuCode}`)
+              const imgData = await fetch(`https://doc-sp.northskysupply.com/web/product/featured-image?sku=${item.skuCode}`)
               const imgDataRes = await imgData.json();
               return {
                 sku: item.skuCode,
@@ -891,7 +887,7 @@
         //更具ordername获取orderid
         async getOrderId(orderName) {
           try {
-            const res = await fetch('https://app.northskysupply.com/web/order?orderName='+orderName, {
+            const res = await fetch('https://doc-sp.northskysupply.com/web/order?orderName='+orderName, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -913,10 +909,7 @@
         },
         async cancelOrderRequest(orderId) {
           try {
-            const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-            const resHeader = await responseHeader.json();
-            const headersData = resHeader.data;
-            const res = await fetch('https://app.northskysupply.com/web/openapi/shopify/refund/cancel', {
+            const res = await fetch('https://doc-sp.northskysupply.com/web/openapi/shopify/refund/cancel', {
               method: 'POST',
               body: JSON.stringify({
                 requestId: orderId,
@@ -924,7 +917,6 @@
               }),
               headers: {
                 'Content-Type': 'application/json',
-                ...headersData
               },
             });
 

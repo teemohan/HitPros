@@ -1042,15 +1042,11 @@
                   }
 
                   try {
-                    const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-                const resHeader = await responseHeader.json();
-                const headersData = resHeader.data;
-                    const response = await fetch('https://openapi.northskysupply.com/openapi/adlink/delivery-calculation', {
+                    const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/adlink/delivery-calculation', {
                       method: 'POST',
                       body: JSON.stringify(deliveryParam),
                       headers: {
                         'Content-Type': 'application/json',
-                        ...headersData
                       },
                     });
                     const res = await response.json();

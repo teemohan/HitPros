@@ -63,62 +63,62 @@
 </div>
 
 <script>
-  const handleIntersection = (entries, observer) => {
-    if (!entries[0].isIntersecting) return;
+  (() => {
+    const handleIntersection = (entries, observer) => {
+      if (!entries[0].isIntersecting) return;
 
-    observer.unobserve(productRecommendationsSection);
+      observer.unobserve(productRecommendationsSection);
 
-    const url = productRecommendationsSection.dataset.url;
+      const url = productRecommendationsSection.dataset.url;
 
-    fetch(url)
-      .then((response) => response.text())
-      .then((text) => {
-        const html = document.createElement('div');
-        html.innerHTML = text;
-        const recommendations = html.querySelector('.product-recommendations');
+      fetch(url)
+        .then((response) => response.text())
+        .then((text) => {
+          const html = document.createElement('div');
+          html.innerHTML = text;
+          const recommendations = html.querySelector('.product-recommendations');
 
-        if (recommendations && recommendations.innerHTML.trim().length) {
-          productRecommendationsSection.innerHTML = recommendations.innerHTML;
-          var cartalsolikeSwiper = new Swiper(".{{ section.id }} .swiper", {
-            breakpoints: {
-              320: {
-                // 当屏幕宽度大于等于320
-                slidesPerView: 2,
-                slidesPerGroup: 2,
-                spaceBetween: 12,
+          if (recommendations && recommendations.innerHTML.trim().length) {
+            productRecommendationsSection.innerHTML = recommendations.innerHTML;
+            var cartalsolikeSwiper = new Swiper(".{{ section.id }} .swiper", {
+              breakpoints: {
+                320: {
+                  // 当屏幕宽度大于等于320
+                  slidesPerView: 2,
+                  slidesPerGroup: 2,
+                  spaceBetween: 12,
+                },
+                740: {
+                  // 当屏幕宽度大于等于768
+                  slidesPerView: 3,
+                  slidesPerGroup: 3,
+                  spaceBetween: 20,
+                },
+                1200: {
+                  // 当屏幕宽度大于等于768
+                  slidesPerView: 4,
+                  spaceBetween: 12,
+                },
               },
-              740: {
-                // 当屏幕宽度大于等于768
-                slidesPerView: 3,
-                slidesPerGroup: 3,
-                spaceBetween: 20,
+              pagination: {
+                el: ".{{ section.id }} .swiper-pagination",
+                clickable: true,
               },
-              1200: {
-                // 当屏幕宽度大于等于768
-                slidesPerView: 4,
-                spaceBetween: 12,
+              navigation: {
+                nextEl: ".{{ section.id }} .swiper-button-next",
+                prevEl: ".{{ section.id }} .swiper-button-prev",
               },
-            },
-            pagination: {
-              el: ".{{ section.id }} .swiper-pagination",
-              clickable: true,
-            },
-            navigation: {
-              nextEl: ".{{ section.id }} .swiper-button-next",
-              prevEl: ".{{ section.id }} .swiper-button-prev",
-            },
-          });
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  };
-
-  const productRecommendationsSection = document.querySelector('.product-recommendations');
-  const observer = new IntersectionObserver(handleIntersection, { rootMargin: '0px 0px 200px 0px' });
-
-  observer.observe(productRecommendationsSection);
+            });
+          }
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    };
+    const productRecommendationsSection = document.querySelector('.product-recommendations');
+    const observer = new IntersectionObserver(handleIntersection, { rootMargin: '0px 0px 200px 0px' });
+    observer.observe(productRecommendationsSection);
+  })();
 </script>
 
 {% schema %}

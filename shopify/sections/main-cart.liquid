@@ -564,15 +564,11 @@
 
     async function getDeleveryDate(deliveryParams) { //获取交期数据
       try {
-         const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-                const resHeader = await responseHeader.json();
-                const headersData = resHeader.data;
-        const response = await fetch('https://openapi.northskysupply.com/openapi/adlink/delivery-calculation/batch', {
+        const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/adlink/delivery-calculation/batch', {
           method: 'POST',
           body: JSON.stringify(deliveryParams),
           headers:{
             'Content-Type':'application/json',
-            ...headersData
           }
         })
         return await response.json();
@@ -764,15 +760,11 @@
         orderAmount,
         skus
       }
-      const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-      const resHeader = await responseHeader.json();
-      const headersData = resHeader.data;
-      const response = await fetch('https://app.northskysupply.com/web/openapi/costs', {
+      const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/costs', {
         method: 'POST',
         body: JSON.stringify(shippingParam),
         headers:{
           'Content-Type':'application/json',
-          ...headersData
         }
       })
       const res = await response.json();
@@ -826,7 +818,7 @@
         currencyCode: "USD"
       }
       try {
-        const response = await fetch('https://app.northskysupply.com/web/tax', {
+        const response = await fetch('https://doc-sp.northskysupply.com/web/tax', {
           method: 'POST',
           body: JSON.stringify(taxParam),
           headers:{
@@ -873,7 +865,7 @@
         window.location.href = '/checkout?discount=0';
         return
       }
-      fetch('https://app.northskysupply.com/web/discount/save', {
+      fetch('https://doc-sp.northskysupply.com/web/discount/save', {
         method: 'POST',
         body: JSON.stringify(formData),
         headers:{

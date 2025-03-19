@@ -826,7 +826,7 @@
         $('#order_section').show();
         const orderId = Number(window.location.href.split('=')[1].split('&')[0]);
         $.ajax({
-          url: `https://app.northskysupply.com/web/order/${orderId}`,
+          url: `https://doc-sp.northskysupply.com/web/order/${orderId}`,
           method: 'GET',
           success: (data) => {
             this.orderMain = data.data.order;
@@ -989,10 +989,7 @@
           // 点击提交时禁用按钮
           this.buttonIsDisableTemp = true;
           try {
-            const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-            const resHeader = await responseHeader.json();
-            const headersData = resHeader.data;
-            const res = await fetch('https://app.northskysupply.com/web/openapi/shopify/refund/create', {
+            const res = await fetch('https://doc-sp.northskysupply.com/web/openapi/shopify/refund/create', {
               method: 'POST',
               body: JSON.stringify({
                 orderRefundMain: params.orderRefundMain,
@@ -1000,7 +997,6 @@
               }),
               headers: {
                 'Content-Type': 'application/json',
-                ...headersData
               },
             });
             if (!res.ok) {
@@ -1103,7 +1099,7 @@
     
         },
         handleAttachmentUpload() {
-          const uploadUrl = 'https://app.northskysupply.com/web/openapi/shopify/refund/file';
+          const uploadUrl = 'https://doc-sp.northskysupply.com/web/openapi/shopify/refund/file';
           const input = document.createElement('input');
           input.type = 'file';
           input.accept = 'image/*,video/*,.xlsx,.xls,.doc,.docx';
@@ -1147,15 +1143,9 @@
                 formData.append('file', file);
 
                 try {
-                  const responseHeader = await fetch('https://app.northskysupply.com/web/openapi/headers');
-                  const resHeader = await responseHeader.json();
-                  const headersData = resHeader.data;
                   const response = await fetch(uploadUrl, {
                     method: 'POST',
                     body: formData,
-                    headers: {
-                      ...headersData
-                    },
                   });
 
                   if (!response.ok) {
