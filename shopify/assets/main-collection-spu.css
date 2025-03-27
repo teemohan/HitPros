@@ -4,7 +4,7 @@
 .top-header {
   margin-bottom: 24px;
 }
-.loading-wrapper {
+#facet-main > .loading-wrapper {
   margin-bottom: 16px;
 }
 .collection-title-wrapper {

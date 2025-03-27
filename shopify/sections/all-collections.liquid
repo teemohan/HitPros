@@ -29,16 +29,7 @@
 <script>
 (() => {
   async function getAllList() {
-    try {
-      // 获取分类数据
-      const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/adlink/product/collection/tree', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const { data } = await response.json();
-      // 生成分类元素
+    const setData = (data) => {
       const categories = data.slice(0, 10).map(collection => {
         const handle = collection.name
           .toLowerCase()                  // 转小写
@@ -71,9 +62,14 @@
       const categoriesList = document.querySelector('.product-categories-list');
       categoriesList.innerHTML = ''; // 清空原有内容
       categories.forEach(category => categoriesList.appendChild(category));
-    } catch (err) {
-      console.error(err);
     }
+    try {
+      const categories = JSON.parse(localStorage.getItem('all-category'));
+      if(categories) setData(categories);
+    } catch {}
+    document.addEventListener('tree-get', ({ detail }) => {
+      setData(detail.data);
+    });
   }
   // 调用函数
   getAllList();

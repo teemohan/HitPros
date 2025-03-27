@@ -378,12 +378,6 @@ th {
   }
 }
 
-@media screen and (pointer: fine) {
-  .pswp__button:hover svg {
-    transform: rotateZ(90deg);
-  }
-}
-
 .flickity-enabled {
   position: relative;
   overflow: visible !important;
@@ -2493,16 +2487,6 @@ not screen and (pointer: fine) {
 
   .prev-next-buttons--row .prev-next-button:last-child {
     border-left: none;
-  }
-}
-
-@media screen and (pointer: fine) {
-  .prev-next-button--prev:hover svg {
-    animation: prevNextButtonKeyframe 0.3s ease-in-out reverse forwards;
-  }
-
-  .prev-next-button--next:hover svg {
-    animation: prevNextButtonKeyframe 0.3s ease-in-out forwards;
   }
 }
 
@@ -6573,7 +6557,7 @@ input:checked+.popover__choice-label::after,
 .video-wrapper--native video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .video-wrapper--native::after {

@@ -102,7 +102,35 @@
     handleDataLayerPush();  //初始化执行 
     clickSerrchProduct();
   })();
-
+  (() => {
+    const setWish = async () => {
+      const skus = [];
+      $('.{{ section.id }} .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        skus.push(sku);
+      })
+      const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
+        method: 'POST',
+        body: JSON.stringify({
+          customerId: '{{ customer.id}}',
+          skus
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      const res = await response.json();
+      $('.{{ section.id }} .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        if(res.data.includes(sku)) {
+          $(this).find('.favorite-button').addClass('favorited')
+        }
+      })
+    }
+    if('{{ customer.id }}') {
+      setWish()
+    }
+  })();
 </script>
 
 {% schema %}

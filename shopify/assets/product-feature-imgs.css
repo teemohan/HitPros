@@ -73,8 +73,13 @@
 }
 
 /* 通用-end*/
-
-
+.feature-imgs-item.type-01 .video-wrapper,
+.feature-imgs-item.type-01 video {
+  width: 100%;
+}
+.feature-imgs-item.type-01 video {
+  aspect-ratio: 375 / 210;
+}
 /* 类别 2、3、4、5、7、8  通用*/
 
 .feature-imgs .feature-imgs-item.type-23 > .img-text-wrapper,

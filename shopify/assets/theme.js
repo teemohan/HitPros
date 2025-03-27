@@ -1,9 +1,17 @@
 (() => {
   (() => { // 校验用户是否是B端用户
-    if(window.themeVariables.userCompany.isB2b == 'false' && window.themeVariables.userCompany.name) {
+    console.log(window.themeVariables.userCompany)
+    if(Cookies.get('logout') == 1) {
+      Cookies.remove('logout');
+      window.location.href = '/account/logout';
+    }
+    if(
+      (window.themeVariables.userCompany.isB2b == 'false' && window.themeVariables.userCompany.name) ||
+      (window.themeVariables.userCompany.isB2b == 'true' && !window.themeVariables.userCompany.zip.trim())
+    ) {
       const parsedUrl = new URL(window.location.href); 
       const returnTo = parsedUrl.pathname + parsedUrl.search;
-      window.location.href = `https://hitpros.myshopify.com/customer_identity/login?return_to=${returnTo}`;
+      window.location.href = `${window.zkh.b2b_url}/locations?return_to=${returnTo}`;
     }
   })();
   var __defProp = Object.defineProperty;
@@ -2590,7 +2598,6 @@
             if (mutation.attributeName == 'open' && !this.productImageZoomDom.open) {
               try {
                 $('.cus-product .product__media').addClass('position-sticky');
-                this.select(this.productImageZoomDom.photoSwipeInstance.getCurrentIndex())
               } catch (error) {
                 console.log('err', error)
               }
@@ -2619,7 +2626,11 @@
               change: (event) => triggerEvent(this, 'flickity:slide-changed', event),
               settle: (event) => triggerEvent(this, 'flickity:slide-settled', event),
               staticClick: () => {
-                this.openProductImageZoom()
+                if($(this).attr('has-video') == 'true' && flickityInstance.selectedIndex != 0) {
+                  this.openProductImageZoom();
+                } else if(!$(this).attr('has-video')){
+                  this.openProductImageZoom();
+                }
               }
             },
           },
@@ -3759,7 +3770,7 @@
                   keyword: searchStr,
                   size: 10
                 };
-                const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/suggest', {
+                const response = await fetch(`${window.zkh.api}/openapi/suggest`, {
                   method: 'POST',
                   body: JSON.stringify(formData),
                   headers: {
@@ -3821,7 +3832,6 @@
         el: '#pc-menu-nav',
         mounted() {
           this.getAllList();
-          $('.header-menu-wrapper').show();
         },
         data() {
           return {
@@ -3892,40 +3902,33 @@
             }
           },
           async getAllList() {
-            try {
-              const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/adlink/product/collection/tree', {
-                method: 'GET', // or 'POST' depending on the endpoint
+            function generateHandles(data, parentHandle = '') {
+              return data.map(item => {
+                // 生成当前节点的handle
+                const handle = item.name
+                  .toLowerCase()                  // 转小写
+                  .replace(/[^a-z0-9\s-]/g, '')    // 移除特殊字符，只保留字母、数字、空格和短横线
+                  .trim()                          // 去除首尾空格
+                  .replace(/\s+/g, '-')            // 替换多个空格为一个短横线
+                  .replace(/-+/g, '-');            // 多个短横线合并为一个
+
+                // 拼接父节点的handle和当前节点的handle
+                const fullHandle = parentHandle ? `${parentHandle}-${handle}` : handle;
+
+                // 如果当前节点有子节点，递归处理子节点
+                if (item.children && item.children.length > 0) {
+                  item.children = generateHandles(item.children, fullHandle); // 递归处理子节点
+                }
+
+                // 为当前节点添加完整的handle字段
+                item.handle = fullHandle;
+                item.isSelected = false;
+                return item;
               });
-              const { data } = await response.json();
-              // 递归函数，用于遍历数据并为每个节点生成handle
-              function generateHandles(data, parentHandle = '') {
-                return data.map(item => {
-                  // 生成当前节点的handle
-                  const handle = item.name
-                    .toLowerCase()                  // 转小写
-                    .replace(/[^a-z0-9\s-]/g, '')    // 移除特殊字符，只保留字母、数字、空格和短横线
-                    .trim()                          // 去除首尾空格
-                    .replace(/\s+/g, '-')            // 替换多个空格为一个短横线
-                    .replace(/-+/g, '-');            // 多个短横线合并为一个
-
-                  // 拼接父节点的handle和当前节点的handle
-                  const fullHandle = parentHandle ? `${parentHandle}-${handle}` : handle;
-
-                  // 如果当前节点有子节点，递归处理子节点
-                  if (item.children && item.children.length > 0) {
-                    item.children = generateHandles(item.children, fullHandle); // 递归处理子节点
-                  }
-
-                  // 为当前节点添加完整的handle字段
-                  item.handle = fullHandle;
-                  item.isSelected = false;
-                  return item;
-                });
-              }
-              this.menu1 = generateHandles(data).sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-            } catch(err) {
-              console.error(err)
             }
+            document.addEventListener('tree-get', ({ detail }) => {
+              this.menu1 = generateHandles(detail.data).sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+            });
           }
         }
       })
@@ -3974,42 +3977,35 @@
             this.menuStack.pop();
             this.showMenu =  this.menuStack[this.menuStack.length - 1];
           },
-          async getAllList() {
-            try {
-              const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/adlink/product/collection/tree', {
-                method: 'GET', // or 'POST' depending on the endpoint
+          getAllList() {
+            function generateHandles(data, parentHandle = '') {
+              return data.map(item => {
+                // 生成当前节点的handle
+                const handle = item.name
+                  .toLowerCase()                  // 转小写
+                  .replace(/[^a-z0-9\s-]/g, '')    // 移除特殊字符，只保留字母、数字、空格和短横线
+                  .trim()                          // 去除首尾空格
+                  .replace(/\s+/g, '-')            // 替换多个空格为一个短横线
+                  .replace(/-+/g, '-');            // 多个短横线合并为一个
+
+                // 拼接父节点的handle和当前节点的handle
+                const fullHandle = parentHandle ? `${parentHandle}-${handle}` : handle;
+
+                // 如果当前节点有子节点，递归处理子节点
+                if (item.children && item.children.length > 0) {
+                  item.children = generateHandles(item.children, fullHandle); // 递归处理子节点
+                }
+                // 为当前节点添加完整的handle字段
+                item.handle = fullHandle;
+                return item;
               });
-              const { data } = await response.json();
-              // 递归函数，用于遍历数据并为每个节点生成handle
-              function generateHandles(data, parentHandle = '') {
-                return data.map(item => {
-                  // 生成当前节点的handle
-                  const handle = item.name
-                    .toLowerCase()                  // 转小写
-                    .replace(/[^a-z0-9\s-]/g, '')    // 移除特殊字符，只保留字母、数字、空格和短横线
-                    .trim()                          // 去除首尾空格
-                    .replace(/\s+/g, '-')            // 替换多个空格为一个短横线
-                    .replace(/-+/g, '-');            // 多个短横线合并为一个
-
-                  // 拼接父节点的handle和当前节点的handle
-                  const fullHandle = parentHandle ? `${parentHandle}-${handle}` : handle;
-
-                  // 如果当前节点有子节点，递归处理子节点
-                  if (item.children && item.children.length > 0) {
-                    item.children = generateHandles(item.children, fullHandle); // 递归处理子节点
-                  }
-                  // 为当前节点添加完整的handle字段
-                  item.handle = fullHandle;
-                  return item;
-                });
-              }
-              const sortMenu = generateHandles(data).sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+            }
+            document.addEventListener('tree-get', ({ detail }) => {
+              const sortMenu = generateHandles(detail.data).sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
               this.menuStack.push(sortMenu);
               this.showMenu = sortMenu;
               $('.mobile-menu-nav').show();
-            } catch(err) {
-              console.error(err)
-            }
+            });
           }
         }
       })
@@ -4105,7 +4101,34 @@
             prevEl: '.recently-viewed .swiper-button-prev',
           },
         });
+        if($(this).data('customer')) {
+          this.setWish();
+        }
       }
+    }
+    async setWish ()  {
+      const skus = [];
+      $('.recently-viewed .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        skus.push(sku);
+      })
+      const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
+        method: 'POST',
+        body: JSON.stringify({
+          customerId: $(this).data('customer'),
+          skus
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      const res = await response.json();
+      $('.recently-viewed .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        if(res.data.includes(sku)) {
+          $(this).find('.favorite-button').addClass('favorited')
+        }
+      })
     }
     get searchQueryString() {
       const items = JSON.parse(localStorage.getItem('theme:recently-viewed-products') || '[]');
@@ -6600,6 +6623,9 @@
       }
       this.addEventListener('submit', this._onSubmit.bind(this));
     }
+    disconnectedCallback () {
+      this._onSubmit = () => {};
+    }
     async setLineAttr(cartItems) {
       const response = await fetch('/cart.js');
       const res = await response.json();
@@ -6941,7 +6967,7 @@
                 value: attrItem.values.find((valueItem) => valueItem.isSelected).value,
               })),
             };
-            const response = await fetch('https://doc-sp.northskysupply.com/web/product/select-attrs', {
+            const response = await fetch(`${window.zkh.api}/product/select-attrs`, {
               method: 'POST',
               body: JSON.stringify(formData),
               headers: {
@@ -6986,7 +7012,7 @@
         })),
       };
       try {
-        const response = await fetch('https://doc-sp.northskysupply.com/web/product/select-attrs', {
+        const response = await fetch(`${window.zkh.api}/product/select-attrs`, {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -7059,7 +7085,7 @@
     }
     async getProductAttrs() {
       try {
-        const response = await fetch(`https://doc-sp.northskysupply.com/web/spu/selection-attrs?sku=${this.sku}`);
+        const response = await fetch(`${window.zkh.api}/spu/selection-attrs?sku=${this.sku}`);
         const res = await response.json();
         if (res.code != 200) {
           window.vue_message.$message({
@@ -7913,7 +7939,7 @@
                     return;
                   }
                   try {
-                    const response = await fetch('https://doc-sp.northskysupply.com/web/openapi/adlink/delivery-calculation', {
+                    const response = await fetch(`${window.zkh.api}/openapi/adlink/delivery-calculation`, {
                       method: 'POST',
                       body: JSON.stringify(deliveryParam),
                       headers: {
@@ -7975,7 +8001,7 @@
       };
       const status = $(this).find('.favorite-button').hasClass('favorited') ? 1 : 0;
       try {
-        const response = await fetch('https://doc-sp.northskysupply.com/web/wish/' + (status == 1 ? 'clear' : 'save'), {
+        const response = await fetch(`${window.zkh.api}/wish/` + (status == 1 ? 'clear' : 'save'), {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -8004,7 +8030,7 @@
         sku: $(this).data('sku'),
       };
       try {
-        const response = await fetch('https://doc-sp.northskysupply.com/web/wish/select', {
+        const response = await fetch(`${window.zkh.api}/wish/select`, {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -8174,7 +8200,6 @@
   // js/custom-element/section/product-list/product-item.js
   var ProductItem = class extends CustomHTMLElement {
     connectedCallback() {
-      this.fetchAndSetFavoriteStatus();
       this.primaryImageList = Array.from(this.querySelectorAll('.product-item__primary-image'));
       this.delegate.on(
         'change',
@@ -8207,7 +8232,7 @@
       };
       const status = $(this).find('.favorite-button').hasClass('favorited') ? 1 : 0;
       try {
-        const response = await fetch('https://doc-sp.northskysupply.com/web/wish/' + (status == 1 ? 'clear' : 'save'), {
+        const response = await fetch(`${window.zkh.api}/wish/` + (status == 1 ? 'clear' : 'save'), {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -8236,7 +8261,7 @@
         sku: $(this).data('sku'),
       };
       try {
-        const response = await fetch('https://doc-sp.northskysupply.com/web/wish/select', {
+        const response = await fetch(`${window.zkh.api}/wish/select`, {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -8761,7 +8786,7 @@
     async connectedCallback() {
       const email = $(this).data('email');
       if(email) {
-        const cartRes = await fetch(`https://doc-sp.northskysupply.com/web/shopping/cart?email=${email}`);
+        const cartRes = await fetch(`${window.zkh.api}/shopping/cart?email=${email}`);
         const cartData = await cartRes.json();
         if(cartData.data.length > 0) {
           Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 });  // 登录的时候查一下，customer对应的cart cookie
@@ -8781,7 +8806,7 @@
         const email = $(this).data('email');
         if(email) {
           const cartCookie = Cookies.get('cart');
-          fetch('https://doc-sp.northskysupply.com/web/shopping/cart/save ', {
+          fetch(`${window.zkh.api}/shopping/cart/save`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -9525,6 +9550,22 @@
       input.value = input.value.replace(/[^0-9]/g, ''); // 移除非数字
     }
   })();
+  (async () => {
+    try {
+      // 获取分类数据
+      const response = await fetch(`${window.zkh.api}/openapi/adlink/product/collection/tree`, {
+        method: 'GET',
+      });
+      const { data } = await response.json();
+      localStorage.setItem('all-category', JSON.stringify(data));
+      // 生成分类元素
+      document.dispatchEvent(new CustomEvent('tree-get', { detail: {
+        data,
+      }}));
+    } catch (err) {
+      console.error(err);
+    }
+  })()
 })();
 
 /*!
