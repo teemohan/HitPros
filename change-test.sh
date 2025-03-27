@@ -1,2 +1,2 @@
 shopify auth logout
-shopify theme login --store testhitpros.myshopify.com
+shopify theme dev --store testhitpros.myshopify.com
