@@ -370,7 +370,7 @@
                   node.innerHTML = node.innerHTML.replace("if(window.attachEvent)", "document.addEventListener('asyncLazyLoad',function(event){asyncLoad();});if(window.attachEvent)").replaceAll(", asyncLoad", ", function(){}");
               }
               else if (node.innerHTML.includes("PreviewBarInjector") || node.innerHTML.includes("adminBarInjector")) {
-                {% comment %} node.innerHTML = node.innerHTML.replace("DOMContentLoaded", "loadBarInjector"); {% endcomment %}
+                node.innerHTML = node.innerHTML.replace("DOMContentLoaded", "loadBarInjector");
               }
                else if (typeof Modernizr.mutationobserver !== "undefined") {
                   node.setAttribute("data-src", node.src);
