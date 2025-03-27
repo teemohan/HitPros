@@ -35,7 +35,7 @@
     {%- endif -%}
     <script>
       window.zkh = {
-        api: {%- if shop.name == 'TestHitpros' -%}'https://doc-shop-uat.northskysupply.com/web'{%- else -%}'https://doc-sp.northskysupply.com/web/'{%- endif -%},
+        api: {%- if shop.name == 'TestHitpros' -%}'https://doc-shop-uat.northskysupply.com/web'{%- else -%}'https://doc-sp.northskysupply.com/web'{%- endif -%},
         pixi_url: {%- if shop.name == 'TestHitpros' -%}'https://pixi-forge.astrl.link/pdf/view/cm06akk9w00t0umfav1ovty8a/cm06aleng004wgt6jefp60ntq'{%- else -%}'https://pixi.storetools.io/api/pdf/clrh58bin00qamc07qcfwpkvs/clrh59cmq00qemc07xzzvb1nt'{%- endif -%},
         b2b_url: {%- if shop.name == 'TestHitpros' -%}'https://shopify.com/87140565299/account'{%- else -%}'https://shopify.com/62373298359/account'{%- endif -%}
       }
