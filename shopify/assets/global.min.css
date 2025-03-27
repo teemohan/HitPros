@@ -314,10 +314,6 @@ input[type="password"]::-ms-clear {
   overflow: hidden;
 }
 
-#preview-bar-iframe {
-  display: none;
-}
-
 .product-item-meta__title:hover {
   text-decoration: underline;
 }
