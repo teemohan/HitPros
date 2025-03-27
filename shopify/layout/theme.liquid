@@ -103,10 +103,10 @@
     <link rel="stylesheet" href="{{ 'global.min.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'theme-v3.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'el-reset.css' | asset_url }}">
-
+<script src="{{ 'js-cookie.js' | asset_url }}"></script>
     <script>
       if('{{ customer.id }}'){
-        Cookies.set('user_id', customer.id }});
+        Cookies.set('user_id', '{{ customer.id }}');
         var dataLayer = [];
         dataLayer.push({
           'user_id':'{{ customer.id }}'
@@ -143,7 +143,7 @@
       gtag('config', 'G-8L4ZHLQH4N');
     </script> -->
 
-    <script src="{{ 'js-cookie.js' | asset_url }}"></script>
+    
     <script src="{{ 'swiper.min.js' | asset_url }}"></script>
     <script src="{{ 'jquery.min.js' | asset_url }}"></script>
     <script src="{{ 'vendor.js' | asset_url }}"></script>
