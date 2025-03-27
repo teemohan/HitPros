@@ -33,8 +33,14 @@
     {%- if settings.favicon -%}
       <link rel="shortcut icon" href="{{ settings.favicon | img_url: '96x96' }}" type="image/png">
     {%- endif -%}
-
-
+    <script>
+      window.zkh = {
+        api: {%- if shop.name == 'TestHitpros' -%}'https://doc-shop-uat.northskysupply.com/web'{%- else -%}'https://doc-sp.northskysupply.com/web/'{%- endif -%},
+        pixi_url: {%- if shop.name == 'TestHitpros' -%}'https://pixi-forge.astrl.link/pdf/view/cm06akk9w00t0umfav1ovty8a/cm06aleng004wgt6jefp60ntq'{%- else -%}'https://pixi.storetools.io/api/pdf/clrh58bin00qamc07qcfwpkvs/clrh59cmq00qemc07xzzvb1nt'{%- endif -%},
+        b2b_url: {%- if shop.name == 'TestHitpros' -%}'https://shopify.com/87140565299/account'{%- else -%}'https://shopify.com/62373298359/account'{%- endif -%}
+      }
+    </script>
+    {%- render 'preload' -%}
     {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
     <link rel="preconnect" href="https://cdn.shopify.com">
     <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
