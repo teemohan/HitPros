@@ -198,7 +198,7 @@
       methods: {
         initDetail() {
           fetch(
-            `https://doc-sp.northskysupply.com/web/after/sales/details?email=${this.queryParam.email}&id=${this.queryParam.id}`,
+            `${window.zkh.api}/after/sales/details?email=${this.queryParam.email}&id=${this.queryParam.id}`,
             {
               method: 'GET',
             }

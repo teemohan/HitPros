@@ -193,12 +193,36 @@
 </section>
 
 <script>
+    const setWish = async () => {
+      const skus = [];
+      $('.product-mobile-sku-line .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        skus.push(sku);
+      })
+      const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
+        method: 'POST',
+        body: JSON.stringify({
+          customerId: '{{ customer.id}}',
+          skus
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      const res = await response.json();
+      $('.product-mobile-sku-line .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        if(res.data.includes(sku)) {
+          $(this).find('.favorite-button').addClass('favorited')
+        }
+      })
+    }
     async function getSpuList() { // 获取spu和sku的组合
       try {
         {% if collection.handle == 'all' %}
-          const fetchUrl = "https://doc-sp.northskysupply.com/web/openapi/adlink/product/collection/spu";
+          const fetchUrl = `${window.zkh.api}/openapi/adlink/product/collection/spu`;
         {% else %}
-          const fetchUrl = `https://doc-sp.northskysupply.com/web/openapi/adlink/product/collection/spu?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}`;
+          const fetchUrl = `${window.zkh.api}/openapi/adlink/product/collection/spu?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}`;
         {% endif %}
         const response = await fetch(fetchUrl, {
           method: 'GET', // or 'POST' depending on the endpoint
@@ -731,10 +755,13 @@
       const spuData = await getSpuList(); // 接口获取spu数据
       initSpuSkuWrapper(spuData); // 创建spu sku dom
       initSpuSwiper(); // 初始化spu swiper 加入到页面中 display 即使是none页不影响swiper的创建
+      if('{{ customer.id }}') {
+        setWish(); //获取心愿单
+      }
       setWrapperLoading(false); // 隐藏页面loading
     }
     async function initCategoriesList() { // 获取下一级类目
-      const baseURL = `https://doc-sp.northskysupply.com/web/openapi/adlink/product/collection/collection?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}&order=1`;
+      const baseURL = `${window.zkh.api}/openapi/adlink/product/collection/collection?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}&order=1`;
       try {
         const response = await fetch(baseURL, {
           method: 'GET', // or 'POST' depending on the endpoint

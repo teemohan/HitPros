@@ -325,7 +325,7 @@
         $('#order_section').show();
         const orderId = Number(window.location.href.split('=')[1]);
         $.ajax({
-          url: `https://doc-sp.northskysupply.com/web/order/${orderId}`,
+          url: `${window.zkh.api}/order/${orderId}`,
           method: 'GET',
           success: (data) => {
             this.orderMain = data.data.order;

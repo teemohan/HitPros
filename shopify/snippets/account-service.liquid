@@ -417,7 +417,7 @@
         async navToOrderDetail(orderName) {
           event.stopPropagation();
           try {
-            const res = await fetch('https://doc-sp.northskysupply.com/web/order?orderName='+orderName, {
+            const res = await fetch(`${window.zkh.api}/order?orderName=`+orderName, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -452,7 +452,7 @@
         },
         async getList(params) {
           try {
-            const res = await fetch('https://doc-sp.northskysupply.com/web/openapi/shopify/refund/page', {
+            const res = await fetch(`${window.zkh.api}/openapi/shopify/refund/page`, {
               method: 'POST',
               body: JSON.stringify({
                 pageNo: params.pageNo,
@@ -559,7 +559,7 @@
         },
         async cancelOrderRequest(orderId) {
           try {
-            const res = await fetch('https://doc-sp.northskysupply.com/web/openapi/shopify/refund/cancel', {
+            const res = await fetch(`${window.zkh.api}/openapi/shopify/refund/cancel`, {
               method: 'POST',
               body: JSON.stringify({
                 requestId: orderId,

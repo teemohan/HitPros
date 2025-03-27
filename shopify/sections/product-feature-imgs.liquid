@@ -124,7 +124,7 @@
         async initData() {
           try {
             const response = await fetch(
-              'https://doc-sp.northskysupply.com/web/openapi/adlink/product/listPDPs?skuCode={{ product.selected_or_first_available_variant.sku }}',
+              `${window.zkh.api}/openapi/adlink/product/listPDPs?skuCode={{ product.selected_or_first_available_variant.sku }}`,
               {
                 method: 'GET', // or 'POST' depending on the endpoint
               }

@@ -105,7 +105,7 @@
             productId: this.productId,
             sku: this.sku
           };
-          fetch('https://doc-sp.northskysupply.com/web/wish/select', {
+          fetch(`${window.zkh.api}/wish/select`, {
             method: 'POST',
             body: JSON.stringify(formData),
             headers:{
@@ -138,7 +138,7 @@
             productNum: 1
           };
           // 发送请求
-          fetch('https://doc-sp.northskysupply.com/web/wish/' + (this.isDelete === 1 ? 'clear' : 'save'), {
+          fetch(`${window.zkh.api}/wish/` + (this.isDelete === 1 ? 'clear' : 'save'), {
               method: 'POST',
               body: JSON.stringify(formData),
               headers:{

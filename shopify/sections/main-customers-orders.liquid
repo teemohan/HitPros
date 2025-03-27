@@ -178,7 +178,7 @@
           <a
             v-if="!order.cancelled_at && !cancelled"
             target="_blank"
-             :href="`https://pixi.storetools.io/api/pdf/clrh58bin00qamc07qcfwpkvs/clrh59cmq00qemc07xzzvb1nt/${ order.id }`"
+             :href="`${ pixiUrl }/${ order.id }`"
             >Invoice/Receipt
           </a>
         </div>
@@ -318,6 +318,7 @@
       delimiters: ['${', '}'],
       data() {
         return {
+          pixiUrl: window.zkh.pixi_url,
           dialogVisibleCancel: false,
           showMoreDetail: true, // 订单详情的
           showMoreRefund: false, // 退款的
@@ -359,7 +360,7 @@
         async handleCancelOrder() {
           this.cancelOrderLoading = true;
           try {
-            const response = await fetch('https://doc-sp.northskysupply.com/web/order/cancel', {
+            const response = await fetch(`${window.zkh.api}/order/cancel`, {
               method: 'PUT',
               body: JSON.stringify(this.orderRuleForm),
               headers: {
@@ -409,7 +410,7 @@
             userEmail: '{{ customer.email }}'
           }
           try {
-            const response = await fetch("https://doc-sp.northskysupply.com/web/openapi/shopify/refund/query", {
+            const response = await fetch(`${window.zkh.api}/openapi/shopify/refund/query`, {
               method: 'POST',
               body: JSON.stringify(formData),
               headers: {
@@ -507,7 +508,7 @@
               }, 0); // 初始值为 0
           }
           try {
-            const response = await fetch(`https://doc-sp.northskysupply.com/web/order/${orderId}`);
+            const response = await fetch(`${window.zkh.api}/order/${orderId}`);
             const res = await response.json();
             if(res.code == 200) {
               res.data.order.line_items.map(item => {
