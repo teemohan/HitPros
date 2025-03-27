@@ -15,6 +15,7 @@
 </style>
 <recently-viewed-products
   section-id="{{ section.id }}"
+  data-customer="{{ customer.id }}"
   products-count="10"
   {% if request.page_type == 'product' %}
     exclude-product-id="{{ product.id | escape }}"

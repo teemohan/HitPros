@@ -5,7 +5,8 @@
   window.themeVariables = {
     userCompany: {
       isB2b: '{{ customer.b2b? }}',
-      name: '{{ customer.current_company.name }}'
+      name: '{{ customer.current_company.name }}',
+      zip: "{{ customer.current_location.shipping_address.zip }}"
     }, 
 
     settings: {

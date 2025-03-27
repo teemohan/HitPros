@@ -57,8 +57,9 @@
         "prevNextButtons": false
       }
       {%- endcapture -%}
-
+      {%- assign first_video = product.media | where: 'media_type', 'video' | first -%}
       <flickity-carousel
+        {% if first_video != blank %}has-video = 'true'{% endif %}
         click-nav
         flickity-config="{{ flickity_config | escape }}"
         id="product-{{ section.id }}-{{ product.id }}-media-list"

@@ -44,54 +44,76 @@
 
 <script>
   (() => {
-    const handleIntersection = (entries, observer) => {
-      if (!entries[0].isIntersecting) return;
-      observer.unobserve(productRecommendationsSection);
-      const url = productRecommendationsSection.dataset.url;
-      fetch(url)
-        .then((response) => response.text())
-        .then((text) => {
-          const html = document.createElement('div');
-          html.innerHTML = text;
-          const recommendations = html.querySelector('.product-recommendations');
+    const setWish = async () => {
+      const skus = [];
+      $('.product-recommendations .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        skus.push(sku);
+      })
+      const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
+        method: 'POST',
+        body: JSON.stringify({
+          customerId: '{{ customer.id}}',
+          skus
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      const res = await response.json();
+      $('.product-recommendations .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        if(res.data.includes(sku)) {
+          $(this).find('.favorite-button').addClass('favorited')
+        }
+      })
+    }
 
-          if (recommendations && recommendations.innerHTML.trim().length) {
-            productRecommendationsSection.innerHTML = recommendations.innerHTML;
-            var alsolikeSwiper = new Swiper(`.{{ section.id }}-IndexBestswiper`, {
-              observer: true,
-              observeParents: true,
-              breakpoints: {
-                0: {
-                  spaceBetween: 12,
-                  slidesPerView: 2,
-                },
-                740: {
-                  spaceBetween: 12,
-                  slidesPerView: 2,
-                },
-                1200: {
-                  spaceBetween: 12,
-                  slidesPerView: 4,
-                },
-              },
-              pagination: {
-                el: '.{{ section.id }} .swiper-pagination',
-                clickable: true,
-              },
-              navigation: {
-                nextEl: `.{{ section.id }} .swiper-button-next`,
-                prevEl: `.{{ section.id }} .swiper-button-prev`,
-              },
-            });
-          }
-        })
-        .catch((e) => {
-          console.error(e);
-        });
-    };
+
     const productRecommendationsSection = document.querySelector('.product-recommendations');
-    const observer = new IntersectionObserver(handleIntersection, { rootMargin: '0px 0px 200px 0px' });
-    observer.observe(productRecommendationsSection);
+    const url = productRecommendationsSection.dataset.url;
+    fetch(url)
+      .then((response) => response.text())
+      .then((text) => {
+        const html = document.createElement('div');
+        html.innerHTML = text;
+        const recommendations = html.querySelector('.product-recommendations');
+        if (recommendations && recommendations.innerHTML.trim().length) {
+          productRecommendationsSection.innerHTML = recommendations.innerHTML;
+          var alsolikeSwiper = new Swiper(`.{{ section.id }}-IndexBestswiper`, {
+            observer: true,
+            observeParents: true,
+            breakpoints: {
+              0: {
+                spaceBetween: 12,
+                slidesPerView: 2,
+              },
+              740: {
+                spaceBetween: 12,
+                slidesPerView: 2,
+              },
+              1200: {
+                spaceBetween: 12,
+                slidesPerView: 4,
+              },
+            },
+            pagination: {
+              el: '.{{ section.id }} .swiper-pagination',
+              clickable: true,
+            },
+            navigation: {
+              nextEl: `.{{ section.id }} .swiper-button-next`,
+              prevEl: `.{{ section.id }} .swiper-button-prev`,
+            },
+          });
+          if('{{ customer.id }}') {
+            setWish()
+          }
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   })();
 </script>
 
