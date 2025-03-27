@@ -1,5 +1,5 @@
 <!doctype html>
-  
+
   {%- assign direction = 'ltr' -%}
   {%- case request.locale.iso_code -%}
     {%- when 'ar', 'arc', 'dv', 'fa', 'ha', 'he', 'kwh', 'ks', 'ku', 'ps', 'ur', 'yi' -%}
@@ -40,6 +40,7 @@
           b2b_url: {%- if shop.name == 'TestHitpros' -%}'https://shopify.com/87140565299/account'{%- else -%}'https://shopify.com/62373298359/account'{%- endif -%}
         }
       </script>
+  
       {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
       <link rel="preconnect" href="https://cdn.shopify.com">
       <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
