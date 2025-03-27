@@ -106,6 +106,7 @@
 
     <script>
       if('{{ customer.id }}'){
+        Cookies.set('user_id', customer.id }});
         var dataLayer = [];
         dataLayer.push({
           'user_id':'{{ customer.id }}'
