@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
@@ -52,11 +43,11 @@
       "settings": {
         "title": "Contact Us",
         "subtitle": "We’re Not Satisfied Until You Are",
-        "content": "<p>Most of our business happens right here on skylinesupply.com. But, we know sometimes you just need to talk to a real person. Whether you want to call us or email us, our customer service staff is available Monday through Friday from 6 am to 9 pm CT and Saturdays from 7 am to 5 pm CT. </p>",
-        "text_1_text": "<p><strong>Skyline Supply Co., Ltd</strong></p><p><strong>Add:</strong><br/>5900 Balcones Drive Suite 100   Austin  TX78731</p><p><strong>E-mail us:</strong><br/>support@skylinesupply.com</p><p><strong>Call Us:</strong><br/>852-4640 3308</p>",
+        "content": "<p>Most of our business happens right here on skylinesupply.com. But, we know sometimes you just need to talk to a real person. Whether you want to call us or email us, our customer service staff is available Monday through Friday from 6 am to 9 pm CT and Saturdays from 7 am to 5 pm CT. <\/p>",
+        "text_1_text": "<p><strong>Skyline Supply Co., Ltd<\/strong><\/p><p><strong>Add:<\/strong><br\/>5900 Balcones Drive Suite 100   Austin  TX78731<\/p><p><strong>E-mail us:<\/strong><br\/>support@skylinesupply.com<\/p><p><strong>Call Us:<\/strong><br\/>852-4640 3308<\/p>",
         "text_2_text": "",
-        "text_3_text": "<p><strong>Live Chat:</strong><br/><a href=\"/pages/contact\" title=\"Contact\">24/7 custtomer support</a></p>",
-        "form_title": "<p>We’re happy to answer your questions.<br/>We respond to most inquiries within 24 hours!</p>",
+        "text_3_text": "<p><strong>Live Chat:<\/strong><br\/><a href=\"\/pages\/contact\" title=\"Contact\">24\/7 custtomer support<\/a><\/p>",
+        "form_title": "<p>We’re happy to answer your questions.<br\/>We respond to most inquiries within 24 hours!<\/p>",
         "background": "rgba(0,0,0,0)",
         "text_color": "rgba(0,0,0,0)",
         "button_background": "rgba(0,0,0,0)",
