@@ -109,7 +109,7 @@
       <link rel="stylesheet" href="{{ 'global.min.css' | asset_url }}">
       <link rel="stylesheet" href="{{ 'theme-v3.css' | asset_url }}">
       <link rel="stylesheet" href="{{ 'el-reset.css' | asset_url }}">
-  <script src="{{ 'js-cookie.js' | asset_url }}"></script>
+      <script src="{{ 'js-cookie.js' | asset_url }}"></script>
       <script>
         if('{{ customer.id }}'){
           Cookies.set('user_id', '{{ customer.id }}');
@@ -171,6 +171,7 @@
   
       <script src="{{ 'theme.js' | asset_url }}" defer></script>
       {{ content_for_header }}
+      {%- render 'other-service' -%}
     </head>
   
     {%- assign feature_classes = '' -%}
