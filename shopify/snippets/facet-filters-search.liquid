@@ -1,0 +1,184 @@
+{%- comment -%}
+  Code that create the faceted search for the collection and search pages. It currently supports the following options:
+
+    - filters: either the collection or search filters
+    - filters_position: can either be "always_visible" or "drawer"
+{%- endcomment -%}
+
+{%- assign active_filters_count = 0 -%}
+
+{%- for filter in filters -%}
+  {%- if filter.type == 'list' -%}
+    {%- assign active_filters_count = active_filters_count | plus: filter.active_values.size -%}
+  {%- elsif filter.type == 'price_range' and filter.min_value.value or filter.max_value.value -%}
+    {%- assign active_filters_count = active_filters_count | plus: 1 -%}
+  {%- elsif filter.type == 'boolean' and filter.true_value.active -%}
+    {%- assign active_filters_count = active_filters_count | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<facet-filters
+  {% if filters_position == 'always_visible' %}
+    always-visible
+  {% endif %}
+  id="facet-filters"
+  class="product-facet__filters {% if filters_position == 'drawer' %}drawer drawer--from-left{% endif %}"
+>
+  <span class="drawer__overlay"></span>
+
+  <header class="drawer__header">
+    <p class="drawer__title heading h6">
+      Filter
+      <span class="product-facet__active-count bubble-count">0</span>
+    </p>
+    <a
+      class="drawer__header-action link text--subdued"
+      data-action="clear-filters"
+      href="{{ page_url }}?sort_by={{ sort_by }}&q={{ search.terms | escape }}&type=product&options[prefix]=last&options[unavailable_products]={{ settings.search_unavailable_products }}"
+    >
+      {{- 'collection.general.clear_filters' | t -}}
+    </a>
+
+    <button
+      type="button"
+      class="drawer__close-button"
+      data-action="close"
+      title="{{ 'general.accessibility.close' | t | escape }}"
+    >
+      {% render 'icon' with 'close' %}
+    </button>
+  </header>
+  <div class="drawer__content">
+    <form id="facet-filters-form">
+      <input type="hidden" name="sort_by" value="Relevance" class="search-hidden-sort">
+
+      {%- if request.page_type == 'search' -%}
+        <input type="hidden" name="q" value="{{ search.terms | escape }}">
+        <input type="hidden" name="type" value="product">
+        <input type="hidden" name="options[prefix]" value="last">
+        <input type="hidden" name="options[unavailable_products]" value="{{ settings.search_unavailable_products }}">
+      {% elsif request.page_type == 'collection'
+        and collection.current_type != blank
+        or collection.current_vendor != blank
+      %}
+        <input
+          type="hidden"
+          name="q"
+          value="{{ collection.current_vendor | default: collection.current_type | escape }}"
+        >
+      {%- endif -%}
+
+      <div class="product-facet__filter-list">
+        <div class="product-facet__filter-item price-range">
+          <button
+            type="button"
+            is="toggle-button"
+            class="collapsible-toggle text--strong"
+            aria-controls="facet-filter-filter.v.price"
+            aria-expanded="false"
+          >
+            Price
+            {%- render 'icon' with 'chevron-white', inline: true -%}
+            </button
+          ><collapsible-content
+            id="facet-filter-filter.v.price"
+            class="collapsible filter-v-price"
+            ><div class="collapsible__content">
+              <price-range class="price-range">
+                <div
+                  class="price-range__range-group range-group"
+                  style="--range-min: 0%; --range-max: 100%"
+                >
+                  <input
+                    type="range"
+                    aria-label="From price"
+                    class="range"
+                    min="0"
+                    max="10000"
+                    value="0"
+                  />
+                  <input
+                    type="range"
+                    aria-label="To price price-max-range"
+                    class="range"
+                    min="0"
+                    max="10000"
+                    value="10000"
+                  />
+                </div>
+        
+                <div class="price-range__input-group">
+                  <div class="price-range__input input-prefix text--xsmall">
+                    <span class="input-prefix__value text--subdued">$</span>
+                    <input
+                      aria-label="From price"
+                      class="input-prefix__field price-min"
+                      type="number"
+                      inputmode="numeric"
+                      oninput="validateInteger(this)"
+                      name="filter.v.price.gte"
+                      id="filter.v.price.gte"
+                      min="0"
+                      max="10000"
+                      placeholder="MIN"
+                    />
+                  </div>
+        
+                  <span class="price-range__delimiter">To</span>
+        
+                  <div class="price-range__input input-prefix text--xsmall">
+                    <span class="input-prefix__value text--subdued">$</span>
+                    <input
+                      aria-label="To price"
+                      class="input-prefix__field price-max"
+                      type="number"
+                      inputmode="numeric"
+                      oninput="validateInteger(this)"
+                      name="filter.v.price.lte"
+                      id="filter.v.price.lte"
+                      min="0"
+                      max="10000"
+                      placeholder="MAX"
+                    />
+                  </div>
+                </div>
+              </price-range>
+            </div>
+          </collapsible-content>
+        </div>
+        
+        <div class="product-facet__filter-item brand">
+          <button
+            type="button"
+            is="toggle-button"
+            class="collapsible-toggle text--strong"
+            aria-controls="facet-filter-filter.p.m.product.brand"
+            aria-expanded="false"
+          >
+            Brand
+            {%- render 'icon' with 'chevron-white', inline: true -%}
+            </button
+          ><collapsible-content
+            animate-items=""
+            id="facet-filter-filter.p.m.product.brand"
+            class="collapsible filter-p-m-product-brand"
+            ><div class="collapsible__content search-brand-collapsible">
+            </div>
+          </collapsible-content>
+        </div>
+      </div>
+
+      <noscript>
+        <button type="submit" class="product-facet__submit button button--secondary">
+          {{ 'collection.general.apply_filters' | t }}
+        </button>
+      </noscript>
+    </form>
+  </div>
+
+  <div class="drawer__footer {% if filters_position == 'always_visible' %}hidden-lap-and-up{% endif %}">
+    <button type="button" class="button button--primary button--full" data-action="close">
+      See {{ collection.products_count }} Results
+    </button>
+  </div>
+</facet-filters>

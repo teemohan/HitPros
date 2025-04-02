@@ -1,6 +1,5 @@
 (() => {
   (() => { // 校验用户是否是B端用户
-    console.log(window.themeVariables.userCompany)
     if(Cookies.get('logout') == 1) {
       Cookies.remove('logout');
       window.location.href = '/account/logout';
@@ -3807,13 +3806,13 @@
           handleSearch() {
             // 搜索按钮
             if(!this.searchStr?.trim()) {
-              window.location.href = "https://northskysupply.com/collections/all";
+              window.location.href = "/collections/all";
               return
             }
             this.storageHistory(this.searchStr);
             const url = new URL(window.location.href);
             url.pathname = '/search';
-            url.search = `?type=product&q=${this.searchStr}`;
+            url.search = `?type=product&q=${encodeURIComponent(this.searchStr)}`;
             window.location.href = url.toString();
           },
         },
@@ -5109,36 +5108,6 @@
   var ProductList = class extends CustomHTMLElement {
     constructor() {
       super();
-      this.productListInner = this.querySelector('.product-list__inner');
-
-      $('.listView').click(function () {
-        $(this).addClass('active');
-        Cookies.set('searchView', 'list', { expires: 36500 });
-        $(this).siblings().removeClass('active');
-        $('.product-list__inner').removeClass('grid-inner');
-        $('.product-list__inner').addClass('list-inner');
-      });
-
-      $('.gridView').click(function () {
-        $(this).addClass('active');
-        Cookies.set('searchView', 'grid', { expires: 36500 });
-        $(this).siblings().removeClass('active');
-        $('.product-list__inner').addClass('grid-inner');
-        $('.product-list__inner').removeClass('list-inner');
-      });
-      const searchView = Cookies.get('searchView') || 'grid';
-      if (searchView == 'grid') {
-        $('.listView').removeClass('active');
-        $('.gridView').addClass('active');
-        $(this.productListInner).addClass('grid-inner');
-        $(this.productListInner).removeClass('list-inner');
-      } else if(searchView == 'list') {
-        $('.listView').addClass('active');
-        $('.gridView').removeClass('active');
-        $(this.productListInner).addClass('list-inner');
-        $(this.productListInner).removeClass('grid-inner');
-      }
-      $('.product-search-wrapper').show();
       this.productItems = Array.from(this.querySelectorAll('product-item'));
     }
     connectedCallback() {
@@ -8001,7 +7970,7 @@
       };
       const status = $(this).find('.favorite-button').hasClass('favorited') ? 1 : 0;
       try {
-        const response = await fetch(`${window.zkh.api}/wish/` + (status == 1 ? 'clear' : 'save'), {
+        const response = await fetch(`${window.zkh.api}/wish/${status == 1 ? 'clear' : 'save'}`, {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -8492,114 +8461,13 @@
       this.delegate.on('pagination:page-changed', this._rerender.bind(this));
       this.delegate.on('facet:criteria-changed', this._rerender.bind(this));
       this.delegate.on('facet:abort-loading', this._abort.bind(this));
-      document.dispatchEvent(new CustomEvent('facet-rerender'));
     }
     async _rerender(event) {
       history.replaceState({}, '', event.detail.url);
-      this._abort();
-      this.showLoadingBar();
-      const url = new URL(window.location);
-      url.searchParams.set('section_id', this.getAttribute('section-id'));
-      try {
-        this.abortController = new AbortController();
-        const response = await fetch(url.toString(), { signal: this.abortController.signal });
-        const responseAsText = await response.text();
-        const fakeDiv = document.createElement('div');
-        fakeDiv.innerHTML = responseAsText;
-        if(fakeDiv.querySelector('#facet-main')?.innerHTML) {
-          this.querySelector('#facet-main').innerHTML = fakeDiv.querySelector('#facet-main').innerHTML;
-          const activeFilterList = Array.from(fakeDiv.querySelectorAll('.product-facet__active-list')),
-            toolbarItem = document.querySelector('.mobile-toolbar__item--filters');
-          if (toolbarItem) {
-            toolbarItem.classList.toggle('has-filters', activeFilterList.length > 0);
-          }
-          const filtersTempDiv = fakeDiv.querySelector('#facet-filters');
-          if (filtersTempDiv) {
-            const previousScrollTop = this.querySelector('#facet-filters .drawer__content').scrollTop;
-            Array.from(this.querySelectorAll('#facet-filters-form .collapsible-toggle[aria-controls]')).forEach(
-              (filterToggle) => {
-                const filtersTempDivToggle = filtersTempDiv.querySelector(
-                    `[aria-controls="${filterToggle.getAttribute('aria-controls')}"]`
-                  ),
-                  isExpanded = filterToggle.getAttribute('aria-expanded') === 'true';
-                filtersTempDivToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-                filtersTempDivToggle.nextElementSibling.toggleAttribute('open', isExpanded);
-                filtersTempDivToggle.nextElementSibling.style.overflow = isExpanded ? 'visible' : '';
-              }
-            );
-            this.querySelector('#facet-filters').innerHTML = filtersTempDiv.innerHTML;
-            this.querySelector('#facet-filters .drawer__content').scrollTop = previousScrollTop;
-          }
-
-          document.dispatchEvent(new CustomEvent("search-rerender-success"));
-        } else {
-          this.querySelector('#facet-main').innerHTML = `<div>No matches found</div>`;
-        }
-        const scrollTo =
-          this.querySelector('.product-facet__meta-bar') ||
-          this.querySelector('.product-facet__product-list') ||
-          this.querySelector('.product-facet__main');
-        requestAnimationFrame(() => {
-          scrollTo.scrollIntoView({ block: 'start', behavior: 'smooth' });
-        });
-        this.hideLoadingBar();
-
-        var searchInput = $('.collapsible-search .search__input');
-        var searchInputSpan = $('.collapsible-search .search__input-span');
-        // 添加键盘按下事件的监听器
-        $(searchInput).keydown(function (event) {
-          var keyCode = event.keyCode || event.which;
-          // 如果按下的是回车键（Enter）
-          if (keyCode === 13) {
-            // 执行你的操作...
-            search();
-          }
-        });
-        $(searchInputSpan).click(function () {
-          search();
-        });
-        function search(event) {
-          let searchval = $(searchInput).val();
-          searchval = searchval.toLowerCase();
-          var hasMatchingItem = false; // 标记是否有匹配项
-
-          $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
-            var title = $(this).find('.checkbox').val();
-            title = title.toLowerCase();
-            if (title.indexOf(searchval) !== -1) {
-              $(this).show();
-              hasMatchingItem = true; // 有匹配项则将标记设为true
-            } else {
-              $(this).hide();
-              $('.no-results-message').show();
-            }
-          });
-
-          if (!hasMatchingItem) {
-            $('.no-results-message').show(); // 所有项都不匹配时显示消息
-          } else {
-            $('.no-results-message').hide(); // 有匹配项则隐藏消息
-          }
-        }
-
-        function resetToInitialState() {
-          $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
-            $(this).show();
-            $('.no-results-message').hide();
-          });
-        }
-
-        searchInput.on('input', function () {
-          if (searchInput.val() === '') {
-            resetToInitialState();
-          }
-        });
-        document.dispatchEvent(new CustomEvent('facet-rerender'));
-      } catch (e) {
-        if (e.name === 'AbortError') {
-          return;
-        }
-      }
+      document.dispatchEvent(new CustomEvent('facet-search-rerender', { detail: { 
+        hideLoadingBar: this.hideLoadingBar,
+        showLoadingBar: this.showLoadingBar
+      }}));
     }
     _abort() {
       if (this.abortController) {

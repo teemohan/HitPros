@@ -1,0 +1,215 @@
+ {% raw %}
+  <script type="text/x-template" id="product-item-delevery">
+    <div class="buy-bottom-box-wrapper">
+      <div class="buy-bottom-box">
+        <div class="ships">
+          <div class="expect">
+            <span>Enter a ZIP Code.</span>
+          </div>
+          <el-form class="form el-reset-from" ref="ruleForm" :model="ruleForm" :rules="rules">
+            <el-form-item prop="zipCode">
+              <el-input
+                v-model="ruleForm.zipCode"
+                placeholder="ZIP Code"
+                @keydown.enter.native.prevent="handleComputedDeleveryDate">
+              </el-input>
+            </el-form-item>
+            <el-button
+              :loading="loading"
+              @click.stop="handleComputedDeleveryDate">
+              Submit
+            </el-button>
+          </el-form>
+          <div class="line-item__property date" v-if="isEstimateShow">
+            <template v-if="deleveryRes.availableInventoryCount === 0">
+              <span>Expected to arrive between {{ formatDate(stockDateStart) }} and {{ formatDate(stockDateEnd) }}.</span>
+            </template>
+            <template v-else-if="deleveryRes.availableInventoryCount >= deleveryRes.demandQuantity">
+              <span>Expected to arrive on {{ formatDate(deleveryRes.availableInventoryDeliveryTimeStamp) }}.</span>
+            </template>
+            <template v-else>
+              <span>Partial expected to arrive on {{ formatDate(+deleveryRes.availableInventoryDeliveryTimeStamp) }}.</span>
+              <span>The remaining balance is expected to arrive between {{ formatDate(stockDateStart) }} and {{ formatDate(stockDateEnd) }}.</span>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+{% endraw %}
+<script>
+  // 注册 Vue 组件
+  {% if customer.b2b? %}
+    {% assign zip = customer.current_location.shipping_address.zip %}
+  {% else %}
+    {% assign zip = customer.default_address.zip | default: '' %}
+  {% endif %}
+  Vue.component('product-item-delevery', {
+    template: '#product-item-delevery',
+    props: {
+      product: {
+        type: Object,
+        required: true
+      },
+      productDemand: {
+        type: [String, Number],
+        required: true,
+        default: 1
+      }
+    },
+    data() {
+      return {
+        loading: false,
+        isEstimateShow: false,
+        stockDateStart: 0,
+        stockDateEnd: 0,
+        deleveryRes: null,
+        ruleForm: {
+          zipCode: '{{ zip }}' || '',
+        },
+        rules: {
+          zipCode: [{ validator: this.validateZipCode, trigger: 'blur' }],
+        },
+      };
+    },
+    methods: {
+      // ZIP 验证规则
+      validateZipCode(rule, value, callback) {
+        if (!value) {
+          return callback(new Error('ZIP Code is required'));
+        } else if (String(value).length !== 5) {
+          return callback(new Error('Zip code must be 5 digits'));
+        } else {
+          getStateByZip(value)
+            .then((state) => {
+              if (!state || state.includes('Unable')) {
+                return callback(new Error('The ZIP Code is invalid.'));
+              }
+              return callback();
+            })
+            .catch(() => {
+              return callback(new Error('Error validating ZIP Code.'));
+            });
+        }
+      },
+      // 格式化日期
+      formatDate(timestamp, timezoneOffset = -5) {
+        const date = new Date(+timestamp);
+        const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
+        const year = localTime.getFullYear();
+        const monthNames = [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December',
+        ];
+        const month = monthNames[localTime.getMonth()];
+        const day = localTime.getDate();
+
+        let suffix = '';
+        if (day >= 11 && day <= 13) {
+          suffix = 'th';
+        } else {
+          switch (day % 10) {
+            case 1:
+              suffix = 'st';
+              break;
+            case 2:
+              suffix = 'nd';
+              break;
+            case 3:
+              suffix = 'rd';
+              break;
+            default:
+              suffix = 'th';
+              break;
+          }
+        }
+        return `${month} ${day}${suffix}, ${year}`;
+      },
+      // 处理提交并计算预计到货日期
+      async handleComputedDeleveryDate() {
+        const quantity = +this.productDemand || 1;
+        const sku = this.product.sku;
+        this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
+            this.loading = true;
+            getStateByZip(this.ruleForm.zipCode)
+              .then(async (state) => {
+                if (!state || state.includes('Unable')) {
+                  this.$message({
+                    showClose: true,
+                    message: 'Invalid ZIP Code',
+                    type: 'error',
+                  });
+                  this.loading = false;
+                  return;
+                }
+                const deliveryParam = {
+                  MATNR: sku,
+                  ZQTY: quantity,
+                  Z004: state,
+                  Z002: 'US',
+                  POST_CODE2: this.ruleForm.zipCode,
+                };
+
+                if (deliveryParam.ZQTY == 0) {
+                  this.$message({
+                    showClose: true,
+                    message: 'Sold out',
+                    type: 'warning',
+                  });
+                  this.loading = false;
+                  return;
+                }
+
+                try {
+                  const response = await fetch(
+                    `${window.zkh.api}/openapi/adlink/delivery-calculation`,
+                    {
+                      method: 'POST',
+                      body: JSON.stringify(deliveryParam),
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                    }
+                  );
+                  const res = await response.json();
+                  this.deleveryRes = res;
+
+                  if (res.transitInventoryDeliveryTimeStampMin && res.transitInventoryDeliveryTimeStampMax) {
+                    this.stockDateStart = +res.transitInventoryDeliveryTimeStampMin;
+                    this.stockDateEnd = +res.transitInventoryDeliveryTimeStampMax;
+                  }
+                  if (res.outOfStockDeliveryTimeStampMin && res.outOfStockDeliveryTimeStampMax) {
+                    this.stockDateStart = +res.outOfStockDeliveryTimeStampMin;
+                    this.stockDateEnd = +res.outOfStockDeliveryTimeStampMax;
+                  }
+
+                  this.isEstimateShow = true;
+                } catch (error) {
+                  console.error('Error fetching status:', error);
+                } finally {
+                  this.loading = false;
+                }
+              })
+              .catch((error) => {
+                console.error('Error fetching state:', error);
+                this.loading = false;
+              });
+          }
+        });
+      },
+    },
+    mounted() {
+    },
+  });
+</script>

@@ -5,7 +5,7 @@
             <div class="faq_detail_info" id="{{block.settings.quesId}}">
                 <h3 class="head_title">
                     {{block.settings.title_icon}}
-                    <span class="my-22">{{block.settings.title}}</span>    
+                    <span class="ol-my-22">{{block.settings.title}}</span>    
                 </h3>
                 <div class="faqs-item_all">
                     {%- for i in (1..10) -%}
@@ -20,7 +20,7 @@
                             <div class="faqs-item">
                                 <div class="card">
                                     <div class="card-header collapsed" id="question-{{ block.id }}-{{ forloop.index }}" data-toggle="collapse" data-target="#collapse-{{ block.id }}-{{ forloop.index }}" aria-expanded="true" aria-controls="collapse-{{ block.id }}-{{ forloop.index }}">
-                                        <div class="title my-16" role="button" tabindex="0">
+                                        <div class="title ol-my-16" role="button" tabindex="0">
                                             {{ question }}
                                         </div>
                                         <span class=" details_icon icon-plus">
@@ -45,8 +45,8 @@
     <div class="right_contact_information">
         <div class="contact_information">
             <div class="contact_information_icon">{{section.settings.icon}}</div>
-            <div class="contact_information_title my-18">{{section.settings.title}}</div>
-            <div class="contact_information_desc my-14">{{section.settings.contact_information}}</div>
+            <div class="contact_information_title ol-my-18">{{section.settings.title}}</div>
+            <div class="contact_information_desc ol-my-14">{{section.settings.contact_information}}</div>
         </div>
     </div>
 </div>

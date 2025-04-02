@@ -160,7 +160,7 @@
                     {% if filter.param_name == 'filter.p.vendor' %}
                       <div class="collapsible-search">
                         <input
-                          class="search__input my-14"
+                          class="search__input ol-my-14"
                           onkeydown="Enter(event)"
                           type="text"
                           name="search__input"
@@ -172,7 +172,7 @@
                           {%- render 'icon' with 'header-search' -%}
                         </span>
                       </div>
-                      <div class="no-results-message my-14" style="display: none;">No results could be found.</div>
+                      <div class="no-results-message ol-my-14" style="display: none;">No results could be found.</div>
                     {% endif %}
                     {%- case filter.type -%}
                       {%- when 'list' -%}
@@ -244,7 +244,7 @@
                           </div>
                         {%- else -%}
                           {%- for filter_value in filter.values -%}
-                            <div class="checkbox-container my-14">
+                            <div class="checkbox-container ol-my-14">
                               <input
                                 class="checkbox"
                                 type="checkbox"
@@ -414,7 +414,7 @@
                           {%- for filter in filters -%}
                             {%- for filter_value in filter.values -%}
                               {% if filter_value.label == tag_name %}
-                                <div class="checkbox-container my-14">
+                                <div class="checkbox-container ol-my-14">
                                   <input
                                     class="checkbox"
                                     type="checkbox"
