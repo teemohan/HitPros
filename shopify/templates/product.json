@@ -38,7 +38,7 @@
       "type": "apps",
       "blocks": {
         "ft_frequently_bought_together_widget_block_mNBUUH": {
-          "type": "shopify:\/\/apps\/ft-frequently-bought-together\/blocks\/widget-block\/f96a0d1a-35b8-40ef-ad54-1cb7fb011e11",
+          "type": "shopify:\/\/apps\/fether\/blocks\/widget-block\/f96a0d1a-35b8-40ef-ad54-1cb7fb011e11",
           "settings": {}
         }
       },

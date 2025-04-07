@@ -62,6 +62,7 @@
     "all_collections_jhEHXB": {
       "type": "all-collections",
       "settings": {
+        "collection_number": 5,
         "title": "Top Product Categories",
         "btn_link": "shopify:\/\/pages\/all-product-categories",
         "btn_title": "View All"
