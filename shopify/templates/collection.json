@@ -5,7 +5,7 @@
       "settings": {}
     },
     "main": {
-      "type": "main-collection",
+      "type": "main-collection-vue",
       "settings": {
         "collection_title": "Shop Self-Tapping Screws",
         "show_sort_by": true,
