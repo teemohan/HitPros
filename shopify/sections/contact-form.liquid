@@ -292,16 +292,16 @@
             <header class="section__header {% if section.settings.content != blank %}section__header--tight{% endif %} text-container">
               
               
-              <div class="contact-subtitle my-22">{{ section.settings.subtitle }}</div>
+              <div class="contact-subtitle ol-my-22">{{ section.settings.subtitle }}</div>
 
-              <div class="contact-text my-14">
+              <div class="contact-text ol-my-14">
               {%- if section.settings.content != blank -%}
                 {{- section.settings.content -}}
               {%- endif -%}
               </div>
             </header>
 
-            <div class="contacts__text-list my-18">
+            <div class="contacts__text-list ol-my-18">
               {%- if section.settings.text_1_text != blank -%}
                 <div class="contacts__text-item">
                   {{- section.settings.text_1_text -}}
@@ -332,8 +332,8 @@
         {%- endcapture -%}
 
         <div class="contact__main">
-          <div class="contact-form-title my-22 hidden-phone">{{ section.settings.form_title }}</div>
-          <div class="contact-form-title my-18 hidden-tablet-and-up">
+          <div class="contact-form-title ol-my-22 hidden-phone">{{ section.settings.form_title }}</div>
+          <div class="contact-form-title ol-my-18 hidden-tablet-and-up">
             {{ section.settings.form_title | strip_html }}
           </div>
           <div id="service-main-form" class="service-main-form">

@@ -93,7 +93,7 @@
         {%- if template.suffix contains 'contact' or template.suffix contains 'faq' -%}
           <div class="page_conent">
             {%- if section.settings.show_title -%}
-              <h1 class="heading h2 my-48">{{ page.title }}</h1>
+              <h1 class="heading h2 ol-my-48 ">{{ page.title }}</h1>
             {%- endif -%}
             {{- page.content -}}
           </div>
@@ -104,10 +104,10 @@
     {%- unless template.suffix contains 'contact' or template.suffix contains 'faq' -%}
       <div class="page_conent page-header__text-wrapper">
         {%- if section.settings.show_title -%}
-          <h1 class="heading h2 my-48">{{ page.title }}</h1>
+          <h1 class="heading h2 ol-my-48 ">{{ page.title }}</h1>
         {%- endif -%}
         {% if page.content != blank %}
-        <div class="page-content page-content--{{ section.settings.page_width }} rte my-16">
+        <div class="page-content page-content--{{ section.settings.page_width }} rte ol-my-16">
           {{- page.content -}}
         </div>
         {% endif %}

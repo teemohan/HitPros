@@ -1,6 +1,5 @@
 (() => {
   (() => { // 校验用户是否是B端用户
-    console.log(window.themeVariables.userCompany)
     if(Cookies.get('logout') == 1) {
       Cookies.remove('logout');
       window.location.href = '/account/logout';

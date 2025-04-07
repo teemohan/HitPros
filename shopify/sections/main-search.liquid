@@ -106,7 +106,7 @@
                           {%- if section.settings.show_sort_by -%}
                             <div class="product-facet__meta-bar-item product-facet__meta-bar-item--sort">
                               <span class="product-facet__sort-by-title text--subdued">Sort By:</span>
-                              <div class="popover-container my-14">
+                              <div class="popover-container ol-my-14">
                                 {%- for option in search.sort_options -%}
                                   {%- if option.value == search_sort_by -%}
                                     {%- assign search_sort_by_name = option.name -%}
