@@ -8610,112 +8610,81 @@
 
   var ProductFacetSpu = class extends CustomHTMLElement {
     connectedCallback() {
-      this.delegate.on('pagination:page-changed', this._rerender.bind(this));
+      // this.delegate.on('pagination:page-changed', this._rerender.bind(this));
       this.delegate.on('facet:criteria-changed', this._rerender.bind(this));
       this.delegate.on('facet:abort-loading', this._abort.bind(this));
       document.dispatchEvent(new CustomEvent('facet-rerender'));
     }
+    
     async _rerender(event) {
+      // 只更新 URL，不刷新页面
       history.replaceState({}, '', event.detail.url);
       this._abort();
       this.showLoadingBar();
-      const url = new URL(window.location);
-      url.searchParams.set('section_id', this.getAttribute('section-id'));
       try {
-        this.abortController = new AbortController();
-        const response = await fetch(url.toString(), { signal: this.abortController.signal });
-        const responseAsText = await response.text();
-        const fakeDiv = document.createElement('div');
-        fakeDiv.innerHTML = responseAsText;
-        this.querySelector('#facet-main').innerHTML = fakeDiv.querySelector('#facet-main').innerHTML;
-        const activeFilterList = Array.from(fakeDiv.querySelectorAll('.product-facet__active-list')),
-          toolbarItem = document.querySelector('.mobile-toolbar__item--filters');
-        if (toolbarItem) {
-          toolbarItem.classList.toggle('has-filters', activeFilterList.length > 0);
-        }
-        const filtersTempDiv = fakeDiv.querySelector('#facet-filters');
-        if (filtersTempDiv) {
-          const previousScrollTop = this.querySelector('#facet-filters .drawer__content').scrollTop;
-          Array.from(this.querySelectorAll('#facet-filters-form .collapsible-toggle[aria-controls]')).forEach(
-            (filterToggle) => {
-              const filtersTempDivToggle = filtersTempDiv.querySelector(
-                  `[aria-controls="${filterToggle.getAttribute('aria-controls')}"]`
-                ),
-                isExpanded = filterToggle.getAttribute('aria-expanded') === 'true';
-              filtersTempDivToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-              filtersTempDivToggle.nextElementSibling.toggleAttribute('open', isExpanded);
-              filtersTempDivToggle.nextElementSibling.style.overflow = isExpanded ? 'visible' : '';
-            }
-          );
-          this.querySelector('#facet-filters').innerHTML = filtersTempDiv.innerHTML;
-          this.querySelector('#facet-filters .drawer__content').scrollTop = previousScrollTop;
-        }
-        const scrollTo =
-          this.querySelector('.product-facet__meta-bar') ||
-          this.querySelector('.product-facet__product-list') ||
-          this.querySelector('.product-facet__main');
-        requestAnimationFrame(() => {
-          scrollTo.scrollIntoView({ block: 'start', behavior: 'smooth' });
-        });
+        // 直接处理搜索功能，不获取和处理 HTML 内容
+        this.setupSearchFunctionality();
+        // 隐藏加载状态条
         this.hideLoadingBar();
-
-        var searchInput = $('.collapsible-search .search__input');
-        var searchInputSpan = $('.collapsible-search .search__input-span');
-        // 添加键盘按下事件的监听器
-        $(searchInput).keydown(function (event) {
-          var keyCode = event.keyCode || event.which;
-          // 如果按下的是回车键（Enter）
-          if (keyCode === 13) {
-            // 执行你的操作...
-            search();
-          }
-        });
-        $(searchInputSpan).click(function () {
-          search();
-        });
-        function search(event) {
-          let searchval = $(searchInput).val();
-          searchval = searchval.toLowerCase();
-          var hasMatchingItem = false; // 标记是否有匹配项
-
-          $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
-            var title = $(this).find('.checkbox').val();
-            title = title.toLowerCase();
-            if (title.indexOf(searchval) !== -1) {
-              $(this).show();
-              hasMatchingItem = true; // 有匹配项则将标记设为true
-            } else {
-              $(this).hide();
-              $('.no-results-message').show();
-            }
-          });
-
-          if (!hasMatchingItem) {
-            $('.no-results-message').show(); // 所有项都不匹配时显示消息
-          } else {
-            $('.no-results-message').hide(); // 有匹配项则隐藏消息
-          }
-        }
-
-        function resetToInitialState() {
-          $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
-            $(this).show();
-            $('.no-results-message').hide();
-          });
-        }
-
-        searchInput.on('input', function () {
-          if (searchInput.val() === '') {
-            resetToInitialState();
-          }
-        });
+        // 触发 facet-rerender 事件
+        console.log("触发筛选器重新渲染事件");
         document.dispatchEvent(new CustomEvent('facet-rerender'));
       } catch (e) {
         if (e.name === 'AbortError') {
           return;
         }
+        console.error('筛选器处理错误:', e);
       }
     }
+    setupSearchFunctionality() {
+      var searchInput = $('.collapsible-search .search__input');
+      var searchInputSpan = $('.collapsible-search .search__input-span');
+      // 添加键盘按下事件的监听器
+      $(searchInput).off('keydown').on('keydown', function (event) {
+        var keyCode = event.keyCode || event.which;
+        // 如果按下的是回车键（Enter）
+        if (keyCode === 13) {
+          search();
+        }
+      });
+      $(searchInputSpan).off('click').on('click', function () {
+        search();
+      });
+      function search() {
+        let searchval = $(searchInput).val();
+        searchval = searchval.toLowerCase();
+        var hasMatchingItem = false; // 标记是否有匹配项
+        $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
+          var title = $(this).find('.checkbox').val();
+          title = title.toLowerCase();
+          if (title.indexOf(searchval) !== -1) {
+            $(this).show();
+            hasMatchingItem = true; // 有匹配项则将标记设为true
+          } else {
+            $(this).hide();
+          }
+        });
+        if (!hasMatchingItem) {
+          $('.no-results-message').show(); // 所有项都不匹配时显示消息
+        } else {
+          $('.no-results-message').hide(); // 有匹配项则隐藏消息
+        }
+      }
+      // 重置为初始状态的函数
+      function resetToInitialState() {
+        $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
+          $(this).show();
+          $('.no-results-message').hide();
+        });
+      }
+      // 监听输入变化，当输入为空时重置
+      searchInput.off('input').on('input', function () {
+        if (searchInput.val() === '') {
+          resetToInitialState();
+        }
+      });
+    }
+    
     _abort() {
       if (this.abortController) {
         this.abortController.abort();
