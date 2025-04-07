@@ -72,7 +72,7 @@
                   <a :href="'/products/' + item.skus[0].skuCode">
                     <h4 :title="item.spuTitle" class="hidden-tablet-and-up product-spu-title">
                       [[item.spuTitle]]
-                      <span class="hidden-tablet-and-up">([[item.spuKey.length]] [[item.spuKey.length > 1 ? 'products' : 'product']])</span>
+                      <span class="hidden-tablet-and-up">([[item.skus.length]] [[item.skus.length > 1 ? 'products' : 'product']])</span>
                     </h4>
                     <div class="product-spu-meta">
                       <div class="product-spu-img">
@@ -80,7 +80,7 @@
                       </div>
                       <div class="product-spu-data">
                         <h2 :title="item.spuTitle" class="hidden-phone product-spu-title">[[ item.spuTitle ]]</h2>
-                        <span class="hidden-phone">[[item.spuKey.length]] [[item.spuKey.length > 1 ? 'products' : 'product']]</span>
+                        <span class="hidden-phone">[[item.skus.length]] [[item.skus.length > 1 ? 'products' : 'product']]</span>
                         <div :title="item.spuDesc" class="hidden-phone product-spu-desc ellipsis3">[[ item.spuDesc ]]</div>
                         <div class="hidden-tablet-and-up product-spu-desc">[[item.spuDesc]]</div>
                       </div>
