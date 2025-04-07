@@ -229,11 +229,7 @@
           });
         </script>
       {% endif %}
-      {%- if template == 'collection' -%}
-        <script src="{{ 'collection-theme.js' | asset_url }}" defer></script>
-      {%- else -%}
-        <script src="{{ 'theme.js' | asset_url }}" defer></script>
-      {%- endif -%}
+      <script src="{{ 'theme.js' | asset_url }}" defer></script>
       {% if shop.name != 'TestHitpros'  %}
         {% render 'other-service' %}
       {% endif %}
