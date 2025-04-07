@@ -1,9 +1,16 @@
 (() => {
   (() => { // 校验用户是否是B端用户
-    if(window.themeVariables.userCompany.isB2b == 'false' && window.themeVariables.userCompany.name) {
+    if(Cookies.get('logout') == 1) {
+      Cookies.remove('logout');
+      window.location.href = '/account/logout';
+    }
+    if(
+      (window.themeVariables.userCompany.isB2b == 'false' && window.themeVariables.userCompany.name) ||
+      (window.themeVariables.userCompany.isB2b == 'true' && !window.themeVariables.userCompany.zip.trim())
+    ) {
       const parsedUrl = new URL(window.location.href); 
       const returnTo = parsedUrl.pathname + parsedUrl.search;
-      window.location.href = `https://testhitpros.myshopify.com/customer_identity/login?return_to=${returnTo}`;
+      window.location.href = `${window.zkh.b2b_url}/locations?return_to=${returnTo}`;
     }
   })();
   var __defProp = Object.defineProperty;
