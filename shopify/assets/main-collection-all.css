@@ -43,7 +43,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
   .zkh-collection-main {
-    min-height: 800px;
+    min-height: 400px;
   }
   #keep-collection-style{
     height: 50px;
