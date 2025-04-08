@@ -137,13 +137,13 @@
         <h4 class="head_title">{{ section.settings.title }}</h4>
         <div class="section_faqs">
           {% if section.settings.description != blank %}
-            <div class="description my-16">{{section.settings.description}}</div>
+            <div class="description ol-my-16">{{section.settings.description}}</div>
           {% endif %}
           <div class="faqs-content">
             {% for block in section.blocks %}
               <a class="faqs" href="{{block.settings.link}}">
                 <div class="icon">{{block.settings.icon}}</div>
-                <div class="faq_title my-18">{{block.settings.title}}</div>
+                <div class="faq_title ol-my-18">{{block.settings.title}}</div>
               </a>
             {% endfor %}
           </div>
