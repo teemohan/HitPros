@@ -7,8 +7,10 @@
     "merge": "bash ./merge.sh",
     "change-test": "bash ./change-test.sh",
     "change-live": "bash ./change-live.sh",
-    "tw": "npx tailwindcss -i ./config.css -o ./shopify/assets/shopify-style.css --watch"
-
+    "pullcli": "bash ./pullcli.sh",
+    "tw": "npx tailwindcss -i ./config.css -o ./shopify/assets/shopify-style.css --watch",
+    "minify": "bash ./minify.sh",
+    "deploycli": "bash ./deploycli.sh"
   },
   "devDependencies": {
     "@shopify/prettier-plugin-liquid": "^1.3.0",
