@@ -231,7 +231,7 @@
       {% if shop.name != 'TestHitpros'  %}
         {% render 'other-service' %}
       {% endif %}
-      {%- render 'preload' -%}
+      {% comment %} {%- render 'preload' -%} {% endcomment %}
       {{ content_for_header }}
     </head>
   
