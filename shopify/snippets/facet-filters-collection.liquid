@@ -1,0 +1,65 @@
+<facet-filters always-visible="" id="facet-filters" class="product-facet__filters">
+  <span class="drawer__overlay"></span>
+
+  <header class="drawer__header">
+      <p class="drawer__title heading h6">
+          Filter
+      </p><button type="button" class="drawer__close-button" data-action="close" title="Close">
+          <svg t="1730104106901" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7792" width="18" height="18">
+              <path d="M948.6 131.1l-67.2-67.2-380.6 380.7L142.6 86.3l-67.2 67.2 358.2 361.3L75.4 873l67.2 67.2 358.2-361.3 380.6 380.7 67.2-67.2L568 511.8z" p-id="7793" fill="#767676"></path>
+          </svg>
+      </button>
+  </header>
+  <div class="drawer__content">
+      <form id="facet-filters-form">
+          <input type="hidden" name="sort_by" value="title-ascending">
+          <div class="product-facet__filter-list">
+              <div class="product-facet__filter-item price-range">
+                  <button  type="button" is="toggle-button" class="collapsible-toggle text--strong" aria-controls="facet-filter-filter.v.price" aria-expanded="true">Price<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 6.0625L0 1.0625L1.0625 0L5 3.9375L8.9375 0L10 1.0625L5 6.0625Z" fill="#1A1A1A"></path>
+                      </svg>
+                  </button>
+                  <collapsible-content  animate-items="" id="facet-filter-filter.v.price" class="collapsible filter-v-price" style="overflow: visible;" open="">
+                      <div class="collapsible__content">
+                          <price-range class="price-range">
+                              <div class="price-range__range-group range-group" style="--range-min: 0.0%; --range-max: 99.96551724137932%">
+                                  <input type="range" aria-label="From price" class="range" min="0" max="145" value="0">
+                                  <input type="range" aria-label="To price" class="range" min="0" max="145" value="145">
+                              </div>
+
+                              <div class="price-range__input-group">
+                                  <div class="price-range__input input-prefix text--xsmall">
+                                      <span class="input-prefix__value text--subdued">$</span>
+                                      <input aria-label="From price" class="input-prefix__field" type="number" inputmode="numeric" oninput="validateInteger(this)" name="filter.v.price.gte" id="filter.v.price.gte" min="0" max="145" placeholder="MIN">
+                                  </div>
+
+                                  <span class="price-range__delimiter">To</span>
+
+                                  <div class="price-range__input input-prefix text--xsmall">
+                                      <span class="input-prefix__value text--subdued">$</span>
+                                      <input aria-label="To price" class="input-prefix__field" type="number" inputmode="numeric" oninput="validateInteger(this)" name="filter.v.price.lte" id="filter.v.price.lte" min="0" max="145" placeholder="MAX">
+                                  </div>
+                              </div>
+                          </price-range>
+                      </div>
+                  </collapsible-content>
+              </div>
+              <div class="product-facet__filter-item "><button type="button"  is="toggle-button" class="collapsible-toggle text--strong" aria-controls="facet-filter-filter.p.m.product.brand" aria-expanded="false">Brand<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 6.0625L0 1.0625L1.0625 0L5 3.9375L8.9375 0L10 1.0625L5 6.0625Z" fill="#1A1A1A"></path>
+                      </svg></button>
+                  <collapsible-content  animate-items="" id="facet-filter-filter.p.m.product.brand" class="collapsible filter-p-m-product-brand">
+                  <div class="collapsible__content js-col-filter">
+                  </div>
+                  </collapsible-content>
+              </div>
+
+          </div>
+
+          <noscript>
+              <button type="submit" class="product-facet__submit button button--secondary">
+                  Apply filters
+              </button>
+          </noscript>
+      </form>
+  </div>
+</facet-filters>

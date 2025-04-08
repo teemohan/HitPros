@@ -1,407 +1,431 @@
 <!doctype html>
 
-{%- assign direction = 'ltr' -%}
-{%- case request.locale.iso_code -%}
-  {%- when 'ar', 'arc', 'dv', 'fa', 'ha', 'he', 'kwh', 'ks', 'ku', 'ps', 'ur', 'yi' -%}
-    {%- assign direction = 'rtl' -%}
-{%- endcase -%}
-
-<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ direction }}">
-  <head>
-    <!-- Start of Shoplift scripts -->
-    {% if shop.name == 'TestHitpros'  %}
-      {% render 'shoplift' %}
-    {% endif %}
-    <!-- End of Shoplift scripts -->
-
-    <meta charset="utf-8">
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0"
-    >
-    <meta name="theme-color" content="{{ settings.header_background }}">
-
-    <title>
-      {% if page_title == blank -%}
-        {{- shop.name -}}
-      {%- else -%}
-        {{- page_title -}}
-        {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
-      {%- endif %}
-    </title>
-
-    {%- if page_description -%}
-      <meta name="description" content="{{ page_description | escape }}">
-    {%- endif -%}
-
-    <link rel="canonical" href="{{ canonical_url }}">
-
-    {%- if settings.favicon -%}
-      <link rel="shortcut icon" href="{{ settings.favicon | img_url: '96x96' }}" type="image/png">
-    {%- endif -%}
-
-    <script>
-      window.zkh = {
-        api: {%- if shop.name == 'TestHitpros' -%}'https://doc-shop-uat.northskysupply.com/web'{%- else -%}'https://doc-sp.northskysupply.com/web'{%- endif -%},
-        pixi_url: {%- if shop.name == 'TestHitpros' -%}'https://pixi-forge.astrl.link/pdf/view/cm06akk9w00t0umfav1ovty8a/cm06aleng004wgt6jefp60ntq'{%- else -%}'https://pixi.storetools.io/api/pdf/clrh58bin00qamc07qcfwpkvs/clrh59cmq00qemc07xzzvb1nt'{%- endif -%},
-        b2b_url: {%- if shop.name == 'TestHitpros' -%}'https://shopify.com/87140565299/account'{%- else -%}'https://shopify.com/62373298359/account'{%- endif -%}
-      }
-    </script>
-    {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
-    <link rel="preconnect" href="https://cdn.shopify.com">
-    <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
-    <link rel="dns-prefetch" href="https://www.google-analytics.com">
-
-    {%- unless settings.heading_font.system? and settings.text_font.system? -%}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-    {%- endunless -%}
-
-    {%- comment -%}Preload important resources{%- endcomment -%}
-    <link rel="preload" as="style" href="{{ 'theme.css' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'vendor.js' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'element.js' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'global.min.css' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'theme-v3.css' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'el-reset.css' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'theme.js' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'jquery.min.js' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'js-cookie.js' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'swiper.min.js' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'vue.js' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'element.js' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'element-ui-locale.js' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'zip-code.js' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'lib-phone.js' | asset_url }}">
-
-    {%- if request.page_type == 'product' -%}
-      {%- assign selected_media = product.selected_variant.featured_media | default: product.featured_media -%}
-
-      <link rel="preload" as="fetch" href="{{ product.url }}.js" crossorigin>
-      <link
-        rel="preload"
-        as="image"
-        imagesizes="(max-width: 999px) calc(100vw - 48px), 640px"
-        imagesrcset="{% render 'image-attributes', image: selected_media, sizes: '400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800', sizes_only: true %}"
+  {%- assign direction = 'ltr' -%}
+  {%- case request.locale.iso_code -%}
+    {%- when 'ar', 'arc', 'dv', 'fa', 'ha', 'he', 'kwh', 'ks', 'ku', 'ps', 'ur', 'yi' -%}
+      {%- assign direction = 'rtl' -%}
+  {%- endcase -%}
+  
+  <html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ direction }}">
+    <head>
+      <meta charset="utf-8">
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0"
       >
-
-      {%- if product.media.size > 1 -%}
-        <link rel="preload" as="script" href="{{ 'flickity.js' | asset_url }}">
+      <meta name="theme-color" content="{{ settings.header_background }}">
+  
+      <title>
+        {% if page_title == blank -%}
+          {{- shop.name -}}
+        {%- else -%}
+          {{- page_title -}}
+          {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+        {%- endif %}
+      </title>
+  
+      {%- if page_description -%}
+        <meta name="description" content="{{ page_description | escape }}">
       {%- endif -%}
-    {%- elsif request.page_type == 'collection' and collection.image -%}
-      <link
-        rel="preload"
-        as="image"
-        media="(max-width: 740px)"
-        imagesizes="100vw"
-        imagesrcset="{% render 'image-attributes', image: collection.image, sizes: '400,500,600,700,800,900,1000', height_constraint: 600, crop: 'center', sizes_only: true %}"
-      >
-      <link
-        rel="preload"
-        as="image"
-        media="(min-width: 741px)"
-        imagesizes="100vw"
-        imagesrcset="{% render 'image-attributes', image: collection.image, sizes: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600', sizes_only: true %}"
-      >
-    {%- endif -%}
-
-    {% render 'social-meta-tags' %}
-    {% render 'microdata-schema' %}
-    {% render 'css-variables', direction: direction %}
-    {% render 'js-variables', direction: direction %}
-
-    <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'element.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'global.min.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'theme-v3.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'el-reset.css' | asset_url }}">
-    <script src="{{ 'js-cookie.js' | asset_url }}"></script>
-    {% if shop.name == 'TestHitpros' %}
+  
+      <link rel="canonical" href="{{ canonical_url }}">
+  
+      {%- if settings.favicon -%}
+        <link rel="shortcut icon" href="{{ settings.favicon | img_url: '96x96' }}" type="image/png">
+      {%- endif -%}
+  
       <script>
-          function decodeHTMLEntities(str) {
-            let textarea = document.createElement('textarea');
-            textarea.innerHTML = str;
-            return textarea.value;
-          }
-          if('{{ customer.id }}'){
-            var dataLayer = [];
-            dataLayer.push({
-              'user_id':'{{ customer.id }}',
-              'user_properties':{
-                "account_type": '{% if customer.b2b? %}business{% else %}personal{% endif %}',
-                "company":'{{ customer.current_company.name }}'
-              },
-              'user_data':{
-                'email':'{{ customer.email }}',
-                'phone_number': {% if customer.phone %}{{ customer.phone }}{% else %}null{% endif %},
-                'address':{
-                  'first_name': decodeHTMLEntities('{{ customer.first_name }}'),
-                  'last_name': decodeHTMLEntities('{{ customer.last_name }}'),
-                  'street': decodeHTMLEntities('{% if customer.default_address %}{{ customer.default_address.street }}{% else %}null{% endif %}'),
-                  'city': decodeHTMLEntities('{% if customer.default_address %}{{ customer.default_address.city }}{% else %}null{% endif %}'),
-                  'region': decodeHTMLEntities('{% if customer.default_address %}{{ customer.default_address.province }}{% else %}null{% endif %}'),
-                  'postal_code': decodeHTMLEntities('{% if customer.default_address %}{{ customer.default_address.zip }}{% else %}null{% endif %}'),
-                  'country': decodeHTMLEntities('{% if customer.default_address %}{{ customer.default_address.country }}{% else %}null{% endif %}')
-                }
-              }
-            })
-          }
-      </script>
-    {% else %}
-      <script>
-        if('{{ customer.id }}'){
-          Cookies.set('user_id', '{{ customer.id }}');
-          var dataLayer = [];
-          dataLayer.push({
-            'user_id':'{{ customer.id }}'
-          })
+        window.zkh = {
+          api: {%- if shop.name == 'TestHitpros' -%}'https://doc-shop-uat.northskysupply.com/web'{%- else -%}'https://doc-sp.northskysupply.com/web'{%- endif -%},
+          pixi_url: {%- if shop.name == 'TestHitpros' -%}'https://pixi-forge.astrl.link/pdf/view/cm06akk9w00t0umfav1ovty8a/cm06aleng004wgt6jefp60ntq'{%- else -%}'https://pixi.storetools.io/api/pdf/clrh58bin00qamc07qcfwpkvs/clrh59cmq00qemc07xzzvb1nt'{%- endif -%},
+          b2b_url: {%- if shop.name == 'TestHitpros' -%}'https://shopify.com/87140565299/account'{%- else -%}'https://shopify.com/62373298359/account'{%- endif -%},
+          customerId: {%- if customer.id -%}'{{ customer.id }}'{%- else -%}null{%- endif -%},
+          customerEmail: {%- if customer.email -%}'{{ customer.email }}'{%- else -%}null{%- endif -%},
         }
       </script>
-    {% endif %}
-    {%- if shop.name == 'TestHitpros' -%}
-      <!-- Google Tag Manager -->
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-MTQZMJCM');</script>
-    {% else %}
-          <script>
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-PVCDGR5P');
-          </script>
-          <script>
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-M7M24J6J');
-          </script>
-    {% endif %}
-    <script src="{{ 'swiper.min.js' | asset_url }}"></script>
-    <script src="{{ 'jquery.min.js' | asset_url }}"></script>
-    <script src="{{ 'vendor.js' | asset_url }}"></script>
-    <script src="{{ 'vue.js' | asset_url }}"></script>
-    <script src="{{ 'element.js' | asset_url }}"></script>
-    <script src="{{ 'element-ui-locale.js' | asset_url  }}"></script>
-    <script src="{{ 'zip-code.js' | asset_url }}"></script>
-    <script src="{{ 'lib-phone.js' | asset_url }}"></script>
-    <script>
-      ELEMENT.locale(ELEMENT.lang.en)
-    </script>
-    {%- if shop.name == 'TestHitpros' -%}
-      <script async src="https://www.googletagmanager.com/gtag/js?id=GT-W6BZ9KTM"></script>
-      <script>
-        document.addEventListener('DOMContentLoaded', () => {
+      {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
+      <link rel="preconnect" href="https://cdn.shopify.com">
+      <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
+      <link rel="dns-prefetch" href="https://www.google-analytics.com">
+  
+      {%- unless settings.heading_font.system? and settings.text_font.system? -%}
+        <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+      {%- endunless -%}
+  
+      {%- comment -%}Preload important resources{%- endcomment -%}
+      {% if template == 'collection' %}
+        <link rel="preload" as="script" href="{{ 'jquery.min.js' | asset_url }}">
+        <link rel="preload" as="script" href="{{ 'js-cookie.js' | asset_url }}">
+        <link rel="preload" as="script" href="{{ 'vue.js' | asset_url }}">
+        <link rel="preload" as="script" href="{{ 'element-collection.js' | asset_url }}">
+      {% else %}
+          <link rel="preload" as="style" href="{{ 'theme.css' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'vendor.js' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'global.min.css' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'theme-v3.css' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'el-reset.css' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'theme.js' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'jquery.min.js' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'js-cookie.js' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'swiper.min.js' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'vue.js' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'element.js' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'element-ui-locale.js' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'zip-code.js' | asset_url }}">
+          <link rel="preload" as="script" href="{{ 'lib-phone.js' | asset_url }}">
+      {% endif %}
+  
+      {%- if request.page_type == 'product' -%}
+        {%- assign selected_media = product.selected_variant.featured_media | default: product.featured_media -%}
+  
+        <link rel="preload" as="fetch" href="{{ product.url }}.js" crossorigin>
+        <link
+          rel="preload"
+          as="image"
+          imagesizes="(max-width: 999px) calc(100vw - 48px), 640px"
+          imagesrcset="{% render 'image-attributes', image: selected_media, sizes: '400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800', sizes_only: true %}"
+        >
+  
+        {%- if product.media.size > 1 -%}
+          <link rel="preload" as="script" href="{{ 'flickity.js' | asset_url }}">
+        {%- endif -%}
+      {%- elsif request.page_type == 'collection' and collection.image -%}
+        <link
+          rel="preload"
+          as="image"
+          media="(max-width: 740px)"
+          imagesizes="100vw"
+          imagesrcset="{% render 'image-attributes', image: collection.image, sizes: '400,500,600,700,800,900,1000', height_constraint: 600, crop: 'center', sizes_only: true %}"
+        >
+        <link
+          rel="preload"
+          as="image"
+          media="(min-width: 741px)"
+          imagesizes="100vw"
+          imagesrcset="{% render 'image-attributes', image: collection.image, sizes: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600', sizes_only: true %}"
+        >
+      {%- endif -%}
+  
+      {% render 'social-meta-tags' %}
+      {% render 'microdata-schema' %}
+      {% render 'css-variables', direction: direction %}
+      {% render 'js-variables', direction: direction %}
+  
+      {% if template == 'collection' %}
+        <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+        <link rel="stylesheet" href="{{ 'element-collection.css' | asset_url }}">
+        <link rel="stylesheet" href="{{ 'shopify-style.css' | asset_url }}">
+        {% comment %} <link rel="stylesheet" href="{{ 'collection-theme.css' | asset_url }}"> {% endcomment %}
+       
+      {% else %}
+        <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}">
+        <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+        <link rel="stylesheet" href="{{ 'element.css' | asset_url }}">
+      {% endif %}
+      <link rel="stylesheet" href="{{ 'global.min.css' | asset_url }}">
+      <link rel="stylesheet" href="{{ 'theme-v3.css' | asset_url }}">
+      <link rel="stylesheet" href="{{ 'el-reset.css' | asset_url }}">
+      <script src="{{ 'js-cookie.js' | asset_url }}"></script>
+      {% if shop.name == 'TestHitpros' %}
+        <script>
+            function decodeHTMLEntities(str) {
+              let textarea = document.createElement('textarea');
+              textarea.innerHTML = str;
+              return textarea.value;
+            }
+            if('{{ customer.id }}'){
+              var dataLayer = [];
+              dataLayer.push({
+                'user_id':'{{ customer.id }}',
+                'user_properties':{
+                  "account_type": '{% if customer.b2b? %}business{% else %}personal{% endif %}',
+                  "company":'{{ customer.current_company.name }}'
+                },
+                'user_data':{
+                  'email':'{{ customer.email }}',
+                  'phone_number': {% if customer.phone %}{{ customer.phone }}{% else %}null{% endif %},
+                  'address':{
+                    'first_name': decodeHTMLEntities('{{ customer.first_name }}'),
+                    'last_name': decodeHTMLEntities('{{ customer.last_name }}'),
+                    'street': decodeHTMLEntities('{% if customer.default_address %}{{ customer.default_address.street }}{% else %}null{% endif %}'),
+                    'city': decodeHTMLEntities('{% if customer.default_address %}{{ customer.default_address.city }}{% else %}null{% endif %}'),
+                    'region': decodeHTMLEntities('{% if customer.default_address %}{{ customer.default_address.province }}{% else %}null{% endif %}'),
+                    'postal_code': decodeHTMLEntities('{% if customer.default_address %}{{ customer.default_address.zip }}{% else %}null{% endif %}'),
+                    'country': decodeHTMLEntities('{% if customer.default_address %}{{ customer.default_address.country }}{% else %}null{% endif %}')
+                  }
+                }
+              })
+            }
+        </script>
+      {% else %}
+        <script>
+          if('{{ customer.id }}'){
+            Cookies.set('user_id', '{{ customer.id }}');
+            var dataLayer = [];
+            dataLayer.push({
+              'user_id':'{{ customer.id }}'
+            })
+          }
+        </script>
+      {% endif %}
+      {%- if shop.name == 'TestHitpros' -%}
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-MTQZMJCM');</script>
+      {% else %}
+            <script>
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-PVCDGR5P');
+            </script>
+            <script>
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-M7M24J6J');
+            </script>
+      {% endif %}
+      {% if template == 'collection' %}
+      {% else %}
+        <script src="{{ 'swiper.min.js' | asset_url }}" async></script>
+      {% endif %}
+      <script src="{{ 'jquery.min.js' | asset_url }}"></script>
+      <script src="{{ 'vendor.js' | asset_url }}"></script>
+      <script src="{{ 'vue.js' | asset_url }}"></script>
+      <script src="{{ 'lazy.js' | asset_url }}"></script>
+      {% if template == 'collection' %}
+        <script src="{{ 'element-collection.js' | asset_url }}"></script>
+      {% else %}
+        <script src="{{ 'element.js' | asset_url }}"></script>
+        <script src="{{ 'element-ui-locale.js' | asset_url  }}"></script>
+        <script>
+          ELEMENT.locale(ELEMENT.lang.en)
+        </script>
+      {% endif %}
+      <script src="{{ 'zip-code.js' | asset_url }}"></script>
+      <script src="{{ 'lib-phone.js' | asset_url }}"></script>
+      {%- if shop.name == 'TestHitpros' -%}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=GT-W6BZ9KTM"></script>
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            $.get('https://www.cloudflare.com/cdn-cgi/trace', (data) => {
+              const ipMatch = data.match(/ip=([\d.]+)/);
+              const ip = ipMatch[1];
+              Cookies.set('ip', ip, { expires: 365 * 10 });
+            });
+          })
+        </script>
+      {% else %}
+        <script>
           $.get('https://www.cloudflare.com/cdn-cgi/trace', (data) => {
             const ipMatch = data.match(/ip=([\d.]+)/);
             const ip = ipMatch[1];
             Cookies.set('ip', ip, { expires: 365 * 10 });
           });
-        })
-      </script>
-    {% else %}
-      <script>
-        $.get('https://www.cloudflare.com/cdn-cgi/trace', (data) => {
-          const ipMatch = data.match(/ip=([\d.]+)/);
-          const ip = ipMatch[1];
-          Cookies.set('ip', ip, { expires: 365 * 10 });
-        });
-      </script>
-    {% endif %}
-    <script src="{{ 'theme.js' | asset_url }}" defer></script>
-    {{ content_for_header }}
-    {% render 'other-service' %}
-    {%- render 'preload' -%}
-  </head>
-
-  {%- assign feature_classes = '' -%}
-
-  {%- if settings.show_image_zoom -%}
-    {% assign feature_classes = feature_classes | append: ' features--image-zoom' %}
-  {%- endif -%}
-
-  <body class="no-focus-outline {{ feature_classes }}" data-instant-allow-query-string>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-PVCDGR5P"
-        height="0"
-        width="0"
-        style="display:none;visibility:hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    {%- if shop.name == 'TestHitpros' -%}
-        <noscript
+        </script>
+      {% endif %}
+      <script src="{{ 'theme.js' | asset_url }}" defer></script>
+      {% if shop.name != 'TestHitpros'  %}
+        {% render 'other-service' %}
+      {% endif %}
+      {%- render 'preload' -%}
+      {{ content_for_header }}
+    </head>
+  
+    {%- assign feature_classes = '' -%}
+  
+    {%- if settings.show_image_zoom -%}
+      {% assign feature_classes = feature_classes | append: ' features--image-zoom' %}
+    {%- endif -%}
+  
+    <body class="no-focus-outline {{ feature_classes }}" data-instant-allow-query-string>
+      <!-- Google Tag Manager (noscript) -->
+      <noscript
         ><iframe
-          src="https://www.googletagmanager.com/ns.html?id=GTM-MTQZMJCM"
+          src="https://www.googletagmanager.com/ns.html?id=GTM-PVCDGR5P"
           height="0"
           width="0"
           style="display:none;visibility:hidden"
         ></iframe
       ></noscript>
       <!-- End Google Tag Manager (noscript) -->
-    {% else %}
-              <!-- Google Tag Manager (noscript) -->
+      {%- if shop.name == 'TestHitpros' -%}
           <noscript
           ><iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-M7M24J6J"
+            src="https://www.googletagmanager.com/ns.html?id=GTM-MTQZMJCM"
             height="0"
             width="0"
             style="display:none;visibility:hidden"
           ></iframe
         ></noscript>
         <!-- End Google Tag Manager (noscript) -->
-
-        {%- comment -%}Common SVG definitions that we are re-using in several places{%- endcomment -%}
-        <svg class="visually-hidden">
-          <linearGradient id="rating-star-gradient-half">
-            <stop offset="50%" stop-color="rgb(var(--product-star-rating))" />
-            <stop offset="50%" stop-color="rgb(var(--product-star-rating))" stop-opacity="0.4" />
-          </linearGradient>
-        </svg>
-    {% endif %}
-    <!-- Google Tag Manager (noscript) -->
-
-
-    <a href="#main" class="visually-hidden skip-to-content">{{ 'general.accessibility.skip_to_content' | t }}</a>
-    <loading-bar class="loading-bar"></loading-bar>
-
-    {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
-      {%- section 'announcement-bar' -%}
-      {%- section 'popup' -%}
-      {%- section 'header' -%}
-      {%- section 'jd-backtop' -%}
-      {%- section 'vue-message' -%}
-
-      {%- unless settings.cart_type == 'page' or request.page_type == 'cart' -%}
-        {%- section 'mini-cart' -%}
-      {%- endunless -%}
-    {%- endif -%}
-    {%- capture template_class_name -%}
-    page-{{ template.name }}{% if template.suffix %}-{{ template.suffix }}{% endif %}
-    {%- endcapture -%}
-    <div id="main" role="main" class="anchor {{ template_class_name }}">
-      {%- comment -%}
-        IMPLEMENTATION NOTE: on collection and search page, the theme was designed to show on mobile the filter bar and/or sort
-          by at the very top of the page. However, due to the fact that sections are isolated, I had to move the code
-          here. Then, the collection section, based on the selected settings, will eventually hide those elements in CSS
-      {%- endcomment -%}
-      {{ content_for_layout }}
-      {%- unless request.page_type == 'index' or request.page_type == 'password' or request.page_type == 'gift_card' -%}
-        {%- section 'static-text-with-icons' -%}
-        {%- section 'static-newsletter' -%}
-      {%- endunless -%}
-    </div>
-
-    {% sections 'footer-group' %}
-
-    {% render 'globo.form.custom' %}
-
-    <script src="//code.tidio.co/dzwcvyci274aolrpev5ilpboec1objxi.js" async></script>
-    {%- if shop.name == 'TestHitpros' -%}
-    {% else %}
-    <!-- Start of HubSpot Embed Code -->
-      <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47344356.js"></script>
-      <!-- End of HubSpot Embed Code -->
-    {% endif %}
-  </body>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      $('#createAccount').click(function() {
-        const ip = Cookies.get('ip');
-        if(ip) {
-          dataLayer.push({
-            'event': 'custom_create_account_clicked',
-            'zip': '{{ customer.default_address.zip  }}',
-            'industry': '{{ customer.metafields.custom.domesticcustomserviceid  }}',
-            'username': '{{ customer.name }}',
-            'email':'{{ customer.email }}',
-            'company':'{{ customer.metafields.custom.overseascustomserviceid  }}',
-            'ip': ip
-          });
-        }
-      })
-    })
-
-     
-    window.addEventListener('beforeunload', function () {
-      if('{{ customer.id }}') return
-      let currentPath = window.location.pathname;
-        if (currentPath === '/account/login' || currentPath === '/account/register') {
-          currentPath = 'index';
-        }
-        Cookies.set('pagePath', currentPath);
-      });
-
-      {%- if shop.name == 'TestHitpros' -%}
-       
       {% else %}
-        document.addEventListener('DOMContentLoaded', () => {
-          // Page Viewed
+                <!-- Google Tag Manager (noscript) -->
+            <noscript
+            ><iframe
+              src="https://www.googletagmanager.com/ns.html?id=GTM-M7M24J6J"
+              height="0"
+              width="0"
+              style="display:none;visibility:hidden"
+            ></iframe
+          ></noscript>
+          <!-- End Google Tag Manager (noscript) -->
+  
+          {%- comment -%}Common SVG definitions that we are re-using in several places{%- endcomment -%}
+          <svg class="visually-hidden">
+            <linearGradient id="rating-star-gradient-half">
+              <stop offset="50%" stop-color="rgb(var(--product-star-rating))" />
+              <stop offset="50%" stop-color="rgb(var(--product-star-rating))" stop-opacity="0.4" />
+            </linearGradient>
+          </svg>
+      {% endif %}
+      <!-- Google Tag Manager (noscript) -->
+  
+  
+      <a href="#main" class="visually-hidden skip-to-content">{{ 'general.accessibility.skip_to_content' | t }}</a>
+      <loading-bar class="loading-bar"></loading-bar>
+  
+      {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
+        {%- section 'announcement-bar' -%}
+        {%- section 'popup' -%}
+        {%- section 'header' -%}
+        {%- section 'jd-backtop' -%}
+        {%- section 'vue-message' -%}
+  
+        {%- unless settings.cart_type == 'page' or request.page_type == 'cart' -%}
+          {%- section 'mini-cart' -%}
+        {%- endunless -%}
+      {%- endif -%}
+      {%- capture template_class_name -%}
+      page-{{ template.name }}{% if template.suffix %}-{{ template.suffix }}{% endif %}
+      {%- endcapture -%}
+      <div id="main" role="main" class="anchor {{ template_class_name }}">
+        {%- comment -%}
+          IMPLEMENTATION NOTE: on collection and search page, the theme was designed to show on mobile the filter bar and/or sort
+            by at the very top of the page. However, due to the fact that sections are isolated, I had to move the code
+            here. Then, the collection section, based on the selected settings, will eventually hide those elements in CSS
+        {%- endcomment -%}
+        {{ content_for_layout }}
+        {%- unless request.page_type == 'index' or request.page_type == 'password' or request.page_type == 'gift_card' -%}
+          {%- section 'static-text-with-icons' -%}
+          {%- section 'static-newsletter' -%}
+        {%- endunless -%}
+      </div>
+  
+      {% sections 'footer-group' %}
+  
+      {% render 'globo.form.custom' %}
+  
+      <script src="//code.tidio.co/dzwcvyci274aolrpev5ilpboec1objxi.js" async></script>
+      {%- if shop.name == 'TestHitpros' -%}
+      {% else %}
+      <!-- Start of HubSpot Embed Code -->
+        <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47344356.js"></script>
+        <!-- End of HubSpot Embed Code -->
+      {% endif %}
+    </body>
+  
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        $('#createAccount').click(function() {
           const ip = Cookies.get('ip');
           if(ip) {
             dataLayer.push({
-              'event': 'custom_page_viewed',
+              'event': 'custom_create_account_clicked',
               'zip': '{{ customer.default_address.zip  }}',
-              'initial_landing_page_url': window.location.href,
+              'industry': '{{ customer.metafields.custom.domesticcustomserviceid  }}',
+              'username': '{{ customer.name }}',
+              'email':'{{ customer.email }}',
+              'company':'{{ customer.metafields.custom.overseascustomserviceid  }}',
+              'ip': ip
+            });
+          }
+        })
+      })
+  
+       
+      window.addEventListener('beforeunload', function () {
+        if('{{ customer.id }}') return
+        let currentPath = window.location.pathname;
+          if (currentPath === '/account/login' || currentPath === '/account/register') {
+            currentPath = 'index';
+          }
+          Cookies.set('pagePath', currentPath);
+        });
+  
+        {%- if shop.name == 'TestHitpros' -%}
+         
+        {% else %}
+          document.addEventListener('DOMContentLoaded', () => {
+            // Page Viewed
+            const ip = Cookies.get('ip');
+            if(ip) {
+              dataLayer.push({
+                'event': 'custom_page_viewed',
+                'zip': '{{ customer.default_address.zip  }}',
+                'initial_landing_page_url': window.location.href,
+                'username': '{{ customer.name }}',
+                'email':'{{ customer.email }}',
+                'ip': ip
+              });
+            }
+          })
+        {% endif %}
+      //Session Started
+      const SESSION_KEY = 'session_start';
+  
+      // 添加 session_start
+      function addSessionStart() {
+        if (!localStorage.getItem(SESSION_KEY)) {
+          localStorage.setItem(SESSION_KEY, JSON.stringify({ timestamp: Date.now() }));
+          const ip = Cookies.get('ip');
+          if(ip) {
+            dataLayer.push({
+              'event': 'custom_session_started',
+              'zip': '{{ customer.default_address.zip  }}',
               'username': '{{ customer.name }}',
               'email':'{{ customer.email }}',
               'ip': ip
             });
           }
-        })
-      {% endif %}
-    //Session Started
-    const SESSION_KEY = 'session_start';
-
-    // 添加 session_start
-    function addSessionStart() {
-      if (!localStorage.getItem(SESSION_KEY)) {
-        localStorage.setItem(SESSION_KEY, JSON.stringify({ timestamp: Date.now() }));
-        const ip = Cookies.get('ip');
-        if(ip) {
-          dataLayer.push({
-            'event': 'custom_session_started',
-            'zip': '{{ customer.default_address.zip  }}',
-            'username': '{{ customer.name }}',
-            'email':'{{ customer.email }}',
-            'ip': ip
-          });
         }
       }
-    }
-    function removeSessionStart() {
-      if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-        // 页面刷新不移除
-        return;
+      function removeSessionStart() {
+        if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+          // 页面刷新不移除
+          return;
+        }
+        // 获取即将跳转的目标 URL
+        const nextPageDomain = document.activeElement?.href || document.referrer || ''; // 使用 window.location.href 获取当前 URL
+        const currentDomain = window.location.origin;
+        console.log(nextPageDomain)
+        if ( nextPageDomain.includes('/account') || nextPageDomain.includes('multipass') || nextPageDomain.includes('northskysupply')) {
+        console.log('Logout detected, keeping session');
+          return;
+        }
+        if (!nextPageDomain.includes(currentDomain)) {
+          console.log('Leaving site, removing session:', localStorage.getItem(SESSION_KEY));
+          localStorage.removeItem(SESSION_KEY);
+        }
       }
-      // 获取即将跳转的目标 URL
-      const nextPageDomain = document.activeElement?.href || document.referrer || ''; // 使用 window.location.href 获取当前 URL
-      const currentDomain = window.location.origin;
-      console.log(nextPageDomain)
-      if ( nextPageDomain.includes('/account') || nextPageDomain.includes('multipass') || nextPageDomain.includes('northskysupply')) {
-      console.log('Logout detected, keeping session');
-        return;
-      }
-      if (!nextPageDomain.includes(currentDomain)) {
-        console.log('Leaving site, removing session:', localStorage.getItem(SESSION_KEY));
-        localStorage.removeItem(SESSION_KEY);
-      }
-    }
-
-    // 页面加载时添加
-    document.addEventListener('DOMContentLoaded', addSessionStart);
-
-    // 页面卸载时判断是否需要移除
-    window.addEventListener('beforeunload', function(){
-      removeSessionStart()
-    });
-  </script>
-  {{ "//cdn.shopify.com/s/files/1/0773/5273/0914/files/footer.js?v=1718022933" | script_tag }}
-</html>
+  
+      // 页面加载时添加
+      document.addEventListener('DOMContentLoaded', addSessionStart);
+  
+      // 页面卸载时判断是否需要移除
+      window.addEventListener('beforeunload', function(){
+        removeSessionStart()
+      });
+    </script>
+    {% if template == 'collection' %}
+      <script src="{{ 'main-collection-vue.js' | asset_url }}" defer></script>
+    {% endif %}
+    {{ "//cdn.shopify.com/s/files/1/0773/5273/0914/files/footer.js?v=1718022933" | script_tag }}
+  </html>
+  

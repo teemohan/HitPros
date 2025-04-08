@@ -258,9 +258,9 @@
                                   disabled
                                 {% endif %}
                               >
-                              <label for="{{ filter_value.param_name | escape }}-{{ forloop.index }}">
-                                {{- filter_value.label }} ({{ filter_value.count }})&lrm;</label
-                              >
+                                <label for="{{ filter_value.param_name | escape }}-{{ forloop.index }}">
+                                  {{- filter_value.label }} ({{ filter_value.count }})&lrm;</label
+                                >
                             </div>
                           {%- endfor -%}
                         {%- endif -%}
