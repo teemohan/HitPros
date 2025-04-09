@@ -125,13 +125,16 @@ new Vue({
       return spu.skus.slice(start, end);
     },
     async initData() {
+      if (this.isMobile) {
+        await this.fetchCategories()
+        if(this.categories.length <= 0) {
+          await this.loadFirstScreenData();  // 首先加载首屏数据
+        }
+        this.fetchWishlist()
+      } else {
         await this.loadFirstScreenData();  // 首先加载首屏数据
-        Promise.all([
-          this.fetchCategories(),
-          this.fetchWishlist()
-        ]).catch(error => {
-          console.error('Failed to load categories or wishlist:', error);
-        });
+        this.fetchCategories();
+      }
     },
     handleSkuPageChange(spuId, page) {
       this.$set(this.currentSkuPages, spuId, page);
@@ -188,22 +191,17 @@ new Vue({
       try {
         const title = this.processedTitle;
         const url = `${this.config.apiBaseUrl}/collection/collection?c1=${encodeURIComponent(title)}&order=1`;
-        
-        // 使用AbortController优化请求
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
-        
-        const response = await fetch(url, {
-          signal: controller.signal
-        });
-        
-        clearTimeout(timeoutId);
-        
+        const response = await fetch(url);
         const result = await response.json();
-        if (result.code === 200 && result.data && result.data.length > 0) {
-          // Transform category data and generate URL-friendly names
+        if (result.code === 200 && result.data) {
           this.categories = result.data || [];
-          this.creatCategoryList();
+          if(this.categories.length > 0) {
+            this.creatCategoryList();
+            const menudata = document.querySelector('.collecition-menu');
+            if (menudata) { //主要是做移动端
+              menudata.style.display = 'none';
+            }
+          }
         }
       } catch (error) {
         if (error.name !== 'AbortError') {
@@ -505,37 +503,6 @@ new Vue({
         }
       } finally {
         this.isLoading = false;
-      }
-    },
-    async fetchCategories() {
-      if (this.categories.length > 0) return; // 避免重复加载
-      
-      try {
-        const title = this.processedTitle;
-        const url = `${this.config.apiBaseUrl}/collection/collection?c1=${encodeURIComponent(title)}&order=1`;
-        
-        // 使用AbortController优化请求
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
-        
-        const response = await fetch(url, {
-          signal: controller.signal
-        });
-        
-        clearTimeout(timeoutId);
-        
-        const result = await response.json();
-        if (result.code === 200 && result.data && result.data.length > 0) {
-          // Transform category data and generate URL-friendly names
-          this.categories = result.data || [];
-          this.creatCategoryList();
-        }
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          console.error('Failed to fetch categories:', error);
-          // 添加重试逻辑
-          setTimeout(() => this.fetchCategories(), 3000);
-        }
       }
     },
     getPriceFilterParams() {
