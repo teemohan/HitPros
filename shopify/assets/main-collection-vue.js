@@ -1,4 +1,3 @@
-// 添加节流函数，优化频繁触发的事件
 function throttle(fn, delay) {
   let lastCall = 0;
   return function(...args) {
@@ -8,8 +7,6 @@ function throttle(fn, delay) {
     return fn.apply(this, args);
   };
 }
-
-// 添加防抖函数，优化输入和搜索等操作
 function debounce(fn, delay) {
   let timer = null;
   return function(...args) {
@@ -24,7 +21,6 @@ new Vue({
   el: '#zkh-collection-list',
   data() {
     return {
-      // 数据状态
       spuData: [],
       categories: [],
       brands: [],
@@ -32,20 +28,21 @@ new Vue({
       page: 1,
       hasMore: false,
       isLoading: false,
-      // 配置
+      isFirstScreenLoaded: false,
+      firstScreenSize: 2, // 首屏只显示2个商品
+      remainingDataLoaded: false,
       config: {
         apiBaseUrl: `${window.zkh?.api || ''}/openapi/adlink/product`,
         spuPageSize: 10,
         mobileThreshold: 741
       },
-      
-      // DOM相关数据
       collectionData: {
         handle: '',
         title: '',
         productCount: 0
       },
       observer: null,
+      scrollObserver: null, // 添加滚动观察器
       paginationInstances: [],
       skuPageSize: 6, // 每页显示6个SKU
       currentSkuPages: {}, // 记录每个SPU的当前页码 {spuId: page}
@@ -54,7 +51,7 @@ new Vue({
       cache: {
         processedTitle: null,
         isMobile: null,
-        wishlistMap: new Map() // 使用Map优化心愿单查找
+        fullData: null // 缓存完整数据
       }
     }
   },
@@ -96,46 +93,49 @@ new Vue({
   },
   created() {
     this.initCollectionData();
-    this.loadInitialData();
+    this.initData();
     this.renderFacet();
-    
-    // 使用节流函数优化窗口大小变化事件
     this._throttledResize = throttle(() => {
-      // 重置缓存
       this.cache.isMobile = null;
     }, 200);
   },
   mounted() {
-    if (!this.observer) {
-      this.$nextTick(() => {
-        this.initIntersectionObserver();
-        window.addEventListener('resize', this._throttledResize);
-      });
-    }
+    this.$nextTick(() => {
+      window.addEventListener('resize', this._throttledResize);
+      document.addEventListener('touchmove', this.handleUserInteraction, { passive: true });
+      document.addEventListener('touchend', this.handleUserInteraction, { passive: true }); 
+      document.addEventListener('wheel', this.handleUserInteraction, { passive: true });
+      document.addEventListener('keydown', this.handleUserInteraction);
+    });
   },
-  destroyed() {
+  beforeDestroy() {
+    window.removeEventListener('resize', this._throttledResize);
+    this.removeDoScreen()
     if (this.observer) {
       this.observer.disconnect();
     }
-    window.removeEventListener('resize', this._throttledResize);
   },
   methods: {
-    // 获取分页后的SKU数据
-    getPaginatedSkus(spuId) {
+    getPaginatedSkus(spuId) { // 获取分页后的SKU数据
       const spu = this.spuData.find(item => item.spu === spuId);
       if (!spu) return [];
-      
       const currentPage = this.currentSkuPages[spuId] || 1;
       const start = (currentPage - 1) * this.skuPageSize;
       const end = start + this.skuPageSize;
-      
       return spu.skus.slice(start, end);
     },
-    
+    async initData() {
+        await this.loadFirstScreenData();  // 首先加载首屏数据
+        Promise.all([
+          this.fetchCategories(),
+          this.fetchWishlist()
+        ]).catch(error => {
+          console.error('Failed to load categories or wishlist:', error);
+        });
+    },
     handleSkuPageChange(spuId, page) {
       this.$set(this.currentSkuPages, spuId, page);
     },
-    
     initCollectionData() {
       const el = document.getElementById('keep-collection-style');
       if (el) {
@@ -146,19 +146,15 @@ new Vue({
         };
       }
     },
-    
     async loadMore() {
       if (this.isLoading) return;
-      
       try {
         await this.fetchSpuList();
       } catch (error) {
         console.error('lade more:', error);
       }
     },
-    
     initIntersectionObserver() {
-      // 如果已有观察器，先断开
       if (this.observer) {
         this.observer.disconnect();
       }
@@ -177,38 +173,6 @@ new Vue({
       
       this.observer.observe(target);
     },
-    
-    // 加载初始数据
-    async loadInitialData() {
-      try {
-        await this.fetchWishlist();
-        
-        if (document.documentElement.clientWidth > this.config.mobileThreshold) {
-          await Promise.all([
-            this.fetchSpuList(),
-            this.fetchCategories()
-          ]);
-        } else {
-          await this.fetchCategories();
-          if (this.categories.length === 0) {
-            await this.fetchSpuList();
-            const menudata = document.querySelector('.collecition-menu');
-            if (menudata) {
-              menudata.style.display = 'flex';
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Initial data loading failed:', error);
-      } finally {
-        const el = document.querySelector('.product-facet__product-list-wrapper');
-        if (el) {
-          el.classList.remove('zkh-collection-block');
-        }
-      }
-    },
-    
-    // 获取分类数据
     async fetchCategories() {
       try {
         const title = this.processedTitle;
@@ -236,11 +200,8 @@ new Vue({
         }
       }
     },
-    
-    // 获取心愿单
     async fetchWishlist() {
       if (!window.zkh?.customerId) return;
-      
       try {
         const response = await fetch(`${window.zkh.api}/wish/list`, {
           method: 'POST',
@@ -251,22 +212,26 @@ new Vue({
             customerId: window.zkh.customerId
           })
         });
-        
         const result = await response.json();
-        if (result.code === 200 && result.data?.list) {
+        if (result.code === 200 && result.data?.list && result.data.list.length > 0) {
           this.wishlist = result.data.list;
-          
-          // 创建心愿单Map以优化查找
-          this.cache.wishlistMap.clear();
-          this.wishlist.forEach(item => {
-            this.cache.wishlistMap.set(item.variantId, true);
-          });
+          this.updateWishlistStatus();
         }
       } catch (error) {
-        console.error('Failed to fetch wishlist:', error);
       }
     },
-    
+    updateWishlistStatus() {
+      if (this.spuData.length === 0 || this.wishlist.length === 0) return;
+      
+      this.spuData.forEach((spu, spuIndex) => {
+        spu.skus.forEach((sku, skuIndex) => {
+          const isInWishlist = this.wishlist.some(item => item.variantId == sku.variantId)
+          if (isInWishlist !== sku.isWish) {
+            this.$set(this.spuData[spuIndex].skus[skuIndex], 'isWish', isInWishlist);
+          }
+        });
+      });
+    },
     async getCart() {
       try {
         const response = await fetch('/cart.js');
@@ -276,15 +241,12 @@ new Vue({
         return { items: [] };
       }
     },
-    
     showaddLoading(itemindex, libindex, bol) {
       if (this.spuData[itemindex]?.skus[libindex]) {
         const sku = this.spuData[itemindex].skus[libindex];
         this.$set(this.spuData[itemindex].skus[libindex], 'selected', bol);
       }
     },
-    
-    // 添加到购物车 - 保持原有功能不变
     async addToCart(variantId, quantity, itemindex, libindex) {
       try {
         this.showaddLoading(itemindex, libindex, true);
@@ -316,8 +278,6 @@ new Vue({
         this.showaddLoading(itemindex, libindex, false);
       }
     },
-    
-    // 处理添加到购物车结果 - 保持原有功能不变
     async handleAddToCart(result) {
       try {
         let errorMsg = '';
@@ -374,7 +334,6 @@ new Vue({
         );
       } catch (error) {
         console.error('Failed to add to cart:', error);
-        // Show error notification
         document.documentElement.dispatchEvent(
           new CustomEvent('cart-notification:show', {
             bubbles: true,
@@ -387,56 +346,134 @@ new Vue({
         );
       }
     },
-    
-    // 优化SPU列表获取方法
-    async fetchSpuList() {
-      if (this.isLoading) return;
-      
+    observeLCP() {     // 监控LCP性能
+      if ('PerformanceObserver' in window) {
+        const lcpObserver = new PerformanceObserver((entryList) => {
+          const entries = entryList.getEntries();
+          const lastEntry = entries[entries.length - 1];
+          console.log('LCP:', lastEntry.startTime, 'Element:', lastEntry.element);
+        });
+        lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+      }
+    },
+    handleUserInteraction() {
+      if (this.isFirstScreenLoaded) {
+        if (!this.remainingDataLoaded) {
+          if (this.cache.fullData) {
+            this.spuData = this.cache.fullData;
+          }
+          console.log('load remaining data')
+          if(this.hasMore) {
+            console.log('hase load more')
+            this.initIntersectionObserver();  // 初始化无限滚动
+          }
+          this.remainingDataLoaded = true;  // 标记剩余数据已加载
+        }
+        this.removeDoScreen()
+      }
+    },
+    async fetchData(pageNo, pageSize, isHighPriority = false) { //通用接口
       try {
-        this.isLoading = true;
         const urlbrand = this.selectedBrands();
         const params = {
-          pageNo: this.page,
-          pageSize: this.config.spuPageSize,
+          pageNo,
+          pageSize,
           ...this.getPriceFilterParams(),
           brand: urlbrand.join(',')
         };
-        
         let url = `${this.config.apiBaseUrl}/collection/pagespu`;
         if (this.collectionData.handle !== 'all') {
           params.c1 = encodeURIComponent(this.processedTitle);
         }
-        
-        // 使用AbortController优化请求
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15秒超时
-        
-        const response = await fetch(`${url}?${new URLSearchParams(params)}`, {
+        const fetchOptions = {
           signal: controller.signal
-        });
-        
+        };
+        // 高优先级请求添加额外头信息
+        if (isHighPriority) {
+          fetchOptions.headers = {
+            'Priority': 'high',
+            'X-Requested-With': 'XMLHttpRequest'
+          };
+        }
+        const response = await fetch(`${url}?${new URLSearchParams(params)}`, fetchOptions);
         clearTimeout(timeoutId);
-        
-        const result = await response.json();
+        return await response.json();
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          console.error('Failed to fetch data:', error);
+        }
+        throw error;
+      }
+    },
+    processSpuData(data, updateWishlist = false) {
+      if (!data || !data.list) return [];
+      return data.list.map(item => ({
+        ...item,
+        skus: item.skus.map(sku => ({
+          ...sku,
+          price: sku.price.toFixed(2),
+          quantity: 1,
+          selected: false,
+          isWish: updateWishlist ? this.wishlist.some(item => item.variantId == sku.variantId): false
+        }))
+      }));
+    },
+    async loadFirstScreenData() {  // 修改首屏加载方法，只关注SPU数据
+      if (this.isLoading) return;
+      try {
+        this.isLoading = true;
+        const result = await this.fetchData(1, this.config.spuPageSize, true);
         if (result.code === 200) {
-          // 优化数据处理，使用Map提高查找效率
-          const changelist = result.data.list && result.data.list.map(item => ({
-            ...item,
-            skus: item.skus.map(sku => ({
-              ...sku,
-              price: sku.price.toFixed(2),
-              quantity: 1,
-              selected: false,
-              isWish: this.cache.wishlistMap.has(sku.variantId)
-            }))
-          }));
-          
-          if (this.page === 1) {
-            this.creatBrandList(result.data.extra || []);
+          const firstScreenData = this.processSpuData(result.data, false);
+          if(firstScreenData.length > this.firstScreenSize) {
+            this.cache.fullData = firstScreenData
           }
-          
-          this.spuData = [...this.spuData, ...(changelist || [])];
-          this.hasMore = parseInt(result.data.total) > (this.spuData.length);
+          this.spuData = (firstScreenData || []).slice(0, this.firstScreenSize);
+          this.hasMore = parseInt(result.data.total) > firstScreenData.length;
+          if (result.data.extra) {
+            this.creatBrandList(result.data.extra);
+          }
+          if(this.hasMore) {
+             this.page = 2;
+          }
+          if ('performance' in window) {
+            performance.mark('first-screen-loaded');
+          }
+        } else {
+          console.error('Failed to load first screen data:', result.msg);
+        }
+      } catch (error) {
+        console.error('Error loading first screen data:', error);
+      } finally {
+        this.isLoading = false;
+        this.isFirstScreenLoaded = true;  // 标记首屏已加载
+        const el = document.querySelector('.product-facet__product-list-wrapper'); // 移除加载状态
+        if (el) {
+          el.classList.remove('zkh-collection-block');
+        }
+      }
+    },
+    async loadRemainingData() {
+      if (this.remainingDataLoaded) return;
+      if (this.cache.fullData) {
+        this.spuData = this.cache.fullData;
+      }
+      if(this.hasMore) {
+        this.initIntersectionObserver();   // 初始化无限滚动
+      }
+      this.remainingDataLoaded = true;  // 标记剩余数据已加载
+    },
+    async fetchSpuList() {
+      if (this.isLoading || !this.hasMore) return;
+      try {
+        this.isLoading = true;
+        const result = await this.fetchData(this.page, this.config.spuPageSize);
+        if (result.code === 200) {
+          const newData = this.processSpuData(result.data, true);
+          this.spuData = [...this.spuData, ...(newData || [])];
+          this.hasMore = parseInt(result.data.total) > this.spuData.length;
           this.page++;
         } else {
           document.documentElement.dispatchEvent(
@@ -445,7 +482,7 @@ new Vue({
               cancelable: true,
               detail: {
                 status: 'error',
-                error: result.msg || 'Please refresh and try again.'
+                error: result.msg || '请刷新页面重试'
               },
             })
           );
@@ -453,14 +490,43 @@ new Vue({
       } catch (error) {
         if (error.name !== 'AbortError') {
           console.error('Failed to fetch SPU list:', error);
-          throw error; // 抛出错误以便loadMore方法捕获
+          throw error;
         }
       } finally {
         this.isLoading = false;
       }
     },
-    
-    // 获取价格筛选参数
+    async fetchCategories() {
+      if (this.categories.length > 0) return; // 避免重复加载
+      
+      try {
+        const title = this.processedTitle;
+        const url = `${this.config.apiBaseUrl}/collection/collection?c1=${encodeURIComponent(title)}&order=1`;
+        
+        // 使用AbortController优化请求
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
+        
+        const response = await fetch(url, {
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        const result = await response.json();
+        if (result.code === 200 && result.data && result.data.length > 0) {
+          // Transform category data and generate URL-friendly names
+          this.categories = result.data || [];
+          this.creatCategoryList();
+        }
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          console.error('Failed to fetch categories:', error);
+          // 添加重试逻辑
+          setTimeout(() => this.fetchCategories(), 3000);
+        }
+      }
+    },
     getPriceFilterParams() {
       const params = new URLSearchParams(window.location.search);
       return {
@@ -468,8 +534,6 @@ new Vue({
         lowPrice: params.get('filter.v.price.gte') || ''
       };
     },
-    
-    // 处理品牌筛选
     handleBrandFilter(event) {
       const brand = event.target.value;
       const url = new URL(window.location.href);
@@ -486,7 +550,6 @@ new Vue({
       url.search = params.toString();
       window.location.href = url.toString();
     },
-    
     async toggleFavorite(lib, itemindex, libindex) {
       if (!window.zkh?.customerId) {
         window.location.href = '/account/login';
@@ -517,21 +580,12 @@ new Vue({
         return false;
       }
     },
-    
     changeWishStatus(itemindex, libindex) {
       if (this.spuData[itemindex]?.skus[libindex]) {
         const sku = this.spuData[itemindex].skus[libindex];
         this.$set(this.spuData[itemindex].skus[libindex], 'isWish', !sku.isWish);
-        
-        // 更新缓存的心愿单Map
-        if (!sku.isWish) {
-          this.cache.wishlistMap.set(sku.variantId, true);
-        } else {
-          this.cache.wishlistMap.delete(sku.variantId);
-        }
       }
     },
-    
     incrementQuantity(itemindex, libindex) {
       if (this.spuData[itemindex]?.skus[libindex]) {
         const sku = this.spuData[itemindex].skus[libindex];
@@ -540,7 +594,6 @@ new Vue({
         }
       }
     },
-    
     decrementQuantity(itemindex, libindex) {
       if (this.spuData[itemindex]?.skus[libindex]) {
         const sku = this.spuData[itemindex].skus[libindex];
@@ -549,7 +602,6 @@ new Vue({
         }
       }
     },
-    
     validateQuantity(itemindex, libindex) {
       if (this.spuData[itemindex]?.skus[libindex]) {
         const sku = this.spuData[itemindex].skus[libindex];
@@ -564,12 +616,10 @@ new Vue({
         this.$set(this.spuData[itemindex].skus[libindex], 'quantity', newQuantity);
       }
     },
-    
     selectedBrands() {
       const params = new URLSearchParams(window.location.search);
       return params.getAll('filter.p.m.product.brand');
     },
-    
     creatCategoryList() {
       const categoryElements = this.categories.map((collection) => {
         const nextHandle = collection.name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-');
@@ -590,7 +640,6 @@ new Vue({
         categoryList.innerHTML = categoryElements.join('');
       }
     },
-    
     creatBrandList(brand) {
       if (!brand || brand.length <= 0) {
         return false;
@@ -628,7 +677,6 @@ new Vue({
       
       filterDom.innerHTML = filtertertml;
     },
-    
     renderFacet() {
       const debouncedReload = debounce(async () => {
         window.scrollTo({
@@ -639,7 +687,6 @@ new Vue({
         this.page = 1;
         this.spuData = [];
         this.hasMore = true;
-        
         try {
           // 重新加载初始数据
           await this.fetchSpuList();
@@ -654,6 +701,12 @@ new Vue({
       }, 300);
       
       document.addEventListener('facet-rerender', debouncedReload);
+    },
+    removeDoScreen() {
+      document.removeEventListener('touchmove', this.handleUserInteraction);
+      document.removeEventListener('touchend', this.handleUserInteraction); 
+      document.removeEventListener('wheel', this.handleUserInteraction);
+      document.removeEventListener('keydown', this.handleUserInteraction);
     }
   }
 });

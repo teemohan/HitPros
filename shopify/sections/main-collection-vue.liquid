@@ -65,7 +65,8 @@
           </div>
         {%- endif -%}
         <div id="zkh-collection-list">
-          <div class="product-facet__product-list-wrapper zkh-collection-block"  v-if="!(categories.length > 0 && isMobile)">
+          <!-- 产品列表 -->
+          <div class="product-facet__product-list-wrapper zkh-collection-block" v-if="!(categories.length > 0 && isMobile)">
             <div class="product-list__inner list-inner" :class="{'mobile-flex': isMobile}" :style="isMobile ? 'display: flex' : 'block'">
               <div class="product-spu-wrapper" :data-spu="item.spu" v-for="(item, itemindex) in spuData" :key="item.spu">
                 <div class="product-spu-header">
@@ -75,8 +76,25 @@
                       <span class="hidden-tablet-and-up">([[item.skus.length]] [[item.skus.length > 1 ? 'products' : 'product']])</span>
                     </h4>
                     <div class="product-spu-meta">
-                      <div class="product-spu-img">
-                        <img width="170" height="170" v-lazy :data-src="item.spuImg" :alt="item.spuTitle" class="lazy-image" />
+                      <div class="product-spu-img" v-if="itemindex < 2">
+                        <img 
+                          width="170" 
+                          height="170" 
+                          :alt="item.spuTitle"
+                          :src="item.spuImg" 
+                        />
+                      </div>
+                      <div class="product-spu-img" v-else>
+                        <img 
+                          width="170" 
+                          height="170" 
+                          :alt="item.spuTitle" 
+                          class="lazy-image" 
+                          v-lazy 
+                          :data-src="item.spuImg" 
+                          :fetchpriority="itemindex < 3 ? 'high' : 'low'"
+                          loading="eager"
+                        />
                       </div>
                       <div class="product-spu-data">
                         <h2 :title="item.spuTitle" class="hidden-phone product-spu-title">[[ item.spuTitle ]]</h2>
@@ -197,7 +215,16 @@
                           </button>
                         </div>
                         <div class="product-item__image-wrapper">
-                          <a :href="'/products/' + lib.skuCode" class="product-item__aspect-ratio aspect-ratio">
+                          <a :href="'/products/' + lib.skuCode" class="product-item__aspect-ratio aspect-ratio" v-if="itemindex< 2">
+                            <img 
+                              width="100%" 
+                              height="100%" 
+                              class="product-item__primary-image" 
+                              :alt="lib.title" 
+                              :src="lib.mainPic"
+                            /> 
+                          </a>
+                          <a :href="'/products/' + lib.skuCode" class="product-item__aspect-ratio aspect-ratio" v-else>
                             <img 
                               width="100%" 
                               height="100%" 
@@ -282,6 +309,11 @@
               {%- endif -%}
             </div>
           </div>
+          {% comment %} <div class="product-facet__product-list-wrapper virtual-scroll-loading" v-if="spuData.length === 0">
+            <div class="product-list__inner list-inner">
+              <div class="skeleton-item" v-for="i in 3" :key="'skeleton-'+i"></div>
+            </div>
+          </div> {% endcomment %}
           <div class="virtual-scroll-loading" v-if="isLoading">
             <div class="loading-container">
               <svg t="1718343354897" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4307" width="16" height="16">
