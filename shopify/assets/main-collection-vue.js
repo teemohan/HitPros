@@ -145,6 +145,17 @@ new Vue({
           productCount: parseInt(el.dataset.productCount) || 0
         };
       }
+      const query = this.getPriceFilterParams()  //判断url有没有值 有值记得初始化
+      if (query.lowPrice || query.highPrice) {
+        const inputs = document.querySelectorAll('input[name="filter.v.price.gte"], input[name="filter.v.price.lte"]')
+        inputs.forEach(input => {
+          if (input.name === 'filter.v.price.gte' && query.lowPrice) {
+            input.value = query.lowPrice
+          } else if (input.name === 'filter.v.price.lte' && query.highPrice) {
+            input.value = query.highPrice
+          }
+        })
+      }
     },
     async loadMore() {
       if (this.isLoading) return;
@@ -222,7 +233,6 @@ new Vue({
     },
     updateWishlistStatus() {
       if (this.spuData.length === 0 || this.wishlist.length === 0) return;
-      
       this.spuData.forEach((spu, spuIndex) => {
         spu.skus.forEach((sku, skuIndex) => {
           const isInWishlist = this.wishlist.some(item => item.variantId == sku.variantId)
@@ -362,9 +372,7 @@ new Vue({
           if (this.cache.fullData) {
             this.spuData = this.cache.fullData;
           }
-          console.log('load remaining data')
           if(this.hasMore) {
-            console.log('hase load more')
             this.initIntersectionObserver();  // 初始化无限滚动
           }
           this.remainingDataLoaded = true;  // 标记剩余数据已加载
@@ -473,6 +481,9 @@ new Vue({
         if (result.code === 200) {
           const newData = this.processSpuData(result.data, true);
           this.spuData = [...this.spuData, ...(newData || [])];
+          if (result.data.extra && this.page == 1) {
+            this.creatBrandList(result.data.extra);
+          }
           this.hasMore = parseInt(result.data.total) > this.spuData.length;
           this.page++;
         } else {
@@ -644,10 +655,8 @@ new Vue({
       if (!brand || brand.length <= 0) {
         return false;
       }
-      
       const urlbrand = this.selectedBrands();
       const urlBrandStr = urlbrand.join(',');
-      
       this.brandExtra = [...brand]
         .sort((a, b) => b.count - a.count)
         .map((item, index) => ({
@@ -657,12 +666,9 @@ new Vue({
           disabled: item.count === 0,
           checked: urlBrandStr.includes(item.brand)
         }));
-      
       let filtertertml = '';
       const filterDom = document.querySelector('.js-col-filter');
-      
       if (!filterDom) return;
-      
       this.brandExtra.forEach((item, index) => {
         const checkboxId = `filter.p.m.product.brand-${index + 1}`;
         filtertertml += `

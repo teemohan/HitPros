@@ -11,9 +11,7 @@
   user-select: none;
   /* Standard */
 }
-#preview-bar-iframe {
-  display: none;
-}
+
 @media screen and (max-width: 740px) {
   .hidden-phone {
     display: none !important;
