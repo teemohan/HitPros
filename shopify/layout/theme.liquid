@@ -195,7 +195,6 @@
       <script src="{{ 'jquery.min.js' | asset_url }}"></script>
       <script src="{{ 'vendor.js' | asset_url }}"></script>
       <script src="{{ 'vue.js' | asset_url }}"></script>
-      <script src="{{ 'lazy.js' | asset_url }}"></script>
       {% if template == 'collection' %}
         <script src="{{ 'element-collection.js' | asset_url }}"></script>
       {% else %}
@@ -230,8 +229,9 @@
       <script src="{{ 'theme.js' | asset_url }}" defer></script>
       {% if shop.name != 'TestHitpros'  %}
         {% render 'other-service' %}
+      {% else %}
+        {%- render 'preload' -%}
       {% endif %}
-      {% comment %} {%- render 'preload' -%} {% endcomment %}
       {{ content_for_header }}
     </head>
   
@@ -318,111 +318,7 @@
       {% sections 'footer-group' %}
   
       {% render 'globo.form.custom' %}
-  
-      <script src="//code.tidio.co/dzwcvyci274aolrpev5ilpboec1objxi.js" async></script>
-      {%- if shop.name == 'TestHitpros' -%}
-      {% else %}
-      <!-- Start of HubSpot Embed Code -->
-        <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47344356.js"></script>
-        <!-- End of HubSpot Embed Code -->
-      {% endif %}
     </body>
-  
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        $('#createAccount').click(function() {
-          const ip = Cookies.get('ip');
-          if(ip) {
-            dataLayer.push({
-              'event': 'custom_create_account_clicked',
-              'zip': '{{ customer.default_address.zip  }}',
-              'industry': '{{ customer.metafields.custom.domesticcustomserviceid  }}',
-              'username': '{{ customer.name }}',
-              'email':'{{ customer.email }}',
-              'company':'{{ customer.metafields.custom.overseascustomserviceid  }}',
-              'ip': ip
-            });
-          }
-        })
-      })
-  
-       
-      window.addEventListener('beforeunload', function () {
-        if('{{ customer.id }}') return
-        let currentPath = window.location.pathname;
-          if (currentPath === '/account/login' || currentPath === '/account/register') {
-            currentPath = 'index';
-          }
-          Cookies.set('pagePath', currentPath);
-        });
-  
-        {%- if shop.name == 'TestHitpros' -%}
-         
-        {% else %}
-          document.addEventListener('DOMContentLoaded', () => {
-            // Page Viewed
-            const ip = Cookies.get('ip');
-            if(ip) {
-              dataLayer.push({
-                'event': 'custom_page_viewed',
-                'zip': '{{ customer.default_address.zip  }}',
-                'initial_landing_page_url': window.location.href,
-                'username': '{{ customer.name }}',
-                'email':'{{ customer.email }}',
-                'ip': ip
-              });
-            }
-          })
-        {% endif %}
-      //Session Started
-      const SESSION_KEY = 'session_start';
-  
-      // 添加 session_start
-      function addSessionStart() {
-        if (!localStorage.getItem(SESSION_KEY)) {
-          localStorage.setItem(SESSION_KEY, JSON.stringify({ timestamp: Date.now() }));
-          const ip = Cookies.get('ip');
-          if(ip) {
-            dataLayer.push({
-              'event': 'custom_session_started',
-              'zip': '{{ customer.default_address.zip  }}',
-              'username': '{{ customer.name }}',
-              'email':'{{ customer.email }}',
-              'ip': ip
-            });
-          }
-        }
-      }
-      function removeSessionStart() {
-        if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-          // 页面刷新不移除
-          return;
-        }
-        // 获取即将跳转的目标 URL
-        const nextPageDomain = document.activeElement?.href || document.referrer || ''; // 使用 window.location.href 获取当前 URL
-        const currentDomain = window.location.origin;
-        console.log(nextPageDomain)
-        if ( nextPageDomain.includes('/account') || nextPageDomain.includes('multipass') || nextPageDomain.includes('northskysupply')) {
-        console.log('Logout detected, keeping session');
-          return;
-        }
-        if (!nextPageDomain.includes(currentDomain)) {
-          console.log('Leaving site, removing session:', localStorage.getItem(SESSION_KEY));
-          localStorage.removeItem(SESSION_KEY);
-        }
-      }
-  
-      // 页面加载时添加
-      document.addEventListener('DOMContentLoaded', addSessionStart);
-  
-      // 页面卸载时判断是否需要移除
-      window.addEventListener('beforeunload', function(){
-        removeSessionStart()
-      });
-    </script>
-    {% if template == 'collection' %}
-      <script src="{{ 'main-collection-vue.js' | asset_url }}" defer></script>
-    {% endif %}
-    {{ "//cdn.shopify.com/s/files/1/0773/5273/0914/files/footer.js?v=1718022933" | script_tag }}
+     {% render 'js-config' %}
   </html>
   

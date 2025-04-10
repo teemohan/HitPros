@@ -111,6 +111,7 @@ new Vue({
   beforeDestroy() {
     window.removeEventListener('resize', this._throttledResize);
     this.removeDoScreen()
+    this.hideSketon()
     if (this.observer) {
       this.observer.disconnect();
     }
@@ -126,14 +127,31 @@ new Vue({
     },
     async initData() {
       if (this.isMobile) {
-        await this.fetchCategories()
+        try{
+          await this.fetchCategories()
+        } catch (error) {
+        }
         if(this.categories.length <= 0) {
           await this.loadFirstScreenData();  // 首先加载首屏数据
+        } else {
+          this.hideSketon()
         }
         this.fetchWishlist()
       } else {
-        await this.loadFirstScreenData();  // 首先加载首屏数据
+        try{
+          await this.loadFirstScreenData();  // 首先加载首屏数据
+        } catch (error) { }
         this.fetchCategories();
+      }
+    },
+    hideSketon() {
+      const el = document.querySelector('.js-skeleton-screen');
+      if(el) {
+        el.style.display = 'none';
+      }
+      const el2 = document.querySelector('.product-facet__product-list-wrapper'); // 移除加载状态
+      if (el2) {
+        el2.classList.remove('zkh-collection-block');
       }
     },
     handleSkuPageChange(spuId, page) {
@@ -420,7 +438,7 @@ new Vue({
         skus: item.skus.map(sku => ({
           ...sku,
           price: sku.price.toFixed(2),
-          quantity: 1,
+          quantity: sku.moq || 1,
           selected: false,
           isWish: updateWishlist ? this.wishlist.some(item => item.variantId == sku.variantId): false
         }))
@@ -432,6 +450,7 @@ new Vue({
         this.isLoading = true;
         const result = await this.fetchData(1, this.config.spuPageSize, true);
         if (result.code === 200) {
+          
           const firstScreenData = this.processSpuData(result.data, false);
           if(firstScreenData.length > this.firstScreenSize) {
             this.cache.fullData = firstScreenData
@@ -444,32 +463,19 @@ new Vue({
           if(this.hasMore) {
              this.page = 2;
           }
-          if ('performance' in window) {
-            performance.mark('first-screen-loaded');
-          }
+          // if ('performance' in window) {
+          //   performance.mark('first-screen-loaded');
+          // }
         } else {
           console.error('Failed to load first screen data:', result.msg);
         }
       } catch (error) {
         console.error('Error loading first screen data:', error);
       } finally {
+        this.hideSketon()
         this.isLoading = false;
         this.isFirstScreenLoaded = true;  // 标记首屏已加载
-        const el = document.querySelector('.product-facet__product-list-wrapper'); // 移除加载状态
-        if (el) {
-          el.classList.remove('zkh-collection-block');
-        }
       }
-    },
-    async loadRemainingData() {
-      if (this.remainingDataLoaded) return;
-      if (this.cache.fullData) {
-        this.spuData = this.cache.fullData;
-      }
-      if(this.hasMore) {
-        this.initIntersectionObserver();   // 初始化无限滚动
-      }
-      this.remainingDataLoaded = true;  // 标记剩余数据已加载
     },
     async fetchSpuList() {
       if (this.isLoading || !this.hasMore) return;
@@ -503,6 +509,7 @@ new Vue({
         }
       } finally {
         this.isLoading = false;
+        this.hideSketon()
       }
     },
     getPriceFilterParams() {
@@ -568,29 +575,43 @@ new Vue({
       if (this.spuData[itemindex]?.skus[libindex]) {
         const sku = this.spuData[itemindex].skus[libindex];
         if (sku.quantity < 1000000) {
-          this.$set(this.spuData[itemindex].skus[libindex], 'quantity', sku.quantity + 1);
+          const newQuantity = sku.quantity + (sku.mpq || 1);
+          this.$set(this.spuData[itemindex].skus[libindex], 'quantity', newQuantity);
         }
       }
     },
     decrementQuantity(itemindex, libindex) {
       if (this.spuData[itemindex]?.skus[libindex]) {
         const sku = this.spuData[itemindex].skus[libindex];
-        if (sku.quantity > 1) {
-          this.$set(this.spuData[itemindex].skus[libindex], 'quantity', sku.quantity - 1);
+        const moq = sku.moq || 1;
+        const mpq = sku.mpq || 1;
+        if (sku.quantity > moq) {
+          const newQuantity = sku.quantity - mpq;
+          this.$set(this.spuData[itemindex].skus[libindex], 'quantity', 
+            newQuantity >= moq ? newQuantity : moq
+          );
         }
       }
     },
     validateQuantity(itemindex, libindex) {
       if (this.spuData[itemindex]?.skus[libindex]) {
         const sku = this.spuData[itemindex].skus[libindex];
-        let newQuantity = sku.quantity;
-        
-        if (isNaN(newQuantity) || newQuantity < 1) {
-          newQuantity = 1;
+        let newQuantity = parseInt(sku.quantity);
+        const moq = sku.moq || 1;
+        const mpq = sku.mpq || 1;
+        // Handle invalid input
+        if (isNaN(newQuantity) || newQuantity < moq) {
+          newQuantity = moq;
         } else if (newQuantity > 1000000) {
           newQuantity = 1000000;
+        } else {
+          // Round up to nearest valid quantity based on MOQ and MPQ
+          const exceededMoq = newQuantity - moq;
+          const remainder = exceededMoq % mpq;
+          if (remainder !== 0) {
+            newQuantity = moq + (Math.ceil(exceededMoq / mpq) * mpq);
+          }
         }
-        
         this.$set(this.spuData[itemindex].skus[libindex], 'quantity', newQuantity);
       }
     },
@@ -647,7 +668,6 @@ new Vue({
           </div>
         `;
       });
-      
       filterDom.innerHTML = filtertertml;
     },
     renderFacet() {

@@ -58,14 +58,16 @@
             {%- render 'icon' with 'filters' -%}
           </button>
         </div>
-        {%- comment -%}活动筛选器{%- endcomment -%}
         {%- if active_filters_count > 0 -%}
           <div class="product-facet__active-list tag-list"  v-pre>
             {%- render 'facet-active-filters', filters: collection.filters -%}
           </div>
         {%- endif -%}
+ 
         <div id="zkh-collection-list">
-          <!-- 产品列表 -->
+          <div class="skeleton-screen js-skeleton-screen" v-pre>
+            {%- render 'skeleton-collection'-%}
+         </div>
           <div class="product-facet__product-list-wrapper zkh-collection-block" v-if="!(categories.length > 0 && isMobile)">
             <div class="product-list__inner list-inner" :class="{'mobile-flex': isMobile}" :style="isMobile ? 'display: flex' : 'block'">
               <div class="product-spu-wrapper" :data-spu="item.spu" v-for="(item, itemindex) in spuData" :key="item.spu">
@@ -140,7 +142,7 @@
                                   type="text" 
                                   v-model.number="lib.quantity" 
                                   @change="validateQuantity(itemindex,libindex)"
-                                  :min="1" 
+                                  :min="lib.moq" 
                                   :max="1000000"
                                 >
                                 <button 
@@ -284,11 +286,12 @@
                 </div>
               </div>
             </div>
-            <div class="empty-state cl-empty-state" v-if="spuData.length <= 0 && !isLoading">
+            <div class="empty-state cl-empty-state"
+              :style="(spuData.length <= 0 && !isLoading) ?'display: flex;!important': '' "
+            >
               {%- if collection.all_products_count == 0 -%}
                 <h3 class="heading h4">{{ 'collection.general.empty_title' | t }}</h3>
                 <p>{{ 'collection.general.empty_label' | t }}</p>
-
                 <div class="button-wrapper">
                   <a href="{{ routes.all_products_collection_url }}" class="button button--primary">
                     {{- 'collection.general.empty_button' | t -}}
@@ -309,11 +312,6 @@
               {%- endif -%}
             </div>
           </div>
-          {% comment %} <div class="product-facet__product-list-wrapper virtual-scroll-loading" v-if="spuData.length === 0">
-            <div class="product-list__inner list-inner">
-              <div class="skeleton-item" v-for="i in 3" :key="'skeleton-'+i"></div>
-            </div>
-          </div> {% endcomment %}
           <div class="virtual-scroll-loading" v-if="isLoading">
             <div class="loading-container">
               <svg t="1718343354897" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4307" width="16" height="16">

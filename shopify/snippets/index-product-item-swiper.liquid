@@ -175,7 +175,7 @@
         class="quantity-selector"
         data-max="{% if product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
       >
-        <button type="button" class="quantity-selector__button minus">
+        <button disabled type="button" class="quantity-selector__button minus">
           <span class="visually-hidden">{{ 'cart.general.decrease_quantity' | t }}</span>
           {%- render 'icon' with 'minus-big' -%}
         </button>
@@ -193,6 +193,7 @@
           data-input-varid="{{ product.selected_or_first_available_variant.id }}"
           data-max="{% if product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
           data-moq="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+          data-mpq="{% if product.metafields.product.mpq != blank %}{{ product.metafields.product.mpq }}{% else %}1{% endif %}"
           value="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
           size="2"
           aria-label="{{ 'product.form.quantity' | t | escape }}"
@@ -217,9 +218,20 @@
       <button
         is="loader-button"
         type="submit"
+        {% unless product.selected_or_first_available_variant.available %}
+          disabled
+        {% endunless %}
         class="button yellow button--outline button--text button--full {% if section.settings.desktop_products_per_row >= 5 %}button--small{% endif %}"
       >
-        {{ 'product.form.add_to_cart' | t }}
+        {%- if product.selected_or_first_available_variant.available -%}
+          {%- if product.template_suffix == 'pre-order' -%}
+            {{- 'product.form.pre_order' | t -}}
+          {%- else -%}
+            {{- 'product.form.add_to_cart' | t -}}
+          {%- endif -%}
+        {%- else -%}
+          {{- 'product.form.sold_out' | t -}}
+        {%- endif -%}
         {% render 'icon' with 'product-item-cart' %}
       </button>
     {%- endform -%}

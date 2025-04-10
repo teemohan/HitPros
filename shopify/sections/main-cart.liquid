@@ -195,7 +195,10 @@
                                 <input onpaste="return false" data-sku="{{ line_item.sku }}" min="1" 
                                   data-max="{% if line_item.product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ line_item.product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
                                   max="1000000" is="input-number" class="quantity-selector__input text--xsmall" 
-                                  autocomplete="off" type="text" inputmode="numeric" data-line="{{ forloop.index }}" value="{{ line_item.quantity }}" data-cart="1" data-input-varid="{{ line_item.variant_id }}" data-varid="{{ line_item.variant_id }}" data-moq="{% if line_item.product.metafields.product.moq != blank %}{{ line_item.product.metafields.product.moq }}{% else %}1{% endif %}" {% if max_allowed_quantity != '' %}max="{{ max_allowed_quantity }}"{% endif %} size="{{ line_item.quantity | append: '' | size | at_least: 2 }}" aria-label="{{ 'cart.general.change_quantity' | t | escape }}">
+                                  autocomplete="off" type="text" inputmode="numeric" data-line="{{ forloop.index }}" value="{{ line_item.quantity }}" data-cart="1" data-input-varid="{{ line_item.variant_id }}" data-varid="{{ line_item.variant_id }}" 
+                                  data-moq="{% if line_item.product.metafields.product.moq != blank %}{{ line_item.product.metafields.product.moq }}{% else %}1{% endif %}" 
+                                  data-mpq="{% if line_item.product.metafields.product.mpq != blank %}{{ line_item.product.metafields.product.mpq }}{% else %}1{% endif %}" 
+                                  {% if max_allowed_quantity != '' %}max="{{ max_allowed_quantity }}"{% endif %} size="{{ line_item.quantity | append: '' | size | at_least: 2 }}" aria-label="{{ 'cart.general.change_quantity' | t | escape }}">
       
                                 {%- if allow_more -%}
                                   <a href="javascript:void(0)" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity }}&line={{ forloop.index }}" href="#" class="quantity-selector__button quantity-selector__plus" aria-label="{{ 'cart.general.increase_quantity' | t | escape }}" data-no-instant>
@@ -931,10 +934,17 @@
       let href = $(this).data('href');
       const line = +href.split('&')[1].split('=')[1];
       const inputElement = $('input[data-line="' + line + '"]');
+      const mpq = +$(inputElement).data('mpq');
       if(+inputElement.val() == 1000000) {
         return
       }
-      const quantity = +inputElement.val() + 1;
+      let quantity;
+      const maxQuantity = +inputElement.data('max');
+      if(maxQuantity && +inputElement.val() + mpq >= maxQuantity) {
+        quantity = Math.floor(maxQuantity / mpq) * mpq;
+      } else {
+        quantity = +inputElement.val() + mpq;
+      }
       href = `/cart/change?quantity=${quantity}&line=${line}`;
       inputElement.val(quantity);
       const $lineItemQuantity = $(this).closest('.line-item-quantity');
@@ -950,9 +960,10 @@
       const line = +href.split('&')[1].split('=')[1];
       const inputElement = $('input[data-line="' + line + '"]');
       const moq = +$(inputElement).data('moq');
-      let quantity = +inputElement.val() - 1;
+      const mpq = +$(inputElement).data('mpq');
+      let quantity = +inputElement.val() - mpq;
       if(quantity < moq) {
-        quantity = moq
+        quantity = moq;
       }
       href = `/cart/change?quantity=${quantity}&line=${line}`;
       inputElement.val(quantity)

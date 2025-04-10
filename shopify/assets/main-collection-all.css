@@ -12,7 +12,7 @@
   display: none;
 }
 .cl-empty-state{
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   text-align: center;
@@ -71,7 +71,228 @@
     transform: rotate(360deg);
   }
 }
+/* 骨架屏样式 */
+.skeleton-screen {
+  width: 100%;
+}
+.skeleton-screen-product-list{
+  display: block;
+  width: 100%;
+}
+.skeleton-mob-total, .skeleton-pc-total{
+  width: 100%;
+}
+.skeleton-mob-total{
+   display: none;
+}
+@media screen and (max-width: 740px) {
+  .skeleton-screen-product-list{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .skeleton-pc-total{
+    display: none;
+  }
+  .skeleton-mob-total{
+    display: block;
+  }
+}
+/* 通用脉冲动画 */
+.pulse {
+  animation: pulse 1.5s infinite;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+}
 
+@keyframes pulse {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* PC端骨架屏 */
+.skeleton-spu-wrapper {
+  margin-bottom: 30px;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+}
+
+.skeleton-spu-header {
+  padding: 15px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.skeleton-spu-meta {
+  display: flex;
+  align-items: flex-start;
+}
+
+.skeleton-spu-img {
+  width: 170px;
+  height: 170px;
+  border-radius: 4px;
+}
+.skeleton-spu-data {
+  flex: 1;
+  margin-left: 15px;
+}
+
+.skeleton-spu-title {
+  height: 24px;
+  width: 70%;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.skeleton-spu-count {
+  height: 18px;
+  width: 30%;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.skeleton-spu-desc {
+  height: 60px;
+  width: 90%;
+  border-radius: 4px;
+}
+
+.skeleton-sku-wrapper {
+  padding: 15px;
+}
+
+.skeleton-sku-header {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.skeleton-key {
+  flex: 1;
+  height: 20px;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.skeleton-common-data {
+  display: flex;
+  width: 300px;
+}
+
+.skeleton-price {
+  width: 80px;
+  height: 20px;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.skeleton-quantity {
+  width: 100px;
+  height: 20px;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.skeleton-operate {
+  width: 80px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.skeleton-sku-line {
+  display: flex;
+  margin-bottom: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.skeleton-value {
+  flex: 1;
+  height: 20px;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+/* 移动端骨架屏 */
+.skeleton-mobile-wrapper {
+  width: 48%;
+  margin-bottom: 15px;
+}
+
+.skeleton-mobile-item {
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.skeleton-mobile-img {
+  width: 100%;
+  height: 90px;
+  padding-bottom: 100%;
+}
+
+.skeleton-mobile-info {
+  padding: 10px;
+}
+
+.skeleton-mobile-title {
+  height: 36px;
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.skeleton-mobile-price {
+  height: 20px;
+  width: 60%;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+
+.skeleton-mobile-button {
+  height: 40px;
+  width: 100%;
+  border-radius: 4px;
+}
+
+/* 适配移动端 */
+@media screen and (max-width: 740px) {
+  .skeleton-spu-number{
+    height: 44px;
+    width: 100%;
+  }
+  .skeleton-mobile-big{
+    width: 100%;
+    display:flex;
+    justify-content: space-between;
+  }
+  .skeleton-mobile-wrapper {
+    width: 48%;
+    margin: 0 1% 15px;
+  }
+  .skeleton-spu-meta{
+    gap: 20px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    align-items: center;
+  }
+  .skeleton-spu-header{
+    padding: 0px;
+    border-bottom: none;
+  }
+  .skeleton-spu-img{
+    width: 30%;
+    height: 100px;
+    flex-shrink: 0;
+  
+  }
+  .skeleton-spu-des{
+      height: 170px;
+  }
+}
 /* 移动端样式 */
 @media screen and (max-width: 768px) {
   .virtual-scroll-loading {

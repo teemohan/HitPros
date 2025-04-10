@@ -1,0 +1,72 @@
+<div class="list-inner skeleton-screen-product-list">
+  <!-- PC端骨架屏 -->
+  <div class="skeleton-pc-total">
+    {% for i in (1..2) %}
+      <div class="skeleton-spu-wrapper">
+        <div class="skeleton-spu-header">
+          <div class="skeleton-spu-meta">
+            <div class="skeleton-spu-img pulse"></div>
+            <div class="skeleton-spu-data">
+              <div class="skeleton-spu-title pulse"></div>
+              <div class="skeleton-spu-count pulse"></div>
+              <div class="skeleton-spu-desc pulse"></div>
+            </div>
+          </div>
+        </div>
+        <div class="skeleton-sku-wrapper">
+          <div class="skeleton-sku-header">
+            {% for j in (1..3) %}
+              <div class="skeleton-key pulse"></div>
+            {% endfor %}
+            <div class="skeleton-common-data">
+              <div class="skeleton-price pulse"></div>
+              <div class="skeleton-quantity pulse"></div>
+              <div class="skeleton-operate pulse"></div>
+            </div>
+          </div>
+          {% for k in (1..3) %}
+            <div class="skeleton-sku-line">
+              {% for l in (1..3) %}
+                <div class="skeleton-value pulse"></div>
+              {% endfor %}
+              <div class="skeleton-common-data">
+                <div class="skeleton-price pulse"></div>
+                <div class="skeleton-quantity pulse"></div>
+                <div class="skeleton-operate pulse"></div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="skeleton-mob-total">
+    {% for i in (1..2) %}
+      <div class="skeleton-spu-number pulse">
+
+      </div>
+      <div class="skeleton-spu-header">
+        <div class="skeleton-spu-meta">
+          <div class="skeleton-spu-img pulse"></div>
+          <div class="skeleton-spu-data">
+            <div class="skeleton-spu-des pulse"></div>
+          </div>
+        </div>
+      </div>
+      <div class="skeleton-mobile-big">
+        {% for j in (1..2) %}
+          <div class="skeleton-mobile-wrapper">
+            <div class="skeleton-mobile-item">
+              <div class="skeleton-mobile-img pulse"></div>
+              <div class="skeleton-mobile-info">
+                <div class="skeleton-mobile-title pulse"></div>
+                <div class="skeleton-mobile-price pulse"></div>
+                <div class="skeleton-mobile-button pulse"></div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+</div>

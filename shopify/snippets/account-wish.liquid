@@ -78,7 +78,7 @@
                 <button @click="decrement(item)">
                   {% render 'icon' with 'v3-counter-minus' %}
                 </button>
-                <input :data-demand="item.quantity" :data-input-varid="item.variantId" type="text" @input="debouncedHandleValueChange(item, $event)" v-model="item.quantity">
+                <input :data-demand="item.quantity" :data-input-varid="item.variantId" type="text" @change="handleValueChange(item, $event)" v-model="item.quantity">
                 <button @click="increment(item)">
                   {% render 'icon' with 'v3-counter-plus' %}
                 </button>
@@ -88,10 +88,11 @@
               <el-button :loading="item.btn_remove_loading" type="text" @click="removeWishItem(item)">Remove</el-button>
               <el-button
                 type="primary"
+                :disabled="!item.availableForSale"
                 :loading="item.btn_loading"
                 @click="handleAddToCart({type: 'single', productItem: item})"
               >
-                Add to Cart
+                ${ item.availableForSale ? "Add to Cart" : "Sold Out" }
               </el-button>
             </footer>
           </div>
@@ -138,7 +139,7 @@
                   <button @click="decrement(item)">
                     {% render 'icon' with 'v3-counter-minus' %}
                   </button>
-                  <input :data-demand="item.quantity" :data-input-varid="item.variantId" type="text" @input="debouncedHandleValueChange(item, $event)" v-model="item.quantity">
+                  <input :data-demand="item.quantity" :data-input-varid="item.variantId" @change="handleValueChange(item, $event)" type="text"  v-model="item.quantity">
                   <button @click="increment(item)">
                     {% render 'icon' with 'v3-counter-plus' %}
                   </button>
@@ -147,10 +148,11 @@
               <footer>
                 <el-button
                   type="primary"
+                  :disabled="!item.availableForSale"
                   :loading="item.btn_loading"
                   @click="handleAddToCart({type: 'single', productItem: item})"
                 >
-                  Add to Cart
+                  ${ item.availableForSale ? "Add to Cart" : "Sold Out" }
                 </el-button>
                 <el-button :loading="item.btn_remove_loading" type="text" @click="removeWishItem(item)">Remove</el-button>
               </footer>
@@ -212,9 +214,6 @@
           }
         }
       },
-      created(){
-        this.debouncedHandleValueChange = this.debounce(this.handleValueChange, 500);
-      },
       methods: {
         async setLineAttr(cartItems) {
           const response = await fetch('/cart.js');
@@ -270,9 +269,11 @@
         },
         handleValueChange(item, event) {
           const positiveIntegerRegex = /^[1-9]\d*$/;
-          if(!positiveIntegerRegex.test(event.target.value) || event.target.value < item.moq) {
-            item.quantity = item.moq
+          let quantity = event.target.value;
+          if(!positiveIntegerRegex.test(quantity) || quantity < item.moq) {
+            quantity = item.moq;
           }
+          item.quantity = Math.ceil((quantity - item.moq) / item.mpq) * item.mpq + item.moq;
         },
         async getProductData(id) {
           // 构建GraphQL查询
@@ -303,6 +304,7 @@
               totalInventory: graphqlNode.totalInventory,
               featuredImage: graphqlNode.featuredImage?.url,
               moq: Number(graphqlNode.moq?.value) || 1, //最小起购量
+              mpq: Number(graphqlNode.mpq?.value) || 1, //最小起购量
               model: graphqlNode.manufacturer_model_number?.value, //model
               brand: graphqlNode.brand?.value, //brand
               quantity: Number(graphqlNode.moq?.value) || 1,
@@ -486,11 +488,19 @@
           }
         },
         increment(productItem) {
-          productItem.quantity += 1;
+          productItem.quantity += productItem.mpq;
+          if(productItem.inventoryPolicy != 'CONTINUE' && productItem.quantity > productItem.totalInventory) { // 限制不能超过库存量
+            productItem.quantity = productItem.totalInventory;
+            this.$message({
+              showClose: true,
+              message: `The maximum quantity available is ${productItem.totalInventory}`,
+              type: 'warning'
+            });
+          }
         },
         decrement(productItem) {
           if (productItem.quantity > productItem.moq) {
-            productItem.quantity -= 1;
+            productItem.quantity -= productItem.mpq;
           }
         }
       }

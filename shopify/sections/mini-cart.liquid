@@ -390,20 +390,18 @@
                   {% endif %}
                 </div>
 
-                {%- assign max_allowed_quantity = '' -%}
+                {% assign moq_value = line_item.product.metafields.product.moq | plus: 0 %}
+                {% assign mpq_value = line_item.product.metafields.product.mpq | plus: 0 %}
+                {% assign remainder = line_item.variant.inventory_quantity | divided_by: mpq_value %}
+                {% assign max_allowed_quantity = remainder | times: mpq_value %}
                 {%- assign allow_more = true -%}
-
-                {%- if line_item.variant.inventory_management == 'shopify' and line_item.variant.inventory_policy == 'deny' and line_item.variant.inventory_quantity <= line_item.quantity -%}
-                  {%- assign max_allowed_quantity = line_item.variant.inventory_quantity -%}
+                {%- if line_item.variant.inventory_policy == 'deny' and max_allowed_quantity == line_item.quantity -%}
                   {%- assign allow_more = false -%}
                 {%- endif -%}
-
                 <line-item-quantity class="line-item__quantity">
                   <div class="quantity-selector quantity-selector--small">
-
-                    {% assign moq_value = line_item.product.metafields.product.moq | plus: 0 %}
                     {% if line_item.product.metafields.product.moq != blank and moq_value < line_item.quantity %}
-                      <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
+                      <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: mpq_value }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
                           {%- render 'icon' with 'minus' -%}
                       </a>
                     {% elsif line_item.product.metafields.product.moq == blank %}
@@ -425,6 +423,7 @@
                       name="updates[]" data-line="{{ forloop.index }}"
                       value="{{ line_item.quantity }}"
                       data-moq="{% if line_item.product.metafields.product.moq != blank %}{{ line_item.product.metafields.product.moq }}{% else %}1{% endif %}"
+                      data-mpq="{% if line_item.product.metafields.product.mpq != blank %}{{ line_item.product.metafields.product.mpq }}{% else %}1{% endif %}"
                       data-max="{% if line_item.product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ line_item.product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
                       min="1"
                       max="1000000"
@@ -433,7 +432,7 @@
                       aria-label="{{ 'cart.general.change_quantity' | t | escape }}"
                     >
                     {%- if allow_more -%}
-                      <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | plus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.increase_quantity' | t | escape }}" data-no-instant>
+                      <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | plus: mpq_value }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.increase_quantity' | t | escape }}" data-no-instant>
                         {%- render 'icon' with 'plus' -%}
                       </a>
                     {%- else -%}

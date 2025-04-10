@@ -132,6 +132,17 @@
         required: true
       }
     },
+    computed: {
+      moq() {
+        return +this.product.moq || 1
+      },
+      mpq() {
+        return +this.product.mpq || 1
+      },
+      minQty() {
+        return this.product.moq ? +this.product.moq : 1
+      }
+    },
     data(){
       return {
         cartLoading: false,
@@ -163,38 +174,17 @@
         this.$emit('wish-change', this.product)
       },
       handleQuantityPlus() {
-        // 先增加需求数量
-        this.productDemand++;
-        // 如果库存策略是deny并且超过库存数量，则把需求量限制为库存数量
-        if (this.product.inventoryPolicy === 'DENY' && this.productDemand > this.product.inventoryQuantity) {
-          this.productDemand = this.product.inventoryQuantity;
-        }
+        this.productDemand = this.productDemand + this.mpq;
       },
 
       handleQuantityMinus() {
-        // 获取最小起订量，若没有则设为1
-        const minQty = this.product.moq ? +this.product.moq : 1;
-
-        // 先减少需求数量
-        if (this.productDemand > minQty) {
-          this.productDemand--;
-        } else {
-          // 如果需求量已经是最小值，则不再减
-          this.productDemand = minQty;
-        }
+        this.productDemand = this.productDemand - this.mpq;
+        if (this.productDemand <= this.minQty) this.productDemand = this.minQty;
       },
 
       handleQuantityChange() {
-        // 获取最小起订量，若没有则设为1
-        const minQty = this.product.moq ? +this.product.moq : 1;
-        // 如果库存策略是deny并且超过库存数量，则把需求量限制为库存数量
-        if (this.product.inventoryPolicy === 'DENY' && this.productDemand > this.product.inventoryQuantity) {
-          this.productDemand = this.product.inventoryQuantity;
-        }
-        // 如果需求量小于最小起订量，则设置为最小值
-        if (this.productDemand < minQty) {
-          this.productDemand = minQty;
-        }
+        this.productDemand = Math.ceil((this.productDemand - this.moq) / this.mpq) * this.mpq + this.moq;
+        if (this.productDemand < this.minQty) this.productDemand = this.minQty;
       },
 
       initMediaSwiper() {

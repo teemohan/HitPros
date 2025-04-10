@@ -152,6 +152,7 @@
                       data-max="{% if product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
                       data-sku="{{ product.selected_or_first_available_variant.sku }}"
                       data-moq="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+                      data-mpq="{% if product.metafields.product.mpq != blank %}{{ product.metafields.product.mpq }}{% else %}1{% endif %}"
                     >
                       {% render 'product-sku-item', product: product %}
                     </div>
@@ -348,12 +349,13 @@
           // 处理数量数据
           const stockMax = $dataElem.data('max');
           const moq = $dataElem.data('moq');
+          const mpq = $dataElem.data('mpq');
           const exceedsWarning = stockMax ? '<div class="max-quantity-warning">exceeds maximum stock</div>' : '';
           const quantityItem = `
             <div class="quantity-item" data-max="${stockMax}">
               <div class="quantity-wrapper">
                 <button class="quantity-btn quantity-btn-minus">-</button>
-                <input type="text" data-min="${moq}" max="1000000" value="${moq}">
+                <input type="text" data-moq="${moq}" data-mpq="${mpq}" max="1000000" value="${moq}">
                 <button class="quantity-btn quantity-btn-plus">+</button>
               </div>
               ${exceedsWarning}
@@ -672,19 +674,21 @@
             window.location.href = href;
           }
         });
-        $thisSku.find('.quantity-wrapper .quantity-btn-minus').click(function () {
+        $thisSku.find('.quantity-wrapper .quantity-btn-minus').click(function () { //减
           const $input = $(this).next('input');
-          let val = parseInt($input.val()) - 1;
-          const minVal = $input.data('min') ? +$input.data('min') : 1;
-          if (val < minVal) {
-            val = minVal;
+          const mpq = $input.data('mpq');
+          const moq = $input.data('moq');
+          let val = parseInt($input.val()) - mpq;
+          if (val < moq) {
+            val = moq;
           }
           $input.val(val);
         });
 
-        $thisSku.find('.quantity-wrapper .quantity-btn-plus').click(function () {
+        $thisSku.find('.quantity-wrapper .quantity-btn-plus').click(function () { //加
           const $input = $(this).prev('input');
-          let val = parseInt($input.val()) + 1;
+          const mpq = $input.data('mpq');
+          let val = parseInt($input.val()) + mpq;
           const stockMax = $input.closest('.quantity-item').data('max'); // 值处理库存数量是否超出
           if (stockMax && val > stockMax) {
             $input.val(stockMax);
@@ -696,29 +700,16 @@
           }
           $input.val(val);
         });
-        $thisSku.find('.quantity-wrapper input').on('input', function () {
-          const $input = $(this);
-          let val = parseInt($input.val());
-          const stockMax = $input.closest('.quantity-item').data('max'); // 值处理库存数量是否超出
-          if (stockMax && val > stockMax) {
-            $input.val(stockMax);
-            $input.closest('.product-sku-line').find('.max-quantity-warning').show();
-            setTimeout(() => {
-              $input.closest('.product-sku-line').find('.max-quantity-warning').hide();
-            }, 3000);
-          }
-        });
         $thisSku.find('.quantity-wrapper input').on('blur', function () {
           const $input = $(this);
-          const minVal = $input.data('min') ? +$input.data('min') : 1;
-          const maxVal = $input.attr('max') ? +$input.attr('max') : Infinity;
-          let val = parseInt($input.val());
-          if (!val || val < minVal) {
-            val = minVal;
+          const moq = +$input.data('moq');
+          const mpq = +$input.data('mpq');
+          const maxVal = +$input.attr('max');
+          let quantity = +$input.val();
+          if(quantity < moq) {
+            quantity = moq;
           }
-          if (val > maxVal) {
-            val = maxVal;
-          }
+          let val = Math.ceil((quantity -moq)  / mpq) * mpq + moq; // 取整
           $input.val(val);
         });
         $thisSku.find('.operate-item .add-to-cart').click(function () {

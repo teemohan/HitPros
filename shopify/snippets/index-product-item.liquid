@@ -158,9 +158,20 @@
       <button
         is="loader-button"
         type="submit"
+        {% unless product.selected_or_first_available_variant.available %}
+          disabled
+        {% endunless %}
         class="button {{ template.name }} {% if template.name != 'index' %}yellow{% endif %} button--outline button--text button--full {% if section.settings.desktop_products_per_row >= 5 %}button--small{% endif %}"
       >
-        {{ 'product.form.add_to_cart' | t }}
+        {%- if product.selected_or_first_available_variant.available -%}
+          {%- if product.template_suffix == 'pre-order' -%}
+            {{- 'product.form.pre_order' | t -}}
+          {%- else -%}
+            {{- 'product.form.add_to_cart' | t -}}
+          {%- endif -%}
+        {%- else -%}
+          {{- 'product.form.sold_out' | t -}}
+        {%- endif -%}
         {% render 'icon' with 'product-item-cart' %}
       </button>
     {%- endform -%}

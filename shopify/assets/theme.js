@@ -3083,12 +3083,13 @@
       this.plusElement = this.querySelector('.plus');
       this.computedFirst();
       this.delegate.on('click', 'button:first-child', () => {
-        const moqValue = Number(this.inputElement.getAttribute('data-moq'));
+        const moqValue = +this.inputElement.getAttribute('data-moq');
+        const mpqValue = +this.inputElement.getAttribute('data-mpq');
         $('.max-quantity-waning').hide();
         if (Number(this.inputElement.quantity) <= moqValue) {
           this.minusElement.disabled = true; // 设置为禁用状态
         } else {
-          this.inputElement.quantity = this.inputElement.quantity - 1;
+          this.inputElement.quantity = this.inputElement.quantity - mpqValue;
           this.minusElement.disabled = false;
           this.highlightPriceRange(this.inputElement.quantity);
           let discountJson = this.quantitySelector.getAttribute('data-discount');
@@ -3102,22 +3103,17 @@
           }
         }
 
-        if (Number(this.inputElement.quantity) <= moqValue) {
+        if (this.inputElement.quantity == moqValue) {
           this.minusElement.disabled = true; // 设置为禁用状态
         }
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
       });
       this.delegate.on('click', 'button:last-child', () => {
-        const moqValue = Number(this.inputElement.getAttribute('data-moq'));
-        const max = $(this).data('max');
-        if (max && this.inputElement.quantity + 1 > max) {
-          $('.max-quantity-waning').show();
-          setTimeout(() => {
-            $('.max-quantity-waning').hide();
-          }, 3000);
-          return;
-        }
-        this.inputElement.quantity = this.inputElement.quantity + 1;
+        this.minusElement.disabled = false; // 设置为禁用状态
+        const mpqValue = +this.inputElement.getAttribute('data-mpq');
+        this.inputElement.quantity = this.inputElement.quantity + mpqValue;
+        this.maxQuantityWarning();
+        /* 阶梯价格*/
         let discountJson = this.quantitySelector.getAttribute('data-discount');
         const quantity = this.inputElement.quantity;
         let basePrice = this.quantitySelector.getAttribute('data-price');
@@ -3128,14 +3124,28 @@
           $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
         }
         this.highlightPriceRange(this.inputElement.quantity);
-        if (Number(this.inputElement.quantity) > moqValue) {
-          this.minusElement.disabled = false; // 设置为禁用状态
-        }
+        /* 阶梯价格*/
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
       });
-      this.quantitySelector.addEventListener('input', () => {
-        $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity );
+      this.addEventListener('quantityChanged', ({detail: {quantity}}) => {
+        event.stopPropagation();
+        $(this.quantitySelector).attr('data-demand', quantity);
       });
+      this.quantitySelector.addEventListener('change', () => {
+        this.maxQuantityWarning();
+      });
+    }
+    maxQuantityWarning() {
+      const max = $(this).data('max');
+      const mpqValue = +this.quantitySelector.getAttribute('data-mpq');
+      if (max && this.inputElement.quantity > max) {
+        this.inputElement.quantity = Math.floor(max / mpqValue) * mpqValue; // 取整，防止超过最大值
+        $('.max-quantity-waning').show();
+        setTimeout(() => {
+          $('.max-quantity-waning').hide();
+        }, 3000);
+        return;
+      }
     }
     highlightPriceRange(quantity) {
       const inputValue = parseInt(quantity);
@@ -3193,47 +3203,47 @@
       return $(this).closest('.product-item').find(".product-item__quick-form [type='hidden'][name='quantity']");
     }
     connectedCallback() {
+      this.inputElement = this.querySelector('input');
       this.minusElement = this.querySelector('.minus');
       this.quantitySelector = this.querySelector('.quantity-selector__input');
-      this.plusElement = this.querySelector('.plus');
-      const moqValue = Number(this.quantitySelector.getAttribute('data-moq'));
-      const max = $(this).data('max');
+      const moqValue = +this.quantitySelector.getAttribute('data-moq');
+      const mpqValue = +this.quantitySelector.getAttribute('data-mpq');
       this.delegate.on('click', 'button:first-child', () => {
-        $('.max-quantity-waning').hide();
-        if (Number(this.quantitySelector.quantity) <= moqValue) {
+        this.quantitySelector.quantity = this.quantitySelector.quantity - mpqValue;
+        if (this.quantitySelector.quantity < moqValue) {
+          this.quantitySelector.quantity = mpqValue;
           this.minusElement.disabled = true; // 设置为禁用状态
-        } else {
-          this.quantitySelector.quantity = this.quantitySelector.quantity - 1;
-          this.minusElement.disabled = false;
         }
         this.$hiddenQuantity.val(this.quantitySelector.quantity);
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
       });
       this.delegate.on('click', 'button:last-child', () => {
-        this.quantitySelector.quantity = this.quantitySelector.quantity + 1;
-        if (Number(this.quantitySelector.quantity) > moqValue) {
-          this.minusElement.disabled = false; // 设置为禁用状态
-        }
+        this.quantitySelector.quantity = this.quantitySelector.quantity + mpqValue;
+        this.maxQuantityWarning();
+        this.minusElement.disabled = false; // 解禁
         this.$hiddenQuantity.val(this.quantitySelector.quantity);
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
       });
-      this.quantitySelector.addEventListener('input', () => {
-        $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity );
+      this.addEventListener('quantityChanged', ({detail: {quantity}}) => {
+        event.stopPropagation();
+        $(this.quantitySelector).attr('data-demand', quantity);
+        $(this).closest('.product-item__info').find("input[name='quantity']").val(quantity);
       });
       this.quantitySelector.addEventListener('change', () => {
-        let quantity = Number(this.quantitySelector.value);
-        if (quantity < moqValue) {
-          quantity = moqValue;
-          this.minusElement.disabled = true;
-        } else if (max && quantity > max) {
-          quantity = max;
-        } else {
-          this.minusElement.disabled = false;
-        }
-        this.quantitySelector.value = this.quantitySelector.quantity = quantity;
-        $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity );
-        $(this).closest('.product-item__info').find("input[name='quantity']").val(this.quantitySelector.value);
+        this.maxQuantityWarning();
       });
+    }
+    maxQuantityWarning() {
+      const mpqValue = +this.quantitySelector.getAttribute('data-mpq');
+      const max = $(this).data('max');
+      if (max && this.inputElement.quantity > max) {
+        this.inputElement.quantity = Math.floor(max / mpqValue) * mpqValue; // 取整，防止超过最大值
+        $('.max-quantity-waning').show();
+        setTimeout(() => {
+          $('.max-quantity-waning').hide();
+        }, 3000);
+        return;
+      }
     }
   };
   window.customElements.define('product-quantity-selector', ProductQuantitySelector);
@@ -3270,9 +3280,7 @@
 
   var LineInputNumber = class extends HTMLInputElement {
     connectedCallback() {
-      this.addEventListener('input', this._onValueInput.bind(this));
       this.addEventListener('change', this._onValueChanged.bind(this));
-      this.addEventListener('keydown', this._onKeyDown.bind(this));
     }
     get quantity() {
       return parseInt(this.value);
@@ -3289,39 +3297,13 @@
       this.value = Math.max(this.min || 1, Math.min(quantity, this.max || Number.MAX_VALUE)).toString();
       this.size = Math.max(this.value.length + 1, 2);
     }
-    _onValueInput() {
-      this.quantity = this.value;
-      const max = $(this).data('max');
-      if (max && this.value > max) {
-        this.value = this.quantity = max;
-      }
-      const moqValue = Number(this.getAttribute('data-moq'));
-      const isCartInput = this.getAttribute('data-cart');
-      if (isCartInput == 1) {
-        const varId = this.getAttribute('data-varid');
-        const updates = {};
-        updates[varId] = Number(this.value) < moqValue ? moqValue : this.value;
-        cartInput(updates);
-      }
-    }
     _onValueChanged() {
-      const moqValue = Number(this.getAttribute('data-moq'));
-      if (Number(this.value) < moqValue) {
-        this.quantity = moqValue;
+      const moqValue = +this.getAttribute('data-moq'); //最小起购量
+      const mpqValue = +this.getAttribute('data-mpq'); //最小包装量
+      if(this.quantity < moqValue) {
+        this.quantity = moqValue; 
       }
-      this.value = parseInt(this.value);
-    }
-    _onKeyDown(event) {
-      event.stopPropagation();
-      if (event.key === 'ArrowUp') {
-        this.quantity = this.quantity + 1;
-      } else if (event.key === 'ArrowDown') {
-        this.quantity = this.quantity - 1;
-        const moqValue = Number(this.getAttribute('data-moq'));
-        if (Number(this.quantity) < moqValue) {
-          this.quantity = moqValue;
-        }
-      }
+      this.quantity = Math.ceil((this.quantity - moqValue) / mpqValue) * mpqValue + moqValue; // 取整
     }
   };
   window.customElements.define('line-input-number', LineInputNumber, { extends: 'input' });
@@ -3330,7 +3312,6 @@
     connectedCallback() {
       this.addEventListener('input', this._onValueInput.bind(this));
       this.addEventListener('change', this._onValueChanged.bind(this));
-      this.addEventListener('keydown', this._onKeyDown.bind(this));
     }
     get quantity() {
       return parseInt(this.value);
@@ -3348,40 +3329,40 @@
       this.size = Math.max(this.value.length + 1, 2);
     }
     _onValueInput() {
-      this.quantity = this.value;
-      const max = $(this).data('max');
-      if (max) {
-        if (this.value > max) {
-          this.value = this.quantity = max;
-          $('.max-quantity-waning').show();
-          setTimeout(() => {
-            $('.max-quantity-waning').hide();
-          }, 3000);
-        } else {
-          $('.max-quantity-waning').hide();
-        }
-      }
       this.highlightPriceRange(this.quantity);
-      const moqValue = Number(this.getAttribute('data-moq'));
-      const isCartInput = this.getAttribute('data-cart');
-      if (isCartInput == 1) {
-        const varId = this.getAttribute('data-varid');
-        const updates = {};
-        updates[varId] = Number(this.value) < moqValue ? moqValue : this.value;
-        cartInput(updates);
-      }
     }
-    _onValueChanged() {
-      const moqValue = Number(this.getAttribute('data-moq'));
-      if (Number(this.value) <= moqValue) {
-        this.quantity = moqValue;
+    _onValueChanged() {  // this.value 控制输入框的值
+      const moqValue = +this.getAttribute('data-moq'); //最小起购量
+      const mpqValue = +this.getAttribute('data-mpq'); //最小包装量
+      /*在这里添加moq和mpq的逻辑 -start */
+      if(this.quantity < moqValue) {
+        this.quantity = moqValue; 
+      }
+      this.quantity = Math.ceil((this.quantity - moqValue) / mpqValue) * mpqValue + moqValue; // 取整
+      /*在这里添加moq和mqo的逻辑 -end */
+
+      this.dispatchEvent(new CustomEvent('quantityChanged', { // 库存标签的值的变化
+        bubbles: true,
+        detail: {
+          quantity: this.value,
+        },
+       }));
+
+      if (quantity == moqValue) { // 非购物车的css显示，不用管
         $(this).prev().attr('disabled', true);
-        this.highlightPriceRange(this.quantity);
       } else {
         $(this).prev().attr('disabled', false);
       }
-      let discountJson = this.getAttribute('data-discount');
-      const quantity = this.quantity;
+
+      const isCartInput = this.getAttribute('data-cart'); // 购物车的数量更新值，不用管，由this.value控制
+      if (isCartInput == 1) {
+        const varId = this.getAttribute('data-varid');
+        const updates = {};
+        updates[varId] = this.value;
+        cartInput(updates);
+      }
+
+      let discountJson = this.getAttribute('data-discount');  //算非购物车，产品详情页价格，不用管
       let basePrice = this.getAttribute('data-price');
       if (basePrice) {
         basePrice = parseFloat(basePrice.replace(/,/g, ''));
@@ -3389,20 +3370,6 @@
         $('.cus-product .subtotal .computed_price').text(`${finalPrice}`);
         $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
       }
-      this.value = parseInt(this.value);
-    }
-    _onKeyDown(event) {
-      event.stopPropagation();
-      if (event.key === 'ArrowUp') {
-        this.quantity = this.quantity + 1;
-      } else if (event.key === 'ArrowDown') {
-        this.quantity = this.quantity - 1;
-        const moqValue = Number(this.getAttribute('data-moq'));
-        if (Number(this.quantity) < moqValue) {
-          this.quantity = moqValue;
-        }
-      }
-      this.highlightPriceRange(this.quantity);
     }
     highlightPriceRange(quantity) {
       const inputValue = parseInt(quantity);
@@ -8482,7 +8449,7 @@
       // this.delegate.on('pagination:page-changed', this._rerender.bind(this));
       this.delegate.on('facet:criteria-changed', this._rerender.bind(this));
       this.delegate.on('facet:abort-loading', this._abort.bind(this));
-      document.dispatchEvent(new CustomEvent('facet-rerender'));
+      // document.dispatchEvent(new CustomEvent('facet-rerender'));
     }
     
     async _rerender(event) {

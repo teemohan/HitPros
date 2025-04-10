@@ -99,7 +99,7 @@
     }
 </style>
 {{ 'index-product-item.css' | asset_url | stylesheet_tag }}
-<div class="container">
+<div class="container {{ section.id }}">
     <h2 class="head_title">{{ section.settings.title }}</h2>
     <div class="head_content hidden-phone">{{ section.settings.content }}</div>
     <div class="head_content hidden-tablet-and-up">{{ section.settings.content | strip_html }}</div>
@@ -111,10 +111,35 @@
     <a href="{{ section.settings.all_link }}" class="View_All">View All</a>
 </div>
 <script>
-    // $(`#shopify-section-{{ section.id }} .View_All`).click(function(){
-    //     $(this).css('display','none');
-    //     $(`#shopify-section-{{ section.id }} .index-product-item:not(:nth-child(-n+4))`).css('display','block');
-    // })
+  (() => {
+    const setWish = async () => {
+      const skus = [];
+      $('.{{ section.id }} .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        skus.push(sku);
+      })
+      const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
+        method: 'POST',
+        body: JSON.stringify({
+          customerId: '{{ customer.id}}',
+          skus
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      const res = await response.json();
+      $('.{{ section.id }} .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        if(res.data.includes(sku)) {
+          $(this).find('.favorite-button').addClass('favorited')
+        }
+      })
+    }
+    if('{{ customer.id }}') {
+      setWish()
+    }
+  })();
 </script>
 {% schema %}
 {

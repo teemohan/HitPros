@@ -742,10 +742,10 @@
                                 name="quantity"
                                 autocomplete="off"
                                 data-input-varid="{{ product.selected_or_first_available_variant.id }}"
-                                data-max="{% if product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
                                 data-price="{{ product.price | money_without_currency }}"
                                 data-demand="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
                                 data-moq="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+                                data-mpq="{% if product.metafields.product.mpq != blank %}{{ product.metafields.product.mpq }}{% else %}1{% endif %}"
                                 {% if product.metafields.product.quantity_discount != blank %}
                                   data-discount="{{- product.metafields.product.quantity_discount | replace: '"', "'" -}}"
                                 {% else %}

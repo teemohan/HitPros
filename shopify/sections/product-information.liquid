@@ -23,6 +23,8 @@
           {% render 'icon' with 'olympia-brand' %}
         {% elsif product.metafields.product.brand.value == 'NorthSky Select' %}
           {% render 'icon' with 'north-select-brand' %}
+        {% elsif product.metafields.product.brand.value == 'WD-40' %}
+          {% render 'icon' with 'wd-40' %}
         {% endif %}
         <div class="product-info-line general-information">
           <ul class="info-table">
