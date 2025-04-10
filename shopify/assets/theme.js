@@ -6916,7 +6916,7 @@
             } else {
               window.vue_message.$message({
                 showClose: true,
-                message: res.msg,
+                message: `Oops! We don't currently have it. Please check out other available options.`,
                 type: 'warning',
               });
               _this.updatedAttrs.map((item) => {
