@@ -52,7 +52,8 @@
 .product-information-wrapper aside svg {
   border-radius: 2px;
   margin-bottom: 8px;
-  width: 200px;
+  height: 60px;
+  width: auto;
   padding-left: 16px;
 }
 .product-information-wrapper main {
