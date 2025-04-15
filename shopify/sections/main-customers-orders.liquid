@@ -258,6 +258,10 @@
 </section>
 <script>
   (() => {
+    if('{{ customer.email }}' == '') {
+      window.location.href = '/account/login';
+      return;
+    }
     function formatMoney(cents, format = '') {
       if (typeof cents === 'string') {
         cents = cents.replace('.', '');
