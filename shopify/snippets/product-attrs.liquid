@@ -28,15 +28,25 @@
     justify-content: center;
     align-items: center;
     border-radius: 2px;
-    color: #999999;
-    border: 1px solid #CCCCCC;
+    color: #1c406a;
+    border: 1px solid #0e255d;
+    background-color: #f0f7fb;
   }
-  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn:hover,
+
   .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn.selected {
-    border: 1px solid var(--my-blue);
-    color: var(--my-black);
+    border: 1px solid #cbd9ee;
+    color: white;
     font-weight: 500;
-    background-color: #F4F8FC;
+    background-color: #002b58;
+  }
+  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn[disabled] {
+    background-color: #f0f7fb;
+    border: 1px solid #cbd9ee;
+    color: #cbd9ee;
+  }
+  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn[disabled],
+  .btn-wishlist[disabled], .btn-wishlist[disabled] .ti-heart{
+    cursor: not-allowed!important;
   }
   @media screen and (max-width: 999px) {
     .product-attrs-wrapper .product-attrs .attr-line .attr-name-header {
