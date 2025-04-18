@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "seo_h1_title_qCmj7Q": {
@@ -21,7 +30,7 @@
       "type": "new-arrivals-list",
       "settings": {
         "title": "New Arrivals",
-        "text": "<p>At NorthSky, we’re constantly expanding our catalogue to meet your need for high-<br\/>quality products at a low price. Explore our latest offerings below.<\/p>",
+        "text": "<p>At NorthSky, we’re constantly expanding our catalogue to meet your need for high-<br/>quality products at a low price. Explore our latest offerings below.</p>",
         "collection": "new-tag"
       }
     }
