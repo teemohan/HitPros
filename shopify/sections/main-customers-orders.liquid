@@ -175,12 +175,20 @@
         </div>
         <div class="order-action">
           <el-button type="primary" :loading="loading" @click="handleBuyAgain">Buy Again</el-button>
-          <a
-            v-if="!order.cancelled_at && !cancelled"
-            target="_blank"
-             :href="`${ pixiUrl }/${ order.id }`"
-            >Invoice/Receipt
-          </a>
+          <template v-if="!order.cancelled_at && !cancelled">
+            <a
+              v-if="order.payment_terms?.payment_terms_type == 'net'"
+              target="_blank"
+              :href="`${ pixiNetUrl }/${ order.id }`"
+              >Invoice/Receipt
+            </a>
+            <a
+              v-else
+              target="_blank"
+              :href="`${ pixiUrl }/${ order.id }`"
+              >Invoice/Receipt
+            </a>
+          </template>
         </div>
       </div>
       <div>
@@ -323,6 +331,7 @@
       data() {
         return {
           pixiUrl: window.zkh.pixi_url,
+          pixiNetUrl: window.zkh.pixi_net_url,
           dialogVisibleCancel: false,
           showMoreDetail: true, // 订单详情的
           showMoreRefund: false, // 退款的
