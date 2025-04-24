@@ -6842,25 +6842,57 @@
   //详情start
   var ProductAttrs = class extends CustomHTMLElement {
     async connectedCallback() {
-      const {
-        selectionAttrs,
-        spu,
-        sku: { description, weightDimensions, specifications, complianceCertificate, detailImages },
-      } = await this.getProductAttrs();
-      this.spu = spu;
-      triggerEvent(this, 'build-product-overview', { description });
-      if (
-        selectionAttrs.find((item) => item.attrName == 'match') ||
-        selectionAttrs.length == 0 ||
-        (selectionAttrs.length == 1 && selectionAttrs[0].values.length <= 1)
-      ) {
+      try {
+        const productData = await this.getProductAttrs();
+        if (!productData || !productData.selectionAttrs) {
+          $('.product-attrs-wrapper').hide();
+          return;
+        }
+        const {
+          selectionAttrs,
+          spu,
+          availableAttrs = [],
+          sku: { description, weightDimensions, specifications, complianceCertificate, detailImages },
+        } = productData;
+        this.spu = spu;
+        this.selectionAttrs = selectionAttrs;
+        this.availableAttrs = availableAttrs;
+        this.processAvailableCombinations();
+        triggerEvent(this, 'build-product-overview', { description });
+        this.initializeProductAttributes(selectionAttrs);
+        this.initializeProductInformation({
+          weightDimensions,
+          specifications,
+          complianceCertificate,
+          detailImages
+        });
+      } catch (error) {
+        console.error('初始化产品属性时出错:', error);
+        this.handleError();
+      }
+    }
+    // 初始化产品属性
+    initializeProductAttributes(selectionAttrs) {
+      if (this.shouldHideAttributeSelector(selectionAttrs)) {
         $('.product-attrs-wrapper').hide();
       } else {
         $('.product-attrs-wrapper').show();
         const attrJsonMap = this.handleJsonMap();
         this.updatedAttrs = this.updatedJsonMap(selectionAttrs, attrJsonMap);
         this.buildAttrLine();
+        this.updateAttributeAvailability();
       }
+    }
+    // 判断是否应该隐藏属性选择器
+    shouldHideAttributeSelector(selectionAttrs) {
+      return (
+        selectionAttrs.find((item) => item.attrName === 'match') ||
+        selectionAttrs.length === 0 ||
+        (selectionAttrs.length === 1 && selectionAttrs[0].values.length <= 1)
+      );
+    }
+    // 初始化产品信息
+    initializeProductInformation({ weightDimensions, specifications, complianceCertificate, detailImages }) {
       try {
         triggerEvent(this, 'build-product-information', {
           weightDimensions,
@@ -6868,180 +6900,298 @@
           complianceCertificate,
         });
         $('.product-information-wrapper').css('visibility', 'visible');
-        triggerEvent(this, 'build-product-media', {
-          detailImages,
-        });
+        triggerEvent(this, 'build-product-media', { detailImages });
       } catch (error) {
-        console.log(error);
+        console.error('初始化产品信息时出错:', error);
       }
+    }
+    handleError() {
+      $('.product-attrs-wrapper').hide();
+      $('.product-information-wrapper').css('visibility', 'hidden');
+    }
+    processAvailableCombinations() {
+      this.availableCombinations = new Set();
+      this.skuCodeMap = new Map(); // 新增 skuCode 映射
+      if (!this.availableAttrs || this.availableAttrs.length === 0) return;
+      const attrNameOrder = this.selectionAttrs.map(attr => attr.attrName);
+      this.availableAttrs.forEach(variant => {
+        if (variant.attrs && variant.attrs.length === attrNameOrder.length) {
+          const comboKey = variant.attrs.join('|');
+          this.availableCombinations.add(comboKey);
+          // 保存组合与 skuCode 的映射关系
+          if (variant.skuCode) {
+            this.skuCodeMap.set(comboKey, variant.skuCode);
+          }
+        }
+      });
+      console.log("skuCodeMap", this.skuCodeMap )
+    }
+    // 获取当前选中的属性值数组
+    getCurrentSelectionArray() {
+      const selectionMap = new Map();
+      this.updatedAttrs.forEach(attr => {
+        const selected = attr.values.find(v => v.isSelected);
+        if (selected) {
+          selectionMap.set(attr.attrName, selected.value);
+        }
+      });
+      return this.selectionAttrs.map(attr => selectionMap.get(attr.attrName));
+    }
+    // 更新属性按钮的可用状态
+    updateAttributeAvailability() {
+      if (!this.availableCombinations || this.availableCombinations.size === 0) {
+        this.enableAllButtons();
+        return;
+      }
+      const currentSelection = this.getCurrentSelectionArray();
+      const firstCategorySelected = currentSelection[0] !== undefined;
+      if (!firstCategorySelected) {
+        this.enableAllButtons();
+        this.disableActions();
+        return;
+      }
+      this.updateSecondCategoryAvailability(currentSelection);
+      this.checkAndUpdateActions();
+    }
+    enableAllButtons() {
+      $(this).find('.attr-btn').prop('disabled', false);
+    }
+    updateSecondCategoryAvailability(currentSelection) { // 更新第二个分类的可用状态
+      if (this.selectionAttrs.length <= 1) return;
+      const secondCategoryLine = $(this).find(`.attr-line[data-attr="${this.selectionAttrs[1].attrName}"]`);
+      secondCategoryLine.find('.attr-btn').each((btnIndex, btn) => {
+        const btnValue = $(btn).data('attr-value');
+        const isAvailable = this.isSecondCategoryValueAvailable(currentSelection[0], btnValue);
+        if (isAvailable) {
+          $(btn).prop('disabled', false);
+        } else {
+          $(btn).prop('disabled', true);
+          this.clearSelectionIfDisabled(btn, secondCategoryLine);
+        }
+      });
+    }
+    // 检查第二个分类的值是否可用
+    isSecondCategoryValueAvailable(firstCategoryValue, secondCategoryValue) {
+      for (const combo of this.availableCombinations) {
+        const [first, second] = combo.split('|');
+        if (first === firstCategoryValue && second === secondCategoryValue) {
+          return true;
+        }
+      }
+      return false;
+    }
+    clearSelectionIfDisabled(btn, categoryLine) { // 如果禁用的按钮是已选中状态，则清除选择
+      if ($(btn).hasClass('selected')) {
+        $(btn).removeClass('selected');
+        this.updatedAttrs = this.updatedAttrs.map(item => {
+          if (item.attrName === this.selectionAttrs[1].attrName) {
+            item.values = item.values.map(valueItem => ({
+              ...valueItem,
+              isSelected: false
+            }));
+            categoryLine.find('.attr-value').text('');
+          }
+          return item;
+        });
+      }
+    }
+    // 检查并更新操作按钮状态
+    checkAndUpdateActions() {
+      const currentSelection = this.getCurrentSelectionArray();
+      const requiredSelections = Math.min(2, this.selectionAttrs.length);
+      const selectedCount = currentSelection.filter(val => val !== undefined).length;
+      
+      if (selectedCount >= requiredSelections && this.isValidCombination(currentSelection, requiredSelections)) {
+        this.enableActions();
+      } else {
+        this.disableActions();
+      }
+    }
+    // 检查是否是有效组合
+    isValidCombination(currentSelection, requiredSelections) {
+      const selectionString = currentSelection.slice(0, requiredSelections).join('|');
+      for (const combo of this.availableCombinations) {
+        if (combo.startsWith(selectionString)) {
+          return true;
+        }
+      }
+      return false;
+    }
+    disableActions() {  // 禁用操作按钮
+      $('.cus-product .shopify-product-form .product-form__add-button')
+        .addClass('disabled')
+        .prop('disabled', true);
+      $('.cus-product .buy-bottom-box .ships .form button').prop('disabled', true);
+      $('.cus-product .buy-bottom-box .ships .form .input-container input').prop('disabled', true);
+      $('.cus-product .btn-wishlist').prop('disabled', true);
+    }
+    enableActions() { // 启用操作按钮
+      $('.cus-product .shopify-product-form .product-form__add-button')
+        .removeClass('disabled')
+        .prop('disabled', false);
+      $('.cus-product .buy-bottom-box .ships .form button').prop('disabled', false);
+      $('.cus-product .buy-bottom-box .ships .form .input-container input').prop('disabled', false);
+      $('.cus-product .btn-wishlist').prop('disabled', false);
     }
     async initAttrBtnEvent() {
       const _this = this;
       $(this)
         .find('.attr-btn')
-        .click(async function () {
-          if ($(this).hasClass('selected')) return;
+        .off('click')
+        .on('click', async function() {
+          // 如果按钮已禁用，直接返回
+          if ($(this).hasClass('disabled') || $(this).prop('disabled')) {
+            return;
+          }
+          // 如果按钮已经被选中，直接返回，不执行任何操作
+          if ($(this).hasClass('selected')) {
+            return;
+          }
           const attrName = $(this).closest('.attr-line').data('attr');
           const attrValue = $(this).data('attr-value');
-          $(this).addClass('selected').siblings().removeClass('selected'); // 改样式
-          _this.updatedAttrs.map((item) => {
-            if (item.attrName == attrName) {
-              item.values.map((valueItem) => {
-                if (valueItem.value == attrValue) {
-                  valueItem.isSelected = true;
-                } else {
-                  valueItem.isSelected = false;
-                }
-              });
-            }
-          });
-          try {
-            const formData = {
-              spu: _this.spu,
-              attrs: _this.updatedAttrs.map((attrItem) => ({
-                attrName: attrItem.attrName,
-                value: attrItem.values.find((valueItem) => valueItem.isSelected).value,
-              })),
-            };
-            const response = await fetch(`${window.zkh.api}/product/select-attrs`, {
-              method: 'POST',
-              body: JSON.stringify(formData),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            });
-            const res = await response.json();
-            if (res.code == 200) {
-              window.location.href = res.data.handle;
+          _this.handleSelection(this, attrName, attrValue);
+          if (_this.shouldAttemptNavigation()) {
+            if (_this.currentSkuCode) { // 如果有 skuCode
+              window.location.href = `/products/${_this.currentSkuCode}`;
             } else {
-              window.vue_message.$message({
-                showClose: true,
-                message: `Oops! We don't currently have it. Please check out other available options.`,
-                type: 'warning',
-              });
-              _this.updatedAttrs.map((item) => {
-                if (item.attrName !== attrName && item.values.length !== 1) {
-                  item.values.map((valueItem) => {
-                    valueItem.isSelected = false;
-                  });
-                }
-              });
-              $('.attr-btn').not(this).removeClass('selected');
-              // 给当前点击的元素添加 'selected' 类
-              $(this).addClass('selected');
-              $('.cus-product .shopify-product-form .product-form__add-button')
-                .addClass('disabled')
-                .prop('disabled', true);
-              $('.cus-product .buy-bottom-box .ships .form button').prop('disabled', true);
-              $('.cus-product .buy-bottom-box .ships .form .input-container input').prop('disabled', true);
-              $('.cus-product .btn-wishlist').prop('disabled', true);
+              _this.showProductUnavailableMessage();
+              _this.disableActions();
             }
-          } catch (error) {}
+          }
         });
     }
-    async getProductDetailInfo() {
-      const formData = {
-        spu: this.spu,
-        attrs: this.updatedAttrs.map((attrItem) => ({
-          attrName: attrItem.attrName,
-          value: attrItem.values.find((valueItem) => valueItem.isSelected).value.trim(),
-        })),
-      };
-      try {
-        const response = await fetch(`${window.zkh.api}/product/select-attrs`, {
-          method: 'POST',
-          body: JSON.stringify(formData),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        const { data } = await response.json();
-        return data;
-      } catch (error) {
-        console.error(error);
+    handleSelection(button, attrName, attrValue) {
+      $(button).addClass('selected').siblings().removeClass('selected');
+      this.updatedAttrs = this.updatedAttrs.map(item => {
+        if (item.attrName === attrName) {
+          $(button).closest('.attr-line').find('.attr-value').text(attrValue);
+          item.values = item.values.map(valueItem => ({
+            ...valueItem,
+            isSelected: valueItem.value === attrValue
+          }));
+        }
+        return item;
+      });
+      this.updateAttributeAvailability();
+    }
+    shouldAttemptNavigation() { // 判断是否有组合
+      const currentSelection = this.getCurrentSelectionArray();
+      const requiredSelections = Math.min(2, this.selectionAttrs.length);
+      const selectedCount = currentSelection.filter(val => val !== undefined).length;
+      if (selectedCount >= requiredSelections) {
+        const selectionKey = currentSelection.slice(0, requiredSelections).join('|');   // 获取当前选择的组合键
+        this.currentSkuCode = this.getSkuCodeForSelection(selectionKey);   // 检查是否有对应的 skuCode
+        return this.isValidCombination(currentSelection, requiredSelections);
       }
+      return false;
     }
-    handleFakeObj(fakeObj) {
+    getSkuCodeForSelection(selectionKey) {
+      if (!this.skuCodeMap) return null;
+      if (this.skuCodeMap.has(selectionKey)) {
+        return this.skuCodeMap.get(selectionKey);
+      }
+      for (const [combo, skuCode] of this.skuCodeMap.entries()) {
+        if (combo.startsWith(selectionKey)) {
+          return skuCode;
+        }
+      }
+      return null;
+    }
+    // 显示产品不可用消息
+    showProductUnavailableMessage() {
+      window.vue_message.$message({
+        showClose: true,
+        message: `Oops! We don't currently have it. Please check out other available options.`,
+        type: 'warning',
+      });
+    }
+    handleFakeObj(fakeObj) {  // 处理对象转Map
+      if (!fakeObj) return new Map();
       const map = new Map();
-      Object.keys(fakeObj).forEach((key) => {
+      Object.keys(fakeObj).forEach(key => {
         map.set(key, fakeObj[key]);
       });
       return map;
     }
     buildAttrLine() {
-      const $attributesContainer = $('.product-attrs-wrapper .product-attrs');
-      this.updatedAttrs.forEach((item) => {
+      const container = $('.product-attrs-wrapper .product-attrs');
+      container.empty();
+      this.updatedAttrs.forEach(item => {
         if (item.values.length <= 1) return;
-        const $attrLine = $('<div>', { class: 'attr-line', 'data-attr': item.attrName });
-        const $attrNameHeader = $('<div>', { class: 'attr-name-header' });
-        const $attrName = $('<span>', { class: 'attr-name', text: `${item.attrName}: ` });
-        const selectedValue = item.values.find((value) => value.isSelected);
-        const $attrValue = $('<span>', { class: 'attr-value', text: selectedValue ? selectedValue.value : '' });
-        $attrNameHeader.append($attrName).append($attrValue);
-        $attrLine.append($attrNameHeader);
-        const $attrsWrapper = $('<div>', { class: 'attrs-wrapper' });
-        item.values.forEach((value) => {
-          const $attrBtn = $('<button>', {
-            class: `attr-btn ${value.isSelected ? 'selected' : ''}`,
-            text: value.value,
-            'data-attr-value': value.value,
-          });
-          $attrsWrapper.append($attrBtn);
+        const selectedValue = item.values.find(value => value.isSelected);
+        const attrLine = $(`
+          <div class="attr-line" data-attr="${item.attrName}">
+            <div class="attr-name-header">
+              <span class="attr-name">${item.attrName}: </span>
+              <span class="attr-value">${selectedValue ? selectedValue.value : ''}</span>
+            </div>
+            <div class="attrs-wrapper"></div>
+          </div>
+        `);
+        const attrsWrapper = attrLine.find('.attrs-wrapper');
+        item.values.forEach(value => {
+          const attrBtn = $(`
+            <button class="attr-btn ${value.isSelected ? 'selected' : ''}" 
+              data-attr-value="${value.value}">${value.value}</button>
+          `);
+          attrsWrapper.append(attrBtn);
         });
-        $attrLine.append($attrsWrapper);
-        $attributesContainer.append($attrLine);
+        container.append(attrLine);
       });
       this.initAttrBtnEvent();
     }
-    updatedJsonMap(selectionAttrs, attrJsonMap) {
+    updatedJsonMap(selectionAttrs, attrJsonMap) { // 更新JSON映射
       return selectionAttrs
-        .map((item) => {
-          if (attrJsonMap.has(item.attrName)) {
-            const selectedValue = attrJsonMap.get(item.attrName);
-            const updatedValues = item.values.map((value) => {
-              return { value, isSelected: value === selectedValue };
-            });
-            return { ...item, values: updatedValues };
-          } else {
-            const updatedValues = item.values.map((value) => {
-              return { value, isSelected: false };
-            });
-            return { ...item, values: updatedValues };
-          }
+        .map(item => {
+          const values = item.values.map(value => {
+            const isSelected = attrJsonMap.has(item.attrName) &&  value === attrJsonMap.get(item.attrName);
+            return { value, isSelected };
+          });
+          return { ...item, values };
         })
-        .filter((item) => item.values.length > 0);
+        .filter(item => item.values.length > 0);
     }
-    handleJsonMap() {
-      const salesFakeJson = $(this).data('sales'); // 销售属性
-      const commonFakeJson = $(this).data('common'); // 公共属性
+    handleJsonMap() { // 处理JSON映射
+      const salesFakeJson = $(this).data('sales') || {};
+      const commonFakeJson = $(this).data('common') || {};
       const salesMap = this.handleFakeObj(salesFakeJson);
       const commonMap = this.handleFakeObj(commonFakeJson);
-      const mergedMap = new Map([...salesMap, ...commonMap]);
-      return mergedMap;
+      return new Map([...salesMap, ...commonMap]);
     }
-    async getProductAttrs() {
+    async getProductAttrs() { // 获取产品属性
       try {
         const response = await fetch(`${window.zkh.api}/spu/selection-attrs?sku=${this.sku}`);
         const res = await response.json();
-        if (res.code != 200) {
-          window.vue_message.$message({
-            showClose: true,
-            message: res.msg,
-            type: 'warning',
-          });
-          $('.product-overview .product-desc').hide();
-          $('.product-attrs-wrapper').hide();
-          $('.product-information .product-info-line.weight-dimensions').hide();
-          $('.product-information .product-info-line.specifications').hide();
-          $('.product-information .product-info-line.compliance-certificates').hide();
-          $('.product-media-detail-wrapper').hide();
-          return {};
+        if (res.code !== 200) {
+          this.showApiErrorMessage(res.msg);
+          this.hideProductElements();
+          return null;
         }
         return res.data;
       } catch (err) {
-        console.error(err);
+        this.showApiErrorMessage("Failed to get product information, please try again later");
+        this.hideProductElements();
+        return null;
       }
     }
+    // 显示API错误消息
+    showApiErrorMessage(message) {
+      window.vue_message.$message({
+        showClose: true,
+        message,
+        type: 'warning',
+      });
+    }
+    // 隐藏产品元素
+    hideProductElements() {
+      $('.product-overview .product-desc').hide();
+      $('.product-attrs-wrapper').hide();
+      $('.product-information .product-info-line.weight-dimensions').hide();
+      $('.product-information .product-info-line.specifications').hide();
+      $('.product-information .product-info-line.compliance-certificates').hide();
+      $('.product-media-detail-wrapper').hide();
+    }
+    // 获取SKU
     get sku() {
       return $(this).data('sku');
     }

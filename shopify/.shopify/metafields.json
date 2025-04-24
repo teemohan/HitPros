@@ -1,9 +1,29 @@
 {
   "article": [],
   "blog": [],
-  "brand": [],
   "collection": [],
-  "company": [],
+  "company": [
+    {
+      "key": "credit_limit",
+      "namespace": "b2b",
+      "name": "Credit limit",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "credit_limit_remaining",
+      "namespace": "b2b",
+      "name": "cost",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    }
+  ],
   "company_location": [],
   "location": [],
   "market": [],
