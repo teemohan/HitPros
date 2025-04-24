@@ -592,7 +592,10 @@
       try {
         const response = await fetch(`${window.zkh.api}/openapi/adlink/delivery-calculation/batch`, {
           method: 'POST',
-          body: JSON.stringify(deliveryParams),
+          body: JSON.stringify({
+            checkoutToken: null,
+            deliveryCalculationParam: deliveryParams
+          }),
           headers:{
             'Content-Type':'application/json',
           }
