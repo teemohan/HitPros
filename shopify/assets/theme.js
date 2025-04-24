@@ -6924,7 +6924,6 @@
           }
         }
       });
-      console.log("skuCodeMap", this.skuCodeMap )
     }
     // 获取当前选中的属性值数组
     getCurrentSelectionArray() {
