@@ -9,9 +9,12 @@
     {{- rule -}}
   {% endfor %}
 
-  {{ 'Disallow: */doc-sp.northskysupply.com/web/' }}
+  
 
   {%- if group.sitemap != blank -%}
     {{ group.sitemap }}
   {%- endif -%}
 {% endfor %}
+
+
+{{ 'Disallow: */doc-sp.northskysupply.com/*' }}
