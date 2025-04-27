@@ -6973,7 +6973,7 @@
     isSecondCategoryValueAvailable(firstCategoryValue, secondCategoryValue) {
       for (const combo of this.availableCombinations) {
         const [first, second] = combo.split('|');
-        if (first === firstCategoryValue && second === secondCategoryValue) {
+        if (first == firstCategoryValue && second == secondCategoryValue) {
           return true;
         }
       }
@@ -6983,7 +6983,7 @@
       if ($(btn).hasClass('selected')) {
         $(btn).removeClass('selected');
         this.updatedAttrs = this.updatedAttrs.map(item => {
-          if (item.attrName === this.selectionAttrs[1].attrName) {
+          if (item.attrName == this.selectionAttrs[1].attrName) {
             item.values = item.values.map(valueItem => ({
               ...valueItem,
               isSelected: false
@@ -7062,11 +7062,11 @@
     handleSelection(button, attrName, attrValue) {
       $(button).addClass('selected').siblings().removeClass('selected');
       this.updatedAttrs = this.updatedAttrs.map(item => {
-        if (item.attrName === attrName) {
+        if (item.attrName == attrName) {
           $(button).closest('.attr-line').find('.attr-value').text(attrValue);
           item.values = item.values.map(valueItem => ({
             ...valueItem,
-            isSelected: valueItem.value === attrValue
+            isSelected: valueItem.value == attrValue
           }));
         }
         return item;
@@ -7143,7 +7143,7 @@
       return selectionAttrs
         .map(item => {
           const values = item.values.map(value => {
-            const isSelected = attrJsonMap.has(item.attrName) &&  value === attrJsonMap.get(item.attrName);
+            const isSelected = attrJsonMap.has(item.attrName) &&  value == attrJsonMap.get(item.attrName);
             return { value, isSelected };
           });
           return { ...item, values };
