@@ -9,7 +9,7 @@
   class="product-recommendations product-x-hidde {{ section.id }}"
   data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{section.settings.recommendations_count}}"
 >
-  <div class="container">
+  <div class="container cl-container">
     {%- if recommendations.performed and recommendations.products_count > 0 -%}
       <div class="index-cus-header">
         <h2>{{ section.settings.title }}</h2>

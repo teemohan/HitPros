@@ -1724,7 +1724,7 @@ a.breadcrumb__link:hover {
    {
     overflow: hidden; 
   }
-  .product-x-hidde{
+  .product-x-hidde .cl-container{
     width: 100%;
     overflow-x:hidden;
   }
