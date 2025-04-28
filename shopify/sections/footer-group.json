@@ -31,7 +31,7 @@
         "links_Qm48ep": {
           "type": "links",
           "settings": {
-            "menu": "support"
+            "menu": "my-account"
           }
         },
         "links_n8Bx9c": {
@@ -54,13 +54,13 @@
         "links_QTzhVf"
       ],
       "settings": {
-        "image": "shopify:\/\/shop_images\/normal.svg",
+        "image": "shopify://shop_images/normal.svg",
         "image_width": 220,
         "m_image_width": 150,
         "footer_desc": "BUILT STRONG, PRICED RIGHT™",
         "contact1": "1-800-805-6686",
         "contact2": "customerservice@northskysupply.com",
-        "copyright_content": "<p>© 2024 NorthSky Supply. All Rights Reserved.<\/p>",
+        "copyright_content": "<p>© 2024 NorthSky Supply. All Rights Reserved.</p>",
         "copyright_content_left": "©",
         "copyright_content_right": "NorthSky Supply. All Rights Reserved.",
         "policy_content": "",
@@ -69,7 +69,7 @@
         "show_locale_selector": true,
         "show_cookie_bar": false,
         "cookie_bar_title": "Cookie policy",
-        "cookie_bar_content": "<p>I agree to the processing of my data in accordance with the conditions set out in the policy of Privacy.<\/p>"
+        "cookie_bar_content": "<p>I agree to the processing of my data in accordance with the conditions set out in the policy of Privacy.</p>"
       }
     }
   },

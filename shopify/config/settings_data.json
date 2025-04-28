@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "button_border_radius": 0,
@@ -27,8 +36,8 @@
     "currency_code_enabled": false,
     "stagger_products_apparition": true,
     "round_color_swatches": false,
-    "ships1": "<p>Ships in 1~2 business day<\/p>",
-    "ships2": "<p>Ships in<strong> <\/strong>35~65 business day<\/p>",
+    "ships1": "<p>Ships in 1~2 business day</p>",
+    "ships2": "<p>Ships in<strong> </strong>35~65 business day</p>",
     "show_vendor": true,
     "show_secondary_image": false,
     "product_add_to_cart": true,
@@ -43,14 +52,14 @@
     "cart_type": "drawer",
     "cart_icon": "shopping_bag",
     "cart_show_free_shipping_threshold": false,
-    "social_facebook": "https:\/\/www.facebook.com\/northsky",
+    "social_facebook": "https://www.facebook.com/northsky",
     "social_twitter": "",
     "social_pinterest": "",
-    "social_instagram": "https:\/\/www.instagram.com\/northskysupply\/",
-    "social_youtube": "https:\/\/www.youtube.com\/@NorthskySupply",
-    "social_linkedin": "https:\/\/www.linkedin.com\/company\/northskysupply\/",
-    "favicon": "shopify:\/\/shop_images\/01.jpg",
-    "ships": "<p>Ships in <strong>1business day<\/strong><\/p>",
+    "social_instagram": "https://www.instagram.com/northskysupply/",
+    "social_youtube": "https://www.youtube.com/@NorthskySupply",
+    "social_linkedin": "https://www.linkedin.com/company/northskysupply/",
+    "favicon": "shopify://shop_images/01.jpg",
+    "ships": "<p>Ships in <strong>1business day</strong></p>",
     "checkout_sidebar_background_color": "#f5f5f5",
     "checkout_accent_color": "#282828",
     "checkout_button_color": "#405de6",
@@ -60,54 +69,61 @@
       "header": {
         "type": "header",
         "blocks": {
-          "menu_list_RYAwcx": {
-            "type": "menu_list",
+          "menu_link_U9ip6g": {
+            "type": "menu_link",
             "settings": {
-              "menu_name": "All Products",
-              "menu_list": "main-menu",
-              "menu_url": ""
+              "title": "Industry Insights",
+              "link_url": "shopify://blogs/industry-insights",
+              "isBrand": false,
+              "new_window": false,
+              "icon": ""
             }
           },
-          "menu_list_mn6Mr7": {
-            "type": "menu_list",
-            "disabled": true,
+          "menu_link_DhWq6Q": {
+            "type": "menu_link",
             "settings": {
-              "menu_name": "Information",
-              "menu_list": "footer",
-              "menu_url": ""
+              "title": "Featured Products",
+              "link_url": "shopify://collections/featured-products",
+              "isBrand": false,
+              "new_window": false,
+              "icon": ""
             }
           },
-          "menu_list_tM93LX": {
-            "type": "menu_list",
+          "menu_link_PUDeUG": {
+            "type": "menu_link",
             "settings": {
-              "menu_name": "Customer Support",
-              "menu_list": "services",
-              "menu_url": ""
+              "title": "Exclusive Brands",
+              "link_url": "",
+              "isBrand": true,
+              "new_window": false,
+              "icon": ""
             }
           },
-          "menu_list_HmaN8y": {
-            "type": "menu_list",
+          "menu_link_x9ijaG": {
+            "type": "menu_link",
             "settings": {
-              "menu_name": "About Us",
-              "menu_list": "",
-              "menu_url": "shopify:\/\/pages\/about-us"
+              "title": "Catalog",
+              "link_url": "",
+              "isBrand": false,
+              "new_window": true,
+              "icon": "<svg width=\"14\" height=\"16\" viewbox=\"0 0 14 16\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g clip-path=\"url(#clip0_1152_418)\">\n<path d=\"M0 9.78754V16H14V9.84614H12.5082V14.4762H1.43443C1.41893 14.4334 1.4918 14.4059 1.4918 14.3883V9.78754H0Z\" fill=\"white\"></path>\n<path d=\"M6.1394 9.72894L3.01235 6.56527L1.95203 7.64835L6.86465 12.6552L11.9092 7.67707C11.9477 7.63311 11.9322 7.60615 11.9092 7.56102C11.7801 7.30491 11.1163 6.84952 10.9304 6.56527L7.63121 9.78755V0H6.22547L6.1394 0.0879121V9.72894Z\" fill=\"white\"></path>\n</g>\n<defs>\n<clippath id=\"clip0_1152_418\">\n<rect width=\"14\" height=\"16\" fill=\"white\" transform=\"matrix(-1 0 0 1 14 0)\"></rect>\n</clippath>\n</defs>\n</svg>"
             }
           }
         },
         "block_order": [
-          "menu_list_RYAwcx",
-          "menu_list_mn6Mr7",
-          "menu_list_tM93LX",
-          "menu_list_HmaN8y"
+          "menu_link_U9ip6g",
+          "menu_link_DhWq6Q",
+          "menu_link_PUDeUG",
+          "menu_link_x9ijaG"
         ],
         "settings": {
-          "catalog": "https:\/\/assets.northskysupply.com\/assets\/pdf\/catalog.pdf",
+          "catalog": "https://assets.northskysupply.com/assets/pdf/catalog.pdf",
           "enable_sticky_header": true,
-          "logo": "shopify:\/\/shop_images\/Northsky_Blue_Icon_1.png",
+          "logo": "shopify://shop_images/Northsky_Blue_Icon_1.png",
           "logo_max_width": 210,
           "mobile_logo_max_width": 165,
           "bulk_text": "",
-          "bulk_link": "shopify:\/\/collections\/frontpage",
+          "bulk_link": "shopify://collections/frontpage",
           "navigation_menu": "main-menu",
           "sidebar_navigation_menu": "",
           "header_layout": "logo_left_navigation_center",
@@ -148,17 +164,17 @@
           "d9666123-bc80-413d-b5e3-47c0e682074a"
         ],
         "settings": {
-          "image": "shopify:\/\/shop_images\/Northsky_Blue_Icon_1_2.png",
+          "image": "shopify://shop_images/Northsky_Blue_Icon_1_2.png",
           "image_width": 230,
           "m_image_width": 150,
-          "copyright_content": "<p>NORTHSKY © 2024. All Rights Reserved<\/p>",
+          "copyright_content": "<p>NORTHSKY © 2024. All Rights Reserved</p>",
           "policy_content": "",
           "show_payment_icons": true,
           "show_country_selector": true,
           "show_locale_selector": true,
           "show_cookie_bar": false,
           "cookie_bar_title": "Cookie policy",
-          "cookie_bar_content": "<p>I agree to the processing of my data in accordance with the conditions set out in the policy of Privacy.<\/p>"
+          "cookie_bar_content": "<p>I agree to the processing of my data in accordance with the conditions set out in the policy of Privacy.</p>"
         }
       },
       "popup": {
@@ -171,7 +187,7 @@
           "show_only_once": true,
           "image_position": "left",
           "title": "Get 10% off",
-          "content": "<p>Promotions, new products and sales. Directly to your inbox.<\/p>"
+          "content": "<p>Promotions, new products and sales. Directly to your inbox.</p>"
         }
       },
       "mini-cart": {
@@ -179,7 +195,7 @@
         "settings": {
           "show_order_note": false,
           "show_checkout_button": true,
-          "empty_button_link": "shopify:\/\/collections\/all",
+          "empty_button_link": "shopify://collections/all",
           "show_recommendations": false,
           "recommendations_title": "You may also like"
         }
@@ -197,7 +213,7 @@
               "icon": "picto-box",
               "custom_icon_width": 50,
               "title": "Free shipping",
-              "content": "<p>Free worldwide shipping and returns - customs and duties taxes included<\/p>"
+              "content": "<p>Free worldwide shipping and returns - customs and duties taxes included</p>"
             }
           },
           "static-text-with-icons-1": {
@@ -206,7 +222,7 @@
               "icon": "picto-phone",
               "custom_icon_width": 50,
               "title": "Customer service",
-              "content": "<p>We are available from monday to friday to answer your questions.<\/p>"
+              "content": "<p>We are available from monday to friday to answer your questions.</p>"
             }
           },
           "static-text-with-icons-2": {
@@ -215,7 +231,7 @@
               "icon": "picto-lock",
               "custom_icon_width": 50,
               "title": "Secure payment",
-              "content": "<p>Your payment information is processed securely.<\/p>"
+              "content": "<p>Your payment information is processed securely.</p>"
             }
           },
           "static-text-with-icons-3": {
@@ -224,7 +240,7 @@
               "icon": "picto-email",
               "custom_icon_width": 50,
               "title": "Contact us",
-              "content": "<p>Need to contact us ? Just send us an e-mail at info@yourstore.com<\/p>"
+              "content": "<p>Need to contact us ? Just send us an e-mail at info@yourstore.com</p>"
             }
           }
         },
@@ -246,7 +262,7 @@
           "show_section": false,
           "reveal_on_scroll": true,
           "subheading": "Stay informed with NorthSky",
-          "content": "<p>Sign up to receive product updates, exclusive deals, and news<\/p>",
+          "content": "<p>Sign up to receive product updates, exclusive deals, and news</p>",
           "text_position": "right",
           "text_alignment": "left",
           "text_background": "rgba(0,0,0,0)",
@@ -262,9 +278,9 @@
       "announcement-bar": {
         "type": "announcement-bar",
         "settings": {
-          "about_url": "shopify:\/\/pages\/about-us",
-          "help_url": "shopify:\/\/pages\/help",
-          "blog_url": "shopify:\/\/blogs\/northsky-insights",
+          "about_url": "shopify://pages/about-us",
+          "help_url": "shopify://pages/help",
+          "blog_url": "shopify://blogs/northsky-insights",
           "phone": "1-800-805-6686",
           "email": "support@northskysupply.com",
           "announcement_bar_position": "non_sticky",
@@ -281,12 +297,12 @@
     "content_for_index": [],
     "blocks": {
       "14634609474538694927": {
-        "type": "shopify:\/\/apps\/ft-frequently-bought-together\/blocks\/widget-embed\/f96a0d1a-35b8-40ef-ad54-1cb7fb011e11",
+        "type": "shopify://apps/ft-frequently-bought-together/blocks/widget-embed/f96a0d1a-35b8-40ef-ad54-1cb7fb011e11",
         "disabled": false,
         "settings": {}
       },
       "13070091535480640111": {
-        "type": "shopify:\/\/apps\/attrac\/blocks\/app-embed\/b783956d-47a9-4434-91ad-4ec960bd74b0",
+        "type": "shopify://apps/attrac/blocks/app-embed/b783956d-47a9-4434-91ad-4ec960bd74b0",
         "disabled": false,
         "settings": {}
       }
