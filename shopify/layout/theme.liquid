@@ -116,8 +116,7 @@
       {% render 'js-variables', direction: direction %}
       {% render 'css-config' %}
       <script src="{{ 'js-cookie.js' | asset_url }}"></script>
-      {% if shop.name == 'TestHitpros' %}
-        <script>
+      <script>
             function decodeHTMLEntities(str) {
               let textarea = document.createElement('textarea');
               textarea.innerHTML = str;
@@ -156,17 +155,6 @@
               })
             }
         </script>
-      {% else %}
-        <script>
-          if('{{ customer.id }}'){
-            Cookies.set('user_id', '{{ customer.id }}');
-            var dataLayer = [];
-            dataLayer.push({
-              'user_id':'{{ customer.id }}'
-            })
-          }
-        </script>
-      {% endif %}
       {%- if shop.name == 'TestHitpros' -%}
         <!-- Google Tag Manager -->
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

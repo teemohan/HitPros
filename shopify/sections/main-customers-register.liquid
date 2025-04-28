@@ -9,8 +9,8 @@
         Do you have an account?<a class="block-url" href="{{ routes.account_login_url }}">Sign In</a>
       </div>
       <div class="register-type-option">
-        <div :class="{active: registerType == 1}" @click="registerType = 1">Personal Account</div>
-        <div :class="{active: registerType == 2}" @click="registerType = 2">Business Account</div>
+        <div :class="{active: registerType == 1}" @click="registerType = '1'">Personal Account</div>
+        <div :class="{active: registerType == 2}" @click="registerType = '2'">Business Account</div>
       </div>
       <el-form
         autocomplete="off"
@@ -418,13 +418,15 @@
         width="auto"
         height="auto"
       >
-      <img
-        class="hidden-tablet-and-up"
-        src="{{ section.settings.mobile_img | image_url }}"
-        alt="{{ section.settings.mobile_img.alt }}"
-        width="auto"
-        height="auto"
-      >
+      {% if section.settings.mobile_img %}
+        <img
+          class="hidden-tablet-and-up"
+          src="{{ section.settings.mobile_img | image_url }}"
+          alt="{{ section.settings.mobile_img.alt }}"
+          width="auto"
+          height="auto"
+        >
+      {% endif %}
     </div>
   </div>
 </section>
