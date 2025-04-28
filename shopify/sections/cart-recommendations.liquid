@@ -43,7 +43,7 @@
         <h2>{{ section.settings.title }}</h2>
         {% render 'swiper-buttons' %}
       </div>
-      <div class="IndexBestswiper hover-list">
+      <div class="IndexBestswiper">
         <div class="swiper">
           <div class="swiper-wrapper">
             {% assign recommendations_products  = recommendations.products | sort: 'tags' %}
@@ -84,21 +84,22 @@
               touchAngle: 70,              
               threshold: 10,
               breakpoints: {
-                0: {
-                  spaceBetween: 12,
+                320: {
+                  // 当屏幕宽度大于等于320
                   slidesPerView: 2,
+                  slidesPerGroup: 2,
+                  spaceBetween: 12,
                 },
-                768: {
-                  spaceBetween: 24,
+                740: {
+                  // 当屏幕宽度大于等于768
                   slidesPerView: 3,
+                  slidesPerGroup: 3,
+                  spaceBetween: 20,
                 },
-                1024: {
-                  spaceBetween: 24,
+                1200: {
+                  // 当屏幕宽度大于等于768
                   slidesPerView: 4,
-                },
-                1280: {
-                  spaceBetween: 24,
-                  slidesPerView: 5,
+                  spaceBetween: 12,
                 },
               },
               scrollbar: {
@@ -124,7 +125,7 @@
 {% schema %}
 {
   "name": "Cart recommendations",
-  "class": "shopify-section--cart-recommendations section-padding featured-product-list product-swiper-list",
+  "class": "shopify-section--cart-recommendations product-swiper-list",
   "settings": [
     {
       "type": "paragraph",
