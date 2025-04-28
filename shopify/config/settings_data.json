@@ -103,7 +103,7 @@
             "type": "menu_link",
             "settings": {
               "title": "Catalog",
-              "link_url": "",
+              "link_url": "https://assets.northskysupply.com/assets/pdf/catalog.pdf",
               "isBrand": false,
               "new_window": true,
               "icon": "<svg width=\"14\" height=\"16\" viewbox=\"0 0 14 16\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g clip-path=\"url(#clip0_1152_418)\">\n<path d=\"M0 9.78754V16H14V9.84614H12.5082V14.4762H1.43443C1.41893 14.4334 1.4918 14.4059 1.4918 14.3883V9.78754H0Z\" fill=\"white\"></path>\n<path d=\"M6.1394 9.72894L3.01235 6.56527L1.95203 7.64835L6.86465 12.6552L11.9092 7.67707C11.9477 7.63311 11.9322 7.60615 11.9092 7.56102C11.7801 7.30491 11.1163 6.84952 10.9304 6.56527L7.63121 9.78755V0H6.22547L6.1394 0.0879121V9.72894Z\" fill=\"white\"></path>\n</g>\n<defs>\n<clippath id=\"clip0_1152_418\">\n<rect width=\"14\" height=\"16\" fill=\"white\" transform=\"matrix(-1 0 0 1 14 0)\"></rect>\n</clippath>\n</defs>\n</svg>"
@@ -280,7 +280,7 @@
         "settings": {
           "about_url": "shopify://pages/about-us",
           "help_url": "shopify://pages/help",
-          "blog_url": "shopify://blogs/northsky-insights",
+          "blog_url": "shopify://blogs/industry-insights",
           "phone": "1-800-805-6686",
           "email": "support@northskysupply.com",
           "announcement_bar_position": "non_sticky",
