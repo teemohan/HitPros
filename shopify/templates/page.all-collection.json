@@ -21,13 +21,13 @@
       }
     },
     "03969b6f-90ab-4f33-a428-d73a034937b3": {
-      "type": "jd-all-collection",
+      "type": "jd-all-collection-vue",
       "blocks": {
         "d4c37f63-087e-426c-a734-e43e952e8872": {
           "type": "categories-item",
           "settings": {
             "image": "shopify:\/\/shop_images\/BIG_AE2949727_01.jpg",
-            "title": "Sockets & Bits",
+            "title": "All Product Categories",
             "num": "3"
           }
         },
