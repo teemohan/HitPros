@@ -9,7 +9,7 @@
     <div class="IndexBestswiper hover-list">
       <div class="swiper {{ section.id }}-IndexBestswiper">
         <div class="swiper-wrapper">
-          {% assign sort_collection_products = section.settings.collection.products | sort: 'tags' %}
+          {% assign sort_collection_products = section.settings.collection.products %}
           {%- for product in sort_collection_products -%}
             <div class="swiper-slide">
               {% render 'index-product-item', product: product %}
