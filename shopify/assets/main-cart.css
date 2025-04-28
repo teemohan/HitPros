@@ -768,11 +768,6 @@
     grid-template-columns: 100px 1fr;
     grid-gap: 10px;
   }
-
-  .product-item-meta__price-list-container {
-    padding-top: 24px;
-  }
-
   .product-item-meta__price-list-container .price {
     font-size: 24px;
   }
