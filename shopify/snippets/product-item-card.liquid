@@ -1,19 +1,6 @@
 {% raw %}
   <script type="text/x-template" id="product-item-card">
-    <div class="index-product-item gird-type product-item">
-      <div class="favorite-button-wrapper">
-        <button class="favorite-button-container" @click="handleWishChange">
-          <template v-if="product.favorited">
-            <icon-favorited/>
-            <span class="favorited-text hidden-phone">In My List</span>
-          </template>
-          <template v-else>
-            <icon-unfavorited/>
-            <span class="unfavorited-text hidden-phone">Add to List</span>
-          </template>
-        </button>
-      </div>
-
+    <div class="index-product-item search gird-type product-item">
       <div class="product-item__image-wrapper">
         <a
           :href="product.productUrl"
@@ -94,7 +81,7 @@
             item_list_id: "search_result_click",
             items: [{
               index: this.product.calculatedIndex,
-              item_id: `shopify_US_${this.product.productId}_${this.product.variantId}`,
+              item_id: this.product.sku,
               sku_code: this.product.sku,
               item_name: this.product.title
             }]
@@ -129,6 +116,9 @@
             },
             body: JSON.stringify(param)
           })
+          window.listenUserEvent({
+            eventName: 'add_to_cart'
+          });
           const responseJson = await response.json();
           let errorMsg;
           if (response.ok) {

@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -5,7 +14,10 @@
       "disabled": true,
       "settings": {
         "show_title": true,
-        "page_width": "medium"
+        "page_width": "medium",
+        "secondary-directory": "",
+        "secondary-directory-link": "",
+        "third-directory": ""
       }
     },
     "cus_nav_3cp7D7": {
@@ -14,6 +26,7 @@
     },
     "collection_header_eGpyxG": {
       "type": "collection-header",
+      "disabled": true,
       "settings": {
         "title": "All Product Categories",
         "product_num": "100 products",
@@ -21,20 +34,20 @@
       }
     },
     "03969b6f-90ab-4f33-a428-d73a034937b3": {
-      "type": "jd-all-collection",
+      "type": "jd-all-collection-vue",
       "blocks": {
         "d4c37f63-087e-426c-a734-e43e952e8872": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/BIG_AE2949727_01.jpg",
-            "title": "Sockets & Bits",
+            "image": "shopify://shop_images/BIG_AE2949727_01.jpg",
+            "title": "All Product Categories",
             "num": "3"
           }
         },
         "f585c657-b6d6-444a-bab2-36f9690c4754": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/BIG_AE3358403_01_b7d8fba3-d3a1-4068-af7b-6a82c6f079a5.jpg",
+            "image": "shopify://shop_images/BIG_AE3358403_01_b7d8fba3-d3a1-4068-af7b-6a82c6f079a5.jpg",
             "title": "Machinery Accessories",
             "num": "4"
           }
@@ -42,7 +55,7 @@
         "3e9fdf7a-8fbb-42fe-ab79-78752cbe9ef6": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/hand-tools.jpg",
+            "image": "shopify://shop_images/hand-tools.jpg",
             "title": "Hand Tools",
             "num": "18"
           }
@@ -50,7 +63,7 @@
         "c5dcdc85-9343-4f3f-8845-642b6b2cd178": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/furniture-_-storage.jpg",
+            "image": "shopify://shop_images/furniture-_-storage.jpg",
             "title": "Furniture & Storage",
             "num": "1"
           }
@@ -58,7 +71,7 @@
         "0a352807-868f-4d54-92e6-74ecaf87489d": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/lubrication.jpg",
+            "image": "shopify://shop_images/lubrication.jpg",
             "title": "Lubrication",
             "num": "1"
           }
@@ -66,7 +79,7 @@
         "84528782-fa70-44ba-a552-cff7808cb01b": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/BIG_AE4696183_01.jpg",
+            "image": "shopify://shop_images/BIG_AE4696183_01.jpg",
             "title": "Power Tools",
             "num": "2"
           }
@@ -74,7 +87,7 @@
         "842c3ab0-2943-4a27-b821-5a03af486dcb": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/BIG_AE4004768_01.jpg",
+            "image": "shopify://shop_images/BIG_AE4004768_01.jpg",
             "title": "Safety",
             "num": "6"
           }
@@ -82,7 +95,7 @@
         "ff82fe4e-9457-41f7-8d6b-e60e2f5a677f": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/BIG_AE5008437_01_0105475c-4f56-4a09-b31d-4b6bcecfdd72.jpg",
+            "image": "shopify://shop_images/BIG_AE5008437_01_0105475c-4f56-4a09-b31d-4b6bcecfdd72.jpg",
             "title": "Lab Supplies",
             "num": "1"
           }
@@ -90,7 +103,7 @@
         "dedebdfa-3923-464f-a0ca-e17c3037ae1f": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/packaging-_-shipping.jpg",
+            "image": "shopify://shop_images/packaging-_-shipping.jpg",
             "title": "Packaging & Shipping",
             "num": "4"
           }
@@ -98,7 +111,7 @@
         "1512d9b7-e5a9-4804-b6bc-1005ad68f3cb": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/BIG_AE4817530_01_b3dfb1f2-a8f7-48c8-9aca-6e046b1b9aa0.jpg",
+            "image": "shopify://shop_images/BIG_AE4817530_01_b3dfb1f2-a8f7-48c8-9aca-6e046b1b9aa0.jpg",
             "title": "Test Instruments",
             "num": "6"
           }
@@ -106,7 +119,7 @@
         "ee4b53d9-2986-4cbd-8f25-af995b77dd6b": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/BIG_AC9553230_01_234782c4-4ce4-4a6c-a463-d1830aa7b0da.jpg",
+            "image": "shopify://shop_images/BIG_AC9553230_01_234782c4-4ce4-4a6c-a463-d1830aa7b0da.jpg",
             "title": "Abrasives",
             "num": "6"
           }
@@ -114,7 +127,7 @@
         "050cd423-93b5-4bdf-8aa5-0da94e6a8065": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/adhesives_-sealants-and-tape.jpg",
+            "image": "shopify://shop_images/adhesives_-sealants-and-tape.jpg",
             "title": "Adhesives, Sealants and Tape",
             "num": "1"
           }
@@ -122,7 +135,7 @@
         "categories_item_FhbknR": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/BIG_AE4817526_01.jpg",
+            "image": "shopify://shop_images/BIG_AE4817526_01.jpg",
             "title": "Fleet & Vehicle Maintenance",
             "num": "1"
           }
@@ -130,7 +143,7 @@
         "categories_item_L6EKkH": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/BIG_AA4857309_05.jpg",
+            "image": "shopify://shop_images/BIG_AA4857309_05.jpg",
             "title": "Lighting",
             "num": "1"
           }
@@ -138,7 +151,7 @@
         "categories_item_nqVgXg": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/BIG_AC7039271_03.jpg",
+            "image": "shopify://shop_images/BIG_AC7039271_03.jpg",
             "title": "Cleaning and Janitorial",
             "num": "1"
           }
@@ -146,7 +159,7 @@
         "categories_item_zD6BwR": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/BIG_AC4820506_05_117dc1c6-6ca0-4b37-b72b-4869995ed60a.jpg",
+            "image": "shopify://shop_images/BIG_AC4820506_05_117dc1c6-6ca0-4b37-b72b-4869995ed60a.jpg",
             "title": "Outdoor Equipment",
             "num": "1"
           }
@@ -154,7 +167,7 @@
         "categories_item_dbyyyf": {
           "type": "categories-item",
           "settings": {
-            "image": "shopify:\/\/shop_images\/BIG_AC9030725_01_997096d0-cf2f-4f31-a70d-d55c348999f8.jpg",
+            "image": "shopify://shop_images/BIG_AC9030725_01_997096d0-cf2f-4f31-a70d-d55c348999f8.jpg",
             "title": "Material Handling",
             "num": "1"
           }
@@ -180,7 +193,8 @@
         "categories_item_dbyyyf"
       ],
       "settings": {
-        "title": "Product Categories",
+        "description": "NorthSky's ever-expanding product portfolio covers a comprehensive range of industrial solutions for all your most pressing and consistent MRO needs, from safety glasses and gloves to combination wrenches and power tool drill bits. It's all part of our mission to provide our customers with the highest quality maintenance, repair and operations products—without the premium price tag.",
+        "title": "All Product Categories",
         "product_num": "100 products",
         "desc": "NorthSky's ever-expanding product portfolio covers a comprehensive range of industrial solutions for all your most pressing and consistent MRO needs, from safety glasses and gloves to combination wrenches and power tool drill bits. It's all part of our mission to provide our customers with the highest quality maintenance, repair and operations products—without the premium price tag."
       }

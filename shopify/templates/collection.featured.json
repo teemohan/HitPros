@@ -1,0 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection_landing_banner_fyYgD7": {
+      "type": "collection-landing-banner",
+      "settings": {
+        "free_tip": "FREE shipping on orders of $75+",
+        "text_width": 43,
+        "title": "Save up to 70%",
+        "title_color": "#0a2b6f",
+        "text": "<p>Compared to other leading brands </p>",
+        "text_color": "#0a2b6f",
+        "bg_img": "shopify://shop_images/Group_428_1.png",
+        "h5_bg_img": "shopify://shop_images/Group_425.png"
+      }
+    },
+    "main_collection_landing_9HCtJm": {
+      "type": "main-collection-landing",
+      "settings": {
+        "title": "Featured Products",
+        "show_view_all": true
+      }
+    }
+  },
+  "order": [
+    "collection_landing_banner_fyYgD7",
+    "main_collection_landing_9HCtJm"
+  ]
+}

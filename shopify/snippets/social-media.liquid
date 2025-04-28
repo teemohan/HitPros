@@ -21,32 +21,12 @@
     </li>
   {%- endif -%}
 
-  {%- if settings.social_instagram != blank -%}
-    {%- assign active_accounts = active_accounts | plus: 1 -%}
-
-    <li class="social-media__item social-media__item--instagram">
-      <a href="{{ settings.social_instagram | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Instagram' }}">
-        {%- render 'icon' with 'instagram' -%}
-      </a>
-    </li>
-  {%- endif -%}
-
   {%- if settings.social_pinterest != blank -%}
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--pinterest">
       <a href="{{ settings.social_pinterest | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Pinterest' }}">
         {%- render 'icon' with 'pinterest' -%}
-      </a>
-    </li>
-  {%- endif -%}
-
-  {%- if settings.social_youtube != blank -%}
-    {%- assign active_accounts = active_accounts | plus: 1 -%}
-
-    <li class="social-media__item social-media__item--youtube">
-      <a href="{{ settings.social_youtube | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'YouTube' }}">
-        {%- render 'icon' with 'youtube' -%}
       </a>
     </li>
   {%- endif -%}
@@ -147,6 +127,26 @@
     <li class="social-media__item social-media__item--spotify">
       <a href="{{ settings.social_spotify | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Spotify' }}">
         {%- render 'icon' with 'spotify' -%}
+      </a>
+    </li>
+  {%- endif -%}
+
+  {%- if settings.social_instagram != blank -%}
+    {%- assign active_accounts = active_accounts | plus: 1 -%}
+
+    <li class="social-media__item social-media__item--instagram">
+      <a href="{{ settings.social_instagram | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Instagram' }}">
+        {%- render 'icon' with 'instagram' -%}
+      </a>
+    </li>
+  {%- endif -%}
+
+  {%- if settings.social_youtube != blank -%}
+    {%- assign active_accounts = active_accounts | plus: 1 -%}
+
+    <li class="social-media__item social-media__item--youtube">
+      <a href="{{ settings.social_youtube | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'YouTube' }}">
+        {%- render 'icon' with 'youtube' -%}
       </a>
     </li>
   {%- endif -%}

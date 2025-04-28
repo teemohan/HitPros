@@ -4,10 +4,9 @@
   <div class="h-newsletter">
     <div class="h-newsletter-text-wrapper">
       <div class="h-newsletter-text-inner">
-        {%- render 'icon' with 'newsletter-email' -%}
         <div class="h-newsletter-text">
           <div class="h-newsletter-title">{{ section.settings.title }}</div>
-          <div class="h-newsletter-tip hidden-pocket">{{ section.settings.tip }}</div>
+          <div class="h-newsletter-tip">{{ section.settings.tip }}</div>
         </div>
       </div>
       {%- form 'customer', id: 'form-newsletter', class: 'footer__newsletter-form form' -%}
@@ -46,13 +45,23 @@
         {%- endif -%}
       {%- endform -%}
     </div>
-    <div class="h-newsletter-social hidden-pocket">
-      {%- render 'social-media' -%}
-    </div>
   </div>
 </div>
 <script>
   (() => {
+    const button = document.querySelector('.newsleftter-btn');
+      const emailInput = document.querySelector('.newsletter-input-row .input__field');
+      button.addEventListener('click', function () {
+        const email = emailInput.value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailRegex.test(email)) {
+          dataLayer.push({
+            'event': 'custom_subscribe_submitted',
+            'email_submitted': email,
+          });
+        }
+      });
+
     const inputEl = document.querySelector('.newsletter-input-row .input__field');
     inputEl.addEventListener('focus', () => {
       if ($('.h-newsletter .banner--error').length) {

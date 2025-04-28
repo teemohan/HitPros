@@ -1,5 +1,5 @@
 .header-bottom-wrapper {
-  background-color: #0A2B6F;
+  background-color: var(--my-blue);
 }
 
 .header-bottom {
@@ -7,4 +7,10 @@
   gap: 14px;
   height: 50px;
   align-items: center;
+}
+
+@media (max-width: 990px) {
+  .header-bottom {
+    height: 60px;
+  }
 }

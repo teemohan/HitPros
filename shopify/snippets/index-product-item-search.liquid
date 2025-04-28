@@ -1,8 +1,10 @@
 <product-item
   data-customer-id="{{- customer.id -}}"
   data-product-id="{{- product.id -}}"
+  data-product-title='{{ product.title | escape | replace: "'", " " | replace: '"', " " }}'
   data-sku="{{- product.selected_or_first_available_variant.sku -}}"
   data-var-id="{{- product.selected_or_first_available_variant.id -}}"
+  data-price="{{ product.selected_or_first_available_variant.price | money_without_currency   }}"
   class="index-product-item {% if template.name == 'search' %}gird-type{% endif %} product-item {% unless product.available %}product-item--sold-out{% endunless %}"
   {% if reveal %}
     reveal

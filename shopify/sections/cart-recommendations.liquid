@@ -39,24 +39,22 @@
 
   {%- if recommendations.performed and acceptable_recommendations_count > 0 -%}
     <div class="container">
-      {% render 'index-cus-header', header_title: section.settings.title %}
+      <div class="index-cus-header">
+        <h2>{{ section.settings.title }}</h2>
+        {% render 'swiper-buttons' %}
+      </div>
       <div class="IndexBestswiper">
-        <div class="swiper-button-prev hidden-pocket">
-          {% render 'icon' with 'swiper-arrow-prev' %}
-        </div>
         <div class="swiper">
           <div class="swiper-wrapper">
-            {%- for product in recommendations.products -%}
+            {% assign recommendations_products  = recommendations.products | sort: 'tags' %}
+            {%- for product in recommendations_products -%}
               <div class="swiper-slide">
                 {%- render 'index-product-item', product: product -%}
               </div>
             {%- endfor -%}
           </div>
-          <div class="swiper-pagination"></div>
         </div>
-        <div class="swiper-button-next hidden-pocket">
-          {% render 'icon' with 'swiper-arrow-next' %}
-        </div>
+        <div class="swiper-scrollbar"></div>
       </div>
     </div>
   {%- endif -%}
@@ -81,6 +79,10 @@
           if (recommendations && recommendations.innerHTML.trim().length) {
             productRecommendationsSection.innerHTML = recommendations.innerHTML;
             var cartalsolikeSwiper = new Swiper(".{{ section.id }} .swiper", {
+              touchStartPreventDefault: true,
+              passiveListeners: false,
+              touchAngle: 70,              
+              threshold: 10,
               breakpoints: {
                 320: {
                   // 当屏幕宽度大于等于320
@@ -100,14 +102,13 @@
                   spaceBetween: 12,
                 },
               },
-              pagination: {
-                el: ".{{ section.id }} .swiper-pagination",
-                clickable: true,
+              scrollbar: {
+                el:".{{ section.id }} .swiper-scrollbar"
               },
               navigation: {
                 nextEl: ".{{ section.id }} .swiper-button-next",
                 prevEl: ".{{ section.id }} .swiper-button-prev",
-              },
+              }
             });
           }
         })
@@ -124,7 +125,7 @@
 {% schema %}
 {
   "name": "Cart recommendations",
-  "class": "shopify-section--cart-recommendations",
+  "class": "shopify-section--cart-recommendations product-swiper-list",
   "settings": [
     {
       "type": "paragraph",

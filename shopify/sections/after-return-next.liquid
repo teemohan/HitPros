@@ -1005,19 +1005,26 @@
             }
             const data = await res.json();
             if (data.msg === 'success') {
-              const ip = Cookies.get('ip');
-              if(ip) {
-                dataLayer.push({
-                  'event': 'custom_return_requested',
-                  'zip': '{{ customer.default_address.zip  }}',   
-                  'username': '{{customer.name }}',
-                  'email':'{{customer.email }}',
-                  'order_number':params.orderRefundMain.refundOrderId,
-                  'products': data.data,
-                  'return_reason':params.orderRefundMain.refundReason,
-                  'ip': ip
-                });
-              }
+              dataLayer.push({
+                'event': 'refund',
+                'return': 1,
+                'ecommerce': {
+                  'currency': 'USD',
+                  'value': this.params.orderRefundMain.refundAmount,
+                  'shipping': +this.orderMain.total_shipping_price_set?.shop_money?.amount || 0,
+                  'tax': +this.orderMain.current_total_tax,
+                  'coupon': this.orderMain.discount_codes[0] || '',
+                  'transaction_id': this.orderMain.id,
+                  'items': this.filteredOrderItems.map(item => ({
+                    'item_id': item.sku,
+                    'item_name': item.name,
+                    'price': +item.price,
+                    'discount': +item.total_discount,
+                    'currency': 'USD',
+                    'quantity': item.refundQty,
+                  }))
+                }
+              });
               window.location.href = '/account?slug=account-service';
             } else {
               this.$message({

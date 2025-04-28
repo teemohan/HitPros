@@ -9,8 +9,8 @@
         Do you have an account?<a class="block-url" href="{{ routes.account_login_url }}">Sign In</a>
       </div>
       <div class="register-type-option">
-        <el-radio v-model="registerType" aria-hidden="false" label="1">Personal Account</el-radio>
-        <el-radio v-model="registerType" aria-hidden="false" label="2">Business Account</el-radio>
+        <div :class="{active: registerType == 1}" @click="registerType = 1">Personal Account</div>
+        <div :class="{active: registerType == 2}" @click="registerType = 2">Business Account</div>
       </div>
       <el-form
         autocomplete="off"
@@ -82,11 +82,10 @@
             <el-row>
               <el-form-item class="common-select" prop="industry">
                 <el-select
-                  ref="sel"
+                  ref="selIndustryCompany"
                   id="register_industry"
                   v-model="ruleForm.industry"
                   placeholder=""
-                  @blur="selectBlur"
                   v-focus-input="ruleForm.industry"
                 >
                   <el-option
@@ -95,13 +94,15 @@
                     :label="item.label"
                     :value="item.value"
                   >
-                    <div class="common-dropdown-item" @click="handleButtonClick($event, item)">
+                    <div class="common-dropdown-item" @click="handleButtonClickIndustryCompany($event, item)">
                       <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
                       <div>${ item.value }</div>
                       <el-input
-                        placeholder="Please enter your single"
+                        @focus="selectIndustyCompanyFocus"
+                        placeholder="Please enter your industry"
                         maxlength="150"
-                        v-if="showIndustryEdit && item.value == 'Other'"
+                        ref="selIndustryCompanyInput"
+                        v-if="showIndustryCompanyEdit && item.value == 'Other'"
                         v-model="ruleForm.industry"
                       ></el-input>
                     </div>
@@ -110,6 +111,40 @@
                 <label for="register_industry" class="el-label">Industry*</label>
               </el-form-item>
             </el-row>
+          </div>
+          <el-row>
+            <el-form-item class="common-select" prop="jobCompany">
+              <el-select
+                ref="selJobCompany"
+                id="register_job_company"
+                v-model="ruleForm.jobCompany"
+                placeholder=""
+                v-focus-input="ruleForm.jobCompany"
+              >
+                <el-option
+                  v-for="item in jobOptionsCompany"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                  <div class="common-dropdown-item" @click="handleButtonClickJobCompany($event, item)">
+                    <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                    <div>${ item.value }</div>
+                    <el-input
+                      ref="selJobCompanyInput"
+                      @focus="selectJobCompanyFocus"
+                      placeholder="Please enter your job"
+                      maxlength="150"
+                      v-if="showJobCompanyEdit && item.value == 'Other'"
+                      v-model="ruleForm.jobCompany"
+                    ></el-input>
+                  </div>
+                </el-option>
+              </el-select>
+              <label for="register_job_company" class="el-label">Job Function*</label>
+            </el-form-item>
+          </el-row>
+          <div v-show="ruleForm.tag != '1'">
             <div class="form-sec-title">Company Address</div>
             <el-row>
               <el-form-item prop="address1">
@@ -207,6 +242,79 @@
             <label for="register_email" class="el-label">Email*</label>
           </el-form-item>
         </el-row>
+        <div v-show="registerType == '1'">
+          <el-row>
+            <el-form-item prop="companyName">
+              <el-input
+                maxlength="150"
+                id="register_company_name_personal"
+                v-model="ruleForm.companyNamePersonal"
+                v-focus-input="ruleForm.companyNamePersonal"
+              ></el-input>
+              <label for="register_company_name_personal" class="el-label">Company Name</label>
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-form-item class="common-select">
+              <el-select
+                ref="selIndustryPersonal"
+                id="register_industryPersonal"
+                v-model="ruleForm.industryPersonal"
+                placeholder=""
+                v-focus-input="ruleForm.industryPersonal"
+              >
+                <el-option
+                  v-for="item in industryOptionsPersonal"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                  <div class="common-dropdown-item" @click="handleButtonClickIndustryPersonal($event, item)">
+                    <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                    <div>${ item.value }</div>
+                    <el-input
+                      placeholder="Please enter your industry"
+                      maxlength="150"
+                      v-if="showIndustryPersonalEdit && item.value == 'Other'"
+                      v-model="ruleForm.industryPersonal"
+                    ></el-input>
+                  </div>
+                </el-option>
+              </el-select>
+              <label for="register_industryPersonal" class="el-label">Industry</label>
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-form-item class="common-select">
+              <el-select
+                ref="selJobPersonal"
+                id="register_jobPersonal"
+                v-model="ruleForm.jobPersonal"
+                placeholder=""
+                v-focus-input="ruleForm.jobPersonal"
+              >
+                <el-option
+                  v-for="item in jobOptionsPersonal"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                  <div class="common-dropdown-item" @click="handleButtonClickJobPersonal($event, item)">
+                    <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                    <div>${ item.value }</div>
+                    <el-input
+                      placeholder="Please enter your job"
+                      maxlength="150"
+                      v-if="showJobPersonalEdit && item.value == 'Other'"
+                      v-model="ruleForm.jobPersonal"
+                    ></el-input>
+                  </div>
+                </el-option>
+              </el-select>
+              <label for="register_jobPersonal" class="el-label">Job Function</label>
+            </el-form-item>
+          </el-row>
+        </div>
         <el-row>
           <el-form-item class="line-input" prop="password">
             <el-input
@@ -551,6 +659,10 @@
             companyId: '',
             companyName: '',
             industry: '',
+            industryPersonal: '',
+            companyNamePersonal: '',
+            jobPersonal: '',
+            jobCompany: '',
             state: '',
             tag: '0',
             city: '',
@@ -560,8 +672,14 @@
             code: ''
           },
           industry: '',
+          industryPersonal: '',
+          jobPersonal: '',
+          jobCompany: '',
           validCompanyData: null,
-          showIndustryEdit: false, // 是否是其他职业
+          showIndustryCompanyEdit: false, // 是否是其他职业
+          showIndustryPersonalEdit: false,
+          showJobPersonalEdit: false,
+          showJobCompanyEdit: false,
           industryOptions: [
             { isSelected: false, value: 'Manufacturing', label: 'Manufacturing' },
             { isSelected: false, value: 'Warehousing', label: 'Warehousing' },
@@ -579,6 +697,47 @@
             { isSelected: false, value: 'Energy / Oil & Gas', label: 'Energy / Oil & Gas' },
             { isSelected: false, value: 'Food & Beverage', label: 'Food & Beverage' },
             { isSelected: false, value: 'Personal Use', label: 'Personal Use' },
+            { isSelected: false, value: 'Other', label: 'Other' },
+          ],
+          industryOptionsPersonal: [
+            { isSelected: false, value: 'Manufacturing', label: 'Manufacturing' },
+            { isSelected: false, value: 'Warehousing', label: 'Warehousing' },
+            { isSelected: false, value: 'Transportation', label: 'Transportation' },
+            { isSelected: false, value: 'Government / Municipality', label: 'Government / Municipality' },
+            { isSelected: false, value: 'Hospitality', label: 'Hospitality' },
+            { isSelected: false, value: 'Healthcare', label: 'Healthcare' },
+            { isSelected: false, value: 'Retail/Commercial', label: 'Retail/Commercial' },
+            { isSelected: false, value: 'Property Management', label: 'Property Management' },
+            { isSelected: false, value: 'Professional Services', label: 'Professional Services' },
+            { isSelected: false, value: 'Construction', label: 'Construction' },
+            { isSelected: false, value: 'Mining', label: 'Mining' },
+            { isSelected: false, value: 'Agriculture', label: 'Agriculture' },
+            { isSelected: false, value: 'Education', label: 'Education' },
+            { isSelected: false, value: 'Energy / Oil & Gas', label: 'Energy / Oil & Gas' },
+            { isSelected: false, value: 'Food & Beverage', label: 'Food & Beverage' },
+            { isSelected: false, value: 'Personal Use', label: 'Personal Use' },
+            { isSelected: false, value: 'Other', label: 'Other' },
+          ],
+          jobOptionsPersonal: [
+            { isSelected: false, value: 'Maintenance & Engineering', label: 'Maintenance & Engineering ' },
+            { isSelected: false, value: 'Safety /EHS', label: 'Safety /EHS' },
+            { isSelected: false, value: 'Purchasing', label: 'Purchasing' },
+            { isSelected: false, value: 'Production', label: 'Production' },
+            { isSelected: false, value: 'Operations', label: 'Operations' },
+            { isSelected: false, value: 'Management', label: 'Management' },
+            { isSelected: false, value: 'Contractor', label: 'Contractor' },
+            { isSelected: false, value: 'Student', label: 'Student' },
+            { isSelected: false, value: 'Other', label: 'Other' },
+          ],
+          jobOptionsCompany: [
+            { isSelected: false, value: 'Maintenance & Engineering', label: 'Maintenance & Engineering ' },
+            { isSelected: false, value: 'Safety /EHS', label: 'Safety /EHS' },
+            { isSelected: false, value: 'Purchasing', label: 'Purchasing' },
+            { isSelected: false, value: 'Production', label: 'Production' },
+            { isSelected: false, value: 'Operations', label: 'Operations' },
+            { isSelected: false, value: 'Management', label: 'Management' },
+            { isSelected: false, value: 'Contractor', label: 'Contractor' },
+            { isSelected: false, value: 'Student', label: 'Student' },
             { isSelected: false, value: 'Other', label: 'Other' },
           ],
           showPass: false, // 查看密码开关
@@ -617,7 +776,10 @@
               { validator: validateCompanyName, trigger: 'blur' },
             ],
             industry: [
-              { validator: noWhitespaceValidator, message: 'Verification Code is required', trigger: 'change' }
+              { validator: noWhitespaceValidator, message: 'industryName is required', trigger: 'change' }
+            ],
+            jobCompany: [
+              { validator: noWhitespaceValidator, message: 'Job Fcuntion is required', trigger: 'change' }
             ],
             address1: [
               { validator: noWhitespaceValidator, message: 'Street Address is required', trigger: 'blur' }
@@ -669,6 +831,24 @@
           const industry = this.industryOptions.find((item) => item.value == 'Other');
           if(industry.isSelected) {
             this.industry = newVal;
+          }
+        },
+        "ruleForm.industryPersonal"(newVal, oldVal) {
+          const industryPersonal = this.industryOptionsPersonal.find((item) => item.value == 'Other');
+          if(industryPersonal.isSelected) {
+            this.industryPersonal = newVal;
+          }
+        },
+        "ruleForm.jobPersonal"(newVal, oldVal) {
+          const jobPersonal = this.jobOptionsPersonal.find((item) => item.value == 'Other');
+          if(jobPersonal.isSelected) {
+            this.jobPersonal = newVal;
+          }
+        },
+        "ruleForm.jobCompany"(newVal, oldVal) {
+          const jobCompany = this.jobOptionsCompany.find((item) => item.value == 'Other');
+          if(jobCompany.isSelected) {
+            this.jobCompany = newVal;
           }
         }
       },
@@ -811,8 +991,11 @@
             form = {
               firstname: this.ruleForm.firstname,
               lastname: this.ruleForm.lastname,
+              companyName: this.ruleForm.companyNamePersonal,
+              industry: this.ruleForm.industryPersonal,
+              jobFunction: this.ruleForm.jobPersonal,
               email: this.ruleForm.email,
-              password: this.ruleForm.password,
+              password: this.ruleForm.password, 
               checked: this.ruleForm.checked,
             };
             try {
@@ -820,12 +1003,18 @@
               for (const key in form) {
                 formData.append(key, form[key]);
               }
+
               const response = await fetch(`${window.zkh.api}/register`, {
                 method: 'POST',
                 body: formData,
               });
               const res = await response.json();
               if (res.code == '200') {
+                dataLayer.push({
+                  'event': 'custom_account_created',
+                  'account_type': 'Personal',
+                  'company': null,
+                });
                 this.$message({
                   showClose: true,
                   message: 'A confirmation email has been sent to the address you provided. Please check your inbox and click the confirmation link to finish creating your account.',
@@ -857,6 +1046,7 @@
                 checked: this.ruleForm.checked,
                 tag: 0,
                 code: this.ruleForm.code,
+                jobFunction: this.ruleForm.jobCompany,
                 company: {
                   companyName: this.ruleForm.companyName,
                   industry: this.ruleForm.industry,
@@ -875,6 +1065,7 @@
                 password: this.ruleForm.password,
                 checked: this.ruleForm.checked,
                 tag: 1,
+                jobFunction: this.ruleForm.jobCompany,
                 code: this.ruleForm.code,
                 company: {
                   ...this.validCompanyData
@@ -890,7 +1081,25 @@
                 },
               });
               const res = await response.json();
-              if(res.code == 200) {
+              if (res.code == 200) {
+                if(this.ruleForm.tag == '0'){
+                  dataLayer.push({
+                    'event': 'custom_business_added',
+                    'company': this.ruleForm.companyName,
+                    'add_type': 'sign up',
+                  });
+                } else if(this.ruleForm.tag == '1'){
+                  dataLayer.push({
+                    'event': 'custom_business_link_requested',
+                    'company': this.validCompanyData.companyName,
+                    'add_type': 'add',
+                  });
+                }
+                dataLayer.push({
+                  'event': 'custom_account_created',
+                  'account_type': 'Business',
+                  'company': this.ruleForm?.companyName || this.validCompanyData?.companyName,
+                });
                 window.location.href = res.data.redirectUrl;
               } else {
                 this.$message({
@@ -917,25 +1126,77 @@
             }
           });
         },
-        selectBlur() {
-          if (this.showIndustryEdit) {
-            this.$refs.ruleForm.clearValidate(["industry"]);
-          }
+        selectIndustyCompanyFocus() {
+          this.$refs.ruleForm.clearValidate(["industry"]);
         },
-        handleButtonClick(event, industryItem) {
+        selectJobCompanyFocus() {
+          this.$refs.ruleForm.clearValidate(["jobCompany"]);
+        },
+        handleButtonClickIndustryCompany(event, industryItem) {
           event.stopPropagation(); // 阻止冒泡，防止关闭
           if (industryItem.isSelected) return;
           this.industryOptions.map((item) => (item.isSelected = false));
           const industry = this.industryOptions.find((item) => item.value == industryItem.value);
           if (industryItem.value == 'Other') {
-            this.showIndustryEdit = true;
+            this.showIndustryCompanyEdit = true;
             this.ruleForm.industry = this.industry;
+            this.$nextTick(() => {
+              this.$refs.selIndustryCompanyInput[0].focus();
+            })
           } else {
-            this.showIndustryEdit = false;
+            this.showIndustryCompanyEdit = false;
             this.ruleForm.industry = industry.value;
-            this.$refs.sel.blur(); // 关闭菜单
+            this.$refs.selIndustryCompany.blur(); // 关闭菜单
           }
           industry.isSelected = true;
+        },
+        handleButtonClickIndustryPersonal(event, industryItem) {
+          event.stopPropagation(); // 阻止冒泡，防止关闭
+          if (industryItem.isSelected) return;
+          this.industryOptionsPersonal.map((item) => (item.isSelected = false));
+          const industryPersonal = this.industryOptionsPersonal.find((item) => item.value == industryItem.value);
+          if (industryItem.value == 'Other') {
+            this.showIndustryPersonalEdit = true;
+            this.ruleForm.industryPersonal = this.industryPersonal;
+          } else {
+            this.showIndustryPersonalEdit = false;
+            this.ruleForm.industryPersonal = industryPersonal.value;
+            this.$refs.selIndustryPersonal.blur(); // 关闭菜单
+          }
+          industryPersonal.isSelected = true;
+        },
+        handleButtonClickJobPersonal(event, jobItem) {
+          event.stopPropagation(); // 阻止冒泡，防止关闭
+          if (jobItem.isSelected) return;
+          this.jobOptionsPersonal.map((item) => (item.isSelected = false));
+          const jobPersonal = this.jobOptionsPersonal.find((item) => item.value == jobItem.value);
+          if (jobItem.value == 'Other') {
+            this.showJobPersonalEdit = true;
+            this.ruleForm.jobPersonal = this.jobPersonal;
+          } else {
+            this.showJobPersonalEdit = false;
+            this.ruleForm.jobPersonal = jobPersonal.value;
+            this.$refs.selJobPersonal.blur(); // 关闭菜单
+          }
+          jobPersonal.isSelected = true;
+        },
+        handleButtonClickJobCompany(event, jobItem) {
+          event.stopPropagation(); // 阻止冒泡，防止关闭
+          if (jobItem.isSelected) return;
+          this.jobOptionsCompany.map((item) => (item.isSelected = false));
+          const jobCompany = this.jobOptionsCompany.find((item) => item.value == jobItem.value);
+          if (jobItem.value == 'Other') {
+            this.showJobCompanyEdit = true;
+            this.ruleForm.jobCompany = this.jobCompany;
+            this.$nextTick(() => {
+              this.$refs.selJobCompanyInput[0].focus();
+            })
+          } else {
+            this.showJobCompanyEdit = false;
+            this.ruleForm.jobCompany = jobCompany.value;
+            this.$refs.selJobCompany.blur(); // 关闭菜单
+          }
+          jobCompany.isSelected = true;
         },
       },
     });

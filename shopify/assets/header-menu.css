@@ -1,5 +1,6 @@
 .header-menu-wrapper {
-  background-color: #F5F5F5;
+  background-color: #0A2B6F;
+  color: #fff;
 }
 .header-menu {
   position: relative;
@@ -19,9 +20,10 @@
   bottom: 0;
   visibility: hidden;
   opacity: 0;
-  width: auto;
+  width: 256px;
+  left: 0;
   transform: translateY(100%);
-  background: #fff;
+  background: #12254D;
   display: flex;
   gap: 12px;
   flex-direction: column;
@@ -31,14 +33,14 @@
   height: 120px!important;
 }
 .exclusive-container .barnd-list a {
-  color: #808080;
+  color: #fff;
   font-size: 14px;
-  padding: 10px 18px;
+  padding: 10px 72px;
   width: 100%;
   height: 40px;
 }
 .exclusive-container .barnd-list a:hover {
-  background-color: #F3F8FC;
+  background-color: #0b1939;
 }
 .header-menu-wrapper .header-menu > ul {
   margin: 0;
@@ -46,23 +48,23 @@
   display: flex;
   height: 50px;
 }
-.header-menu-wrapper .header-menu > ul li > a:hover {
-  text-decoration: underline;
+.header-menu-wrapper .header-menu > ul > li {
+  flex: 1;
 }
-.header-menu-wrapper .header-menu > ul li > a,
-.header-menu-wrapper .header-menu > ul li > div:first-of-type {
-  padding: 14px 16px;
+.header-menu-wrapper .header-menu > ul > li:hover {
+  background-color: #12254D;
+  transition: all .3s;
+}
+.header-menu-wrapper .header-menu > ul > li > a,
+.header-menu-wrapper .header-menu > ul > li > div:first-of-type {
+  padding: 14px;
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 100%;
   gap: 8px;
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
-  color: #191C1F;
   cursor: pointer;
-}
-
-.header-menu-wrapper .header-menu > ul li > div:first-of-type {
-  align-items: flex-start;
 }

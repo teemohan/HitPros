@@ -16,11 +16,11 @@
         "created_at": "{{ order.created_at | date: '%b. %d, %Y at %I:%M:%S %p' }}",
         "created_at_date": "{{ order.created_at | date: "%Y/%m/%d %H:%M:%S" }}",
         "loading": false,
+        "invoice_loading": false,
+        {% assign image_line_items = order.line_items | where: "image" %}
         "line_items_img": [
-          {% for line_item in order.line_items %}
-            {% if line_item.image %}
-              { "img": "{{ line_item.image | image_url | escape }}" }{% unless forloop.last %},{% endunless %}
-            {% endif %}
+          {% for line_item in image_line_items %}
+            { "img": "{{ line_item.image | image_url | escape }}" }{% unless forloop.last %},{% endunless %}
           {% endfor %}
         ],
         "line_items": [
@@ -100,20 +100,22 @@
           </header>
           <main @click="navToDetail(`pages/order-details?id=${ order.id }`)">
             <div class="order-product-info">
-              <template v-for="(item, idx) in order.line_items_img.slice(0, 2)">
-                <img
-                  :key="idx"
-                  :src="item.img"
-                  width="auto"
-                  height="auto"
-                  alt="Product Image"
-                >
-              </template>
-              <template v-if="order.line_items_img.length > 2">
-                <span>...</span>
-              </template>
-              <template v-else>
-                <span class="opacity-none">...</span>
+              <template v-if="order.line_items_img?.length">
+                <template v-for="(item, idx) in order.line_items_img.slice(0, 2)">
+                  <img
+                    :key="idx"
+                    :src="item.img"
+                    width="auto"
+                    height="auto"
+                    alt="Product Image"
+                  >
+                </template>
+                <template v-if="order.line_items_img.length > 2">
+                  <span>...</span>
+                </template>
+                <template v-else>
+                  <span class="opacity-none">...</span>
+                </template>
               </template>
             </div>
             <div class="line-item-middle">
@@ -143,11 +145,12 @@
           <footer>
             <div class="account-order-actions">
               <template v-if="!order.cancelled">
-                <a
-                  target="_blank"
-                  :href="`${ pixiUrl }/${ order.id }`"
-                  >Invoice/Receipt</a
-                >
+                <el-button
+                  @click="handleOpenInvoice(order)"
+                  :loading="order.invoice_loading"
+                  type="text"
+                  >Invoice/Receipt
+                </el-button>
                 <span class="dot"></span>
                 <a :href="`/pages/after-sales-request?id=${ order.id }`">Refund Only</a>
                  <span v-if="order.fulfillment_status != 'unfulfilled'" class="dot"></span>
@@ -191,6 +194,7 @@
       data() {
         return {
           pixiUrl: window.zkh.pixi_url,
+          pixiNetUrl: window.zkh.pixi_net_url,
           loading: false,
           dialogVisibleCancel: false,
           total: +'{{ customer.orders_count }}',
@@ -221,6 +225,25 @@
         });
       },
       methods: {
+        handleOpenInvoice(order) {
+          if(window.themeVariables.userCompany.isB2b == 'true') {
+            order.invoice_loading = true;
+            fetch(`${window.zkh.api}/order/${order.id}`)
+              .then(response => response.json())
+              .then(res =>{
+                if(res.code == 200) {
+                  if(res.data.order.payment_terms?.payment_terms_type == 'net') {
+                    window.open(`${ this.pixiNetUrl }/${ order.id }`, '_blank');
+                  } else {
+                    window.open(`${ this.pixiUrl }/${ order.id }`, '_blank');
+                  }
+                }
+                order.invoice_loading = false;
+              })
+          } else {
+            window.open(`${ this.pixiUrl }/${ order.id }`, '_blank');
+          }
+        },
         handleBeforeCancelOrder(order) {
           this.order = order;
           this.orderRuleForm.orderId = +order.id;
@@ -264,6 +287,7 @@
           this.ordersData = $('[data-order]').map(function() {
             return $(this).data('order');
           }).get().map(order => {
+            console.log(order)
             const createdAtTimestamp = new Date(order.created_at_date).getTime();
 
             const getTimestampInTimezone = (timezoneOffset) => {
@@ -355,6 +379,9 @@
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(param),
+          });
+          window.listenUserEvent({
+            eventName: 'add_to_cart'
           });
           const responseJson = await response.json();
           let errorMsg;

@@ -76,7 +76,7 @@
         text-align: left;
     }
     #shopify-section-{{ section.id }} .View_All{
-        color: #0A2B6F;
+        color: var(--my-blue);
         font-family: Inter;
         font-size: 12px;
         font-style: normal;
@@ -139,6 +139,20 @@
     if('{{ customer.id }}') {
       setWish()
     }
+  })();
+  (() => {
+    const pageTitle = '{{ page.title }}';
+    if(pageTitle == 'Black Canyon') {
+
+    } else if(pageTitle == 'Olympia') {
+
+    } else if(pageTitle == 'NorthSky Select') {
+
+    }
+
+    $('.{{ section.id }} .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+    })
   })();
 </script>
 {% schema %}

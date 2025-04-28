@@ -11,9 +11,7 @@
   user-select: none;
   /* Standard */
 }
-#preview-bar-iframe {
-  display: none;
-}
+
 @media screen and (max-width: 740px) {
   .hidden-phone {
     display: none !important;
@@ -91,7 +89,7 @@
 }
 
 html {
-  font-family: sans-serif;
+  font-family: 'Inter', sans-serif, 'system-ui', '-apple-system';
   -ms-overflow-style: -ms-autohiding-scrollbar;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -1463,8 +1461,6 @@ p+.button-group,
   max-width: var(--container-max-width);
   margin-left: auto;
   margin-right: auto;
-  padding-left: var(--container-gutter);
-  padding-right: var(--container-gutter);
   --container-outer-margin: 0px;
   /* Inside a container only the gutter remains as margin */
 }
@@ -2715,7 +2711,7 @@ not screen and (pointer: fine) {
 
 .social-media {
   display: flex;
-  gap: 8px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
@@ -2772,6 +2768,14 @@ not screen and (pointer: fine) {
   .social-media__link {
     height: 40px;
     width: 40px;
+  }
+  .social-media__link:hover svg:first-child,
+  .social-media__link svg:last-child {
+    display: none;
+  }
+  .social-media__link:hover svg:last-child {
+    display: block;
+    transition: all .3s;
   }
 }
 
@@ -3449,6 +3453,9 @@ not screen and (pointer: fine) {
 }
 
 @media screen and (max-width: 740px) {
+  .social-media__link svg:last-child {
+    display: none;
+  }
   .quantity-selector {
     --quantity-selector-height: 32px;
   }
@@ -8997,7 +9004,7 @@ input:checked+.popover__choice-label::after,
 .footer__item-content .linklist__item a {
   font-size: 14px;
   font-weight: 400;
-  line-height: 21px;
+  line-height: 1.5;
   color: #666666;
 }
 
@@ -12906,17 +12913,6 @@ shopify-payment-terms {
   flex-direction: column;
 }
 
-.product-item__image-wrapper {
-  position: relative;
-  display: block;
-  margin-bottom: 16px;
-  overflow: hidden;
-}
-
-.product-item__image-wrapper--placeholder {
-  fill: currentColor;
-}
-
 [dir="ltr"] .product-item__label-list {
   left: 10px;
 }
@@ -12929,11 +12925,6 @@ shopify-payment-terms {
   position: absolute;
   z-index: 1;
   top: 10px;
-}
-
-.product-item__image-wrapper--multiple .product-item__primary-image,
-.product-item__image-wrapper--multiple .product-item__secondary-image {
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 
 .product-item__aspect-ratio {
@@ -12952,7 +12943,6 @@ shopify-payment-terms {
   justify-content: center;
   top: 0;
 }
-
 .cus-label svg,
 .product-item__aspect-ratio .favorite-button svg {
   position: static;
@@ -12962,13 +12952,13 @@ shopify-payment-terms {
 
 .cus-label span {
   position: absolute;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 150%;
   color: #fff;
-  font-size: 12px;
-  font-weight: 900;
-  left: 12px;
-  bottom: 20px;
-  line-height: 1;
-  letter-spacing: 0;
+  left: 6px;
+  top: 12px;
+  transform: rotate(-45deg);
 }
 
 .product-item .favorite-button-wrapper {
@@ -13006,7 +12996,7 @@ shopify-payment-terms {
   font-size: 12px;
   font-weight: 400;
   line-height: 16.5px;
-  color: #575757;
+  color: var(--my-grey);
 }
 
 .product-item .favorite-button svg {
@@ -13114,37 +13104,10 @@ shopify-payment-terms {
   margin: 6px auto 0;
 }
 
-@media screen and (pointer: fine) {
-  .product-item__secondary-image {
-    display: block;
-  }
-
-  .product-item__image-wrapper--multiple:hover .product-item__primary-image {
-    visibility: hidden;
-    opacity: 0;
-  }
-
-  .product-item__image-wrapper--multiple:hover .product-item__secondary-image {
-    visibility: visible;
-    opacity: 1;
-  }
-
-  .product-item__image-wrapper:hover .product-item__quick-form {
-    visibility: visible;
-    opacity: 1;
-  }
-}
-
 @media screen and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .product-item__quick-form {
     transform: translateY(16px);
     transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
-  }
-
-  .product-item__image-wrapper:hover .product-item__quick-form {
-    transform: translateY(0);
-    visibility: visible;
-    opacity: 1;
   }
 }
 
@@ -13152,12 +13115,6 @@ shopify-payment-terms {
   .product-item__quick-form {
     visibility: visible;
     opacity: 1;
-  }
-}
-
-@media screen and (min-width: 1000px) {
-  .product-item__image-wrapper {
-    margin-bottom: 24px;
   }
 }
 

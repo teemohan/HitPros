@@ -80,6 +80,12 @@
 
 <script>
   (() => {
+    // 使用 DOM 元素解码 HTML 实体, 转义字符
+    function decodeHTMLEntities(str) {
+      let textarea = document.createElement('textarea');
+      textarea.innerHTML = str;
+      return textarea.value;
+    }
     new Vue({
       el: '#btn-wishlist',
       delimiters: ['${', '}'],
@@ -88,7 +94,9 @@
           isDelete: 0,
           customerId: Number(`{{ customer.id }}`),
           productId: Number(`{{ product.id }}`),
-          sku: `{{ product.selected_or_first_available_variant.sku }}`
+          sku: "{{ product.selected_or_first_available_variant.sku }}",
+          title: decodeHTMLEntities("{{ product.selected_or_first_available_variant.title }}"),
+          price: "{{ product.selected_or_first_available_variant.price | money_without_currency }}",
         };
       },
       mounted() {   
@@ -153,6 +161,21 @@
               }
               if(data.data.wish) {
                 this.isDelete = 1;
+                window.listenUserEvent({
+                  eventName: 'add_to_cart'
+                });
+                dataLayer.push({
+                  'event': 'add_to_wishlist',
+                  'ecommerce': {
+                    'currency': 'USD',
+                    'value': this.price,
+                    'items': [{
+                      'item_id': this.sku,
+                      'sku_code': this.sku,
+                      'item_name': this.title
+                    }],
+                  },
+                });
               }
               document.dispatchEvent(new CustomEvent('wish-refreash'));
             } else {

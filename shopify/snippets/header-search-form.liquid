@@ -1,13 +1,21 @@
 <style>
-  .header-search-form-wrapper {
-    box-shadow: 0px 8px 32px 0px #00000014;
-    border: 1px solid #8080808c;
+  .header-search-form {
+    border: 1px solid #808080;
     border-radius: 2px;
+  }
+  .header-search-form-wrapper {
     visibility: hidden;
   }
   .header-search-form-wrapper .el-input__inner {
     color: var(--my-black);
     border: none;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    height: 48px;
+  }
+  .header-search-form-wrapper .el-input__inner::placeholder {
+    color: #77878F;
   }
   .header-search-form-wrapper,
   .header-search-form,
@@ -27,10 +35,15 @@
   .highlight {
     font-weight: bold; /* 可以设置加粗效果 */
   }
-  @media (max-width: 740px) {
-    .header-search-form-wrapper {
-      background-color: #fff;
+  @media (max-width: 990px) {
+    .header-search-form-wrapper .el-input__inner {
+      height: 38px;
     }
+    .header-search-form {
+      border: none;
+    }
+  }
+  @media (max-width: 740px) {
     .header-search-form-wrapper .el-input__inner {
       height: 36px;
       line-height: 36px;

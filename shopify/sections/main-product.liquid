@@ -220,6 +220,13 @@
 {%- endunless -%}
 <script>
   (() => {
+    document.addEventListener('DOMContentLoaded', () => {
+      window.listenUserEvent({
+        eventName: 'product_page_view',
+        skuCode: '{{ product.selected_or_first_available_variant.sku }}'
+      });
+    });
+    
     $('.cus-product .pswp__button--close').on('click', function (event) {
       $('.product--thumbnails-left .product__media').css('position', 'sticky');
       $('.cus-product .product__media-image-wrapper img').css('transform', 'scale(1)');

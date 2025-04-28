@@ -1,5 +1,4 @@
 .header-menu-collection {
-  width: 100%;
   position: absolute;
   left: 0;
   visibility: hidden;
@@ -31,7 +30,7 @@
 .pc-menu-nav .menu-nav3
 {
   box-shadow: 0 2px 4px #00000040;
-  width: 25%;
+  width: 300px;
   background-color: #fff;
   overflow-y: auto;
 }

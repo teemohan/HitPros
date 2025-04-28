@@ -216,7 +216,7 @@
 
 .stock-tag.coming-stock {
   background-color: #F3F8FC;
-  color: #0A2B6F;
+  color: var(--my-blue);
 }
 .stock-tag.instock-ready {
   background-color: #D4ECD6;
