@@ -6,7 +6,7 @@
   {% if request.page_type == 'product' %}
     exclude-product-id="{{ product.id | escape }}"
   {% endif %}
-  class="product-x-hidden"
+  class="product-x-hidde"
 >
   {%- if request.page_type == 'search' and search.performed and search.results_count > 0 -%}
     <div class="{{ section.id }} recently-viewed">
