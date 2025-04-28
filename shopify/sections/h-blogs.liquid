@@ -1,17 +1,10 @@
-<style>
-  @media screen and (max-width: 740px) {
-    .{{ section.id }} .swiper {
-      overflow: unset;
-    }
-  }
-</style>
 <div class="{{ section.id }}">
   <div class="container">
-    {% render 'index-cus-header', header_title: section.settings.title, header_url: section.settings.btn_link %}
+    <div class="index-cus-header">
+      <h2>{{ section.settings.title }}</h2>
+      {% render 'swiper-buttons' %}
+    </div>
     <div class="IndexBestswiper">
-      <div class="swiper-button-prev hidden-pocket">
-        {% render 'icon' with 'swiper-arrow-prev' %}
-      </div>
       <div class="swiper {{ section.id }}-IndexBestswiper">
         <div class="swiper-wrapper">
           {% for article in section.settings.blog.articles %}
@@ -22,39 +15,40 @@
         </div>
         <div class="swiper-pagination"></div>
       </div>
-      <div class="swiper-button-next hidden-pocket">
-        {% render 'icon' with 'swiper-arrow-next' %}
-      </div>
+      <div class="swiper-scrollbar"></div>
     </div>
   </div>
 </div>
 
 <script>
   (() => {
-    new Swiper(`.{{ section.id }}-IndexBestswiper`, {
+    new Swiper(".{{ section.id }}-IndexBestswiper", {
       observer: true,
       observeParents: true,
+      touchStartPreventDefault: true,
+      passiveListeners: false,
+      touchAngle: 70,              
+      threshold: 10,
       breakpoints: {
         0: {
-          spaceBetween: 8,
+          spaceBetween: 12,
           slidesPerView: 1,
         },
-        740: {
-          spaceBetween: 12,
-          slidesPerView: 2,
+        768: {
+          spaceBetween: 20,
+          slidesPerView: 2.2,
         },
-        1200: {
-          spaceBetween: 24,
-          slidesPerView: 2.6,
+        1280: {
+          spaceBetween: 20,
+          slidesPerView: 3.2,
         },
       },
-      pagination: {
-        el: '.{{ section.id }} .swiper-pagination',
-        clickable: true,
-      },
+      scrollbar: {
+          el: ".{{ section.id }} .swiper-scrollbar"
+        },
       navigation: {
-        nextEl: `.{{ section.id }} .swiper-button-next`,
-        prevEl: `.{{ section.id }} .swiper-button-prev`,
+        nextEl: ".{{ section.id }} .swiper-button-next",
+        prevEl: ".{{ section.id }} .swiper-button-prev",
       },
     });
   })();
@@ -63,7 +57,7 @@
 {% schema %}
 {
   "name": "h-blogs",
-  "class": "section-padding swiper-list-wrapper",
+  "class": "section-gap h-blogs",
   "settings": [
     {
       "type": "text",

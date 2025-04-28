@@ -43,6 +43,9 @@
               <a href="tel:{{ section.settings.contact1 }}">{{ section.settings.contact1 }}</a>or
               <a href="mailto:{{ section.settings.contact2 }}">{{ section.settings.contact2 }}</a>
             </div>
+            <div class="footer-social">
+              {%- render 'social-media' -%}
+            </div>
           </div>
           {%- for block in section.blocks -%}
             {%- capture block_content -%}
@@ -69,7 +72,7 @@
                   {%- if menu != blank -%}
                     <p class="footer__item-title">{{ menu.title }}
                       <span class="hidden-tablet-and-up details_icon">
-                        {% render 'icon' with 'footer-arrow' %}
+                        {% render 'icon' with 'footer-arrow-icon' %}
                       </span>
                     </p>
   
@@ -112,6 +115,9 @@
               </div>
             {%- endif -%}
           {%- endfor -%}
+        </div>
+        <div class="footer-social hidden-tablet-and-up">
+          {%- render 'social-media' -%}
         </div>
         <div class="connect-box hidden-tablet-and-up">
           {%- for block in section.blocks -%}

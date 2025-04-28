@@ -1,0 +1,124 @@
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+<style>
+  .collection-landing-wrapper {
+    background: #EAEEF1;
+  }
+  .collection-product-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+  }
+
+  .index-cus-header a {
+    font-size: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .pagination__nav-item {
+    height: 40px;
+    width: 40px;
+    border-radius: 0;
+    font-size: 20px;
+    color: #0A2B6F;
+    font-weight: 400;
+    border: 1px solid #0A2B6F;
+  }
+  .pagination {
+    margin-top: 32px;
+  }
+  .pagination__nav {
+    gap: 15px;
+  }
+  .pagination__nav-item svg {
+    width: 100%;
+  }
+  .pagination__nav-item[aria-current=page] {
+    background-color: #0A2B6F;
+    color: #fff;
+    border: 0;
+  }
+  .pagination__nav-item[aria-label=Previous] svg {
+    transform: scale(-1);
+  }
+  .pagination__nav-item[aria-label=Next],
+  .pagination__nav-item[aria-label=Previous] {
+    border: 0;
+  }
+  @media screen and (max-width: 1280px) {
+    .collection-product-list {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .pagination__nav {
+      gap: 10px;
+    }
+    .index-cus-header a {
+      gap: 10px;
+      font-size: 16px;
+    }
+    .pagination__nav-item svg {
+      width: 20px;
+    }
+    .pagination__nav-item {
+      height: 28px;
+      width: 28px;
+      font-size: 12px;
+    }
+    .index-cus-header svg {
+      width: 20px;
+    }
+    .pagination {
+      margin-top: 28px;
+    }
+    .collection-product-list {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+  }
+</style>
+<div class="container">
+  <div class="index-cus-header">
+    <h2>{{ section.settings.title }}</h2>
+    {% if collection.products.size > 20 and section.settings.show_view_all %}
+      <a href="/collections/all">
+        See All
+        {% render 'icon' with 'view-all' %}
+      </a>
+    {% endif %}
+  </div>
+  {%- paginate collection.products by 20 -%}
+    <div class="collection-product-list hover-list">
+      {%- for product in collection.products -%}
+        {% render 'index-product-item', product: product %}
+      {%- endfor -%}
+    </div>
+    {%- render 'pagination-landing', paginate: paginate -%}
+  {%- endpaginate -%}
+</div>
+{% schema %}
+{
+  "name": "Collection Landing",
+  "class": "collection-landing-wrapper section-padding",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Landing"
+    }
+  ]
+}
+{% endschema %}

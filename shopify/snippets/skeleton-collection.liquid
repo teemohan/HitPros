@@ -1,71 +1,66 @@
-<div class="list-inner skeleton-screen-product-list">
+<div class="w-full">
   <!-- PC端骨架屏 -->
-  <div class="skeleton-pc-total">
-    {% for i in (1..2) %}
-      <div class="skeleton-spu-wrapper">
-        <div class="skeleton-spu-header">
-          <div class="skeleton-spu-meta">
-            <div class="skeleton-spu-img pulse"></div>
-            <div class="skeleton-spu-data">
-              <div class="skeleton-spu-title pulse"></div>
-              <div class="skeleton-spu-count pulse"></div>
-              <div class="skeleton-spu-desc pulse"></div>
-            </div>
-          </div>
-        </div>
-        <div class="skeleton-sku-wrapper">
-          <div class="skeleton-sku-header">
-            {% for j in (1..3) %}
-              <div class="skeleton-key pulse"></div>
-            {% endfor %}
-            <div class="skeleton-common-data">
-              <div class="skeleton-price pulse"></div>
-              <div class="skeleton-quantity pulse"></div>
-              <div class="skeleton-operate pulse"></div>
-            </div>
-          </div>
-          {% for k in (1..3) %}
-            <div class="skeleton-sku-line">
-              {% for l in (1..3) %}
-                <div class="skeleton-value pulse"></div>
-              {% endfor %}
-              <div class="skeleton-common-data">
-                <div class="skeleton-price pulse"></div>
-                <div class="skeleton-quantity pulse"></div>
-                <div class="skeleton-operate pulse"></div>
+  <div class="hidden fb-sm:block pt-6">
+    <div class="w-full h-30  mb-4 bg-gray-200 pulse"></div>
+    <div class="w-full h-[244px] mt-6  mb-4 bg-gray-200 pulse"></div>
+    <div class="fb-sm:flex fb-sm:justify-center fb-sm:mt-9">
+      <div class="flex-none mr-10 fb-md:w-21r">
+        <div class="w-full h-30 bg-gray-200 pulse"></div>
+      </div>
+      <div class="product-facet__main">
+        <div class="space-y-5 fb-sm:space-y-6">
+          {% for i in (1..2) %}
+            <div class="fb-sm:bg-white fb-sm:p-6 fb-sm:rounded-sm">
+              <div class="flex gap-3 fb-sm:gap-8">
+                <div class="w-[30%] h-32 fb-sm:w-[130px] fb-sm:h-[130px] flex-shrink-0 bg-gray-200 pulse"></div>
+                <div class="flex-1">
+                  <div class="hidden fb-sm:block h-7 w-4/5 bg-gray-200 pulse"></div>
+                  <div class="hidden fb-sm:block h-4 w-24 bg-gray-200 pulse mt-2"></div>
+                  <div class="hidden fb-sm:block h-12 w-full bg-gray-200 pulse mt-5"></div>
+                  <div class="fb-sm:hidden h-20 w-full bg-gray-200 pulse"></div>
+                </div>
+              </div>
+              <div class="mt-5">
+                <div class="hidden fb-sm:flex justify-between items-center py-1.5 mb-1">
+                  <div class="flex-1 flex justify-between">
+                    {% for i in (1..6) %}
+                      <div class="flex-1 h-4 bg-gray-200 pulse mx-1"></div>
+                    {% endfor %}
+                  </div>
+                  <div class="w-[148px] h-4 bg-gray-200 pulse"></div>
+                </div>
+                {% for i in (1..5) %}
+                  <div class="hidden fb-sm:flex justify-between items-center py-2">
+                    <div class="flex-1 flex justify-between">
+                      {% for j in (1..6) %}
+                        <div class="flex-1 h-4 bg-gray-200 pulse mx-1"></div>
+                      {% endfor %}
+                    </div>
+                    <div class="w-[148px] h-8 bg-gray-200 first:pulse">
+                    </div>
+                  </div>
+                {% endfor %}
               </div>
             </div>
           {% endfor %}
         </div>
       </div>
-    {% endfor %}
+    </div>
   </div>
-  <div class="skeleton-mob-total">
+  <!-- 移动端骨架屏 -->
+  <div class="fb-sm:hidden">
+    <div class="w-full h-16 mb-4 bg-gray-200 pulse"></div>
     {% for i in (1..2) %}
-      <div class="skeleton-spu-number pulse">
-
-      </div>
-      <div class="skeleton-spu-header">
-        <div class="skeleton-spu-meta">
-          <div class="skeleton-spu-img pulse"></div>
-          <div class="skeleton-spu-data">
-            <div class="skeleton-spu-des pulse"></div>
-          </div>
+      <div class="w-full bg-white rounded-sm mb-5">
+        <div class="w-full h-20 pulse ">
         </div>
-      </div>
-      <div class="skeleton-mobile-big">
-        {% for j in (1..2) %}
-          <div class="skeleton-mobile-wrapper">
-            <div class="skeleton-mobile-item">
-              <div class="skeleton-mobile-img pulse"></div>
-              <div class="skeleton-mobile-info">
-                <div class="skeleton-mobile-title pulse"></div>
-                <div class="skeleton-mobile-price pulse"></div>
-                <div class="skeleton-mobile-button pulse"></div>
-              </div>
+        <div class="grid grid-cols-2 gap-4 mt-5">
+          {% for j in (1..2) %}
+            <div class="w-full bg-white h-[298px] rounded-sm p-3 pulse">
+            
             </div>
-          </div>
-        {% endfor %}
+          {% endfor %}
+        </div>
       </div>
     {% endfor %}
   </div>

@@ -330,7 +330,7 @@
                   <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
                   <div>${ item.value }</div>
                   <el-input
-                    placeholder="Please enter your single"
+                    placeholder="Please enter your industry"
                     maxlength="150"
                     v-if="showIndustryEdit && item.value == 'Other'"
                     v-model="industryForm.industry"
@@ -482,29 +482,63 @@
             :rules="searchCompanyRules"
             ref="searchCompanyRuleForm"
           >
-            <el-form-item prop="searchCompanyCode">
-              <el-select
-                id="searchCompanyCode"
-                v-model="searchCompanyCodeForm.searchCompanyCode"
-                filterable
-                remote
-                placeholder=""
-                :popper-append-to-body="false"
-                @hook:mounted="removeReadOnly"
-                @visible-change="removeReadOnlyVisible"
-                @blur="removeReadOnly"
-                @focus="removeReadOnlyFocus"
-                :remote-method="companyRemoteSearch"
-                :loading="codeSearchLoading">
-                <el-option
-                  v-for="item in companyOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-              <label for="searchCompanyCode" class="el-label" :class="{ 'label--focus': elSelectFocus }">Company Authorization Code*</label>
-            </el-form-item>
+            <el-row>
+              <el-form-item prop="searchCompanyCode">
+                <el-select
+                  id="searchCompanyCode"
+                  v-model="searchCompanyCodeForm.searchCompanyCode"
+                  filterable
+                  remote
+                  placeholder=""
+                  :popper-append-to-body="false"
+                  @hook:mounted="removeReadOnly"
+                  @visible-change="removeReadOnlyVisible"
+                  @blur="removeReadOnly"
+                  @focus="removeReadOnlyFocus"
+                  :remote-method="companyRemoteSearch"
+                  :loading="codeSearchLoading">
+                  <el-option
+                    v-for="item in companyOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+                <label for="searchCompanyCode" class="el-label" :class="{ 'label--focus': elSelectFocus }">Company Authorization Code*</label>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item class="common-select" prop="jobCompany">
+                <el-select
+                  ref="selJobCompany"
+                  id="account_job_company"
+                  v-model="searchCompanyCodeForm.jobCompany"
+                  placeholder=""
+                  v-focus-input="searchCompanyCodeForm.jobCompany"
+                >
+                  <el-option
+                    v-for="item in jobOptionsCompany"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                    <div class="common-dropdown-item" @click="handleButtonClickJobCompany($event, item)">
+                      <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                      <div>${ item.value }</div>
+                      <el-input
+                        ref="selJobCompanyInput"
+                        @focus="selectJobCompanyFocus"
+                        placeholder="Please enter your job"
+                        maxlength="150"
+                        v-if="showJobCompanyEdit && item.value == 'Other'"
+                        v-model="searchCompanyCodeForm.jobCompany"
+                      ></el-input>
+                    </div>
+                  </el-option>
+                </el-select>
+                <label for="account_job_company" class="el-label">Job Function*</label>
+              </el-form-item>
+            </el-row>
           </el-form>
         </template>
         <template v-else>
@@ -550,7 +584,7 @@
                         <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
                         <div>${ item.value }</div>
                         <el-input
-                          placeholder="Please enter your single"
+                          placeholder="Please enter your industry"
                           maxlength="150"
                           v-if="showIndustryEdit1 && item.value == 'Other'"
                           v-model="addCompanyForm.industry"
@@ -561,6 +595,38 @@
                   <label for="addCompanyForm[industry]" class="el-label">Industry*</label>
                 </el-form-item>
               </el-col>
+            </el-row>
+            <el-row>
+              <el-form-item class="common-select" prop="jobFunction">
+                <el-select
+                  ref="selJobCompany1"
+                  id="account_job_company1"
+                  v-model="addCompanyForm.jobFunction"
+                  placeholder=""
+                  v-focus-input="addCompanyForm.jobFunction"
+                >
+                  <el-option
+                    v-for="item in jobOptionsCompany1"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                    <div class="common-dropdown-item" @click="handleButtonClickJobCompany1($event, item)">
+                      <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                      <div>${ item.value }</div>
+                      <el-input
+                        ref="selJobCompanyInput1"
+                        @focus="selectJobCompanyFocus1"
+                        placeholder="Please enter your job"
+                        maxlength="150"
+                        v-if="showJobCompanyEdit1 && item.value == 'Other'"
+                        v-model="addCompanyForm.jobFunction"
+                      ></el-input>
+                    </div>
+                  </el-option>
+                </el-select>
+                <label for="account_job_company1" class="el-label">Job Function*</label>
+              </el-form-item>
             </el-row>
             <el-row class="join-progress-2-title">
               Company Address
@@ -968,6 +1034,16 @@
             ${ currentCompany.industry }
           </div>
         </div>
+        {% if customer.metafields.custom.jobFunction %}
+          <div class="account-info-line">
+            <div class="account-info-line-1">
+              <p>JOB FUNCTION</p>
+            </div>
+            <div class="account-info-line-2">
+              {{ customer.metafields.custom.jobFunction }}
+            </div>
+          </div>
+        {% endif %}
         <div class="account-info-line">
           <div class="account-info-line-1">
             <p>PAYMENT TERMS</p>
@@ -1261,6 +1337,28 @@
             { isSelected: false, value: 'Personal Use', label: 'Personal Use' },
             { isSelected: false, value: 'Other', label: 'Other' },
           ],
+          jobOptionsCompany: [
+            { isSelected: false, value: 'Maintenance & Engineering', label: 'Maintenance & Engineering ' },
+            { isSelected: false, value: 'Safety /EHS', label: 'Safety /EHS' },
+            { isSelected: false, value: 'Purchasing', label: 'Purchasing' },
+            { isSelected: false, value: 'Production', label: 'Production' },
+            { isSelected: false, value: 'Operations', label: 'Operations' },
+            { isSelected: false, value: 'Management', label: 'Management' },
+            { isSelected: false, value: 'Contractor', label: 'Contractor' },
+            { isSelected: false, value: 'Student', label: 'Student' },
+            { isSelected: false, value: 'Other', label: 'Other' },
+          ],
+          jobOptionsCompany1: [
+            { isSelected: false, value: 'Maintenance & Engineering', label: 'Maintenance & Engineering ' },
+            { isSelected: false, value: 'Safety /EHS', label: 'Safety /EHS' },
+            { isSelected: false, value: 'Purchasing', label: 'Purchasing' },
+            { isSelected: false, value: 'Production', label: 'Production' },
+            { isSelected: false, value: 'Operations', label: 'Operations' },
+            { isSelected: false, value: 'Management', label: 'Management' },
+            { isSelected: false, value: 'Contractor', label: 'Contractor' },
+            { isSelected: false, value: 'Student', label: 'Student' },
+            { isSelected: false, value: 'Other', label: 'Other' },
+          ],
           originalAddCompanyForm: {
             companyName: '',
             industry: '',
@@ -1312,6 +1410,7 @@
           searchCompanyCodeForm: {
             // 搜索公司表单
             searchCompanyCode: '',
+            jobCompany: ''
           },
           validCompanyData: {},
           originalAddressRuleForm: {
@@ -1331,6 +1430,7 @@
           addressFormMethod: 'post', // 表单提交的地址
           isAddressUpdate: false, //是否更新表单
           addressRuleForm: {
+            jobCompany: '',
             first_name: '',
             last_name: '',
             phone: '',
@@ -1368,13 +1468,23 @@
             last_name: decodeHTMLEntities("{{ customer.last_name }}"),
           },
           industry: "",
+          jobCompany: '',
+          jobCompany1: '',
+          showJobCompanyEdit: false,
+          showJobCompanyEdit1: false,
           searchCompanyRules: {
+            jobCompany: [
+              { validator: noWhitespaceValidator, message: 'Job Fcuntion is required', trigger: 'change' }
+            ],
             // 搜索公司Code校验
             searchCompanyCode: [ 
               { validator: companyCodeValidator, trigger: 'change' } 
             ],
           },
           addCompanyFormRules: {
+            jobFunction: [
+              { validator: noWhitespaceValidator, message: 'Job Fcuntion is required', trigger: 'change' }
+            ],
             // 新增公司校验
             companyName: [
               { validator: noWhitespaceValidator, message: 'Company Name is required', trigger: 'blur' },
@@ -1555,6 +1665,18 @@
             this.industry1 = newVal;
           }
         },
+        "addCompanyForm.jobFunction"(newVal, oldVal) {
+          const jobCompany = this.jobOptionsCompany1.find((item) => item.value == 'Other');
+          if(jobCompany.isSelected) {
+            this.jobCompany1 = newVal;
+          }
+        },
+        "searchCompanyCodeForm.jobCompany"(newVal, oldVal) {
+          const jobCompany = this.jobOptionsCompany.find((item) => item.value == 'Other');
+          if(jobCompany.isSelected) {
+            this.jobCompany = newVal;
+          }
+        },
         existCompany(newVal, oldVal) {
           if(this.newCompany && newVal) {
             this.newCompany = false;
@@ -1567,6 +1689,12 @@
         }
       },
       methods: {
+        selectJobCompanyFocus() {
+          this.$refs.searchCompanyRuleForm.clearValidate(["jobCompany"]);
+        },
+        selectJobCompanyFocus1() {
+          this.$refs.addCompanyRuleForm.clearValidate(["jobFunction"]);
+        },
         removeReadOnlyVisible(bol) {
           this.$nextTick(() => {
             document.getElementById('searchCompanyCode').removeAttribute("readOnly");
@@ -1738,14 +1866,19 @@
         changeJoinMethod(type) {
           if(type == 1) {
             this.searchCompanyCodeForm = {
-              searchCompanyCode: ''
+              searchCompanyCode: '',
+              jobCompany: ''
             };
             this.$refs.searchCompanyRuleForm?.clearValidate();
             this.$refs.addCompanyRuleForm?.resetFields();
+            this.jobCompany1 = '';
+            this.showJobCompanyEdit1 = false;
+            this.jobOptionsCompany1.map(item => {item.isSelected = false});
             this.existCompany = true;
             this.newCompany = false;
           } else {
             this.addCompanyForm = {
+              jobFunction: '',
               companyName: '',
               industry: '',
               address1: '',
@@ -1756,6 +1889,9 @@
             };
             this.$refs.searchCompanyRuleForm?.clearValidate();
             this.$refs.addCompanyRuleForm?.resetFields();
+            this.jobCompany = '';
+            this.showJobCompanyEdit = false;
+            this.jobOptionsCompany.map(item => {item.isSelected = false});
             this.existCompany = false;
             this.newCompany = true;
           }
@@ -1775,6 +1911,7 @@
                     customerId: '{{ customer.id }}',
                     email: "{{ customer.email }}",
                     companyId: this.validCompanyData.companyId,
+                    jobFunction: this.searchCompanyCodeForm.jobCompany,
                     companyName: this.validCompanyData.companyName
                   }),
                   headers: {
@@ -2157,6 +2294,42 @@
           this.defaultAddress.default = false;
           this.address_list.map(item => item.default = false);
           address.default = true;
+        },
+        handleButtonClickJobCompany(event, jobItem) {
+          event.stopPropagation(); // 阻止冒泡，防止关闭
+          if (jobItem.isSelected) return;
+          this.jobOptionsCompany.map((item) => (item.isSelected = false));
+          const jobCompany = this.jobOptionsCompany.find((item) => item.value == jobItem.value);
+          if (jobItem.value == 'Other') {
+            this.showJobCompanyEdit = true;
+            this.searchCompanyCodeForm.jobCompany = this.jobCompany;
+            this.$nextTick(() => {
+              this.$refs.selJobCompanyInput[0].focus();
+            })
+          } else {
+            this.showJobCompanyEdit = false;
+            this.searchCompanyCodeForm.jobCompany = jobCompany.value;
+            this.$refs.selJobCompany.blur(); // 关闭菜单
+          }
+          jobCompany.isSelected = true;
+        },
+        handleButtonClickJobCompany1(event, jobItem) {
+          event.stopPropagation(); // 阻止冒泡，防止关闭
+          if (jobItem.isSelected) return;
+          this.jobOptionsCompany1.map((item) => (item.isSelected = false));
+          const jobCompany = this.jobOptionsCompany1.find((item) => item.value == jobItem.value);
+          if (jobItem.value == 'Other') {
+            this.showJobCompanyEdit1 = true;
+            this.addCompanyForm.jobFunction = this.jobCompany1;
+            this.$nextTick(() => {
+              this.$refs.selJobCompanyInput1[0].focus();
+            })
+          } else {
+            this.showJobCompanyEdit1 = false;
+            this.addCompanyForm.jobFunction = jobCompany.value;
+            this.$refs.selJobCompany1.blur(); // 关闭菜单
+          }
+          jobCompany.isSelected = true;
         },
         handleToResetPass() {
           Cookies.set();

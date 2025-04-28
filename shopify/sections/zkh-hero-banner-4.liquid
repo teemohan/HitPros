@@ -1,0 +1,143 @@
+<style>
+  .hero-banner {
+    line-height: 1.5;
+  }
+  .hero-banner-link {
+    width: 100%;
+    display: block;
+    position: relative;
+    height: 420px;
+    background-position: left;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url('{{ section.settings.bg_img | image_url }}');
+  }
+
+  .hero-banner-content-wrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .hero-banner-title {
+    color: #FABE00;
+    font-size: 48px;
+    font-weight: 900;
+  }
+
+  .hero-banner-text {
+    color: white;
+    margin-top: 18px;
+    font-size: 32px;
+  }
+
+  .hero-banner-button {
+    margin-top: 32px;
+    transition: all .3s;
+    border: 1px solid #FABE00;
+    color: #FABE00;
+    font-weight: bold;
+    border-radius: 2px;
+    display: inline-flex;
+    width: 220px;
+    height: 48px;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+  }
+
+  .hero-banner-button:hover {
+    background-color: #FABE00;
+    color: #142A6B;
+  }
+
+  @media screen and (max-width: 740px) {
+    .hero-banner .container {
+      padding: 0;
+    }
+    .hero-banner-link {
+      height: auto;
+      aspect-ratio: 1;
+      background-image: url('{{ section.settings.h5_bg_img | image_url }}');
+    }
+    .hero-banner-content-wrapper {
+      padding: 40px 20px; /* Reduce padding on mobile */
+      justify-content: center; /* Center content on mobile */
+      align-items: end;
+      text-align: center;
+    }
+    .hero-banner-title {
+      font-size: 24px;
+    }
+    .hero-banner-text {
+      font-size: 14px;
+    }
+    .hero-banner-button {
+      width: 154px;
+      height: 32px;
+      font-size: 14px;
+    }
+    .hero-banner-button,
+    .hero-banner-text {
+      margin-top: 20px;
+    }
+  }
+</style>
+<div class="container">
+  <a href="{{ section.settings.btn_url }}" class="hero-banner-link">
+    <div class="hero-banner-content-wrapper">
+      <div>
+        <h2 class="hero-banner-title">{{ section.settings.title }}</h2>
+        <div class="hero-banner-text">{{ section.settings.text }}</div>
+        <div class="hero-banner-button">{{ section.settings.btn_text }}</div>
+      </div>
+    </div>
+  </a>
+</div>
+{% schema %}
+  {
+    "name": "Zkh Hero Banner 4",
+    "class": "hero-banner",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_img",
+        "label": "Bg Img"
+      },
+      {
+        "type": "image_picker",
+        "id": "h5_bg_img",
+        "label": "H5 Bg Img"
+      },
+      {
+        "type": "text",
+        "id": "btn_text",
+        "label": "Btn Text"
+      }, {
+        "type": "url",
+        "id": "btn_url",
+        "label": "Btn URL"
+      }
+    ],
+    "presets": [
+
+      {
+        "name": "Zkh Hero Banner 4"
+      }
+    ]
+  }
+{% endschema %}

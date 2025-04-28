@@ -34,8 +34,7 @@
   line-height: 24px;
 }
 .h-newsletter .h-newsletter-text {
-  margin-left: 8px;
-  margin-right: 74px;
+  margin-right: 60px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -68,6 +67,7 @@
   background-color: var(--my-yellow);
 }
 .h-newsletter .h-newsletter-social {
+  display: none;
   flex-shrink: 0;
 }
 
@@ -75,15 +75,15 @@
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  height: 52px;
-  border-radius: 56px;
+  height: 48px;
   overflow: hidden;
   background-color: #fff;
+  border-radius: 2px;
 }
 
 .h-newsletter .newsletter-input-row input {
   border: none;
-  padding-left: 24px;
+  padding-left: 18px;
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
@@ -96,12 +96,11 @@
 }
 
 .h-newsletter .newsleftter-btn {
-  border-radius: 43px;
   position: relative;
   color: #fff;
-  width: 160px;
-  text-transform: capitalize;
+  width: 220px;
   right: 0;
+  text-transform: capitalize;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -109,7 +108,7 @@
   background-color: var(--my-yellow);
   transition: all .3s;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--my-blue);
   line-height: 20px;
 }
@@ -117,9 +116,11 @@
 @media screen and (max-width: 740px) {
   .h-newsletter {
     padding: 26px 0;
+    align-items: flex-start;
   }
   .h-newsletter .h-newsletter-text-wrapper .footer__newsletter-form {
     min-width: auto;
+    align-self: stretch;
   }
   .h-newsletter .newsletter-input-row input {
     font-size: 14px;
@@ -131,7 +132,7 @@
   }
   .h-newsletter .h-newsletter-text-wrapper {
     flex-direction: column;
-    justify-content: center;
+    align-items: flex-start;
     gap: 16px;
   }
   .h-newsletter-text-inner svg {
@@ -139,9 +140,11 @@
     height: 16px;
   }
   .h-newsletter .h-newsletter-title {
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 24px;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .h-newsletter .h-newsletter-tip {
+    font-size: 12px;
   }
   .h-newsletter .h-newsletter-text {
     margin: 0;

@@ -1,4 +1,22 @@
 (() => {
+  (() => {
+    window.listenUserEvent = ({
+      eventName, skuCode
+    }) => {
+      fetch(`${window.zkh.api}/listen/event`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          shopifyUserId: window.themeVariables.userId || null,
+          ga4UserId: window.gaGlobal?.vid,
+          eventName,
+          ...(eventName === 'product_page_view' && { skuCode })
+        }),
+      })
+    }
+  })();
   (() => { // 校验用户是否是B端用户
     if(Cookies.get('logout') == 1) {
       Cookies.remove('logout');
@@ -3699,6 +3717,15 @@
             searchStr: '',
             timeout: null,
             cb: null,
+            abortController: null,
+            isloading: false,
+            queryParam: {
+              channelCode: "NorthSky-US",
+              hasLogin: window.zkh.customerId ? true : false,
+              from: 0,
+              size: 12,
+              keyword: "",
+            }
           };
         },
         mounted() {
@@ -3770,18 +3797,46 @@
               localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
             }
           },
+          async getResult() {
+            if(this.isloading) return;
+            this.isloading = true;
+            triggerEvent(document.documentElement, 'theme:loading:start');
+            this.queryParam.keyword = this.searchStr;
+            const url = new URL(window.location.href);
+            url.pathname = '/search';
+            url.search = `?type=product&q=${encodeURIComponent(this.searchStr)}`;
+            try{
+              this.abortController = new AbortController();
+              const response = await fetch(`${window.zkh.api}/openapi/search/v2`, {
+                signal: this.abortController.signal,
+                method: 'POST',
+                body: JSON.stringify(this.queryParam),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+              const res = await response.json();
+              if(res.data && res.data.totalNum == 1 && res.data.searchHitType && res.data.searchHitType == 'skuNo') {
+                window.location.href = res.data.skuInfos[0].productUrl;
+              } else {
+                window.location.href = url.toString();
+              }
+            } catch(error) {
+              window.location.href = url.toString();
+              console.error(error);
+            } finally {
+              this.isloading = false;
+              triggerEvent(document.documentElement, 'theme:loading:end');
+            }
+          },
           handleSearch() {
-            // 搜索按钮
             if(!this.searchStr?.trim()) {
               window.location.href = "/collections/all";
               return
             }
             this.storageHistory(this.searchStr);
-            const url = new URL(window.location.href);
-            url.pathname = '/search';
-            url.search = `?type=product&q=${encodeURIComponent(this.searchStr)}`;
-            window.location.href = url.toString();
-          },
+            this.getResult();
+          }
         },
       });
     }
@@ -4038,63 +4093,45 @@
       const recentlyViewedProductsElement = div.querySelector('recently-viewed-products');
       if (recentlyViewedProductsElement.hasChildNodes()) {
         this.innerHTML = recentlyViewedProductsElement.innerHTML;
+      } else {
+        this.closest('.shopify-section--recently-viewed-products').style.display = 'none'
       }
 
       if ($('.recently-viewed .swiper').length > 0) {
         new Swiper('.recently-viewed .swiper', {
           observer: true,
           observeParents: true,
+          touchStartPreventDefault: true,
+          passiveListeners: false,
+          touchAngle: 70,              
+          threshold: 10,
           breakpoints: {
             0: {
               spaceBetween: 12,
               slidesPerView: 2,
             },
-            740: {
-              spaceBetween: 12,
-              slidesPerView: 2,
+            768: {
+              spaceBetween: 24,
+              slidesPerView: 3,
             },
-            1200: {
-              spaceBetween: 12,
+            1024: {
+              spaceBetween: 24,
               slidesPerView: 4,
             },
-          },
-          pagination: {
-            el: '.recently-viewed .swiper-pagination',
-            clickable: true,
+            1280: {
+              spaceBetween: 24,
+              slidesPerView: 5,
+            },
           },
           navigation: {
             nextEl: '.recently-viewed .swiper-button-next',
             prevEl: '.recently-viewed .swiper-button-prev',
           },
+          scrollbar: {
+            el:".recently-viewed .swiper-scrollbar"
+          },
         });
-        if($(this).data('customer')) {
-          this.setWish();
-        }
       }
-    }
-    async setWish ()  {
-      const skus = [];
-      $('.recently-viewed .index-product-item').each(function() {
-        const sku = $(this).data('sku');
-        skus.push(sku);
-      })
-      const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
-        method: 'POST',
-        body: JSON.stringify({
-          customerId: $(this).data('customer'),
-          skus
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-      const res = await response.json();
-      $('.recently-viewed .index-product-item').each(function() {
-        const sku = $(this).data('sku');
-        if(res.data.includes(sku)) {
-          $(this).find('.favorite-button').addClass('favorited')
-        }
-      })
     }
     get searchQueryString() {
       const items = JSON.parse(localStorage.getItem('theme:recently-viewed-products') || '[]');
@@ -6959,7 +6996,7 @@
       if (this.selectionAttrs.length <= 1) return;
       const secondCategoryLine = $(this).find(`.attr-line[data-attr="${this.selectionAttrs[1].attrName}"]`);
       secondCategoryLine.find('.attr-btn').each((btnIndex, btn) => {
-        const btnValue = $(btn).data('attr-value');
+      const btnValue = ($(btn).data('attr-value') || '').toString();
         const isAvailable = this.isSecondCategoryValueAvailable(currentSelection[0], btnValue);
         if (isAvailable) {
           $(btn).prop('disabled', false);
@@ -7047,7 +7084,7 @@
             return;
           }
           const attrName = $(this).closest('.attr-line').data('attr');
-          const attrValue = $(this).data('attr-value');
+          const attrValue = ($(this).data('attr-value') || '').toString();
           _this.handleSelection(this, attrName, attrValue);
           if (_this.shouldAttemptNavigation()) {
             if (_this.currentSkuCode) { // 如果有 skuCode
@@ -8224,38 +8261,39 @@
   var ProductIndexList = class extends HTMLElement {
     connectedCallback() {
       const sectionId = $(this).data('section-id');
-      new Swiper(`.${sectionId}-IndexBestswiper`, {
+      new Swiper(`.${sectionId} .swiper`, {
         observer: true,
         observeParents: true,
+        touchStartPreventDefault: true,
+        passiveListeners: false,
+        touchAngle: 70,              
+        threshold: 10,
         breakpoints: {
           0: {
             spaceBetween: 12,
             slidesPerView: 2,
           },
-          740: {
-            spaceBetween: 12,
-            slidesPerView: 2,
+          768: {
+            spaceBetween: 24,
+            slidesPerView: 3,
           },
-          1200: {
-            spaceBetween: 12,
+          1024: {
+            spaceBetween: 24,
             slidesPerView: 4,
           },
+          1280: {
+            spaceBetween: 24,
+            slidesPerView: 5,
+          },
         },
-        pagination: {
-          el: `.${sectionId} .swiper-pagination`,
-          clickable: true,
+        scrollbar: {
+          el: `.${sectionId} .swiper-scrollbar`
         },
         navigation: {
           nextEl: `.${sectionId} .swiper-button-next`,
           prevEl: `.${sectionId} .swiper-button-prev`,
         },
-        on: {
-          init: function () {
-            $(`.${sectionId}`).removeClass('opacity-hidden');
-          },
-        },
       });
-
     }
   };
   window.customElements.define('product-index-list', ProductIndexList);
@@ -8327,6 +8365,23 @@
         const res = await response.json();
         if (res.code === 200) {
           const isFavorited = res.data.wish ? 1 : 0;
+          if(isFavorited) {
+            const sku = $(this).data('sku');
+            const price = $(this).data('price');
+            const productTitle = $(this).data('product-title');
+            dataLayer.push({
+              'event': 'add_to_wishlist',
+              'ecommerce': {
+                'currency': 'USD',
+                'value': price,
+                'items': [{
+                  'item_id': sku,
+                  'sku_code': sku,
+                  'item_name': productTitle
+                }],
+              },
+            });
+          }
           this.updateFavoriteButton(isFavorited);
           document.dispatchEvent(new CustomEvent('wish-refreash'));
         }

@@ -64,6 +64,7 @@
 
 .el-select-dropdown__item .el-input__inner {
   height: 30px;
+  line-height: 30px;
 }
 
 
@@ -429,11 +430,11 @@
   margin-right: 24px;
 }
 .el-radio__input.is-checked .el-radio__inner {
-  border-color: #0A2B6F;
+  border-color: var(--my-blue);
   background: #0A2B6F;
 }
 .el-radio__input.is-checked+.el-radio__label {
-  color: #0A2B6F;
+  color: var(--my-blue);
   font-weight: 500;
 }
 

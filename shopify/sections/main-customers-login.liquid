@@ -259,28 +259,17 @@
             });
             const data = await res.json();
             if (data.code == 200) {
-              const ip = Cookies.get('ip');
-              if(ip) {
-                //Sign-in Completed
-                dataLayer.push({
-                  'event': 'custom_sign_in_completed',
-                  'zip': data.data.userInfo.zip,   
-                  'first_name':data.data.userInfo.firstname, 
-                  'last_name': data.data.userInfo.lastname,
-                  'username': data.data.userInfo.username,
-                  'email': data.data.userInfo.email,
-                  'industry': data.data.userInfo.industry,
-                  'ip': ip
-                });
-              }
               const cartRes = await fetch(`${window.zkh.api}/shopping/cart?email=${this.ruleForm.email}`);
               const cartData = await cartRes.json();
               if(cartData.data.length > 0) {
                 Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 });  // 登录的时候查一下，customer对应的cart cookie
               }
-              const email = this.ruleForm.email
+              dataLayer.push({
+                'event': 'custom_sign_in_completed',
+                'account_type': data.data.userInfo.companyName ? 'Business': 'Personal',
+                'company': data.data.userInfo.companyName ? data.data.userInfo.companyName : null
+              });
               window.location.href = data.data.redirectUrl;
-              
             } else {
               this.$message({
                 showClose: true,

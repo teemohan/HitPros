@@ -3,18 +3,6 @@
   <script type="text/x-template" id="product-item-search">
     <div class="index-product-item list-type product-item" :data-product-id="product.productId">
       <div class="list-product-media">
-        <div class="favorite-button-wrapper">
-          <button class="favorite-button-container" @click="handleWishChange">
-            <template v-if="product.favorited">
-              <icon-favorited/>
-              <span class="favorited-text hidden-phone">In My List</span>
-            </template>
-            <template v-else>
-              <icon-unfavorited/>
-              <span class="unfavorited-text hidden-phone">Add to List</span>
-            </template>
-          </button>
-        </div>
         <div class="product-img-swiper swiper">
           <div class="swiper-button-prev">
             <icon-media-swiper-prev />
@@ -162,7 +150,7 @@
             item_list_id: "search_result_click",
             items: [{
               index: this.product.calculatedIndex,
-              item_id: `shopify_US_${this.product.productId}_${this.product.variantId}`,
+              item_id: this.product.sku,
               sku_code: this.product.sku,
               item_name: this.product.title
             }]
@@ -209,6 +197,10 @@
           },
         });
         new Swiper(`.list-type[data-product-id='${this.product.productId}'] .product-img-swiper`, {
+          touchStartPreventDefault: true,
+          passiveListeners: false,
+          touchAngle: 70,              
+          threshold: 10,
           lazy: true,
           navigation: {
             nextEl: `.list-type[data-product-id='${this.product.productId}'] .swiper-button-next`,
@@ -243,6 +235,9 @@
             },
             body: JSON.stringify(param)
           })
+          window.listenUserEvent({
+            eventName: 'add_to_cart'
+          });
           const responseJson = await response.json();
           let errorMsg;
           if (response.ok) {

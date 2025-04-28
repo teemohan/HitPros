@@ -27,6 +27,9 @@
 .product-files a .download-text {
   text-decoration: underline;
 }
+.product-information .wd-40 {
+  max-width: 200px;
+}
 .product-information-wrapper .product-information {
   display: flex;
   align-items: flex-start;

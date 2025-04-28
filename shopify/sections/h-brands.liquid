@@ -43,6 +43,10 @@
     new Swiper('.section-{{ section.id }} .swiper', {
       observer: true,
       observeParents: true,
+      touchStartPreventDefault: true,
+      passiveListeners: false,
+      touchAngle: 70,              
+      threshold: 10,
       breakpoints: {
         0: {
           spaceBetween: 8,

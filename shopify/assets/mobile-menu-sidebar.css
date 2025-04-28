@@ -48,7 +48,7 @@
   font-weight: 500;
   line-height: 22px;
   letter-spacing: -0.43px;
-  background-color: #0A2B6F;
+  background-color: var(--my-blue);
   color: #fff;
 }
 .mobile-menu-nav .menu-nav header .title .close {
@@ -100,7 +100,7 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
-  color: #0A2B6F;
+  color: var(--my-blue);
 }
 .mobile-menu-nav main ul {
   display: flex;

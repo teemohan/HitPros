@@ -204,7 +204,7 @@
       background: #FFFBEC;
     }
     .account-company-user-line.unauth .line-title span:first-child {
-      color: #0A2B6F;
+      color: var(--my-blue);
     }
     .account-company-user-line .el-dropdown,
     .account-company-user-line .el-dropdown-menu__item
@@ -718,7 +718,7 @@
               dataLayer.push({
                 'event': 'custom_business_user_removed',
                 'company': this.companyName,
-                'request_user_id': this.needRemoveItem.customerId,
+                'request_user_id': String(this.needRemoveItem.customerId),
               });
               this.$message({
                 showClose: true,
@@ -812,7 +812,7 @@
               dataLayer.push({
                 'event': 'custom_business_user_added',
                 'company': this.companyName,
-                'request_user_id': item.customerId,
+                'request_user_id': String(item.customerId),
               });
               this.$message({
                 showClose: true,
@@ -857,7 +857,7 @@
                   dataLayer.push({
                     'event': 'custom_business_user_rejected',
                     'company': this.companyName,
-                    'request_user_id': this.removeingItem.customerId,
+                    'request_user_id': String(this.removeingItem.customerId),
                   });
                   this.$message({
                     showClose: true,

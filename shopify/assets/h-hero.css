@@ -225,7 +225,7 @@
     font-weight: 600;
     line-height: 16.94px;
     letter-spacing: .012em;
-    color: #0a2b6f;
+    color: var(--my-blue);
     display: flex;
     background-color: #fabe00;
     justify-content: center;

@@ -1,150 +1,105 @@
 {% if section.settings.collection.products.size > 0 %}
-  {{ 'index-product-item.css' | asset_url | stylesheet_tag }}
-  {% style %}
-    {% if template.name == 'index' %}
-      .index-product-item .product-item__quick-form .button:hover {
-        background-color: var(--my-blue);
-        color: #fff;
-      }
-      .index-product-item .product-item__quick-form .button:hover path {
-        fill: #fff;
-      }
-      .opacity-hidden {
-        opacity: 0;
-      }
-    {% endif %}
-  {% endstyle %}
-  <product-index-list data-section-id="{{ section.id }}" class="{{ section.id }} opacity-hidden">
-    <div class="container">
-      {% render 'index-cus-header', header_title: section.settings.title, header_url: section.settings.btn_link %}
-      <div class="IndexBestswiper">
-        <div class="swiper-button-prev hidden-pocket">
-          {% render 'icon' with 'swiper-arrow-prev' %}
-        </div>
-        <div class="swiper {{ section.id }}-IndexBestswiper">
-          <div class="swiper-wrapper">
-            {%- assign collection = section.settings.collection -%}
-            {%- for product in collection.products limit: 12 -%}
-              <div class="swiper-slide">
-                {% render 'index-product-item', product: product %}
-              </div>
-            {% endfor %}
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
-        <div class="swiper-button-next hidden-pocket">
-          {% render 'icon' with 'swiper-arrow-next' %}
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+<product-index-list data-section-id="{{ section.id }}" class="{{ section.id }} product-x-hidde">
+  <div class="container">
+    <div class="index-cus-header">
+      <h2>{{ section.settings.title }}</h2>
+      {% render 'swiper-buttons' %}
+    </div>
+    <div class="IndexBestswiper hover-list">
+      <div class="swiper {{ section.id }}-IndexBestswiper">
+        <div class="swiper-wrapper">
+          {% assign sort_collection_products = section.settings.collection.products | sort: 'tags' %}
+          {%- for product in sort_collection_products -%}
+            <div class="swiper-slide">
+              {% render 'index-product-item', product: product %}
+            </div>
+          {% endfor %}
         </div>
       </div>
+      <div class="swiper-scrollbar"></div>
     </div>
-  </product-index-list>
+  </div>
+</product-index-list>
 
-  <script>
-    (() => {
-      //埋点
-      let dataLayerForm = null;
-      function generateUUID() {
-        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
-      }
-      const request_id = generateUUID();
+<script>
+  (() => {
+    //埋点
+    let dataLayerForm = null;
+    function generateUUID() {
+      return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
+    }
+    const request_id = generateUUID();
 
-      const getDataLayerForm = () => {
-        const items = [];
-        $('.featured-product-list .index-product-item').each(function(index) {
-          const sku = $(this).data('sku');
-          const productId = $(this).data('product-id');
-          const varId = $(this).data('var-id');
-          const productTitle = $(this).data('product-title');
-          items.push({
-            index: index + 1,
-            item_id: `shopify_US_${productId}_${varId}`,
-            sku_code: sku,
-            item_name: productTitle
-          });
+    const getDataLayerForm = () => {
+      const items = [];
+      $('.featured-product-list .index-product-item').each(function(index) {
+        const sku = $(this).data('sku');
+        const productId = $(this).data('product-id');
+        const varId = $(this).data('var-id');
+        const productTitle = $(this).data('product-title');
+        items.push({
+          index: index + 1,
+          item_id: sku,
+          sku_code: sku,
+          item_name: productTitle
         });
-        return {
-          event: "view_item_list",
-          recommend_module:'homepage', //默认值
-          request_id,
-          rank_type:'',
-          ecommerce: {
-            item_list_id: "recommended_product_exposure",
-            items
-          }
+      });
+      return {
+        event: "view_item_list",
+        recommend_module:'homepage', //默认值
+        request_id,
+        rank_type:'',
+        ecommerce: {
+          item_list_id: "recommended_product_exposure",
+          items
         }
       }
+    }
 
-      const handleDataLayerPush = () => {
-        dataLayerForm = getDataLayerForm();
-        dataLayer.push(dataLayerForm);
-      }
-      const clickSerrchProduct = () => {
-        $('.featured-product-list a[datalayer-link]').off('click').on('click', function(event) {
-          event.preventDefault();
-          const clicked_sku = $(this).data('sku');
-          const p_item = dataLayerForm.ecommerce.items.find(item => item.sku_code == clicked_sku);
-          if (p_item) {
-            const productLayerForm = {
-              ...dataLayerForm,
-              event: 'select_item',
-              ecommerce: {
-                items: [p_item],
-                item_list_id: "recommended_product_click",
-              }
+    const handleDataLayerPush = () => {
+      dataLayerForm = getDataLayerForm();
+      dataLayer.push(dataLayerForm);
+    }
+    const clickSerrchProduct = () => {
+      $('.featured-product-list a[datalayer-link]').off('click').on('click', function(event) {
+        const clicked_sku = $(this).data('sku');
+        const p_item = dataLayerForm.ecommerce.items.find(item => item.sku_code == clicked_sku);
+        if (p_item) {
+          const dataLayerFormCopy = {
+            ...dataLayerForm
+          };
+          delete dataLayerFormCopy.event;
+          const productLayerForm = {
+            ...dataLayerFormCopy,
+            event: 'select_item',
+            ecommerce: {
+              items: [p_item],
+              item_list_id: "recommended_product_click",
             }
-            dataLayer.push(productLayerForm);
-            location.href = $(this).attr('href'); // 跳转到链接的 href
           }
-        });
-      }
+          dataLayer.push(productLayerForm);
+        }
+      });
+    }
 
-      handleDataLayerPush();  //初始化执行 
-      clickSerrchProduct();
-    })();
-    (() => {
-      const setWish = async () => {
-        const skus = [];
-        $('.{{ section.id }} .index-product-item').each(function() {
-          const sku = $(this).data('sku');
-          skus.push(sku);
-        })
-        const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
-          method: 'POST',
-          body: JSON.stringify({
-            customerId: '{{ customer.id}}',
-            skus
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-        const res = await response.json();
-        $('.{{ section.id }} .index-product-item').each(function() {
-          const sku = $(this).data('sku');
-          if(res.data.includes(sku)) {
-            $(this).find('.favorite-button').addClass('favorited')
-          }
-        })
-      }
-      if('{{ customer.id }}') {
-        setWish()
-      }
-    })();
-  </script>
+    handleDataLayerPush();  //初始化执行 
+    clickSerrchProduct();
+  })();
+</script>
 {% else %} 
   {% style %}
     #shopify-section-{{ section.id }} {
       display: none;
     }
   {% endstyle %}
-  
 {% endif %}
 {% schema %}
 {
   "name": "product list",
-  "class": "section-padding section-gap swiper-list-wrapper featured-product-list",
+  "class": "section-padding section-gap featured-product-list product-swiper-list",
   "settings": [
     {
       "type": "text",

@@ -3,6 +3,7 @@
 <script>
   // This allows to expose several variables to the global scope, to be used in scripts
   window.themeVariables = {
+    userId: '{{ customer.id }}',
     userCompany: {
       isB2b: '{{ customer.b2b? }}',
       name: '{{ customer.current_company.name }}',

@@ -1,0 +1,142 @@
+<h1 style="display: none;">{{ section.settings.title }}</h1>
+<div class="container">
+  {% render 'collection-top-public', collection: section.settings %}
+  <div class="js-categories mb-10 fb-sm:mb-20 mt-4 fb-sm:mt-0">
+    <div class="js-categories-list grid grid-cols-2 fb-sm:grid-cols-4 fb-sm:border-l fb-sm:border-F0F0F0">
+     {% for i in (1..8) %}
+      <div class="flex flex-col items-center justify-center group py-2.5 transition duration-200 relative fb-sm:pt-6 fb-sm:pb-10 fb-sm:h-[244px] fb-sm:border-t fb-sm:border-b fb-sm:border-r fb-sm:border-F0F0F0">
+        <div class="w-full px-9 h-25 mb-4 fb-flex-center fb-sm:w-8.75r fb-sm:h-8.75r fb-sm:px-0">
+            <div class="w-full h-full bg-gray-200 animate-pulse rounded"></div>
+        </div>  
+        <div class="px-4 w-3/4 h-4 bg-gray-200 animate-pulse rounded fb-sm:px-7"></div>
+        <p class="w-full h-full border-[3px] absolute border-[#D3DEF1] hidden left-0 top-0 group-hover:block"></p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" defer>
+  (() => {
+    function createCategoryList(categories) {
+      if (!categories || !Array.isArray(categories) || categories.length === 0) {
+        return;
+      }
+      const categoryElements = categories.map((collection, index) => {
+        if (!collection || !collection.name) return '';
+        
+        const handle = collection.name.toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .trim()
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-');
+          
+        return `<a href="/collections/${handle}" 
+         class="flex flex-col items-center justify-center group py-2.5 transition duration-200 relative fb-sm:pt-6 fb-sm:pb-10 fb-sm:h-[244px] hover:bg-F3F8FC hover:border-none ${index > 3 ? 'fb-sm:border-b': 'fb-sm:border-t fb-sm:border-b'}  fb-sm:border-r  fb-sm:border-F0F0F0">
+          <div class="w-full px-9 h-25 mb-4 fb-flex-center fb-sm:w-8.75r fb-sm:h-8.75r fb-sm:px-0">
+              <img src="${collection?.img || ''}" alt="${collection.name}" width="100px" height="100px" class="h-full w-auto">
+          </div>  
+         <div class="px-4 text-13 text-main fb-sm:text-sm group-hover:underline font-bold text-center line-clamp-2 h-9 fb-sm:px-7 fb-sm:line-clamp-1 fb-sm:h-auto">
+            ${collection.name}
+          </div>
+          <p class="w-full h-full border-[3px] absolute border-[#D3DEF1] hidden left-0 top-0 group-hover:block"></p>
+        </a>`;
+      });
+      
+      const categoryList = document.querySelector('.js-categories-list');      
+      if (categoryList) {
+        categoryList.innerHTML = categoryElements.join('');
+      }
+    }
+    async function getAllList() {
+      try {
+        const response = await fetch(`${window.zkh?.api || ''}/openapi/adlink/product/collection/tree?order=1`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Request failed: ${response.status}`);
+        }
+        
+        const { data } = await response.json();
+        
+        if (data && Array.isArray(data)) {
+          createCategoryList(data);
+        } else {
+          console.warn('Invalid data format');
+        }
+      } catch(err) {
+        console.error('Failed to fetch categories:', err);
+      }
+    }
+    
+    // Fetch categories list when page loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', getAllList);
+    } else {
+      getAllList();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "jd-all-collection-vue",
+  "class": "section-padding-bottom",
+  "settings": [
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Collection desc",
+      "default": "NorthSky's ever-expanding product portfolio covers a comprehensive range of industrial solutions for all your most pressing and consistent MRO needs, from safety glasses and gloves to combination wrenches and power tool drill bits. It's all part of our mission to provide our customers with the highest quality maintenance, repair and operations products—without the premium price tag."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "All Product Categories"
+    },
+    {
+      "type": "text",
+      "id": "product_num",
+      "label": "Product Num"
+    },
+    {
+      "type": "text",
+      "id": "desc",
+      "label": "Desc"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "categories-item",
+      "name": "categories Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "title"
+        },
+        {
+          "type": "text",
+          "id": "num",
+          "label": "num"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "jd-all-collection-vue"
+    }
+  ]
+}
+{% endschema %}

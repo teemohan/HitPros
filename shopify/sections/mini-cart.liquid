@@ -643,54 +643,56 @@
       $('.drawer__content .line-item .loading-container').show(); // loading 按钮隐藏
       $('.mini-cart .line-item__property').hide();
       const deleveryDate = await getDeleveryDate(line_item_delivery);
-      deleveryDate.map(line_item => {
-        // item.availableInventoryCount 库存
-        let $deliveryTime
-        const $lineItem = $(`.line-item[data-sku='${line_item.sku}']`);
-        let stockDateStart;
-        let stockDateEnd;
-        if (
-          line_item.transitInventoryDeliveryTimeStampMin &&
-          line_item.transitInventoryDeliveryTimeStampMax &&
-          line_item.outOfStockDeliveryTimeStampMin &&
-          line_item.outOfStockDeliveryTimeStampMax
-        ) {
-          stockDateStart = +line_item.transitInventoryDeliveryTimeStampMin;
-          stockDateEnd = +line_item.outOfStockDeliveryTimeStampMax;
-        } else if(
-          line_item.transitInventoryDeliveryTimeStampMin &&
-          line_item.transitInventoryDeliveryTimeStampMax &&
-          !line_item.outOfStockDeliveryTimeStampMin &&
-          !line_item.outOfStockDeliveryTimeStampMax
-        ) {
-          stockDateStart = +line_item.transitInventoryDeliveryTimeStampMin;
-          stockDateEnd = +line_item.transitInventoryDeliveryTimeStampMax;
-        } else if(
-          !line_item.transitInventoryDeliveryTimeStampMin &&
-          !line_item.transitInventoryDeliveryTimeStampMax &&
-          line_item.outOfStockDeliveryTimeStampMin &&
-          line_item.outOfStockDeliveryTimeStampMax
-        ){
-          stockDateStart = +line_item.outOfStockDeliveryTimeStampMin;
-          stockDateEnd = +line_item.outOfStockDeliveryTimeStampMax;
-        }
-        if(line_item.availableInventoryCount == 0) {
-          $deliveryTime = $(`
-            <span>Expected to arrive between ${formatDate(stockDateStart)} and ${formatDate(stockDateEnd)}.</span>
-          `);
-        } else if(line_item.availableInventoryCount >= line_item.demandQuantity) { // 现货大于0，并且现货>=需求
-          $deliveryTime = $(`
-            <span>Expected to arrive on ${formatDate(line_item.availableInventoryDeliveryTimeStamp)}.</span>
-          `);
-        } else { // 现货大于0，并且需求大于现货
-          $deliveryTime = $(`
-            <span>Partial expected to arrive on ${formatDate(line_item.availableInventoryDeliveryTimeStamp)}.</span>
-            <span>The remaining balance is expected to arrive between ${formatDate(stockDateStart)} and ${formatDate(stockDateEnd)}.</span>
-          `);
-        }
-        $lineItem.find('.loading-container').hide();
-        $lineItem.find('.line-item__property.date').show().html($deliveryTime);
-      })
+      if(deleveryDate?.length) {
+        deleveryDate.map(line_item => {
+          // item.availableInventoryCount 库存
+          let $deliveryTime
+          const $lineItem = $(`.line-item[data-sku='${line_item.sku}']`);
+          let stockDateStart;
+          let stockDateEnd;
+          if (
+            line_item.transitInventoryDeliveryTimeStampMin &&
+            line_item.transitInventoryDeliveryTimeStampMax &&
+            line_item.outOfStockDeliveryTimeStampMin &&
+            line_item.outOfStockDeliveryTimeStampMax
+          ) {
+            stockDateStart = +line_item.transitInventoryDeliveryTimeStampMin;
+            stockDateEnd = +line_item.outOfStockDeliveryTimeStampMax;
+          } else if(
+            line_item.transitInventoryDeliveryTimeStampMin &&
+            line_item.transitInventoryDeliveryTimeStampMax &&
+            !line_item.outOfStockDeliveryTimeStampMin &&
+            !line_item.outOfStockDeliveryTimeStampMax
+          ) {
+            stockDateStart = +line_item.transitInventoryDeliveryTimeStampMin;
+            stockDateEnd = +line_item.transitInventoryDeliveryTimeStampMax;
+          } else if(
+            !line_item.transitInventoryDeliveryTimeStampMin &&
+            !line_item.transitInventoryDeliveryTimeStampMax &&
+            line_item.outOfStockDeliveryTimeStampMin &&
+            line_item.outOfStockDeliveryTimeStampMax
+          ){
+            stockDateStart = +line_item.outOfStockDeliveryTimeStampMin;
+            stockDateEnd = +line_item.outOfStockDeliveryTimeStampMax;
+          }
+          if(line_item.availableInventoryCount == 0) {
+            $deliveryTime = $(`
+              <span>Expected to arrive between ${formatDate(stockDateStart)} and ${formatDate(stockDateEnd)}.</span>
+            `);
+          } else if(line_item.availableInventoryCount >= line_item.demandQuantity) { // 现货大于0，并且现货>=需求
+            $deliveryTime = $(`
+              <span>Expected to arrive on ${formatDate(line_item.availableInventoryDeliveryTimeStamp)}.</span>
+            `);
+          } else { // 现货大于0，并且需求大于现货
+            $deliveryTime = $(`
+              <span>Partial expected to arrive on ${formatDate(line_item.availableInventoryDeliveryTimeStamp)}.</span>
+              <span>The remaining balance is expected to arrive between ${formatDate(stockDateStart)} and ${formatDate(stockDateEnd)}.</span>
+            `);
+          }
+          $lineItem.find('.loading-container').hide();
+          $lineItem.find('.line-item__property.date').show().html($deliveryTime);
+        })
+      }
     }
     function getDiscount () {  // 获取折扣然后跳转
       const amount_original = parseFloat($('.hidden-mini-cart-price').data("original-price"));

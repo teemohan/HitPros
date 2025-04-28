@@ -71,6 +71,8 @@
 
 .index-product-item.list-type .swiper-button-prev,
 .index-product-item.list-type .swiper-button-next {
+  position: absolute;
+  z-index: 2;
   width: 26px;
   height: 26px;
   background-color: #fff;

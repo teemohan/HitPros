@@ -1,3 +1,4 @@
+
 function throttle(fn, delay) {
   let lastCall = 0;
   return function(...args) {
@@ -125,6 +126,14 @@ new Vue({
       const end = start + this.skuPageSize;
       return spu.skus.slice(start, end);
     },
+    factMobFilter() {
+      const filterDrawer = new FilterDrawer();
+      filterDrawer.init();
+      const mainEl = document.getElementById('main');
+      if (mainEl) {
+        mainEl.style.backgroundColor = '#EAEEF1';
+      }
+    },
     async initData() {
       if (this.isMobile) {
         try{
@@ -133,10 +142,11 @@ new Vue({
         }
         if(this.categories.length <= 0) {
           await this.loadFirstScreenData();  // 首先加载首屏数据
+          this.factMobFilter()
         } else {
           this.hideSketon()
         }
-        this.fetchWishlist()
+        // this.fetchWishlist()
       } else {
         try{
           await this.loadFirstScreenData();  // 首先加载首屏数据
@@ -149,9 +159,9 @@ new Vue({
       if(el) {
         el.style.display = 'none';
       }
-      const el2 = document.querySelector('.product-facet__product-list-wrapper'); // 移除加载状态
+      const el2 = document.querySelector('.js-collection-main'); // 移除加载状态
       if (el2) {
-        el2.classList.remove('zkh-collection-block');
+        el2.classList.remove('hidden');
       }
     },
     handleSkuPageChange(spuId, page) {
@@ -168,7 +178,7 @@ new Vue({
       }
       const query = this.getPriceFilterParams()  //判断url有没有值 有值记得初始化
       if (query.lowPrice || query.highPrice) {
-        const inputs = document.querySelectorAll('input[name="filter.v.price.gte"], input[name="filter.v.price.lte"]')
+        const inputs = document.querySelectorAll('.js-price-gte, .js-price-lte')
         inputs.forEach(input => {
           if (input.name === 'filter.v.price.gte' && query.lowPrice) {
             input.value = query.lowPrice
@@ -215,9 +225,14 @@ new Vue({
           this.categories = result.data || [];
           if(this.categories.length > 0) {
             this.creatCategoryList();
-            const menudata = document.querySelector('.collecition-menu');
+            const menudata = document.querySelector('.js-collecition-menu');
             if (menudata) { //主要是做移动端
               menudata.style.display = 'none';
+            }
+          } else {
+            const menudata2 = document.querySelector('.js-topheader-mob');
+            if(menudata2 && this.isMobile) {
+              menudata2.style.display = 'none';
             }
           }
         }
@@ -227,26 +242,26 @@ new Vue({
         }
       }
     },
-    async fetchWishlist() {
-      if (!window.zkh?.customerId) return;
-      try {
-        const response = await fetch(`${window.zkh.api}/wish/list`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            page: 1,
-            pageSize: 1000,
-            customerId: window.zkh.customerId
-          })
-        });
-        const result = await response.json();
-        if (result.code === 200 && result.data?.list && result.data.list.length > 0) {
-          this.wishlist = result.data.list;
-          this.updateWishlistStatus();
-        }
-      } catch (error) {
-      }
-    },
+    // async fetchWishlist() {
+    //   if (!window.zkh?.customerId) return;
+    //   try {
+    //     const response = await fetch(`${window.zkh.api}/wish/list`, {
+    //       method: 'POST',
+    //       headers: { 'Content-Type': 'application/json' },
+    //       body: JSON.stringify({
+    //         page: 1,
+    //         pageSize: 1000,
+    //         customerId: window.zkh.customerId
+    //       })
+    //     });
+    //     const result = await response.json();
+    //     if (result.code === 200 && result.data?.list && result.data.list.length > 0) {
+    //       this.wishlist = result.data.list;
+    //       this.updateWishlistStatus();
+    //     }
+    //   } catch (error) {
+    //   }
+    // },
     updateWishlistStatus() {
       if (this.spuData.length === 0 || this.wishlist.length === 0) return;
       this.spuData.forEach((spu, spuIndex) => {
@@ -291,6 +306,9 @@ new Vue({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
+        });
+        window.listenUserEvent({
+          eventName: 'add_to_cart'
         });
         const resultObj = {
           success: response.ok,
@@ -440,7 +458,7 @@ new Vue({
           price: sku.price.toFixed(2),
           quantity: sku.moq || 1,
           selected: false,
-          isWish: updateWishlist ? this.wishlist.some(item => item.variantId == sku.variantId): false
+          // isWish: updateWishlist ? this.wishlist.some(item => item.variantId == sku.variantId): false
         }))
       }));
     },
@@ -497,7 +515,7 @@ new Vue({
               cancelable: true,
               detail: {
                 status: 'error',
-                error: result.msg || '请刷新页面重试'
+                error: result.msg || 'please try again later'
               },
             })
           );
@@ -523,7 +541,6 @@ new Vue({
       const brand = event.target.value;
       const url = new URL(window.location.href);
       const params = new URLSearchParams(url.search);
-      
       if (event.target.checked) {
         params.append('filter.p.m.product.brand', brand);
       } else {
@@ -531,46 +548,45 @@ new Vue({
         params.delete('filter.p.m.product.brand');
         brands.filter(b => b !== brand).forEach(b => params.append('filter.p.m.product.brand', b));
       }
-      
       url.search = params.toString();
       window.location.href = url.toString();
     },
-    async toggleFavorite(lib, itemindex, libindex) {
-      if (!window.zkh?.customerId) {
-        window.location.href = '/account/login';
-        return false;
-      }
+    // async toggleFavorite(lib, itemindex, libindex) {
+    //   if (!window.zkh?.customerId) {
+    //     window.location.href = '/account/login';
+    //     return false;
+    //   }
       
-      try {
-        const action = lib.isWish ? 'clear' : 'save';
-        const response = await fetch(`${window.zkh.api}/wish/${action}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            productId: lib.productId,
-            sku: lib.skuCode,
-            customerId: window.zkh?.customerId,
-            productNum: 1,
-          })
-        });
+    //   try {
+    //     const action = lib.isWish ? 'clear' : 'save';
+    //     const response = await fetch(`${window.zkh.api}/wish/${action}`, {
+    //       method: 'POST',
+    //       headers: { 'Content-Type': 'application/json' },
+    //       body: JSON.stringify({
+    //         productId: lib.productId,
+    //         sku: lib.skuCode,
+    //         customerId: window.zkh?.customerId,
+    //         productNum: 1,
+    //       })
+    //     });
         
-        const result = await response.json();
-        if (result.code === 200) {
-          this.changeWishStatus(itemindex, libindex);
-          document.dispatchEvent(new CustomEvent('wish-refreash'));
-        }
-        return false;
-      } catch (error) {
-        console.error('Toggle favorite failed:', error);
-        return false;
-      }
-    },
-    changeWishStatus(itemindex, libindex) {
-      if (this.spuData[itemindex]?.skus[libindex]) {
-        const sku = this.spuData[itemindex].skus[libindex];
-        this.$set(this.spuData[itemindex].skus[libindex], 'isWish', !sku.isWish);
-      }
-    },
+    //     const result = await response.json();
+    //     if (result.code === 200) {
+    //       this.changeWishStatus(itemindex, libindex);
+    //       document.dispatchEvent(new CustomEvent('wish-refreash'));
+    //     }
+    //     return false;
+    //   } catch (error) {
+    //     console.error('Toggle favorite failed:', error);
+    //     return false;
+    //   }
+    // },
+    // changeWishStatus(itemindex, libindex) {
+    //   if (this.spuData[itemindex]?.skus[libindex]) {
+    //     const sku = this.spuData[itemindex].skus[libindex];
+    //     this.$set(this.spuData[itemindex].skus[libindex], 'isWish', !sku.isWish);
+    //   }
+    // },
     incrementQuantity(itemindex, libindex) {
       if (this.spuData[itemindex]?.skus[libindex]) {
         const sku = this.spuData[itemindex].skus[libindex];
@@ -620,16 +636,22 @@ new Vue({
       return params.getAll('filter.p.m.product.brand');
     },
     creatCategoryList() {
-      const categoryElements = this.categories.map((collection) => {
+      const categoryElements = this.categories.map((collection, index) => {
         const nextHandle = collection.name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-');
-        return `<a href="/collections/${this.collectionData.handle}-${nextHandle}" class="product-categories-item">
-          <img src="${collection?.img || ''}" alt="${collection.name}" width="146" height="146">
-          <span>${collection.name}</span>
+        return `<a href="/collections/${this.collectionData.handle}-${nextHandle}"
+         class="flex flex-col items-center justify-center group py-2.5 transition duration-200 relative fb-sm:pt-6 fb-sm:pb-10 fb-sm:h-[244px] hover:bg-F3F8FC hover:border-none ${index > 3 ? 'fb-sm:border-b': 'fb-sm:border-t fb-sm:border-b'}  fb-sm:border-r  fb-sm:border-F0F0F0">
+          <div class="w-full px-9 h-25 mb-4 fb-flex-center fb-sm:w-8.75r fb-sm:h-8.75r fb-sm:px-0">
+              <img src="${collection?.img || ''}" alt="${collection.name}" width="100px" height="100px" class="h-full w-auto">
+          </div>  
+          <div class="px-4 text-13 text-main fb-sm:text-sm group-hover:underline font-bold text-center line-clamp-2 h-9 fb-sm:px-7 fb-sm:line-clamp-1 fb-sm:h-auto">
+            ${collection.name}
+          </div>
+          <p class="w-full h-full border-[3px] absolute border-[#D3DEF1] hidden left-0 top-0 group-hover:block"></p>
         </a>`;
       });
       
-      const categoryList = document.querySelector('.product-categories-list');
-      const categoriesBox = document.querySelector('.categories');
+      const categoryList = document.querySelector('.js-categories-list');
+      const categoriesBox = document.querySelector('.js-categories');
       
       if (categoriesBox) {
         categoriesBox.style.display = 'block';
@@ -654,21 +676,25 @@ new Vue({
           disabled: item.count === 0,
           checked: urlBrandStr.includes(item.brand)
         }));
+      const filterDoms = document.querySelectorAll('.js-col-filter');
+      if (!filterDoms.length) return;
+      // Generate HTML template once
       let filtertertml = '';
-      const filterDom = document.querySelector('.js-col-filter');
-      if (!filterDom) return;
       this.brandExtra.forEach((item, index) => {
         const checkboxId = `filter.p.m.product.brand-${index + 1}`;
         filtertertml += `
-          <div class="checkbox-container ol-my-14">
-            <input class="checkbox" type="checkbox" name="filter.p.m.product.brand" id="${checkboxId}" value="${item.brand}"
+          <div class="flex items-center text-xs">
+            <input class="checkbox" class="w-4 h-4 border border-999999 rounded-sm fb-sm:w-5 fb-sm:h-5" type="checkbox" name="filter.p.m.product.brand" id="${checkboxId}" value="${item.brand}"
               ${item.disabled ? 'disabled' : ''} ${item.checked ? 'checked' : ''}
             >
-            <label for="${checkboxId}">${item.brand} (${item.count})&lrm;</label>
+            <label class="text-xs text-black fb-sm:text-sm" for="${checkboxId}">${item.brand} (${item.count})&lrm;</label>
           </div>
         `;
       });
-      filterDom.innerHTML = filtertertml;
+      // Apply template to each filter container
+      filterDoms.forEach(filterDom => {
+        filterDom.innerHTML = filtertertml;
+      });
     },
     renderFacet() {
       const debouncedReload = debounce(async () => {
@@ -703,3 +729,5 @@ new Vue({
     }
   }
 });
+
+

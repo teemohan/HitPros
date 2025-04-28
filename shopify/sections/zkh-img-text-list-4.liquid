@@ -1,0 +1,190 @@
+<style>
+.zkh-img-text-list {
+  display: flex;
+  gap: 16px;
+}
+
+.zkh-img-text-link {
+  display: block;
+  position: relative;
+}
+
+.zkh-img-text-image-wrapper {
+  width: 100%;
+}
+
+.zkh-img-text-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.zkh-img-text-link-wrapper {
+  flex: 1;
+  overflow: hidden;
+}
+.zkh-img-text-overlay {
+  background-color: black;
+  position: absolute;
+  top: 0;
+  opacity: 0.4;
+  width: 100%;
+  height: 100%;
+}
+
+.zkh-img-text-text-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.zkh-img-text-title {
+  color: #FABE00;
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.zkh-img-text-text {
+  color: white;
+  font-size: 24px;
+  line-height: 1.2;
+}
+.{{ section.id }} .swiper-scrollbar {
+  position: static;
+  display: flex;
+  width: 100%;
+}
+@media screen and (min-width: 741px) {
+  .zkh-img-text-link:hover img {
+    transform: scale(1.2);
+    transition: transform 0.3s ease;
+  }
+}
+
+@media screen and (max-width: 999px) {
+  .zkh-img-text-text {
+    font-size: 18px;
+  }
+  .zkh-img-text-text-container {
+    bottom: 22px;
+  }
+}
+@media screen and (max-width: 999px) {
+  .zkh-img-text-title {
+    font-size: 24px;
+  }
+}
+</style>
+<div class="container">
+  <div class="zkh-img-text-list hidden-phone">
+    {% for block in section.blocks %}
+      <div class="zkh-img-text-link-wrapper">
+        <a class="zkh-img-text-link" href="{{ block.settings.url }}">
+          <div class="zkh-img-text-image-wrapper">
+            {% if block.settings.img != blank %}
+              <img
+                class="zkh-img-text-image"
+                loading="lazy"
+                src="{{ block.settings.img | image_url }}"
+                width="auto"
+                height="auto" />
+            {% endif %}
+            <div class="zkh-img-text-overlay"></div>
+          </div>
+          <div class="zkh-img-text-text-container">
+            <h3 class="zkh-img-text-title">{{ block.settings.title }}</h3>
+            <p class="zkh-img-text-text">{{ block.settings.text }}</p>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="hidden-tablet-and-up {{ section.id }}">
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          <div class="swiper-slide">
+            <a class="zkh-img-text-link" href="{{ block.settings.url }}">
+              <div class="zkh-img-text-image-wrapper">
+                {% if block.settings.img != blank %}
+                  <img
+                    class="zkh-img-text-image"
+                    loading="lazy"
+                    src="{{ block.settings.img | image_url }}"
+                    width="auto"
+                    height="auto" />
+                {% endif %}
+                <div class="zkh-img-text-overlay"></div>
+              </div>
+              <div class="zkh-img-text-text-container">
+                <h3 class="zkh-img-text-title">{{ block.settings.title }}</h3>
+                <p class="zkh-img-text-text">{{ block.settings.text }}</p>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="swiper-scrollbar"></div>
+  </div>
+</div>
+<script>
+  (() => {
+    new Swiper('.{{ section.id }} .swiper', {
+      spaceBetween: 16,
+      touchStartPreventDefault: true,
+      passiveListeners: false,
+      touchAngle: 70,              
+      threshold: 10,
+      scrollbar: {
+        el:".{{ section.id }} .swiper-scrollbar"
+      },
+    })
+  })();
+</script>
+{% schema %}
+  {
+    "name": "Zkh Img Text List 4",
+    "class": "section-gap",
+    "blocks": [
+      {
+        "name": "block",
+        "type": "block",
+        "limit": 3,
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "title",
+            "label": "Title"
+          }, {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          }, {
+            "type": "url",
+            "id": "url",
+            "label": "Url"
+          }, {
+            "type": "image_picker",
+            "id": "img",
+            "label": "Img"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Zkh Img Text List 4"
+      }
+    ]
+  }
+{% endschema %}

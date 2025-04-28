@@ -4,27 +4,12 @@
   data-product-title='{{ product.title | escape | replace: "'", " " | replace: '"', " " }}'
   data-sku="{{- product.selected_or_first_available_variant.sku -}}"
   data-var-id="{{- product.selected_or_first_available_variant.id -}}"
+  data-price="{{- product.selected_or_first_available_variant.price | money_without_currency -}}"
   class="index-product-item {% if template.name == 'search' %}gird-type{% endif %} product-item {% unless product.available %}product-item--sold-out{% endunless %}"
   {% if reveal %}
     reveal
   {% endif %}
 >
-  <div class="favorite-button-wrapper">
-    {% if customer %}
-      <button class="favorite-button" data-action="favorite">
-        {% render 'icon' with 'v3-favorited' %}
-        {% render 'icon' with 'v3-unfavorited' %}
-        <span class="unfavorited-text hidden-phone">Add to List</span>
-        <span class="favorited-text hidden-phone">In My List</span>
-      </button>
-    {% else %}
-      <button class="favorite-button" data-action="toLogin">
-        {% render 'icon' with 'v3-unfavorited' %}
-        {% render 'icon' with 'v3-favorited' %}
-        <span class="hidden-phone">Add to List</span>
-      </button>
-    {% endif %}
-  </div>
   <div class="product-item__image-wrapper {% if settings.show_secondary_image and product.media.size > 1 and hide_secondary_image != true %}product-item__image-wrapper--multiple{% endif %}">
     <a
       href="{{ product.url }}"
@@ -32,24 +17,18 @@
         datalayer-link data-sku="{{ product.selected_or_first_available_variant.sku }}"
       {% endif %}
       class="product-item__aspect-ratio aspect-ratio {% if settings.product_image_size != 'natural' %}aspect-ratio--{{ settings.product_image_size }}{% endif %}"
-      style="padding-bottom: {{ 100.0 | divided_by: product.featured_image.aspect_ratio }}%; --aspect-ratio: {{ product.featured_image.aspect_ratio }}"
+      style="padding-bottom: {{ 100.0 | divided_by: product.featured_image.aspect_ratio }}%; --aspect-ratio: 1"
     >
-      {% if product.metafields.custom.feature_tag.value %}
-        <div class="cus-label">
-          <span>{{ product.metafields.custom.feature_tag.value }}</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            fill="none"
-            version="1.1"
-            width="45.5"
-            height="45"
-            viewBox="0 0 45.5 45"
-          >
-            <defs><filter id="master_svg0_56_36451" filterUnits="objectBoundingBox" color-interpolation-filters="sRGB" x="-4" y="-3" width="44" height="47"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/><feOffset dy="1" dx="0"/><feGaussianBlur stdDeviation="1"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3199999928474426 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter></defs><g><g transform="matrix(0,1,-1,0,8.5,-4.5)"><path d="M6.5,2L16.5,8.5L16.5,2L6.5,2Z" fill="#990000" fill-opacity="1"/></g><g filter="url(#master_svg0_56_36451)"><path d="M6.5,32.8638L24.5,41L42.5,32.8638L42.5,2L6.5,2L6.5,32.8638Z" fill="#DF1616" fill-opacity="1"/></g></g>
-          </svg>
-        </div>
-      {% endif %}
+    {% assign has_new_tag = product.tags | has: '000-newTag' %}
+    {% if has_new_tag %}
+      <div class="cus-label">
+        <span>NEW</span>
+        <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="-26" y="48.9998" width="104.538" height="30" transform="rotate(-45 -26 48.9998)" fill="#ED0006"/>
+        </svg>
+      </div>
+    {% endif %}
+
       <img
         class="product-item__primary-image hidden-phone"
         loading="lazy"
@@ -62,7 +41,6 @@
           sizes: '200,300,400,500,600,700,800,900,1000,1100,1200'
         %}
       >
-
       <img
         class="product-item__primary-image hidden-tablet-and-up"
         loading="lazy"
@@ -93,27 +71,24 @@
         >
       {%- endif -%}
     </a>
-    <div>
-      <span class="product-item-meta__vendor">
-        {%- if product.metafields.product.brand.value != blank
-          and product.metafields.product.brand.value != 'null'
-          and product.metafields.product.brand.value != '-'
-        -%}
-          {{ product.metafields.product.brand }}
-        {% endif %}
-      </span>
-
-      <a href="{{ product.url }}"
-      {% if template.name == 'search' or template.name == 'index' %}
-        datalayer-link data-sku="{{ product.selected_or_first_available_variant.sku }}"
-      {% endif %}
-      title="{{ product.title }}" class="product-item-meta__title ol-my-14 ellipsis2">
-        {{- product.title -}}
-      </a>
-    </div>
   </div>
 
   <div class="product-item__info {% if show_cta %}product-item__info--with-button{% endif %} {% if reduced_font_size %}text--small{% endif %}">
+    <span class="product-vendor">
+      {%- if product.metafields.product.brand.value != blank
+        and product.metafields.product.brand.value != 'null'
+        and product.metafields.product.brand.value != '-'
+      -%}
+        {{ product.metafields.product.brand }}
+      {% endif %}
+    </span>
+    <a href="{{ product.url }}"
+    {% if template.name == 'search' or template.name == 'index' %}
+      datalayer-link data-sku="{{ product.selected_or_first_available_variant.sku }}"
+    {% endif %}
+    title="{{ product.title }}" class="product-item-meta__title ellipsis2">
+      {{- product.title -}}
+    </a>
     <div class="product-item-meta">
       <div class="product-item-meta__price-list-container">
         {% if product.compare_at_price > product.price %}
@@ -158,10 +133,7 @@
       <button
         is="loader-button"
         type="submit"
-        {% unless product.selected_or_first_available_variant.available %}
-          disabled
-        {% endunless %}
-        class="button {{ template.name }} {% if template.name != 'index' %}yellow{% endif %} button--outline button--text button--full {% if section.settings.desktop_products_per_row >= 5 %}button--small{% endif %}"
+        class="button button--outline button--text button--full {% if section.settings.desktop_products_per_row >= 5 %}button--small{% endif %}"
       >
         {%- if product.selected_or_first_available_variant.available -%}
           {%- if product.template_suffix == 'pre-order' -%}

@@ -6,26 +6,28 @@
 {%- endif -%}
 
 <div
-  class="product-recommendations {{ section.id }}"
+  class="product-recommendations product-x-hidde {{ section.id }}"
   data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{section.settings.recommendations_count}}"
 >
   <div class="container">
     {%- if recommendations.performed and recommendations.products_count > 0 -%}
-      {% render 'index-cus-header', header_title: section.settings.title %}
+      <div class="index-cus-header">
+        <h2>{{ section.settings.title }}</h2>
+        {% render 'swiper-buttons' %}
+      </div>
       <div class="IndexBestswiper">
-        <div class="swiper-button-prev hidden-pocket">
-          {% render 'icon' with 'swiper-arrow-prev' %}
-        </div>
         <div class="swiper {{ section.id }}-IndexBestswiper">
           <div class="swiper-wrapper">
             {%- if use_recommendations -%}
-              {%- for product in recommendations.products -%}
+              {% assign recommendations_products  = recommendations.products | sort: 'tags' %}
+              {%- for product in recommendations_products -%}
                 <div class="swiper-slide">
                   {%- render 'index-product-item', product: product -%}
                 </div>
               {%- endfor -%}
             {%- else -%}
-              {%- for product in section.settings.products -%}
+            {% assign recommendations_products = section.settings.products | sort: 'tags' %}
+              {%- for product in recommendations_products -%}
                 <div class="swiper-slide">
                   {%- render 'index-product-item', product: product -%}
                 </div>
@@ -34,9 +36,7 @@
           </div>
           <div class="swiper-pagination"></div>
         </div>
-        <div class="swiper-button-next hidden-pocket">
-          {% render 'icon' with 'swiper-arrow-next' %}
-        </div>
+        <div class="swiper-scrollbar"></div>
       </div>
     {%- endif -%}
   </div>
@@ -44,32 +44,6 @@
 
 <script>
   (() => {
-    const setWish = async () => {
-      const skus = [];
-      $('.product-recommendations .index-product-item').each(function() {
-        const sku = $(this).data('sku');
-        skus.push(sku);
-      })
-      const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
-        method: 'POST',
-        body: JSON.stringify({
-          customerId: '{{ customer.id}}',
-          skus
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-      const res = await response.json();
-      $('.product-recommendations .index-product-item').each(function() {
-        const sku = $(this).data('sku');
-        if(res.data.includes(sku)) {
-          $(this).find('.favorite-button').addClass('favorited')
-        }
-      })
-    }
-
-
     const productRecommendationsSection = document.querySelector('.product-recommendations');
     const url = productRecommendationsSection.dataset.url;
     fetch(url)
@@ -83,32 +57,36 @@
           var alsolikeSwiper = new Swiper(`.{{ section.id }}-IndexBestswiper`, {
             observer: true,
             observeParents: true,
+            touchStartPreventDefault: true,
+            passiveListeners: false,
+            touchAngle: 70,              
+            threshold: 10,
             breakpoints: {
               0: {
                 spaceBetween: 12,
                 slidesPerView: 2,
               },
-              740: {
-                spaceBetween: 12,
-                slidesPerView: 2,
+              768: {
+                spaceBetween: 24,
+                slidesPerView: 3,
               },
-              1200: {
-                spaceBetween: 12,
+              1024: {
+                spaceBetween: 24,
                 slidesPerView: 4,
               },
+              1280: {
+                spaceBetween: 24,
+                slidesPerView: 5,
+              },
             },
-            pagination: {
-              el: '.{{ section.id }} .swiper-pagination',
-              clickable: true,
+            scrollbar: {
+              el:".{{ section.id }} .swiper-scrollbar"
             },
             navigation: {
-              nextEl: `.{{ section.id }} .swiper-button-next`,
-              prevEl: `.{{ section.id }} .swiper-button-prev`,
+              nextEl: ".{{ section.id }} .swiper-button-next",
+              prevEl: ".{{ section.id }} .swiper-button-prev",
             },
           });
-          if('{{ customer.id }}') {
-            setWish()
-          }
         }
       })
       .catch((e) => {
@@ -120,7 +98,7 @@
 {% schema %}
 {
   "name": "Product recommendation",
-  "class": "shopify-section--product-recommendation section-gap section-padding swiper-list-wrapper",
+  "class": "shopify-section--product-recommendation section-gap section-padding product-swiper-list",
   "templates": ["product"],
   "settings": [
     {

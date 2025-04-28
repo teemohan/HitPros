@@ -1,7 +1,10 @@
 {% if template == 'collection' %}
-  <script src="{{ 'main-collection-vue.js' | asset_url }}" ></script>
+  <script src="{{ 'facet-filters-newcol.js' | asset_url }}" defer></script>
+  <script src="{{ 'main-collection-vue.js' | asset_url }}"  defer></script>
 {% endif %}
+{% render 'js-page-customer'%}
 <script src="//code.tidio.co/dzwcvyci274aolrpev5ilpboec1objxi.js" async></script>
+
 {%- if shop.name == 'TestHitpros' -%}
 {% else %}
 <!-- Start of HubSpot Embed Code -->
