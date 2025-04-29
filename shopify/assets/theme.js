@@ -3,7 +3,7 @@
     window.listenUserEvent = ({
       eventName, skuCode
     }) => {
-      fetch(`${window.zkh.api}/listen/event`, {
+      fetch(`${window.zkh.api}/openapi/listen/event`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
