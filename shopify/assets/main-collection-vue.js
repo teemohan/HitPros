@@ -639,11 +639,11 @@ new Vue({
       const categoryElements = this.categories.map((collection, index) => {
         const nextHandle = collection.name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-');
         return `<a href="/collections/${this.collectionData.handle}-${nextHandle}"
-         class="flex flex-col items-center justify-center group py-2.5 transition duration-200 relative fb-sm:pt-6 fb-sm:pb-10 fb-sm:h-[244px] hover:bg-F3F8FC hover:border-none ${index > 3 ? 'fb-sm:border-b': 'fb-sm:border-t fb-sm:border-b'}  fb-sm:border-r  fb-sm:border-F0F0F0">
+         class="flex flex-col items-center justify-center group py-2.5 transition duration-200 relative fb-sm:pt-6 fb-sm:pb-4 fb-sm:h-[244px] hover:bg-F3F8FC hover:border-none ${index > 3 ? 'fb-sm:border-b': 'fb-sm:border-t fb-sm:border-b'}  fb-sm:border-r  fb-sm:border-F0F0F0">
           <div class="w-full px-9 h-25 mb-4 fb-flex-center fb-sm:w-8.75r fb-sm:h-8.75r fb-sm:px-0">
               <img src="${collection?.img || ''}" alt="${collection.name}" width="100px" height="100px" class="h-full w-auto">
           </div>  
-          <div class="px-4 text-13 text-main fb-sm:text-sm group-hover:underline font-bold text-center line-clamp-2 h-9 fb-sm:px-7 fb-sm:line-clamp-1 fb-sm:h-auto">
+          <div class="px-4 text-13 text-main fb-sm:text-sm group-hover:underline font-bold text-center line-clamp-2 h-9 fb-sm:px-7 fb-sm:h-auto">
             ${collection.name}
           </div>
           <p class="w-full h-full border-[3px] absolute border-[#D3DEF1] hidden left-0 top-0 group-hover:block"></p>
