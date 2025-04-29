@@ -19,14 +19,14 @@
         <div class="swiper {{ section.id }}-IndexBestswiper">
           <div class="swiper-wrapper">
             {%- if use_recommendations -%}
-              {% assign recommendations_products  = recommendations.products | sort: 'tags' %}
+              {% assign recommendations_products  = recommendations.products %}
               {%- for product in recommendations_products -%}
                 <div class="swiper-slide">
                   {%- render 'index-product-item', product: product -%}
                 </div>
               {%- endfor -%}
             {%- else -%}
-            {% assign recommendations_products = section.settings.products | sort: 'tags' %}
+            {% assign recommendations_products = section.settings.products %}
               {%- for product in recommendations_products -%}
                 <div class="swiper-slide">
                   {%- render 'index-product-item', product: product -%}

@@ -46,7 +46,7 @@
       <div class="IndexBestswiper">
         <div class="swiper">
           <div class="swiper-wrapper">
-            {% assign recommendations_products  = recommendations.products | sort: 'tags' %}
+            {% assign recommendations_products  = recommendations.products %}
             {%- for product in recommendations_products -%}
               <div class="swiper-slide">
                 {%- render 'index-product-item', product: product -%}
