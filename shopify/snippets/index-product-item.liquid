@@ -28,21 +28,8 @@
         </svg>
       </div>
     {% endif %}
-
       <img
-        class="product-item__primary-image hidden-phone"
-        loading="lazy"
-        data-media-id="{{ product.featured_image.id | escape }}"
-        sizes="{{ sizes_attribute }}"
-        width="auto"
-        height="auto"
-        {% render 'image-attributes',
-          image: product.featured_image,
-          sizes: '200,300,400,500,600,700,800,900,1000,1100,1200'
-        %}
-      >
-      <img
-        class="product-item__primary-image hidden-tablet-and-up"
+        class="product-item__primary-image"
         loading="lazy"
         data-media-id="{{ product.featured_image.id | escape }}"
         width="auto"
