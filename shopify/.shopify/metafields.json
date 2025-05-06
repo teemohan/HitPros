@@ -22,6 +22,16 @@
         "name": "single_line_text_field",
         "category": "TEXT"
       }
+    },
+    {
+      "key": "industry",
+      "namespace": "company",
+      "name": "industry",
+      "description": "行业",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
     }
   ],
   "company_location": [],
