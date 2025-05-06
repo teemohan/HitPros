@@ -8667,7 +8667,6 @@
         // 隐藏加载状态条
         this.hideLoadingBar();
         // 触发 facet-rerender 事件
-        console.log("触发筛选器重新渲染事件");
         document.dispatchEvent(new CustomEvent('facet-rerender'));
       } catch (e) {
         if (e.name === 'AbortError') {

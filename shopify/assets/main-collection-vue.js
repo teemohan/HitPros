@@ -218,8 +218,17 @@ new Vue({
     async fetchCategories() {
       try {
         const title = this.processedTitle;
-        const url = `${this.config.apiBaseUrl}/collection/collection?c1=${encodeURIComponent(title)}&order=1`;
-        const response = await fetch(url);
+        const url = `${this.config.apiBaseUrl}/collection/collection/v2`;
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            c1: title,
+            order: 1
+          })
+        });
         const result = await response.json();
         if (result.code === 200 && result.data) {
           this.categories = result.data || [];
@@ -421,9 +430,9 @@ new Vue({
           pageNo,
           pageSize,
           ...this.getPriceFilterParams(),
-          brand: urlbrand.join(',')
+          brand: urlbrand || []
         };
-        let url = `${this.config.apiBaseUrl}/collection/pagespu`;
+        let url = `${this.config.apiBaseUrl}/collection/pagespu/v2`;
         if (this.collectionData.handle !== 'all') {
           params.c1 = this.processedTitle
         }
@@ -439,7 +448,15 @@ new Vue({
             'X-Requested-With': 'XMLHttpRequest'
           };
         }
-        const response = await fetch(`${url}?${new URLSearchParams(params)}`, fetchOptions);
+        const response = await fetch(url, {
+          ...fetchOptions,
+          method: 'POST',
+          headers: {
+            ...fetchOptions.headers,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(params)
+        });
         clearTimeout(timeoutId);
         return await response.json();
       } catch (error) {
@@ -533,8 +550,8 @@ new Vue({
     getPriceFilterParams() {
       const params = new URLSearchParams(window.location.search);
       return {
-        highPrice: params.get('filter.v.price.lte') || '',
-        lowPrice: params.get('filter.v.price.gte') || ''
+        highPrice: parseFloat(params.get('filter.v.price.lte')) || null,
+        lowPrice: parseFloat(params.get('filter.v.price.gte')) || null
       };
     },
     handleBrandFilter(event) {

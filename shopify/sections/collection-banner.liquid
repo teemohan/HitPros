@@ -14,7 +14,7 @@
 
 <script>
 (() => {
-  const titles = '{{ collection.title }}'.split('~');
+  const titles = '{{ collection.title | replace: "'", "\\'" }}'.split('~');
   let c_handle = '';
   const $titles = titles.map((c_title, idx) => {
     c_handle += idx === 0 ? c_title : `-${c_title}`;
