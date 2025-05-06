@@ -425,7 +425,7 @@ new Vue({
         };
         let url = `${this.config.apiBaseUrl}/collection/pagespu`;
         if (this.collectionData.handle !== 'all') {
-          params.c1 = encodeURIComponent(this.processedTitle);
+          params.c1 = this.processedTitle
         }
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15秒超时
