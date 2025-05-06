@@ -1117,7 +1117,8 @@
         });
 
         if(this.currentCompany.industry) {
-          this.industryOptions.find(item => item.value === this.currentCompany.industry).isSelected = true;
+          const selectedIndustry = this.industryOptions.find(item => item.value === this.currentCompany.industry);
+          if(selectedIndustry) selectedIndustry.isSelected = true;
         }
       },
       data() {
