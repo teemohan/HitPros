@@ -168,7 +168,7 @@
                   'event': 'add_to_wishlist',
                   'ecommerce': {
                     'currency': 'USD',
-                    'value': this.price,
+                    'value': parseFloat(this.price || 0),
                     'items': [{
                       'item_id': this.sku,
                       'sku_code': this.sku,

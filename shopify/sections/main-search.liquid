@@ -436,7 +436,8 @@
               'email':'{{customer.email }}',
               'search_parameters': $('.main-search__results').attr('terms'),
               'search_outcome': skuString,
-              'ip': ip
+              'ip': ip,
+              'number_of_results': this.total || 0
             });
           }
         },

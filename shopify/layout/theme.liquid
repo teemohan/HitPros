@@ -22,7 +22,15 @@
           {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
         {%- endif %}
       </title>
-      {% if shop.name != 'TestHitpros' %}
+      {%- assign is_test_shop = shop.name == 'TestHitpros' -%}
+      {%- if shop.name != 'TestHitpros' -%}
+        {%- assign is_online_shop = true -%}
+        {%- assign gtm_id = 'GTM-M7M24J6J' -%}
+      {%- else -%}
+        {%- assign is_online_shop = false -%}
+        {%- assign gtm_id = 'GTM-MTQZMJCM' -%}
+      {%- endif -%}
+      {% if is_online_shop %}
         <!-- begin Convert Experiences code-->
           <script type="text/javascript" src="//cdn-4.convertexperiments.com/v1/js/10047477-100416519.js?environment=production"></script>
         <!-- end Convert Experiences code -->
@@ -117,60 +125,64 @@
       {% render 'css-config' %}
       <script src="{{ 'js-cookie.js' | asset_url }}"></script>
       <script>
-            function decodeHTMLEntities(str) {
-              let textarea = document.createElement('textarea');
-              textarea.innerHTML = str;
-              return textarea.value;
-            }
-            if('{{ customer.id }}'){
-              var dataLayer = [];
-              dataLayer.push({
-                'user_id':'{{ customer.id }}',
-                'user_properties': {
-                  "account_type": '{% if customer.b2b? %}Business{% else %}Personal{% endif %}',
-                  "industry": {% if customer.current_company.metafields.company.industry != blank %}decodeHTMLEntities('{{ customer.current_company.metafields.company.industry }}'){% else %}null{% endif %},
-                  "company": {% if customer.current_company.name != blank %}decodeHTMLEntities('{{ customer.current_company.name }}'){% else %}null{% endif %}
-                },
-                'user_data':{
-                  'email':'{{ customer.email }}',
-                  'phone_number': {% if customer.phone %}{{ customer.phone }}{% else %}null{% endif %},
-                  'address':{
-                    'first_name': decodeHTMLEntities('{{ customer.first_name }}'),
-                    'last_name': decodeHTMLEntities('{{ customer.last_name }}'),
-                    {% if customer.b2b? %}
-                    'street': {% if customer.current_location.shipping_address.street != blank %}decodeHTMLEntities('{{customer.current_location.shipping_address.street }}'){% else %}null{% endif %},
-                    'city': {% if customer.current_location.shipping_address.city != blank  %}decodeHTMLEntities('{{ customer.current_location.shipping_address.city }}'){% else %}null{% endif %},
-                    'region': {% if customer.current_location.shipping_address.province != blank %}decodeHTMLEntities('{{ customer.current_location.shipping_address.province }}'){% else %}null{% endif %},
-                    'postal_code': {% if customer.current_location.shipping_address.zip != blank %}decodeHTMLEntities('{{ customer.current_location.shipping_address.zip }}'){% else %}null{% endif %},
-                    'country': {% if customer.current_location.shipping_address.country_code != blank %}decodeHTMLEntities('{{ customer.current_location.shipping_address.country_code }}'){% else %}null{% endif %},
-                    {% else %}
-                    'street': {% if customer.default_address.street != blank %}decodeHTMLEntities('{{ customer.default_address.street }}'){% else %}null{% endif %},
-                    'city': {% if customer.default_address.city != blank  %}decodeHTMLEntities('{{ customer.default_address.city }}'){% else %}null{% endif %},
-                    'region': {% if customer.default_address.province != blank %}decodeHTMLEntities('{{ customer.default_address.province }}'){% else %}null{% endif %},
-                    'postal_code': {% if customer.default_address.zip != blank %}decodeHTMLEntities('{{ customer.default_address.zip }}'){% else %}null{% endif %},
-                    'country': {% if customer.default_address.country_code != blank %}decodeHTMLEntities('{{ customer.default_address.country_code }}'){% else %}null{% endif %},
-                    {% endif %}
-                  }
+        var dataLayer = window.dataLayer || [];
+        function initUserDataGtm() {
+          if ('{{ customer.id }}') {
+            const isB2B = {% if customer.b2b? %}true{% else %}false{% endif %};
+            const address = isB2B ? {
+              street: '{{ customer.current_location.shipping_address.street | escape }}',
+              city: '{{ customer.current_location.shipping_address.city | escape }}',
+              region: '{{ customer.current_location.shipping_address.province | escape }}',
+              postal_code: '{{ customer.current_location.shipping_address.zip | escape }}',
+              country: '{{ customer.current_location.shipping_address.country_code | escape }}'
+            } : {
+              street: '{{ customer.default_address.street | escape }}',
+              city: '{{ customer.default_address.city | escape }}',
+              region: '{{ customer.default_address.province | escape }}',
+              postal_code: '{{ customer.default_address.zip | escape }}',
+              country: '{{ customer.default_address.country_code | escape }}'
+            };
+            dataLayer.push({
+              'user_id': '{{ customer.id }}',
+              'user_properties': {
+                'account_type': isB2B ? 'Business': 'Personal',
+                'industry': '{{ customer.current_company.metafields.company.industry | escape }}',
+                'company': '{{ customer.current_company.name | escape }}'
+              },
+              'user_data': {
+                'email': '{{ customer.email }}',
+                'phone_number': '{{ customer.phone }}' || null,
+                'address': {
+                  'first_name': '{{ customer.first_name | escape }}',
+                  'last_name': '{{ customer.last_name | escape }}',
+                  ...address
                 }
-              })
-            }
-        </script>
-      {%- if shop.name == 'TestHitpros' -%}
-        <!-- Google Tag Manager -->
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              }
+            });
+          }
+        }
+        initUserDataGtm();
+        async function  getIpAddress () {
+          try {
+            await fetch('https://www.cloudflare.com/cdn-cgi/trace')
+              .then(response => response.text())
+              .then(data => {
+                const lines = data.split('\n');
+                const ipLine = lines.find(line => line.startsWith('ip='));
+                const ip = ipLine ? ipLine.substring(3) : '';
+                Cookies.set('ip', ip, { expires: 365 * 10 });
+              });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        getIpAddress();
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-MTQZMJCM');</script>
-      {% else %}
-            <script>
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-M7M24J6J');
-            </script>
-      {% endif %}
+          })(window,document,'script','dataLayer','{{ gtm_id }}');
+      </script>
       {% if template == 'collection' %}
       {% else %}
         <script src="{{ 'swiper.min.js' | asset_url }}"></script>
@@ -189,25 +201,6 @@
       {% endif %}
       <script src="{{ 'zip-code.js' | asset_url }}"></script>
       <script src="{{ 'lib-phone.js' | asset_url }}"></script>
-      {%- if shop.name == 'TestHitpros' -%}
-        <script>
-          document.addEventListener('DOMContentLoaded', () => {
-            $.get('https://www.cloudflare.com/cdn-cgi/trace', (data) => {
-              const ipMatch = data.match(/ip=([\d.]+)/);
-              const ip = ipMatch[1];
-              Cookies.set('ip', ip, { expires: 365 * 10 });
-            });
-          })
-        </script>
-      {% else %}
-        <script>
-          $.get('https://www.cloudflare.com/cdn-cgi/trace', (data) => {
-            const ipMatch = data.match(/ip=([\d.]+)/);
-            const ip = ipMatch[1];
-            Cookies.set('ip', ip, { expires: 365 * 10 });
-          });
-        </script>
-      {% endif %}
       <script src="{{ 'theme.js' | asset_url }}" defer></script>
       {% if shop.name != 'TestHitpros'  %}
         {% render 'other-service' %}
@@ -216,57 +209,28 @@
       {% endif %}
       {{ content_for_header }}
     </head>
-  
     {%- assign feature_classes = '' -%}
   
     {%- if settings.show_image_zoom -%}
       {% assign feature_classes = feature_classes | append: ' features--image-zoom' %}
     {%- endif -%}
-  
     <body class="no-focus-outline {{ feature_classes }}" data-instant-allow-query-string>
-      <!-- Google Tag Manager (noscript) -->
-      <noscript
-        ><iframe
-          src="https://www.googletagmanager.com/ns.html?id=GTM-PVCDGR5P"
+      <noscript>
+        <iframe
+          src="https://www.googletagmanager.com/ns.html?id={{ gtm_id }}"
           height="0"
           width="0"
           style="display:none;visibility:hidden"
-        ></iframe
-      ></noscript>
-      <!-- End Google Tag Manager (noscript) -->
-      {%- if shop.name == 'TestHitpros' -%}
-          <noscript
-          ><iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-MTQZMJCM"
-            height="0"
-            width="0"
-            style="display:none;visibility:hidden"
-          ></iframe
-        ></noscript>
-        <!-- End Google Tag Manager (noscript) -->
-      {% else %}
-                <!-- Google Tag Manager (noscript) -->
-            <noscript
-            ><iframe
-              src="https://www.googletagmanager.com/ns.html?id=GTM-M7M24J6J"
-              height="0"
-              width="0"
-              style="display:none;visibility:hidden"
-            ></iframe
-          ></noscript>
-          <!-- End Google Tag Manager (noscript) -->
-  
-          {%- comment -%}Common SVG definitions that we are re-using in several places{%- endcomment -%}
-          <svg class="visually-hidden">
-            <linearGradient id="rating-star-gradient-half">
-              <stop offset="50%" stop-color="rgb(var(--product-star-rating))" />
-              <stop offset="50%" stop-color="rgb(var(--product-star-rating))" stop-opacity="0.4" />
-            </linearGradient>
-          </svg>
-      {% endif %}
-      <!-- Google Tag Manager (noscript) -->
-  
-  
+        >
+        </iframe>
+      </noscript>
+      {%- comment -%}Common SVG definitions that we are re-using in several places{%- endcomment -%}
+      <svg class="visually-hidden">
+        <linearGradient id="rating-star-gradient-half">
+          <stop offset="50%" stop-color="rgb(var(--product-star-rating))" />
+          <stop offset="50%" stop-color="rgb(var(--product-star-rating))" stop-opacity="0.4" />
+        </linearGradient>
+      </svg>
       <a href="#main" class="visually-hidden skip-to-content">{{ 'general.accessibility.skip_to_content' | t }}</a>
       <loading-bar class="loading-bar"></loading-bar>
   
@@ -296,11 +260,10 @@
           {%- section 'static-newsletter' -%}
         {%- endunless -%}
       </div>
-  
       {% sections 'footer-group' %}
-  
       {% render 'globo.form.custom' %}
     </body>
      {% render 'js-config' %}
+     {% render 'js-gtm' %}
   </html>
   

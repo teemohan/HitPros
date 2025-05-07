@@ -8373,7 +8373,7 @@
               'event': 'add_to_wishlist',
               'ecommerce': {
                 'currency': 'USD',
-                'value': price,
+                'value': parseFloat(price || 0),
                 'items': [{
                   'item_id': sku,
                   'sku_code': sku,
@@ -9084,6 +9084,9 @@
     }
     async _updateFromLink(link) {
       if (window.themeVariables.settings.pageType === 'cart') {
+        this.dispatchEvent(
+          new CustomEvent('line-item-quantity:url:start', { bubbles: true, detail: { link:link  || ''} })
+        );
         window.location.href = link;
         return;
       }
