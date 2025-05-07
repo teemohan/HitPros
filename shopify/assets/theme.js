@@ -9067,7 +9067,7 @@
     }
     _onQuantityLinkClicked(event, target) {
       event.preventDefault();
-      this._updateFromLink(target.href);
+      this._updateFromLink(target.href, true);
     }
     _onQuantityMaxChanged(event, target) {
       event.preventDefault();
@@ -9082,11 +9082,9 @@
         )}`
       );
     }
-    async _updateFromLink(link) {
-      if (window.themeVariables.settings.pageType === 'cart') {
-        this.dispatchEvent(
-          new CustomEvent('line-item-quantity:url:start', { bubbles: true, detail: { link:link  || ''} })
-        );
+    async _updateFromLink(link, isRemove = false ) {
+
+      if (window.themeVariables.settings.pageType === 'cart' && !isRemove) {
         window.location.href = link;
         return;
       }
@@ -9113,6 +9111,10 @@
           detail: { cart: cartContent, newLineQuantity: quantity },
         })
       );
+      if (window.themeVariables.settings.pageType === 'cart' && isRemove) {
+        window.location.reload();
+        return false
+      }
       document.documentElement.dispatchEvent(
         new CustomEvent('cart:updated', {
           bubbles: true,

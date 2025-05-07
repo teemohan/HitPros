@@ -200,7 +200,7 @@
       };
       window.dataLayer.push(cartViewEventDataEmpt);
     }
-    document.addEventListener('line-item-quantity:url:start', (event) => {
+    {% comment %} document.addEventListener('line-item-quantity:url:start', (event) => {
       const url = event.detail?.link || '';
       const changeUrl = new URL(url, `https://${window.themeVariables.routes.host}`)
       const searchParams = changeUrl.searchParams
@@ -236,7 +236,7 @@
         }
       }
       window.dataLayer.push(eventData);
-    })
+    }) {% endcomment %}
   {% endif %}
   // 初始化商品页面GTM
   document.addEventListener('DOMContentLoaded', () => {

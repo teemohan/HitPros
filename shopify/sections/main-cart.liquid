@@ -178,13 +178,13 @@
                               <div class="quantity-selector  quantity-selector--small">
                                 {% assign moq_value = line_item.product.metafields.product.moq | plus: 0 %}
                                 {% if line_item.product.metafields.product.moq != blank and moq_value < line_item.quantity %}
-                                  <a href="javascript:void(0)" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button quantity-selector__minus" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
+                                  <span style="cursor:pointer;" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button quantity-selector__minus" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
                                     {%- render 'icon' with 'minus' -%}
-                                  </a>
+                                  </span>
                                 {% elsif line_item.product.metafields.product.moq == blank %}
-                                  <a href="javascript:void(0)" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button quantity-selector__minus" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
+                                  <span style="cursor:pointer;" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button quantity-selector__minus" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
                                     {%- render 'icon' with 'minus' -%}
-                                  </a>
+                                  </span>
                                 {% else %}
                                   <span class="disabled-link quantity-selector__button">
                                     {%- render 'icon' with 'minus' -%}
@@ -200,9 +200,9 @@
                                   {% if max_allowed_quantity != '' %}max="{{ max_allowed_quantity }}"{% endif %} size="{{ line_item.quantity | append: '' | size | at_least: 2 }}" aria-label="{{ 'cart.general.change_quantity' | t | escape }}">
       
                                 {%- if allow_more -%}
-                                  <a href="javascript:void(0)" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity }}&line={{ forloop.index }}" href="#" class="quantity-selector__button quantity-selector__plus" aria-label="{{ 'cart.general.increase_quantity' | t | escape }}" data-no-instant>
+                                  <span data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity }}&line={{ forloop.index }}" style="cursor:pointer;" class="quantity-selector__button quantity-selector__plus" aria-label="{{ 'cart.general.increase_quantity' | t | escape }}" data-no-instant>
                                     {%- render 'icon' with 'plus' -%}
-                                  </a>
+                                  </span>
                                 {%- else -%}
                                   <span class="quantity-selector__button" aria-label="{{ 'cart.general.no_more_stock' | t | escape }}" data-tooltip="{{ 'cart.general.no_more_stock' | t | escape }}">
                                     {%- render 'icon' with 'plus' -%}
