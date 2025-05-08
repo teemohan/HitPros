@@ -103,15 +103,15 @@ new Vue({
   mounted() {
     this.$nextTick(() => {
       window.addEventListener('resize', this._throttledResize);
-      document.addEventListener('touchmove', this.handleUserInteraction, { passive: true });
-      document.addEventListener('touchend', this.handleUserInteraction, { passive: true }); 
-      document.addEventListener('wheel', this.handleUserInteraction, { passive: true });
-      document.addEventListener('keydown', this.handleUserInteraction);
+      // document.addEventListener('touchmove', this.handleUserInteraction, { passive: true });
+      // document.addEventListener('touchend', this.handleUserInteraction, { passive: true }); 
+      // document.addEventListener('wheel', this.handleUserInteraction, { passive: true });
+      // document.addEventListener('keydown', this.handleUserInteraction);
     });
   },
   beforeDestroy() {
     window.removeEventListener('resize', this._throttledResize);
-    this.removeDoScreen()
+    // this.removeDoScreen()
     this.hideSketon()
     if (this.observer) {
       this.observer.disconnect();
@@ -141,7 +141,7 @@ new Vue({
         } catch (error) {
         }
         if(this.categories.length <= 0) {
-          await this.loadFirstScreenData();  // 首先加载首屏数据
+          await this.fetchSpuList();  // 首先加载首屏数据
           this.factMobFilter()
         } else {
           this.hideSketon()
@@ -149,7 +149,7 @@ new Vue({
         // this.fetchWishlist()
       } else {
         try{
-          await this.loadFirstScreenData();  // 首先加载首屏数据
+          await this.fetchSpuList();  // 首先加载首屏数据
         } catch (error) { }
         this.fetchCategories();
       }
@@ -409,20 +409,20 @@ new Vue({
         lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
       }
     },
-    handleUserInteraction() {
-      if (this.isFirstScreenLoaded) {
-        if (!this.remainingDataLoaded) {
-          if (this.cache.fullData) {
-            this.spuData = this.cache.fullData;
-          }
-          if(this.hasMore) {
-            this.initIntersectionObserver();  // 初始化无限滚动
-          }
-          this.remainingDataLoaded = true;  // 标记剩余数据已加载
-        }
-        this.removeDoScreen()
-      }
-    },
+    // handleUserInteraction() {
+    //   if (this.isFirstScreenLoaded) {
+    //     if (!this.remainingDataLoaded) {
+    //       if (this.cache.fullData) {
+    //         this.spuData = this.cache.fullData;
+    //       }
+    //       if(this.hasMore) {
+    //         this.initIntersectionObserver();  // 初始化无限滚动
+    //       }
+    //       this.remainingDataLoaded = true;  // 标记剩余数据已加载
+    //     }
+    //     this.removeDoScreen()
+    //   }
+    // },
     async fetchData(pageNo, pageSize, isHighPriority = false) { //通用接口
       try {
         const urlbrand = this.selectedBrands();
@@ -479,41 +479,41 @@ new Vue({
         }))
       }));
     },
-    async loadFirstScreenData() {  // 修改首屏加载方法，只关注SPU数据
-      if (this.isLoading) return;
-      try {
-        this.isLoading = true;
-        const result = await this.fetchData(1, this.config.spuPageSize, true);
-        if (result.code === 200) {
+    // async loadFirstScreenData() {  // 修改首屏加载方法，只关注SPU数据
+    //   if (this.isLoading) return;
+    //   try {
+    //     this.isLoading = true;
+    //     const result = await this.fetchData(1, this.config.spuPageSize, true);
+    //     if (result.code === 200) {
           
-          const firstScreenData = this.processSpuData(result.data, false);
-          if(firstScreenData.length > this.firstScreenSize) {
-            this.cache.fullData = firstScreenData
-          }
-          this.spuData = (firstScreenData || []).slice(0, this.firstScreenSize);
-          this.hasMore = parseInt(result.data.total) > firstScreenData.length;
-          if (result.data.extra) {
-            this.creatBrandList(result.data.extra);
-          }
-          if(this.hasMore) {
-             this.page = 2;
-          }
-          // if ('performance' in window) {
-          //   performance.mark('first-screen-loaded');
-          // }
-        } else {
-          console.error('Failed to load first screen data:', result.msg);
-        }
-      } catch (error) {
-        console.error('Error loading first screen data:', error);
-      } finally {
-        this.hideSketon()
-        this.isLoading = false;
-        this.isFirstScreenLoaded = true;  // 标记首屏已加载
-      }
-    },
+    //       const firstScreenData = this.processSpuData(result.data, false);
+    //       if(firstScreenData.length > this.firstScreenSize) {
+    //         this.cache.fullData = firstScreenData
+    //       }
+    //       this.spuData = (firstScreenData || []).slice(0, this.firstScreenSize);
+    //       this.hasMore = parseInt(result.data.total) > firstScreenData.length;
+    //       if (result.data.extra) {
+    //         this.creatBrandList(result.data.extra);
+    //       }
+    //       if(this.hasMore) {
+    //          this.page = 2;
+    //       }
+    //       // if ('performance' in window) {
+    //       //   performance.mark('first-screen-loaded');
+    //       // }
+    //     } else {
+    //       console.error('Failed to load first screen data:', result.msg);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error loading first screen data:', error);
+    //   } finally {
+    //     this.hideSketon()
+    //     this.isLoading = false;
+    //     this.isFirstScreenLoaded = true;  // 标记首屏已加载
+    //   }
+    // },
     async fetchSpuList() {
-      if (this.isLoading || !this.hasMore) return;
+      if (this.isLoading) return;
       try {
         this.isLoading = true;
         const result = await this.fetchData(this.page, this.config.spuPageSize);
@@ -524,6 +524,9 @@ new Vue({
             this.creatBrandList(result.data.extra);
           }
           this.hasMore = parseInt(result.data.total) > this.spuData.length;
+          if(this.hasMore && this.page == 1) {
+            this.initIntersectionObserver();  // 初始化无限滚动
+          }
           this.page++;
         } else {
           document.documentElement.dispatchEvent(
@@ -738,13 +741,11 @@ new Vue({
       
       document.addEventListener('facet-rerender', debouncedReload);
     },
-    removeDoScreen() {
-      document.removeEventListener('touchmove', this.handleUserInteraction);
-      document.removeEventListener('touchend', this.handleUserInteraction); 
-      document.removeEventListener('wheel', this.handleUserInteraction);
-      document.removeEventListener('keydown', this.handleUserInteraction);
-    }
+    // removeDoScreen() {
+    //   document.removeEventListener('touchmove', this.handleUserInteraction);
+    //   document.removeEventListener('touchend', this.handleUserInteraction); 
+    //   document.removeEventListener('wheel', this.handleUserInteraction);
+    //   document.removeEventListener('keydown', this.handleUserInteraction);
+    // }
   }
 });
-
-

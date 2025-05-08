@@ -173,22 +173,24 @@
                               {%- assign max_allowed_quantity = line_item.variant.inventory_quantity -%}
                               {%- assign allow_more = false -%}
                             {%- endif -%}
-
+                            {% assign moq_value = line_item.product.metafields.product.moq | plus: 0 %}
+                            {% assign mpq_value = line_item.product.metafields.product.mpq | plus: 0 %}
+                            {% comment %} {% assign remainder = line_item.variant.inventory_quantity | divided_by: mpq_value %}
+                            {% assign max_allowed_quantity = remainder | times: mpq_value %} {% endcomment %}
                             {%- capture quantity_selector_inner -%}
                               <div class="quantity-selector  quantity-selector--small">
-                                {% assign moq_value = line_item.product.metafields.product.moq | plus: 0 %}
                                 {% if line_item.product.metafields.product.moq != blank and moq_value < line_item.quantity %}
-                                  <span style="cursor:pointer;" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button quantity-selector__minus" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
-                                    {%- render 'icon' with 'minus' -%}
-                                  </span>
+                                  <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: mpq_value }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
+                                      {%- render 'icon' with 'minus' -%}
+                                  </a>
                                 {% elsif line_item.product.metafields.product.moq == blank %}
-                                  <span style="cursor:pointer;" data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button quantity-selector__minus" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
-                                    {%- render 'icon' with 'minus' -%}
-                                  </span>
+                                    <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
+                                        {%- render 'icon' with 'minus' -%}
+                                    </a>
                                 {% else %}
-                                  <span class="disabled-link quantity-selector__button">
-                                    {%- render 'icon' with 'minus' -%}
-                                  </span>
+                                    <span class="disabled-link quantity-selector__button">
+                                        {%- render 'icon' with 'minus' -%}
+                                    </span>
                                 {% endif %}
   
                                 <input onpaste="return false" data-sku="{{ line_item.sku }}" min="1" 
@@ -199,15 +201,15 @@
                                   data-mpq="{% if line_item.product.metafields.product.mpq != blank %}{{ line_item.product.metafields.product.mpq }}{% else %}1{% endif %}" 
                                   {% if max_allowed_quantity != '' %}max="{{ max_allowed_quantity }}"{% endif %} size="{{ line_item.quantity | append: '' | size | at_least: 2 }}" aria-label="{{ 'cart.general.change_quantity' | t | escape }}">
       
-                                {%- if allow_more -%}
-                                  <span data-href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity }}&line={{ forloop.index }}" style="cursor:pointer;" class="quantity-selector__button quantity-selector__plus" aria-label="{{ 'cart.general.increase_quantity' | t | escape }}" data-no-instant>
-                                    {%- render 'icon' with 'plus' -%}
-                                  </span>
-                                {%- else -%}
-                                  <span class="quantity-selector__button" aria-label="{{ 'cart.general.no_more_stock' | t | escape }}" data-tooltip="{{ 'cart.general.no_more_stock' | t | escape }}">
-                                    {%- render 'icon' with 'plus' -%}
-                                  </span>
-                                {%- endif -%}
+                                  {%- if allow_more -%}
+                                    <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | plus: mpq_value }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.increase_quantity' | t | escape }}" data-no-instant>
+                                      {%- render 'icon' with 'plus' -%}
+                                    </a>
+                                  {%- else -%}
+                                    <span class="quantity-selector__button" aria-label="{{ 'cart.general.no_more_stock' | t | escape }}" data-tooltip="{{ 'cart.general.no_more_stock' | t | escape }}">
+                                      {%- render 'icon' with 'plus' -%}
+                                    </span>
+                                  {%- endif -%}
                               </div>
                               <a href="{{ line_item.url_to_remove }}" class="hidden-phone remove_link line-item__remove-button link text--subdued text--xsmall" data-no-instant>{{ 'cart.general.remove' | t }}</a>
                             {%- endcapture -%}
@@ -891,8 +893,7 @@
       });
     }
   })();
-
-  (() => {
+  {% comment %} (() => {
     let isDisabledInput = false;  // 调用一次函数就拉倒了
     function disabledInput(key) {  // 禁用输入和加减
       const $lineItemQuantitys = $('.line-item-quantity');
@@ -978,7 +979,7 @@
       }
       debouncedItemValueChange(href);
     });
-  })()
+  })() {% endcomment %}
 </script>
 
 {% schema %}
