@@ -17,14 +17,17 @@
     </product-overview>
     <div class="product-information">
       <aside>
-        {% if product.metafields.product.brand.value == 'Black Canyon' %}
+        {% assign brand = product.metafields.product.brand.value | strip %}
+        {% if brand == 'Black Canyon' %}
           {% render 'icon' with 'canyon-brand' %}
-        {% elsif product.metafields.product.brand.value == 'Olympia' %}
+        {% elsif brand == 'Olympia' %}
           {% render 'icon' with 'olympia-brand' %}
-        {% elsif product.metafields.product.brand.value == 'NorthSky Select' %}
+        {% elsif brand == 'NorthSky Select' %}
           {% render 'icon' with 'north-select-brand' %}
-        {% elsif product.metafields.product.brand.value == 'WD-40' %}
+        {% elsif brand == 'WD-40' %}
           {% render 'icon' with 'wd-40' %}
+        {% elsif brand == 'Physicians Care' %}
+          {% render 'icon' with 'physicians-care' %}
         {% endif %}
         <div class="product-info-line general-information">
           <ul class="info-table">
