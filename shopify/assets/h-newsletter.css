@@ -111,6 +111,12 @@
   font-weight: 700;
   color: var(--my-blue);
   line-height: 20px;
+  border: 2px solid var(--my-yellow);
+}
+.h-newsletter .newsleftter-btn:hover {
+  background-color: #fabe000d;
+  color: var(--my-yellow);
+  cursor: pointer;
 }
 
 @media screen and (max-width: 740px) {
