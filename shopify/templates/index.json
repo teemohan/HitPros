@@ -12,8 +12,8 @@
     "zkh_hero_banner_4_gz7YDr": {
       "type": "zkh-hero-banner-4",
       "settings": {
-        "title": "Built Strong, Priced Right™",
-        "text": "<p>Save 40-70% on durable and<br/>dependable industrial supplies </p>",
+        "new_title": "<p> High-Quality Supplies,<br/>Industry-Best Prices.<\/p>",
+        "text": "<p>Save 30-70% on premium industrial supplies.</p>",
         "bg_img": "shopify://shop_images/Group_421.png",
         "h5_bg_img": "shopify://shop_images/Left_bunner_1.png",
         "btn_text": "Explore",
