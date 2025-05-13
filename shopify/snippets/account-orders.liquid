@@ -226,23 +226,19 @@
       },
       methods: {
         handleOpenInvoice(order) {
-          if(window.themeVariables.userCompany.isB2b == 'true') {
-            order.invoice_loading = true;
-            fetch(`${window.zkh.api}/order/${order.id}`)
-              .then(response => response.json())
-              .then(res =>{
-                if(res.code == 200) {
-                  if(res.data.order.payment_terms?.payment_terms_type == 'net') {
-                    window.open(`${ this.pixiNetUrl }/${ order.id }`, '_blank');
-                  } else {
-                    window.open(`${ this.pixiUrl }/${ order.id }`, '_blank');
-                  }
+          order.invoice_loading = true;
+          fetch(`${window.zkh.api}/order/${order.id}`)
+            .then(response => response.json())
+            .then(res =>{
+              if(res.code == 200) {
+                if(res.data.order.payment_terms?.payment_terms_type == 'net') {
+                  window.open(`${ this.pixiNetUrl }/${ order.id }`, '_blank');
+                } else {
+                  window.open(`${ this.pixiUrl }/${ order.id }`, '_blank');
                 }
-                order.invoice_loading = false;
-              })
-          } else {
-            window.open(`${ this.pixiUrl }/${ order.id }`, '_blank');
-          }
+              }
+              order.invoice_loading = false;
+            })
         },
         handleBeforeCancelOrder(order) {
           this.order = order;
@@ -287,7 +283,6 @@
           this.ordersData = $('[data-order]').map(function() {
             return $(this).data('order');
           }).get().map(order => {
-            console.log(order)
             const createdAtTimestamp = new Date(order.created_at_date).getTime();
 
             const getTimestampInTimezone = (timezoneOffset) => {
