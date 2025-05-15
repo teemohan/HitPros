@@ -30,11 +30,6 @@
         {%- assign is_online_shop = false -%}
         {%- assign gtm_id = 'GTM-MTQZMJCM' -%}
       {%- endif -%}
-      {% if is_online_shop %}
-        <!-- begin Convert Experiences code-->
-          <script type="text/javascript" src="//cdn-4.convertexperiments.com/v1/js/10047477-100416519.js?environment=production"></script>
-        <!-- end Convert Experiences code -->
-      {%  endif %}
       {%- if page_description -%}
         <meta name="description" content="{{ page_description | escape }}">
       {%- endif -%}
@@ -202,11 +197,6 @@
       <script src="{{ 'zip-code.js' | asset_url }}"></script>
       <script src="{{ 'lib-phone.js' | asset_url }}"></script>
       <script src="{{ 'theme.js' | asset_url }}" defer></script>
-      {% if shop.name != 'TestHitpros'  %}
-        {% render 'other-service' %}
-      {% else %}
-        {%- render 'preload' -%}
-      {% endif %}
       {{ content_for_header }}
     </head>
     {%- assign feature_classes = '' -%}
