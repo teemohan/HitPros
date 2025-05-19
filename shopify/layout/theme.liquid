@@ -30,10 +30,8 @@
         {%- assign is_online_shop = false -%}
         {%- assign gtm_id = 'GTM-MTQZMJCM' -%}
       {%- endif -%}
-      {% if is_online_shop %}
-        <!-- begin Convert Experiences code-->
-          <script type="text/javascript" src="//cdn-4.convertexperiments.com/v1/js/10047477-100416519.js?environment=production"></script>
-        <!-- end Convert Experiences code -->
+      {% if settings.open_convert  and settings.convert_codes %}
+          <script type="text/javascript" src="//cdn-4.convertexperiments.com/v1/js/{{- settings.convert_codes -}}.js?environment=production"></script>
       {%  endif %}
       {%- if page_description -%}
         <meta name="description" content="{{ page_description | escape }}">
