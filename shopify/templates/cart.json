@@ -36,7 +36,6 @@
     },
     "cart-recommendations": {
       "type": "cart-recommendations",
-      "disabled": true,
       "settings": {
         "title": "Products You May  Like"
       }
