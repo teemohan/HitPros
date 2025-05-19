@@ -1,30 +1,6 @@
 {{ 'index-product-item.css' | asset_url | stylesheet_tag }}
-<style>
-  .cart-alsolikeSwiper {
-    overflow: hidden;
-  }
-
-  .cart-alsolikeSwiper .swiper-slide {
-    height: auto;
-  }
-  .shopify-section--cart-recommendations {
-    overflow: hidden;
-  }
-  @media screen and (min-width: 741px) {
-    .recommendations_header {
-      margin-bottom: 30px;
-    }
-  }
-
-  @media screen and (max-width: 740px) {
-    .recommendations_header {
-      margin-bottom: 20px;
-    }
-  }
-</style>
-
 <div
-  class="product-recommendations section-padding-top section-padding-bottom {{ section.id }}"
+  class="js-cart-recommendations product-recommendations {{ section.id }} product-x-hidde bg-EAEEF1 py-6 fb-sm:py-17 hidden"
   data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ cart.items.first.product_id }}&limit=12"
 >
   {%- assign acceptable_recommendations_count = 0 -%}
@@ -38,7 +14,7 @@
   {%- endfor -%}
 
   {%- if recommendations.performed and acceptable_recommendations_count > 0 -%}
-    <div class="container">
+    <div class="container cl-container">
       <div class="index-cus-header">
         <h2>{{ section.settings.title }}</h2>
         {% render 'swiper-buttons' %}
@@ -62,44 +38,44 @@
 
 <script>
   (() => {
-    const handleIntersection = (entries, observer) => {
-      if (!entries[0].isIntersecting) return;
-
-      observer.unobserve(productRecommendationsSection);
-
+    const handleIntersection = () => {
+      const productRecommendationsSection = document.querySelector('.product-recommendations');
       const url = productRecommendationsSection.dataset.url;
-
       fetch(url)
         .then((response) => response.text())
         .then((text) => {
+          if(!text || text.trim().length === 0) {
+            return false
+          }
           const html = document.createElement('div');
           html.innerHTML = text;
           const recommendations = html.querySelector('.product-recommendations');
-
           if (recommendations && recommendations.innerHTML.trim().length) {
-            productRecommendationsSection.innerHTML = recommendations.innerHTML;
+            document.querySelector('.js-cart-recommendations').classList.remove('hidden')
+            productRecommendationsSection.innerHTML = recommendations.innerHTML; 
             var cartalsolikeSwiper = new Swiper(".{{ section.id }} .swiper", {
+              observer: true,
+              observeParents: true,
               touchStartPreventDefault: true,
               passiveListeners: false,
               touchAngle: 70,              
               threshold: 10,
               breakpoints: {
-                320: {
-                  // 当屏幕宽度大于等于320
+                0: {
+                  spaceBetween: 12,
                   slidesPerView: 2,
-                  slidesPerGroup: 2,
-                  spaceBetween: 12,
                 },
-                740: {
-                  // 当屏幕宽度大于等于768
+                768: {
+                  spaceBetween: 24,
                   slidesPerView: 3,
-                  slidesPerGroup: 3,
-                  spaceBetween: 20,
                 },
-                1200: {
-                  // 当屏幕宽度大于等于768
+                1024: {
+                  spaceBetween: 24,
                   slidesPerView: 4,
-                  spaceBetween: 12,
+                },
+                1280: {
+                  spaceBetween: 24,
+                  slidesPerView: 5,
                 },
               },
               scrollbar: {
@@ -116,9 +92,10 @@
           console.error(e);
         });
     };
-    const productRecommendationsSection = document.querySelector('.product-recommendations');
+    handleIntersection()
+    {% comment %} const productRecommendationsSection = document.querySelector('.product-recommendations');
     const observer = new IntersectionObserver(handleIntersection, { rootMargin: '0px 0px 200px 0px' });
-    observer.observe(productRecommendationsSection);
+    observer.observe(productRecommendationsSection); {% endcomment %}
   })();
 </script>
 

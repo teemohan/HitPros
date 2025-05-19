@@ -1,4 +1,21 @@
-{{ 'main-cart.css' | asset_url | stylesheet_tag }}
+<style>
+   @keyframes loadingRotate {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  .line-item-table .line-item .loading-container {
+    animation: loadingRotate 1s infinite linear;
+    width: 16px;
+    height: 16px;
+    display: flex;
+  } 
+
+</style>
 <nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="container breadcrumb text--xsmall">
   <ol class="collection_breadcrumb__list breadcrumb__list" role="list">
     <li class="breadcrumb__item">
@@ -13,37 +30,37 @@
 <section>
   <div class="{{ section.id }} container">
     {%- if cart.item_count == 0 -%}
-      <div class="empty-state text-container">
-        <h1 class="heading h1">{{ 'cart.general.title' | t }}</h1>
-        <p class="text--large">{{ 'cart.general.empty' | t }}</p>
-        <div class="button-wrapper">
-          <a href="{{ section.settings.empty_button_link }}" class="button button--primary">
-            {{- 'cart.general.start_shopping' | t -}}
+      <div class="text-center my-14r w-full">
+        <h1 class="text-32 text-main m-0 uppercase font-bold">{{ 'cart.general.title' | t }}</h1>
+        <p class="mt-4 text-20">{{ 'cart.general.empty' | t }}</p>
+        <div class="w-full h-auto fb-flex-center mt-5">
+          <a href="{{ section.settings.empty_button_link }}" class="px-10 rounded py-4 bg-button font-bold text-base text-black tracking-[2px]">
+            {{- 'cart.general.start_shopping' | t | upcase -}}
           </a>
         </div>
       </div>
     {%- endif -%}
-
     {%- if cart.item_count > 0 -%}
-      <div class="page-content page-content--fluid">
-        <div class="main-cart-box">
-          <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
+      <div class="w-full mb-8 mx-auto">
+        <div class="w-full">
+          <form action="{{ routes.cart_url }}" method="post" novalidate class="flex-col-reverse flex space-y-5 fb-md:grid fb-md:gap-4 fb-md:grid-cols-[1fr_303px]">
             <input type="hidden" name="checkout">
-
-            <div class="cart__content">
-              <h3 class="cart__content-header">cart</h3>
-              <div class="main-cart-table">
-                <table class="line-item-table table table--loose">
-                  <tbody class="line-item-table__list">
+            <div class="w-full">
+              <h3 class="bg-F3F8FC w-full rounded-sm text-0A2B6F flex items-center font-bold h-8 text-sm px-5 fb-sm:h-12 fb-sm:px-7 fb-sm:text-22">CART</h3>
+              <div class="w-full">
+                <table class="w-full js-line-item-table">
+                  <tbody class="w-full">
                     {% liquid
                       assign computed_subtotal = 0
+                      assign original_total_price = 0
                     %}
                     {%- for line_item in cart.items -%}
                       {% liquid
                         assign quantity_discount_json = line_item.product.metafields.product.quantity_discount
                         assign quantity_discounts = quantity_discount_json.value
                         assign first_moq = quantity_discounts.first.moq | times: 1
-                        
+                        assign original_line_item_price = line_item.variant.price | times: line_item.quantity
+
                         if quantity_discounts.size > 0 and line_item.quantity >= first_moq
                           for discount in quantity_discounts
                             assign moq = discount.moq | times: 1
@@ -51,66 +68,71 @@
                               break
                             endif
                             assign discount_value = discount.discount | times: 1
-                            assign computed_final_line_price = line_item.original_price | times: discount_value
-                            assign computed_final_line_price_total = line_item.original_price | times: discount_value | times: line_item.quantity
+                            assign computed_final_line_price = line_item.variant.price | times: discount_value
+                            assign computed_final_line_price_total = line_item.variant.price | times: discount_value | times: line_item.quantity
                           endfor
                         else
-                          assign computed_final_line_price = line_item.original_price
-                          assign computed_final_line_price_total = line_item.original_price | times: line_item.quantity
+                          assign computed_final_line_price = line_item.variant.price
+                          assign computed_final_line_price_total = line_item.variant.price | times: line_item.quantity
                         endif
                         assign computed_subtotal = computed_subtotal | plus: computed_final_line_price_total
+                        assign original_total_price = original_total_price | plus: original_line_item_price 
                       %}
                       <tr
-                        class="line-item"
+                        class="line-item w-full min-h-13r rounded-sm border border-F0F0F0 flex flex-col fb-sm:flex-row px-2.5 pt-4 pb-6 mb-4.5 fb-sm:space-x-15"
                         data-sku="{{ line_item.sku }}"
                         data-price="{{ line_item.original_price }}"
                         data-qty="{{ line_item.quantity }}"
                       >
-                        <td class="line-item__product">
-                          <div class="line-item__content-wrapper">
+                        <td class="p-0 fb-sm:flex-1">
+                          <div class="flex relative items-center mt-0 space-x-4 fb-sm:space-x-6">
                             <a
                               href="{{ line_item.url }}"
-                              class="line-item__image-wrapper"
+                              class="w-25 h-25 fb-sm:w-10r fb-sm:h-10r shrink-1"
                               tabindex="-1"
                               aria-hidden="true"
                             >
                               <img
-                                class="line-item__image"
+                                class="w-full h-full"
                                 width="auto"
                                 height="auto"
                                 src="{{ line_item.image | image_url }}"
                               >
                             </a>
-                            <div class="product-item-meta">
-                              <div>
-                                <div class="product-item-meta-top">
+                            <div class="flex-1 flex flex-col justify-between relative shrink-0">
+                              <div class="w-full">
+                                <div class="flex fb-sm:flex-wrap text-xs items-end space-x-2 fb-sm:space-x-2.5">
                                   {%- if line_item.product.metafields.product.brand.value != blank
                                     and line_item.product.metafields.product.brand.value != 'null'
                                     and line_item.product.metafields.product.brand.value != '-'
                                   -%}
-                                    <span class="line-item-vendor">
+                                    <span class="text-sm fb-sm:text-base text-0A2B6F font-bold">
                                       {{- line_item.product.metafields.product.brand.value -}}
                                     </span>
                                   {%- endif -%}
                                   {% if line_item.product.metafields.product.manufacturer_model_number != blank %}
-                                    <span class="model"
+                                    <span class="text-sm text-575757 hidden fb-sm:block"
+                                      data-tooltip="{{ line_item.product.metafields.product.manufacturer_model_number }}"
                                       >Model: {{ line_item.product.metafields.product.manufacturer_model_number }}
                                     </span>
                                   {% endif %}
                                   {% assign stock_num = line_item.product.variants.first.inventory_quantity %}
                                   {% assign varid = line_item.product.variants.first.id %}
-                                  {% render 'stock-label', stock_num: stock_num, varid: varid, class: 'hidden-phone' %}
+                                  <div class="flex items-end fb-sm:h-6 pb-0.5">
+                                    <stock-label class="stock-label-container h-4" data-stock-num="{{ stock_num }}" data-input-varid="{{ varid }}">
+                                    </stock-label>
+                                  </div>
                                 </div>
-                                <a href="{{ line_item.url }}" class="line-item-title">
+                                <a href="{{ line_item.url }}" class="line-item-title mt-2.5 fb-sm:mt-2 text-0A2B6F text-sm text-left block">
                                   {{- line_item.product.title -}}
                                 </a>
+                                {% if line_item.product.metafields.product.manufacturer_model_number != blank %}
+                                  <div class="text-xs text-575757 fb-sm:hidden mt-3.5"
+                                    data-tooltip="{{ line_item.product.metafields.product.manufacturer_model_number }}"
+                                    >Model: {{ line_item.product.metafields.product.manufacturer_model_number }}
+                                  </div>
+                                {% endif %}
                               </div>
-                              {% render 'stock-label',
-                                stock_num: stock_num,
-                                varid: varid,
-                                class: 'hidden-tablet-and-up'
-                              %}
-
                               {%- capture line_item_properties -%}
                                 {%- unless line_item.product.has_only_default_variant -%}
                                   <span class="product-item-meta__property text--subdued text--xsmall">{{ line_item.variant.title }}</span>
@@ -120,21 +142,22 @@
                                   <span class="product-item-meta__property text--subdued text--xsmall">{{ line_item.selling_plan_allocation.selling_plan.name }}</span>
                                 {%- endif -%}
 
-                                <ul class="product-item-meta__property list--unstyled text--subdued text--xsmall" role="list">
+                                <ul class="product-item-meta__property" role="list">
                                   <span class="loading-container">
                                     {% render 'icon' with 'loading' %}
                                   </span>
-                                  <li class="line-item__property date"></li>
+                                  <li class="js-line-item__property date flex text-xs fb-sm:text-sm flex-col text-575757"></li>
                                 </ul>
                               {%- endcapture -%}
-                              <div class="line-item-bottom">
+                              <div class="line-item-bottom w-full mt-4 fb-sm:mt-10 fb-sm:flex fb-sm:items-start fb-sm:space-y-3.5 fb-sm:flex-col-reverse">
                                 {%- if line_item_properties != blank -%}
-                                  <div class="product-item-meta__property-list">
+                                  <div class="w-full fb-sm:mr-10">
                                     {{- line_item_properties -}}
                                   </div>
                                 {%- endif -%}
-                                <div class="product-item-meta__price-list-container hidden-phone">
-                                  <div class="line-item-price-list">
+                                <div class="w-full hidden fb-sm:block">
+                                  {% comment %} mobile 不能在加line-item-data{% endcomment %}
+                                  <div class="text-0A2B6F text-base font-medium flex items-center space-x-2">
                                     {% if line_item.variant.compare_at_price > line_item.variant.price %}
                                       {% assign price = line_item.variant.price
                                         | money_without_currency
@@ -152,13 +175,13 @@
                                         | times: 100
                                         | ceil
                                       %}
-                                      <span class="line-item-price" line-item-data data-quantity="{{ line_item.quantity }}" data-price="{{ line_item.variant.price }}">{{ line_item.variant.price | money }}</span>
-                                      <s class="line-item-compare">
+                                      <span class="" data-quantity="{{ line_item.quantity }}" data-price="{{ line_item.variant.price }}">{{ line_item.variant.price | money }}</span>
+                                      <s class="text-xs text-999999 flex items-center">
                                         {{- line_item.variant.compare_at_price | money -}}
                                       </s>
-                                      <span class="line-discount-percentage">{{ discount_percentage }}%OFF</span>
+                                      <span class="text-xs text-E62D35">{{ discount_percentage }}%OFF</span>
                                     {% else %}
-                                      <div class="line-item-price" line-item-data data-quantity="{{ line_item.quantity }}" data-price="{{ computed_final_line_price }}">{{ computed_final_line_price | money }}</div>
+                                      <div class="" data-quantity="{{ line_item.quantity }}" data-price="{{ computed_final_line_price }}">{{ computed_final_line_price | money }} per item</div>
                                     {% endif %}
                                   </div>
                                 </div>
@@ -178,55 +201,66 @@
                             {% comment %} {% assign remainder = line_item.variant.inventory_quantity | divided_by: mpq_value %}
                             {% assign max_allowed_quantity = remainder | times: mpq_value %} {% endcomment %}
                             {%- capture quantity_selector_inner -%}
-                              <div class="quantity-selector  quantity-selector--small">
+                              {%- assign css_input = 'fb-flex-center flex-1 h-full shrink-0' -%}
+                              <div class="w-9r h-9 fb-sm:w-9.2r fb-sm:h-12 border border-D3DEF1 fb-flex-center ">
                                 {% if line_item.product.metafields.product.moq != blank and moq_value < line_item.quantity %}
-                                  <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: mpq_value }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
-                                      {%- render 'icon' with 'minus' -%}
+                                  <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: mpq_value }}&line={{ forloop.index }}" class="{{ css_input }}" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
+                                      {%- render 'icon' with 'minus-new' -%}
                                   </a>
                                 {% elsif line_item.product.metafields.product.moq == blank %}
-                                    <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
-                                        {%- render 'icon' with 'minus' -%}
+                                    <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="{{ css_input }}" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
+                                        {%- render 'icon' with 'minus-new' -%}
                                     </a>
                                 {% else %}
-                                    <span class="disabled-link quantity-selector__button">
-                                        {%- render 'icon' with 'minus' -%}
+                                    <span class="{{ css_input }} opacity-50 cursor-not-allowed">
+                                        {%- render 'icon' with 'minus-new' -%}
                                     </span>
                                 {% endif %}
   
                                 <input onpaste="return false" data-sku="{{ line_item.sku }}" min="1" 
                                   data-max="{% if line_item.product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ line_item.product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
-                                  max="1000000" is="input-number" class="quantity-selector__input text--xsmall" 
-                                  autocomplete="off" type="text" inputmode="numeric" data-line="{{ forloop.index }}" value="{{ line_item.quantity }}" data-cart="1" data-input-varid="{{ line_item.variant_id }}" data-varid="{{ line_item.variant_id }}" 
+                                  max="1000000" is="line-input-number" class="w-18 fb-sm:w-20 outline-none text-0A2B6F text-20 fb-sm:text-24 text-center" 
+                                  autocomplete="off" type="text" inputmode="numeric" data-line="{{ forloop.index }}" value="{{ line_item.quantity }}" 
+                                  data-cart="1" 
+                                  data-input-varid="{{ line_item.variant_id }}" 
+                                  data-varid="{{ line_item.variant_id }}" 
                                   data-moq="{% if line_item.product.metafields.product.moq != blank %}{{ line_item.product.metafields.product.moq }}{% else %}1{% endif %}" 
                                   data-mpq="{% if line_item.product.metafields.product.mpq != blank %}{{ line_item.product.metafields.product.mpq }}{% else %}1{% endif %}" 
-                                  {% if max_allowed_quantity != '' %}max="{{ max_allowed_quantity }}"{% endif %} size="{{ line_item.quantity | append: '' | size | at_least: 2 }}" aria-label="{{ 'cart.general.change_quantity' | t | escape }}">
+                                  {% if max_allowed_quantity != '' %}max="{{ max_allowed_quantity }}"{% endif %} 
+                                  size="{{ line_item.quantity | append: '' | size | at_least: 2 }}" 
+                                  aria-label="{{ 'cart.general.change_quantity' | t | escape }}">
       
-                                  {%- if allow_more -%}
-                                    <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | plus: mpq_value }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.increase_quantity' | t | escape }}" data-no-instant>
-                                      {%- render 'icon' with 'plus' -%}
+                                  {%- if allow_more and line_item.quantity < 1000000 -%}
+                                    <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | plus: mpq_value }}&line={{ forloop.index }}" class="{{ css_input }}" aria-label="{{ 'cart.general.increase_quantity' | t | escape }}" data-no-instant>
+                                      {%- render 'icon' with 'plus-new' -%}
                                     </a>
                                   {%- else -%}
-                                    <span class="quantity-selector__button" aria-label="{{ 'cart.general.no_more_stock' | t | escape }}" data-tooltip="{{ 'cart.general.no_more_stock' | t | escape }}">
-                                      {%- render 'icon' with 'plus' -%}
+                                    {% comment %} data-tooltip="{{ 'cart.general.no_more_stock' | t | escape }}" {% endcomment %}
+                                    <span class="{{ css_input }} opacity-50 cursor-not-allowed" aria-label="{{ 'cart.general.no_more_stock' | t | escape }}">
+                                     {%- render 'icon' with 'plus-new' -%}
                                     </span>
                                   {%- endif -%}
                               </div>
-                              <a href="{{ line_item.url_to_remove }}" class="hidden-phone remove_link line-item__remove-button link text--subdued text--xsmall" data-no-instant>{{ 'cart.general.remove' | t }}</a>
+                              <a href="{{ line_item.url_to_remove }}" class="hidden fb-sm:block mt-5 underline text-0A2B6F text-sm text-right" data-no-instant>{{ 'cart.general.remove' | t }}</a>
                             {%- endcapture -%}
                           </div>
                         </td>
 
-                        <td class="line-item__price-list-container">
-                          <div class="line-item-right">
-                            <a
-                              href="{{ line_item.url_to_remove }}"
-                              class="remove_link hidden-tablet-and-up line-item__remove-button link text--subdued text--xsmall"
-                              data-no-instant
-                            >
-                              {{- 'cart.general.remove' | t -}}
-                            </a>
-                            <div class="price hidden-phone">{{ computed_final_line_price_total | money }}</div>
-                            <div class="hidden-tablet-and-up line-item-price-list price">
+                        <td class="w-full relative fb-sm:w-1/4 p-0 fb-sm:h-full mt-3 fb-sm:mt-0">
+                          <div class="absolute left-6 -bottom-2 fb-sm:hidden">                        
+                              <a
+                                href="{{ line_item.url_to_remove }}"
+                                class="text-sm text-main underline"
+                                data-no-instant
+                              >
+                                {{- 'cart.general.remove' | t -}}
+                              </a>
+                          </div>
+                          <div class="w-full flex  space-x-4 flex-col items-end fb-sm:h-full fb-sm:space-x-0">
+                            <div class="font-medium min-w-9r line-clamp-1 text-left fb-sm:min-w-auto fb-sm:font-bold text-22 fb-sm:text-32 text-main">
+                              {{ computed_final_line_price_total | money }}
+                            </div>
+                            <div class="mt-1 w-9r flex items-center justify-start space-x-1 text-left fb-sm:hidden">
                               {% if line_item.variant.compare_at_price > line_item.variant.price %}
                                 {% assign price = line_item.variant.price
                                   | money_without_currency
@@ -244,20 +278,21 @@
                                   | times: 100
                                   | ceil
                                 %}
-                                <div class="line-item-compare-wrapper">
-                                  <s class="line-item-compare">
-                                    {{- line_item.variant.compare_at_price | money -}}
-                                  </s>
-                                  <span class="line-discount-percentage">{{ discount_percentage }}%OFF</span>
-                                </div>
-                                <span class="line-item-price">{{ computed_final_line_price_total | money }}</span>
-                              {% else %}
-                                <div class="line-item-price">{{ computed_final_line_price_total | money }}</div>
+                                <span class="text-10 text-main" line-item-data data-quantity="{{ line_item.quantity }}" data-price="{{ line_item.variant.price }}">{{ line_item.variant.price | money }}</span>
+                                <s class="text-10 text-999999 flex items-center">
+                                  {{- line_item.variant.compare_at_price | money -}}
+                                </s>
+                                <span class="text-10 text-E62D35">{{ discount_percentage }}%OFF</span>
+                             {% else %}
+                                <div class="text-10 text-main" line-item-data data-quantity="{{ line_item.quantity }}" data-price="{{ computed_final_line_price }}">{{ computed_final_line_price | money }} per item</div>
                               {% endif %}
                             </div>
-                            <line-item-quantity class="line-item-quantity" data-key="{{ line_item.key }}">
-                              {{ quantity_selector_inner }}
-                            </line-item-quantity>
+                            <div class="flex-1 shrink-0 mt-0.5 fb-sm:mt-3">
+                                <line-item-quantity 
+                                  data-key="{{ line_item.key }}">
+                                  {{ quantity_selector_inner }}
+                                </line-item-quantity>
+                              </div> 
                           </div>
                         </td>
                       </tr>
@@ -279,7 +314,6 @@
                     {{- 'cart.shipping_estimator.estimate_shipping' | t -}}
                     {%- render 'icon' with 'chevron' -%}
                   </button>
-
                   <collapsible-content id="shipping-estimator" class="collapsible">
                     <shipping-estimator class="shipping-estimator__form" role="form">
                       <div class="input-row">
@@ -346,58 +380,25 @@
                 </div>
               {%- endif -%}
             </div>
-
-            <div class="button-action hidden-tablet-and-up">
-              {% if customer %}
-                <button
-                  type="submit"
-                  is="loader-button"
-                  id="cart-checkout-button"
-                  data-disabled="0"
-                  class="cart-checkout-button cart-button cart-checkout button--full"
-                  name="checkout"
-                >
-                  Checkout
-                </button>
-              {% else %}
-                <a
-                  href="/account/login"
-                  class="cart-button cart-login button--full"
-                >
-                  Sign in and Checkout
-                </a>
-                <button
-                  type="submit"
-                  is="loader-button"
-                  id="cart-checkout-button"
-                  data-disabled="0"
-                  class="cart-checkout-button cart-button cart-login-checkout button--full"
-                  name="checkout"
-                >
-                  Checkout as Guest
-                </button>
-              {% endif %}
-            </div>
-
-            <div class="cart__aside">
-              <safe-sticky offset="24" class="cart__aside-inner">
-                <div class="cart__recap">
-                  <div class="cart__aside-title">Order Summary</div>
+            <div class="w-full fb-md:w-[303px] rounded-sm">
+              <safe-sticky offset="24" class="w-full fb-sm:sticky fb-sm:min-h-30r">
+                <div class="flex flex-col w-full bg-F8F8F8 pt-5.5 pb-9 px-3 fb-sm:px-4.5 fb-sm:pt-4.5 fb-sm:pb-3">
+                  <div class="w-full text-0A2B6F font-bold text-sm mb-3.5 fb-sm:text-18 fb-sm:mb-9">Order Summary</div>
                   {%- for block in section.blocks -%}
                     {%- case block.type -%}
                       {%- when 'totals' -%}
-                        <div class="cart__recap-block" {{ block.shopify_attributes }}>
-                          <div class="cart__total-container">
-                            <div class="title">Subtotal</div>
-                            <div class="text subtotal computed-subtotal" data-price="{{ computed_subtotal }}">{{ computed_subtotal | money }}</div>
+                        <div class="w-full flex flex-col space-y-2 mb-7 fb-sm:mb-4r" {{ block.shopify_attributes }}>
+                          <div class="js-cart-total-container w-full flex justify-between items-center">
+                            <div class="text-sm text-575757">Subtotal</div>
+                            <div class="js-computed-subtotal font-medium text-sm text-1E1E1E" data-price="{{ computed_subtotal }}">{{ computed_subtotal | money }}</div>
                           </div>
-                          <div class="cart__total-container">
-                            <div class="title">Estimated Tax</div>
-                            <div class="text tax"></div>
+                          <div class="js-cart-total-container w-full flex  justify-between items-center">
+                            <div class="text-sm text-575757">Estimated Tax</div>
+                            <div class="js-tax font-medium text-sm text-1E1E1E"></div>
                           </div>
-                          <div class="cart__total-container">
-                            <div class="title">Estimated Shipping</div>
-                            <div class="text computed_shipping_money"></div>
+                          <div class="js-cart-total-container w-full flex  justify-between items-center">
+                            <div class="text-sm text-575757">Estimated Shipping</div>
+                            <div class="js-computed-shipping-money font-medium text-sm text-1E1E1E"></div>
                           </div>
                         </div>
 
@@ -416,11 +417,11 @@
                         </div>
                     {%- endcase -%}
                   {%- endfor -%}
-                  <div class="cart__total-container cart__total-container1">
-                    <div class="title">Estimated Total</div>
-                    <div class="text computed-total subtotal"></div>
+                  <div class="w-full js-cart-total-container js-cart-total-container1 flex justify-between items-center mb-10 fb-sm:mb-4r">
+                    <div class="text-sm text-575757">Estimated Total</div>
+                    <div class="js-computed-total font-medium text-sm text-1E1E1E"></div>
                   </div>
-                  <div class="cart__total-text">
+                  <div class="cart__total-text w-full text-sm text-575757">
                     {{ section.settings.text }}
                   </div>
                   {% comment %}
@@ -467,36 +468,28 @@
                     {%- endfor -%}
                   {% endcomment %}
 
-                  <div class="button-action hidden-phone">
+                  <div class="hidden fb-sm:flex flex-col space-y-2 mt-8 w-full">
+                    {%- assign go_checkout_name = 'Checkout as Guest' -%}
                     {% if customer %}
-                      <button
-                        type="submit"
-                        is="loader-button"
-                        id="cart-checkout-button"
-                        data-disabled="0"
-                        class="cart-checkout-button cart-button cart-checkout button--full"
-                        name="checkout"
-                      >
-                        Checkout
-                      </button>
+                      {%- assign go_checkout_name = 'Checkout' -%}
                     {% else %}
                       <a
                         href="/account/login"
-                        class="cart-button cart-login button--full"
+                        class="w-full flex items-center justify-center h-12  text-18 font-bold rounded-sm text-main bg-button"
                       >
                         Sign in and Checkout
                       </a>
-                      <button
-                        type="submit"
-                        is="loader-button"
-                        id="cart-checkout-button"
-                        data-disabled="0"
-                        class="cart-checkout-button cart-button cart-login-checkout button--full"
-                        name="checkout"
-                      >
-                        Checkout as Guest
-                      </button>
                     {% endif %}
+                    <button
+                      type="submit"
+                      is="loader-button"
+                      id="cart-checkout-button"
+                      data-disabled="0"
+                      class="cart-checkout-button relative w-full flex items-center justify-center h-12  text-18 font-bold rounded-sm bg-main text-white"
+                      name="checkout"
+                    >
+                      {{ go_checkout_name }}
+                    </button>
                   </div>
                 </div>
 
@@ -514,6 +507,29 @@
                   </div>
                 {%- endif -%}
               </safe-sticky>
+            </div>
+            <div class="w-full fb-sm:hidden">
+              {%- assign go_checkout_name = 'Checkout as Guest' -%}
+              {% if customer %}
+                {%- assign go_checkout_name = 'Checkout' -%}
+              {% else %}
+                <a
+                  href="/account/login"
+                  class="w-full flex items-center justify-center h-8 text-sm font-bold rounded-sm text-main bg-button mb-2"
+                >
+                  Sign in and Checkout
+                </a>
+              {% endif %}
+              <button
+                type="submit"
+                is="loader-button"
+                id="cart-checkout-button"
+                data-disabled="0"
+                class="cart-checkout-button relative w-full flex items-center justify-center h-8 text-sm font-bold rounded-sm bg-main text-white"
+                name="checkout"
+              >
+                {{ go_checkout_name }}
+              </button>
             </div>
           </form>
         </div>
@@ -616,8 +632,8 @@
 
     async function initDeleveryDate(line_item_delivery) { // 查一组交期数据
       if(line_item_delivery.length == 0) return
-      $('.line-item-table .line-item .loading-container').show(); // loading 按钮隐藏
-      $('.line-item__property').hide();
+      $('.js-line-item-table .line-item .loading-container').show(); // loading 按钮隐藏
+      $('.js-line-item__property').hide();
       const deleveryDate = await getDeleveryDate(line_item_delivery);
       if(deleveryDate?.length) {
         deleveryDate.map(line_item => {
@@ -666,7 +682,7 @@
             `);
           }
           $lineItem.find('.loading-container').hide();
-          $lineItem.find('.line-item__property.date').show().html($deliveryTime);
+          $lineItem.find('.js-line-item__property.date').show().html($deliveryTime);
         })
       }
     }
@@ -837,12 +853,12 @@
         const res = await response.json();
         if(res.code === 200) {
           const shipping_money = await getShippingCost(); // 计算运费
-          $('.computed_shipping_money').text(`$${shipping_money}`);
-          const computed_subtotal = $('.computed-subtotal').data('price'); // 获取计算总额
+          $('.js-computed-shipping-money').text(`$${shipping_money}`);
+          const computed_subtotal = $('.js-computed-subtotal').data('price'); // 获取计算总额
           const tax_money = Math.ceil(res.data.totalTax); // 计算税费
           const total = +computed_subtotal + shipping_money * 100 + tax_money;
-          $('.cart__total-container .tax').text(`${formatMoney(tax_money)}`);
-          $('.cart__total-container1 .computed-total').text(`${formatMoney(total)}`); // 计算总额（总计）
+          $('.js-cart-total-container .js-tax').text(`${formatMoney(tax_money)}`);
+          $('.js-cart-total-container1 .js-computed-total').text(`${formatMoney(total)}`); // 计算总额（总计）
         }
       } catch (error) {
         console.error("Failed to fetch provinces data:", error);
@@ -863,7 +879,7 @@
       getDiscount();
     })
     function getDiscount () {  // 获取折扣然后跳转
-      const amount_original = parseFloat('{{ cart.original_total_price }}');
+      const amount_original = parseFloat('{{ original_total_price }}');
       const amount_current = parseFloat('{{ computed_subtotal }}');
       const amount_difference = (amount_original - amount_current) / 100;
       const formData = {
@@ -886,100 +902,15 @@
         if (data.code == 200) {
           const discountCode = data.data.title;
           window.location.href = `/checkout?discount=${discountCode}`; 
+        } else{
+          window.location.href = `/checkout?discount=0`; 
         }
       })
       .catch(error => {
-          // 处理错误
+        window.location.href = `/checkout?discount=0`; 
       });
     }
   })();
-  {% comment %} (() => {
-    let isDisabledInput = false;  // 调用一次函数就拉倒了
-    function disabledInput(key) {  // 禁用输入和加减
-      const $lineItemQuantitys = $('.line-item-quantity');
-      const $mobileLineItemQuantitys = $('.line-item__quantity');
-      const filteredItems = $lineItemQuantitys.filter(function() {
-        return $(this).data('key') != key;
-      });
-      const mobileFilteredItems = $mobileLineItemQuantitys.filter(function() {
-        return $(this).data('key') != key;
-      });
-      // 对过滤后的元素进行操作
-      filteredItems.find('.quantity-selector__button').unbind("click");
-      filteredItems.find('.quantity-selector__input').attr('disabled', 'disabled');
-      filteredItems.find('.remove_link').off('click');
-      filteredItems.find('.remove_link, .quantity-selector__button, .quantity-selector__input').click(() => {
-        alert('Please wait');
-      });
-
-      mobileFilteredItems.find('.quantity-selector__button').unbind("click");
-      mobileFilteredItems.find('.quantity-selector__input').attr('disabled', 'disabled');
-      mobileFilteredItems.find('.remove_link').off('click');
-      mobileFilteredItems.find('.remove_link, .quantity-selector__button, .quantity-selector__input').click(() => {
-        alert('Please wait');
-      });
-    }
-
-    function debounce(func, wait) { // 防抖
-      let timeout;
-      return function(...args) {
-        const context = this;
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          func.apply(context, args);
-        }, wait);
-      };
-    }
-
-    const debouncedItemValueChange = debounce(async (href) => {
-      window.location.href = href
-    }, 400);
-
-    $('.quantity-selector__plus').on('click', function() { //加
-      let href = $(this).data('href');
-      const line = +href.split('&')[1].split('=')[1];
-      const inputElement = $('input[data-line="' + line + '"]');
-      const mpq = +$(inputElement).data('mpq');
-      if(+inputElement.val() == 1000000) {
-        return
-      }
-      let quantity;
-      const maxQuantity = +inputElement.data('max');
-      if(maxQuantity && +inputElement.val() + mpq >= maxQuantity) {
-        quantity = Math.floor(maxQuantity / mpq) * mpq;
-      } else {
-        quantity = +inputElement.val() + mpq;
-      }
-      href = `/cart/change?quantity=${quantity}&line=${line}`;
-      inputElement.val(quantity);
-      const $lineItemQuantity = $(this).closest('.line-item-quantity');
-      if(!isDisabledInput) { // 卡扣
-        disabledInput($lineItemQuantity.data('key'))
-        isDisabledInput = true
-      }
-      debouncedItemValueChange(href);
-    });
-    
-    $('.quantity-selector__minus').on('click', function() { //减
-      let href = $(this).data('href');
-      const line = +href.split('&')[1].split('=')[1];
-      const inputElement = $('input[data-line="' + line + '"]');
-      const moq = +$(inputElement).data('moq');
-      const mpq = +$(inputElement).data('mpq');
-      let quantity = +inputElement.val() - mpq;
-      if(quantity < moq) {
-        quantity = moq;
-      }
-      href = `/cart/change?quantity=${quantity}&line=${line}`;
-      inputElement.val(quantity)
-      const $lineItemQuantity = $(this).closest('.line-item-quantity');
-      if(!isDisabledInput) {  // 卡扣
-        disabledInput($lineItemQuantity.data('key'))
-        isDisabledInput = true
-      }
-      debouncedItemValueChange(href);
-    });
-  })() {% endcomment %}
 </script>
 
 {% schema %}

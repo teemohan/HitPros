@@ -949,16 +949,13 @@
           } else if (value.length !== 5 || isNaN(value)) {
             return callback(new Error('ZIP Code must be 5 digits'));
           } else {
-            getStateByZip(value)
-              .then((state) => {
-                if (!state || state.includes('Unable')) {
-                  return callback(new Error('The ZIP Code is invalid.'));
-                }
+            getZipCode('US', value, function (result) {
+              if(result?.valid) {
                 return callback();
-              })
-              .catch((error) => {
-                return callback(new Error('Error validating ZIP Code.'));
-              });
+              } else {
+                return callback(new Error('The ZIP Code is invalid.'));
+              }
+            });
           }
         };
 
@@ -1010,80 +1007,66 @@
             if (valid) {
               this.loading = true;
               const _this = this;
-              getStateByZip(_this.ruleForm.zipCode)
-                .then(async (state) => {
-                  if (!state || state.includes('Unable')) {
-                    _this.$message({
-                      showClose: true,
-                      message: 'Invalid ZIP Code',
-                      type: 'error',
-                    });
-                    _this.loading = false;
-                    return;
-                  }
-                  const quantity =
-                    +$('#delevery-date').closest('.product__info').find('.quantity-selector__input').val() || 1;
-                  const deliveryParam = {
-                    MATNR: '{{ product.selected_or_first_available_variant.sku }}',
-                    ZQTY: quantity,
-                    Z004: state, // 使用 Zippopotam.us 查询到的州
-                    Z002: 'US',
-                    POST_CODE2: _this.ruleForm.zipCode
-                  };
+              getZipCode('US', _this.ruleForm.zipCode, async function (result) {
+                const quantity =
+                  +$('#delevery-date').closest('.product__info').find('.quantity-selector__input').val() || 1;
+                const deliveryParam = {
+                  MATNR: '{{ product.selected_or_first_available_variant.sku }}',
+                  ZQTY: quantity,
+                  Z004: result.lookup.adminName1, // 使用 Zippopotam.us 查询到的州
+                  Z002: 'US',
+                  POST_CODE2: _this.ruleForm.zipCode
+                };
 
-                  if (deliveryParam.MATNR == 0) {
-                    _this.$message({
-                      showClose: true,
-                      message: 'Solid out',
-                      type: 'warning',
-                    });
-                    _this.loading = false;
-                    return;
-                  }
-
-                  try {
-                    const response = await fetch(`${window.zkh.api}/openapi/adlink/delivery-calculation`, {
-                      method: 'POST',
-                      body: JSON.stringify(deliveryParam),
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                    });
-                    const res = await response.json();
-                    res.availableInventoryCount = res.availableInventoryCount || 0;
-                    _this.deleveryRes = res;
-                    if (
-                      res.transitInventoryDeliveryTimeStampMin &&
-                      res.transitInventoryDeliveryTimeStampMax &&
-                      res.outOfStockDeliveryTimeStampMin &&
-                      res.outOfStockDeliveryTimeStampMax
-                    ) {
-                      _this.stockDateStart = +res.transitInventoryDeliveryTimeStampMin;
-                      _this.stockDateEnd = +res.outOfStockDeliveryTimeStampMax;
-                    } else if (
-                      res.transitInventoryDeliveryTimeStampMin &&
-                      res.transitInventoryDeliveryTimeStampMax
-                    ) {
-                      _this.stockDateStart = +res.transitInventoryDeliveryTimeStampMin;
-                      _this.stockDateEnd = +res.transitInventoryDeliveryTimeStampMax;
-                    } else if (
-                      res.outOfStockDeliveryTimeStampMin &&
-                      res.outOfStockDeliveryTimeStampMax
-                    ) {
-                      _this.stockDateStart = +res.outOfStockDeliveryTimeStampMin;
-                      _this.stockDateEnd = +res.outOfStockDeliveryTimeStampMax;
-                    }
-                    _this.isEstimateShow = true;
-                  } catch (error) {
-                    console.error('Error fetching status:', error);
-                  } finally {
-                    _this.loading = false;
-                  }
-                })
-                .catch((error) => {
-                  console.error('Error fetching state:', error);
+                if (deliveryParam.MATNR == 0) {
+                  _this.$message({
+                    showClose: true,
+                    message: 'Solid out',
+                    type: 'warning',
+                  });
                   _this.loading = false;
-                });
+                  return;
+                }
+
+                try {
+                  const response = await fetch(`${window.zkh.api}/openapi/adlink/delivery-calculation`, {
+                    method: 'POST',
+                    body: JSON.stringify(deliveryParam),
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                  });
+                  const res = await response.json();
+                  res.availableInventoryCount = res.availableInventoryCount || 0;
+                  _this.deleveryRes = res;
+                  if (
+                    res.transitInventoryDeliveryTimeStampMin &&
+                    res.transitInventoryDeliveryTimeStampMax &&
+                    res.outOfStockDeliveryTimeStampMin &&
+                    res.outOfStockDeliveryTimeStampMax
+                  ) {
+                    _this.stockDateStart = +res.transitInventoryDeliveryTimeStampMin;
+                    _this.stockDateEnd = +res.outOfStockDeliveryTimeStampMax;
+                  } else if (
+                    res.transitInventoryDeliveryTimeStampMin &&
+                    res.transitInventoryDeliveryTimeStampMax
+                  ) {
+                    _this.stockDateStart = +res.transitInventoryDeliveryTimeStampMin;
+                    _this.stockDateEnd = +res.transitInventoryDeliveryTimeStampMax;
+                  } else if (
+                    res.outOfStockDeliveryTimeStampMin &&
+                    res.outOfStockDeliveryTimeStampMax
+                  ) {
+                    _this.stockDateStart = +res.outOfStockDeliveryTimeStampMin;
+                    _this.stockDateEnd = +res.outOfStockDeliveryTimeStampMax;
+                  }
+                  _this.isEstimateShow = true;
+                } catch (error) {
+                  console.error('Error fetching status:', error);
+                } finally {
+                  _this.loading = false;
+                }
+              });
             }
           });
         },

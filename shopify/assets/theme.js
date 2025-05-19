@@ -3304,15 +3304,16 @@
       return parseInt(this.value);
     }
     set quantity(quantity) {
+      const moqValue = +this.getAttribute('data-moq'); //最小起购量
       const isNumeric =
         (typeof quantity === 'number' || (typeof quantity === 'string' && quantity.trim() !== '')) && !isNaN(quantity);
       if (quantity === '') {
         return;
       }
       if (!isNumeric || quantity < 0) {
-        quantity = parseInt(quantity) || 1;
+        quantity = moqValue;
       }
-      this.value = Math.max(this.min || 1, Math.min(quantity, this.max || Number.MAX_VALUE)).toString();
+      this.value = Math.max(this.min || moqValue, Math.min(quantity, this.max || Number.MAX_VALUE)).toString();
       this.size = Math.max(this.value.length + 1, 2);
     }
     _onValueChanged() {
@@ -3335,15 +3336,16 @@
       return parseInt(this.value);
     }
     set quantity(quantity) {
+      const moqValue = +this.getAttribute('data-moq'); //最小起购量
       const isNumeric =
         (typeof quantity === 'number' || (typeof quantity === 'string' && quantity.trim() !== '')) && !isNaN(quantity);
       if (quantity === '') {
         return;
       }
       if (!isNumeric || quantity < 0) {
-        quantity = parseInt(quantity) || 1;
+        quantity = parseInt(quantity) || moqValue;
       }
-      this.value = Math.max(this.min || 1, Math.min(quantity, this.max || Number.MAX_VALUE)).toString();
+      this.value = Math.max(this.min || moqValue, Math.min(quantity, this.max || Number.MAX_VALUE)).toString();
       this.size = Math.max(this.value.length + 1, 2);
     }
     _onValueInput() {
@@ -3362,11 +3364,11 @@
       this.dispatchEvent(new CustomEvent('quantityChanged', { // 库存标签的值的变化
         bubbles: true,
         detail: {
-          quantity: this.value,
+          quantity: this.quantity,
         },
        }));
 
-      if (quantity == moqValue) { // 非购物车的css显示，不用管
+      if (this.quantity == moqValue) { // 非购物车的css显示，不用管
         $(this).prev().attr('disabled', true);
       } else {
         $(this).prev().attr('disabled', false);
@@ -3376,7 +3378,7 @@
       if (isCartInput == 1) {
         const varId = this.getAttribute('data-varid');
         const updates = {};
-        updates[varId] = this.value;
+        updates[varId] = this.quantity;
         cartInput(updates);
       }
 
@@ -3384,7 +3386,7 @@
       let basePrice = this.getAttribute('data-price');
       if (basePrice) {
         basePrice = parseFloat(basePrice.replace(/,/g, ''));
-        const finalPrice = computed_price(discountJson, basePrice, quantity);
+        const finalPrice = computed_price(discountJson, basePrice, this.quantity);
         $('.cus-product .subtotal .computed_price').text(`${finalPrice}`);
         $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
       }
@@ -7871,393 +7873,6 @@
   };
   window.customElements.define('product-variants', ProductVariants);
 
-  // js/custom-element/section/product-list/product-item.js
-  var ProductSwiperItem = class extends CustomHTMLElement {
-    connectedCallback() {
-      this.fetchAndSetFavoriteStatus();
-      this.primaryImageList = Array.from(this.querySelectorAll('.product-item__primary-image'));
-      this.delegate.on(
-        'change',
-        '.product-item-meta__swatch-list .color-swatch__radio',
-        this._onColorSwatchChanged.bind(this)
-      );
-      this.delegate.on(
-        'click',
-        '.product-item-meta__swatch-list .color-swatch__item',
-        this._onColorSwatchHovered.bind(this),
-        true
-      );
-      this.delegate.on('click', '[data-action="favorite"]', this.handleClickFavoritebutton.bind(this));
-      this.delegate.on('click', '[data-action="toLogin"]', this.handleClickToLogin.bind(this));
-      this.delegate.on(
-        'mouseenter',
-        '.product-item-meta__swatch-list .color-swatch__item',
-        this._onColorSwatchHovered.bind(this),
-        true
-      );
-      this.buildFeatures();
-      this.initVue();
-      const productId = $(this).data('product-id');
-      const thumbnails = new Swiper(`.list-type[data-product-id='${productId}'] .product-img-swiper-thumbs`, {
-        spaceBetween: 6,
-        slidesPerView: 3,
-        freeMode: true,
-        watchSlidesProgress: true,
-        lazy: true,
-        observer: true,
-        observeParents: true,
-        breakpoints: {
-          740: {
-            // 当屏幕宽度大于等于320
-            slidesPerView: 4,
-          },
-        },
-        on: {
-          init: () => {
-            $(this).find('.product-img-swiper-thumbs').css('visibility', 'visible');
-          },
-        },
-      });
-      new Swiper(`.list-type[data-product-id='${productId}'] .product-img-swiper`, {
-        lazy: true,
-        navigation: {
-          nextEl: `.list-type[data-product-id='${productId}'] .swiper-button-next`,
-          prevEl: `.list-type[data-product-id='${productId}'] .swiper-button-prev`,
-        },
-        thumbs: {
-          swiper: thumbnails,
-        },
-      });
-    }
-    get proudctId() {
-      return $(this).data('product-id');
-    }
-    get sku() {
-      return $(this).data('sku');
-    }
-    get zip() {
-      return $(this).data('zip');
-    }
-    get features() {
-      return $(this).data('features');
-    }
-    buildFeatures() {
-      try {
-        if(!this.features)
-        return
-        const features = this.features?.slice(0, 3);
-        const featuresKeys = features.map(item => {
-          return $(`<li>${item.featureTitle}</li>`)
-        })
-        const $ul = $(`.product-feature[data-sku="${this.sku}"]`);
-        $ul.append(featuresKeys);
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    initVue() {
-      const proudctId = this.proudctId;
-      const sku = this.sku;
-      const zip = this.zip;
-      new Vue({
-        el: `#delevery-date-${proudctId}`,
-        delimiters: ['${', '}'],
-        data() {
-          const validateZipCode = (rule, value, callback) => {
-            if (!value) {
-              return callback(new Error('ZIP Code is required'));
-            } else if (value.length !== 5) {
-              return callback(new Error('Zip code must be 5 digits'));
-            } else {
-              getStateByZip(value)
-              .then((state) => {
-                if (!state || state.includes('Unable')) {
-                  return callback(new Error('The ZIP Code is invalid.'));
-                }
-                return callback();
-              })
-              .catch((error) => {
-                return callback(new Error('Error validating ZIP Code.'));
-              });
-            }
-          };
-          return {
-            loading: false,
-            isEstimateShow: false,
-            stockDateStart: 0,
-            stockDateEnd: 0,
-            deleveryRes: null,
-            ruleForm: {
-              zipCode: String(zip) || ''
-            },
-            rules: {
-              zipCode: [{ validator: validateZipCode, trigger: 'blur' }],
-            },
-          };
-        },
-        mounted() {
-          $(`#delevery-date-${proudctId}`).show();
-        },
-        methods: {
-          formatDate(timestamp, timezoneOffset = -5) {
-            // 创建 Date 对象（默认会使用 UTC 时间）
-            const date = new Date(+timestamp);
-            // 调整时区：将日期偏移到 GMT-5
-            const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
-            // 获取年份、月份和日期
-            const year = localTime.getFullYear();
-            const monthNames = [
-              'January', 'February', 'March', 'April', 'May', 'June',
-              'July', 'August', 'September', 'October', 'November', 'December'
-            ];
-            const month = monthNames[localTime.getMonth()];
-            const day = localTime.getDate();
-            // 确定日期后缀
-            let suffix = '';
-            if (day >= 11 && day <= 13) {
-              suffix = 'th'; // 特殊情况：11th, 12th, 13th
-            } else {
-              switch (day % 10) {
-                case 1: suffix = 'st'; break; // 1, 21, 31
-                case 2: suffix = 'nd'; break; // 2, 22
-                case 3: suffix = 'rd'; break; // 3, 23
-                default: suffix = 'th'; break; // 其他情况
-              }
-            }
-            // 返回格式化后的日期
-            return `${month} ${day}${suffix}, ${year}`;
-          },
-          async handleComputedDeleveryDate() {
-            this.$refs.ruleForm.validate((valid) => {
-              if (valid) {
-                const _this = this;
-                this.loading = true;
-                getStateByZip(this.ruleForm.zipCode)
-                .then(async (state) => {
-                  if (!state || state.includes('Unable')) {
-                    _this.$message({
-                      showClose: true,
-                      message: 'Invalid ZIP Code',
-                      type: 'error',
-                    });
-                    _this.loading = false;
-                    return;
-                  }
-                  const quantity = $(`#delevery-date-${proudctId}`).closest('.product-item__info').find('.quantity-selector__input').val();
-                  const deliveryParam = {
-                    MATNR: sku, // sku
-                    ZQTY: quantity, //购买数量
-                    Z004: state, //州
-                    Z002: 'US', //国家
-                    POST_CODE2: _this.ruleForm.zipCode
-                  };
-                  if (deliveryParam.quantity == 0) {
-                    _this.$message({
-                      showClose: true,
-                      message: 'Solid out',
-                      type: 'warning',
-                    });
-                    _this.loading = false;
-                    return;
-                  }
-                  try {
-                    const response = await fetch(`${window.zkh.api}/openapi/adlink/delivery-calculation`, {
-                      method: 'POST',
-                      body: JSON.stringify(deliveryParam),
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                    });
-                    const res = await response.json();
-                    _this.deleveryRes = res; // 需求
-                    if (
-                      res.transitInventoryDeliveryTimeStampMin &&
-                      res.transitInventoryDeliveryTimeStampMax &&
-                      res.outOfStockDeliveryTimeStampMin &&
-                      res.outOfStockDeliveryTimeStampMax
-                    ) {
-                      _this.stockDateStart = +res.transitInventoryDeliveryTimeStampMin;
-                      _this.stockDateEnd = +res.outOfStockDeliveryTimeStampMax;
-                    } else if(
-                      res.transitInventoryDeliveryTimeStampMin &&
-                      res.transitInventoryDeliveryTimeStampMax &&
-                      !res.outOfStockDeliveryTimeStampMin &&
-                      !res.outOfStockDeliveryTimeStampMax
-                    ) {
-                      _this.stockDateStart = +res.transitInventoryDeliveryTimeStampMin;
-                      _this.stockDateEnd = +res.transitInventoryDeliveryTimeStampMax;
-                    } else if(
-                      !res.transitInventoryDeliveryTimeStampMin &&
-                      !res.transitInventoryDeliveryTimeStampMax &&
-                      res.outOfStockDeliveryTimeStampMin &&
-                      res.outOfStockDeliveryTimeStampMax
-                    ){
-                      _this.stockDateStart = +res.outOfStockDeliveryTimeStampMin;
-                      _this.stockDateEnd = +res.outOfStockDeliveryTimeStampMax;
-                    }
-                    _this.isEstimateShow = true;
-                  } catch (error) {
-                    console.error('Error fetching status:', error);
-                  } finally {
-                    _this.loading = false;
-                  }
-                })
-                .catch((error) => {
-                  console.error('Error fetching state:', error);
-                  this.loading = false;
-                });
-              }
-            });
-          },
-        },
-      });
-    }
-    async handleClickFavoritebutton(e) {
-      e.preventDefault();
-      // 添加或取消心愿单
-      const formData = {
-        customerId: $(this).data('customer-id'),
-        productId: $(this).data('product-id'),
-        sku: $(this).data('sku'),
-        productNum: 1,
-      };
-      const status = $(this).find('.favorite-button').hasClass('favorited') ? 1 : 0;
-      try {
-        const response = await fetch(`${window.zkh.api}/wish/${status == 1 ? 'clear' : 'save'}`, {
-          method: 'POST',
-          body: JSON.stringify(formData),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        const res = await response.json();
-        if (res.code === 200) {
-          const isFavorited = res.data.wish ? 1 : 0;
-          this.updateFavoriteButton(isFavorited);
-          document.dispatchEvent(new CustomEvent('wish-refreash'));
-        }
-      } catch (error) {
-        console.error('Error fetching favorite status:', error);
-      }
-    }
-    handleClickToLogin(e) {
-      e.preventDefault();
-      window.location.href = '/account/login';
-    }
-    async fetchAndSetFavoriteStatus() {
-      if (!$(this).data('customer-id')) return;
-      const formData = {
-        customerId: $(this).data('customer-id'),
-        productId: $(this).data('product-id'),
-        sku: $(this).data('sku'),
-      };
-      try {
-        const response = await fetch(`${window.zkh.api}/wish/select`, {
-          method: 'POST',
-          body: JSON.stringify(formData),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        const res = await response.json();
-        const isFavorited = res.data.isDelete == 1 ? 1 : 0;
-        this.updateFavoriteButton(isFavorited);
-      } catch (error) {
-        console.error('Error fetching favorite status:', error);
-      }
-    }
-    updateFavoriteButton(isFavorited) {
-      const favoriteButtons = $(`[data-sku="${$(this).data('sku')}"]`);
-      if (isFavorited) {
-        favoriteButtons.each(function () {
-          $(this).find('.favorite-button').addClass('favorited');
-        });
-      } else {
-        favoriteButtons.each(function () {
-          $(this).find('.favorite-button').removeClass('favorited');
-        });
-      }
-    }
-    async _onColorSwatchChanged(event, target) {
-      Array.from(this.querySelectorAll(`[href*="/products"]`)).forEach((link) => {
-        let url;
-        if (link.tagName === 'A') {
-          url = new URL(link.href);
-        } else {
-          url = new URL(link.getAttribute('href'), `https://${window.themeVariables.routes.host}`);
-        }
-        url.searchParams.set('variant', target.getAttribute('data-variant-id'));
-        link.setAttribute('href', url.toString());
-      });
-      if (target.hasAttribute('data-variant-featured-media')) {
-        const newImage = this.primaryImageList.find(
-          (image) => image.getAttribute('data-media-id') === target.getAttribute('data-variant-featured-media')
-        );
-        newImage.setAttribute('loading', 'eager');
-        const onImageLoaded = newImage.complete
-          ? Promise.resolve()
-          : new Promise((resolve) => (newImage.onload = resolve));
-        await onImageLoaded;
-        newImage.removeAttribute('hidden');
-        let properties = {};
-        if (
-          Array.from(newImage.parentElement.classList).some((item) =>
-            ['aspect-ratio--short', 'aspect-ratio--tall', 'aspect-ratio--square'].includes(item)
-          )
-        ) {
-          properties = [
-            {
-              clipPath: 'polygon(0 0, 0 0, 0 100%, 0% 100%)',
-              transform: 'translate(calc(-50% - 20px), -50%)',
-              zIndex: 1,
-              offset: 0,
-            },
-            {
-              clipPath: 'polygon(0 0, 20% 0, 5% 100%, 0 100%)',
-              transform: 'translate(calc(-50% - 20px), -50%)',
-              zIndex: 1,
-              offset: 0.3,
-            },
-            {
-              clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 1,
-              offset: 1,
-            },
-          ];
-        } else {
-          properties = [
-            { clipPath: 'polygon(0 0, 0 0, 0 100%, 0% 100%)', transform: 'translateX(-20px)', zIndex: 1, offset: 0 },
-            {
-              clipPath: 'polygon(0 0, 20% 0, 5% 100%, 0 100%)',
-              transform: 'translateX(-20px)',
-              zIndex: 1,
-              offset: 0.3,
-            },
-            { clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', transform: 'translateX(0px)', zIndex: 1, offset: 1 },
-          ];
-        }
-        await newImage.animate(properties, {
-          duration: 500,
-          easing: 'ease-in-out',
-        }).finished;
-        this.primaryImageList
-          .filter((image) => image.classList.contains('product-item__primary-image') && image !== newImage)
-          .forEach((image) => image.setAttribute('hidden', ''));
-      }
-    }
-    _onColorSwatchHovered(event, target) {
-      const input = target.previousElementSibling;
-      if (input.hasAttribute('data-variant-featured-media')) {
-        const newImage = this.primaryImageList.find(
-          (image) => image.getAttribute('data-media-id') === input.getAttribute('data-variant-featured-media')
-        );
-        newImage.setAttribute('loading', 'eager');
-      }
-    }
-  };
-  window.customElements.define('product-swiper-item', ProductSwiperItem);
-
   var ProductIndexList = class extends HTMLElement {
     connectedCallback() {
       const sectionId = $(this).data('section-id');
@@ -9082,20 +8697,22 @@
         )}`
       );
     }
-    async _updateFromLink(link, isRemove = false ) {
-
-      if (window.themeVariables.settings.pageType === 'cart' && !isRemove) {
-        window.location.href = link;
-        return;
-      }
+    async _updateFromLink(link, isRemove = false) {
+      // if (window.themeVariables.settings.pageType === 'cart' && !isRemove) {
+      //   window.location.href = link;
+      //   return;
+      // }
       const changeUrl = new URL(link, `https://${window.themeVariables.routes.host}`),
-        searchParams = changeUrl.searchParams,
-        line = searchParams.get('line'),
-        id = searchParams.get('id'),
-        quantity = parseInt(searchParams.get('quantity'));
+      searchParams = changeUrl.searchParams,
+      line = searchParams.get('line'),
+      id = searchParams.get('id'),
+      quantity = parseInt(searchParams.get('quantity'));
       this.dispatchEvent(
         new CustomEvent('line-item-quantity:change:start', { bubbles: true, detail: { newLineQuantity: quantity } })
       );
+      if(window.themeVariables.settings.pageType == 'cart' && isRemove && this.querySelector('input') && quantity) {
+        this.querySelector('input').value = quantity
+      }
       const response = await fetch(`${window.themeVariables.routes.cartChangeUrl}.js`, {
         body: JSON.stringify({ line, id, quantity, sections: ['mini-cart'] }),
         credentials: 'same-origin',
@@ -9111,7 +8728,7 @@
           detail: { cart: cartContent, newLineQuantity: quantity },
         })
       );
-      if (window.themeVariables.settings.pageType === 'cart' && isRemove) {
+      if (window.themeVariables.settings.pageType == 'cart') {
         window.location.reload();
         return false
       }

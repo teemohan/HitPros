@@ -78,7 +78,7 @@
                 <button @click="decrement(item)">
                   {% render 'icon' with 'v3-counter-minus' %}
                 </button>
-                <input :data-demand="item.quantity" :data-input-varid="item.variantId" type="text" @change="handleValueChange(item, $event)" v-model="item.quantity">
+                <input max="1000000" :data-demand="item.quantity" :data-input-varid="item.variantId" type="text" @change="handleValueChange(item, $event)" v-model="item.quantity">
                 <button @click="increment(item)">
                   {% render 'icon' with 'v3-counter-plus' %}
                 </button>
@@ -274,6 +274,9 @@
             quantity = item.moq;
           }
           item.quantity = Math.ceil((quantity - item.moq) / item.mpq) * item.mpq + item.moq;
+          if(item.quantity > 1000000) {
+            item.quantity = 1000000;
+          }
         },
         async getProductData(id) {
           // 构建GraphQL查询
@@ -375,10 +378,13 @@
             });
             const res = await response.json();
             param = {
-              items: res.data.list.map(item => ({
-                id: item.variantId,
-                quantity: item.productNum,
-              }))
+              items: res.data.list.map(item => {
+                const product = this.wishList.find(i => i.variantId == item.variantId);
+                return {
+                  id: item.variantId,
+                  quantity: product?.quantity ?? item.productNum,
+                };
+              })
             }
             this.all_selected_loading = true;
           } else if(type === 'single'){
@@ -492,6 +498,9 @@
         },
         increment(productItem) {
           productItem.quantity += productItem.mpq;
+          if (productItem.quantity > 1000000) {
+            productItem.quantity = 1000000;
+          }
           if(productItem.inventoryPolicy != 'CONTINUE' && productItem.quantity > productItem.totalInventory) { // 限制不能超过库存量
             productItem.quantity = productItem.totalInventory;
             this.$message({

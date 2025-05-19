@@ -520,21 +520,21 @@
           } else if (value.length !== 5) {
             callback(new Error('Zip code must be 5 digits'));
           } else {
-            try {
-              // 使用 getStateByZip 查询 ZIP Code 对应的州
-              const state = await getStateByZip(value);
-              const stateName = this.stateOptions.find(item => item[1] == this.ruleForm.state);
-              if (!state || state.includes('Unable')) {
-                callback(new Error('The zip code is invalid.'));
-              } else if (stateName && state !== stateName[0]) {
-                callback(new Error('Not matching with the state.'));
-              } else {
-                callback(); // 验证通过
-              }
-            } catch (error) {
-              console.error('Error validating ZIP Code:', error);
-              callback(new Error('An error occurred while validating the ZIP Code.'));
-            }
+            return new Promise((resolve, reject) => {
+              getZipCode('US', value, function(result) {
+                try {
+                  if (!result.valid) {
+                    reject(new Error('The zip code is invalid.'));
+                  } else if (this.ruleForm.state && result.lookup.adminCode1 !== this.ruleForm.state) {
+                    reject(new Error('Not matching with the state.'));
+                  } else {
+                    resolve();
+                  }
+                } catch (error) {
+                  console.error(error)
+                }
+              }.bind(this));
+            })
           }
         };
 

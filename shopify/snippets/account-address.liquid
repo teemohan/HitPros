@@ -356,27 +356,27 @@
           }
         };
 
-        const validateZipCode = async (rule, value, callback) => {
+        const validateZipCode = (rule, value, callback) => {
           if (!value) {
-            callback(new Error('ZIP Code is required'));
+            return callback(new Error('ZIP Code is required'));
           } else if (value.length !== 5) {
-            callback(new Error('Zip code must be 5 digits'));
+            return callback(new Error('Zip code must be 5 digits'));
           } else {
-            try {
-              // 使用 getStateByZip 查询 ZIP Code 对应的州
-              const state = await getStateByZip(value);
-
-              if (!state || state.includes('Unable')) {
-                callback(new Error('The zip code is invalid.'));
-              } else if (this.ruleForm.province && state !== this.ruleForm.province) {
-                callback(new Error('Not matching with the state.'));
-              } else {
-                callback(); // 验证通过
-              }
-            } catch (error) {
-              console.error('Error validating ZIP Code:', error);
-              callback(new Error('An error occurred while validating the ZIP Code.'));
-            }
+            return new Promise((resolve, reject) => {
+              getZipCode('US', value, function(result) {
+                try {
+                  if (!result.valid) {
+                    reject(new Error('The zip code is invalid.'));
+                    } else if (this.ruleForm.province && result.lookup.adminName1 !== this.ruleForm.province) {
+                    reject(new Error('Not matching with the state.'));
+                  } else {
+                    resolve();
+                  }
+                } catch (error) {
+                  console.error(error)
+                }
+              }.bind(this));
+            })
           }
         };
 
