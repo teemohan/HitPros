@@ -58,13 +58,12 @@ or change the format of some info
     },
     "name": {{ product.title | json }},
     "description": {{ product.description | strip_html | json }},
-    "category": {{ product.type | json }},
-    "url": "{{ product.url }}",
+    "category": "{{ product.type }}",
+    "url": "{{ shop.url }}{{ product.url }}",
     "sku": {{ product.selected_or_first_available_variant.sku | json }},
     "image": {
       "@type": "ImageObject",
       "url": "https:{{ page_image | img_url: '1024x' }}",
-      "image": "https:{{ page_image | img_url: '1024x' }}",
       "name": {{ page_image.alt | json }},
       "width": "1024",
       "height": "1024"
