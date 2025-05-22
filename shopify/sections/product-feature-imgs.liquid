@@ -1,162 +1,133 @@
 {{ 'product-feature-imgs.css' | asset_url | stylesheet_tag }}
-{% raw %}
+
 <div id="feature-imgs" class="feature-imgs">
-  <template v-if="imgsArr.length > 0">
-    <template v-for="(item, idx) in imgsArr">
-      <template v-if="item.templateType == 0 || item.templateType == 1">
+  {% assign imgsArr = product.metafields.product.pdp.value %}
+  {% if imgsArr.size > 0 %}
+    {% for item in imgsArr %}
+      {% if item.templateType == 0 or item.templateType == 1 %}
         <div class="feature-imgs-item type-01">
-          <div v-if="item.imageData.imageOne.contentType.startsWith('image')" class="img-wrapper">
-            <img :src="item.imageData.imageOne.objectUrl">
-          </div>
-          <div v-else-if="item.imageData.imageOne.contentType.startsWith('video')" class="video-wrapper">
-            <video controls muted :src="item.imageData.imageOne.objectUrl"></video>
-          </div>
+          {% if item.imageData.imageOne.contentType contains 'image' %}
+            <div class="img-wrapper">
+              <img src="{{ item.imageData.imageOne.objectUrl }}">
+            </div>
+          {% elsif item.imageData.imageOne.contentType contains 'video' %}
+            <div class="video-wrapper">
+              <video controls muted src="{{ item.imageData.imageOne.objectUrl }}"></video>
+            </div>
+          {% endif %}
         </div>
-      </template>
-      <template v-else-if="item.templateType == 2 || item.templateType == 3">
-        <div class="feature-imgs-item type-23" :class="[{ flag: item.flag }, `bgColorType${item.bgColorType}`]">
+      {% elsif item.templateType == 2 or item.templateType == 3 %}
+        <div class="feature-imgs-item type-23 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %}">
           <div class="img-text-wrapper">
             <div class="text-container">
-              <h2 class="text-title" v-html="item.imageData.featureTitleOne"></h2>
-              <div class="text-desc" v-html="item.imageData.featureDescOne"></div>
+              <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+              <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
             </div>
           </div>
           <div class="img-wrapper">
-            <img :src="item.imageData.imageOne.objectUrl">
+            <img src="{{ item.imageData.imageOne.objectUrl }}">
           </div>
         </div>
-      </template>
-      <template v-else-if="item.templateType == 4 ">
-        <div class="feature-imgs-item type-45" :class="[`bgColorType${item.bgColorType}`]">
+      {% elsif item.templateType == 4 %}
+        <div class="feature-imgs-item type-45 bgColorType{{ item.bgColorType }}">
           <div class="img-text-wrapper">
             <div class="text-container">
-              <h2 class="text-title" v-html="item.imageData.featureTitleOne"></h2>
-              <div class="text-desc" v-html="item.imageData.featureDescOne"></div>
+              <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+              <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
             </div>
             <div class="img-wrapper hidden-phone">
-              <img :src="item.imageData.imageOne.objectUrl">
+              <img src="{{ item.imageData.imageOne.objectUrl }}">
             </div>
           </div>
           <div class="img-wrapper">
-            <img :src="item.imageData.imageTwo.objectUrl">
-            <img class="hidden-tablet-and-up" :src="item.imageData.imageOne.objectUrl">
+            <img src="{{ item.imageData.imageTwo.objectUrl }}">
+            <img class="hidden-tablet-and-up" src="{{ item.imageData.imageOne.objectUrl }}">
           </div>
         </div>
-      </template>
-      <template v-else-if="item.templateType == 5">
-        <div class="feature-imgs-item type-45" :class="[{ flag: item.flag }, `bgColorType${item.bgColorType}`]">
+      {% elsif item.templateType == 5 %}
+        <div class="feature-imgs-item type-45 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %}">
           <div class="img-wrapper">
-            <img :src="item.imageData.imageOne.objectUrl">
-            <img class="hidden-tablet-and-up"  :src="item.imageData.imageTwo.objectUrl">
+            <img src="{{ item.imageData.imageOne.objectUrl }}">
+            <img class="hidden-tablet-and-up" src="{{ item.imageData.imageTwo.objectUrl }}">
           </div>
           <div class="img-text-wrapper">
             <div class="text-container">
-              <h2 class="text-title" v-html="item.imageData.featureTitleOne"></h2>
-              <div class="text-desc" v-html="item.imageData.featureDescOne"></div>
+              <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+              <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
             </div>
             <div class="img-wrapper hidden-phone">
-              <img :src="item.imageData.imageTwo.objectUrl">
+              <img src="{{ item.imageData.imageTwo.objectUrl }}">
             </div>
           </div>
         </div>
-      </template>
-      <template v-else-if="item.templateType == 6">
-        <div class="feature-imgs-item type-6" :class="[`bgColorType${item.bgColorType}`]">
+      {% elsif item.templateType == 6 %}
+        <div class="feature-imgs-item type-6 bgColorType{{ item.bgColorType }}">
           <div class="img-wrapper">
-            <img :src="item.imageData.imageOne.objectUrl">
+            <img src="{{ item.imageData.imageOne.objectUrl }}">
           </div>
           <div class="img-wrapper">
-            <img :src="item.imageData.imageTwo.objectUrl">
+            <img src="{{ item.imageData.imageTwo.objectUrl }}">
           </div>
         </div>
-      </template>
-      <template v-else-if="item.templateType == 7 || item.templateType == 8">
-        <div class="feature-imgs-item type-78" :class="[{ flag: item.flag }, `bgColorType${item.bgColorType}`]">
+      {% elsif item.templateType == 7 or item.templateType == 8 %}
+        <div class="feature-imgs-item type-78 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %}">
           <div class="img-text-wrapper">
             <div class="text-container">
-              <h2 class="text-title" v-html="item.imageData.featureTitleOne"></h2>
-              <div class="text-desc" v-html="item.imageData.featureDescOne"></div>
+              <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+              <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
             </div>
             <div class="img-wrapper">
-              <img :src="item.imageData.imageOne.objectUrl">
+              <img src="{{ item.imageData.imageOne.objectUrl }}">
             </div>
           </div>
           <div class="img-text-wrapper">
             <div class="text-container">
-              <h2 class="text-title" v-html="item.imageData.featureTitleTwo"></h2>
-              <div class="text-desc" v-html="item.imageData.featureDescTwo"></div>
+              <h2 class="text-title">{{ item.imageData.featureTitleTwo }}</h2>
+              <div class="text-desc">{{ item.imageData.featureDescTwo | replace: '&nbsp;', ' ' }}</div>
             </div>
             <div class="img-wrapper">
-              <img :src="item.imageData.imageTwo.objectUrl">
+              <img src="{{ item.imageData.imageTwo.objectUrl }}">
             </div>
           </div>
         </div>
-      </template>
-      <template v-else-if="item.templateType == 9">
-        <div class="feature-imgs-item type-9" :class="[`bgColorType${item.bgColorType}`]">
+      {% elsif item.templateType == 9 %}
+        <div class="feature-imgs-item type-9 bgColorType{{ item.bgColorType }}">
           <div class="text-container">
-            <h2 class="text-title" v-html="item.imageData.featureTitleOne"></h2>
-            <div class="text-desc" v-html="item.imageData.featureDescOne"></div>
+            <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+            <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
           </div>
           <div class="img-wrapper">
-            <img :src="item.imageData.imageOne.objectUrl">
+            <img src="{{ item.imageData.imageOne.objectUrl }}">
           </div>
         </div>
-      </template>
-    </template>
-  </template>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
 </div>
-{% endraw %}
 
 <script>
-  (() => {
-    new Vue({
-      el: '#feature-imgs',
-      data() {
-        return {
-          imgsArr: [],
-        };
-      },
-      mounted() {
-        this.initData();
-      },
-      methods: {
-        async initData() {
-          try {
-            const response = await fetch(
-              `${window.zkh.api}/openapi/adlink/product/listPDPs?skuCode={{ product.selected_or_first_available_variant.sku }}`,
-              {
-                method: 'GET', // or 'POST' depending on the endpoint
-              }
-            );
-            const res = await response.json();
-            if (res.code === 200 && res.data?.length > 0) {
-              res.data.map(item => {
-                if(item.imageData.featureDescOne) item.imageData.featureDescOne = item.imageData.featureDescOne.replace(/&nbsp;/g, ' ');
-                if(item.imageData.featureDescTwo) item.imageData.featureDescTwo = item.imageData.featureDescTwo.replace(/&nbsp;/g, ' ');
-              })
-              this.imgsArr = res.data;
-              $(".product-anchor [data-target-id='feature-imgs-wrapper']").show();
-              $('.product-anchor-sticky-wrapper').show();
-            } else {
-              $('.feature-imgs-wrapper').hide().attr('data-hide', true);
-              $(".product-anchor [data-target-id='feature-imgs-wrapper']").hide().attr('data-hide', true);
-              if($(".product-anchor [data-hide='true']").length == 2) {
-                $('.product-anchor-sticky-wrapper').hide();
-              }
-            }
-          } catch (error) {
-            this.$message({
-              showClose: true,
-              message: error,
-              type: 'warning',
-            });
-          }
-        },
-      },
-    });
-  })();
+  document.addEventListener('DOMContentLoaded', function() {
+    try {
+      var imgsArr = {{ product.metafields.product.pdp.value | json }}
+      if (imgsArr && Array.isArray(imgsArr) && imgsArr.length > 0) {
+        document.querySelector(".product-anchor [data-target-id='feature-imgs-wrapper']").style.display = 'block';
+        document.querySelector('.product-anchor-sticky-wrapper').style.display = 'block';
+      } else {
+        document.querySelector('.feature-imgs-wrapper').style.display = 'none';
+        document.querySelector('.feature-imgs-wrapper').setAttribute('data-hide', 'true');
+        document.querySelector(".product-anchor [data-target-id='feature-imgs-wrapper']").style.display = 'none';
+        document.querySelector(".product-anchor [data-target-id='feature-imgs-wrapper']").setAttribute('data-hide', 'true');
+        
+        if (document.querySelectorAll(".product-anchor [data-hide='true']").length == 2) {
+          document.querySelector('.product-anchor-sticky-wrapper').style.display = 'none';
+        }
+      }
+    } catch (error) {
+      console.error('Error initializing feature images:', error);
+    }
+  });
 </script>
+
 {% schema %}
 {
   "name": "Product Feature Imgs",
