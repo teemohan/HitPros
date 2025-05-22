@@ -26,6 +26,7 @@
       {%- if shop.name != 'TestHitpros' -%}
         {%- assign is_online_shop = true -%}
         {%- assign gtm_id = 'GTM-M7M24J6J' -%}
+        <script src="https://js.sentry-cdn.com/d1fe70ce6417e6c4f1a0a83c72a5287e.min.js" crossorigin="anonymous"></script>
       {%- else -%}
         {%- assign is_online_shop = false -%}
         {%- assign gtm_id = 'GTM-MTQZMJCM' -%}
@@ -38,7 +39,6 @@
       {%- endif -%}
   
       <link rel="canonical" href="{{ canonical_url }}">
-      <script src="https://js.sentry-cdn.com/d1fe70ce6417e6c4f1a0a83c72a5287e.min.js" crossorigin="anonymous"></script>
       {%- if settings.favicon -%}
         <link rel="shortcut icon" href="{{ settings.favicon | img_url: '96x96' }}" type="image/png">
       {%- endif -%}
