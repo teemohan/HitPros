@@ -13,6 +13,21 @@
     };
     dataLayer.push({ ...commonData, ...data });
   }
+  {% comment %} 搜索相关埋点 {% endcomment %}
+  const listenUserEvent = ({ eventName, skuCode}) => {
+    fetch(`${window.zkh.api}/openapi/listen/event`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        shopifyUserId: window.themeVariables.userId || null,
+        ga4UserId: window.gaGlobal?.vid,
+        eventName,
+        skuCode
+      }),
+    })
+  }
   // Session管理
   const SESSION_KEY = 'session_start';
   const addSessionStart = () => {
@@ -99,6 +114,10 @@
       }
     };
     window.dataLayer.push(eventData);
+    listenUserEvent({
+      eventName: 'add_to_cart',
+      skuCode: variant.sku
+    })
   };
   document.addEventListener('variant:added', handleVariantAdded);
   const cartRefrsh = (event) => {
@@ -162,7 +181,6 @@
     };
     window.dataLayer.push(eventData);
   };
-
   document.addEventListener('line-item-quantity:change:end', handleCartItemRemove);
   // 购物车视图事件处理
   {% if template == 'cart' %}
@@ -200,48 +218,22 @@
       };
       window.dataLayer.push(cartViewEventDataEmpt);
     }
-    {% comment %} document.addEventListener('line-item-quantity:url:start', (event) => {
-      const url = event.detail?.link || '';
-      const changeUrl = new URL(url, `https://${window.themeVariables.routes.host}`)
-      const searchParams = changeUrl.searchParams
-      const keyid = searchParams.get('id')
-      let quantity = parseInt(searchParams.get('quantity'));
-      let item = []
-      let update_type  = ''
-      if (!item) return;
-      if(quantity == 0) {
-        update_type = 'custom_remove_from_cart';
-        item = cart_data_gtm.find((item) => item.key == keyid);
-      } else {
-        return false
-      }
-      const eventData = {
-        event: update_type,
-        url: window.location.href,
-        ecommerce: {
-          ecomm_pagetype: "cart",
-          ecomm_prodid: [item.sku || ''],
-          ecomm_totalvalue: ((item.price || 0) / 100) * (item.quantity || 1),
-          currency: {{ shop.currency | json }},
-          value: ((item.price || 0) / 100) * (item.quantity || 1),
-          items: [{
-            item_id: item.sku || '',
-            item_name: item.product_title,
-            price: (item.price || 0) / 100,
-            quantity: item.quantity,
-            item_brand: item.vendor,
-            item_category: item.product_type,
-            currency: {{ shop.currency | json }}  
-          }]
-        }
-      }
-      window.dataLayer.push(eventData);
-    }) {% endcomment %}
   {% endif %}
   // 初始化商品页面GTM
   document.addEventListener('DOMContentLoaded', () => {
     {% if template == 'product' %}
       previewProductPageGtm();
+      listenUserEvent({
+        eventName: 'product_page_view',
+        skuCode: '{{ product.selected_or_first_available_variant.sku }}'
+      });
+      // Add click event listener for wishlist button
+      document.querySelector('.btn-wishlist')?.addEventListener('click', () => {
+        listenUserEvent({
+          eventName: 'add_to_wishlist',
+          skuCode: '{{ product.selected_or_first_available_variant.sku }}'
+        });
+      });
     {% endif %}
   })
 </script>

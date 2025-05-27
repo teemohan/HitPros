@@ -606,9 +606,6 @@
                 items: this.param
               })
             })
-            window.listenUserEvent({
-              eventName: 'add_to_cart'
-            });
             const responseJson = await response.json();
             let errorMsg;
             if (response.ok) {

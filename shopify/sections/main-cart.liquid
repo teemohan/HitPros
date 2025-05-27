@@ -814,6 +814,9 @@
           taxCode: "PT118906"
         });
       });
+      if(lines.length == 0) {
+        return false;
+      }
       {% if customer.default_address.zip %}
         const singleLocation = {
           line1: "{{ customer.default_address.address1 }}",

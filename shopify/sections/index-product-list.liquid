@@ -1,18 +1,24 @@
 {% if section.settings.collection.products.size > 0 %}
 {{ 'index-product-item.css' | asset_url | stylesheet_tag }}
 <product-index-list data-section-id="{{ section.id }}" class="{{ section.id }} product-x-hidde">
-  <div class="container cl-container">
+  <div class="container cl-container hover-cl-container">
     <div class="index-cus-header">
       <h2>{{ section.settings.title }}</h2>
       {% render 'swiper-buttons' %}
     </div>
     <div class="IndexBestswiper hover-list">
       <div class="swiper {{ section.id }}-IndexBestswiper">
-        <div class="swiper-wrapper">
+        <div class="swiper-wrapper"
+          data-datalayer="true" 
+          data-event-type="view_item_list" 
+          data-list-name="{{ section.settings.title }}" 
+          data-recommend-module="homepage"
+        >
           {% assign sort_collection_products = section.settings.collection.products %}
           {%- for product in sort_collection_products -%}
             <div class="swiper-slide">
-              {% render 'index-product-item', product: product %}
+              {% render 'index-product-item', product: product, position: forloop.index,
+                add_datalayer: true  %}
             </div>
           {% endfor %}
         </div>
@@ -24,7 +30,6 @@
 
 <script>
   (() => {
-    //埋点
     let dataLayerForm = null;
     function generateUUID() {
       return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>

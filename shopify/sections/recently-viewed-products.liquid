@@ -10,7 +10,7 @@
 >
   {%- if request.page_type == 'search' and search.performed and search.results_count > 0 -%}
     <div class="{{ section.id }} recently-viewed">
-      <div class="container cl-container">
+      <div class="container cl-container hover-cl-container">
         <div class="index-cus-header">
           <h2>{{ section.settings.title }}</h2>
           {% render 'swiper-buttons' %}

@@ -1,22 +1,4 @@
 (() => {
-  (() => {
-    window.listenUserEvent = ({
-      eventName, skuCode
-    }) => {
-      fetch(`${window.zkh.api}/openapi/listen/event`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          shopifyUserId: window.themeVariables.userId || null,
-          ga4UserId: window.gaGlobal?.vid,
-          eventName,
-          ...(eventName === 'product_page_view' && { skuCode })
-        }),
-      })
-    }
-  })();
   (() => { // 校验用户是否是B端用户
     if(Cookies.get('logout') == 1) {
       Cookies.remove('logout');

@@ -316,9 +316,6 @@ new Vue({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         });
-        window.listenUserEvent({
-          eventName: 'add_to_cart'
-        });
         const resultObj = {
           success: response.ok,
           data: await response.json(),

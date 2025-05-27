@@ -161,9 +161,6 @@
               }
               if(data.data.wish) {
                 this.isDelete = 1;
-                window.listenUserEvent({
-                  eventName: 'add_to_cart'
-                });
                 dataLayer.push({
                   'event': 'add_to_wishlist',
                   'ecommerce': {
