@@ -12,7 +12,8 @@
     "zkh_hero_banner_4_gz7YDr": {
       "type": "zkh-hero-banner-4",
       "settings": {
-        "new_title": "<p> High-Quality Supplies,<br/>Industry-Best Prices.<\/p>",
+        "title": "",
+        "new_title": "<p> High-Quality Supplies,<br/>Industry-Best Prices.</p>",
         "text": "<p>Save 30-70% on premium industrial supplies.</p>",
         "bg_img": "shopify://shop_images/Group_421.png",
         "h5_bg_img": "shopify://shop_images/Left_bunner_1.png",
@@ -109,6 +110,7 @@
     },
     "recently_viewed_products_eBQU9V": {
       "type": "recently-viewed-products",
+      "disabled": true,
       "settings": {
         "title": "Recently Viewed",
         "collection": ""
@@ -120,6 +122,13 @@
         "title": "Industry Insights",
         "blog": "industry-insights"
       }
+    },
+    "guess_you_like_Nmc4wp": {
+      "type": "guess-you-like",
+      "name": "guess-you-like",
+      "settings": {
+        "title": "Products You May Like"
+      }
     }
   },
   "order": [
@@ -129,6 +138,7 @@
     "6d3130cf-a40f-4b1d-8550-86b9ae2563e4",
     "zkh_img_text_list_4_Ndiqhn",
     "recently_viewed_products_eBQU9V",
+    "guess_you_like_Nmc4wp",
     "h_blogs_GHEBgy"
   ]
 }
