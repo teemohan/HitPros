@@ -1,7 +1,7 @@
 class Ajax {
   constructor() {
     this.baseURL = window.zkh.api;
-    this.timeout = 20000;
+    this.timeout = 100000;
     this.headers = {
       'Content-Type': 'application/json'
     };
