@@ -118,7 +118,7 @@
       color: var(--my-grey)
     }
 
-    /* Contact Form */
+    
     .contact__form {
       width: 100%;
       max-width: 100%;
@@ -226,7 +226,7 @@
       color: #0A3164 !important;
     }
 
-    /* Contact Form */
+    
     .contact__form {
       width: 100%;
       max-width: 100%;
@@ -323,10 +323,7 @@
 
           {%- endif -%}
 
-          {% comment %} {%- if section.settings.image != blank -%}
-            <img class="contact__image" loading="lazy" sizes="(max-width: 740px) calc(100vw - 24px * 2), 530px" {% render 'image-attributes', image: section.settings.image %}>
-          {%- endif -%}
-          {% endcomment %}
+          
 
           
         {%- endcapture -%}
@@ -439,7 +436,7 @@
                     'Content-Type': 'application/json',
                   },
                 });
-                const data = await res.json(); // 判断data == 200
+                const data = await res.json();
                 if (data.code == 200) {
                   _this.$message({
                     showClose: true,

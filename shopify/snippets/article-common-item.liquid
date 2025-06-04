@@ -1,7 +1,8 @@
 <a href="{{ article.url }}" class="article-common-item">
   <img
-    src="{{ article.image | image_url }}"
+    data-src="{{ article.image | image_url }}"
     alt="{{ article.image.alt }}"
+    class="js-lazy-image"
     width="auto"
     height="auto"
   >

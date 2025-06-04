@@ -141,10 +141,12 @@
     },
     methods: {
       handleClickLink(event) {
-        event.preventDefault(); // 阻止默认跳转行为
+        event.preventDefault();
         dataLayer.push({
-          ...this.dataLayerForm,
           event: 'select_item',
+          top_price: this.dataLayerForm.top_price || '',
+          bottom_price: this.dataLayerForm.bottom_price || '',
+          brand_filter: this.dataLayerForm.brand_filter || '',
           ecommerce: {
             item_list_id: "search_result_click",
             items: [{
@@ -195,7 +197,6 @@
           observeParents: true,
           breakpoints: {
             740: {
-              // 当屏幕宽度大于等于320
               slidesPerView: 4,
             },
           },
@@ -224,7 +225,7 @@
         const response = await fetch('/cart.js');
         const res = await response.json();
         if(res.items.length == 0) return;
-        const line_item = res.items.find(item => item.id == param.id); // param.id 变体id
+        const line_item = res.items.find(item => item.id == param.id);
         if(line_item) param.properties = line_item.properties;
       },
       async handleAddToCart() {

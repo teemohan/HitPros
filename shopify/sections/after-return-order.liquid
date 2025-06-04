@@ -298,26 +298,26 @@
         loading: false,
         orderMain: {},
         currencySymbols: {
-          USD: '$', // 美元
-          EUR: '€', // 欧元
-          GBP: '£', // 英镑
-          JPY: '¥', // 日元
-          CNY: '¥', // 人民币
-          AUD: '$', // 澳大利亚元
-          CAD: '$', // 加拿大元
-          CHF: 'CHF', // 瑞士法郎
-          NZD: '$', // 新西兰元
-          INR: '₹', // 印度卢比
-          RUB: '₽', // 俄罗斯卢布
-          KRW: '₩', // 韩元
-          SGD: '$', // 新加坡元
-          HKD: '$', // 港元
-          SEK: 'kr', // 瑞典克朗
-          NOK: 'kr', // 挪威克朗
-          TRY: '₺', // 土耳其里拉
-          MXN: '$', // 墨西哥比索
-          BRL: 'R$', // 巴西雷亚尔
-          ZAR: 'R', // 南非兰特
+          USD: '$', // US Dollar
+          EUR: '€', // Euro
+          GBP: '£', // British Pound
+          JPY: '¥', // Japanese Yen
+          CNY: '¥', // Chinese Yuan
+          AUD: '$', // Australian Dollar
+          CAD: '$', // Canadian Dollar
+          CHF: 'CHF', // Swiss Franc
+          NZD: '$', // New Zealand Dollar
+          INR: '₹', // Indian Rupee
+          RUB: '₽', // Russian Ruble
+          KRW: '₩', // Korean Won
+          SGD: '$', // Singapore Dollar
+          HKD: '$', // Hong Kong Dollar
+          SEK: 'kr', // Swedish Krona
+          NOK: 'kr', // Norwegian Krone
+          TRY: '₺', // Turkish Lira
+          MXN: '$', // Mexican Peso
+          BRL: 'R$', // Brazilian Real
+          ZAR: 'R', // South African Rand
         },
       };
     },
@@ -378,7 +378,7 @@
         }
       },
       checkIsAllSelected() {
-        //获取所有的order-line-item-wrapper下的input
+        // Get all inputs under order-line-item-wrapper
         const checkboxes = document.querySelectorAll('.order-line-item-wrapper.active .line-item-checkbox');
         const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper.active');
         let isAllSelected = true;
@@ -395,16 +395,16 @@
         }
       },
       checkIsButtonAvailable() {
-        // 获取所有的 order-line-item-wrapper 下的 input
+        // Get all inputs under order-line-item-wrapper
         const checkboxes = document.querySelectorAll('.order-line-item-wrapper.active .line-item-checkbox');
         let isAnySelected = false;
-        // 如果有任何一个 checkbox 被选中，将 isAnySelected 设置为 true
+        // If any checkbox is selected, set isAnySelected to true
         checkboxes.forEach((checkbox) => {
           if (checkbox.checked) {
             isAnySelected = true;
           }
         });
-        // 根据是否有选中的 checkbox 设置按钮的 disabled 状态
+        // Set button disabled state based on checkbox selection
         if (isAnySelected) {
           document.querySelector('.next-btn').removeAttribute('disabled');
         } else {
@@ -412,12 +412,12 @@
         }
       },
       goToNextPage() {
-        // 将页面跳转到退款页面的链接
+        // Redirect to refund page
         window.location.href = `/pages/after-return-return-request-details?id=${this.orderId}${this.collectSelectedItems()}`;
         this.clearChecked();
       },
       collectSelectedItems() {
-        // 获取选中的商品信息
+        // Get selected product information
         let selectedItems = '';
         const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper');
         lineItemWrappers.forEach((lineItemWrapper, index) => {
@@ -429,7 +429,7 @@
         return selectedItems;
       },
       clearChecked() {
-        //清空所有选中状态
+        // Clear all selected states
         const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper');
         lineItemWrappers.forEach((lineItemWrapper) => {
           lineItemWrapper.querySelector('.line-item-checkbox').checked = false;
@@ -438,25 +438,25 @@
       },
       formateDate(dateString) {
         if (dateString) {
-          // 创建日期对象（自动解析时区偏移）
+          // Create date object (auto parse timezone offset)
           const date = new Date(dateString);
-          date.setMilliseconds(0); // 设置毫秒为 0
-          // 将日期时间转换到指定时区（GMT-0500）
-          const offset = -5 * 60; // GMT-0500 转为分钟
+          date.setMilliseconds(0); // Set milliseconds to 0
+          // Convert datetime to specified timezone (GMT-0500)
+          const offset = -5 * 60; // GMT-0500 to minutes
           const localTime = new Date(date.getTime() + (date.getTimezoneOffset() + offset) * 60000);
-          // 格式化月份（缩写并加点）
+          // Format month (abbreviated with dot)
           const monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
           const month = monthNames[localTime.getMonth()];
-          // 格式化日期和年份
+          // Format date and year
           const day = localTime.getDate();
           const year = localTime.getFullYear();
-          // 格式化小时（12 小时制）
+          // Format hours (12-hour format)
           let hours = localTime.getHours();
           const period = hours >= 12 ? 'PM' : 'AM';
-          hours = hours % 12 || 12; // 转为 12 小时制
+          hours = hours % 12 || 12; // Convert to 12-hour format
           const minutes = String(localTime.getMinutes()).padStart(2, '0');
           const seconds = String(localTime.getSeconds()).padStart(2, '0');
-          // 返回格式化后的日期字符串
+          // Return formatted date string
           return `${month} ${day}, ${year} at ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${period}`;
         }
       },

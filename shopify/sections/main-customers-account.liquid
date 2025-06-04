@@ -37,7 +37,7 @@
         if (!inputEl) return;
         const $label = $(inputEl).closest('.el-form-item__content').find('label');
         const toggleLabelFocus = () => {
-          // Only remove the focus class if input is not focused and empty
+         
           if ($(inputEl).val().length === 0 && !inputEl.matches(':focus')) {
             $label.removeClass('label--focus');
           }
@@ -47,7 +47,7 @@
         });
 
         inputEl.addEventListener('blur', () => {
-          setTimeout(toggleLabelFocus, 100); // Delay to check focus state
+          setTimeout(toggleLabelFocus, 100);
         });
 
         if (binding.value) {
@@ -86,7 +86,6 @@
       },
       mounted() {
         const queryString = window.location.search;
-        // 将查询字符串解析为对象
         const params = new URLSearchParams(queryString);
         const linkSlug = params.get('slug');
         this.linkSlug = linkSlug ? linkSlug : 'account-info';

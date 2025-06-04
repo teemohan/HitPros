@@ -93,7 +93,7 @@
   margin-top: 28px;
 }
 
-/* 输入框带右侧文字*/
+
 .line-input .el-input__inner {
   padding-right: 60px;
 }
@@ -130,7 +130,7 @@
   text-decoration: none;
 }
 
-/* 表单自定义错误提示-start*/
+
 .el-form-error-common {
   transform-origin: top;
   transform: scaleY(0) translateY(2px);
@@ -141,7 +141,7 @@
   transform: scaleY(1) translateY(0);
 }
 
-/* 全局标题*/
+
 .common-header-title {
   font-weight: 700;
   font-size: 20px;
@@ -174,7 +174,7 @@
 }
 
 
-/* 交期*/
+
 
 .line-item__property {
   display: flex;
@@ -198,7 +198,7 @@
   color: var(--my-red);
 }
 
-/* 产品tab标签*/
+
 
 
 .stock-label-container {
@@ -226,7 +226,7 @@
   background-color: #D4ECD6;
   color: #26A230;
 }
-/* 价格*/
+
 .cus-price-list {
   display: flex;
   align-items: center;
@@ -270,7 +270,7 @@
     margin-left: 10px;
   }
 }
-/* 表单自定义错误提示-end*/
+
 @media screen and (min-width: 741px) {
   .form-container {
     border-top: 1px solid rgba(226, 226, 226, 0.5);

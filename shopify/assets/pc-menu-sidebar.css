@@ -79,21 +79,21 @@
 .accessories-wrapper .accessories-list-item:hover {
   border: 1px solid var(--my-border);
 }
-/* 滚动条轨道 */
+
 .pc-menu-nav .menu-nav1::-webkit-scrollbar-track, 
 .pc-menu-nav .menu-nav2::-webkit-scrollbar-track,
 .pc-menu-nav .menu-nav3::-webkit-scrollbar-track {
   background: #E5E5E5;
 }
 
-/* 滚动条滑块 */
+
 .pc-menu-nav .menu-nav1::-webkit-scrollbar-thumb, 
 .pc-menu-nav .menu-nav2::-webkit-scrollbar-thumb,
 .pc-menu-nav .menu-nav3::-webkit-scrollbar-thumb {
   background: #CBCBCB;
 }
 
-/* 滚动条滑块悬停状态 */
+
 .pc-menu-nav .menu-nav1::-webkit-scrollbar-thumb:hover,
 .pc-menu-nav .menu-nav2::-webkit-scrollbar-thumb:hover,
 .pc-menu-nav .menu-nav3::-webkit-scrollbar-thumb:hover {

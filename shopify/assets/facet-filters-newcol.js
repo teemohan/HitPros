@@ -1,6 +1,6 @@
 class FilterDrawer {
   constructor(options) {
-    // 默认配置
+   
     const defaults = {
       filterButtonsSelector: '.ffn-filter-btn',
       drawerSelector: '#ffn-col-drawer',
@@ -10,9 +10,9 @@ class FilterDrawer {
       clearBtnSelector: '#col-clearBtn',
       applyBtnSelector: '#col-applyBtn'
     };
-   // 合并配置
+  
    this.options = { ...defaults, ...options };
-   // 初始化元素引用
+  
    this.filterButtons = null;
    this.drawer = null;
    this.filterItem = null;
@@ -21,7 +21,7 @@ class FilterDrawer {
    this.clearBtn = null;
    this.applyBtn = null;
     
-    // 绑定方法的this上下文
+   
     this.setDrawerPosition = this.setDrawerPosition.bind(this);
     this.resetButtonStyles = this.resetButtonStyles.bind(this);
     this.openDrawer = this.openDrawer.bind(this);
@@ -35,7 +35,7 @@ class FilterDrawer {
     this.buildFilterUrl = this.buildFilterUrl.bind(this);
   }
   init() {
-    // 获取DOM元素
+   
     this.filterButtons = document.querySelectorAll(this.options.filterButtonsSelector);
     this.drawer = document.querySelector(this.options.drawerSelector);
     this.filterItem = document.querySelector(this.options.filterItemSelector);
@@ -44,7 +44,7 @@ class FilterDrawer {
     this.clearBtn = document.querySelector(this.options.clearBtnSelector);
     this.applyBtn = document.querySelector(this.options.applyBtnSelector);
     
-    // 如果必要的元素不存在，则不初始化
+   
     if (!this.drawer || !this.filterItem || !this.drawerContent) {
       return;
     }
@@ -91,7 +91,7 @@ class FilterDrawer {
   resetButtonStyles() {
     this.filterButtons.forEach(btn => {
       btn.classList.remove('bg-darkmain', '!text-white', '!border-darkmain');
-      // Reset SVG rotation
+     
       const svg = btn.querySelector('svg');
       if (svg) {
         svg.style.transform = 'rotate(0deg)';
@@ -112,9 +112,9 @@ class FilterDrawer {
   openDrawer(filterType, button) {
     this.setDrawerPosition();
     this.resetButtonStyles();
-    // Update button styles
+   
     button.classList.add('bg-darkmain', '!text-white', '!border-darkmain');
-    // Rotate the SVG icon 180 degrees
+   
     const svg = button.querySelector('svg');
     if (svg) {
       svg.style.transform = 'rotate(90deg)';
@@ -129,25 +129,25 @@ class FilterDrawer {
       activeContent.classList.remove('hidden');
     }
     
-    // 显示弹窗
+   
     this.drawer.classList.remove('opacity-0', 'invisible');
     this.drawer.classList.add('opacity-100');
     
-    // 内容区域动画
+   
     this.drawerContent.classList.remove('translate-y-[-20px]');
     this.drawerContent.classList.add('translate-y-0');
     
-    // 禁止背景滚动
+   
     document.body.style.overflow = 'hidden';
   }
   closeDrawer() {
-    // 先执行内容区域动画
+   
     this.drawerContent.classList.remove('translate-y-0');
     this.drawerContent.classList.add('translate-y-[-20px]');
     this.drawer.classList.remove('opacity-100');
     this.drawer.classList.add('opacity-0', 'invisible');
     document.body.style.overflow = '';
-    // 关闭弹窗时重置按钮样式
+   
     this.resetButtonStyles();
   }
   handleResize() {
@@ -167,7 +167,7 @@ handleFilterButtonClick(event) {
   this.openDrawer(filterType, button);
 }
   handleDrawerBackgroundClick(event) {
-    // 检查点击的元素是否在内容区域之外
+   
     if (!this.drawerContent.contains(event.target)) {
       this.closeDrawer();
     }
@@ -184,10 +184,10 @@ handleFilterButtonClick(event) {
     return hasSelectedFilters;
   }
   handleClearBtnClick() {
-    // Check if any filters are selected
+   
     const hasSelectedFilters = this.handelEmptyInput();
     console.log("hasSelectedFilters", hasSelectedFilters);
-    // If no filters are selected, just close the drawer
+   
     if (!hasSelectedFilters) {
       this.closeDrawer();
       return;
@@ -216,16 +216,16 @@ handleFilterButtonClick(event) {
     this.closeDrawer();
   }
   buildFilterUrl() {
-    // 获取当前页面URL
+   
     const currentUrl = new URL(window.location.href);
     const searchParams = new URLSearchParams();
-    // 获取价格范围并确保验证
+   
     const priceMinInput = document.getElementById('price-min');
     const priceMaxInput = document.getElementById('price-max');
     const minPrice = priceMinInput?.value || '';
     const maxPrice = priceMaxInput?.value || '';
     
-    // 添加价格参数
+   
     if (minPrice) {
       searchParams.append('filter.v.price.gte', minPrice);
     }
@@ -233,14 +233,14 @@ handleFilterButtonClick(event) {
       searchParams.append('filter.v.price.lte', maxPrice);
     }
     
-    // 获取选中的品牌
+   
     const brandCheckboxes = document.querySelectorAll('#brand-filter-content input[type="checkbox"]:checked');
     brandCheckboxes.forEach(checkbox => {
       const brandName = checkbox.value || checkbox.dataset.brand || checkbox.id.replace('brand-', '');
       searchParams.append('filter.p.m.product.brand', brandName);
     });
     
-    // 保留其他可能的查询参数（如排序、页码等）
+   
     for (const [key, value] of currentUrl.searchParams.entries()) {
       if (!key.startsWith('filter.')) {
         searchParams.append(key, value);
@@ -270,7 +270,7 @@ handleFilterButtonClick(event) {
     }
   destroy() {
     this.removeEventListeners();
-    // 清空引用
+   
     this.filterButtons = null;
     this.drawer = null;
     this.filterItem = null;

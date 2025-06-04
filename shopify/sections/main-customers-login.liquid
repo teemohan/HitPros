@@ -111,7 +111,6 @@
 
 <script>
   (() => {
-    // 轮询执行的函数，定期检查 returnUrl 是否符合条件
     function startPolling() {
       setInterval(() => {
         const params = new URLSearchParams(window.location.search);
@@ -133,7 +132,7 @@
         const $label = $(inputEl).closest('.el-form-item__content').find('label');
         
         const toggleLabelFocus = () => {
-          // Only remove the focus class if input is not focused and empty
+         
           if ($(inputEl).val().length === 0 && !inputEl.matches(':focus')) {
             $label.removeClass('label--focus');
           }
@@ -144,7 +143,7 @@
         });
 
         inputEl.addEventListener('blur', () => {
-          setTimeout(toggleLabelFocus, 100); // Delay to check focus state
+          setTimeout(toggleLabelFocus, 100);
         });
 
         if (binding.value) {
@@ -174,14 +173,13 @@
           returnTo = `${window.location.origin}/account?slug=account-info`;
         }
         const checkEmail = (rule, value, callback) => {
-          // 邮箱格式的正则表达式
           const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
           if (value == '') {
             callback(new Error('Email is required.'));
           } else if (!emailPattern.test(value)) {
             callback(new Error('Please enter a valid email address.'));
           } else {
-            callback(); // 验证通过
+            callback();
           }
         };
         const checkPass = (rule, value, callback) => {
@@ -216,20 +214,16 @@
       },
       mounted() {
         if (window.location.hash === '#recover') {
-          // 恢复密码标记
           this.show_recover = true;
         }
-        $('#login-wrapper').show(); // 等vue挂在再显示dom
+        $('#login-wrapper').show(); 
         if (Cookies.get('email_send') == 'true') {
-          // 如果发送了邮箱恢复密码则下次挂在的时候显示
           this.show_recover = this.sendEmail = true;
           Cookies.remove('email_send');
         }
         if ('{{ customer.email }}') {
-          // 再次查找登录的邮箱
           this.recoverRuleForm.email = '{{ customer.email }}';
         } else if (Cookies.get('recover_customer_email')) {
-          // 下次进来恢复密码的时候，优先手动发送的邮箱
           this.recoverRuleForm.email = Cookies.get('recover_customer_email');
         }
 
@@ -262,7 +256,7 @@
               const cartRes = await fetch(`${window.zkh.api}/shopping/cart?email=${this.ruleForm.email}`);
               const cartData = await cartRes.json();
               if(cartData.data.length > 0) {
-                Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 });  // 登录的时候查一下，customer对应的cart cookie
+                Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 }); 
               }
               dataLayer.push({
                 'event': 'custom_sign_in_completed',
@@ -288,13 +282,11 @@
           }
         },
         submitForm(formName) {
-          // 校验登录表单
           this.$refs[formName].validate((valid) => {
             if (valid) this.submit();
           });
         },
         submitRecoverForm(formName) {
-          // 校验恢复邮箱表单
           this.$refs[formName].validate(async (valid) => {
             if (valid) {
               this.recoverLoading = true;
@@ -326,12 +318,6 @@
     });
   })();
 </script>
-
-<!-- <script>
-  $('#forgetPwd').click(function(){
-    
-  })
-</script> -->
 
 {% schema %}
 {

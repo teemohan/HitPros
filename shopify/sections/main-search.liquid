@@ -76,7 +76,7 @@
                   </div>
                   <div class="product-facet__meta-bar-item product-facet__meta-bar-item--sort">
                     <span class="product-facet__sort-by-title text--subdued">Sort By:</span>
-                    <div class="popover-container my-14">
+                    <div class="popover-container ol-my-14">
                       <button
                         type="button"
                         is="toggle-button"
@@ -194,29 +194,6 @@
   {%- else -%}
   {% endif %}
 </section>
-<script>
-  (() => {
-    const clickSerrchProduct = () => { // 点击事件
-      $('a[datalayer-link]').off('click').on('click', function(event) {
-        event.preventDefault();
-        const clicked_sku = $(this).data('sku');
-        const p_item = dataLayerForm.ecommerce.items.find(item => item.sku_code == clicked_sku);
-        if (p_item) {
-          const productLayerForm = {
-            ...dataLayerForm,
-            event: 'select_item',
-            ecommerce: {
-              item_list_id: "search_result_click",
-              items: [p_item]
-            }
-          }
-          dataLayer.push(productLayerForm);
-          location.href = $(this).attr('href'); // 跳转到链接的 href
-        }
-      });
-    }
-  })();
-</script>
 {% liquid
   render 'product-item-search'
   render 'product-item-card'
@@ -391,6 +368,23 @@
           this.handleUrlChange();
           this.getProducts();
         },
+        getBrandNames() {
+          if (!this.queryParam?.productFilter?.brandId) {
+            return null
+          }
+          const brandIds = this.queryParam.productFilter.brandId.trim()
+          if (!brandIds) {
+            return null;
+          }
+          const brandNames = brandIds.split(',')
+            .map(id => {
+              const brand = this.brandsData?.find(b => b.brandId.toString() === id.trim())
+              return brand?.brandName
+            })
+            .filter(name => name)
+            .join(',')
+          return brandNames || null
+        },
         getDataLayerFormAndPush() { 
           const queryString = window.location.search;
           const params = new URLSearchParams(queryString);
@@ -398,9 +392,9 @@
           const keyword = params.get('q');
           const pageSize = this.queryParam.size;
           const sortBy = params.get('sort_by');
-          let rank_type = '';
+          let rank_type = 'Relevance';
           if(sortBy == 'Asc') {
-            rank_type = 'PRICE_DESC';
+            rank_type = 'PRICE_ASC';
           } else if(sortBy == 'Desc') {
             rank_type = 'PRICE_DESC';
           }
@@ -413,6 +407,7 @@
               item_name: product.title
             }
           });
+
           this.dataLayerForm = {
             event: 'view_item_list',
             request_id: this.request_id,
@@ -421,11 +416,14 @@
             ecommerce: {
               item_list_id: "search_result_exposure",
               items
-            }
+            },
+            top_price: this.queryParam.productFilter.maxPrice || '',
+            bottom_price: this.queryParam.productFilter.minPrice || '',
+            brand_filter: this.getBrandNames()
           }
           dataLayer.push(this.dataLayerForm);
         },
-        setEventTrackingFirst10() { // 每次搜索后取前10个产品
+        setEventTrackingFirst10() { 
           const skuString = this.products.slice(0, 10).map(item => item.sku).join('');
           const ip = Cookies.get('ip');
           if(ip) {
@@ -502,7 +500,7 @@
           const $container = $(".search-brand-collapsible");
           const brandHtml = this.brandsData.reduce((html, brand) => {
             return html + `
-                <div class="checkbox-container my-14">
+                <div class="checkbox-container ol-my-14">
                     <input
                       class="checkbox"
                       type="checkbox"
@@ -517,14 +515,13 @@
           }, "");
 
           $container.html(brandHtml);
-          // 解析 URL 参数
           const urlParams = new URLSearchParams(window.location.search);
           const brands = urlParams.getAll('filter.p.m.product.brand');
           brands.map(brand => {
             $(`.search-brand-collapsible input[value='${brand}']`).prop('checked', true);
           });
 
-          this.$nextTick(() => { // 更新到dom上去再更新状态
+          this.$nextTick(() => { 
             this.setCollapsibleStatus();
           })
         },
@@ -634,7 +631,6 @@
               },
             });
             const res = await response.json();
-            console.log(res)
             if (res.code === 200 && res.data.brand.length) {
               this.total = +res.data.totalNum;
               if(this.total == 1 && res.data.searchHitType == 'skuNo') {
@@ -643,7 +639,7 @@
               }
               this.brandsData = res.data.brand;
               this.setMaxPrice(res.data.maxPrice);
-              this.buildBrandDom(); // 每次构建
+              this.buildBrandDom(); 
 
               const brandTotal = res.data.brand.reduce((accumulator, currentItem) => accumulator + currentItem.number, 0);
               if(brandTotal) {
@@ -679,8 +675,12 @@
           } finally {
             this.pageLoading = false;
             this.loadingBar?.hideLoadingBar();
-            this.setEventTrackingFirst10(); // 每次搜索后取前10个产品
-            this.getDataLayerFormAndPush(); // 推送数据埋点
+            this.setEventTrackingFirst10(); 
+            try {
+              this.getDataLayerFormAndPush();
+            } catch (error) {
+              console.log(error);
+            }
           }
         },
         async handlePageChange(page) {

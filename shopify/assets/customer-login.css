@@ -10,7 +10,7 @@
   background-color: #fff;
   z-index: 999999999999;
 }
-/* 恢复密码框*/
+
 .recover-form-box .block-text {
   color: #333333;
 }
@@ -50,4 +50,3 @@
   }
 }
 
-/* 恢复密码框-end*/

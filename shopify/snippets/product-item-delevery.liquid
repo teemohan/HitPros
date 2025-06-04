@@ -38,7 +38,6 @@
   </script>
 {% endraw %}
 <script>
-  // 注册 Vue 组件
   {% if customer.b2b? %}
     {% assign zip = customer.current_location.shipping_address.zip %}
   {% else %}
@@ -73,7 +72,6 @@
       };
     },
     methods: {
-      // ZIP 验证规则
       validateZipCode(rule, value, callback) {
         if (!value) {
           return callback(new Error('ZIP Code is required'));
@@ -90,7 +88,6 @@
           });
         }
       },
-      // 格式化日期
       formatDate(timestamp, timezoneOffset = -5) {
         const date = new Date(+timestamp);
         const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
@@ -133,7 +130,6 @@
         }
         return `${month} ${day}${suffix}, ${year}`;
       },
-      // 处理提交并计算预计到货日期
       async handleComputedDeleveryDate() {
         const _this = this;
         const quantity = +this.productDemand || 1;

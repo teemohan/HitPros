@@ -21,7 +21,7 @@
     return __reExport(__markAsModule(__defProp(module != null ? __create(__getProtoOf(module)) : {}, "default", module && module.__esModule && "default" in module ? { get: () => module.default, enumerable: true } : { value: module, enumerable: true })), module);
   };
 
-  // node_modules/ev-emitter/ev-emitter.js
+ 
   var require_ev_emitter = __commonJS({
     "node_modules/ev-emitter/ev-emitter.js"(exports, module) {
       (function(global, factory) {
@@ -97,7 +97,7 @@
     }
   });
 
-  // node_modules/get-size/get-size.js
+ 
   var require_get_size = __commonJS({
     "node_modules/get-size/get-size.js"(exports, module) {
       (function(window2, factory) {
@@ -225,7 +225,7 @@
     }
   });
 
-  // node_modules/desandro-matches-selector/matches-selector.js
+ 
   var require_matches_selector = __commonJS({
     "node_modules/desandro-matches-selector/matches-selector.js"(exports, module) {
       (function(window2, factory) {
@@ -263,7 +263,7 @@
     }
   });
 
-  // node_modules/fizzy-ui-utils/utils.js
+ 
   var require_utils = __commonJS({
     "node_modules/fizzy-ui-utils/utils.js"(exports, module) {
       (function(window2, factory) {
@@ -412,7 +412,7 @@
     }
   });
 
-  // node_modules/flickity/js/cell.js
+ 
   var require_cell = __commonJS({
     "node_modules/flickity/js/cell.js"(exports, module) {
       (function(window2, factory) {
@@ -488,7 +488,7 @@
     }
   });
 
-  // node_modules/flickity/js/slide.js
+ 
   var require_slide = __commonJS({
     "node_modules/flickity/js/slide.js"(exports, module) {
       (function(window2, factory) {
@@ -550,7 +550,7 @@
     }
   });
 
-  // node_modules/flickity/js/animate.js
+ 
   var require_animate = __commonJS({
     "node_modules/flickity/js/animate.js"(exports, module) {
       (function(window2, factory) {
@@ -700,7 +700,7 @@
     }
   });
 
-  // node_modules/flickity/js/flickity.js
+ 
   var require_flickity = __commonJS({
     "node_modules/flickity/js/flickity.js"(exports, module) {
       (function(window2, factory) {
@@ -1314,7 +1314,7 @@
     }
   });
 
-  // node_modules/unipointer/unipointer.js
+ 
   var require_unipointer = __commonJS({
     "node_modules/unipointer/unipointer.js"(exports, module) {
       (function(window2, factory) {
@@ -1496,7 +1496,7 @@
     }
   });
 
-  // node_modules/unidragger/unidragger.js
+ 
   var require_unidragger = __commonJS({
     "node_modules/unidragger/unidragger.js"(exports, module) {
       (function(window2, factory) {
@@ -1663,7 +1663,7 @@
     }
   });
 
-  // node_modules/flickity/js/drag.js
+ 
   var require_drag = __commonJS({
     "node_modules/flickity/js/drag.js"(exports, module) {
       (function(window2, factory) {
@@ -1922,7 +1922,7 @@
     }
   });
 
-  // node_modules/flickity/js/prev-next-button.js
+ 
   var require_prev_next_button = __commonJS({
     "node_modules/flickity/js/prev-next-button.js"(exports, module) {
       (function(window2, factory) {
@@ -2069,7 +2069,7 @@
     }
   });
 
-  // node_modules/flickity/js/page-dots.js
+ 
   var require_page_dots = __commonJS({
     "node_modules/flickity/js/page-dots.js"(exports, module) {
       (function(window2, factory) {
@@ -2200,7 +2200,7 @@
     }
   });
 
-  // node_modules/flickity/js/player.js
+ 
   var require_player = __commonJS({
     "node_modules/flickity/js/player.js"(exports, module) {
       (function(window2, factory) {
@@ -2331,7 +2331,7 @@
     }
   });
 
-  // node_modules/flickity/js/add-remove-cell.js
+ 
   var require_add_remove_cell = __commonJS({
     "node_modules/flickity/js/add-remove-cell.js"(exports, module) {
       (function(window2, factory) {
@@ -2433,7 +2433,7 @@
     }
   });
 
-  // node_modules/flickity/js/lazyload.js
+ 
   var require_lazyload = __commonJS({
     "node_modules/flickity/js/lazyload.js"(exports, module) {
       (function(window2, factory) {
@@ -2525,7 +2525,7 @@
     }
   });
 
-  // node_modules/flickity/js/index.js
+ 
   var require_js = __commonJS({
     "node_modules/flickity/js/index.js"(exports, module) {
       (function(window2, factory) {
@@ -2548,7 +2548,7 @@
     }
   });
 
-  // node_modules/flickity-fade/flickity-fade.js
+ 
   var require_flickity_fade = __commonJS({
     "node_modules/flickity-fade/flickity-fade.js"(exports, module) {
       (function(window2, factory) {
@@ -2750,7 +2750,7 @@
     }
   });
 
-  // js/flickity.js
+ 
   var import_flickity_fade = __toModule(require_flickity_fade());
   (() => {
     let touchingCarousel = false, touchStartCoords;
@@ -2787,28 +2787,7 @@
   })();
   window.ThemeFlickity = import_flickity_fade.default;
 })();
-/*!
- * Flickity v2.3.0
- * Touch, responsive, flickable carousels
- *
- * Licensed GPLv3 for open source use
- * or Flickity Commercial License for commercial use
- *
- * https://flickity.metafizzy.co
- * Copyright 2015-2021 Metafizzy
- */
-/*!
- * Unidragger v2.4.0
- * Draggable base class
- * MIT license
- */
-/*!
- * Unipointer v2.4.0
- * base class for doing one thing with pointer event
- * MIT license
- */
-/*!
- * getSize v2.0.3
- * measure size of elements
- * MIT license
- */
+
+
+
+

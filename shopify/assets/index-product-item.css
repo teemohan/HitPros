@@ -1,4 +1,4 @@
-  /* index */
+  
   .index-product-item {
     height: 100%;
     width: 100%;
@@ -90,7 +90,7 @@
     padding: 0 !important;
   }
 
-  /* add cart btn */
+  
   .index-product-item .product-item__quick-form {
     position: unset;
     padding: 0;

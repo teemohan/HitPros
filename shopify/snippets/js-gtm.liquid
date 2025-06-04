@@ -1,6 +1,5 @@
-<script>
+<script type="text/javascript">
   var cart_data_gtm = []
-  // 公共函数：推送数据到dataLayer
   function pushToDataLayer(eventName, data = {}) {
     const ip = Cookies.get('ip');
     if (!ip) return;
@@ -13,7 +12,6 @@
     };
     dataLayer.push({ ...commonData, ...data });
   }
-  {% comment %} 搜索相关埋点 {% endcomment %}
   const listenUserEvent = ({ eventName, skuCode}) => {
     fetch(`${window.zkh.api}/openapi/listen/event`, {
       method: 'POST',
@@ -28,7 +26,6 @@
       }),
     })
   }
-  // Session管理
   const SESSION_KEY = 'session_start';
   const addSessionStart = () => {
     if (!localStorage.getItem(SESSION_KEY)) {
@@ -48,7 +45,6 @@
       localStorage.removeItem(SESSION_KEY);
     }
   };
-  // 事件处理函数
   const handleCreateAccount = () => {
     pushToDataLayer('custom_create_account_clicked', {
       'industry': '{{ customer.metafields.custom.domesticcustomserviceid }}',
@@ -60,14 +56,12 @@
       'initial_landing_page_url': window.location.href
     });
   };
-  // 事件监听器初始化
   const initEventListeners = () => {
     $('#createAccount').click(handleCreateAccount);
     handlePageView();
     addSessionStart();
   };
   document.addEventListener('DOMContentLoaded', initEventListeners);
-  // 页面卸载事件
   window.addEventListener('beforeunload', () => {
     if ('{{ customer.id }}') return;
     let currentPath = window.location.pathname;
@@ -77,13 +71,12 @@
     Cookies.set('pagePath', currentPath);
     removeSessionStart();
   });
-  {% comment %} 新增的埋点 {% endcomment %}
-
   if ({{ cart.items | size }}) {
     cart_data_gtm = {{ cart.items | json }}
   }
   const handleVariantAdded = (event) => {
     const variant = event.detail?.variant;
+    const recommendModule = event.detail?.recommendModule;
     if (!variant) return;
     let adddquantity = variant.quantity || 1;
     if(cart_data_gtm && cart_data_gtm.length) {
@@ -96,6 +89,7 @@
     const eventData = {
       event: "custom_add_to_cart",
       url: window.location.href,
+      recommend_module: recommendModule,
       ecommerce: {
         ecomm_pagetype: "cart",
         ecomm_prodid: [variant.sku || ''],
@@ -126,7 +120,6 @@
     cart_data_gtm = variant;
   }
   document.addEventListener('cart:refresh', cartRefrsh);
-  // 商品页面GTM数据推送
   const previewProductPageGtm = () => {
     {% if template == 'product' %}
       const eventData = {
@@ -152,7 +145,6 @@
       window.dataLayer.push(eventData);
     {% endif %}
   };
-  // 购物车商品移除事件处理
   const handleCartItemRemove = (event) => {
     const changeCart = event.detail?.cart;
     const newLineQuantity = event.detail?.newLineQuantity || 0;
@@ -182,7 +174,7 @@
     window.dataLayer.push(eventData);
   };
   document.addEventListener('line-item-quantity:change:end', handleCartItemRemove);
-  // 购物车视图事件处理
+
   {% if template == 'cart' %}
     if ({{ cart.items | size }}) {
       const cartViewEventData = {
@@ -219,7 +211,6 @@
       window.dataLayer.push(cartViewEventDataEmpt);
     }
   {% endif %}
-  // 初始化商品页面GTM
   document.addEventListener('DOMContentLoaded', () => {
     {% if template == 'product' %}
       previewProductPageGtm();
@@ -227,7 +218,7 @@
         eventName: 'product_page_view',
         skuCode: '{{ product.selected_or_first_available_variant.sku }}'
       });
-      // Add click event listener for wishlist button
+     
       document.querySelector('.btn-wishlist')?.addEventListener('click', () => {
         listenUserEvent({
           eventName: 'add_to_wishlist',
@@ -235,5 +226,44 @@
         });
       });
     {% endif %}
+    {%- if template contains 'page.Olympia' or template == 'page.black-canyon-mockup' or template == 'page.northsky-select' -%}
+      {%- if template contains 'page.Olympia' -%}
+        {%- assign banrd_type = 1 -%}
+        {%- assign banrd_name = "Olympia" -%}
+      {%- elsif template == 'page.black-canyon-mockup' -%}
+        {%- assign banrd_type = 2 -%}
+        {%- assign banrd_name = "Black Canyon" -%}
+      {%- elsif template == 'page.northsky-select' -%}
+          {%- assign banrd_type = 3 -%}
+          {%- assign banrd_name = "NorthSky Select" -%}
+      {%- endif -%}
+      const brandextractItemData=(element, index) =>{
+        try {
+          return {
+            item_id: element.getAttribute('data-sku') || element.getAttribute('data-product-id') || '',
+            item_name: element.getAttribute('data-product-title') || '',
+            item_brand: element.getAttribute('data-brand') || '',
+            index: index + 1,
+          };
+        } catch {
+          return {};
+        }
+      }
+      const handlePageBrandsView = () => {
+        
+        const productItems = document.querySelectorAll('.index-product-item');
+        const itemsData = productItems?.length ? Array.from(productItems).map((item, index) => brandextractItemData(item, index)) : [];
+        const eventData = {
+          event: "view_item_list",
+          brand_name: "{{ banrd_name }}",
+          ecommerce: {
+            item_list_id: "brand_page_view",
+            items: itemsData.slice(0, 4)
+          }
+        };
+        window.dataLayer.push(eventData);
+      };
+      handlePageBrandsView();
+    {%- endif -%}
   })
 </script>

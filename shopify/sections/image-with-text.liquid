@@ -37,7 +37,7 @@
   }
 
   {%- if section.settings.background_overlap != 'both' -%}
-    /* We have to remove some extra spacing adding in non-overlap mode */
+    
     @media screen and (max-width: 999px) {
       {%- if section.settings.background_overlap == 'image' -%}
         {%- unless is_boxed -%}

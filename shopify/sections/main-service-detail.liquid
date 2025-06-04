@@ -4,7 +4,7 @@
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3; /* 超出几行省略 */
+    -webkit-line-clamp: 3; 
     overflow: hidden;
   }
   .service-detail {
@@ -164,7 +164,6 @@
 </section>
 <script>
   (() => {
-    // 获取当前页面的 URL 参数
     const searchParams = new URLSearchParams(window.location.search);
     const idFromURL = searchParams.get('id');
 

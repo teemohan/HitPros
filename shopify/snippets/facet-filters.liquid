@@ -473,14 +473,14 @@
     function search(event) {
       let searchval = $(searchInput).val();
       searchval = searchval.toLowerCase();
-      var hasMatchingItem = false; // 标记是否有匹配项
+      var hasMatchingItem = false;
 
       $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
         var title = $(this).find('.checkbox').val();
         title = title.toLowerCase();
         if (title.indexOf(searchval) !== -1) {
           $(this).show();
-          hasMatchingItem = true; // 有匹配项则将标记设为true
+          hasMatchingItem = true;
         } else {
           $(this).hide();
           $('.no-results-message').show();
@@ -488,9 +488,9 @@
       });
 
       if (!hasMatchingItem) {
-        $('.no-results-message').show(); // 所有项都不匹配时显示消息
+        $('.no-results-message').show();
       } else {
-        $('.no-results-message').hide(); // 有匹配项则隐藏消息
+        $('.no-results-message').hide();
       }
     }
 

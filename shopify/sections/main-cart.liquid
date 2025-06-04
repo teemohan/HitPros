@@ -156,7 +156,6 @@
                                   </div>
                                 {%- endif -%}
                                 <div class="w-full hidden fb-sm:block">
-                                  {% comment %} mobile 不能在加line-item-data{% endcomment %}
                                   <div class="text-0A2B6F text-base font-medium flex items-center space-x-2">
                                     {% if line_item.variant.compare_at_price > line_item.variant.price %}
                                       {% assign price = line_item.variant.price
@@ -551,10 +550,6 @@
       });
     }
   })();
-
-  // 获取默认state code,如果有地址就获取,没地址就固定DC
-
-  
   {% if customer.b2b? %}
     {% assign province_code = customer.current_location.shipping_address.province_code %}
     {% assign zip = customer.current_location.shipping_address.zip %}
@@ -565,7 +560,7 @@
   (() => {
     $('.quantity-selector__input').on('keydown', function(event) {
       if (event.key === 'Enter') {
-        event.preventDefault(); // 阻止默认行为
+        event.preventDefault();
       }
     });
   })();
@@ -582,7 +577,7 @@
       });
     {% endfor %}
 
-    async function getDeleveryDate(deliveryParams) { //获取交期数据
+    async function getDeleveryDate(deliveryParams) {
       try {
         const response = await fetch(`${window.zkh.api}/openapi/adlink/delivery-calculation/batch`, {
           method: 'POST',
@@ -601,11 +596,8 @@
     }
 
     function formatDate(timestamp, timezoneOffset = -5) {
-      // 创建 Date 对象（默认会使用 UTC 时间）
       const date = new Date(+timestamp);
-      // 调整时区：将日期偏移到 GMT-5
       const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
-      // 获取年份、月份和日期
       const year = localTime.getFullYear();
       const monthNames = [
         'January', 'February', 'March', 'April', 'May', 'June',
@@ -613,31 +605,29 @@
       ];
       const month = monthNames[localTime.getMonth()];
       const day = localTime.getDate();
-      // 确定日期后缀
       let suffix = '';
       if (day >= 11 && day <= 13) {
-        suffix = 'th'; // 特殊情况：11th, 12th, 13th
+        suffix = 'th';
       } else {
         switch (day % 10) {
-          case 1: suffix = 'st'; break; // 1, 21, 31
-          case 2: suffix = 'nd'; break; // 2, 22
-          case 3: suffix = 'rd'; break; // 3, 23
-          default: suffix = 'th'; break; // 其他情况
+          case 1: suffix = 'st'; break; 
+          case 2: suffix = 'nd'; break; 
+          case 3: suffix = 'rd'; break;
+          default: suffix = 'th'; break;
         }
       }
-      // 返回格式化后的日期
       return `${month} ${day}${suffix}, ${year}`;
     }
 
 
-    async function initDeleveryDate(line_item_delivery) { // 查一组交期数据
+    async function initDeleveryDate(line_item_delivery) {
       if(line_item_delivery.length == 0) return
-      $('.js-line-item-table .line-item .loading-container').show(); // loading 按钮隐藏
+      $('.js-line-item-table .line-item .loading-container').show(); 
       $('.js-line-item__property').hide();
       const deleveryDate = await getDeleveryDate(line_item_delivery);
       if(deleveryDate?.length) {
         deleveryDate.map(line_item => {
-          // item.availableInventoryCount 库存
+          // item.availableInventoryCount 
           let $deliveryTime
           const $lineItem = $(`.line-item[data-sku='${line_item.sku}']`);
           let stockDateStart;
@@ -671,11 +661,11 @@
             $deliveryTime = $(`
               <span>Expected to arrive between ${formatDate(stockDateStart)} and ${formatDate(stockDateEnd)}.</span>
             `);
-          } else if(line_item.availableInventoryCount >= line_item.demandQuantity) { // 现货大于0，并且现货>=需求
+          } else if(line_item.availableInventoryCount >= line_item.demandQuantity) { // Available stock is greater than 0 and available stock >= demand
             $deliveryTime = $(`
               <span>Expected to arrive on ${formatDate(line_item.availableInventoryDeliveryTimeStamp)}.</span>
             `);
-          } else { // 现货大于0，并且需求大于现货
+          } else { // Stock is greater than 0, and demand exceeds available stock
             $deliveryTime = $(`
               <span>Partial expected to arrive on ${formatDate(line_item.availableInventoryDeliveryTimeStamp)}.</span>
               <span>The remaining balance is expected to arrive between ${formatDate(stockDateStart)} and ${formatDate(stockDateEnd)}.</span>
@@ -686,7 +676,7 @@
         })
       }
     }
-    initDeleveryDate(line_item_delivery); // 初始化交期
+    initDeleveryDate(line_item_delivery);
   })();
 
   (() => {
@@ -747,7 +737,7 @@
       }
     }
 
-    async function getShippingCost() {  // 算运费
+    async function getShippingCost() { 
       const skus = [];
       {% for line_item in cart.items %}
         skus.push({
@@ -766,14 +756,14 @@
           zipCode: "{{ customer.default_address.zip }}"
         };
       {% else %}
-        const deliveryAddress = {  // 收货地址, 固定
+        const deliveryAddress = { 
           city: "Washington",
           province: "District of Columbia",
           street: "1600 Pennsylvania Avenue NW",
           zipCode: "20500"
         };
       {% endif %}
-      const sendAddress = { // 发货地址, 固定
+      const sendAddress = {
         city: "Houston",
         province: "Texas",
         street: "2425 Broad St",
@@ -799,13 +789,11 @@
         return 0
       }
     }
-
-    // 初始化算钱
     async function getProvincesDataAndCompute() {
       const today = new Date();
-      const year = today.getFullYear(); // 获取年份
-      const month = today.getMonth() + 1; // 获取月份（从0开始，所以要+1）
-      const date = today.getDate(); // 获取日期
+      const year = today.getFullYear(); 
+      const month = today.getMonth() + 1; 
+      const date = today.getDate();
       const lines = [];
       $('[line-item-data]').each((idx, item) => {
         lines.push({
@@ -826,7 +814,7 @@
           postalCode: "{{ customer.default_address.zip }}",
         };
       {% else %}
-        const singleLocation = {  // 收货地址, 固定
+        const singleLocation = { 
           line1: "1600 Pennsylvania Avenue NW",
           city: "Washington",
           region: "{{ province_code }}",
@@ -855,13 +843,13 @@
         })
         const res = await response.json();
         if(res.code === 200) {
-          const shipping_money = await getShippingCost(); // 计算运费
+          const shipping_money = await getShippingCost(); 
           $('.js-computed-shipping-money').text(`$${shipping_money}`);
-          const computed_subtotal = $('.js-computed-subtotal').data('price'); // 获取计算总额
-          const tax_money = Math.ceil(res.data.totalTax); // 计算税费
+          const computed_subtotal = $('.js-computed-subtotal').data('price'); 
+          const tax_money = Math.ceil(res.data.totalTax); 
           const total = +computed_subtotal + shipping_money * 100 + tax_money;
           $('.js-cart-total-container .js-tax').text(`${formatMoney(tax_money)}`);
-          $('.js-cart-total-container1 .js-computed-total').text(`${formatMoney(total)}`); // 计算总额（总计）
+          $('.js-cart-total-container1 .js-computed-total').text(`${formatMoney(total)}`);
         }
       } catch (error) {
         console.error("Failed to fetch provinces data:", error);
@@ -872,7 +860,7 @@
 
   (() => {
     $('.cart-checkout-button').attr('data-disabled', '0');
-    $('.cart-checkout-button').click(function(event) {  // checkout按钮
+    $('.cart-checkout-button').click(function(event) {
       event.preventDefault();
       const disabled = $('.cart-checkout-button').attr('data-disabled');
       if(disabled == 1) {
@@ -881,7 +869,7 @@
       }
       getDiscount();
     })
-    function getDiscount () {  // 获取折扣然后跳转
+    function getDiscount () { 
       const amount_original = parseFloat('{{ original_total_price }}');
       const amount_current = parseFloat('{{ computed_subtotal }}');
       const amount_difference = (amount_original - amount_current) / 100;

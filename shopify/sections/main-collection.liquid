@@ -1,0 +1,940 @@
+{%- assign collection_sort_by = collection.sort_by | default: collection.default_sort_by -%}
+{%- assign active_filters_count = 0 -%}
+
+{%- for filter in collection.filters -%}
+  {%- if filter.type == 'list' -%}
+    {%- assign active_filters_count = active_filters_count | plus: filter.active_values.size -%}
+  {%- elsif filter.type == 'price_range' and filter.min_value.value or filter.max_value.value -%}
+    {%- assign active_filters_count = active_filters_count | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
+{{ 'main-collection-list.css' | asset_url | stylesheet_tag }}
+{{ 'main-collection-spu.css' | asset_url | stylesheet_tag }}
+{{ 'aside-filter-reset.css' | asset_url | stylesheet_tag }}
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+<section>
+  <div class="{{ section.id }} container {% if collection.handle != 'all' %}top-header{% endif %}">
+    {% if collection.handle != 'all' %}    
+      <div class="collection-title-wrapper">
+        <h1 class="collection-title">{{ collection.title | split: "~" | last }}</h1>
+      </div>
+    {% endif %}
+
+    <button
+      is="toggle-button"
+      class="collecition-menu hidden-tablet-and-up"
+      aria-expanded="false"
+      aria-controls="facet-filters"
+    >
+      {% render 'icon' with 'v3-account-filter' %}
+      <span>All Filters</span>
+    </button>
+    {% if collection.description != blank and collection.handle != 'all' %}
+      <div class="collection-desc">{{ collection.description }}</div>
+    {% endif %}
+  </div>
+  <product-facet-spu section-id="{{ section.id }}" class="product-facet container product-facet-spu">
+    {%- if section.settings.show_filters and collection.filters != empty -%}
+      {%- if section.settings.filter_position == 'always_visible' -%}
+        <div class="product-facet__aside">
+          <safe-sticky offset="30" class="product-facet__aside-inner">
+            <div class="product-facet__filters-header hidden-phone">
+              <p class="heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}">
+                Filter
+              </p>
+            </div>
+            {%- render 'facet-filters',
+              filters: collection.filters,
+              filters_position: section.settings.filter_position
+            -%}
+          </safe-sticky>
+        </div>
+      {%- else -%}
+        {%- render 'facet-filters',
+          filters: collection.filters,
+          filters_position: section.settings.filter_position
+        -%}
+      {%- endif -%}
+    {%- endif -%}
+    <div id="facet-main" class="product-facet__main anchor" role="region" aria-live="polite">
+      {%- if collection.products_count > 0 -%}
+        {% if collection.handle != 'all' %}
+          <div class="categories">
+            <div class="product-categories-list">
+            </div>
+          </div>
+        {% endif %}
+        <div class="loading-wrapper">
+          <span class="loading-container">
+            {% render 'icon' with 'loading' %}
+          </span>
+        </div>
+        <div class="fixed-toolbar hidden-phone">
+          <button
+            is="toggle-button"
+            class="mobile-toolbar__item mobile-toolbar__item--filters {% if active_filters_count > 0 %}has-filters{% endif %}"
+            aria-expanded="false"
+            aria-controls="facet-filters"
+          >
+            {%- render 'icon' with 'filters' -%}
+          </button>
+        </div>
+        {%- if active_filters_count > 0 -%}
+          <div class="product-facet__active-list tag-list">
+            {%- render 'facet-active-filters', filters: collection.filters -%}
+          </div>
+        {%- endif -%}
+        <div class="product-facet__product-list-wrapper">
+          {% if collection.handle == 'inquiry-all' %}
+            <product-list
+              {% if settings.stagger_products_apparition %}
+                stagger-apparition
+              {% endif %}
+              class="product-facet__product-list product-list anchor"
+            >
+              <div class="product-list__inner list-inner">
+                {%- for product in collections.all.products -%}
+                  {% if product.metafields.product.quantity_discount != blank %}
+                    {% assign last_item_index = product.metafields.product.quantity_discount.value.size
+                      | minus: 1
+                      | plus: 1
+                    %}
+                    {% for item in product.metafields.product.quantity_discount.value %}
+                      {% if forloop.index == last_item_index %}
+                        {% if item.discount == '0.63' %}
+                          <div class="product-item-wrapper">
+                            {%- render 'index-product-item', product: product -%}
+                          </div>
+                        {% endif %}
+                      {% endif %}
+                    {%- endfor -%}
+                  {% endif %}
+                {%- endfor -%}
+              </div>
+            </product-list>
+          {% else %}
+            <product-list
+              {% if settings.stagger_products_apparition %}
+                stagger-apparition
+              {% endif %}
+              class="product-facet__product-list product-list anchor"
+            >
+              <div class="spu-swiper-wrapper hidden-phone">
+              </div> 
+              <div class="product-list__inner list-inner">
+                {% paginate collection.products by 1000 %}
+                  {%- for product in collection.products -%}
+                    {% assign price = product.price | money_without_currency | replace: ',', '' | times: 1 %}
+                    {% assign compare_at_price = product.compare_at_price
+                      | money_without_currency
+                      | replace: ',', ''
+                      | times: 1
+                    %}
+                    {% assign discount_difference = compare_at_price | minus: price %}
+                    {% assign discount_percentage = discount_difference
+                      | divided_by: compare_at_price
+                      | times: 100
+                      | ceil
+                    %}
+                    <div class="product-sku-line-data visually-hidden"
+                      data-href="{{ product.url }}"
+                      data-model="{{ product.metafields.product.manufacturer_model_number }}"
+                      data-package="{{ product.metafields.product.sale_package }}"
+                      data-inventory-type="{% unless product.selected_or_first_available_variant.available or product.selected_or_first_available_variant.inventory_policy == 'continue' %}deny{% endunless %}"
+                      data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                      data-price="{{ product.price | money }}"
+                      {% if product.compare_at_price > product.price %}
+                        data-compare-at-price="{{ product.compare_at_price | money }}"
+                        data-savings="{{ discount_percentage }}%"
+                      {% endif %}
+                      data-common='{{ product.metafields.product.common }}'
+                      data-sales='{{ product.metafields.product.sales }}'
+                      data-max="{% if product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
+                      data-sku="{{ product.selected_or_first_available_variant.sku }}"
+                      data-moq="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+                    >
+                      {% render 'product-sku-item', product: product %}
+                    </div>
+                  {%- endfor -%}
+                {% endpaginate %}
+              </div>
+            </product-list>
+          {% endif %}
+        </div>
+      {%- else -%}
+        <div class="empty-state">
+          {%- if collection.all_products_count == 0 -%}
+            <h3 class="heading h4">{{ 'collection.general.empty_title' | t }}</h3>
+            <p>{{ 'collection.general.empty_label' | t }}</p>
+
+            <div class="button-wrapper">
+              <a href="{{ routes.all_products_collection_url }}" class="button button--primary">
+                {{- 'collection.general.empty_button' | t -}}
+              </a>
+            </div>
+          {%- else -%}
+            <h3 class="heading h4">{{ 'collection.general.no_results_title' | t }}</h3>
+            <p>{{ 'collection.general.no_results_label' | t }}</p>
+
+            <div class="button-wrapper">
+              <a
+                href="{{ collection.url }}?sort_by={{ collection_sort_by }}"
+                data-action="clear-filters"
+                class="button button--primary"
+              >
+                {{- 'collection.general.no_results_button' | t -}}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </product-facet-spu>
+</section>
+
+<script>
+    const setWish = async () => {
+      const skus = [];
+      $('.product-mobile-sku-line .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        skus.push(sku);
+      })
+      const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
+        method: 'POST',
+        body: JSON.stringify({
+          customerId: '{{ customer.id}}',
+          skus
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      const res = await response.json();
+      $('.product-mobile-sku-line .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        if(res.data.includes(sku)) {
+          $(this).find('.favorite-button').addClass('favorited')
+        }
+      })
+    }
+    async function getSpuList() {
+      try {
+        {% if collection.handle == 'all' %}
+          const fetchUrl = `${window.zkh.api}/openapi/adlink/product/collection/spu`;
+        {% else %}
+          const fetchUrl = `${window.zkh.api}/openapi/adlink/product/collection/spu?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}`;
+        {% endif %}
+        const response = await fetch(fetchUrl, {
+          method: 'GET',
+        });
+        const res = await response.json();
+        if(res.code == 200) {
+          return res.data;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    function setWrapperLoading(isLoading) {
+      if (isLoading) {
+        $('.product-facet .product-list').hide();
+        $('.product-facet__main > .loading-wrapper .loading-container').show();
+      } else {
+        $('.product-facet__main > .loading-wrapper .loading-container').hide();
+        $('.product-facet .product-list').show();
+      }
+    }
+    function initSpuWrapper(spuItem) {
+      try {
+        const escapedTitle = escapeHtml(spuItem.spuTitle);
+        const escapedDesc = escapeHtml(spuItem.spuDesc);
+        return $(`
+          <div class="product-spu-wrapper" data-title="${escapedTitle}">
+            <div class="product-spu-header">
+              <h4 title="${escapedTitle}" class="hidden-tablet-and-up product-spu-title">
+                ${escapedTitle}
+                <span class="hidden-tablet-and-up">(${spuItem.skus.length} products)</span>
+              </h4>
+              <div class="product-spu-meta">
+                <div class="product-spu-img">
+                  <img src="${spuItem.spuImg}"/>
+                </div>
+                <div class="product-spu-data">
+                  <h2 title="${escapedTitle}" class="hidden-phone product-spu-title">${escapedTitle}</h2>
+                  <span class="hidden-phone">${spuItem.skus.length} ${spuItem.skus.length > 1 ? 'products': 'product'}</span>
+                  <div title="${escapedDesc}" class="hidden-phone product-spu-desc ellipsis3">${escapedDesc}</div>
+                  <div class="hidden-tablet-and-up product-spu-desc">${escapedDesc}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `);
+      } catch (error) {
+        console.log(error);
+      }
+      function escapeHtml(str) {
+        if (typeof str !== 'string') return str;
+        return str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+    }
+    function handleFakeObj(fakeObj) {
+      const map = new Map();
+      Object.keys(fakeObj).forEach((key) => {
+        map.set(key, fakeObj[key]);
+      });
+      return map;
+    }
+    function initSkuWrapper(spuItem, spuKey) {
+     
+      try {
+       
+        const commonHeaderTitle = `<div class="common-data-wrapper">
+          <span class="sku-price">Price</span>
+          <span class="sku-quantity">Quantity</span>
+          <span class="sku-operate"></span>
+        </div>`;
+        const spuKeyWrapper = $(`<div></div>`);
+        spuKey.forEach((key) => {
+          const keyItem = $(`<span class="spu-key">${key}</span>`);
+          keyItem.appendTo(spuKeyWrapper);
+        });
+        let skuWrapper;
+        let skuListPcWrapper;
+        skuWrapper = $(`
+          <div class="product-sku-wrapper">
+            <div class="product-sku-wrapper-inner">
+              <div class="product-sku-header hidden-phone">
+                ${spuKeyWrapper.html()}${commonHeaderTitle}
+              </div>
+            </div>
+          </div>
+        `);
+        skuListPcWrapper = $(`<div class="sku-pc-wrapper hidden-phone"></div>`);
+        const skuListMobileWrapper = $(`<div class="sku-m-swiper hidden-tablet-and-up"></div>`);
+       
+        spuItem.skus.forEach(function (sku) {
+         
+          const $dataElem = $('.product-sku-line-data').filter(function () {
+            return $(this).data('sku') === sku;
+          });
+
+         
+          if (!$dataElem.length) return;
+
+         
+          const salesFakeJson = $dataElem.data('sales');
+          const commonFakeJson = $dataElem.data('common');
+          const salesMap = handleFakeObj(salesFakeJson);
+          const commonMap = handleFakeObj(commonFakeJson);
+          const mergedMap = new Map([...salesMap, ...commonMap]);
+
+         
+          const price = $dataElem.data('price');
+          const compareAtPrice = $dataElem.data('compare-at-price');
+          const savings = $dataElem.data('savings');
+          const priceItem = `
+            <div class="price-item">
+              <span class="sku-price">${price !== undefined ? price : ''}</span>
+              ${compareAtPrice ? `<span class="sku-compare-at-price">${compareAtPrice}</span>` : ''}
+              ${savings ? `<span class="sku-savings">${savings}OFF</span>` : ''}
+            </div>
+          `;
+
+         
+          const stockMax = $dataElem.data('max');
+          const moq = $dataElem.data('moq');
+          const exceedsWarning = stockMax ? '<div class="max-quantity-warning">exceeds maximum stock</div>' : '';
+          const quantityItem = `
+            <div class="quantity-item" data-max="${stockMax}">
+              <div class="quantity-wrapper">
+                <button class="quantity-btn quantity-btn-minus">-</button>
+                <input type="text" data-min="${moq}" max="1000000" value="${moq}">
+                <button class="quantity-btn quantity-btn-plus">+</button>
+              </div>
+              ${exceedsWarning}
+            </div>
+          `;
+
+         
+          const href = $dataElem.data('href');
+          const variantId = $dataElem.data('variant-id');
+          const inventoryType = $dataElem.data('inventory-type');
+          const operateItem = `
+            <div class="operate-item">
+              <a class="visually-hidden" href="${href}">
+                {% render 'icon' with 'sku-detail' %}
+              </a>
+              ${
+                inventoryType !== 'deny'
+                  ? `<button class="add-to-cart" data-variant-id="${variantId}">
+                      <span class="cart-container">
+                        {% render 'icon' with 'sku-cart' %}
+                      </span>
+                      <div class="loading-wrapper">
+                        <span class="loading-container">
+                          {% render 'icon' with 'loading' %}
+                        </span>
+                      </div>
+                    </button>`
+                  : `<button class="add-to-cart sold-out" data-variant-id="${variantId}">
+                      <span class="cart-container">
+                        {% render 'icon' with 'sku-cart' %}
+                      </span>
+                    </button>`
+              }
+            </div>
+          `;
+
+         
+          const normalHeaderData = `<div class="common-data-wrapper">${priceItem}${quantityItem}${operateItem}</div>`;
+
+         
+          const $spuValueWrapper = $('<div></div>');
+          spuKey.forEach(function (key) {
+           
+            let value = mergedMap.get(key) ? mergedMap.get(key) : '-';
+           
+            if (key === 'Model') {
+              value = $dataElem.data('model');
+            } else if (key === 'Sales Unit Package') {
+              value = $dataElem.data('package');
+            }
+            $('<span class="spu-value"></span>').text(value).appendTo($spuValueWrapper);
+          });
+
+         
+          const skuLine = $(`
+            <div class="product-sku-line" data-href="${href}" data-sku="${sku}">
+              ${$spuValueWrapper.html()}
+              ${normalHeaderData}
+            </div>
+          `);
+
+         
+          const $mobileSkuLine = $dataElem.find('.product-mobile-sku-line');
+
+         
+          skuLine.appendTo(skuListPcWrapper);
+          $mobileSkuLine.appendTo(skuListMobileWrapper);
+
+         
+          $dataElem.remove();
+        });
+
+        skuListPcWrapper.appendTo(skuWrapper.find('.product-sku-wrapper-inner'));
+        skuListMobileWrapper.appendTo(skuWrapper.find('.product-sku-wrapper-inner'));
+        return skuWrapper;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    function initPagination(spuWrapper, skuWrapper, idx) {
+      if (skuWrapper.find('.product-sku-line').length > 0) {
+       
+        const paginateWrapper = $(`
+          <div class="sku-paginate-wrapper-${idx} hidden-phone" v-if="isShowPagenation">
+            <el-pagination
+              @current-change="handleCurrentChange"
+              layout="prev, pager, next"
+              :page-size="pageSize"
+              :total="pageTotal">
+            </el-pagination>
+          </div>
+        `);
+       
+        skuWrapper.appendTo(spuWrapper);
+        paginateWrapper.appendTo(spuWrapper);
+       
+        spuWrapper.appendTo($('.product-list__inner'));
+        new Vue({
+         
+          el: `.sku-paginate-wrapper-${idx}`,
+          delimiters: ['${', '}'],
+          data() {
+            return {
+              isShowPagenation: true,
+              pageSize: 6,
+              pageTotal: spuWrapper.find('.product-sku-line').length,
+              productItemWrappers: [],
+            };
+          },
+          created() {
+            const _this = this;
+            spuWrapper.find('.product-sku-line').each(function () {
+              _this.productItemWrappers.push($(this).detach());
+              $(this).remove();
+            });
+            const curSkuArr = this.productItemWrappers.slice(0, this.pageSize);
+            skuWrapper.find('.sku-pc-wrapper').append(...curSkuArr);
+            if (this.productItemWrappers.length <= this.pageSize) {
+             
+              this.isShowPagenation = false;
+            }
+            initSkuLineEvent(curSkuArr);
+          },
+          methods: {
+            handleCurrentChange(currentPage) {
+              spuWrapper.find('.product-sku-line').remove();
+              const curSkuArr = this.productItemWrappers.slice(
+                (currentPage - 1) * this.pageSize,
+                currentPage * this.pageSize
+              );
+              skuWrapper.find('.sku-pc-wrapper').append(...curSkuArr);
+              initSkuLineEvent(curSkuArr);
+            },
+          },
+        });
+      }
+    }
+    function initSwiperEvent() {
+     
+      $('.spu-swiper-wrapper .swiper-slide').click(function () {
+        const idx = $(this).index();
+        var targetElement = $('.product-list__inner .product-spu-wrapper').eq(idx);
+        var headerHeight = $('.header.header--bordered').outerHeight();
+        $('html, body').animate(
+          {
+            scrollTop: targetElement.offset().top - headerHeight - 20,
+          },
+          800
+        );
+      });
+    }
+    function initSpuSwiper() {
+      if($('.spu-swiper-wrapper').children().length) {
+        $('.spu-swiper-wrapper').html('');
+      }
+      const swiperSlides = [];
+      $('.product-spu-wrapper').each(function () {
+        const title = $(this).data('title');
+        swiperSlides.push(
+          $(`<div class="swiper-slide">
+            <div class="spu-img">
+              <img src="${$(this).find('.product-spu-img img').attr('src')}"/>
+            </div>
+            <div class="spu-data">
+              <h4 class="ellipsis3" title="${title}" class="product-spu-title">${title}</h4>
+            </div>
+          </div>`)
+        );
+      });
+      const swiperWrapper = $('<div class="swiper-wrapper"></div>');
+      const swiperOuterWrapper = $('<div class="IndexBestswiper"></div>');
+      swiperSlides.forEach(function (slide) {
+        swiperWrapper.append(slide);
+      });
+      const spuSwiper = $('<div class="swiper"></div>');
+      const prevButtons = $(`
+        <div class="swiper-button-prev hidden-pocket">
+          {% render 'icon' with 'swiper-arrow-prev' %}
+        </div>
+      `);
+      const nextButtons = $(`
+        <div class="swiper-button-next hidden-pocket">
+          {% render 'icon' with 'swiper-arrow-next' %}
+        </div>
+      `);
+      swiperWrapper.appendTo(spuSwiper);
+      spuSwiper.appendTo(swiperOuterWrapper);
+      prevButtons.prependTo(swiperOuterWrapper);
+      nextButtons.appendTo(swiperOuterWrapper);
+      swiperOuterWrapper.appendTo($('.spu-swiper-wrapper'));
+      new Swiper('.spu-swiper-wrapper .swiper', {
+        observer: true,
+        observeParents: true,
+        breakpoints: {
+          0: {
+            spaceBetween: 12,
+            slidesPerView: 2.1,
+          },
+          740: {
+            spaceBetween: 16,
+            slidesPerView: 4,
+          },
+          1400: {
+            spaceBetween: 24,
+            slidesPerView: 5,
+          },
+        },
+        navigation: {
+          nextEl: '.spu-swiper-wrapper .swiper-button-next',
+          prevEl: '.spu-swiper-wrapper .swiper-button-prev',
+        },
+      });
+      $('.spu-swiper-wrapper').show();
+      initSwiperEvent();
+    }
+    async function setLineAttr(cartItems) {
+      const response = await fetch('/cart.js');
+      const res = await response.json();
+      if(res.items.length == 0) return;
+      cartItems.map(cartItem => {
+        const line_item = res.items.find(item => item.id == cartItem.id);
+        if(line_item) cartItem.properties = line_item.properties
+      })
+    }
+    async function addToCart(sku_line, variant_id, quantity) {
+     
+      $('.product-list__inner .add-to-cart').prop('disabled', true);
+      sku_line.find('.cart-container').hide();
+      sku_line.find('.loading-wrapper').css('display', 'flex');
+      sku_line.find('.loading-container').show();
+      const formData = {
+        items: [
+          {
+            id: variant_id,
+            quantity,
+          },
+        ],
+      };
+      await setLineAttr(formData.items);
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const responseJson = await response.json();
+      let errorMsg;
+      if (response.ok) {
+        document.documentElement.dispatchEvent(
+          new CustomEvent('variant:added', {
+            bubbles: true,
+            detail: {
+              variant: responseJson.hasOwnProperty('items') ? responseJson['items'][0] : responseJson,
+            },
+          })
+        );
+        fetch(`${window.themeVariables.routes.cartUrl}.js`).then(async (response2) => {
+          const cartContent = await response2.json();
+          document.documentElement.dispatchEvent(
+            new CustomEvent('cart:updated', {
+              bubbles: true,
+              detail: {
+                cart: cartContent,
+              },
+            })
+          );
+          cartContent['sections'] = responseJson['sections'];
+          document.documentElement.dispatchEvent(
+            new CustomEvent('cart:refresh', {
+              bubbles: true,
+              detail: {
+                cart: cartContent,
+                openMiniCart: true,
+              },
+            })
+          );
+        });
+      } else {
+        if (responseJson['description'].endsWith('are in your cart.')) {
+          errorMsg = 'Your cart already contains all available stock Unable to add more';
+        } else if (responseJson['description'].endsWith('to the cart.')) {
+          errorMsg =
+            'The available stock has been added to your cart，the excess quantity beyond available stock cannot be added';
+        }
+      }
+      document.documentElement.dispatchEvent(
+        new CustomEvent('cart-notification:show', {
+          bubbles: true,
+          cancelable: true,
+          detail: {
+            status: response.ok ? 'success' : 'error',
+            error: errorMsg || responseJson['description'] || '',
+          },
+        })
+      );
+      $('.product-list__inner .add-to-cart').prop('disabled', false);
+      sku_line.find('.cart-container').show();
+      sku_line.find('.loading-wrapper, .loading-container').hide();
+    }
+    function initSkuLineEvent(curSkuArr) {
+      $(curSkuArr).each(function () {
+        const $thisSku = $(this);
+        $thisSku.hover(
+          function() {
+            $thisSku.find('.spu-value, .price-item').addClass('hover-bac');
+          },
+          function() {
+            $thisSku.find('.spu-value, .price-item').removeClass('hover-bac');
+          }
+        );
+
+        $thisSku.click(function (event) {
+          if ($(event.target).hasClass('spu-value')) {
+            const href = $(this).find('.operate-item a').attr('href');
+            window.location.href = href;
+          }
+        });
+        $thisSku.find('.quantity-wrapper .quantity-btn-minus').click(function () {
+          const $input = $(this).next('input');
+          let val = parseInt($input.val()) - 1;
+          const minVal = $input.data('min') ? +$input.data('min') : 1;
+          if (val < minVal) {
+            val = minVal;
+          }
+          $input.val(val);
+        });
+
+        $thisSku.find('.quantity-wrapper .quantity-btn-plus').click(function () {
+          const $input = $(this).prev('input');
+          let val = parseInt($input.val()) + 1;
+          const stockMax = $input.closest('.quantity-item').data('max');
+          if (stockMax && val > stockMax) {
+            $input.val(stockMax);
+            $input.closest('.product-sku-line').find('.max-quantity-warning').show();
+            setTimeout(() => {
+              $input.closest('.product-sku-line').find('.max-quantity-warning').hide();
+            }, 3000);
+            return;
+          }
+          $input.val(val);
+        });
+        $thisSku.find('.quantity-wrapper input').on('input', function () {
+          const $input = $(this);
+          let val = parseInt($input.val());
+          const stockMax = $input.closest('.quantity-item').data('max');
+          if (stockMax && val > stockMax) {
+            $input.val(stockMax);
+            $input.closest('.product-sku-line').find('.max-quantity-warning').show();
+            setTimeout(() => {
+              $input.closest('.product-sku-line').find('.max-quantity-warning').hide();
+            }, 3000);
+          }
+        });
+        $thisSku.find('.quantity-wrapper input').on('blur', function () {
+          const $input = $(this);
+          const minVal = $input.data('min') ? +$input.data('min') : 1;
+          const maxVal = $input.attr('max') ? +$input.attr('max') : Infinity;
+          let val = parseInt($input.val());
+          if (!val || val < minVal) {
+            val = minVal;
+          }
+          if (val > maxVal) {
+            val = maxVal;
+          }
+          $input.val(val);
+        });
+        $thisSku.find('.operate-item .add-to-cart').click(function () {
+         
+          if ($(this).hasClass('sold-out')) return;
+          const $skuLine = $(this).closest('.product-sku-line');
+          const variantId = $(this).data('variant-id');
+          const quantity = +$skuLine.find('.quantity-wrapper input').val();
+          addToCart($skuLine, variantId, quantity);
+        });
+      });
+
+    }
+    function initSpuSkuWrapper(spuData) {
+      spuData.forEach((spuItem, idx) => {
+       
+        const spuWrapper = initSpuWrapper(spuItem);
+        const skuWrapper = initSkuWrapper(spuItem, spuItem.spuKey);
+        initPagination(spuWrapper, skuWrapper, idx);
+        const $spuMeta = spuWrapper.find('.product-spu-meta');
+        $spuMeta.click(function() {
+          window.location.href = skuWrapper.find('.product-sku-line').eq(0).data('href');
+        })
+        const $MspuHeader = spuWrapper.find('.product-spu-title');
+        $MspuHeader.click(function() {
+          window.location.href = skuWrapper.find('.product-sku-line').eq(0).data('href');
+        })
+      });
+    }
+    async function showCollectionList() {
+      setWrapperLoading(true);
+      await initCategoriesList();
+      if({{ collection.products_count }} > 1000) await getAllSkuList();
+      const spuData = await getSpuList();
+      initSpuSkuWrapper(spuData);
+      initSpuSwiper();
+      if('{{ customer.id }}') {
+        setWish();
+      }
+      setWrapperLoading(false);
+    }
+    async function initCategoriesList() {
+      const baseURL = `${window.zkh.api}/openapi/adlink/product/collection/collection?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}&order=1`;
+      try {
+        const response = await fetch(baseURL, {
+          method: 'GET',
+        });
+        const res = await response.json();
+        if (res.code === 200) {
+          try {
+            if(res.data.length) {
+              const categories = res.data.map(collection => {
+                const cur_handle = '{{ collection.handle }}'
+                const next_handle = collection.name
+                  .toLowerCase()                 
+                  .replace(/[^a-z0-9\s-]/g, '')   
+                  .trim()                         
+                  .replace(/\s+/g, '-')           
+                  .replace(/-+/g, '-');
+
+               
+                const $categoriesItem = $(`
+                  <a href="/collections/${cur_handle}-${next_handle}" class="product-categories-item">
+                    <img loading="lazy" src="${collection?.img || ''}" alt="${collection.name}" width="auto" height="auto">
+                    <span>${collection.name}</span>
+                  </a>
+                `);
+                return $categoriesItem;
+              });
+              $('.categories').show();
+              $('.product-categories-list').append(categories);
+            } else {
+              if(window.innerWidth >= 741 && window.innerWidth < 1200) {
+                $('.product-facet-spu .fixed-toolbar').css('display', 'flex');
+              }
+              if(window.innerWidth <= 740) {
+                $('.product-list__inner').css('display', 'flex');
+                $('.collecition-menu').css('display', 'flex');
+
+              }
+              $('.product-facet__product-list-wrapper').addClass('margin0-padding0');
+              $('.categories').hide();
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      } catch (error) {
+        console.error("Fetch failed:", error);
+      }
+    }
+    async function getAllSkuList() {
+      const url = new URL(window.location);
+      url.searchParams.set('section_id', '{{ section.id }}');
+      url.searchParams.set('page', 2);
+      const response = await fetch(url.toString());
+      const responseAsText = await response.text();
+      const productSkuLineDatas = $(responseAsText).find('.product-sku-line-data');
+      if (productSkuLineDatas.length > 0) {
+        $.each(productSkuLineDatas, function (index, skuLineData) {
+          $('.product-facet-spu .product-list__inner.list-inner').append(skuLineData);
+        });
+      }
+    }
+    document.addEventListener('facet-rerender', function () {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      showCollectionList();
+    });
+</script>
+
+{% schema %}
+{
+  "name": "Collection page",
+  "class": "shopify-section--main-collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "collection_title",
+      "label": "collection title"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort_by",
+      "label": "Show sort by",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Filters"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show filters",
+      "info": "[Customize filters](/admin/menus)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filter_group_name",
+      "label": "Show group name",
+      "info": "Group name will be shown inside selected filters.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_color_swatch",
+      "label": "Show filter color swatch",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first_filter_group",
+      "label": "Open first group by default",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "filter_position",
+      "label": "Position",
+      "options": [
+        {
+          "value": "always_visible",
+          "label": "Always visible"
+        },
+        {
+          "value": "drawer",
+          "label": "Drawer"
+        }
+      ],
+      "default": "always_visible"
+    },
+    {
+      "type": "header",
+      "content": "Promotion blocks",
+      "info": "Add extra information to push other collections or products."
+    },
+    {
+      "type": "select",
+      "id": "promotion_position",
+      "label": "Position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "select",
+      "id": "promotion_height",
+      "label": "Block height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "small"
+    }
+  ]
+}
+{% endschema %}

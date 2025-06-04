@@ -30,11 +30,11 @@
 
   {%- if section.settings.title == blank and section.settings.subheading == blank and section.settings.content == blank -%}
     #shopify-section-{{ section.id }} {
-      --vertical-breather: 40px; /* Only on multi-column section, due to its specific usage we reduce spacing when no content */
+      --vertical-breather: 40px; 
     }
 
     {%- if blends_with_background or section.settings.mobile_item_size == 'small' -%}
-      /* Reduce the margin on small devices to create a slightly better layout */
+      
       @media screen and (max-width: 999px) {
         #shopify-section-{{ section.id }} {
           --vertical-breather: var(--container-gutter);

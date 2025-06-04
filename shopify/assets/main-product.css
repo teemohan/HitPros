@@ -61,7 +61,7 @@
 }
 
 
-/* product info */
+
 .product-meta {
   background-color: #fff;
 }
@@ -381,7 +381,7 @@
   border: 1px solid var(--my-blue);
 }
 
-/* product form */
+
 .product-ships strong {
   font-weight: 500;
 }

@@ -272,7 +272,6 @@
   }
 
 
-  /* 通用脉冲动画 */
   .pulse {
     animation: pulse 1.5s infinite;
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -381,11 +380,11 @@
       }
       const categories = data.slice(0, 12).map((collection, idx) => {
         const handle = collection.name
-          .toLowerCase()                  // 转小写
-          .replace(/[^a-z0-9\s-]/g, '')    // 去除特殊字符
-          .trim()                          // 去掉首尾空格
-          .replace(/\s+/g, '-')            // 替换空格为 "-"
-          .replace(/-+/g, '-');            // 合并多余的 "-"
+          .toLowerCase()                 
+          .replace(/[^a-z0-9\s-]/g, '')   
+          .trim()                         
+          .replace(/\s+/g, '-')         
+          .replace(/-+/g, '-');           
         
         const anchor = document.createElement('a');
         anchor.href = `/collections/${handle}`;
@@ -413,9 +412,8 @@
         return anchor;
       });
   
-      // 插入到目标列表中
       const categoriesList = document.querySelector('.product-categories-list');
-      categoriesList.innerHTML = ''; // 清空原有内容
+      categoriesList.innerHTML = ''; 
       categories.forEach(category => categoriesList.appendChild(category));
     }
     try {
@@ -426,7 +424,6 @@
       setData(detail.data);
     });
   }
-  // 调用函数
   getAllList();
   })();
 </script>

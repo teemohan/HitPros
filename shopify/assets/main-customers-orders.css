@@ -1,7 +1,7 @@
 .order-section {
   padding-bottom: 32px;
   font-size: 14px;
-  /* display: none; */
+  
 }
 .order-refund-detail-wrapper .actions {
   margin-top: 28px;
@@ -513,7 +513,7 @@ div.total-title {
   }
 
   .order-action>div {
-    /* flex: 50%; */
+    
   }
 
   .order-action a {

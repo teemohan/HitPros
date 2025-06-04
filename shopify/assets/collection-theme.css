@@ -10,7 +10,7 @@
     }
 }
 
-/*! minireset.css v0.0.6 | MIT License | github.com/jgthms/minireset.css */
+
 *,*:before,*:after {
     box-sizing: border-box !important;
     -webkit-font-smoothing: antialiased;
@@ -355,11 +355,7 @@ p a:not(.button),.rte a:not(.button),.link {
     padding: 0 2px
 }
 
-/**
- * --------------------------------------------------------------------
- * CART NOTIFICATION
- * --------------------------------------------------------------------
- */
+
 
 .cart-notification {
   --heading-color: 255, 255, 255;
@@ -489,7 +485,7 @@ p a:not(.button),.rte a:not(.button),.link {
 @media screen and (max-width: 999px) {
   .cart-notification {
     transform: none !important;
-    /* You cannot have any offset on pocket */
+    
   }
 }
 
@@ -2164,11 +2160,7 @@ p a:not(.button),.rte a:not(.button),.link {
         margin-right: auto
     }
 }
-/**
- * --------------------------------------------------------------------
- * SPINNER
- * --------------------------------------------------------------------
- */
+
 
 @keyframes spinnerRotate {
   100% {
@@ -2222,11 +2214,7 @@ p a:not(.button),.rte a:not(.button),.link {
   animation: spinnerDash 1.5s ease-in-out infinite, spinnerColor 6s ease-in-out infinite;
 }
 
-/**
- * -------------------------------------------------------------
- * EMPTY STATE
- * -------------------------------------------------------------
- */
+
 
 .collection-empty-state {
   position: relative;

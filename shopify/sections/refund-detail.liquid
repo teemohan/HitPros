@@ -555,7 +555,6 @@
               class="delivery-preview"
             >
               <template v-if="isImage(order)">
-                <!-- 渲染图片缩略图 -->
                 <img :src="order" alt="图片预览">
                 <div class="delivery-actions">
                   <a href="javascript:void(0);" @click="viewImage(order)">View</a>
@@ -563,7 +562,6 @@
                 </div>
               </template>
               <template v-else>
-                <!-- 根据文件类型显示不同的图标 -->
                 <div class="file-icon" v-html="getFileIcon(order)"></div>
                 <div class="delivery-actions">
                   <a :href="order" download target="_blank">Download</a>
@@ -572,7 +570,6 @@
             </div>
           </div>
         </div>
-        <!-- 全屏预览弹窗 -->
         <div v-if="showFullScreen" class="fullscreen-overlay" @click="closeFullScreen">
           <img :src="fullScreenImage" class="fullscreen-image" alt="Full Screen Image">
         </div>
@@ -614,16 +611,13 @@
           <div class="attachment-list">
             <div v-for="(fileUrl, index) in requestData.refundOrder?.refundFileUrl" :key="index">
               <div v-if="isImage(fileUrl)">
-                <!-- 显示图片缩略图，点击跳转查看大图 -->
                 <a :href="fileUrl" target="_blank">
                   <img :src="fileUrl" alt="图片预览" style="width: 100px; height: auto; cursor: pointer;">
                 </a>
               </div>
               <div v-else>
-                <!-- 显示非图片文件的图标，点击下载文件 -->
                 <a :href="fileUrl" download>
                   <div v-html="getFileIcon(fileUrl)" class="file-icon"></div>
-                  <!-- 替换为实际的图标样式 -->
                   <!-- <p>${ getFileName(fileUrl) }</p> -->
                 </a>
               </div>
@@ -645,7 +639,7 @@
           requestData: {},
           param: null,
           orderId: 0,
-          refundQty: 1, // 初始值设置为 1
+          refundQty: 1, 
           refundAmount: 0,
           orderItems: [],
           orderMain: {},
@@ -656,29 +650,29 @@
           refundFileUrl: [],
           attachmentPreviewUrls: [],
           currencySymbols: {
-            USD: '$', // 美元
-            EUR: '€', // 欧元
-            GBP: '£', // 英镑
-            JPY: '¥', // 日元
-            CNY: '¥', // 人民币
-            AUD: '$', // 澳大利亚元
-            CAD: '$', // 加拿大元
-            CHF: 'CHF', // 瑞士法郎
-            NZD: '$', // 新西兰元
-            INR: '₹', // 印度卢比
-            RUB: '₽', // 俄罗斯卢布
-            KRW: '₩', // 韩元
-            SGD: '$', // 新加坡元
-            HKD: '$', // 港元
-            SEK: 'kr', // 瑞典克朗
-            NOK: 'kr', // 挪威克朗
-            TRY: '₺', // 土耳其里拉
-            MXN: '$', // 墨西哥比索
-            BRL: 'R$', // 巴西雷亚尔
-            ZAR: 'R', // 南非兰特
+            USD: '$', 
+            EUR: '€',
+            GBP: '£',
+            JPY: '¥',
+            CNY: '¥', 
+            AUD: '$', 
+            CAD: '$', 
+            CHF: 'CHF', 
+            NZD: '$', 
+            INR: '₹', 
+            RUB: '₽', 
+            KRW: '₩', 
+            SGD: '$', 
+            HKD: '$', 
+            SEK: 'kr',
+            NOK: 'kr', 
+            TRY: '₺', 
+            MXN: '$', 
+            BRL: 'R$', 
+            ZAR: 'R', 
           },
-          showFullScreen: false, // 控制全屏弹窗显示
-          fullScreenImage: '', // 存储当前点击的图片 URL
+          showFullScreen: false, 
+          fullScreenImage: '', 
         };
       },
       async mounted() {
@@ -727,7 +721,6 @@
       },
       watch: {
         orderItems(newVal) {
-          // 当 orderItems 有值时，确保操作 DOM 元素
           if (newVal.length > 0) {
             this.$nextTick(() => {
               let orders = window.location.href.split('=').slice(2);
@@ -737,14 +730,14 @@
                 $('.order-line-item-wrapper').each(function () {
                   let variant = Number($(this).data('variant'));
                   if (!orders.includes(variant)) {
-                    $(this).attr('data-visible', 'false'); // 设置为隐藏
+                    $(this).attr('data-visible', 'false'); 
                     $(this).remove();
                   } else {
-                    $(this).attr('data-visible', 'true'); // 设置为显示
+                    $(this).attr('data-visible', 'true');
                   }
                 });
                 this.$nextTick(() => {
-                  this.calculateTotalRefundAmount(); // 页面加载完成后，计算总退款金额
+                  this.calculateTotalRefundAmount(); 
                 });
               }
             });
@@ -756,7 +749,6 @@
           let orders = window.location.href.split('=').slice(2);
           if (orders.length > 0) {
             orders = orders.map((item) => Number(item.split('&')[0]));
-            // 筛选出符合条件的 orderItems
             return this.orderItems.filter((item) => orders.includes(item.variant_id));
           }
           return [];
@@ -773,30 +765,24 @@
             const numericRefundAmount = parseFloat(
               item.refundAmount.replace(currencySymbol, '').replace(/[^0-9.]/g, '')
             );
-            // 累加到 totalRefundAmount
             if (!isNaN(numericRefundAmount)) {
               totalRefundAmount += numericRefundAmount;
             }
           });
-          // 更新总退款金额的绑定
           this.refundAmount = `${this.orderMain.currency} ${currencySymbol}${totalRefundAmount.toFixed(2)}`;
         },
 
         formatDate(dateString) {
           const localTime = new Date(dateString);
-          // 格式化月份（缩写并加点）
           const monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
           const month = monthNames[localTime.getMonth()];
-          // 格式化日期和年份
           const day = localTime.getDate();
           const year = localTime.getFullYear();
-          // 格式化小时（12 小时制）
           let hours = localTime.getHours();
           const period = hours >= 12 ? 'PM' : 'AM';
-          hours = hours % 12 || 12; // 转为 12 小时制
+          hours = hours % 12 || 12; 
           const minutes = String(localTime.getMinutes()).padStart(2, '0');
           const seconds = String(localTime.getSeconds()).padStart(2, '0');
-          // 返回格式化后的日期字符串
           return `${month} ${day}, ${year} at ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${period}`;
         },
         getCurrencySymbol(currencyType) {
@@ -854,7 +840,7 @@
             return `<svg t="1731901529367" class="icon" viewBox="0 0 1365 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1506" width="50" height="50"><path d="M256.006827 42.669796a42.666382 42.666382 0 1 1 85.332764 0v938.660408a42.666382 42.666382 0 1 1-85.332764 0zM554.671502 383.147526c0-23.039846 16.213225-33.279778 37.546417-23.039847l227.838481 114.345905c41.813055 21.333191 40.959727 55.466297 0 75.94616l-33.279778 17.066553-193.705376 96.426024c-21.333191 10.239932-38.399744 0-38.399744-23.039847z" fill="#333333" p-id="1507"></path><path d="M0.008533 384.000853A41.813055 41.813055 0 0 1 41.821588 341.334471h255.998293a42.666382 42.666382 0 0 1 43.51971 42.666382 41.813055 41.813055 0 0 1-41.813054 42.666383h-255.998294A42.666382 42.666382 0 0 1 0.008533 384.000853zM0.008533 639.999147A41.813055 41.813055 0 0 1 41.821588 597.332764h255.998293a42.666382 42.666382 0 0 1 43.51971 42.666383 41.813055 41.813055 0 0 1-41.813054 42.666382h-255.998294A42.666382 42.666382 0 0 1 0.008533 639.999147zM1024.001707 384.000853a41.813055 41.813055 0 0 1 41.813054-42.666382h255.998294a42.666382 42.666382 0 0 1 41.813054 42.666382 41.813055 41.813055 0 0 1-41.813054 42.666383h-255.998294a42.666382 42.666382 0 0 1-41.813054-42.666383zM1024.001707 639.999147a41.813055 41.813055 0 0 1 41.813054-42.666383h255.998294a42.666382 42.666382 0 0 1 41.813054 42.666383 41.813055 41.813055 0 0 1-41.813054 42.666382h-255.998294a42.666382 42.666382 0 0 1-41.813054-42.666382z" fill="#333333" p-id="1508"></path><path d="M1024.001707 42.669796a42.666382 42.666382 0 1 1 85.332764 0v938.660408a42.666382 42.666382 0 1 1-85.332764 0z" fill="#333333" p-id="1509"></path><path d="M1262.933447 0.003413H102.407851A101.54599 101.54599 0 0 0 0.008533 101.549403v820.047866A103.252645 103.252645 0 0 0 102.407851 1023.996587h1160.525596a101.54599 101.54599 0 0 0 102.399318-101.54599V101.549403A103.252645 103.252645 0 0 0 1262.933447 0.003413z m17.066553 870.394198a68.266212 68.266212 0 0 1-67.412884 68.266211H152.754182a68.266212 68.266212 0 0 1-67.412884-68.266211V153.602389a68.266212 68.266212 0 0 1 67.412884-68.266211h1059.832934a68.266212 68.266212 0 0 1 67.412884 68.266211z" fill="#333333" p-id="1510"></path></svg>`;
           } 
           else {
-            return 'icon-default'; // 其他文件的默认图标样式
+            return 'icon-default'; 
           }
         },
         getFileName(fileUrl) {
@@ -863,17 +849,12 @@
         },
         cancelRequest(orderId, status) {
           if (status === 1 || status === 2) {
-            //阻止父元素事件冒泡
             event.stopPropagation();
- 
-            // 如果用户输入了取消原因，调用接口取消订单
             this.cancelOrderRequest(orderId)
             .then(() => {
-              // 刷新页面
               window.location.reload();
             })
             .catch(() => {
-              // 失败时弹出失败提示框
               this.$message({
                 message: 'Cancel order request failed',
                 type: 'error',
@@ -884,7 +865,6 @@
             return false;
           }
         },
-        //更具ordername获取orderid
         async getOrderId(orderName) {
           try {
             const res = await fetch(`${window.zkh.api}/order?orderName=`+orderName, {

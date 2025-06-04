@@ -1,13 +1,20 @@
-<product-item
-  {% if add_datalayer %}
-  data-datalayer-item="true"
-  {% endif %}
+
+
+{% capture keep_data %}
   data-customer-id="{{- customer.id -}}"
   data-product-id="{{- product.id -}}"
   data-product-title='{{ product.title | escape | replace: "'", " " | replace: '"', " " }}'
   data-sku="{{- product.selected_or_first_available_variant.sku -}}"
   data-var-id="{{- product.selected_or_first_available_variant.id -}}"
   data-price="{{- product.selected_or_first_available_variant.price | money_without_currency -}}"
+  data-brand="{{ product.metafields.product.brand }}"
+  data-quantity="{{ product.metafields.product.moq | default: 1 }}"
+{% endcapture %}
+<product-item
+  {% if add_datalayer %}
+  data-datalayer-item="true"
+  {% endif %}
+  {{ keep_data  }}
   class="index-product-item {% if template.name == 'search' %}gird-type{% endif %} product-item {% unless product.available %}product-item--sold-out{% endunless %}"
   {% if reveal %}
     reveal
@@ -17,8 +24,9 @@
     <a
       href="{{ product.url }}"
       {% if template.name == 'search' or template.name == 'index' %}
-        datalayer-link data-sku="{{ product.selected_or_first_available_variant.sku }}"
+        datalayer-link
       {% endif %}
+      data-sku="{{ product.selected_or_first_available_variant.sku }}"
       class="product-item__aspect-ratio aspect-ratio {% if settings.product_image_size != 'natural' %}aspect-ratio--{{ settings.product_image_size }}{% endif %}"
       style="padding-bottom: {{ 100.0 | divided_by: product.featured_image.aspect_ratio }}%; --aspect-ratio: 1"
     >
@@ -32,12 +40,13 @@
       </div>
     {% endif %}
       <img
-        class="product-item__primary-image"
+        class="product-item__primary-image js-lazy-image"
         loading="lazy"
         data-media-id="{{ product.featured_image.id | escape }}"
-        width="auto"
-        height="auto"
-        src="{{ product.featured_image | image_url: width: 300 }}"
+        width="300"
+        height="300"
+        alt="{{ product.featured_image.alt }}"
+        data-src="{{ product.featured_image | image_url: width: 300 }}"
       >
       {% comment %}
         {%- if settings.product_color_display == 'swatch' -%}
@@ -54,10 +63,12 @@
       {%- if settings.show_secondary_image and product.media.size > 1 and hide_secondary_image != true -%}
         {%- assign next_media = product.media[product.featured_image.position] | default: product.media[1] -%}
         <img
-          class="product-item__secondary-image"
+          class="product-item__secondary-image js-lazy-image"
           loading="lazy"
-          sizes="{{ sizes_attribute }}"
-          {% render 'image-attributes', image: next_media, sizes: '200,300,400,500,600,700,800,900,1000,1100,1200' %}
+          width="300"
+          height="300"
+          alt="{{ product.featured_image.alt }}"
+          data-src="{{ next_media | image_url: width: 400 }}"
         >
       {%- endif -%}
     </a>
@@ -76,6 +87,7 @@
     {% if template.name == 'search' or template.name == 'index' %}
       datalayer-link data-sku="{{ product.selected_or_first_available_variant.sku }}"
     {% endif %}
+    data-scope-id="{{ section.id  }}"
     title="{{ product.title }}" class="product-item-meta__title ellipsis2">
       {{- product.title -}}
     </a>
@@ -111,8 +123,13 @@
       </div>
     </div>
 
-    {%- capture form_id -%}product_form_{{ section.id }}_{{ block.id }}_{{ product.id }}_{% increment product_form_index %}{%- endcapture -%}
-    {%- form 'product', product, is: 'product-form', id: form_id, class: 'product-item__quick-form' -%}
+    {%- capture form_id -%}product_form_{{ section.id }}_{{ block.id }}_{{ product.id }}_{% increment product_form_index %}{%- endcapture -%} 
+    {%- capture recommend_module -%}
+      {%- if template.name == 'index' -%}
+        {{- section.settings.title | prepend: 'homepage/' -}} 
+      {%- endif -%}
+    {%- endcapture -%}
+    {%- form 'product', product, is: 'product-form', id: form_id, class: 'product-item__quick-form', data-recommend-module: recommend_module -%}
       <input
         type="hidden"
         name="quantity"

@@ -4,20 +4,24 @@
   {% assign imgsArr = product.metafields.product.pdp.value %}
   {% if imgsArr.size > 0 %}
     {% for item in imgsArr %}
+      {%- assign is_hase_media = ''  -%}
+      {%- if item.imageData.imageOne.contentType contains 'image' or  item.imageData.imageOne.contentType contains 'video' -%}
+        {%- assign is_hase_media = 'min-h-media'  -%}
+      {%- endif -%}
       {% if item.templateType == 0 or item.templateType == 1 %}
-        <div class="feature-imgs-item type-01">
+        <div class="feature-imgs-item type-01 {{ is_hase_media }}">
           {% if item.imageData.imageOne.contentType contains 'image' %}
             <div class="img-wrapper">
-              <img src="{{ item.imageData.imageOne.objectUrl }}">
+              <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
             </div>
           {% elsif item.imageData.imageOne.contentType contains 'video' %}
             <div class="video-wrapper">
-              <video controls muted src="{{ item.imageData.imageOne.objectUrl }}"></video>
+              <video controls muted src="{{ item.imageData.imageOne.objectUrl }}" alt="{{ item.imageData.altTagOne }}"></video>
             </div>
           {% endif %}
         </div>
       {% elsif item.templateType == 2 or item.templateType == 3 %}
-        <div class="feature-imgs-item type-23 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %}">
+        <div class="feature-imgs-item type-23 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %} {{ is_hase_media }}">
           <div class="img-text-wrapper">
             <div class="text-container">
               <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
@@ -25,30 +29,30 @@
             </div>
           </div>
           <div class="img-wrapper">
-            <img src="{{ item.imageData.imageOne.objectUrl }}">
+            <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
           </div>
         </div>
       {% elsif item.templateType == 4 %}
-        <div class="feature-imgs-item type-45 bgColorType{{ item.bgColorType }}">
+        <div class="feature-imgs-item type-45 bgColorType{{ item.bgColorType }} {{ is_hase_media }}">
           <div class="img-text-wrapper">
             <div class="text-container">
               <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
               <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
             </div>
             <div class="img-wrapper hidden-phone">
-              <img src="{{ item.imageData.imageOne.objectUrl }}">
+              <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
             </div>
           </div>
           <div class="img-wrapper">
-            <img src="{{ item.imageData.imageTwo.objectUrl }}">
-            <img class="hidden-tablet-and-up" src="{{ item.imageData.imageOne.objectUrl }}">
+            <img class="js-lazy-image" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
+            <img class="js-lazy-image hidden-tablet-and-up" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
           </div>
         </div>
       {% elsif item.templateType == 5 %}
-        <div class="feature-imgs-item type-45 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %}">
+        <div class="feature-imgs-item type-45 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %} {{ is_hase_media }}">
           <div class="img-wrapper">
-            <img src="{{ item.imageData.imageOne.objectUrl }}">
-            <img class="hidden-tablet-and-up" src="{{ item.imageData.imageTwo.objectUrl }}">
+            <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+            <img class="js-lazy-image hidden-tablet-and-up" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
           </div>
           <div class="img-text-wrapper">
             <div class="text-container">
@@ -56,28 +60,28 @@
               <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
             </div>
             <div class="img-wrapper hidden-phone">
-              <img src="{{ item.imageData.imageTwo.objectUrl }}">
+              <img class="js-lazy-image" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
             </div>
           </div>
         </div>
       {% elsif item.templateType == 6 %}
-        <div class="feature-imgs-item type-6 bgColorType{{ item.bgColorType }}">
+        <div class="feature-imgs-item type-6 bgColorType{{ item.bgColorType }} {{ is_hase_media }}">
           <div class="img-wrapper">
-            <img src="{{ item.imageData.imageOne.objectUrl }}">
+            <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
           </div>
           <div class="img-wrapper">
-            <img src="{{ item.imageData.imageTwo.objectUrl }}">
+            <img class="js-lazy-image" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
           </div>
         </div>
       {% elsif item.templateType == 7 or item.templateType == 8 %}
-        <div class="feature-imgs-item type-78 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %}">
+        <div class="feature-imgs-item type-78 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %} {{ is_hase_media }}">
           <div class="img-text-wrapper">
             <div class="text-container">
               <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
               <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
             </div>
             <div class="img-wrapper">
-              <img src="{{ item.imageData.imageOne.objectUrl }}">
+              <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
             </div>
           </div>
           <div class="img-text-wrapper">
@@ -86,18 +90,150 @@
               <div class="text-desc">{{ item.imageData.featureDescTwo | replace: '&nbsp;', ' ' }}</div>
             </div>
             <div class="img-wrapper">
-              <img src="{{ item.imageData.imageTwo.objectUrl }}">
+              <img class="js-lazy-image" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
             </div>
           </div>
         </div>
       {% elsif item.templateType == 9 %}
-        <div class="feature-imgs-item type-9 bgColorType{{ item.bgColorType }}">
+        <div class="feature-imgs-item type-9 bgColorType{{ item.bgColorType }} {{ is_hase_media }}">
           <div class="text-container">
             <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
             <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
           </div>
           <div class="img-wrapper">
-            <img src="{{ item.imageData.imageOne.objectUrl }}">
+            <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+          </div>
+        </div>
+      {% elsif item.templateType == 10 %}
+        <div class="feature-imgs-item2 type-10 bgColorType{{ item.bgColorType }} js-customer-table {{ is_hase_media }}">
+          <div class="img-text-wrapper">
+            <div class="text-container">
+              <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+              {% if item.imageData.featureDescOne != blank %}
+                <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="table-wrapper-common">
+            <table>
+              <thead>
+                <tr>
+                  {% for header in item.imageData.headerColumns %}
+                    <th>{{ header.label }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in item.imageData.tableData %}
+                  <tr>
+                    {% for header in item.imageData.headerColumns %}
+                      {% assign key = header.value %}
+                      <td>
+                        {% if row[key].objectUrl %}
+                          <img class="js-lazy-image" data-src="{{ row[key].objectUrl }}" width="auto" height="auto" alt="{{ row[key].objectName | default: '' }}">
+                        {% else %}
+                          {{ row[key] }}
+                        {% endif %}
+                      </td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% elsif item.templateType == 11 %}
+        <div class="feature-imgs-item2 type-11 js-customer-table bgColorType{{ item.bgColorType }} {{ is_hase_media }}">
+          <div class="img-text-wrapper">
+            <div class="text-container">
+              <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+              {% if item.imageData.featureDescOne != blank %}
+                <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
+              {% endif %}
+            </div>
+          </div>
+          {% if item.imageData.imageOne.objectUrl %}
+          <div class="img-wrapper">
+            <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne | default: '' }}">
+          </div>
+          {% endif %}
+          <div class="table-wrapper-common">
+            <table>
+              <thead>
+                <tr>
+                  {% for header in item.imageData.headerColumns %}
+                    <th>{{ header.label }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in item.imageData.tableData %}
+                  <tr>
+                    {% for header in item.imageData.headerColumns %}
+                      {% assign key = header.value %}
+                      <td>
+                        {% if row[key].objectUrl %}
+                          <img class="js-lazy-image" data-src="{{ row[key].objectUrl }}" width="auto" height="auto" alt="{{ row[key].objectName | default: '' }}">
+                        {% else %}
+                          {{ row[key] }}
+                        {% endif %}
+                      </td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% elsif item.templateType == 12 %}
+        {% capture dom_title %}
+          <div class="text-container">
+            <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+            {% if item.imageData.featureDescOne != blank %}
+              <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
+            {% endif %}
+          </div>
+        {% endcapture %}
+        <div class="feature-imgs-item2 type-12 bgColorType{{ item.bgColorType }} {{ is_hase_media }}">
+          <div class="img-text-wrapper mob-img-text-wrapper">
+            {{ dom_title }}
+          </div>
+          {% if item.imageData.imageOne.objectUrl %}
+          <div class="img-wrapper">
+            <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne | default: '' }}">
+          </div>
+          {% endif %}
+          <div class="table-right-wrapper js-customer-table">
+            <div class="img-text-wrapper">
+               {{ dom_title }}
+            </div>
+            <div class="table-wrapper-common">
+              <table>
+                <thead>
+                  <tr>
+                    {% for header in item.imageData.headerColumns %}
+                      <th>{{ header.label }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in item.imageData.tableData %}
+                    <tr>
+                      {% for header in item.imageData.headerColumns %}
+                        {% assign key = header.value %}
+                        <td>
+                          {% if row[key].objectUrl %}
+                            <img class="js-lazy-image" data-src="{{ row[key].objectUrl }}" width="auto" height="auto" alt="{{ row[key].objectName | default: '' }}">
+                          {% else %}
+                            {{ row[key] }}
+                          {% endif %}
+                        </td>
+                      {% endfor %}
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       {% endif %}

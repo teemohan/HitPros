@@ -218,8 +218,8 @@
       mounted() {
         document.addEventListener('keydown', (event) => {
           if (event.key === 'Enter' && this.dialogVisibleCancel) {
-            event.preventDefault(); // 阻止默认行为
-            event.stopPropagation(); // 阻止事件冒泡
+            event.preventDefault(); 
+            event.stopPropagation(); 
             this.dialogVisibleCancel = false;
           }
         });
@@ -287,14 +287,13 @@
 
             const getTimestampInTimezone = (timezoneOffset) => {
               const now = new Date();
-              const utcTimestamp = now.getTime() + now.getTimezoneOffset() * 60 * 1000; // 当前 UTC 时间戳
-              return utcTimestamp + timezoneOffset * 60 * 60 * 1000; // 指定时区的时间戳
+              const utcTimestamp = now.getTime() + now.getTimezoneOffset() * 60 * 1000; 
+              return utcTimestamp + timezoneOffset * 60 * 60 * 1000; 
             };
             
-            const gmtMinus5Timestamp = getTimestampInTimezone(-5); // GMT-5 时区的时间戳
-            const currentTimestamp = Date.now(); // 当前时间戳
+            const gmtMinus5Timestamp = getTimestampInTimezone(-5); 
+            const currentTimestamp = Date.now(); 
           
-            // 检查是否小于 15 分钟
             const canCancel = (gmtMinus5Timestamp - createdAtTimestamp) < 15 * 60 * 1000;
          
             if(!order.fulfillment_status) {
@@ -308,9 +307,9 @@
             }
             function capitalizeWords(str) {
               return str
-                .split('_') // 按下划线分割
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // 首字母大写
-                .join(''); // 拼接成一个字符串
+                .split('_') 
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1)) 
+                .join(''); 
             }
 
             if(order.financial_status) {
@@ -367,7 +366,7 @@
             items: this.ordersData.find((item) => item.id == id).line_items,
           };
           this.loading = true;
-          await this.setLineAttr(param.items); // 清空date属性
+          await this.setLineAttr(param.items); 
           const response = await fetch('/cart/add.js', {
             method: 'POST',
             headers: {

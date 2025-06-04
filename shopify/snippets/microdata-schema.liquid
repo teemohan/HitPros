@@ -19,24 +19,31 @@ or change the format of some info
   {%- endif -%}
 
   {%- capture main_entity_microdata -%}
-    "@type": "Product",
-    "offers": [
-      {%- for variant in product.variants -%}
-        {
-          "@type": "Offer",
-          "name": {{ variant.product.title | json }},
-          "availability": {%- if variant.available -%}"https://schema.org/InStock"{%- else -%}"https://schema.org/OutOfStock"{%- endif -%},
-          "price": {{ variant.price | divided_by: 100.0 | json }},
-          "priceCurrency": {{ cart.currency.iso_code | json }},
-          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d'}}",
-          {%- if variant.sku != blank -%}
-            "sku": {{ variant.sku | json }},
-          {%- endif -%}
-          "url": "{{shop.url}}{{ product.url }}"
-        }{% unless forloop.last %},{% endunless %}
-      {%- endfor -%}
-    ],
-    {%- if product.metafields.reviews.rating.value != blank and product.metafields.reviews.rating_count.value > 0 -%}
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "description": {{ product.description | strip_html | json }},
+      "category": {{ product.type | json }},
+      "url": "{{ shop.url }}{{ product.url }}",
+      "sku": {{ product.selected_or_first_available_variant.sku | json }},
+      "brand": {
+        "@type": "Brand",
+        "name": {{ product.vendor | json }}
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https:{{ page_image | img_url: '1024x' }}",
+        "name": {{ page_image.alt | json }},
+        "width": "1024",
+        "height": "1024"
+      },
+      {% if is_barcode_available and is_valid_gtin_length %}
+        "{{ gtin_option }}": {{ product.selected_or_first_available_variant.barcode | json }},
+        "productId": {{ product.selected_or_first_available_variant.barcode | json }},
+      {% elsif is_barcode_available %}
+        "mpn": {{ product.selected_or_first_available_variant.barcode | json }},
+        "productId": {{ product.selected_or_first_available_variant.barcode | json }},
+      {% endif %}
+      {% if product.metafields.reviews.rating.value != blank and product.metafields.reviews.rating_count.value > 0 %}
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "{{ product.metafields.reviews.rating.value }}",
@@ -44,31 +51,32 @@ or change the format of some info
         "worstRating": "{{ product.metafields.reviews.rating.value.scale_min }}",
         "bestRating": "{{ product.metafields.reviews.rating.value.scale_max }}"
       },
-    {%- endif -%}
-    {%- if is_barcode_available and is_valid_gtin_length %}
-      "{{gtin_option}}": {{ product.selected_or_first_available_variant.barcode | json }},
-      "productId": {{ product.selected_or_first_available_variant.barcode | json }},
-    {%- elsif is_barcode_available %}
-      "mpn": {{ product.selected_or_first_available_variant.barcode | json }},
-      "productId": {{ product.selected_or_first_available_variant.barcode | json }},
-    {%- endif %}
-    "brand": {
-      "@type": "Brand",
-      "name": {{ product.vendor | json }}
-    },
-    "name": {{ product.title | json }},
-    "description": {{ product.description | strip_html | json }},
-    "category": "{{ product.type }}",
-    "url": "{{ shop.url }}{{ product.url }}",
-    "sku": {{ product.selected_or_first_available_variant.sku | json }},
-    "image": {
-      "@type": "ImageObject",
-      "url": "https:{{ page_image | img_url: '1024x' }}",
-      "name": {{ page_image.alt | json }},
-      "width": "1024",
-      "height": "1024"
-    }
-  {%- endcapture -%}
+      {% endif %}
+      "offers": [
+        {% for variant in product.variants %}
+        {
+          "@type": "Offer",
+          "name": {{ variant.product.title | json }},
+          "availability": "{% if variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+          "price": {{ variant.price | divided_by: 100.0 | json }},
+          "priceCurrency": {{ cart.currency.iso_code | json }},
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d'}}",
+          {% if variant.sku != blank %}
+          "sku": {{ variant.sku | json }},
+          {% endif %}
+          "url": "{{ shop.url }}{{ product.url }}",
+          "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+            "merchantReturnDays": 30,
+            "returnMethod": "https://schema.org/ReturnByMail",
+            "returnFees": "https://schema.org/FreeReturn"
+          }
+        }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+    {%- endcapture -%}
+    
 {%- elsif request.page_type == 'article' -%}
   {%- capture main_entity_microdata -%}
     "@type": "BlogPosting",

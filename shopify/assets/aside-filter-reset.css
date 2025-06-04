@@ -7,7 +7,7 @@
     width: calc(100% - 368px);
   }
 
-  /* Filter */
+  
   .product-facet__filters-header {
     padding-top: 20px;
     padding-bottom: 20px;
@@ -99,7 +99,7 @@
     border-radius: 6px;
   }
 
-  /* Product List layout */
+  
   .product-list__inner {
     --product-list-column-gap: 15px;
     --product-list-block-spacing: 15px;

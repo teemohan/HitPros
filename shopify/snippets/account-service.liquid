@@ -348,42 +348,41 @@
         return {
           isFetching: true,
           loading: false,
-          serviceList: [], // 全量数据
+          serviceList: [], 
           list_loading: true,
           requestType: '',
           startTime: '',
           endTime: '',
           endTimePickerOptions: {
             disabledDate(time) {
-              // 禁止选择超过当前日期的时间
               return time.getTime() > Date.now();
             },
           },
-          currentPage: 1, // 当前页码
-          pageSize: 20, // 每页显示条目数
-          total: 0, // 总条目数
+          currentPage: 1,
+          pageSize: 20, 
+          total: 0, 
           relatedOrderId: "",
           currencySymbols: {
-            USD: '$', // 美元
-            EUR: '€', // 欧元
-            GBP: '£', // 英镑
-            JPY: '¥', // 日元
-            CNY: '¥', // 人民币
-            AUD: '$', // 澳大利亚元
-            CAD: '$', // 加拿大元
-            CHF: 'CHF', // 瑞士法郎
-            NZD: '$', // 新西兰元
-            INR: '₹', // 印度卢比
-            RUB: '₽', // 俄罗斯卢布
-            KRW: '₩', // 韩元
-            SGD: '$', // 新加坡元
-            HKD: '$', // 港元
-            SEK: 'kr', // 瑞典克朗
-            NOK: 'kr', // 挪威克朗
-            TRY: '₺', // 土耳其里拉
-            MXN: '$', // 墨西哥比索
-            BRL: 'R$', // 巴西雷亚尔
-            ZAR: 'R', // 南非兰特
+            USD: '$',
+            EUR: '€', 
+            GBP: '£',
+            JPY: '¥',
+            CNY: '¥', 
+            AUD: '$', 
+            CAD: '$', 
+            CHF: 'CHF', 
+            NZD: '$', 
+            INR: '₹', 
+            RUB: '₽', 
+            KRW: '₩', 
+            SGD: '$', 
+            HKD: '$', 
+            SEK: 'kr',
+            NOK: 'kr', 
+            TRY: '₺', 
+            MXN: '$', 
+            BRL: 'R$',
+            ZAR: 'R', 
           },
         };
       },
@@ -408,7 +407,7 @@
             pageNo: this.currentPage,
             pageSize: this.pageSize,
             userEmail: '{{ customer.email }}',
-            requestType: requestTypeValue, // 注意，不需要用数组包装
+            requestType: requestTypeValue, 
             startTime: this.formatDateTime(this.startTime),
             endTime: this.formatDateTime(this.endTime),
           };
@@ -444,7 +443,7 @@
             pageSize: this.pageSize,
             userEmail: '{{ customer.email }}',
             relatedOrderId: this.relatedOrderId,
-            requestType: requestTypeValue, // 注意，不需要用数组包装
+            requestType: requestTypeValue,
             startTime: this.formatDateTime(this.startTime),
             endTime: this.formatDateTime(this.endTime),
           };
@@ -472,7 +471,6 @@
             }
 
             const data = await res.json();
-            // 设置 serviceList 数据
             this.serviceList = data.data.list;
             this.total = Number(data.data.total);
 
@@ -490,7 +488,7 @@
             pageSize: this.pageSize,
             relatedOrderId: this.relatedOrderId,
             userEmail: '{{ customer.email }}',
-            requestType: requestTypeValue, // 保持当前的过滤类型
+            requestType: requestTypeValue, 
             startTime: this.formatDateTime(this.startTime),
             endTime: this.formatDateTime(this.endTime),
           };
@@ -498,7 +496,6 @@
           this.getList(params);
         },
         handleChange() {
-          // 当选择框发生改变时，将当前页重置为第一页
           this.currentPage = 1;
           const requestTypeValue =
             this.requestType === 'Refund Only' ? [1] : this.requestType === 'Refund & Return' ? [2] : [];
@@ -507,7 +504,7 @@
             pageSize: this.pageSize,
             userEmail: '{{ customer.email }}',
             relatedOrderId: this.relatedOrderId,
-            requestType: requestTypeValue, // 注意，不需要用数组包装
+            requestType: requestTypeValue, 
             startTime: this.formatDateTime(this.startTime),
             endTime: this.formatDateTime(this.endTime),
           };
@@ -515,7 +512,6 @@
         },
         formatDateTime(dateStr) {
           if (!dateStr) return '';
-          // 将日期字符串转换为 Date 对象
           const d = new Date(dateStr);
           const year = d.getFullYear();
           const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -548,10 +544,8 @@
         },
         handleCancel(orderId, status) {
           if (status === 1 || status === 2) {
-            // 阻止父元素事件冒泡
             event.stopPropagation();
 
-            // 如果用户输入了取消原因，调用接口取消订单
             this.cancelOrderRequest(orderId);
           } else {
             return false;
@@ -581,7 +575,6 @@
               const requestTypeValue =
                 this.requestType === 'Refund Only' ? [1] : this.requestType === 'Refund & Return' ? [2] : [];
 
-              // 更新列表，确保当前数据是最新的
               let params = {
                 pageNo: this.currentPage,
                 pageSize: this.pageSize,
@@ -607,7 +600,6 @@
         },
         copyToClipboard(name) {
           if (name) {
-            //阻止父元素事件冒泡
             event.stopPropagation();
             const el = document.createElement('textarea');
             el.value = name;
@@ -623,19 +615,15 @@
         },
         formatDate(dateString) {
           const localTime = new Date(dateString);
-          // 格式化月份（缩写并加点）
           const monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
           const month = monthNames[localTime.getMonth()];
-          // 格式化日期和年份
           const day = localTime.getDate();
           const year = localTime.getFullYear();
-          // 格式化小时（12 小时制）
           let hours = localTime.getHours();
           const period = hours >= 12 ? 'PM' : 'AM';
-          hours = hours % 12 || 12; // 转为 12 小时制
+          hours = hours % 12 || 12;
           const minutes = String(localTime.getMinutes()).padStart(2, '0');
           const seconds = String(localTime.getSeconds()).padStart(2, '0');
-          // 返回格式化后的日期字符串
           return `${month} ${day}, ${year} at ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${period}`;
         },
         clearFilter() {

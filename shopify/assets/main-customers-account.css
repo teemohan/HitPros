@@ -9,7 +9,7 @@ p {
   list-style: none;
 }
 
-/* 主体样式 */
+
 .account-section {
   margin-top: 16px;
 }
@@ -71,7 +71,7 @@ p {
   -webkit-display: grid;
 }
 
-/* main header*/
+
 
 .account-main-item {
   display: grid;
@@ -90,28 +90,28 @@ p {
   border: 1px solid var(--my-border);
 }
 
-/* 自定义滚动条样式 */
+
 .account-list-wrapper::-webkit-scrollbar {
   width: 6px;
-  /* 滚动条宽度 */
+  
 }
 
-/* 滚动条轨道 */
+
 .account-list-wrapper::-webkit-scrollbar-track {
   background: #f5f4f4;
-  /* 轨道颜色 */
+  
 }
 
-/* 滚动条滑块 */
+
 .account-list-wrapper::-webkit-scrollbar-thumb {
   background: var(--my-border);
-  /* 滑块颜色 */
+  
 }
 
-/* 滚动条滑块：鼠标悬停 */
+
 .account-list-wrapper::-webkit-scrollbar-thumb:hover {
   background: #cecece;
-  /* 滑块悬停颜色 */
+  
 }
 
 .skeleton-wrapper {
@@ -185,7 +185,7 @@ p {
 
 @media screen and (min-width: 741px) {
 
-  /* 主体样式 */
+  
   .account-section {
     display: grid;
     -webkit-display: grid;

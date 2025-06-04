@@ -2,7 +2,6 @@
 {{ 'customer-register.css' | asset_url | stylesheet_tag }}
 <template id="accountInfo">
   <div class="account-info-block">
-    {% comment %} 新增地址表单弹框 {% endcomment %}
     <el-dialog
       title="Add Address"
       width="558px"
@@ -196,7 +195,6 @@
         </div>
       </div>
     </el-dialog>
-    {% comment %} 新增、更新用户名称表单弹框 {% endcomment %}
     <el-dialog
       title="Update Name"
       width="484px"
@@ -251,7 +249,6 @@
         </div>
       </div>
     </el-dialog>
-    {% comment %} 新增、更新公司名称表单弹框 {% endcomment %}
     <el-dialog
       title="Update Company Name"
       width="484px"
@@ -293,7 +290,6 @@
         </div>
       </div>
     </el-dialog>
-    {% comment %} 新增、更新职业名称表单弹框 {% endcomment %}
     <el-dialog
       title="Update Industry"
       width="484px"
@@ -356,7 +352,6 @@
         </div>
       </div>
     </el-dialog>
-    {% comment %} 选择、新增默认地址弹框 {% endcomment %}
     <el-dialog
       title="Update Shipping Address"
       width="484px"
@@ -423,7 +418,6 @@
         </div>
       </div>
     </el-dialog>
-    {% comment %} 加入公司弹框 {% endcomment %}
     <el-dialog
       title="Join Company"
       class="join-dialog"
@@ -750,8 +744,6 @@
         </div>
       </div>
     </el-dialog>
-
-    {% comment %} 更新公司地址弹框 {% endcomment %}
     <el-dialog
       title="Update Company Address"
       width="484px"
@@ -1085,7 +1077,6 @@
       });
     }
     
-    // 使用 DOM 元素解码 HTML 实体, 转义字符
     function decodeHTMLEntities(str) {
       let textarea = document.createElement('textarea');
       textarea.innerHTML = str;
@@ -1256,7 +1247,7 @@
         };
 
         const validateEnglishLettersOnly = (rule, value, callback) => {
-          const englishLetterPattern = /^[a-zA-Z]+$/; // 仅允许英文字母
+          const englishLetterPattern = /^[a-zA-Z]+$/; 
           if (!englishLetterPattern.test(value)) {
             return callback(new Error('Special characters are not allowed'));
           }
@@ -1296,8 +1287,8 @@
           companyOptions: [],
           companyTerms: {},
           companyAuthStatus: null,
-          showIndustryEdit: false, // 是否是其他职业
-          showIndustryEdit1: false, // 是否是其他职业
+          showIndustryEdit: false, 
+          showIndustryEdit1: false, 
           industry: '',
           industry1: '',
           codeSearchLoading: false,
@@ -1385,11 +1376,10 @@
             name: decodeHTMLEntities('{{ customer.current_company.name }}'),
             industry: decodeHTMLEntities('{{ customer.current_company.metafields.company.industry }}')
           },
-          joinProgress: 1, // 加入公司的步骤
-          existCompany: false, // 是否是加入现有公司
-          newCompany: false, // 是否加入一个新公司
+          joinProgress: 1, 
+          existCompany: false, 
+          newCompany: false, 
           dialogVisible: {
-            // 弹框框控制
             join: false,
             address: false,
             company: false,
@@ -1400,7 +1390,6 @@
           },
           showCompanyId: false,
           dialogLoading: {
-            // 表单save loading
             companyAddressUpdate: false,
             address: false,
             join: false,
@@ -1410,13 +1399,11 @@
             defaultAddress: false,
           },
           searchCompanyCodeForm: {
-            // 搜索公司表单
             searchCompanyCode: '',
             jobCompany: ''
           },
           validCompanyData: {},
           originalAddressRuleForm: {
-            //原始地址表单
             first_name: '',
             last_name: '',
             phone: '',
@@ -1425,12 +1412,12 @@
             city: '',
             zip: '',
             province: '',
-            country: 'United States', // 默认值
+            country: 'United States', 
             default: false,
           },
-          addressFormAction: '/account/addresses', // 表单提交的地址
-          addressFormMethod: 'post', // 表单提交的地址
-          isAddressUpdate: false, //是否更新表单
+          addressFormAction: '/account/addresses',
+          addressFormMethod: 'post', 
+          isAddressUpdate: false, 
           addressRuleForm: {
             jobCompany: '',
             first_name: '',
@@ -1441,7 +1428,7 @@
             city: '',
             zip: '',
             province: '',
-            country: 'United States', // 默认值
+            country: 'United States', 
             default: false,
           },
           originalCompanyAddressForm: {
@@ -1461,7 +1448,6 @@
             countryCode: 'US'
           },
           originalNameRuleForm: {
-            //原始名字表单
             first_name: decodeHTMLEntities("{{ customer.first_name }}"),
             last_name: decodeHTMLEntities("{{ customer.last_name }}"),
           },
@@ -1478,7 +1464,6 @@
             jobCompany: [
               { validator: noWhitespaceValidator, message: 'Job Fcuntion is required', trigger: 'change' }
             ],
-            // 搜索公司Code校验
             searchCompanyCode: [ 
               { validator: companyCodeValidator, trigger: 'change' } 
             ],
@@ -1487,7 +1472,6 @@
             jobFunction: [
               { validator: noWhitespaceValidator, message: 'Job Fcuntion is required', trigger: 'change' }
             ],
-            // 新增公司校验
             companyName: [
               { validator: noWhitespaceValidator, message: 'Company Name is required', trigger: 'blur' },
               { validator: validateCompanyName, trigger: 'blur' },
@@ -1511,7 +1495,6 @@
             zip: [{ validator: validateCompanyAddressZipCode, trigger: 'blur' }],
           },
           addressRules: {
-            // 地址校验
             first_name: [
               { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
              
@@ -1541,7 +1524,6 @@
             ],
           },
           nameRules: {
-            // 名字校验
             first_name: [
               { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
               
@@ -1615,13 +1597,13 @@
             ["Virgin Islands", "VI"],
             ["Palau", "PW"]
           ],
-          showIndustryEdit: false, // 是否是其他职业
+          showIndustryEdit: false, 
           industryForm: {
-            originalIndustry: decodeHTMLEntities("{{ customer.current_company.metafields.company.industry }}"), //原始行业名称
+            originalIndustry: decodeHTMLEntities("{{ customer.current_company.metafields.company.industry }}"),
             industry: decodeHTMLEntities("{{ customer.current_company.metafields.company.industry }}"),
           },
           companyNameForm: {
-            originalCompany: decodeHTMLEntities("{{ customer.current_company.name }}"), //原始公司名称
+            originalCompany: decodeHTMLEntities("{{ customer.current_company.name }}"), 
             name: decodeHTMLEntities("{{ customer.current_company.name }}"),
           },
           defaultAddress: {
@@ -2006,7 +1988,7 @@
           this.joinProgress = this.joinProgress + 1;
         },
         handleBeforeCloseJoinDialog() {
-          // 初始化数据并且清除错误
+         
           this.joinProgress = 1;
           this.addCompanyForm = {
             ...this.originalAddCompanyForm
@@ -2025,12 +2007,9 @@
           this.dialogVisible.address = true;
         },
         submitForm(formName) {
-          // 除地址外，网络请求更新的表单要请求成功后 让原始表单等于更新的表单
-          // 提交表单
           this.$refs[formName].validate((valid) => {
             if (valid) {
               if (formName == 'addressRuleForm') {
-                // 地址
                 if({{ customer.addresses.size }} == 20) {
                   this.$message({
                     showClose: true,
@@ -2042,14 +2021,12 @@
                 this.dialogLoading.address = true;
                 this.$refs.addressRuleForm.$el.submit();
               } else if (formName == 'nameRuleForm') {
-                //名字
                 this.nameUpdate();
               }
             }
           });
         },
         handleBeforeCloseCADialog() {
-          // 关闭公司地址弹框
           this.dialogVisible.defaultCompanyAddress = false;
           this.$refs.companyAddressRules?.clearValidate();
           this.companyAddressForm = {
@@ -2057,30 +2034,25 @@
           }
         },
         handleBeforeCloseAddressDialog() {
-          // 关闭地址弹框并重置表单
           this.addressFormAction = `/account/addresses`;
           this.addressRuleForm = JSON.parse(JSON.stringify(this.originalAddressRuleForm));
           this.dialogVisible.address = this.isAddressUpdate = false;
           this.$refs.addressRuleForm.clearValidate();
         },
         handleBeforeCloseNameDialog() {
-          // 名字弹框关闭
           this.nameRuleForm = JSON.parse(JSON.stringify(this.originalNameRuleForm));
           this.dialogVisible.name = false;
           this.$refs.nameRuleForm.clearValidate();
         },
         handleBeforeCloseCompanyDialog() {
-          // 公司名字弹框关闭
           this.companyNameForm.name = this.companyNameForm.originalCompany;
           this.dialogVisible.company = false;
         },
         handleBeforeCloseIndustryDialog() {
-          // 行业名字弹框关闭
           this.industryForm.industry = this.industryForm.originalIndustry;
           this.dialogVisible.industry = false;
         },
         handleBeforeCloseDefaultAddressDialog() {
-          // 默认地址弹框关闭
           this.defaultAddress.default = true;
           this.dialogVisible.defaultAddress = false;
         },
@@ -2108,7 +2080,6 @@
           }
         },
         async nameUpdate() {
-          // 更新用户名字
           this.dialogLoading.name = true;
           try {
             const res = await fetch(`${window.zkh.api}/customer`, {
@@ -2155,7 +2126,6 @@
           }
         },
         async handleCompanyUpdate() {
-          // 更新公司名字
           this.dialogLoading.company = true;
           const companyId = '{{ customer.current_company.id }}';
           try {
@@ -2211,7 +2181,7 @@
           }
         },
         handleButtonClick(event, industryItem) {
-          event.stopPropagation(); // 阻止冒泡，防止关闭
+          event.stopPropagation(); 
           if (industryItem.isSelected) return;
           this.industryOptions.map((item) => (item.isSelected = false));
           const industry = this.industryOptions.find((item) => item.value == industryItem.value);
@@ -2221,12 +2191,12 @@
           } else {
             this.showIndustryEdit = false;
             this.industryForm.industry = industry.value;
-            this.$refs.industrySelect.blur(); // 关闭菜单
+            this.$refs.industrySelect.blur(); 
           }
           industry.isSelected = true;
         },
         handleButtonClick1(event, industryItem) {
-          event.stopPropagation(); // 阻止冒泡，防止关闭
+          event.stopPropagation(); 
           if (industryItem.isSelected) return;
           this.industryOptions1.map((item) => (item.isSelected = false));
           const industry = this.industryOptions1.find((item) => item.value == industryItem.value);
@@ -2236,12 +2206,11 @@
           } else {
             this.showIndustryEdit1 = false;
             this.addCompanyForm.industry = industry.value;
-            this.$refs.addCompanyFormRef.blur(); // 关闭菜单
+            this.$refs.addCompanyFormRef.blur(); 
           }
           industry.isSelected = true;
         },
         async handleIndustryUpdate() {
-          // 更新行业名字
           this.dialogLoading.industry = true;
           const companyId = '{{ customer.current_company.id }}';
           try {
@@ -2298,7 +2267,7 @@
           address.default = true;
         },
         handleButtonClickJobCompany(event, jobItem) {
-          event.stopPropagation(); // 阻止冒泡，防止关闭
+          event.stopPropagation(); 
           if (jobItem.isSelected) return;
           this.jobOptionsCompany.map((item) => (item.isSelected = false));
           const jobCompany = this.jobOptionsCompany.find((item) => item.value == jobItem.value);
@@ -2311,12 +2280,12 @@
           } else {
             this.showJobCompanyEdit = false;
             this.searchCompanyCodeForm.jobCompany = jobCompany.value;
-            this.$refs.selJobCompany.blur(); // 关闭菜单
+            this.$refs.selJobCompany.blur(); 
           }
           jobCompany.isSelected = true;
         },
         handleButtonClickJobCompany1(event, jobItem) {
-          event.stopPropagation(); // 阻止冒泡，防止关闭
+          event.stopPropagation(); 
           if (jobItem.isSelected) return;
           this.jobOptionsCompany1.map((item) => (item.isSelected = false));
           const jobCompany = this.jobOptionsCompany1.find((item) => item.value == jobItem.value);
@@ -2329,7 +2298,7 @@
           } else {
             this.showJobCompanyEdit1 = false;
             this.addCompanyForm.jobFunction = jobCompany.value;
-            this.$refs.selJobCompany1.blur(); // 关闭菜单
+            this.$refs.selJobCompany1.blur(); 
           }
           jobCompany.isSelected = true;
         },

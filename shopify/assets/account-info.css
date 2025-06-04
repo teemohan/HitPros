@@ -61,24 +61,18 @@
   width: 8px;
 }
 
-/* 滚动条轨道 */
 .form-select-wrapper ul::-webkit-scrollbar-track {
   border-radius: 14px;
   background: #fff;
 }
 
-/* 滚动条滑块 */
 .form-select-wrapper ul::-webkit-scrollbar-thumb {
   border-radius: 19px;
   background: #ccc;
 }
-
-/* 滚动条滑块悬停状态 */
 .form-select-wrapper ul::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
-
-
 .form-address-item {
   padding: 12px 16px;
   gap: 16px;
@@ -325,18 +319,18 @@
   margin: 30px 0;
 }
 .join-progress-2.progress2-form-wrapper::-webkit-scrollbar {
-  width: 6px; /* 滚动条宽度 */
+  width: 6px; 
 }
 
-/* 滚动条滑块 */
+
 .join-progress-2.progress2-form-wrapper::-webkit-scrollbar-thumb {
-  background-color: #CCCCCC; /* 滚动条颜色 */
-  border-radius: 3px; /* 滑块圆角 */
+  background-color: #CCCCCC; 
+  border-radius: 3px; 
 }
 
-/* 滚动条轨道背景 */
+
 .join-progress-2.progress2-form-wrapper::-webkit-scrollbar-track {
-  background: transparent; /* 轨道背景透明 */
+  background: transparent; 
 }
 .account-company-line-list {
   user-select: none;

@@ -3,7 +3,7 @@
     --progress-bar-color: {{ section.blocks.first.settings.text_color.red }}, {{ section.blocks.first.settings.text_color.green }}, {{ section.blocks.first.settings.text_color.blue }};
     --section-autoplay-duration: {% if section.settings.autoplay %}{{ section.settings.cycle_speed }}s{% else %}0s{% endif %};
     --section-animation-play-state: paused;
-    background-color: {{ section.settings.background }}; /* Allows to set a placeholder color while loading */
+    background-color: {{ section.settings.background }}; 
   }
 
   {%- for block in section.blocks -%}

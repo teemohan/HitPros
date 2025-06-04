@@ -588,7 +588,7 @@
 </cart-drawer>
 <script>
   (() => {
-    async function getDeleveryDate(deliveryParams) { //获取交期数据
+    async function getDeleveryDate(deliveryParams) { 
       try {
         const response = await fetch(`${window.zkh.api}/openapi/adlink/delivery-calculation/batch`, {
           method: 'POST',
@@ -607,11 +607,8 @@
     }
 
     function formatDate(timestamp, timezoneOffset = -5) {
-      // 创建 Date 对象（默认会使用 UTC 时间）
       const date = new Date(+timestamp);
-      // 调整时区：将日期偏移到 GMT-5
       const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
-      // 获取年份、月份和日期
       const year = localTime.getFullYear();
       const monthNames = [
         'January', 'February', 'March', 'April', 'May', 'June',
@@ -619,33 +616,30 @@
       ];
       const month = monthNames[localTime.getMonth()];
       const day = localTime.getDate();
-      // 确定日期后缀
       let suffix = '';
       if (day >= 11 && day <= 13) {
-        suffix = 'th'; // 特殊情况：11th, 12th, 13th
+        suffix = 'th'; 
       } else {
         switch (day % 10) {
           case 1: suffix = 'st'; break; // 1, 21, 31
           case 2: suffix = 'nd'; break; // 2, 22
           case 3: suffix = 'rd'; break; // 3, 23
-          default: suffix = 'th'; break; // 其他情况
+          default: suffix = 'th'; break; 
         }
       }
-      // 返回格式化后的日期
       return `${month} ${day}${suffix}, ${year}`;
     }
 
-    async function initDeleveryDate() { // 查一组交期数据
+    async function initDeleveryDate() { 
       const line_item_delivery = $('[data-cart]').map(function() {
         return $(this).data('cart');
       }).get();
       if(line_item_delivery.length == 0) return
-      $('.drawer__content .line-item .loading-container').show(); // loading 按钮隐藏
+      $('.drawer__content .line-item .loading-container').show();
       $('.mini-cart .line-item__property').hide();
       const deleveryDate = await getDeleveryDate(line_item_delivery);
       if(deleveryDate?.length) {
         deleveryDate.map(line_item => {
-          // item.availableInventoryCount 库存
           let $deliveryTime
           const $lineItem = $(`.line-item[data-sku='${line_item.sku}']`);
           let stockDateStart;
@@ -679,11 +673,11 @@
             $deliveryTime = $(`
               <span>Expected to arrive between ${formatDate(stockDateStart)} and ${formatDate(stockDateEnd)}.</span>
             `);
-          } else if(line_item.availableInventoryCount >= line_item.demandQuantity) { // 现货大于0，并且现货>=需求
+          } else if(line_item.availableInventoryCount >= line_item.demandQuantity) { 
             $deliveryTime = $(`
               <span>Expected to arrive on ${formatDate(line_item.availableInventoryDeliveryTimeStamp)}.</span>
             `);
-          } else { // 现货大于0，并且需求大于现货
+          } else { 
             $deliveryTime = $(`
               <span>Partial expected to arrive on ${formatDate(line_item.availableInventoryDeliveryTimeStamp)}.</span>
               <span>The remaining balance is expected to arrive between ${formatDate(stockDateStart)} and ${formatDate(stockDateEnd)}.</span>
@@ -694,7 +688,7 @@
         })
       }
     }
-    function getDiscount () {  // 获取折扣然后跳转
+    function getDiscount () { 
       const amount_original = parseFloat($('.hidden-mini-cart-price').data("original-price"));
       const amount_current = parseFloat($('.hidden-mini-cart-price').data("computed-subtotal"));
       const amount_difference = (amount_original - amount_current) / 100;
@@ -721,22 +715,22 @@
         }
       })
       .catch(error => {
-          // 处理错误
+          
       });
     }
 
     document.addEventListener('cart-rendered', function () {
       $('.quantity-selector__input').on('keydown', function(event) {
         if (event.key === 'Enter') {
-          event.preventDefault(); // 阻止默认行为
+          event.preventDefault(); 
         }
       });
-      $('.cart-checkout-button').click(function(event) {  // checkout按钮
+      $('.cart-checkout-button').click(function(event) { 
         event.preventDefault();
         Cookies.set('remove-property', 'true');
         getDiscount();
       })
-      initDeleveryDate(); // 初始化交期
+      initDeleveryDate(); 
     });
   })();
 </script>

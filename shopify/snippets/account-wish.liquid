@@ -178,9 +178,7 @@
 </template>
 <script> 
   (() => {
-    // 获取当前页面的 URL
     const urlParams = new URLSearchParams(window.location.search);
-    // 检查 slug 参数是否为 "account-wish"
     if (urlParams.get('slug') === 'account-wish') {
       const ip = Cookies.get('ip');
       if(ip) {
@@ -244,7 +242,6 @@
             const data = await res.json()
             if(data.code === 200) {
               this.wishList = []
-              // 刷新心愿单数量
               this.total = 0;
               document.dispatchEvent(new CustomEvent('wish-refreash'));
             }
@@ -279,9 +276,7 @@
           }
         },
         async getProductData(id) {
-          // 构建GraphQL查询
-          // 设置请求URL和请求头
-          const url = `${window.zkh.api}/graphQL/api`;  // 确保API版本是正确的
+          const url = `${window.zkh.api}/graphQL/api`; 
           const headers = {
             'Content-Type': 'application/json',
           };
@@ -306,10 +301,10 @@
               title: graphqlNode.title,
               totalInventory: graphqlNode.totalInventory,
               featuredImage: graphqlNode.featuredImage?.url,
-              moq: Number(graphqlNode.moq?.value) || 1, //最小起购量
-              mpq: Number(graphqlNode.mpq?.value) || 1, //最小起购量
-              model: graphqlNode.manufacturer_model_number?.value, //model
-              brand: graphqlNode.brand?.value, //brand
+              moq: Number(graphqlNode.moq?.value) || 1, 
+              mpq: Number(graphqlNode.mpq?.value) || 1, 
+              model: graphqlNode.manufacturer_model_number?.value, 
+              brand: graphqlNode.brand?.value, 
               quantity: Number(graphqlNode.moq?.value) || 1,
               btn_loading: false,
               btn_remove_loading: false,
@@ -347,7 +342,7 @@
             })
           })
         },
-        handleSelectToggle(type) {  // 1全选， 0全不选
+        handleSelectToggle(type) {  
           if(type === 1) {
             this.selectAllValue = !this.selectAllValue
             this.selectAllValue ? 
@@ -358,7 +353,7 @@
             this.wishList.map(item => { item.isSelected = false })
           }
         },
-        handleSelectItem(productItem) { // 单选
+        handleSelectItem(productItem) { 
           productItem.isSelected = !productItem.isSelected
           this.selectAllValue = this.wishList.every(item => item.isSelected)
         },
@@ -396,7 +391,7 @@
             }
             productItem.btn_loading = true;
           }
-          await this.setLineAttr(param.items); // 清空date属性
+          await this.setLineAttr(param.items); 
           const response = await fetch('/cart/add.js', {
             method: 'POST',
             headers: {
@@ -460,7 +455,7 @@
           } else if(type === 'single'){
             productItem.btn_loading = false;
           }
-          // window.location.href = "/cart"
+         
         },
         async removeWishItem(productItem) {
           const param = {
@@ -498,7 +493,7 @@
           if (productItem.quantity > 1000000) {
             productItem.quantity = 1000000;
           }
-          if(productItem.inventoryPolicy != 'CONTINUE' && productItem.quantity > productItem.totalInventory) { // 限制不能超过库存量
+          if(productItem.inventoryPolicy != 'CONTINUE' && productItem.quantity > productItem.totalInventory) {
             productItem.quantity = productItem.totalInventory;
             this.$message({
               showClose: true,

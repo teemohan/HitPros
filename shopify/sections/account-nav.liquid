@@ -232,7 +232,7 @@
           $('#account_main_nav').removeClass('nav-open');
         },
         logout() {
-          Cookies.remove('cart'); // 购物车相关
+          Cookies.remove('cart');
           if(window.themeVariables.userCompany.isB2b == 'true') {
             Cookies.set('logout', 1);
             window.location.href = `${window.zkh.b2b_url}/logout`;

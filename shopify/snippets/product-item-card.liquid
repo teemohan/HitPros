@@ -20,7 +20,7 @@
           <span class="product-item-meta__vendor">
             {{ product.brand }}
           </span>
-          <a :href="product.productUrl" @click="handleClickLink" :title="product.title" class="product-item-meta__title my-14 ellipsis2">{{ product.title }}</a>
+          <a :href="product.productUrl" @click="handleClickLink" :title="product.title" class="product-item-meta__title ol-my-14 ellipsis2">{{ product.title }}</a>
         </div>
       </div>
 
@@ -73,7 +73,7 @@
     },
     methods: {
       handleClickLink(event) {
-        event.preventDefault(); // 阻止默认跳转行为
+        event.preventDefault(); 
         dataLayer.push({
           ...this.dataLayerForm,
           event: 'select_item',
@@ -96,7 +96,7 @@
         const response = await fetch('/cart.js');
         const res = await response.json();
         if(res.items.length == 0) return;
-        const line_item = res.items.find(item => item.id == param.id); // param.id 变体id
+        const line_item = res.items.find(item => item.id == param.id);
         if(line_item) param.properties = line_item.properties;
       },
       async handleAddToCart() {

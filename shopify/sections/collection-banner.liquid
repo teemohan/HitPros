@@ -19,10 +19,10 @@
   const $titles = titles.map((c_title, idx) => {
     c_handle += idx === 0 ? c_title : `-${c_title}`;
     c_handle = c_handle
-      .toLowerCase()                  // Convert to lowercase
-      .replace(/[^a-z0-9\s-]/g, '')    // Remove special characters except spaces and hyphens
-      .trim()                          // Remove leading and trailing whitespace
-      .replace(/\s+/g, '-')            // Replace spaces with hyphens
+      .toLowerCase()                 
+      .replace(/[^a-z0-9\s-]/g, '')   
+      .trim()                         
+      .replace(/\s+/g, '-')           
       .replace(/-+/g, '-');
     const isLast = idx === titles.length - 1;
     const listItem = isLast

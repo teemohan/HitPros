@@ -150,7 +150,7 @@
                 <div class="bg-overlay"></div>
                 <div class="content-wrapper">
                   <div class="content">
-                    <img src="{{ block.settings.brand_img | image_url }}" />
+                    <img data-src="{{ block.settings.brand_img | image_url }}" class="js-lazy-image" width="auto" height="auto" />
                     <h2 class="hero-title">{{ block.settings.title }}</h2>
                     <div class="hero-text">{{ block.settings.text }}</div>
                     <div class="hero-tip">{{ block.settings.tip }}</div>

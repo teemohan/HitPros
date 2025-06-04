@@ -3,7 +3,9 @@
   display: flex;
   gap: 16px;
 }
-
+.zkh-imgtext-banner{
+  min-height: 342px;
+}
 .zkh-img-text-link {
   display: block;
   position: relative;
@@ -71,6 +73,9 @@
 }
 
 @media screen and (max-width: 999px) {
+  .zkh-imgtext-banner{
+    min-height: 332px;
+  }
   .zkh-img-text-text {
     font-size: 18px;
   }
@@ -84,7 +89,7 @@
   }
 }
 </style>
-<div class="container">
+<div class="container zkh-imgtext-banner">
   <div class="zkh-img-text-list hidden-phone">
     {% for block in section.blocks %}
       <div class="zkh-img-text-link-wrapper">
@@ -92,10 +97,11 @@
           <div class="zkh-img-text-image-wrapper">
             {% if block.settings.img != blank %}
               <img
-                class="zkh-img-text-image"
+                class="zkh-img-text-image js-lazy-image"
                 loading="lazy"
-                src="{{ block.settings.img | image_url }}"
-                width="auto"
+                data-src="{{ block.settings.img | image_url }}"
+                alt="{{ block.settings.img.alt | default: block.settings.title }}"
+                width="300"
                 height="auto" />
             {% endif %}
             <div class="zkh-img-text-overlay"></div>
@@ -117,10 +123,10 @@
               <div class="zkh-img-text-image-wrapper">
                 {% if block.settings.img != blank %}
                   <img
-                    class="zkh-img-text-image"
+                    class="zkh-img-text-image js-lazy-image"
                     loading="lazy"
-                    src="{{ block.settings.img | image_url }}"
-                    width="auto"
+                    data-src="{{ block.settings.img | image_url }}"
+                    width="400"
                     height="auto" />
                 {% endif %}
                 <div class="zkh-img-text-overlay"></div>

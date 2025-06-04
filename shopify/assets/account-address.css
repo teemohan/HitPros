@@ -39,7 +39,6 @@
   display: flex;
   gap: 16px;
   -webkit-tap-highlight-color: transparent;
-  /* 移除点击高亮效果 */
   font-size: 14px;
   color: var(--my-black);
   align-items: center;
@@ -49,7 +48,6 @@
 
 .account-address-action:active {
   background-color: transparent;
-  /* 设置为透明，防止显示点击背景色 */
 }
 
 .account-address-action .dot {
@@ -69,7 +67,6 @@
   font-weight: bold;
 }
 
-/* 添加和修改*/
 .address-label {
   display: block;
   position: unset;
@@ -78,7 +75,6 @@
   color: var(--my-black);
 }
 
-/* 添加和修改 -end*/
 @media screen and (max-width: 740px) {
   .account-address {
     margin-top: 16px;

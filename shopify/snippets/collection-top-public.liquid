@@ -2,7 +2,11 @@
   assign description = description | default: collection.description
   assign custom_class = class_name | default: ''
 -%}
-{%- if collection.handle != 'all' -%}    
+{%- if collection.handle == 'all' -%}    
+  <div class="w-full text-left mt-0 pb-6">
+    <h1 class="text-xl font-bold text-main fb-sm:text-32">All Products</h1>
+  </div>
+{%- else -%}
   <div class="w-full text-left mt-0">
     <h1 class="text-xl font-bold text-main fb-sm:text-32">{{ collection.title | split: "~" | last }}</h1>
   </div>

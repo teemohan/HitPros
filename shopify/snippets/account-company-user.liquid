@@ -559,7 +559,6 @@
 
 <script>
   (() => {
-    // 使用 DOM 元素解码 HTML 实体, 转义字符
     function decodeHTMLEntities(str) {
       let textarea = document.createElement('textarea');
       textarea.innerHTML = str;
@@ -695,8 +694,8 @@
           }
         },
         handleRoleClick(event, roleItem) {
-          event.stopPropagation(); // 阻止冒泡，防止关闭
-          this.$refs.searchSel.blur(); // 关闭菜单
+          event.stopPropagation();
+          this.$refs.searchSel.blur();
         },
         async handleRemoveUser() {
           this.removeingLoading = true;

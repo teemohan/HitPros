@@ -1,127 +1,67 @@
 {% if section.settings.collection.products.size > 0 %}
-{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
-<product-index-list data-section-id="{{ section.id }}" class="{{ section.id }} product-x-hidde">
-  <div class="container cl-container hover-cl-container">
-    <div class="index-cus-header">
-      <h2>{{ section.settings.title }}</h2>
-      {% render 'swiper-buttons' %}
-    </div>
-    <div class="IndexBestswiper hover-list">
-      <div class="swiper {{ section.id }}-IndexBestswiper">
-        <div class="swiper-wrapper"
-          data-datalayer="true" 
-          data-event-type="view_item_list" 
-          data-list-name="{{ section.settings.title }}" 
-          data-recommend-module="homepage"
-        >
-          {% assign sort_collection_products = section.settings.collection.products %}
-          {%- for product in sort_collection_products -%}
-            <div class="swiper-slide">
-              {% render 'index-product-item', product: product, position: forloop.index,
-                add_datalayer: true  %}
-            </div>
-          {% endfor %}
-        </div>
+  {{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+  <product-index-list data-section-id="{{ section.id }}" class="{{ section.id }} product-x-hidde">
+    <div class="container cl-container hover-cl-container">
+      <div class="index-cus-header">
+        <h2>{{ section.settings.title }}</h2>
+        {% render 'swiper-buttons' %}
       </div>
-      <div class="swiper-scrollbar"></div>
+      <div class="IndexBestswiper hover-list">
+        <div class="swiper {{ section.id }}-IndexBestswiper">
+          <div class="swiper-wrapper"
+            data-datalayer="true" 
+            data-event-type="view_item_list" 
+            data-list-name="recommended_product_exposure" 
+            data-scope-id="{{ section.id }}"
+            data-recommend-module="homepage/{{- section.settings.title -}}"
+          >
+            {% assign sort_collection_products = section.settings.collection.products %}
+            {%- for product in sort_collection_products -%}
+              <div class="swiper-slide">
+                {% render 'index-product-item', product: product, position: forloop.index,
+                  add_datalayer: true  %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="swiper-scrollbar"></div>
+      </div>
     </div>
-  </div>
-</product-index-list>
-
-<script>
-  (() => {
-    let dataLayerForm = null;
-    function generateUUID() {
-      return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-      );
-    }
-    const request_id = generateUUID();
-
-    const getDataLayerForm = () => {
-      const items = [];
-      $('.featured-product-list .index-product-item').each(function(index) {
-        const sku = $(this).data('sku');
-        const productId = $(this).data('product-id');
-        const varId = $(this).data('var-id');
-        const productTitle = $(this).data('product-title');
-        items.push({
-          index: index + 1,
-          item_id: sku,
-          sku_code: sku,
-          item_name: productTitle
-        });
-      });
-      return {
-        event: "view_item_list",
-        recommend_module:'homepage', //默认值
-        request_id,
-        rank_type:'',
-        ecommerce: {
-          item_list_id: "recommended_product_exposure",
-          items
-        }
-      }
-    }
-
-    const handleDataLayerPush = () => {
-      dataLayerForm = getDataLayerForm();
-      dataLayer.push(dataLayerForm);
-    }
-    const clickSerrchProduct = () => {
-      $('.featured-product-list a[datalayer-link]').off('click').on('click', function(event) {
-        const clicked_sku = $(this).data('sku');
-        const p_item = dataLayerForm.ecommerce.items.find(item => item.sku_code == clicked_sku);
-        if (p_item) {
-          const dataLayerFormCopy = {
-            ...dataLayerForm
-          };
-          delete dataLayerFormCopy.event;
-          const productLayerForm = {
-            ...dataLayerFormCopy,
-            event: 'select_item',
-            ecommerce: {
-              items: [p_item],
-              item_list_id: "recommended_product_click",
-            }
-          }
-          dataLayer.push(productLayerForm);
-        }
-      });
-    }
-
-    handleDataLayerPush();  //初始化执行 
-    clickSerrchProduct();
-  })();
-</script>
+  </product-index-list>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      DataLayerManagerFactory.getInstance('{{ section.id }}').init();
+    })
+  </script>
 {% else %} 
-  {% style %}
-    #shopify-section-{{ section.id }} {
-      display: none;
-    }
-  {% endstyle %}
+    {% style %}
+      #shopify-section-{{ section.id }} {
+        display: none;
+      }
+    {% endstyle %}
 {% endif %}
-{% schema %}
-{
-  "name": "product list",
-  "class": "section-padding section-gap featured-product-list product-swiper-list",
-  "settings": [
-    {
-      "type": "text",
-      "id": "title",
-      "label": "title",
-      "default": "Featured Brands"
-    },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "collection"
-    }
-  ],
-  "presets": [
-    {
-      "name": "product list"
-    }
-  ]
-}
-{% endschema %}
+  {% schema %}
+  {
+    "name": "product list",
+    "class": "section-padding section-gap featured-product-list product-swiper-list",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "title",
+        "default": "Featured Brands"
+      },
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "collection"
+      }
+    ],
+    "presets": [
+      {
+        "name": "product list"
+      }
+    ]
+  }
+  {% endschema %}
+  

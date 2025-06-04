@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  /*! modernizr 3.6.0 (Custom Build) | MIT * !*/
+  
 
   !(function (e, t, n) {
       function r(e, t) {
@@ -288,7 +288,7 @@
                           }, 3000);
                           continue;
                       }
-                      {% comment %} console.log(item); {% endcomment %}
+                      
                       let s = document.createElement('script');
                       s.type = 'text/javascript';
                       s.async = true;
@@ -325,7 +325,7 @@
               return;
           }
           if (node.src && node.src.includes('automizely')) {
-              {% comment %} console.log('automizely have src', node) {% endcomment %}
+              
           }
           if (node.innerHTML && node.innerHTML.includes('automizely') && node.innerHTML.includes('createElement')) {
               let startLoadTime = new Date().getTime();
@@ -333,7 +333,7 @@
               html = html.replaceAll("//", "/")
               html = html.replaceAll("\\/", "/")
               html = html.replaceAll("\\u0026", "&")
-              {% comment %} console.log('html:', html) {% endcomment %}
+              
               var list = html.substring(html.indexOf("[") + 1, html.indexOf("]"))
 
               list = list.split(",")
@@ -370,7 +370,7 @@
                   node.innerHTML = node.innerHTML.replace("if(window.attachEvent)", "document.addEventListener('asyncLazyLoad',function(event){asyncLoad();});if(window.attachEvent)").replaceAll(", asyncLoad", ", function(){}");
               }
               else if (node.innerHTML.includes("PreviewBarInjector") || node.innerHTML.includes("adminBarInjector")) {
-                {% comment %} node.innerHTML = node.innerHTML.replace("DOMContentLoaded", "loadBarInjector"); {% endcomment %}
+                
               }
                else if (typeof Modernizr.mutationobserver !== "undefined") {
                   node.setAttribute("data-src", node.src);

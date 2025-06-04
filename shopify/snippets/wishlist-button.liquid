@@ -80,7 +80,6 @@
 
 <script>
   (() => {
-    // 使用 DOM 元素解码 HTML 实体, 转义字符
     function decodeHTMLEntities(str) {
       let textarea = document.createElement('textarea');
       textarea.innerHTML = str;
@@ -105,9 +104,7 @@
         {% endif %}
       },
       methods: {
-        // 查询是否添加过心愿单
         initWish() {
-          // 查询是否添加过心愿单
           const formData = {
             customerId: this.customerId,
             productId: this.productId,
@@ -122,13 +119,11 @@
           })
           .then(response => response.json())
           .then(data => {
-            // 处理响应
             if (data.code == 200) {
               this.isDelete = data.data.isDelete
             }
           })
           .catch(error => {
-            // 处理错误
             this.$message({
               showClose: true,
               message: error,
@@ -138,14 +133,12 @@
         },
 
         toggleWish() {
-          // 添加或取消心愿单
           const formData = {
             customerId: this.customerId,
             productId: this.productId,
             sku: this.sku,
             productNum: 1
           };
-          // 发送请求
           fetch(`${window.zkh.api}/wish/` + (this.isDelete === 1 ? 'clear' : 'save'), {
               method: 'POST',
               body: JSON.stringify(formData),
@@ -155,7 +148,7 @@
           })
           .then(response => response.json())
           .then(data => {
-            if (data.code === 200) { // 刷新心愿单数量
+            if (data.code === 200) { 
               if(data.data.cancel) {
                 this.isDelete = 0;
               }
@@ -176,7 +169,6 @@
               }
               document.dispatchEvent(new CustomEvent('wish-refreash'));
             } else {
-              // 处理失败情况
               this.$message({
                 showClose: true,
                 message: data.msg,

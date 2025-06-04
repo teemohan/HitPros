@@ -70,11 +70,8 @@
     });
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('customer_posted') === 'true' || urlParams.get('contact[tags]') === 'newsletter') {
-      // 获取当前 URL
       const url = window.location.href;
-      // 查找 '?contact' 的位置
       const newUrl = url.split('?')[0];
-      // 使用 history.replaceState 更新 URL，但不刷新页面
       window.history.replaceState(null, null, newUrl);
       document.documentElement.scrollTop = document.body.scrollTop = Math.max(
         document.body.scrollHeight,

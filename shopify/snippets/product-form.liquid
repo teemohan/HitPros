@@ -710,7 +710,7 @@
                   <input type="hidden" disabled name="sku" value="{{ product.selected_or_first_available_variant.sku }}">
                   <input type="hidden" disabled name="stateCode" value="{{ customer.default_address.province_code }}">
                   {% comment %}
-                    customer.default_address.province_code  是C端默认地址
+                    customer.default_address.province_code 
                   {% endcomment %}
                     <product-payment-container
                       form-id="{{ product_form_id }}"
@@ -975,11 +975,8 @@
       },
       methods: {
         formatDate(timestamp, timezoneOffset = -5) {
-          // 创建 Date 对象（默认会使用 UTC 时间）
           const date = new Date(+timestamp);
-          // 调整时区：将日期偏移到 GMT-5
           const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
-          // 获取年份、月份和日期
           const year = localTime.getFullYear();
           const monthNames = [
             'January', 'February', 'March', 'April', 'May', 'June',
@@ -987,19 +984,17 @@
           ];
           const month = monthNames[localTime.getMonth()];
           const day = localTime.getDate();
-          // 确定日期后缀
           let suffix = '';
           if (day >= 11 && day <= 13) {
-            suffix = 'th'; // 特殊情况：11th, 12th, 13th
+            suffix = 'th'; 
           } else {
             switch (day % 10) {
               case 1: suffix = 'st'; break; // 1, 21, 31
               case 2: suffix = 'nd'; break; // 2, 22
               case 3: suffix = 'rd'; break; // 3, 23
-              default: suffix = 'th'; break; // 其他情况
+              default: suffix = 'th'; break; 
             }
           }
-          // 返回格式化后的日期
           return `${month} ${day}${suffix}, ${year}`;
         },
         async handleComputedDeleveryDate() {
@@ -1013,7 +1008,7 @@
                 const deliveryParam = {
                   MATNR: '{{ product.selected_or_first_available_variant.sku }}',
                   ZQTY: quantity,
-                  Z004: result.lookup.adminName1, // 使用 Zippopotam.us 查询到的州
+                  Z004: result.lookup.adminName1,
                   Z002: 'US',
                   POST_CODE2: _this.ruleForm.zipCode
                 };
@@ -1073,7 +1068,6 @@
       },
     });
 
-    // 打开弹窗
     $('.samples-btn').click(function (event) {
       event.stopPropagation();
       $('.samples-popup_shadow').show();
@@ -1081,14 +1075,12 @@
       $('body').addClass('no-scroll');
     });
 
-    // 弹窗关闭
     $('.samples-popup-imgbox').click(function () {
       $('.samples-popup_shadow').hide();
       $('.samples-popup-main').hide();
       $('body').removeClass('no-scroll');
     });
 
-    // 弹窗关闭
     $('.samples-popup_shadow').click(function () {
       $('.samples-popup_shadow').hide();
       $('.samples-popup-main').hide();

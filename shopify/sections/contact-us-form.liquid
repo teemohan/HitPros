@@ -164,7 +164,6 @@
         const $label = $(inputEl).closest('.el-form-item__content').find('label');
         
         const toggleLabelFocus = () => {
-          // Only remove the focus class if input is not focused and empty
           if ($(inputEl).val().length === 0 && !inputEl.matches(':focus')) {
             $label.removeClass('label--focus');
           }
@@ -175,7 +174,7 @@
         });
 
         inputEl.addEventListener('blur', () => {
-          setTimeout(toggleLabelFocus, 100); // Delay to check focus state
+          setTimeout(toggleLabelFocus, 100);
         });
 
         if (binding.value) {
@@ -237,7 +236,7 @@
             message: '',
           },
           category: '',
-          showCatelogEdit: false, // 是否是其他职业
+          showCatelogEdit: false, 
           catelogOptions: [
             { isSelected: false, value: 'Billing', label: 'Billing' },
             { isSelected: false, value: 'Orders', label: 'Orders' },
@@ -261,7 +260,6 @@
       },
       mounted() {
         $('#contact-wrapper').show();
-        // 获取当前 URL 的查询参数
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('contact_posted') === 'true') {
           this.$message({
@@ -269,11 +267,8 @@
             message: 'Submitted successfully',
             type: 'success',
           });
-          // 获取当前 URL
           const url = window.location.href;
-          // 查找 '?contact' 的位置
           const newUrl = url.split('?contact')[0];
-          // 使用 history.replaceState 更新 URL，但不刷新页面
           window.history.replaceState(null, null, newUrl);
         }
       },
@@ -286,7 +281,7 @@
         }
       },
       methods: {
-        submitForm(formName) { // 提交表单
+        submitForm(formName) { 
           this.$refs[formName].validate((valid) => {
             if (valid) {
               this.loading = true;
@@ -300,7 +295,7 @@
           }
         },
         handleButtonClick(event, catelogItem) {
-          event.stopPropagation(); // 阻止冒泡，防止关闭
+          event.stopPropagation(); 
           if (catelogItem.isSelected) return;
           this.catelogOptions.map((item) => (item.isSelected = false));
           const category = this.catelogOptions.find((item) => item.value == catelogItem.value);

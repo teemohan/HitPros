@@ -95,7 +95,6 @@
                     </div>
                   </a>
                 </div>
-                <!-- PC端显示 -->
                 <div class="w-full" v-if="!isMobile">
                   <div class="mt-5 w-full">
                     <div class="w-full" :style="{'min-height': item.skus.length > skuPageSize ? '272px': 'auto'}">
@@ -108,7 +107,6 @@
                         </div>
                         <div class="w-[148px] flex items-center justify-center text-center">Quantity</div>
                       </div>
-                      <!-- 使用分页后的SKU数据 -->
                       <div class="w-full hidden fb-sm:block " v-for="(lib, libindex) in getPaginatedSkus(item.spu)" :key="lib.skuCode">
                         <div class="text-xs text-black justify-between min-h-10 items-center hidden py-2 fb-sm:flex w-full hover:bg-D3DEF1 hover:rounded-sm" :data-sku="lib.skuCode">
                             <div class="flex-1 w-full h-full flex items-center justify-between cursor-pointer">
@@ -168,7 +166,6 @@
                       </div>
                     </div>
                   </div>
-                  <!-- 分页控件 -->
                   <div class="hidden mt-4 fb-sm:flex justify-end items-center" v-if="item.skus.length > skuPageSize">
                     <el-pagination
                       @current-change="(page) => handleSkuPageChange(item.spu, page)"
@@ -179,7 +176,6 @@
                     </el-pagination>
                   </div>
                 </div>
-                <!-- 移动端显示 -->
                 <div class="w-full" v-else>
                   <div class="fb-sm:hidden grid grid-cols-2 gap-4">
                     <div class="w-full" v-for="(lib, libindex) in item.skus" :key="'mob' + lib.skuCode">
@@ -301,6 +297,13 @@
   data-title="{{ collection.title }}"
   data-product-count="{{ collection.products_count }}"
   >
+  </div>
+  <div class="hidden js-hidden-content">
+    {% paginate collection.products by 50 %}
+      {%- for product in collection.products -%}
+        {%- render 'index-product-item', product: product -%}
+      {%- endfor -%}
+    {% endpaginate %}
   </div>
 </section>
 

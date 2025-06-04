@@ -236,9 +236,9 @@
   .order-more-info__reason select:focus{
     border: none;
     padding-left: 10px;
-    appearance: none;         /* 去除浏览器默认样式 */
-    -webkit-appearance: none; /* 兼容 WebKit 浏览器 */
-    -moz-appearance: none;    /* 兼容 Firefox */
+    appearance: none;        
+    -webkit-appearance: none; 
+    -moz-appearance: none;  
   }
   .order-more-info__reason.is-filled select{
     color: #1a1a1a;
@@ -743,7 +743,7 @@
           $label.addClass('label--focus');
         });
         inputEl.addEventListener('blur', () => {
-          setTimeout(toggleLabelFocus, 100); // 延迟检查
+          setTimeout(toggleLabelFocus, 100); 
         });
 
         if (binding.value) {
@@ -772,41 +772,41 @@
           isFetching: true,
           param: null,
           orderId: 0,
-          refundQty: 1, // 初始值设置为 1
+          refundQty: 1, 
           refundAmount: 0,
           orderItems: [],
           orderMain: {},
           refundReason: '',
           ordersItemsIds: [],
-          refundAmountMax: 0, // 最大退款金额
+          refundAmountMax: 0, 
           refundOption: '',
-          buttonIsDisableTemp: false, // 用于控制按钮的临时禁用状态
+          buttonIsDisableTemp: false, 
           params: {},
           refundFileUrl: [],
           estimatedAmount: 0,
           attachmentPreviewUrls: [],
           showIndustryEdit: false,
           currencySymbols: {
-            USD: '$', // 美元
-            EUR: '€', // 欧元
-            GBP: '£', // 英镑
-            JPY: '¥', // 日元
-            CNY: '¥', // 人民币
-            AUD: '$', // 澳大利亚元
-            CAD: '$', // 加拿大元
-            CHF: 'CHF', // 瑞士法郎
-            NZD: '$', // 新西兰元
-            INR: '₹', // 印度卢比
-            RUB: '₽', // 俄罗斯卢布
-            KRW: '₩', // 韩元
-            SGD: '$', // 新加坡元
-            HKD: '$', // 港元
-            SEK: 'kr', // 瑞典克朗
-            NOK: 'kr', // 挪威克朗
-            TRY: '₺', // 土耳其里拉
-            MXN: '$', // 墨西哥比索
-            BRL: 'R$', // 巴西雷亚尔
-            ZAR: 'R', // 南非兰特
+            USD: '$', 
+            EUR: '€', 
+            GBP: '£', 
+            JPY: '¥',
+            CNY: '¥', 
+            AUD: '$',
+            CAD: '$', 
+            CHF: 'CHF', 
+            NZD: '$', 
+            INR: '₹', 
+            RUB: '₽', 
+            KRW: '₩', 
+            SGD: '$', 
+            HKD: '$', 
+            SEK: 'kr', 
+            NOK: 'kr', 
+            TRY: '₺', 
+            MXN: '$', 
+            BRL: 'R$', 
+            ZAR: 'R', 
           },
           industryOptions: [
             { value: 'Bought by mistake', label: 'Bought by mistake', isSelected: false },
@@ -831,14 +831,12 @@
           success: (data) => {
             this.orderMain = data.data.order;
             const currencySymbol = this.currencySymbols[this.orderMain.currency] || '$';
-            // 使用箭头函数，使 `this` 指向 Vue 实例
             this.orderItems = this.orderMain.line_items.map((item) => {
               const taxTotal = item.tax_lines.reduce((sum, taxLine) => sum + parseFloat(taxLine.price), 0);
               const priceOneTotal = parseFloat(item.pre_tax_price) / item.quantity;
               const priceTotal = priceOneTotal * parseInt(item.current_quantity, 10);
               const taxCurrentTotal = this.roundUpToSecondDecimal((parseFloat(taxTotal) / item.quantity) * item.current_quantity);
               this.isFetching = false
-              // 返回新的对象
               return {
                 ...item,
                 refundQty: item.current_quantity, // Default refund quantity
@@ -851,7 +849,6 @@
       },
       watch: {
         orderItems(newVal) {
-          // 当 orderItems 有值时，确保操作 DOM 元素
           if (newVal.length > 0) {
             this.$nextTick(() => {
               let orders = window.location.href.split('=').slice(2);
@@ -861,14 +858,14 @@
                 $('.order-line-item-wrapper').each(function () {
                   let variant = Number($(this).data('variant'));
                   if (!orders.includes(variant)) {
-                    $(this).attr('data-visible', 'false'); // 设置为隐藏
+                    $(this).attr('data-visible', 'false'); 
                     $(this).remove();
                   } else {
-                    $(this).attr('data-visible', 'true'); // 设置为显示
+                    $(this).attr('data-visible', 'true');
                   }
                 });
                 this.$nextTick(() => {
-                  this.calculateTotalRefundAmount(); // 页面加载完成后，计算总退款金额
+                  this.calculateTotalRefundAmount(); 
                 });
               }
             });
@@ -880,13 +877,11 @@
           let orders = window.location.href.split('=').slice(2);
           if (orders.length > 0) {
             orders = orders.map((item) => Number(item.split('&')[0]));
-            // 筛选出符合条件的 orderItems
             return this.orderItems.filter((item) => orders.includes(item.variant_id));
           }
           return [];
         },
         buttonIsDisable() {
-          // 如果refundOption为空且按钮没被临时禁用，按钮禁用
           return this.refundOption === '' || this.buttonIsDisableTemp;
         },
       },
@@ -913,7 +908,6 @@
           }
         },
         checkIsAllSelected() {
-          //获取所有的order-line-item-wrapper下的input
           const checkboxes = document.querySelectorAll('.line-item-checkbox');
           const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper');
           let isAllSelected = true;
@@ -930,7 +924,6 @@
           }
         },
         handleSubmit() {
-          // 点击提交时禁用按钮
           this.buttonIsDisableTemp = true;
 
           this.params = {
@@ -961,14 +954,10 @@
             })),
           };
           const selectElement = document.getElementById('refund-reason');
-          //获取selectElement前一个兄弟元素
           const selectElementPrev = document.querySelector('.alert-label');
-          // 检查 select 的值是否为空
           if (!selectElement.value) {
-            // 如果为空，设置样式使其变为图1的样式
-            selectElement.style.borderColor = '#F0B429'; // 设置为黄色
-            selectElementPrev.style.color = '#F0B429'; // 前一个元素的文字颜色也变为黄色
-            // 弹出提示框
+            selectElement.style.borderColor = '#F0B429'; 
+            selectElementPrev.style.color = '#F0B429'; 
             setTimeout(() => {
               this.$message({
                 showClose: true,
@@ -976,17 +965,14 @@
                 type: 'error',
               });
             }, 100);
-            // 请求失败后恢复按钮状态
             this.buttonIsDisableTemp = false;
             return false;
           } else {
             this.params.orderRefundMain.refundType = 1;
-            // 调用函数
             this.createRefund(this.params);
           }
         },
         async createRefund(params) {
-          // 点击提交时禁用按钮
           this.buttonIsDisableTemp = true;
           try {
             const res = await fetch(`${window.zkh.api}/openapi/shopify/refund/create`, {
@@ -1036,7 +1022,6 @@
           } catch (error) {
             console.error('Request failed');
           } finally {
-            // 请求完成后恢复按钮状态
             this.buttonIsDisableTemp = false;
           }
         },
@@ -1053,7 +1038,6 @@
           }
         },
         updateRefundAmount(order) {
-          // 计算税金总和
           const taxTotal = order.tax_lines.reduce((sum, taxLine) => sum + parseFloat(taxLine.price), 0);
 
           const taxCurrentTotal = this.roundUpToSecondDecimal((parseFloat(taxTotal) / order.quantity) * order.current_quantity);        
@@ -1082,12 +1066,10 @@
             const numericRefundAmount = parseFloat(
               item.refundAmount.replace(currencySymbol, '').replace(/[^0-9.]/g, '')
             );
-            // 累加到 totalRefundAmount
             if (!isNaN(numericRefundAmount)) {
               totalRefundAmount += numericRefundAmount;
             }
           });
-          // 更新总退款金额的绑定
           this.refundAmount = `${totalRefundAmount.toFixed(2)}`;
           this.refundAmountMax = `${totalRefundAmount.toFixed(2)}`
           this.estimatedAmount = `${currencySymbol}${totalRefundAmount.toFixed(2)}`;
@@ -1096,7 +1078,6 @@
           }
         },
         validateInput() {
-          // 确保 refundAmountInput 在 0 和 refundAmount 范围内
           if ( Number(this.refundAmount) < 0) {
             this.refundAmount = 0;
           } else if ( Number(this.refundAmount) >  Number(this.refundAmountMax)) {
@@ -1112,20 +1093,18 @@
           input.multiple = true;
           input.style.display = 'none';
 
-          // 限制上传文件数量，最多只能选择15个文件
           if (this.refundFileUrl.length > 15) {
             this.$message({
               showClose: true,
               message: 'You can only upload up to 15 files.',
               type: 'error',
             });
-            return; // 退出函数，阻止选择文件
+            return; 
           }
 
           input.addEventListener('change', async (event) => {
             const files = event.target.files;
 
-            // 计算选择的文件和已有文件的总数量
             const totalFiles = this.refundFileUrl.length + files.length;
 
             if (totalFiles > 15) {
@@ -1134,17 +1113,15 @@
                 message: 'You can only upload up to 15 files.',
                 type: 'error',
               });
-              return; // 退出函数，防止超过15个文件上传
+              return; 
             }
 
             if (files) {
               for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-                // 生成文件预览 URL
                 const previewUrl = URL.createObjectURL(file);
                 this.attachmentPreviewUrls.push({ url: previewUrl, type: file.type, name: file.name });
 
-                // 上传文件
                 const formData = new FormData();
                 formData.append('file', file);
 
@@ -1159,7 +1136,6 @@
                   }
 
                   const result = await response.json();
-                  // 将返回的文件 URL 添加到 refundFileUrl 数组中
                   this.refundFileUrl.push(result.data);
                   // if (this.refundFileUrl.length <= 15) {
                   //   this.refundFileUrl.push(result.data);
@@ -1180,10 +1156,9 @@
           input.click();
         },
         removeAttachment(index) {
-          // 释放预览 URL 资源
           URL.revokeObjectURL(this.attachmentPreviewUrls[index].url);
           this.attachmentPreviewUrls.splice(index, 1);
-          this.refundFileUrl.splice(index, 1); // 同时从 refundFileUrl 中移除上传的文件 URL
+          this.refundFileUrl.splice(index, 1); 
         },
         copyToClipboard(name) {
           const el = document.createElement('textarea');
@@ -1199,25 +1174,19 @@
         },
         formateDate(dateString) {
           if (dateString) {
-            // 创建日期对象（自动解析时区偏移）
             const date = new Date(dateString);
-            date.setMilliseconds(0); // 设置毫秒为 0
-            // 将日期时间转换到指定时区（GMT-0500）
-            const offset = -5 * 60; // GMT-0500 转为分钟
+            date.setMilliseconds(0);
+            const offset = -5 * 60; 
             const localTime = new Date(date.getTime() + (date.getTimezoneOffset() + offset) * 60000);
-            // 格式化月份（缩写并加点）
             const monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
             const month = monthNames[localTime.getMonth()];
-            // 格式化日期和年份
             const day = localTime.getDate();
             const year = localTime.getFullYear();
-            // 格式化小时（12 小时制）
             let hours = localTime.getHours();
             const period = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12 || 12; // 转为 12 小时制
+            hours = hours % 12 || 12; 
             const minutes = String(localTime.getMinutes()).padStart(2, '0');
             const seconds = String(localTime.getSeconds()).padStart(2, '0');
-            // 返回格式化后的日期字符串
             return `${month} ${day}, ${year} at ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${period}`;
           }
         },
@@ -1225,7 +1194,7 @@
           window.history.back();
         },
         handleButtonClick(event, industryItem) {
-          event.stopPropagation(); // 阻止冒泡，防止关闭
+          event.stopPropagation(); 
           this.industryOptions.map((item) => (item.isSelected = false));
           const industry = this.industryOptions.find((item) => item.value == industryItem.value);
           industry.isSelected = true;
@@ -1234,7 +1203,7 @@
             this.refundOption = '';
             this.showIndustryEdit = true;
           } else {
-            this.$refs.sel.blur(); // 关闭菜单
+            this.$refs.sel.blur(); 
             this.showIndustryEdit = false;
           }
         },

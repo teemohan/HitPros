@@ -47,7 +47,7 @@
 <script>
   (() => {
     window.mobileSidebar = {
-      template: '#mobileSidebar', // 个人中心侧边栏
+      template: '#mobileSidebar',
       delimiters: ['${', '}'],
       props: {
         mobile_sidebar_show: Boolean,
@@ -88,9 +88,7 @@
       },
       mounted() {
         const queryString = window.location.search;
-        // 将查询字符串解析为对象
         const params = new URLSearchParams(queryString);
-        // 获取特定参数的值
         const linkSlug = params.get('slug');
         if (linkSlug) {
           try {
@@ -118,7 +116,7 @@
           $('#mobile_main_nav').removeClass('nav-open');
         },
         logout() {
-          Cookies.remove('cart'); // 购物车相关
+          Cookies.remove('cart');
           if(window.themeVariables.userCompany.isB2b == 'true') {
             Cookies.set('logout', 1);
             window.location.href = `${window.zkh.b2b_url}/logout`;

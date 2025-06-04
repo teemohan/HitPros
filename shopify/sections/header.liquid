@@ -658,7 +658,7 @@
         })
       {% endif %}
     }
-    getWishCount(); // 初始化的时候查一次
+    getWishCount(); 
     document.addEventListener('wish-refreash', function() {
       getWishCount();
     });
@@ -683,34 +683,30 @@
       }
     );
 
-    let header_menu_timer;  // 定义一个计时器变量
+    let header_menu_timer;  
     $('.header-menu-item').hover(
       function() {
-        var $this = $(this);  // 当前元素的 jQuery 对象
-        // 鼠标悬停时设置定时器
+        var $this = $(this); 
         header_menu_timer = setTimeout(function() {
             $this.addClass('hover');
-        }, 300); // 延迟 0.3 秒
+        }, 300); 
       },
       function() {
-        // 鼠标离开时清除定时器并移除类
         clearTimeout(header_menu_timer);
         $(this).removeClass('hover');
       }
     );
 
-    let header_scroll_timer;  // 定义一个计时器变量
+    let header_scroll_timer; 
     $('.header-menu-item:first-child').hover(
       function() {
-        // 鼠标悬停时设置定时器
         header_scroll_timer = setTimeout(function() {
-          $('body').addClass('no-scroll'); // 当鼠标悬停时添加类
-        }, 300); // 延迟 0.3 秒
+          $('body').addClass('no-scroll'); 
+        }, 300); 
       },
       function() {
-        // 鼠标离开时清除定时器并移除类
         clearTimeout(header_scroll_timer);
-        $('body').removeClass('no-scroll'); // 当鼠标离开时移除类
+        $('body').removeClass('no-scroll');
       }
     );
 

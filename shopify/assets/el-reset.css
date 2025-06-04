@@ -1,4 +1,4 @@
-/* el-select checkbox*/
+
 .el-select-dropdown__item .el-checkbox {
   display: flex;
   white-space: unset;
@@ -68,7 +68,7 @@
 }
 
 
-/* checkbox*/
+
 .el-reset-from .el-button {
   border: none;
 }
@@ -126,7 +126,7 @@
   font-weight: 14px;
 }
 
-/* checkbox-end*/
+
 
 
 .el-reset-from .el-label {
@@ -188,7 +188,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
-  /* 超出几行省略 */
+  
   overflow: hidden;
 }
 
@@ -213,7 +213,7 @@
   color: var(--my-blue);
 }
 
-/* 提示 */
+
 .reset-form-tips {
   padding-bottom: 22px;
   list-style: circle;
@@ -224,7 +224,7 @@
   line-height: 21px;
 }
 
-/* 分页*/
+
 .el-pagination {
   display: flex;
   padding: 0;
@@ -252,9 +252,9 @@
   color: var(--my-black);
 }
 
-/* 分页-end*/
 
-/* 密码提示*/
+
+
 .reset-form-tips li {
   list-style: disc;
 }
@@ -267,14 +267,14 @@
   margin-left: -20px;
 }
 
-/* 自定义select框*/
+
 .common-select {
   position: relative;
 }
 
 .el-reset-from .el-reset-from .el-reset-from .readonly-input {
   pointer-events: none;
-  /* 禁止交互，但样式保持不变 */
+  
   background-color: inherit;
   color: inherit;
   cursor: text;
@@ -306,7 +306,7 @@
   color: #333333;
 }
 
-/* dialog部分*/
+
 .choose-dialog .el-dialog {
   max-width: 484px;
 }
@@ -438,7 +438,7 @@
   font-weight: 500;
 }
 
-/* diglog-end*/
+
 @media screen and (min-width: 741px) {
   .dialog-form-btn {
     gap: 0;

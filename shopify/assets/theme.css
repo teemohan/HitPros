@@ -1,15 +1,13 @@
-/**
- * NOTE: most of the CSS variables used are defined in the "css-variables.liquid" snippet file
- */
+
  .none-copy {
   -webkit-user-select: none;
-  /* Safari */
+  
   -moz-user-select: none;
-  /* Firefox */
+  
   -ms-user-select: none;
-  /* IE10+/Edge */
+  
   user-select: none;
-  /* Standard */
+  
 }
 
 @media screen and (max-width: 740px) {
@@ -78,7 +76,7 @@
   }
 }
 
-/*! minireset.css v0.0.6 | MIT License | github.com/jgthms/minireset.css */
+
 
 *,
 *::before,
@@ -172,7 +170,7 @@ video {
   vertical-align: top;
 }
 
-/* By default Firefox show the alt tag of image while image is loading, which is often not desirable */
+
 img:-moz-loading {
   visibility: hidden;
 }
@@ -191,7 +189,7 @@ th {
   padding: 0;
 }
 
-/*! PhotoSwipe main CSS by Dmitry Semenov | photoswipe.com | MIT license */
+
 
 .pswp {
   display: none;
@@ -233,7 +231,7 @@ th {
   cursor: grabbing;
 }
 
-/* Background is added as a separate element, as animating opacity is much faster than animating rgba() background-color. */
+
 .pswp__bg {
   position: absolute;
   left: 0;
@@ -266,7 +264,7 @@ th {
   bottom: 0;
 }
 
-/* Prevent selection and tap highlights */
+
 .pswp__container,
 .pswp__img {
   -webkit-user-select: none;
@@ -314,7 +312,7 @@ th {
   left: 0;
 }
 
-/* UI */
+
 
 [dir="ltr"] .pswp__top-bar {
   right: var(--container-gutter);
@@ -336,7 +334,7 @@ th {
   left: 0;
   right: 0;
   top: calc(50% - 28px);
-  /* 28px is half the height of button */
+  
   margin-left: var(--container-gutter);
   margin-right: var(--container-gutter);
   pointer-events: none;
@@ -400,7 +398,7 @@ th {
   height: 100%;
 }
 
-/* draggable */
+
 .flickity-enabled.is-draggable {
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
@@ -427,12 +425,12 @@ th {
   direction: rtl;
 }
 
-/* flickity-fade */
+
 .flickity-enabled.is-fade .flickity-slider>* {
   pointer-events: none;
   z-index: 0;
   transition: visibility 0.2s linear;
-  /* this is a hotfix for Safari mobile */
+  
 }
 
 .flickity-enabled.is-fade .flickity-slider>.is-selected {
@@ -444,11 +442,7 @@ th {
   visibility: hidden;
 }
 
-/**
- * -------------------------------------------------------------
- * GENERAL TYPOGRAPHY
- * -------------------------------------------------------------
- */
+
 
 html {
   font-family: var(--text-font-family);
@@ -462,7 +456,7 @@ html {
 
 :lang(ar) * {
   letter-spacing: normal !important;
-  /* Arabic should never have letter spacing as it makes it unreadable on some fonts */
+  
 }
 
 p strong,
@@ -553,7 +547,7 @@ p a:not(.button),
   transition: text-decoration-color 0.2s ease-in-out, color 0.2s ease-in-out, -webkit-text-decoration-color 0.2s ease-in-out;
 }
 
-/* When the link class is assigned to the heading--small, we have to force increase the line height to prevent the line to overlap */
+
 .heading--small.link {
   line-height: 1.8;
 }
@@ -569,7 +563,7 @@ p a:not(.button),
   }
 }
 
-/* Animated link */
+
 .link--animated {
   display: block;
   position: relative;
@@ -630,7 +624,7 @@ p a:not(.button),
   }
 }
 
-/* Hide a text visually without removing it from screen readers (mostly used for accessibility) */
+
 .visually-hidden {
   position: absolute !important;
   overflow: hidden;
@@ -642,7 +636,7 @@ p a:not(.button),
   border: 0;
 }
 
-/* Headings */
+
 
 @media screen and (min-width: 741px) {
   html {
@@ -670,11 +664,7 @@ p a:not(.button),
   }
 }
 
-/**
- * -------------------------------------------------------------
- * RTE STYLES
 
- */
 
 .heading:first-child {
   margin-top: 0;
@@ -684,18 +674,14 @@ p a:not(.button),
   margin-bottom: 0;
 }
 
-/*
- * IMPLEMENTATION NOTE: while those are called "heading--small", they are actually using the text font and not the heading
- * font. The reason is that we found out that due to their small size, the body font usually works better visually. Of
- * course if both heading and body font are the same, this won't change anything.
- */
+
 .heading--small,
 .heading--xsmall,
 .heading--xxsmall {
   font-family: var(--text-font-family);
   font-style: var(--text-font-style);
   text-transform: uppercase;
-  /* Small headings are always uppercase */
+  
   font-weight: var(--text-font-bold-weight);
   line-height: 1.4663636;
   letter-spacing: 1px;
@@ -712,7 +698,7 @@ p a:not(.button),
 .heading--small {
   font-size: var(--heading-small-font-size);
   line-height: 1.5;
-  /* Slightly bigger line height */
+  
 }
 
 .heading--large,
@@ -878,7 +864,7 @@ p a:not(.button),
   font-size: 11px;
 }
 
-/* Minimal table styling, with a bordered variation */
+
 
 .table-wrapper {
   overflow-x: auto;
@@ -1114,7 +1100,7 @@ p a:not(.button),
 
 @media screen and (min-width: 1000px) {
 
-  /* The rich text table keep the smaller padding as merchant often use RTE with lot of columns */
+  
   .table {
     --table-spacing: 24px;
   }
@@ -1202,14 +1188,7 @@ p a:not(.button),
   }
 }
 
-/**
- * -------------------------------------------------------------
- * RTE SPACING
- *
- * NOTE: to have the same spacing as in an RTE field, you can wrap
- *       the element by a div with the class "text-container"
- * -------------------------------------------------------------
- */
+
 
 .text-container p:not(.heading)+p,
 .rte p:not(.heading)+p,
@@ -1304,7 +1283,7 @@ p a:not(.button),
   }
 }
 
-/* We remove the spacing for first item and last item */
+
 
 .rte> :first-child,
 .text-container> :first-child {
@@ -1316,14 +1295,7 @@ p a:not(.button),
   margin-bottom: 0;
 }
 
-/**
- * -------------------------------------------------------------
- * SPACING COMBINATIONS
- *
- * NOTE: this define common combination in order to provide a consistent
- *       styling throughout the theme
- * -------------------------------------------------------------
- */
+
 
 .heading--small+.heading--large {
   margin-top: 32px;
@@ -1407,33 +1379,21 @@ p+.button-group,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * SHOPIFY SECTION
- * -------------------------------------------------------------
- */
+
 
 .shopify-section {
   color: rgb(var(--text-color));
-  /* Allow easy override of per-section color */
+  
   scroll-margin-top: calc(var(--header-height, 0px) * var(--enable-sticky-header) + var(--announcement-bar-height, 0px) * var(--enable-sticky-announcement-bar));
 }
 
-/**
- * -------------------------------------------------------------
- * TABBING MANAGEMENT
- * -------------------------------------------------------------
- */
+
 
 .js .no-focus-outline *:focus {
   outline: none;
 }
 
-/**
- * -------------------------------------------------------------
- * LOCK UTILITY
- * -------------------------------------------------------------
- */
+
 
 .lock-all {
   overflow: hidden;
@@ -1447,14 +1407,9 @@ p+.button-group,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * CONTAINER
- * -------------------------------------------------------------
- */
 
-/* Implementation note: the double selector for policy container allows to increase selector specificity to override
-   Shopify default style */
+
+
 .container,
 .shopify-policy__container.shopify-policy__container {
   width: 100%;
@@ -1462,7 +1417,7 @@ p+.button-group,
   margin-left: auto;
   margin-right: auto;
   --container-outer-margin: 0px;
-  /* Inside a container only the gutter remains as margin */
+  
 }
 
 .container--small {
@@ -1471,7 +1426,7 @@ p+.button-group,
 
 @media screen and (max-width: 999px) {
 
-  /* Variation that remove the padding on small devices */
+  
   .container--flush {
     padding-left: 0;
     padding-right: 0;
@@ -1482,15 +1437,11 @@ p+.button-group,
   .container--medium {
     padding-left: calc(var(--container-gutter) + var(--grid-column-width) + var(--grid-gap));
     padding-right: calc(var(--container-gutter) + var(--grid-column-width) + var(--grid-gap));
-    /* Medium container just adds an extra column on left and top */
+    
   }
 }
 
-/**
- * --------------------------------------------------------------------
- * NON-JS AND REVEAL ELEMENTS
- * --------------------------------------------------------------------
- */
+
 
 .js .no-js {
   display: none !important;
@@ -1512,11 +1463,7 @@ p+.button-group,
   visibility: visible;
 }
 
-/**
- * --------------------------------------------------------------------
- * ACCESSIBILITY
- * --------------------------------------------------------------------
- */
+
 
 .skip-to-content:focus {
   clip: auto;
@@ -1531,11 +1478,7 @@ p+.button-group,
   transition: none;
 }
 
-/**
- * --------------------------------------------------------------------
- * VERTICAL BREATHER
- * --------------------------------------------------------------------
- */
+
 
 .vertical-breather {
   padding-top: var(--vertical-breather);
@@ -1571,12 +1514,7 @@ p+.button-group,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * ANCHOR
- * Doc: https://gomakethings.com/how-to-prevent-anchor-links-from-scrolling-behind-a-sticky-header-with-one-line-of-css/
- * -------------------------------------------------------------
- */
+
 
 .anchor {
   scroll-margin-top: calc(var(--header-height, 0px) * var(--enable-sticky-header) + var(--announcement-bar-height, 0px) * var(--enable-sticky-announcement-bar) + var(--anchor-offset, 20px));
@@ -1584,23 +1522,19 @@ p+.button-group,
 
 .anchor.vertical-breather:not(.vertical-breather--margin) {
   --anchor-offset: 0px;
-  /* There is already lot of space brought by vertical breather so no need for extra one */
+  
 }
 
 .anchor.vertical-breather--margin {
   --anchor-offset: var(--vertical-breather);
-  /* This is used to compensate the margin */
+  
 }
 
 .anchor.vertical-breather--tight.vertical-breather--margin {
   --anchor-offset: var(--vertical-breather-tight);
 }
 
-/**
- * --------------------------------------------------------------------
- * ICON
- * --------------------------------------------------------------------
- */
+
 
 .icon {
   display: block;
@@ -1614,7 +1548,7 @@ p+.button-group,
   display: inline-block;
 }
 
-/* Simple component allowing to align a text with an icon */
+
 .icon-text {
   display: flex;
   align-items: center;
@@ -1633,7 +1567,7 @@ p+.button-group,
 @supports (scale: 1) {
   [dir="rtl"] .icon--direction-aware {
     scale: -1 1;
-    /* Allows to have better support if it is combined with other transforms */
+    
   }
 }
 
@@ -1643,11 +1577,7 @@ p+.button-group,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * LIST
- * -------------------------------------------------------------
- */
+
 
 .list--unstyled {
   list-style: none;
@@ -1655,11 +1585,7 @@ p+.button-group,
   margin: 0;
 }
 
-/**
- * --------------------------------------------------------------------
- * LOADING BAR
- * --------------------------------------------------------------------
- */
+
 
 .loading-bar {
   position: fixed;
@@ -1680,11 +1606,7 @@ p+.button-group,
   opacity: 1;
 }
 
-/**
- * -------------------------------------------------------------
- * SECTION
- * -------------------------------------------------------------
- */
+
 
 .section {
   display: block;
@@ -1700,9 +1622,7 @@ p+.button-group,
   display: none;
 }
 
-/* This class is actually not really useful as you could just remove the "section" class to remove the padding. However
-   for clarity, I preferred to assign the class "section" to every section, and then add an extra class conditionally to
-   flush, as it makes it clear in the code that it is a section */
+
 .section--flush {
   margin-top: 0;
   margin-bottom: 0;
@@ -1710,7 +1630,7 @@ p+.button-group,
 
 .section__color-wrapper {
   display: flow-root;
-  /* Modern clearfix */
+  
   background: rgb(var(--section-background, var(--background)));
 }
 
@@ -1783,11 +1703,7 @@ p+.button-group,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * PAGE
- * -------------------------------------------------------------
- */
+
 
 .page-header {
   position: relative;
@@ -1855,17 +1771,13 @@ p+.button-group,
     margin-bottom: 120px;
   }
 
-  /* When the page header is immediately preceded by a floating breadcrumb, we increase the size */
+  
   .breadcrumb--floating+.page-header__text-wrapper {
     margin-top: 80px;
   }
 }
 
-/**
- * -------------------------------------------------------------
- * BREADCRUMB
- * -------------------------------------------------------------
- */
+
 
 .breadcrumb {
   z-index: 1;
@@ -1903,11 +1815,7 @@ p+.button-group,
   float: right;
 }
 
-/**
- * -------------------------------------------------------------
- * PAGINATION
- * -------------------------------------------------------------
- */
+
 
 .pagination {
   display: flex;
@@ -1951,11 +1859,7 @@ p+.button-group,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * LINKLIST
- * -------------------------------------------------------------
- */
+
 
 .linklist__item:not(:first-child) {
   padding-top: 12px;
@@ -1969,15 +1873,11 @@ p+.button-group,
 @media screen and (min-width: 1000px) {
   .linklist__item:not(:first-child) {
     padding-top: 6px;
-    /* On desktop we use less space as we do not have as much constraint for tap area */
+    
   }
 }
 
-/**
- * -------------------------------------------------------------
- * ANIMATED PLUS
- * -------------------------------------------------------------
- */
+
 
 .animated-plus {
   position: relative;
@@ -2016,11 +1916,7 @@ p+.button-group,
   transform: translate(-50%, -50%) rotate(90deg);
 }
 
-/**
- * --------------------------------------------------------------------
- * ASPECT RATIO
- * --------------------------------------------------------------------
- */
+
 
 .aspect-ratio {
   position: relative;
@@ -2029,7 +1925,7 @@ p+.button-group,
   margin-right: auto;
 }
 
-/* The aspect-ratio can also contain a native HTML5 video element */
+
 .aspect-ratio img,
 .aspect-ratio video,
 .aspect-ratio svg {
@@ -2056,7 +1952,7 @@ p+.button-group,
   object-fit: contain;
   top: 50%;
   left: 50%;
-  /* We must use this and not logical property here */
+  
   transform: translate(-50%, -50%) !important;
 }
 
@@ -2098,11 +1994,7 @@ p+.button-group,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * PLACEHOLDER
- * -------------------------------------------------------------
- */
+
 
 .placeholder-image {
   position: relative;
@@ -2135,11 +2027,7 @@ p+.button-group,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * PROGRESS BAR
- * -------------------------------------------------------------
- */
+
 
 .progress-bar {
   display: block;
@@ -2167,11 +2055,7 @@ p+.button-group,
   background: rgb(var(--text-color));
 }
 
-/**
- * -------------------------------------------------------------
- * CUSTOM DRAG CURSOR
- * -------------------------------------------------------------
- */
+
 
 [draggable].is-scrollable {
   cursor: none;
@@ -2182,7 +2066,7 @@ p+.button-group,
   display: block;
   top: 0;
   left: 0;
-  /* Must not use logical properties here !! */
+  
   width: 60px;
   height: 60px;
   pointer-events: none;
@@ -2208,11 +2092,7 @@ not screen and (pointer: fine) {
   }
 }
 
-/**
- * -------------------------------------------------------------
- * TAP AREA (this allows to increase the tap area on mobile)
- * -------------------------------------------------------------
- */
+
 
 .tap-area {
   position: relative;
@@ -2262,11 +2142,7 @@ not screen and (pointer: fine) {
   bottom: -10px;
 }
 
-/**
- * --------------------------------------------------------------------
- * SCROLLER (only for mobile and desktop)
- * --------------------------------------------------------------------
- */
+
 
 @media screen and (max-width: 999px) {
   .scroller {
@@ -2275,14 +2151,14 @@ not screen and (pointer: fine) {
     scroll-snap-type: x mandatory;
     margin-left: calc(-1 * var(--container-gutter));
     margin-right: calc(-1 * var(--container-gutter));
-    /* On mobile we remove the container gutter to make sure the scroll is edge to edge */
+    
     scrollbar-width: none;
-    /* Hide scrollbar for Firefox */
+    
   }
 
   .scroller::-webkit-scrollbar {
     display: none;
-    /* Hide scrollbar for Chrome and Safari */
+    
   }
 
   .scroller__inner {
@@ -2291,44 +2167,32 @@ not screen and (pointer: fine) {
     padding-right: var(--container-gutter);
     margin-left: auto;
     margin-right: auto;
-    /* margin rules allow to center the content if there are not enough elements to scroll */
+    
   }
 }
 
-/**
- * -------------------------------------------------------------
- * HIDE SCROLLBAR
- * -------------------------------------------------------------
- */
+
 
 .hide-scrollbar {
   scrollbar-width: none;
-  /* For Firefox */
+  
   overflow-x: auto;
   overflow-y: hidden;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
-  /* For Chrome and Safari */
+  
 }
 
-/**
- * --------------------------------------------------------------------
- * ANIMATION
- * --------------------------------------------------------------------
- */
+
 
 .js .animated-element {
   visibility: hidden;
-  /* An animated element will be an element that is dynamically transitioned */
+  
 }
 
-/**
- * --------------------------------------------------------------------
- * SQUARE SEPARATOR
- * --------------------------------------------------------------------
- */
+
 
 .square-separator {
   position: relative;
@@ -2337,7 +2201,7 @@ not screen and (pointer: fine) {
   width: 4px;
   margin: 0 8px;
   flex-shrink: 0;
-  /* in case it is a flex children */
+  
   background: currentColor;
   vertical-align: middle;
 }
@@ -2352,13 +2216,9 @@ not screen and (pointer: fine) {
   opacity: 0.5;
 }
 
-/**
- * --------------------------------------------------------------------
- * PREV NEXT BUTTONS (used in different places to navigate in scrollable elements)
- * --------------------------------------------------------------------
- */
 
-/* Animation states that we apply to those buttons */
+
+
 @keyframes prevNextButtonKeyframe {
   0% {
     transform: translateX(0%) scale(var(--transform-logical-flip), 1);
@@ -2488,11 +2348,7 @@ not screen and (pointer: fine) {
   }
 }
 
-/**
- * --------------------------------------------------------------------
- * DOT NAVIGATION
- * --------------------------------------------------------------------
- */
+
 
 .dots-nav {
   display: flex;
@@ -2520,11 +2376,7 @@ not screen and (pointer: fine) {
   opacity: 1;
 }
 
-/**
- * -------------------------------------------------------------
- * PRICE
- * -------------------------------------------------------------
- */
+
 
 .price-list {
   display: inline-flex;
@@ -2576,7 +2428,7 @@ not screen and (pointer: fine) {
 
 .unit-price-measurement {
   display: inline-flex;
-  /* This allows to remove the space between each elements */
+  
 }
 
 @media screen and (min-width: 1000px) {
@@ -2585,11 +2437,7 @@ not screen and (pointer: fine) {
   }
 }
 
-/**
- * --------------------------------------------------------------------
- * LABEL
- * --------------------------------------------------------------------
- */
+
 
 .label {
   display: inline-block;
@@ -2653,11 +2501,7 @@ not screen and (pointer: fine) {
   }
 }
 
-/**
- * -------------------------------------------------------------
- * TAG
- * -------------------------------------------------------------
- */
+
 
 .tag-list {
   display: flex;
@@ -2691,7 +2535,7 @@ not screen and (pointer: fine) {
 
 .tag__icon {
   position: relative;
-  /* For pixel perfect precision ! */
+  
   cursor: pointer;
 }
 
@@ -2703,11 +2547,7 @@ not screen and (pointer: fine) {
   padding-right: 6px;
 }
 
-/**
- * -------------------------------------------------------------
- * SOCIAL MEDIA
- * -------------------------------------------------------------
- */
+
 
 .social-media {
   display: flex;
@@ -2779,11 +2619,7 @@ not screen and (pointer: fine) {
   }
 }
 
-/**
- * -------------------------------------------------------------
- * BANNER
- * -------------------------------------------------------------
- */
+
 
 [dir="ltr"] .banner {
   text-align: left;
@@ -2852,11 +2688,7 @@ not screen and (pointer: fine) {
   }
 }
 
-/**
- * -------------------------------------------------------------
- * TABS (used in product pages and for the collections section)
- * -------------------------------------------------------------
- */
+
 
 .tabs-nav {
   position: relative;
@@ -2913,7 +2745,7 @@ not screen and (pointer: fine) {
   background: currentColor;
   transform: scaleX(var(--scale, 0)) translateX(var(--translate, 0));
   transform-origin: left;
-  /* Make sure to always use left here even in RTL, as the calculation is based on LTR */
+  
 }
 
 .tabs-nav__position.is-initialized {
@@ -2932,7 +2764,7 @@ not screen and (pointer: fine) {
   }
 }
 
-/* Center variation */
+
 
 .tabs-nav--center .tabs-nav__scroller-inner {
   max-width: max-content;
@@ -2940,7 +2772,7 @@ not screen and (pointer: fine) {
   margin-right: auto;
 }
 
-/* Arrow variation */
+
 
 [dir="ltr"] .tabs-nav__arrows {
   right: 0;
@@ -2981,7 +2813,7 @@ not screen and (pointer: fine) {
 
 .tabs-nav[arrows] .tabs-nav__scroller {
   overflow: hidden;
-  /* Prevent to be manually scrollable as we want to allow scroll with arrows only */
+  
 }
 
 [dir="ltr"] .tabs-nav[arrows] .tabs-nav__scroller.is-scrollable::before {
@@ -2998,8 +2830,8 @@ not screen and (pointer: fine) {
   width: 48px;
   height: 100%;
   top: -2px;
-  /* Prevent to overlap the bottom border */
-  /* Shift by the arrows size */
+  
+  
   z-index: 1;
   pointer-events: none;
   background: linear-gradient(to var(--transform-origin-start), rgb(var(--section-background, var(--background))), rgba(var(--section-background, var(--background)), 0));
@@ -3015,7 +2847,7 @@ not screen and (pointer: fine) {
 
 .tabs-nav[arrows] .tabs-nav__item-list {
   width: 100%;
-  /* In arrow mode we want to extend the list all the time */
+  
   min-width: max-content;
 }
 
@@ -3025,11 +2857,11 @@ not screen and (pointer: fine) {
   width: 35px;
 }
 
-/* No border variation */
+
 
 .tabs-nav--no-border.tabs-nav--narrow {
   margin-bottom: 24px;
-  /* When there is no bottom border spacing with next elements is closer */
+  
 }
 
 .tabs-nav--no-border .tabs-nav__item-list {
@@ -3038,12 +2870,12 @@ not screen and (pointer: fine) {
 
 .tabs-nav--no-border.tabs-nav--narrow .tabs-nav__item {
   padding-bottom: 5px;
-  /* Due to the lack of border we reduce the spacing with the moving link */
+  
 }
 
 @media screen and (max-width: 999px) {
 
-  /* On phone and tablet, when the tab nav is contained within a section header, we stretch it to be edge to edge */
+  
   .tabs-nav--edge2edge {
     margin-left: calc(-1 * var(--container-gutter));
     margin-right: calc(-1 * var(--container-gutter));
@@ -3063,7 +2895,7 @@ not screen and (pointer: fine) {
 
   .tabs-nav--no-border.tabs-nav--narrow {
     margin-bottom: 32px;
-    /* When there is no bottom border spacing with next elements is closer */
+    
   }
 
   .tabs-nav__item-list {
@@ -3079,11 +2911,7 @@ not screen and (pointer: fine) {
   }
 }
 
-/**
- * -------------------------------------------------------------
- * EMPTY STATE
- * -------------------------------------------------------------
- */
+
 
 .empty-state {
   position: relative;
@@ -3135,11 +2963,7 @@ not screen and (pointer: fine) {
   }
 }
 
-/**
- * -------------------------------------------------------------
- * BUBBLE COUNT (used in various places to show a count)
- * -------------------------------------------------------------
- */
+
 
 .bubble-count {
   position: relative;
@@ -3164,11 +2988,7 @@ not screen and (pointer: fine) {
   vertical-align: top;
 }
 
-/**
- * --------------------------------------------------------------------
- * QUANTITY SELECTOR
- * --------------------------------------------------------------------
- */
+
 
 .quantity-selector {
   --quantity-selector-height: 46px;
@@ -3217,11 +3037,7 @@ not screen and (pointer: fine) {
 }
 
 
-/**
- * --------------------------------------------------------------------
- * SPINNER
- * --------------------------------------------------------------------
- */
+
 
 @keyframes spinnerRotate {
   100% {
@@ -3275,11 +3091,7 @@ not screen and (pointer: fine) {
   animation: spinnerDash 1.5s ease-in-out infinite, spinnerColor 6s ease-in-out infinite;
 }
 
-/**
- * --------------------------------------------------------------------
- * TOOLTIP
- * --------------------------------------------------------------------
- */
+
 
 [data-tooltip] {
   position: relative;
@@ -3341,11 +3153,7 @@ not screen and (pointer: fine) {
   left: calc(50% - 6px);
 }
 
-/**
- * --------------------------------------------------------------------
- * CART NOTIFICATION
- * --------------------------------------------------------------------
- */
+
 
 .cart-notification {
   --heading-color: 255, 255, 255;
@@ -3478,7 +3286,7 @@ not screen and (pointer: fine) {
 @media screen and (max-width: 999px) {
   .cart-notification {
     transform: none !important;
-    /* You cannot have any offset on pocket */
+    
   }
 }
 
@@ -3510,11 +3318,7 @@ not screen and (pointer: fine) {
   }
 }
 
-/**
- * -------------------------------------------------------------
- * PAYMENT METHODS
- * -------------------------------------------------------------
- */
+
 
 .payment-methods-list {
   display: flex;
@@ -3527,11 +3331,7 @@ not screen and (pointer: fine) {
 }
 
 
-/**
- * -------------------------------------------------------------
- * LINK BAR (show a list of links usually for tags ; used in collection and blog pages)
- * -------------------------------------------------------------
- */
+
 
 .link-bar {
   position: relative;
@@ -3661,13 +3461,7 @@ not screen and (pointer: fine) {
   }
 }
 
-/**
- * -------------------------------------------------------------
- * MOBILE SHARE BUTTONS
- *
- * Those are used in product pages and blog posts
- * -------------------------------------------------------------
- */
+
 
 .mobile-share-buttons__item {
   display: flex;
@@ -3696,14 +3490,7 @@ not screen and (pointer: fine) {
   margin-left: 16px;
 }
 
-/**
- * --------------------------------------------------------------------
- * MOBILE TOOLBAR
- *
- * Those are used on collection page and account pages to create links
- * to sub-section
- * --------------------------------------------------------------------
- */
+
 
 .mobile-toolbar {
   position: -webkit-sticky;
@@ -3754,16 +3541,7 @@ not screen and (pointer: fine) {
   margin-right: 10px;
 }
 
-/**
- * -------------------------------------------------------------
- * COMBO BOX
- *
- * Implementation note: on mobile the combo-box is largely similar to the
- * popover and therefore re-use lot of styles. I preferred doing some
- * duplication here rather than rely on JavaScript to dynamically transformed
- * a non-popover on desktop to a popover
- * -------------------------------------------------------------
- */
+
 
 @media screen and (max-width: 740px) {
   [dir="ltr"] .combo-box {
@@ -3813,7 +3591,7 @@ not screen and (pointer: fine) {
     height: 100vh;
     width: 100%;
     bottom: calc(100% - 10px);
-    /* There is a border radius on the header on mobile so we slightly move down the overlay */
+    
     background: #000000;
     opacity: 0;
     visibility: hidden;
@@ -3952,7 +3730,7 @@ not screen and (pointer: fine) {
 
   .combo-box__header {
     display: none;
-    /* Nothing on tablet and up */
+    
   }
 
   .combo-box__option-list {
@@ -3994,7 +3772,7 @@ not screen and (pointer: fine) {
     background-position: center;
   }
 
-  /* Adjustment to the toggle button */
+  
   .combo-box+.select {
     transition: border-radius 0.2s ease-in-out;
   }
@@ -4032,11 +3810,7 @@ not screen and (pointer: fine) {
   }
 }
 
-/**
- * -------------------------------------------------------------
- * PRICE RANGE
- * -------------------------------------------------------------
- */
+
 
 .price-range__input-group {
   display: flex;
@@ -4046,7 +3820,7 @@ not screen and (pointer: fine) {
 .price-range__input {
   flex: 1 0 0;
   min-width: 0;
-  /* Required for Firefox */
+  
 }
 
 .price-range__delimiter {
@@ -4063,14 +3837,10 @@ not screen and (pointer: fine) {
 
 .no-js .price-range__range-group {
   display: none !important;
-  /* When JS is disabled we only rely on the input field */
+  
 }
 
-/**
- * -------------------------------------------------------------
- * SCROLL SPY
- * -------------------------------------------------------------
- */
+
 
 .scroll-spy {
   display: block;
@@ -4123,27 +3893,19 @@ not screen and (pointer: fine) {
   stroke-linecap: square;
 }
 
-/**
- * -------------------------------------------------------------
- * SPLIT LINE (custom element)
- * -------------------------------------------------------------
- */
+
 
 split-lines {
   display: block;
 }
 
-/**
- * -------------------------------------------------------------
- * EFFECT
- * -------------------------------------------------------------
- */
+
 
 @media screen and (pointer: fine) {
   .features--image-zoom .image-zoom img {
     transition: transform 0.5s ease;
     transform: translateZ(0);
-    /* Allow to promote on its own layer */
+    
   }
 
   .features--image-zoom .image-zoom:hover img {
@@ -4151,11 +3913,7 @@ split-lines {
   }
 }
 
-/**
- * -------------------------------------------------------------
- * RATING
- * -------------------------------------------------------------
- */
+
 
 .rating {
   display: inline-flex;
@@ -4187,11 +3945,7 @@ split-lines {
   margin-right: 8px;
 }
 
-/**
- * -------------------------------------------------------------
- * OPENABLE
- * -------------------------------------------------------------
- */
+
 
 .openable__overlay {
   position: absolute;
@@ -4200,7 +3954,7 @@ split-lines {
   width: 100%;
   bottom: 100%;
   left: 0;
-  /* We must make sure to not use logical property here */
+  
   background: #000000;
   opacity: 0;
   visibility: hidden;
@@ -4212,10 +3966,8 @@ split-lines {
   opacity: 0.2;
 }
 
-/* Make sure to keep this order the same as it relies on inheritance */
-/*
- * FORM GENERIC
- */
+
+
 
 .form__banner:not(:last-child),
 .form__info {
@@ -4234,7 +3986,7 @@ split-lines {
   margin-top: 16px;
 }
 
-/* Element that is added below a submit form to provide a secondary, subdued action */
+
 .form__secondary-action {
   display: block;
   width: 100%;
@@ -4254,9 +4006,7 @@ split-lines {
   }
 }
 
-/*
- * INPUT
- */
+
 
 .input {
   position: relative;
@@ -4347,7 +4097,7 @@ select:focus,
   transform-origin: var(--transform-origin-start) top;
   transition: transform 0.2s ease-in-out;
   background: rgb(var(--section-block-background, var(--section-background, var(--background))));
-  /* Try to inherit from specific section background first, then global background */
+  
   color: rgba(var(--text-color), 0.7);
   line-height: 1;
   white-space: nowrap;
@@ -4363,13 +4113,13 @@ select:focus,
   transform: scale(0.733) translateY(calc(-24px - 0.5em)) translateX(calc(5px * 0.733));
 }
 
-/* Block label is outside the field itself (used on very few forms actually) */
+
 .input__block-label {
   display: inline-block;
   margin-bottom: 8px;
 }
 
-/* Used for instance in the login form for the "forgot password" link */
+
 [dir="ltr"] .input__field-link {
   right: 18px;
 }
@@ -4383,7 +4133,7 @@ select:focus,
   top: 1.1em;
 }
 
-/* This icon is placed within an input div */
+
 [dir="ltr"] .input__submit-icon {
   right: 20px;
 }
@@ -4429,9 +4179,7 @@ select:focus,
   }
 }
 
-/*
- * INPUT PREFIX (allow to create small input with a prefixed value)
- */
+
 
 .input-prefix {
   display: flex;
@@ -4472,9 +4220,7 @@ select:focus,
   margin: 0;
 }
 
-/*
- * CHECKBOX
- */
+
 
 .checkbox-container {
   display: flex;
@@ -4531,9 +4277,7 @@ select:focus,
   }
 }
 
-/*
- * SELECT
- */
+
 
 .select-wrapper {
   position: relative;
@@ -4542,7 +4286,7 @@ select:focus,
 .select {
   -webkit-appearance: none;
   appearance: none;
-  /* Remove default style if applied to a built-in select */
+  
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -4599,7 +4343,7 @@ select:focus,
   transition: transform 0.25s ease-in-out;
 }
 
-/* When the select class is applied to a native select, then the svg arrow is positioned absolutely */
+
 [dir="ltr"] .select~svg {
   right: 18px;
 }
@@ -4618,7 +4362,7 @@ select:focus,
   display: flex;
   align-items: center;
   top: -1px;
-  /* Designer want to move by 1px up */
+  
   max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -4650,7 +4394,7 @@ select:focus,
 .select--small {
   padding: 6px 12px;
   height: auto;
-  /* As the input is much smaller we size it with padding instead */
+  
 }
 
 [dir="ltr"] .select--small svg {
@@ -4671,28 +4415,25 @@ select:focus,
   }
 }
 
-/*
- * RANGE ELEMENT
- * Styling range are pretty complex as each browsers has their own way to do it
- */
 
-/* First we revert the styling of range elements */
+
+
 
 .range {
   -webkit-appearance: none;
   appearance: none;
-  /* Hides the slider so that custom slider can be made */
+  
   width: 100%;
-  /* Specific width is required for Firefox. */
+  
   background: transparent;
-  /* Otherwise white in Chrome */
+  
 }
 
 .range::-webkit-slider-thumb {
   -webkit-appearance: none;
 }
 
-/* Chrome and Safari */
+
 
 .range::-webkit-slider-thumb {
   position: relative;
@@ -4716,7 +4457,7 @@ select:focus,
   border: none;
 }
 
-/* Firefox */
+
 
 .range::-moz-range-thumb {
   height: 14px;
@@ -4745,7 +4486,7 @@ select:focus,
   background-color: rgb(var(--border-color));
 }
 
-/* On non-hover devices, we make the thumb bigger */
+
 
 @media not screen and (pointer: fine) {
   .range::-webkit-slider-thumb {
@@ -4762,7 +4503,7 @@ select:focus,
   }
 }
 
-/* Range group (when using double range, we need to rely on some clever trick) */
+
 
 .range-group {
   display: none;
@@ -4807,10 +4548,7 @@ select:focus,
   top: 0;
 }
 
-/*
- * SWITCH CHECKBOX
- * Styling range are pretty complex as each browsers has their own way to do it
- */
+
 
 .switch-checkbox {
   position: relative;
@@ -4853,11 +4591,7 @@ select:focus,
   transform: translateX(calc(100% + 6px));
 }
 
-/**
- * -------------------------------------------------------------
- * BUTTON
- * -------------------------------------------------------------
- */
+
 
 .button,
 .shopify-challenge__button,
@@ -4922,16 +4656,11 @@ select:focus,
   width: 100%;
 }
 
-/**
- * IMPLEMENTATION NOTE: As of today, when the dynamic checkout button is added on non-product page (for instance
- * drawer or collection page), Shopify forces their style. We therefore need to use !important rules to make sure
- * the theme styling is applied. I did not want to apply that globally to the .button, so I am applying this
- * scoped for this button only, even if this incurs duplicate code
- */
+
 
 .shopify-payment-button {
   min-height: var(--button-height);
-  /* This prevents a page jump */
+  
 }
 
 .shopify-payment-button__button--branded {
@@ -4985,7 +4714,7 @@ select:focus,
     font-size: calc(var(--base-font-size) - 3px);
   }
 
-  /* Please refer to a comment a few lines before for the reason of those !important */
+  
   .shopify-payment-button__button--unbranded {
     padding-left: 35px !important;
     padding-right: 35px !important;
@@ -4994,16 +4723,7 @@ select:focus,
   }
 }
 
-/**
- * IMPLEMENTATION NOTE: the design team wanted a specific transition on hover that implies a slightly tilted background
- * with a reduced opacity. Doing that with a pseudo element (with an efficient scale transform) caused to be problematic,
- * because the text would appear below the actual pseudo-element, causing the color to be off. One solution would have
- * been to add an extra <span> wrapping the text itself so that we could set a z-index for the text to be on top. Unfortunately,
- * there are lot of buttons (Shopify Reviews, dynamic checkout button...) for which controlling the markup is not possible.
- * As a consequence, I had to go with a more creating approach that uses multiple linear-gradient and animate the background-position.
- * Animating background-position is known to not be very efficient, but as this is only for desktop and on elements (buttons) whose
- * size is extremely small, this did not cause any visible slugger animation.
- */
+
 @media screen and (pointer: fine) {
 
   .button,
@@ -5011,13 +4731,10 @@ select:focus,
   #shopify-product-reviews .spr-summary-actions-newreview,
   #shopify-product-reviews .spr-button,
   .shopify-payment-button__button {
-    /* background-image: linear-gradient(178deg, rgb(var(--button-background)), rgb(var(--button-background)) 10%, rgba(0, 0, 0, 0.07) 10%, rgba(0, 0, 0, 0.07) 100%), linear-gradient(rgb(var(--button-background)), rgb(var(--button-background)));
-    background-size: 100% 200%, 100% 100%;
-    background-position: 100% -100%, 100% 100%;
-    background-repeat: no-repeat; */
+    
     transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
     transform: translateZ(0);
-    /* Make sure to promote the button on its own layer */
+    
   }
 
   .button:hover,
@@ -5028,7 +4745,7 @@ select:focus,
     background-position: 100% 25%, 100% 100%;
   }
 
-  /* Only on super modern browsers, allow to automatically switch to a white color based on contrast */
+  
   @supports (color: color-contrast(wheat vs black, white)) and (color: rgb(from wheat r g b / 0.07)) {
 
     .button,
@@ -5042,11 +4759,7 @@ select:focus,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * LOADER BUTTON
- * -------------------------------------------------------------
- */
+
 
 .loader-button__text {
   display: flex;
@@ -5062,22 +4775,18 @@ select:focus,
   opacity: 0;
 }
 
-/**
- * -------------------------------------------------------------
- * BUTTON GROUP
- * -------------------------------------------------------------
- */
+
 
 .button-group {
   font-size: 0;
-  /* Collapse margin */
+  
 }
 
 @media screen and (max-width: 740px) {
   .button-group .button {
     margin: 12px;
     padding: 0 18px;
-    /* We halve the padding to increase probability to button to fit on same row on mobile */
+    
   }
 
   .button-group__wrapper {
@@ -5087,7 +4796,7 @@ select:focus,
 
 @media screen and (min-width: 741px) {
 
-  /* On tablet as we have more space we want to ensure the button has the same width */
+  
   .button-group__wrapper {
     display: inline-grid;
     gap: 24px;
@@ -5095,11 +4804,7 @@ select:focus,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * COLLAPSIBLE
- * -------------------------------------------------------------
- */
+
 
 .collapsible {
   display: block;
@@ -5175,7 +4880,7 @@ select:focus,
   z-index: 1;
 }
 
-/* Text alignment variations */
+
 
 .content-box--text-center {
   text-align: center;
@@ -5191,10 +4896,7 @@ select:focus,
 
 @media screen and (max-width: 740px) {
 
-  /*
-     Small and medium variation on mobile have some extra spacing and are not directly based on the grid. We also
-     apply extra margin if the content box is contained within a flushed mobile container
-   */
+  
   .content-box--small,
   .content-box--medium,
   .container--flush .content-box--large {
@@ -5202,7 +4904,7 @@ select:focus,
     margin-right: 24px;
   }
 
-  /* Positional variation */
+  
 
   [dir="ltr"] .content-box--left {
     margin-right: auto;
@@ -5223,7 +4925,7 @@ select:focus,
 
 @media screen and (min-width: 741px) {
 
-  /* On tablet, all sizes are shifted by one column left and right, and span a different number of columns */
+  
   .content-box {
     margin-left: auto;
     margin-right: auto;
@@ -5242,7 +4944,7 @@ select:focus,
     width: 100% !important;
   }
 
-  /* Positional variations */
+  
 
   [dir="ltr"] .content-box--left {
     margin-left: calc(var(--grid-column-width) + var(--grid-gap));
@@ -5281,11 +4983,7 @@ select:focus,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * DRAWER
- * -------------------------------------------------------------
- */
+
 
 [dir="ltr"] .drawer {
   right: 0;
@@ -5304,14 +5002,14 @@ select:focus,
 }
 
 .drawer {
-  /* Make sure the drawer component does not inherit values from the section it is included to */
+  
   --heading-color: var(--root-heading-color);
   --text-color: var(--root-text-color);
   --background: var(--root-background);
   --primary-button-background: var(--root-primary-button-background);
   --primary-button-text-color: var(--root-primary-button-text-color);
   --section-background: initial;
-  /* Allows to remove the inheritance */
+  
 
   position: fixed;
   display: flex;
@@ -5411,11 +5109,11 @@ select:focus,
   max-height: 80px;
   border-bottom: 1px solid rgb(var(--root-border-color));
   background: rgb(var(--root-background));
-  /* Setting an explicit background allow element to go beyond */
+  
   z-index: 1;
 }
 
-/* This variation remove the border and add a shadow on scroll */
+
 .drawer__header--shadowed {
   height: auto;
   border-bottom: none;
@@ -5442,7 +5140,7 @@ select:focus,
 }
 
 .drawer__title {
-  /* We use flex positioning in case the title contains an icon or extra content */
+  
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -5513,7 +5211,7 @@ select:focus,
   overflow-y: auto;
   flex-grow: 1;
   padding-bottom: 24px;
-  /* We add a bit of spacing as the drawer footer may add a shadow */
+  
 }
 
 .drawer__content--padded-start {
@@ -5533,10 +5231,10 @@ select:focus,
   margin-top: auto;
   padding-top: 15px !important;
   padding-bottom: 15px !important;
-  /* The footer in drawer has a slightly smaller padding in block direction */
+  
   z-index: 1;
-  /* transform: translateZ(0);  */
-  /* For some reason position: relative cause an issue on Safari so I use this to promote the element */
+  
+  
 }
 
 .drawer__footer button {
@@ -5553,7 +5251,7 @@ select:focus,
 
 .drawer__footer--bordered {
   box-shadow: 0 1px rgb(var(--root-border-color)) inset;
-  /* We use box-shadow due to the shadow */
+  
 }
 
 .drawer__footer--no-top-padding {
@@ -5604,11 +5302,7 @@ select:focus,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * POPOVER
- * -------------------------------------------------------------
- */
+
 
 
 [dir="ltr"] .popover-button svg {
@@ -5622,7 +5316,7 @@ select:focus,
 .popover-button svg {
   position: relative;
   top: -1px;
-  /* For pixel perfect */
+  
   transition: transform 0.2s ease-in-out;
 }
 
@@ -5639,7 +5333,7 @@ select:focus,
 }
 
 .popover {
-  /* Make sure the popover component does not inherit values from the section it is included to */
+  
   --heading-color: var(--root-heading-color);
   --text-color: var(--root-text-color);
   --background: var(--root-background);
@@ -5669,9 +5363,9 @@ select:focus,
   height: 100vh;
   width: 100%;
   bottom: calc(100% - 10px);
-  /* There is a border radius on the header on mobile so we slightly move down the overlay */
+  
   left: 0;
-  /* We must make sure to not use logical property here */
+  
   background: #000000;
   opacity: 0;
   visibility: hidden;
@@ -5749,7 +5443,7 @@ select:focus,
     flex-direction: column;
     bottom: 0;
     left: 0;
-    /* We must make sure to not use logical property here */
+    
     width: 100vw;
     max-height: 75vh;
     border-radius: 10px 10px 0 0;
@@ -5776,7 +5470,7 @@ select:focus,
   }
 
   .drawer:not(.drawer--from-left) .popover {
-    /* Popover takes 89vw so we shift by 11vw */
+    
   }
 }
 
@@ -5837,7 +5531,7 @@ select:focus,
   .popover__overlay,
   .popover__header {
     display: none;
-    /* No overlay nor header on tablet and up for popover */
+    
   }
 
   .popover__content {
@@ -5849,14 +5543,14 @@ select:focus,
     max-height: 400px;
   }
 
-  /* Small variation */
+  
 
   .popover--small {
     font-size: calc(var(--base-font-size) - 3px);
     line-height: 1.5;
   }
 
-  /* Positional variation */
+  
 
   .popover--top {
     top: auto;
@@ -5895,7 +5589,7 @@ select:focus,
     display: none;
   }
 
-  /* Position related to various UX element */
+  
 
   [dir="ltr"] .popover-button+.popover {
     right: -28px;
@@ -5914,14 +5608,7 @@ select:focus,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * POPOVER CHOICE LIST
- *
- * This child component is used to create a easily usable list of
- * choices
- * -------------------------------------------------------------
- */
+
 
 .popover__choice-list {
   white-space: nowrap;
@@ -6003,16 +5690,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * MODAL
- *
- * Modal allows to provide a full-screen off-screen elements. On mobile, they look
- * like popover, while on tablet and desktop they use an immersive full-screen elements. Because
- * modal are much more "free" than popover and drawer in their structure, the styling
- * is left to the actual inner content
- * -------------------------------------------------------------
- */
+
 
 [dir="ltr"] .modal {
   left: 0;
@@ -6023,7 +5701,7 @@ input:checked+.popover__choice-label::after,
 }
 
 .modal {
-  /* Make sure the modal component does not inherit values from the section it is included to */
+  
   --heading-color: var(--root-heading-color);
   --text-color: var(--root-text-color);
   --background: var(--root-background);
@@ -6053,7 +5731,7 @@ input:checked+.popover__choice-label::after,
   height: 100vh;
   width: 100vw;
   bottom: calc(100% - 10px);
-  /* There is a border radius on the header on mobile so we slightly move down the overlay */
+  
   background: #000000;
   opacity: 0;
   visibility: hidden;
@@ -6125,7 +5803,7 @@ input:checked+.popover__choice-label::after,
 
   .modal__content {
     margin: 80px;
-    /* Allows to guarantee spacing around the edges */
+    
     max-height: calc(100vh - 160px);
     overflow: auto;
     transform: scale(0.8);
@@ -6140,11 +5818,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/**
- * --------------------------------------------------------------------
- * COLOR SWATCH
- * --------------------------------------------------------------------
- */
+
 
 .color-swatch-list {
   display: grid;
@@ -6219,7 +5893,7 @@ input:checked+.popover__choice-label::after,
   border-width: 1px;
 }
 
-/* Disabled state */
+
 
 .color-swatch.is-disabled .color-swatch__item::before {
   background: linear-gradient(to bottom right, transparent calc(50% - 1px), rgb(var(--background)) calc(50% - 1px), rgb(var(--background)) calc(50% + 1px), transparent calc(50% + 1px)) no-repeat;
@@ -6233,11 +5907,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/**
- * --------------------------------------------------------------------
- * BLOCK SWATCH
- * --------------------------------------------------------------------
- */
+
 
 .block-swatch-list {
   display: flex;
@@ -6298,18 +5968,14 @@ input:checked+.popover__choice-label::after,
   transform: scale(1);
 }
 
-/* Disabled state */
+
 
 .block-swatch.is-disabled .block-swatch__item {
   color: rgba(var(--text-color), 0.5);
   background: linear-gradient(to bottom right, transparent calc(50% - 1px), rgb(var(--border-color)) 50%, transparent calc(50% + 1px)) no-repeat;
 }
 
-/**
- * --------------------------------------------------------------------
- * VARIANT IMAGE SWATCH
- * --------------------------------------------------------------------
- */
+
 
 .variant-swatch-list {
   display: flex;
@@ -6363,13 +6029,13 @@ input:checked+.popover__choice-label::after,
   transform: scale(1);
 }
 
-/* Disabled state */
+
 
 .variant-swatch.is-disabled .variant-swatch__image {
   opacity: 0.4;
 }
 
-/* We have to use a pseudo element as background image does not work on image */
+
 [dir="ltr"] .variant-swatch.is-disabled .variant-swatch__item::before {
   left: 0;
 }
@@ -6402,11 +6068,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/**
- * --------------------------------------------------------------------
- * ACCESSIBILITY
- * --------------------------------------------------------------------
- */
+
 
 .color-swatch__radio.focus-visible+label,
 .block-swatch__radio.focus-visible+label,
@@ -6420,11 +6082,7 @@ input:checked+.popover__choice-label::after,
   outline: auto 5px -webkit-focus-ring-color;
 }
 
-/**
- * --------------------------------------------------------------------
- * 3D MODEL
- * --------------------------------------------------------------------
- */
+
 
 .shopify-model-viewer-ui.shopify-model-viewer-ui .shopify-model-viewer-ui__controls-area {
   background: rgb(var(--background));
@@ -6484,11 +6142,7 @@ input:checked+.popover__choice-label::after,
   opacity: 1;
 }
 
-/**
- * --------------------------------------------------------------------
- * VIDEO WRAPPER
- * --------------------------------------------------------------------
- */
+
 
 .video-wrapper {
   display: block;
@@ -6499,7 +6153,7 @@ input:checked+.popover__choice-label::after,
   content: '';
   display: block;
   padding-bottom: 56.25%;
-  /* 16:9 */
+  
   pointer-events: none;
 }
 
@@ -6518,7 +6172,7 @@ input:checked+.popover__choice-label::after,
   height: 100%;
 }
 
-/* The cover variation is used when we use an iframe such as YouTube and Vimeo, and want the video to covers the whole div */
+
 
 .video-wrapper--cover {
   overflow: hidden;
@@ -6553,12 +6207,12 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Inert variation is useful for background video */
+
 .video-wrapper--inert iframe {
   pointer-events: none;
 }
 
-/* For native one we use a different thing */
+
 .video-wrapper--native {
   aspect-ratio: var(--aspect-ratio);
 }
@@ -6588,7 +6242,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* A cover image can be optionally added before the iframe / video tag */
+
 
 .video-wrapper__poster {
   position: absolute;
@@ -6665,11 +6319,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/**
- * -------------------------------------------------------------
- * FACETING (used on collection and search page)
- * -------------------------------------------------------------
- */
+
 
 .product-facet {
   display: block;
@@ -6684,7 +6334,7 @@ input:checked+.popover__choice-label::after,
 .product-facet__filters:not(.drawer) {
   display: block;
   padding-bottom: 24px;
-  /* Allows to add a bit of spacing if too much links */
+  
 }
 
 .product-facet__active-list {
@@ -6736,7 +6386,7 @@ input:checked+.popover__choice-label::after,
 
 .product-facet__product-list {}
 
-/* Meta bar */
+
 
 .product-facet__meta-bar {
   display: flex;
@@ -6756,7 +6406,7 @@ input:checked+.popover__choice-label::after,
   margin-left: 13px;
 }
 
-/* Toolbar */
+
 
 [dir="ltr"] .mobile-toolbar__item .icon--filters {
   margin-right: 13px;
@@ -6768,8 +6418,7 @@ input:checked+.popover__choice-label::after,
 
 @media screen and (max-width: 740px) {
   .product-facet__active-list {
-    /* margin-left: -18px;
-    margin-right: -18px; */
+    
   }
 
   .mobile-toolbar__item--filters.has-filters .mobile-toolbar__item-label::after {
@@ -6785,7 +6434,7 @@ input:checked+.popover__choice-label::after,
 @media screen and (max-width: 999px) {
   .product-facet__filters:not(.drawer) {
     display: none;
-    /* By default the filters is hidden until dynamically transformed to a modal */
+    
   }
 }
 
@@ -6794,7 +6443,7 @@ input:checked+.popover__choice-label::after,
 
   .drawer .product-facet__active-list {
     margin-top: 26px;
-    /* Margin is bigger when it is inside the drawer to keep visual rhythm consistency */
+    
   }
 
   .product-facet__meta-bar {}
@@ -6856,7 +6505,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* General. The back button has a very specific positioning that is used only here so it has special style */
+
 
 .account__block-list {
   display: grid;
@@ -6906,7 +6555,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Main account */
+
 
 .account__order-table-item:hover .link--animated::after {
   transform: scale(1);
@@ -6933,12 +6582,12 @@ input:checked+.popover__choice-label::after,
   margin-bottom: 8px;
 }
 
-/* Order details */
+
 
 .account__order-date {
   display: block;
   margin-top: -6px;
-  /* Small irregularity here as the designer want the date to be closer */
+  
 }
 
 @media screen and (max-width: 740px) {
@@ -6951,7 +6600,7 @@ input:checked+.popover__choice-label::after,
   }
 
   .account--order .page-header {
-    /* Small exception */
+    
   }
 }
 
@@ -6965,7 +6614,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Addresses */
+
 
 .account__addresses-list {
   display: grid;
@@ -7150,7 +6799,7 @@ input:checked+.popover__choice-label::after,
   height: 100vh;
   width: 100%;
   bottom: calc(100% - 10px);
-  /* There is a border radius on the header on mobile so we slightly move down the overlay */
+  
   background: #000000;
   opacity: 0.3;
   z-index: -1;
@@ -7306,7 +6955,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Header part */
+
 
 .article__header {
   position: relative;
@@ -7345,7 +6994,7 @@ input:checked+.popover__choice-label::after,
     font-size: 24px;
     line-height: 1.2;
   }
-  /* Because the header of blog post is not in the natural flow, we have to position the breadcrumb differently */
+  
   [dir="ltr"] .article__header .breadcrumb {
     left: var(--container-outer-margin);
   }
@@ -7392,7 +7041,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Top navigation */
+
 
 .article__nav {
   position: fixed;
@@ -7594,7 +7243,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Inner part */
+
 
 .article {
   margin: 40px 0;
@@ -7700,7 +7349,7 @@ input:checked+.popover__choice-label::after,
 .article__comments-count svg {
   position: relative;
   top: 1px;
-  /* Micro alignment required by designer */
+  
 }
 
 @media screen and (min-width: 1000px) {
@@ -7789,7 +7438,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Prev next */
+
 
 .article__prev-next {
   background: rgb(var(--secondary-background));
@@ -7807,7 +7456,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Comment */
+
 
 .article__comment-list-heading {
   margin-bottom: 30px;
@@ -7923,7 +7572,7 @@ input:checked+.popover__choice-label::after,
   overflow: hidden;
   border-radius: var(--block-border-radius-reduced);
   z-index: 0;
-  /* Creating new stacking context is needed on Safari to apply the border radius */
+  
 }
 
 [dir="ltr"] .article-item__arrow {
@@ -7951,9 +7600,9 @@ input:checked+.popover__choice-label::after,
 
 .article-item--horizontal .article-item__image-container {
   border-radius: calc(var(--block-border-radius-reduced) / 2);
-  /* When shown as horizontal the tiles are smaller so we reduced the radius */
+  
   z-index: 0;
-  /* Creating new stacking context is needed on Safari to apply the border radius */
+  
 }
 
 [dir="ltr"] .article-item--horizontal .article-item__arrow {
@@ -7987,7 +7636,7 @@ input:checked+.popover__choice-label::after,
 
 .article-item__excerpt {
   margin-top: -4px;
-  /* We want the excerpt to be a bit closer to the title than usual paragraph */
+  
 }
 
 .article-list--section .article-item:only-child {
@@ -8027,7 +7676,7 @@ input:checked+.popover__choice-label::after,
 
   .article-list+.pagination {
     margin-top: 64px;
-    /* Small exception here to separate more the pagination */
+    
   }
 
   .article-list--section {
@@ -8041,10 +7690,10 @@ input:checked+.popover__choice-label::after,
 
   .article-item__excerpt {
     margin-top: -8px;
-    /* We want the excerpt to be a bit closer to the title than usual paragraph */
+    
   }
 
-  /* When this layout is used, the most recent blog post takes larger part */
+  
   .article-list--collage {
     grid-template-columns: 1.37731fr 1fr;
     column-gap: 48px;
@@ -8096,7 +7745,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* General */
+
 
 .checkout-button {
   position: relative;
@@ -8128,7 +7777,7 @@ input:checked+.popover__choice-label::after,
 }
 
 .checkout-button .square-separator {
-  /* This is a micro adjustment but because of the letter spacing we have to compensate with negative margin */
+  
 }
 
 @media screen and (min-width: 741px) {
@@ -8141,7 +7790,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Discount badge (used both at line and cart level) */
+
 
 .discount-badge {
   display: flex;
@@ -8169,7 +7818,7 @@ input:checked+.popover__choice-label::after,
   position: relative;
 }
 
-/* Free shipping bar */
+
 
 .shipping-bar {
   display: block;
@@ -8226,7 +7875,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Line item */
+
 
 .line-item {
   display: flow-root;
@@ -8290,7 +7939,7 @@ input:checked+.popover__choice-label::after,
   visibility: hidden;
 }
 
-/* Used for secondary info such as variant title, subscription plan, attributes... */
+
 
 .line-item__quantity {
   display: block;
@@ -8301,7 +7950,7 @@ input:checked+.popover__choice-label::after,
   margin-top: 12px;
 }
 
-/* Discount at line item level */
+
 
 .line-item__discount-list {
   display: flex;
@@ -8338,7 +7987,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* FULFILLMENT */
+
 
 @media screen and (min-width: 741px) {
   [dir="ltr"] .line-item__fulfillment {
@@ -8350,7 +7999,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* TABLE */
+
 
 .line-item-table {
   margin-bottom: 40px;
@@ -8362,7 +8011,7 @@ input:checked+.popover__choice-label::after,
 
 .line-item-table .line-item__content-wrapper {
   margin-top: 0;
-  /* The spacing is brought by the table */
+  
 }
 
 @media screen and (max-width: 740px) {
@@ -8409,7 +8058,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Mini-cart specificities */
+
 
 .mini-cart__discount-list {
   display: grid;
@@ -8482,7 +8131,7 @@ input:checked+.popover__choice-label::after,
     margin-bottom: 7px;
   }
 
-  /* On mobile we want the order note to take full width. As the drawer is taking 89vw, we need to shift left by 11vw */
+  
   [dir="ltr"] .mini-cart__order-note {
     left: -11vw;
   }
@@ -8516,7 +8165,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Mini cart recommendations */
+
 
 .mini-cart__recommendations:not([hidden]) {
   display: block;
@@ -8636,7 +8285,7 @@ input:checked+.popover__choice-label::after,
 }
 
 
-/* Shipping estimator */
+
 
 .shipping-estimator {
   border: 1px solid rgb(var(--border-color));
@@ -8662,7 +8311,7 @@ input:checked+.popover__choice-label::after,
   .shipping-estimator__form .input-row .input:nth-child(1),
   .shipping-estimator__form .input-row .input:nth-child(2) {
     grid-column: span 2;
-    /* The third one is the zip and can be smaller */
+    
   }
 
   .shipping-estimator__toggle-button,
@@ -8671,9 +8320,9 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/** NOTE: Collection related styles are very scarce, as most of them are abstracted in the "product-facet" that is used on search page as well */
 
-/* Promotion block override for the collection page */
+
+
 
 .product-facet__main .promotion-block-list {
   --promotion-block-gutter: 24px;
@@ -8689,7 +8338,7 @@ input:checked+.popover__choice-label::after,
 
 @media screen and (max-width: 740px) {
 
-  /* On mobile only we want the promotion block and filters closer to the edge so that they align with products */
+  
   .product-facet__main .promotion-block-list {
     --promotion-block-gutter: 12px;
     margin-left: calc(-1 * (var(--container-gutter) - var(--promotion-block-gutter) / 2));
@@ -8903,7 +8552,7 @@ input:checked+.popover__choice-label::after,
 
 .faq__item .collapsible__content {
   padding-bottom: 26px;
-  /* We add extra spacing horizontally */
+  
 }
 
 @media screen and (max-width: 740px) {
@@ -8980,7 +8629,7 @@ input:checked+.popover__choice-label::after,
 
 .footer__item {
   max-width: 325px;
-  /* Ensure a given item does not grow too big */
+  
   word-break: break-word;
 }
 
@@ -9029,7 +8678,7 @@ input:checked+.popover__choice-label::after,
 }
 
 .footer__cross-border .popover-container+.popover-container {
-  /* Allows to collapse the border */
+  
 }
 
 .footer__copyright,
@@ -9177,7 +8826,7 @@ input:checked+.popover__choice-label::after,
 .gallery__list-wrapper.is-scrollable .gallery__list::after {
   content: '';
   flex: 0 0 var(--container-outer-width);
-  /* Allows to create the gap after the last image */
+  
 }
 
 .gallery__item {
@@ -9230,15 +8879,15 @@ input:checked+.popover__choice-label::after,
 .gallery__prev-next-buttons {
   position: absolute;
   top: calc(var(--gallery-image-height) / 2 - 56px);
-  /* 56px is the height of a single button */
-  /* 28px is half the width of button */
+  
+  
   z-index: 1;
 }
 
 @media not screen and (pointer: fine) {
   .gallery__prev-next-buttons {
     display: none !important;
-    /* Arrows are hidden on touch devices */
+    
   }
 }
 
@@ -9263,7 +8912,7 @@ input:checked+.popover__choice-label::after,
 .gift-card {
   -webkit-print-color-adjust: exact;
   color-adjust: exact;
-  /* Make sure it prints using the same background */
+  
   background: rgb(var(--background));
   min-height: var(--window-height, 100vh);
   text-align: center;
@@ -9308,7 +8957,7 @@ input:checked+.popover__choice-label::after,
 
 .gift-card__main {
   padding-top: calc(32px + 65px);
-  /* 65px is the offset of the image */
+  
 }
 
 .gift-card__amount {
@@ -9375,7 +9024,7 @@ input:checked+.popover__choice-label::after,
 
   .gift-card__main {
     padding-top: calc(40px + 95px);
-    /* 95px is the offset of the image */
+    
   }
 
   .gift-card__image-wrapper {
@@ -9487,8 +9136,8 @@ input:checked+.popover__choice-label::after,
 
 .header__inline-navigation,
 .header__secondary-links {
-  /* flex: 1 1 0;  */
-  /* Allows to give the same width to left and right part */
+  
+  
 }
 
 .header__icon-wrapper {
@@ -9510,21 +9159,14 @@ input:checked+.popover__choice-label::after,
     margin-bottom: 4px;
   }
 
-  /* #ShopifyChat {
-    bottom: 54px!important;
-  } */
+  
 }
 
 @media screen and (min-width: 1000px) and (max-width: 1199px) {
-  /* [dir="ltr"] .header__search-bar {
-    margin-left: 24px;
-  }
-  [dir="rtl"] .header__search-bar {
-    margin-right: 24px;
-  } */
+  
 }
 
-/** SECONDARY LINKS **/
+
 
 .header__secondary-links {
   display: flex;
@@ -9557,7 +9199,7 @@ input:checked+.popover__choice-label::after,
 
 .header__cart-count {
   top: -1px;
-  /* pixel perfect alignment */
+  
 }
 
 [dir="ltr"] .header__cart-count--floating {
@@ -9592,12 +9234,12 @@ input:checked+.popover__choice-label::after,
 
 @media screen and (min-width: 741px) {
   .header__icon-list {
-    /* gap: 24px; */
+    
     margin: 0 16px;
   }
 }
 
-/** CROSS BORDER **/
+
 
 .header__cross-border {
   display: grid;
@@ -9625,12 +9267,12 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/** NAVIGATION **/
+
 
 .header__bottom-navigation {
   padding-top: calc(17px - var(--reduce-header-padding) * 8px);
   padding-bottom: calc(19px - var(--reduce-header-padding) * 8px);
-  /* Designer want slightly irregular padding */
+  
   border-top: 1px solid rgb(var(--header-border-color));
   transition: border-top 0.2s ease-in-out;
 }
@@ -9639,7 +9281,7 @@ input:checked+.popover__choice-label::after,
   display: flex;
   flex-wrap: wrap;
   row-gap: 12px;
-  /* This will add extra spacing on modern browsers */
+  
 }
 
 .header__linklist-item {
@@ -9654,7 +9296,7 @@ input:checked+.popover__choice-label::after,
   margin-left: 32px;
 }
 
-/* This is a trick to increase the bounding size of the link, and therefore prevent to loose hover */
+
 [dir="ltr"] .header__linklist-item.has-dropdown:hover::before {
   margin-left: -32px;
 }
@@ -9671,7 +9313,7 @@ input:checked+.popover__choice-label::after,
   padding-left: 32px;
   padding-right: 32px;
   opacity: 0;
-  /* Allow to visually hide it */
+  
 }
 
 .header__bottom-navigation .header__linklist-item:hover::before {
@@ -9688,7 +9330,7 @@ input:checked+.popover__choice-label::after,
   justify-content: center;
 }
 
-/** DROPDOWN MENU **/
+
 
 [dir="ltr"] .nav-dropdown {
   margin-left: -32px;
@@ -9783,7 +9425,7 @@ input:checked+.popover__choice-label::after,
   transform: translateX(calc(var(--transform-logical-flip) * 8px));
 }
 
-/** MEGA MENU **/
+
 
 .mega-menu {
   --mega-menu-column-gap: 48px;
@@ -9856,7 +9498,7 @@ input:checked+.popover__choice-label::after,
 
 .header--bordered .mega-menu {
   margin-top: 1px;
-  /* Prevent overlapping the border */
+  
 }
 
 .mega-menu__inner {
@@ -9878,7 +9520,7 @@ input:checked+.popover__choice-label::after,
   display: flex;
   flex-wrap: wrap;
   margin: calc(-1 * var(--mega-menu-column-gap) / 2);
-  /* gap: var(--mega-menu-column-gap); NOT YET FULLY SUPPORTED */
+  
 }
 
 .mega-menu__column {
@@ -9912,7 +9554,7 @@ input:checked+.popover__choice-label::after,
   overflow: hidden;
   border-radius: var(--block-border-radius-reduced);
   z-index: 0;
-  /* Creating new stacking context is needed on Safari to apply the border radius */
+  
 }
 
 .mega-menu__heading {
@@ -9944,7 +9586,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/** MOBILE MENU **/
+
 
 .mobile-nav__item {
   display: flow-root;
@@ -9976,7 +9618,7 @@ input:checked+.popover__choice-label::after,
   margin-right: calc(-1 * var(--container-gutter));
 }
 
-/* Level 2 */
+
 
 [dir="ltr"] .mobile-nav .mobile-nav {
   padding-left: 8px;
@@ -9990,7 +9632,7 @@ input:checked+.popover__choice-label::after,
   margin-left: var(--container-gutter);
   margin-right: var(--container-gutter);
   margin-bottom: 24px !important;
-  /* Sorry about the important, may me soul be in peace */
+  
 }
 
 .mobile-nav .mobile-nav .mobile-nav__item {
@@ -10002,7 +9644,7 @@ input:checked+.popover__choice-label::after,
   padding: 0;
 }
 
-/* Level 3 */
+
 
 [dir="ltr"] .mobile-nav .mobile-nav .mobile-nav {
   border-left: 1px solid rgba(var(--text-color), 0.15);
@@ -10033,7 +9675,7 @@ input:checked+.popover__choice-label::after,
   margin-bottom: 0;
 }
 
-/* Mobile images */
+
 
 [dir="ltr"] .mobile-nav+.mobile-nav__images-wrapper {
   padding-left: 8px;
@@ -10068,7 +9710,7 @@ input:checked+.popover__choice-label::after,
   border-radius: min(var(--block-border-radius), 4px);
 }
 
-/* Footer */
+
 
 .mobile-nav__footer {
   display: flex;
@@ -10076,7 +9718,7 @@ input:checked+.popover__choice-label::after,
 }
 
 .image-with-text {
-  /* Thanks to the ratio of the image and the height of the div we can calculate the height taken by the image */
+  
   --image-height: calc((100vw - var(--container-gutter) * 4) * (1.0 / var(--image-aspect-ratio)));
 
   position: relative;
@@ -10110,7 +9752,7 @@ input:checked+.popover__choice-label::after,
   top: auto;
   bottom: 0;
   height: calc(100% - var(--image-height));
-  /* When we overlap the text we actually take the full height minus image height */
+  
 }
 
 .image-with-text__image-wrapper {
@@ -10119,7 +9761,7 @@ input:checked+.popover__choice-label::after,
   overflow: hidden;
   border-radius: var(--block-border-radius-reduced);
   z-index: 0;
-  /* Creating new stacking context is needed on Safari to apply the border radius */
+  
 }
 
 .image-with-text__image {
@@ -10131,7 +9773,7 @@ input:checked+.popover__choice-label::after,
   z-index: 1;
 }
 
-/* Next images are resized to keep the format of the first image */
+
 [dir="ltr"] .image-with-text__image:not(:first-child) {
   left: 0;
 }
@@ -10161,7 +9803,7 @@ input:checked+.popover__choice-label::after,
   overflow: hidden;
 }
 
-/* We want to have the div to have the height of the tallest element, so we align them horizontally */
+
 .image-with-text__content-list {
   display: flex;
   flex-wrap: nowrap;
@@ -10172,7 +9814,7 @@ input:checked+.popover__choice-label::after,
   flex-shrink: 0;
   width: 100%;
   order: 0;
-  /* Force the active to be the visible one */
+  
 }
 
 .image-with-text__content[hidden] {
@@ -10235,7 +9877,7 @@ input:checked+.popover__choice-label::after,
 
 @media screen and (max-width: 999px) {
 
-  /* Extra spacing just for the pocket devices */
+  
   .image-with-text {
     padding: var(--vertical-breather) var(--container-gutter);
   }
@@ -10296,7 +9938,7 @@ input:checked+.popover__choice-label::after,
 
   .image-with-text--overlap-both::before {
     width: 100% !important;
-    /* When it overlap both we force it to be 100% */
+    
   }
 
   .image-with-text__wrapper {
@@ -10367,7 +10009,7 @@ input:checked+.popover__choice-label::after,
 .image-with-text-block__image-wrapper {
   overflow: hidden;
   background: rgb(var(--secondary-background));
-  /* Act as a filler */
+  
 }
 
 .image-with-text-block__content {
@@ -10395,8 +10037,7 @@ input:checked+.popover__choice-label::after,
     border-radius: 0;
   }
 
-  /* Cover variation: on this mode, the image will still cover the image. There is a bit of duplication of
-     code but I could not find cleaner way */
+  
   .image-with-text-block--cover {
     position: relative;
     display: flex;
@@ -10494,7 +10135,7 @@ input:checked+.popover__choice-label::after,
     margin-bottom: var(--vertical-breather);
   }
 
-  /* Overlap variation */
+  
 
   .image-with-text-block--overlap-right .image-with-text-block__image-wrapper,
   .image-with-text-block--overlap-left .image-with-text-block__image-wrapper {
@@ -10625,7 +10266,7 @@ input:checked+.popover__choice-label::after,
 
 .image-overlay__text-container .button-wrapper:only-child {
   margin-top: 32px;
-  /* We add an exception here to compensate the margin */
+  
 }
 
 @media screen and (min-width: 741px) {
@@ -10642,7 +10283,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* This section describe the main list of collections used on list of collections */
+
 
 .list-collections {
   display: block;
@@ -10665,11 +10306,11 @@ input:checked+.popover__choice-label::after,
   display: block;
   text-align: center;
   background: rgb(var(--secondary-background));
-  /* We fill with the secondary background */
+  
   border-radius: var(--block-border-radius-reduced);
   overflow: hidden;
   z-index: 0;
-  /* Creating new stacking context is needed on Safari to apply the border radius */
+  
 }
 
 .list-collections__item.image-zoom {
@@ -10679,7 +10320,7 @@ input:checked+.popover__choice-label::after,
 .list-collections__item:hover .link {
   -webkit-text-decoration-color: rgb(var(--text-color));
   text-decoration-color: rgb(var(--text-color));
-  /* Make sure that the underlined link is in active state on hover of the whole block */
+  
 }
 
 .list-collections__item-image-wrapper {
@@ -10700,7 +10341,7 @@ input:checked+.popover__choice-label::after,
 
 .list-collections__item-image {
   min-height: 120px;
-  /* Ensure enough space for text */
+  
   height: 100%;
   width: 100%;
   -o-object-fit: cover;
@@ -10735,7 +10376,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Collage variation */
+
 
 @media screen and (min-width: 741px) {
   .list-collections--collage {
@@ -10790,7 +10431,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Carousel (scroller) variation */
+
 
 .list-collections__scroller {
   display: block;
@@ -10819,8 +10460,7 @@ input:checked+.popover__choice-label::after,
 }
 
 @media screen and (min-width: 741px) and (max-width: 999px) {
-  /* Just on tablet, the designer wants to have the collections bigger on grid mode and use a carousel mode, so we have
-   to do a specific exception just for tablet size. This unfortunately cause code duplication :( */
+  
 
   .list-collections--grid .container {
     display: block;
@@ -10829,7 +10469,7 @@ input:checked+.popover__choice-label::after,
     padding-right: 0;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    /* For Firefox */
+    
   }
 
   .list-collections--grid .container::-webkit-scrollbar {
@@ -10853,7 +10493,7 @@ input:checked+.popover__choice-label::after,
 
 @media screen and (min-width: 1000px) {
   .list-collections__scroller {
-    /* overflow: hidden; Uncomment this line if you just want scroll to be done in JS with arrows */
+    
     scroll-snap-type: none;
   }
 
@@ -10872,7 +10512,7 @@ input:checked+.popover__choice-label::after,
   }
 
   .list-collections__scroller.is-scrollable .list-collections__item-list {
-    /* 28px is half the width of arrows */
+    
   }
 
   [dir="ltr"] .list-collections__prev-next {
@@ -10887,7 +10527,7 @@ input:checked+.popover__choice-label::after,
     display: none;
     position: absolute;
     top: calc(50% - 56px);
-    /* 56px is the height of a single button */
+    
     z-index: 1;
   }
 
@@ -10932,7 +10572,7 @@ input:checked+.popover__choice-label::after,
 
 @media screen and (max-width: 999px) {
 
-  /* Carousel variation */
+  
   .logo-list--carousel .logo-list__list {
     grid-template-columns: none;
     grid-auto-flow: column;
@@ -10942,7 +10582,7 @@ input:checked+.popover__choice-label::after,
   .logo-list--grid {
     padding-left: var(--container-gutter);
     padding-right: var(--container-gutter);
-    /* We add extra internal spacing on pocket */
+    
   }
 }
 
@@ -10952,7 +10592,7 @@ input:checked+.popover__choice-label::after,
     --logos-gap: 16px;
   }
 
-  /* Scroller variation */
+  
   .logo-list--carousel .logo-list__list {
     grid-auto-columns: 185px;
   }
@@ -10964,7 +10604,7 @@ input:checked+.popover__choice-label::after,
     --logos-gap: 24px;
   }
 
-  /* On desktop, the scroller mode is only visible if we have the arrows, independently of the selected settings */
+  
 
   .logo-list__prev-next {
     position: absolute;
@@ -10973,7 +10613,7 @@ input:checked+.popover__choice-label::after,
     width: 100%;
     pointer-events: none;
     top: calc(50% - 28px);
-    /* 28px is half the height of the button */
+    
   }
 
   .logo-list--carousel .logo-list__prev-next+.logo-list__list {
@@ -10982,10 +10622,10 @@ input:checked+.popover__choice-label::after,
     grid-auto-columns: calc(100% / var(--logos-per-row) - (var(--logos-gap) / var(--logos-per-row) * (var(--logos-per-row) - 1)));
     justify-content: flex-start;
     overflow: hidden;
-    /* We will scroll in JS */
+    
     margin-left: calc(56px + 32px);
     margin-right: calc(56px + 32px);
-    /* 56px is the width of arrows and 32px the extra space we add between arrows and logos */
+    
   }
 
   .logo-list__arrow {
@@ -11040,7 +10680,7 @@ input:checked+.popover__choice-label::after,
   gap: var(--multi-column-row-gap) var(--multi-column-column-gap);
   justify-content: safe center;
   padding-bottom: 2px;
-  /* This allows to allocate extra space and make sure that link border are not hidden */
+  
 }
 
 .multi-column__inner--left {
@@ -11072,7 +10712,7 @@ input:checked+.popover__choice-label::after,
   border-radius: min(8px, var(--block-border-radius));
   overflow: hidden;
   z-index: 0;
-  /* Creating new stacking context is needed on Safari to apply the border radius */
+  
 }
 
 .multi-column__image-wrapper:only-child {
@@ -11093,7 +10733,7 @@ input:checked+.popover__choice-label::after,
 
 @media screen and (max-width: 740px) {
 
-  /* On mobile, for the scroller we use fixed width based on viewport size */
+  
   .multi-column__inner--scroller {
     grid-auto-columns: 25vw;
   }
@@ -11120,7 +10760,7 @@ input:checked+.popover__choice-label::after,
     --section-items-per-row: 3;
   }
 
-  /* On mobile, for the scroller we use fixed width based on viewport size */
+  
   .multi-column__inner--scroller {
     grid-auto-columns: 20vw;
   }
@@ -11194,13 +10834,13 @@ input:checked+.popover__choice-label::after,
     justify-content: space-between;
     width: calc(100% - 56px);
     top: calc(var(--item-width) / var(--smallest-image-aspect-ratio) / 2 - 28px);
-    /* 28px is half the height of the button */
+    
     left: 28px;
   }
 
   .multi-column__prev-next--no-image {
     top: calc(50% - 28px);
-    /* 28px is half the height of the button */
+    
   }
 
   .multi-column__arrow {
@@ -11253,13 +10893,13 @@ input:checked+.popover__choice-label::after,
 
 .newsletter__form .input-row {
   grid-template-columns: none;
-  /* As the newsletter box is small there is not enough space to fit on smaller screens */
+  
 }
 
 @media screen and (min-width: 1200px) {
   .newsletter__form .input-row {
     grid-template-columns: 1fr auto;
-    /* Small variation for this section */
+    
   }
 }
 
@@ -11283,7 +10923,7 @@ input:checked+.popover__choice-label::after,
 
 .newsletter-modal__content--extra {
   padding-top: 40px;
-  /* If there is an image the close button is within the text so we have to increase the padding */
+  
 }
 
 @media screen and (max-width: 740px) {
@@ -11540,7 +11180,7 @@ input:checked+.popover__choice-label::after,
   margin-bottom: 16px;
 }
 
-/* Product */
+
 
 .predictive-search__product-item:first-child .line-item__content-wrapper {
   margin-top: 0;
@@ -11566,7 +11206,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Linklist */
+
 
 .predictive-search__linklist {
   max-width: 450px;
@@ -11612,7 +11252,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/* Blog post */
+
 
 .predictive-search__article-item+.predictive-search__article-item {
   margin-top: 24px;
@@ -11640,7 +11280,7 @@ input:checked+.popover__choice-label::after,
 @supports (-webkit-touch-callout: none) {
   @media screen and (max-width: 740px) {
 
-    /* On iOS, when the keyboard is visible it does not contribute to the size of the viewport, so do not center on iOS */
+    
     .predictive-search .drawer__content--center {
       margin-top: 150px;
     }
@@ -11728,14 +11368,12 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/*
- * MAIN LAYOUT
- */
+
 
 @media screen and (max-width: 740px) {
   .product:not(.product--featured) {
     margin-top: var(--container-gutter);
-    /* margin-bottom: 36px; */
+    
   }
 }
 
@@ -11747,7 +11385,7 @@ input:checked+.popover__choice-label::after,
   }
 
   .product:not(.product--featured) {
-    /* margin-bottom: 80px; */
+    
   }
 
   .product__media {
@@ -11764,7 +11402,7 @@ input:checked+.popover__choice-label::after,
   .product__info:only-child {
     margin-left: auto;
     margin-right: auto;
-    /* Allows to center if this is the only child */
+    
   }
 }
 
@@ -11801,9 +11439,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/*
- * PRODUCT MEDIA PART
- */
+
 
 .product__media {
   display: block;
@@ -11832,9 +11468,9 @@ input:checked+.popover__choice-label::after,
 .product__media-image-wrapper {
   overflow: hidden;
   padding: 2px;
-  /* Act as a placeholder until image is loaded */
+  
   z-index: 0;
-  /* Creating new stacking context is needed on Safari to apply the border radius */
+  
 }
 
 .product__media-nav {
@@ -12004,7 +11640,7 @@ input:checked+.popover__choice-label::after,
 
 .product__view-in-space {
   display: none;
-  /* We do not show that button on desktop */
+  
 }
 
 .product__media-nav {
@@ -12032,7 +11668,7 @@ input:checked+.popover__choice-label::after,
   min-width: 64px;
 }
 
-/* Thumbnails left variation */
+
 .product--thumbnails-left .product__media {
   position: sticky;
   top: 216px;
@@ -12148,9 +11784,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/*
- * PRODUCT META
- */
+
 
 .product-meta {
   display: block;
@@ -12250,9 +11884,7 @@ input:checked+.popover__choice-label::after,
   }
 }
 
-/*
- * PRODUCT FORM
- */
+
 
 .product-form {
   display: grid;
@@ -12314,7 +11946,7 @@ input:checked+.popover__choice-label::after,
   width: 100%;
 }
 
-/* Custom element that controls the "payment terms" */
+
 shopify-payment-terms {
   display: block;
 }
@@ -12330,13 +11962,11 @@ shopify-payment-terms {
 
 .product-form__store-availability-container:empty {
   display: none;
-  /* Make sure that it does not add extra space */
+  
 }
 
 
-/*
- * INVENTORY
- */
+
 
 .inventory {
   color: rgb(var(--product-in-stock-text-color));
@@ -12346,9 +11976,7 @@ shopify-payment-terms {
   color: rgb(var(--product-low-stock-text-color));
 }
 
-/*
- * PRODUCT CONTENT PART
- */
+
 
 .product-content {
   display: flex;
@@ -12371,7 +11999,7 @@ shopify-payment-terms {
 
   .product-content {
     flex-direction: column-reverse;
-    /* In mobile we show the "complete the look" products first */
+    
   }
 
   .product-content__tabs+.product-content__featured-products {
@@ -12401,9 +12029,7 @@ shopify-payment-terms {
   }
 }
 
-/*
- * PRODUCT CONTENT PART (TABS)
- */
+
 
 .product-tabs__trust-list:not(:first-child) {
   margin-top: 32px;
@@ -12482,13 +12108,13 @@ shopify-payment-terms {
   }
 
   .product-content__tabs:only-child {
-    /* The auto margin allows to center if only tabs are present */
+    
     margin-left: auto;
     margin-right: auto;
     width: calc(var(--grid-column-width) * 12 + var(--grid-gap) * 12);
   }
 
-  /* On lap and up, the inner collapsible are always visible */
+  
   .product-tabs__tab-item-wrapper .collapsible {
     height: auto;
     overflow: auto;
@@ -12496,9 +12122,7 @@ shopify-payment-terms {
   }
 }
 
-/*
- * PRODUCT CONTENT PART (PRODUCTS)
- */
+
 
 .product-content__featured-products-title {
   margin-bottom: 0;
@@ -12514,14 +12138,14 @@ shopify-payment-terms {
 
 @media screen and (max-width: 740px) {
 
-  /* On mobile we show the product a bit differently */
+  
   .product-content__featured-products .product-item {
     flex-direction: row;
     align-items: center;
     scroll-snap-align: center;
     scroll-snap-stop: always;
     scroll-snap-margin: var(--container-gutter);
-    /* iOS uses non-standard property */
+    
     scroll-margin: var(--container-gutter);
   }
 
@@ -12588,9 +12212,7 @@ shopify-payment-terms {
   }
 }
 
-/*
- * QUICK BUY (POPOVER AND DRAWER)
- */
+
 
 .quick-buy-product {
   display: flex;
@@ -12671,9 +12293,7 @@ shopify-payment-terms {
   }
 }
 
-/*
- * PRODUCT STICKY FORM
- */
+
 
 [dir="ltr"] .product-sticky-form {
   left: 0;
@@ -12768,7 +12388,7 @@ shopify-payment-terms {
   }
 
   .product-sticky-form__variants .select-wrapper+.select-wrapper {
-    /* Allow the borders to collapse */
+    
   }
 
   .product-sticky-form__variants .select-wrapper:not(:first-child):not(:last-child) .select {
@@ -12818,7 +12438,7 @@ shopify-payment-terms {
     }
   }
 
-  /* The height of the selectors is slightly reduced only here */
+  
   .product-sticky-form .button,
   .product-sticky-form .select {
     line-height: 48px;
@@ -12834,15 +12454,7 @@ shopify-payment-terms {
   }
 }
 
-/**
- * -------------------------------------------------------------
- * PRODUCT ITEM META
- *
- * This component is used on many elements (like grid item,
- * cart page, mini-cart, order...) and guarantee a consistent
- * spacing across all elements
- * -------------------------------------------------------------
- */
+
 
 .product-item-meta {
   display: block;
@@ -12868,7 +12480,7 @@ shopify-payment-terms {
 
 .product-item-meta__reviews-badge+.product-item-meta__color-count {
   margin-top: 4px;
-  /* When preceded by reviews badge we have a smaller gap */
+  
 }
 
 .product-item-meta__reviews-badge .spr-icon {
@@ -12879,7 +12491,7 @@ shopify-payment-terms {
 .product-item-meta__swatch-list {
   margin-top: 10px;
   margin-bottom: 2px;
-  /* The extra 2px at the bottom is to avoid the border to be clipped on iOS */
+  
   justify-content: center;
   gap: 6px;
 }
@@ -12895,17 +12507,11 @@ shopify-payment-terms {
 
   .product-item-meta__title {
     line-height: 1.5;
-    /* We slightly reduce the line height on larger screen */
+    
   }
 }
 
-/**
- * -------------------------------------------------------------
- * PRODUCT ITEM
- *
- * extra info only available on collection and featured collection pages
- * -------------------------------------------------------------
- */
+
 
 .product-item {
   position: relative;
@@ -13034,12 +12640,12 @@ shopify-payment-terms {
 .product-item__secondary-image {
   position: absolute;
   display: none;
-  /* Allows to make sure it does not trigger lazyload */
+  
   visibility: hidden;
   opacity: 0;
   top: 50% !important;
   left: 50% !important;
-  /* We must use this instead of logical property here */
+  
   transform: translate(-50%, -50%) !important;
   -o-object-fit: contain;
   object-fit: contain;
@@ -13081,7 +12687,7 @@ shopify-payment-terms {
   transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
-/* This button is only appearing on touch device */
+
 [dir="ltr"] .product-item__quick-buy-button {
   right: 12px;
 }
@@ -13118,11 +12724,7 @@ shopify-payment-terms {
   }
 }
 
-/**
- * -------------------------------------------------------------
- * PRODUCT LIST
- * -------------------------------------------------------------
- */
+
 
 .product-list {
   --product-list-column-gap: var(--grid-gap);
@@ -13148,7 +12750,7 @@ shopify-payment-terms {
 
 [dir="ltr"] .product-list--center .product-list__inner {
   justify-content: safe center;
-  /* For some reason it does not work in RTL on Chrome */
+  
 }
 
 @media screen and (max-width: 740px) {
@@ -13156,14 +12758,13 @@ shopify-payment-terms {
     width: 16px;
   }
 
-  /* On mobile when the products are shown in grid we reduce spacing */
+  
   .product-list {
     --product-list-column-gap: 12px;
   }
 
   .product-list__inner:not(.product-list__inner--scroller) {
-    /* margin-left: calc(-1 * var(--container-gutter) / 2);
-    margin-right: calc(-1 * var(--container-gutter) / 2); */
+    
   }
 }
 
@@ -13186,7 +12787,7 @@ shopify-payment-terms {
 
 @media screen and (min-width: 1000px) {
   .product-list {
-    /* We calculate the width of one product item cell thanks to power of CSS variables */
+    
     --item-width: calc((var(--container-max-width-minus-gutters) - 56px) / var(--section-products-per-row) - (var(--grid-gap) / var(--section-products-per-row) * (var(--section-products-per-row) - 1)));
   }
 
@@ -13203,7 +12804,7 @@ shopify-payment-terms {
     justify-content: space-between;
     width: 100%;
     top: calc(var(--item-width) / var(--smallest-image-aspect-ratio) / 2 - 28px);
-    /* 28px is half the height of the button */
+    
   }
 
   .product-list__arrow {
@@ -13226,7 +12827,7 @@ shopify-payment-terms {
     grid-auto-columns: calc(100% / var(--section-products-per-row, 4) - (var(--grid-gap) / var(--section-products-per-row, 4) * (var(--section-products-per-row, 4) - 1)));
     margin-left: 28px;
     margin-right: 28px;
-    /* We add a bit of space for the arrow */
+    
     overflow: hidden;
   }
 
@@ -13286,10 +12887,10 @@ shopify-payment-terms {
 .promotion-block:hover .link {
   -webkit-text-decoration-color: rgb(var(--text-color));
   text-decoration-color: rgb(var(--text-color));
-  /* Make sure that the underlined link is in active state on hover of the whole block */
+  
 }
 
-/* IMAGE DEDICATED BLOCK */
+
 
 [dir="ltr"] .promotion-block__image {
   right: 0;
@@ -13311,7 +12912,7 @@ shopify-payment-terms {
   border-radius: var(--block-border-radius-reduced);
 }
 
-/* QUOTE DEDICATED BLOCK */
+
 
 [dir="ltr"] .promotion-block--quote::before {
   left: var(--promotion-block-padding);
@@ -13340,24 +12941,24 @@ shopify-payment-terms {
 
 .promotion-block--quote .promotion-block__content-wrapper {
   margin-top: 50px;
-  /* This ensure a minimum space so that text does not cover the quote */
+  
 }
 
-/* VIDEO DEDICATED BLOCK */
+
 
 .promotion-block--video {
   padding: 0 !important;
-  /* The video cover the tile */
+  
 }
 
 .promotion-block .video-wrapper {
   --video-height: calc(var(--promotion-block-min-height) + 60px);
-  /* We add a bit of extra space in case other blocks may be taller */
+  
   min-height: var(--promotion-block-min-height);
   height: 100%;
 }
 
-/* PRODUCT DEDICATED BLOCK */
+
 
 .promotion-block--products {
   padding: 24px !important;
@@ -13398,7 +12999,7 @@ shopify-payment-terms {
   align-items: center;
   width: 100%;
   top: calc(50% - 20px);
-  /* 20px is half the height of the buttons */
+  
   pointer-events: none;
 }
 
@@ -13429,7 +13030,7 @@ shopify-payment-terms {
     scroll-snap-align: center;
     scroll-snap-stop: always;
     scroll-snap-margin: var(--promotion-block-gutter);
-    /* iOS uses non-standard property */
+    
     scroll-margin: var(--promotion-block-gutter);
   }
 }
@@ -13441,7 +13042,7 @@ shopify-payment-terms {
 
   .promotion-block .newsletter__form .input-row {
     grid-template-columns: 1fr auto;
-    /* We have enough space :) */
+    
   }
 }
 
@@ -13467,7 +13068,7 @@ shopify-payment-terms {
 
   .promotion-block:not(.promotion-block--highlight) .newsletter__form .input-row {
     grid-template-columns: none;
-    /* We do not have enough space */
+    
   }
 }
 
@@ -13493,7 +13094,7 @@ shopify-payment-terms {
 @media screen and (min-width: 1400px) {
   .promotion-block .newsletter__form .input-row {
     grid-template-columns: 1fr auto;
-    /* We have enough space :) */
+    
   }
 }
 
@@ -13582,7 +13183,7 @@ shopify-payment-terms {
 
 .shop-the-look__item {
   background: rgb(var(--secondary-background));
-  /* Use as a filler */
+  
 }
 
 .shop-the-look__item[hidden] {
@@ -13598,7 +13199,7 @@ shopify-payment-terms {
 .shop-the-look__item[hidden] .popover,
 .shop-the-look__item[hidden] .drawer {
   display: none;
-  /* Making sure popover and drawer are hidden for hidden look helps alleviating issues with Safari */
+  
 }
 
 .shop-the-look__image {
@@ -13607,10 +13208,10 @@ shopify-payment-terms {
 
 .shop-the-look__product-wrapper {
   position: absolute;
-  /* Position is set dynamically in Liquid */
+  
 }
 
-/* Dot elements */
+
 
 .shop-the-look__dot {
   position: relative;
@@ -13646,9 +13247,9 @@ shopify-payment-terms {
   animation: shopTheLookDotKeyframe 2s ease-in-out infinite;
 }
 
-/* Product part */
 
-/* This allows to shift by the size of the dot */
+
+
 [dir="ltr"] .shop-the-look__product-wrapper {
   margin-left: -12px;
 }
@@ -13751,7 +13352,7 @@ shopify-payment-terms {
   margin-bottom: 2px;
 }
 
-/* Nav */
+
 
 .shop-the-look__nav {
   position: absolute;
@@ -13764,7 +13365,7 @@ shopify-payment-terms {
   overflow: hidden;
   z-index: 1;
   transform: translateZ(0);
-  /* Solves an extremely odd rendering issue on Safari */
+  
 }
 
 .shop-the-look__prev-next-buttons {
@@ -13825,7 +13426,7 @@ shopify-payment-terms {
 
   .shop-the-look__counter-page-base {
     opacity: 0;
-    /* Just to allocate the space */
+    
   }
 
   [dir="ltr"] .shop-the-look__counter-page-transition {
@@ -13850,12 +13451,9 @@ shopify-payment-terms {
   }
 }
 
-/**
- * IMPLEMENTATION NOTE: as always, styling Shopify Reviews is a whole mess, as the app adds ton of useless and outdated
- * CSS, so we have to override everything. You should really touch this code with extra extra care...
- */
 
-/* GENERAL */
+
+
 
 .spr-starrating,
 #shopify-product-reviews .spr-starratings {
@@ -13894,14 +13492,14 @@ shopify-payment-terms {
 
 .spr-icon::before {
   content: none !important;
-  /* Remove the default Shopify styles */
+  
 }
 
 .spr-icon.spr-icon.spr-icon-star-empty {
   opacity: 0.4;
 }
 
-/* BADGE */
+
 
 [dir="ltr"] .spr-summary-starrating+.spr-summary-caption {
   margin-left: 8px;
@@ -13911,11 +13509,11 @@ shopify-payment-terms {
   margin-right: 8px;
 }
 
-/* MAIN REVIEW */
 
-/* There are lot of elements we do not want */
+
+
 .product-tabs .spr-header-title,
-/* the title must only be hidden if the reviews are embedded into the tab system */
+
 .spr-form-title,
 .spr-summary::before,
 .spr-summary::after,
@@ -13930,7 +13528,7 @@ shopify-payment-terms {
 
 #shopify-product-reviews {
   display: block !important;
-  /* Make sure reviews are always visible whatever is checked in the Shopify app */
+  
   margin: 0 !important;
 }
 
@@ -13979,7 +13577,7 @@ shopify-payment-terms {
 
 #shopify-product-reviews .spr-form-review-body {
   margin-bottom: 0 !important;
-  /* This is the last field */
+  
 }
 
 #shopify-product-reviews .spr-form-input.spr-starrating {
@@ -14101,7 +13699,7 @@ shopify-payment-terms {
   font-weight: var(--text-font-bold-weight);
 }
 
-/* We cannot control the DOM generated so we have to be creative... */
+
 #shopify-product-reviews .spr-review-header-byline {
   position: absolute;
   margin: 0;
@@ -14151,7 +13749,7 @@ shopify-payment-terms {
   padding-right: 8px;
 }
 
-/* Allows to make the whole pagination link clickable */
+
 #shopify-product-reviews .spr-pagination a {
   display: flex;
   position: relative;
@@ -14236,7 +13834,7 @@ shopify-payment-terms {
     margin-bottom: calc(1em - 2px);
   }
 
-  /* We cannot control the DOM generated so we have to be creative... */
+  
   #shopify-product-reviews .spr-review-header-byline {
     bottom: 32px;
   }
@@ -14261,9 +13859,7 @@ shopify-payment-terms {
   }
 }
 
-/**
- * STYLES FOR SOME PAGES CONTROLLED BY SHOPIFY
- */
+
 
 .shopify-challenge__container {
   margin-top: var(--vertical-breather) !important;
@@ -14398,7 +13994,7 @@ shopify-payment-terms {
   z-index: 1;
 }
 
-/* When the text is aligned at the top, we should add extra space if the header is transparent to avoid it to collide */
+
 @supports (width: max(1px, 2px)) {
   .slideshow__text-wrapper--top {
     padding-top: max(var(--vertical-breather), calc((var(--header-height) + 25px) * var(--enable-transparent-header)));
@@ -14413,7 +14009,7 @@ shopify-payment-terms {
   }
 }
 
-/* Navigation (progress bar) */
+
 
 @keyframes slideshowProgressBarAnimation {
   from {
@@ -14517,7 +14113,7 @@ shopify-payment-terms {
   }
 
   .slideshow__slide--split .slideshow__image-wrapper--secondary {
-    /* The -1px allows to take into account the potential approximation rounding that browsers do */
+    
     width: calc(50% + 1px);
   }
 
@@ -14525,7 +14121,7 @@ shopify-payment-terms {
     padding-bottom: calc(100.0 / var(--image-aspect-ratio) * 1%);
   }
 
-  /* Navigation (progress bar) */
+  
 
   .slideshow__nav {
     bottom: 23px;
@@ -14590,7 +14186,7 @@ shopify-payment-terms {
   margin-top: 10px;
 }
 
-/* MODAL */
+
 
 .store-availabilities-modal__product-title {
   max-width: 85%;
@@ -14635,7 +14231,7 @@ shopify-payment-terms {
 
 .store-availability-list__contact p {
   margin-bottom: 0;
-  /* Remove the margin of the formatted address by Shopify */
+  
 }
 
 .testimonial-list {
@@ -14648,7 +14244,7 @@ shopify-payment-terms {
 .testimonial__author,
 .testimonial-list__nav {
   padding: 0 24px;
-  /* The blockquote has a natural spacing that we have to add on other elements */
+  
 }
 
 .testimonial-list__wrapper {
@@ -14702,7 +14298,7 @@ shopify-payment-terms {
 
   .testimonial__author,
   .testimonial-list__nav {
-    /* The blockquote has a natural spacing that we have to add on other elements */
+    
     margin-top: 32px;
   }
 }
@@ -14730,7 +14326,7 @@ shopify-payment-terms {
 
   .testimonial__author,
   .testimonial-list__nav {
-    /* The blockquote has a natural spacing that we have to add on other elements */
+    
     margin-top: 40px;
   }
 }
@@ -14788,12 +14384,12 @@ shopify-payment-terms {
 
   .text-with-icons__item {
     padding: 0;
-    /* Spacing is already added by the grid */
+    
   }
 
   .text-with-icons__content-wrapper .heading+p {
     margin-top: 16px;
-    /* We have a slightly different spacing here */
+    
   }
 }
 
@@ -14896,15 +14492,14 @@ shopify-payment-terms {
 .timeline__prev-next-buttons {
   position: absolute;
   top: calc(50% - 56px);
-  /* 56px is the height of a single button */
-  /* 28px is half the width of button */
+  
+  
   z-index: 1;
 }
 
 @media screen and (max-width: 999px) {
 
-  /* On mobile and tablet we have a very special layout and scrolling pattern. What happens is that by default
-     images appear "static", and when scrolling the content goes "on top" of the image */
+  
   .timeline {
     --timeline-image-max-width: 70vw;
     --timeline-content-max-width: 79vw;
@@ -15045,7 +14640,7 @@ shopify-payment-terms {
     border-radius: var(--block-border-radius);
     overflow: hidden;
     z-index: 0;
-    /* Creating new stacking context is needed on Safari to apply the border radius */
+    
   }
 
   .timeline__item[hidden] {
@@ -15111,7 +14706,7 @@ shopify-payment-terms {
   }
 }
 
-/* For the boxed variation, the size setting controls the width */
+
 
 .video-section--boxed {
   margin-left: auto;
@@ -15130,7 +14725,7 @@ shopify-payment-terms {
   max-width: 1200px;
 }
 
-/* For the full-width, the size setting controls the height */
+
 
 .video-section--full .video-wrapper {
   --video-width: 100vw;
@@ -15191,9 +14786,7 @@ shopify-payment-terms {
   }
 }
 
-/* NOTE: this code is to fix a temporary issue introduced by Safari 15.4 that prevents any overflow: hidden to be scrollable
-   programmatically. Those temporary fixes will be removed from the theme once a new version of Safari is released
- */
+
 
 @media screen and (min-width: 1000px) {
   .product-list__inner {

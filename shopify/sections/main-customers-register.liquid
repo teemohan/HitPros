@@ -441,7 +441,7 @@
         const $label = $(inputEl).closest('.el-form-item__content').find('label');
         
         const toggleLabelFocus = () => {
-          // Only remove the focus class if input is not focused and empty
+         
           if ($(inputEl).val().length === 0 && !inputEl.matches(':focus')) {
             $label.removeClass('label--focus');
           }
@@ -452,7 +452,7 @@
         });
 
         inputEl.addEventListener('blur', () => {
-          setTimeout(toggleLabelFocus, 100); // Delay to check focus state
+          setTimeout(toggleLabelFocus, 100);
         });
         if (binding.value) {
           $label.addClass('label--focus');
@@ -481,7 +481,7 @@
     };
 
     const validateEnglishLettersOnly = (rule, value, callback) => {
-      const englishLetterPattern = /^[a-zA-Z]+$/; // 仅允许英文字母
+      const englishLetterPattern = /^[a-zA-Z]+$/;
       if (!englishLetterPattern.test(value)) {
         return callback(new Error('Special characters are not allowed'));
       }
@@ -679,7 +679,7 @@
           jobPersonal: '',
           jobCompany: '',
           validCompanyData: null,
-          showIndustryCompanyEdit: false, // 是否是其他职业
+          showIndustryCompanyEdit: false,
           showIndustryPersonalEdit: false,
           showJobPersonalEdit: false,
           showJobCompanyEdit: false,
@@ -743,8 +743,8 @@
             { isSelected: false, value: 'Student', label: 'Student' },
             { isSelected: false, value: 'Other', label: 'Other' },
           ],
-          showPass: false, // 查看密码开关
-          showPass1: false, // 查看确认密码开关
+          showPass: false,
+          showPass1: false,
           personalRules: {
             firstname: [
               { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
@@ -803,7 +803,7 @@
               { validator: noWhitespaceValidator, message: 'Code is required', trigger: 'blur' }
             ],
           },
-          loading: false, //create account按钮的loading
+          loading: false,
         };
       },
       computed: {
@@ -817,7 +817,7 @@
               return this.companyJoinRules;
             }
           }
-          return {}; // 默认空规则
+          return {};
         },
       },
       mounted() {
@@ -1136,7 +1136,7 @@
           this.$refs.ruleForm.clearValidate(["jobCompany"]);
         },
         handleButtonClickIndustryCompany(event, industryItem) {
-          event.stopPropagation(); // 阻止冒泡，防止关闭
+          event.stopPropagation();
           if (industryItem.isSelected) return;
           this.industryOptions.map((item) => (item.isSelected = false));
           const industry = this.industryOptions.find((item) => item.value == industryItem.value);
@@ -1149,12 +1149,12 @@
           } else {
             this.showIndustryCompanyEdit = false;
             this.ruleForm.industry = industry.value;
-            this.$refs.selIndustryCompany.blur(); // 关闭菜单
+            this.$refs.selIndustryCompany.blur();
           }
           industry.isSelected = true;
         },
         handleButtonClickIndustryPersonal(event, industryItem) {
-          event.stopPropagation(); // 阻止冒泡，防止关闭
+          event.stopPropagation();
           if (industryItem.isSelected) return;
           this.industryOptionsPersonal.map((item) => (item.isSelected = false));
           const industryPersonal = this.industryOptionsPersonal.find((item) => item.value == industryItem.value);
@@ -1164,12 +1164,12 @@
           } else {
             this.showIndustryPersonalEdit = false;
             this.ruleForm.industryPersonal = industryPersonal.value;
-            this.$refs.selIndustryPersonal.blur(); // 关闭菜单
+            this.$refs.selIndustryPersonal.blur();
           }
           industryPersonal.isSelected = true;
         },
         handleButtonClickJobPersonal(event, jobItem) {
-          event.stopPropagation(); // 阻止冒泡，防止关闭
+          event.stopPropagation();
           if (jobItem.isSelected) return;
           this.jobOptionsPersonal.map((item) => (item.isSelected = false));
           const jobPersonal = this.jobOptionsPersonal.find((item) => item.value == jobItem.value);
@@ -1179,12 +1179,12 @@
           } else {
             this.showJobPersonalEdit = false;
             this.ruleForm.jobPersonal = jobPersonal.value;
-            this.$refs.selJobPersonal.blur(); // 关闭菜单
+            this.$refs.selJobPersonal.blur();
           }
           jobPersonal.isSelected = true;
         },
         handleButtonClickJobCompany(event, jobItem) {
-          event.stopPropagation(); // 阻止冒泡，防止关闭
+          event.stopPropagation();
           if (jobItem.isSelected) return;
           this.jobOptionsCompany.map((item) => (item.isSelected = false));
           const jobCompany = this.jobOptionsCompany.find((item) => item.value == jobItem.value);
@@ -1197,7 +1197,7 @@
           } else {
             this.showJobCompanyEdit = false;
             this.ruleForm.jobCompany = jobCompany.value;
-            this.$refs.selJobCompany.blur(); // 关闭菜单
+            this.$refs.selJobCompany.blur();
           }
           jobCompany.isSelected = true;
         },

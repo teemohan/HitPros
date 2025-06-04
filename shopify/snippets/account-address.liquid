@@ -1,7 +1,6 @@
 {{ 'account-address.css' | asset_url | stylesheet_tag }}
 <template id="accountAddress">
   <div class="account-main-container">
-    {% comment %} 新增、更新表单弹框 {% endcomment %}
     <el-dialog
       width="558px"
       :title="isUpdate ? 'Edit Address': 'Add Address'"
@@ -194,7 +193,6 @@
         </div>
       </div>
     </el-dialog>
-    {% comment %} 删除表单弹框 {% endcomment %}
     <el-dialog
       width="484px"
       title="Remove Address"
@@ -324,7 +322,6 @@
 
 <script>
   (() => {
-    // 使用 DOM 元素解码 HTML 实体
     function decodeHTMLEntities(str) {
       let textarea = document.createElement('textarea');
       textarea.innerHTML = str;
@@ -399,7 +396,7 @@
         };
 
         const validateEnglishLettersOnly = (rule, value, callback) => {
-          const englishLetterPattern = /^[a-zA-Z]+$/; // 仅允许英文字母
+          const englishLetterPattern = /^[a-zA-Z]+$/;
           if (!englishLetterPattern.test(value)) {
             return callback(new Error('Special characters are not allowed'));
           }
@@ -420,7 +417,7 @@
             city: '',
             zip: '',
             province: '',
-            country: 'United States', // 默认值
+            country: 'United States',
             default: false,
           },
           originRuleForm: {
@@ -432,13 +429,13 @@
             city: '',
             zip: '',
             province: '',
-            country: 'United States', // 默认值
+            country: 'United States', 
             default: false,
           },
-          formAction: '/account/addresses', // 表单提交的地址
-          formMethod: 'post', // 表单提交的地址
-          isUpdate: false, //是否更新表单
-          removed_address_url: '', // 删除表单的url
+          formAction: '/account/addresses', 
+          formMethod: 'post', 
+          isUpdate: false,
+          removed_address_url: '',
           rules: {
             first_name: [
               { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
@@ -458,7 +455,7 @@
             province: [{ validator: validateState, trigger: 'change' }],
             zip: [{ validator: validateZipCode, trigger: 'blur' }],
           },
-          stateOptions: [ // 美国所有的州
+          stateOptions: [
             ["Alabama", "Alabama"],
             ["Alaska", "Alaska"],
             ["American Samoa", "American Samoa"],
@@ -554,7 +551,7 @@
             this.$refs.ruleForm.validateField('province');
           }
         },
-        submitForm(formName) { // 提交表单
+        submitForm(formName) {
           if(!this.isUpdate && this.address_list.length == 20) {
             this.$message({
               showClose: true,
@@ -570,7 +567,7 @@
             };
           });
         },
-        handleBeforeClose() { // 关闭弹框并重置表单
+        handleBeforeClose() { 
           this.formAction = `/account/addresses`;
           this.ruleForm = JSON.parse(JSON.stringify(this.originRuleForm));
           this.dialogVisible = false;
@@ -579,12 +576,12 @@
           }, 300)
           this.$refs.ruleForm.clearValidate();
         },
-        handleUpdateAddress(address_id) { // 更新表单
+        handleUpdateAddress(address_id) { 
           this.formAction = `/account/addresses/${address_id}`;
           this.ruleForm = this.address_list.find(item => item.address_id == address_id).data;
           this.dialogVisible = this.isUpdate = true;
         },
-        handleRemoveAddress(address_url) { // 删除表单
+        handleRemoveAddress(address_url) { 
           this.removed_address_url = address_url;
           this.dialogVisibleRemove = true;
         },

@@ -1,5 +1,5 @@
 (() => {
-  (() => { // 校验用户是否是B端用户
+  (() => {
     if(Cookies.get('logout') == 1) {
       Cookies.remove('logout');
       window.location.href = '/account/logout';
@@ -23,7 +23,7 @@
     return value;
   };
 
-  // node_modules/ftdomdelegate/main.js
+ 
   function Delegate(root) {
     this.listenerMap = [{}, {}];
     if (root) {
@@ -263,7 +263,7 @@
   };
   var main_default = Delegate;
 
-  // js/components/input-binding-manager.js
+ 
   var InputBindingManager = class {
     constructor() {
       this.delegateElement = new main_default(document.body);
@@ -280,7 +280,7 @@
     }
   };
 
-  // js/helper/event.js
+ 
   function triggerEvent(element, name, data = {}) {
     element.dispatchEvent(
       new CustomEvent(name, {
@@ -298,7 +298,7 @@
     );
   }
 
-  // js/custom-element/custom-html-element.js
+ 
   var CustomHTMLElement = class extends HTMLElement {
     constructor() {
       super();
@@ -357,7 +357,7 @@
     }
   };
 
-  // node_modules/tabbable/dist/index.esm.js
+ 
   var candidateSelectors = [
     'input',
     'select',
@@ -558,7 +558,7 @@
     return isNodeMatchingSelectorFocusable(options, node);
   };
 
-  // node_modules/focus-trap/dist/focus-trap.esm.js
+ 
   function ownKeys(object, enumerableOnly) {
     var keys = Object.keys(object);
     if (Object.getOwnPropertySymbols) {
@@ -1034,7 +1034,7 @@
     return trap;
   };
 
-  // js/helper/section.js
+ 
   function filterShopifyEvent(event, domElement, callback) {
     let executeCallback = false;
     if (event.type.includes('shopify:section')) {
@@ -1049,7 +1049,7 @@
     }
   }
 
-  // js/custom-element/behavior/openable-element.js
+ 
   var OpenableElement = class extends CustomHTMLElement {
     static get observedAttributes() {
       return ['open'];
@@ -1153,7 +1153,7 @@
   };
   window.customElements.define('openable-element', OpenableElement);
 
-  // js/custom-element/behavior/collapsible-content.js
+ 
   var CollapsibleContent = class extends OpenableElement {
     constructor() {
       super();
@@ -1204,7 +1204,7 @@
   };
   window.customElements.define('collapsible-content', CollapsibleContent);
 
-  // js/custom-element/behavior/confirm-button.js
+ 
   var ConfirmButton = class extends HTMLButtonElement {
     connectedCallback() {
       this.addEventListener('click', (event) => {
@@ -1216,7 +1216,7 @@
   };
   window.customElements.define('confirm-button', ConfirmButton, { extends: 'button' });
 
-  // js/mixin/loader-button.js
+ 
   var LoaderButtonMixin = {
     _prepareButton() {
       this.originalContent = this.innerHTML;
@@ -1298,7 +1298,7 @@
     },
   };
 
-  // js/custom-element/behavior/loader-button.js
+ 
   var LoaderButton = class extends HTMLButtonElement {
     static get observedAttributes() {
       return ['aria-busy'];
@@ -1336,7 +1336,7 @@
   Object.assign(LoaderButton.prototype, LoaderButtonMixin);
   window.customElements.define('loader-button', LoaderButton, { extends: 'button' });
 
-  // js/custom-element/behavior/page-pagination.js
+ 
   var PagePagination = class extends CustomHTMLElement {
     connectedCallback() {
       if (this.hasAttribute('ajax')) {
@@ -1352,7 +1352,7 @@
   };
   window.customElements.define('page-pagination', PagePagination);
 
-  // js/custom-element/behavior/toggle-button.js
+ 
   var ToggleButton = class extends HTMLButtonElement {
     static get observedAttributes() {
       return ['aria-expanded', 'aria-busy'];
@@ -1442,7 +1442,7 @@
   Object.assign(ToggleButton.prototype, LoaderButtonMixin);
   window.customElements.define('toggle-button', ToggleButton, { extends: 'button' });
 
-  // js/custom-element/behavior/toggle-link.js
+ 
   var ToggleLink = class extends HTMLAnchorElement {
     static get observedAttributes() {
       return ['aria-expanded'];
@@ -1502,7 +1502,7 @@
   };
   window.customElements.define('toggle-link', ToggleLink, { extends: 'a' });
 
-  // js/custom-element/behavior/page-dots.js
+ 
   var PageDots = class extends CustomHTMLElement {
     connectedCallback() {
       this.buttons = Array.from(this.querySelectorAll('button'));
@@ -1561,7 +1561,7 @@
   };
   window.customElements.define('page-dots', PageDots);
 
-  // js/custom-element/behavior/prev-next-buttons.js
+ 
   var PrevNextButtons = class extends HTMLElement {
     connectedCallback() {
       this.prevButton = this.querySelector('button:first-of-type');
@@ -1594,7 +1594,7 @@
   window.customElements.define('prev-button', PrevButton, { extends: 'button' });
   window.customElements.define('next-button', NextButton, { extends: 'button' });
 
-  // js/helper/dimensions.js
+ 
   function getStickyHeaderOffset() {
     const documentStyles = getComputedStyle(document.documentElement);
     return (
@@ -1605,7 +1605,7 @@
     );
   }
 
-  // js/custom-element/behavior/safe-sticky.js
+ 
   var SafeSticky = class extends HTMLElement {
     connectedCallback() {
       this.lastKnownY = window.scrollY;
@@ -1639,7 +1639,7 @@
   };
   window.customElements.define('safe-sticky', SafeSticky);
 
-  // js/helper/throttle.js
+ 
   function throttle(callback, delay3 = 15) {
     let throttleTimeout = null,
       storedEvent = null;
@@ -1660,7 +1660,7 @@
     return throttledEventHandler;
   }
 
-  // js/custom-element/behavior/scroll-spy.js
+ 
   var ScrollSpy = class extends HTMLElement {
     connectedCallback() {
       this._createSvg();
@@ -1760,7 +1760,7 @@
   };
   window.customElements.define('scroll-spy', ScrollSpy);
 
-  // js/custom-element/behavior/scroll-shadow.js
+ 
   var template = `
   <style>
     :host {
@@ -1855,7 +1855,7 @@
     window.customElements.define('scroll-shadow', ScrollShadow);
   }
 
-  // js/custom-element/behavior/share-toggle-button.js
+ 
   var ShareToggleButton = class extends ToggleButton {
     _onButtonClick() {
       if (window.matchMedia(window.themeVariables.breakpoints.phone).matches && navigator.share) {
@@ -1870,7 +1870,7 @@
   };
   window.customElements.define('share-toggle-button', ShareToggleButton, { extends: 'button' });
 
-  // js/custom-element/ui/carousel.js
+ 
   var NativeCarousel = class extends CustomHTMLElement {
     connectedCallback() {
       this.items = Array.from(this.querySelectorAll('native-carousel-item'));
@@ -1956,7 +1956,7 @@
   window.customElements.define('native-carousel-item', NativeCarouselItem);
   window.customElements.define('native-carousel', NativeCarousel);
 
-  // js/custom-element/ui/drag-cursor.js
+ 
   var DragCursor = class extends HTMLElement {
     connectedCallback() {
       this.scrollableElement = this.parentElement;
@@ -1990,7 +1990,7 @@
   };
   window.customElements.define('drag-cursor', DragCursor);
 
-  // js/custom-element/ui/scrollable-content.js
+ 
   var ScrollableContent = class extends CustomHTMLElement {
     connectedCallback() {
       if (this.draggable) {
@@ -2068,7 +2068,7 @@
   };
   window.customElements.define('scrollable-content', ScrollableContent);
 
-  // js/custom-element/ui/loading-bar.js
+ 
   var LoadingBar = class extends CustomHTMLElement {
     constructor() {
       super();
@@ -2094,7 +2094,7 @@
   };
   window.customElements.define('loading-bar', LoadingBar);
 
-  // js/custom-element/ui/split-lines.js
+ 
   var SplitLines = class extends HTMLElement {
     connectedCallback() {
       this.originalContent = this.textContent;
@@ -2154,7 +2154,7 @@
   };
   window.customElements.define('split-lines', SplitLines);
 
-  // js/custom-element/ui/popover.js
+ 
   var PopoverContent = class extends OpenableElement {
     connectedCallback() {
       super.connectedCallback();
@@ -2170,7 +2170,7 @@
   };
   window.customElements.define('popover-content', PopoverContent);
 
-  // js/custom-element/ui/tabs-nav.js
+ 
   var TabsNav = class extends HTMLElement {
     connectedCallback() {
       this.buttons = Array.from(this.querySelectorAll('button[aria-controls]'));
@@ -2276,7 +2276,7 @@
   };
   window.customElements.define('tabs-nav', TabsNav);
 
-  // js/helper/library-loader.js
+ 
   var LibraryLoader = class {
     static load(libraryName) {
       const STATUS_REQUESTED = 'requested',
@@ -2347,7 +2347,7 @@
     },
   });
 
-  // js/custom-element/ui/qr-code.js
+ 
   var QrCode = class extends HTMLElement {
     async connectedCallback() {
       await LibraryLoader.load('qrCode');
@@ -2360,7 +2360,7 @@
   };
   window.customElements.define('qr-code', QrCode);
 
-  // js/custom-element/ui/country-selector.js
+ 
   var CountrySelector = class extends HTMLSelectElement {
     connectedCallback() {
       this.provinceElement = document.getElementById(this.getAttribute('aria-owns'));
@@ -2408,7 +2408,7 @@
   };
   window.customElements.define('country-selector', CountrySelector, { extends: 'select' });
 
-  // js/custom-element/ui/modal.js
+ 
   var ModalContent = class extends OpenableElement {
     connectedCallback() {
       super.connectedCallback();
@@ -2442,7 +2442,7 @@
   };
   window.customElements.define('modal-content', ModalContent);
 
-  // js/custom-element/ui/price-range.js
+ 
   var PriceRange = class extends HTMLElement {
     connectedCallback() {
       this.rangeLowerBound = this.querySelector('.price-range__range-group input:first-child');
@@ -2509,7 +2509,7 @@
   };
   window.customElements.define('price-range', PriceRange);
 
-  // js/custom-element/ui/link-bar.js
+ 
   var LinkBar = class extends HTMLElement {
     connectedCallback() {
       const selectedItem = this.querySelector('.link-bar__link-item--selected');
@@ -2522,7 +2522,7 @@
   };
   window.customElements.define('link-bar', LinkBar);
 
-  // js/helper/media-features.js
+ 
   var MediaFeatures = class {
     static prefersReducedMotion() {
       return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2532,14 +2532,14 @@
     }
   };
 
-  // js/custom-element/ui/flickity-carousel.js
+ 
   var FlickityCarousel = class extends CustomHTMLElement {
     constructor() {
       super();
       if (this.childElementCount === 1) {
         return;
       }
-      // 获取弹窗实例
+     
       this.productImageZoomDom = document.getElementById(this.dataset.productImageZoomId);
       this.addEventListener('flickity:ready', this._preloadNextImage.bind(this));
       this.listenerImageZoomDom();
@@ -2606,7 +2606,7 @@
       });
       observer.observe(this.productImageZoomDom, { attributes: true });
     }
-     // 唤醒轮播图弹窗
+    
     openProductImageZoom() {
       $('.cus-product .product__media').removeClass('position-sticky');
       $(this).closest('.product__media-list-wrapper').find('.product__zoom-button').attr('aria-expanded', true);
@@ -2675,7 +2675,7 @@
   };
   window.customElements.define("flickity-carousel", FlickityCarousel);
 
-  // js/helper/dom.js
+ 
   function getSiblings(element, filter, includeSelf = false) {
     let siblings = [];
     let currentElement = element;
@@ -2712,7 +2712,7 @@
     return processedTarget;
   }
 
-  // js/custom-element/ui/flickity-controls.js
+ 
   var FlickityControls = class extends CustomHTMLElement {
     async connectedCallback() {
       this.flickityCarousel.addEventListener('flickity:ready', this._onSlideChanged.bind(this, false));
@@ -2796,7 +2796,7 @@
   };
   window.customElements.define('flickity-controls', FlickityControls);
 
-  // js/custom-element/ui/external-video.js
+ 
   var ExternalVideo = class extends CustomHTMLElement {
     constructor() {
       super();
@@ -2864,7 +2864,7 @@
   };
   window.customElements.define('external-video', ExternalVideo);
 
-  // js/helper/product-loader.js
+ 
   var ProductLoader = class {
     static load(productHandle) {
       if (!productHandle) {
@@ -2885,7 +2885,7 @@
   };
   __publicField(ProductLoader, 'loadedProducts', {});
 
-  // js/custom-element/ui/model-media.js
+ 
   var ModelMedia = class extends HTMLElement {
     constructor() {
       super();
@@ -2939,7 +2939,7 @@
   };
   window.customElements.define('model-media', ModelMedia);
 
-  // js/custom-element/ui/native-video.js
+ 
   var NativeVideo = class extends HTMLElement {
     constructor() {
       super();
@@ -2979,7 +2979,7 @@
   };
   window.customElements.define('native-video', NativeVideo);
 
-  // js/custom-element/ui/combo-box.js
+ 
   var ComboBox = class extends OpenableElement {
     connectedCallback() {
       super.connectedCallback();
@@ -3053,7 +3053,7 @@
       try {
         jsonArray = JSON.parse(discountJson);
         let applicableDiscount = null;
-        // Find the appropriate discount
+       
         for (let i = 0; i < jsonArray.length; i++) {
           if (quantity >= parseInt(jsonArray[i].moq)) {
             applicableDiscount = parseFloat(jsonArray[i].discount);
@@ -3074,7 +3074,7 @@
     return formatMoney(finalPrice*100);
   }
 
-  // js/custom-element/ui/quantity-selector.js
+ 
   var QuantitySelector = class extends CustomHTMLElement {
     connectedCallback() {
       this.inputElement = this.querySelector('input');
@@ -3087,7 +3087,7 @@
         const mpqValue = +this.inputElement.getAttribute('data-mpq');
         $('.max-quantity-waning').hide();
         if (Number(this.inputElement.quantity) <= moqValue) {
-          this.minusElement.disabled = true; // 设置为禁用状态
+          this.minusElement.disabled = true;
         } else {
           this.inputElement.quantity = this.inputElement.quantity - mpqValue;
           this.minusElement.disabled = false;
@@ -3104,16 +3104,16 @@
         }
 
         if (this.inputElement.quantity == moqValue) {
-          this.minusElement.disabled = true; // 设置为禁用状态
+          this.minusElement.disabled = true;
         }
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
       });
       this.delegate.on('click', 'button:last-child', () => {
-        this.minusElement.disabled = false; // 设置为禁用状态
+        this.minusElement.disabled = false;
         const mpqValue = +this.inputElement.getAttribute('data-mpq');
         this.inputElement.quantity = this.inputElement.quantity + mpqValue;
         this.maxQuantityWarning();
-        /* 阶梯价格*/
+        
         let discountJson = this.quantitySelector.getAttribute('data-discount');
         const quantity = this.inputElement.quantity;
         let basePrice = this.quantitySelector.getAttribute('data-price');
@@ -3124,7 +3124,7 @@
           $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
         }
         this.highlightPriceRange(this.inputElement.quantity);
-        /* 阶梯价格*/
+        
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
       });
       this.addEventListener('quantityChanged', ({detail: {quantity}}) => {
@@ -3139,7 +3139,7 @@
       const max = $(this).data('max');
       const mpqValue = +this.quantitySelector.getAttribute('data-mpq');
       if (max && this.inputElement.quantity > max) {
-        this.inputElement.quantity = Math.floor(max / mpqValue) * mpqValue; // 取整，防止超过最大值
+        this.inputElement.quantity = Math.floor(max / mpqValue) * mpqValue;
         $('.max-quantity-waning').show();
         setTimeout(() => {
           $('.max-quantity-waning').hide();
@@ -3212,7 +3212,7 @@
         this.quantitySelector.quantity = this.quantitySelector.quantity - mpqValue;
         if (this.quantitySelector.quantity < moqValue) {
           this.quantitySelector.quantity = mpqValue;
-          this.minusElement.disabled = true; // 设置为禁用状态
+          this.minusElement.disabled = true;
         }
         this.$hiddenQuantity.val(this.quantitySelector.quantity);
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
@@ -3220,7 +3220,7 @@
       this.delegate.on('click', 'button:last-child', () => {
         this.quantitySelector.quantity = this.quantitySelector.quantity + mpqValue;
         this.maxQuantityWarning();
-        this.minusElement.disabled = false; // 解禁
+        this.minusElement.disabled = false;
         this.$hiddenQuantity.val(this.quantitySelector.quantity);
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
       });
@@ -3237,7 +3237,7 @@
       const mpqValue = +this.quantitySelector.getAttribute('data-mpq');
       const max = $(this).data('max');
       if (max && this.inputElement.quantity > max) {
-        this.inputElement.quantity = Math.floor(max / mpqValue) * mpqValue; // 取整，防止超过最大值
+        this.inputElement.quantity = Math.floor(max / mpqValue) * mpqValue;
         $('.max-quantity-waning').show();
         setTimeout(() => {
           $('.max-quantity-waning').hide();
@@ -3286,7 +3286,7 @@
       return parseInt(this.value);
     }
     set quantity(quantity) {
-      const moqValue = +this.getAttribute('data-moq'); //最小起购量
+      const moqValue = +this.getAttribute('data-moq');
       const isNumeric =
         (typeof quantity === 'number' || (typeof quantity === 'string' && quantity.trim() !== '')) && !isNaN(quantity);
       if (quantity === '') {
@@ -3299,16 +3299,16 @@
       this.size = Math.max(this.value.length + 1, 2);
     }
     _onValueChanged() {
-      const moqValue = +this.getAttribute('data-moq'); //最小起购量
-      const mpqValue = +this.getAttribute('data-mpq'); //最小包装量
+      const moqValue = +this.getAttribute('data-moq');
+      const mpqValue = +this.getAttribute('data-mpq');
       if(this.quantity < moqValue) {
         this.quantity = moqValue; 
       }
-      this.quantity = Math.ceil((this.quantity - moqValue) / mpqValue) * mpqValue + moqValue; // 取整
+      this.quantity = Math.ceil((this.quantity - moqValue) / mpqValue) * mpqValue + moqValue;
     }
   };
   window.customElements.define('line-input-number', LineInputNumber, { extends: 'input' });
-  // js/custom-element/ui/input-number.js
+ 
   var InputNumber = class extends HTMLInputElement {
     connectedCallback() {
       this.addEventListener('input', this._onValueInput.bind(this));
@@ -3318,7 +3318,7 @@
       return parseInt(this.value);
     }
     set quantity(quantity) {
-      const moqValue = +this.getAttribute('data-moq'); //最小起购量
+      const moqValue = +this.getAttribute('data-moq');
       const isNumeric =
         (typeof quantity === 'number' || (typeof quantity === 'string' && quantity.trim() !== '')) && !isNaN(quantity);
       if (quantity === '') {
@@ -3333,30 +3333,30 @@
     _onValueInput() {
       this.highlightPriceRange(this.quantity);
     }
-    _onValueChanged() {  // this.value 控制输入框的值
-      const moqValue = +this.getAttribute('data-moq'); //最小起购量
-      const mpqValue = +this.getAttribute('data-mpq'); //最小包装量
-      /*在这里添加moq和mpq的逻辑 -start */
+    _onValueChanged() { 
+      const moqValue = +this.getAttribute('data-moq');
+      const mpqValue = +this.getAttribute('data-mpq');
+      
       if(this.quantity < moqValue) {
         this.quantity = moqValue; 
       }
-      this.quantity = Math.ceil((this.quantity - moqValue) / mpqValue) * mpqValue + moqValue; // 取整
-      /*在这里添加moq和mqo的逻辑 -end */
+      this.quantity = Math.ceil((this.quantity - moqValue) / mpqValue) * mpqValue + moqValue;
+      
 
-      this.dispatchEvent(new CustomEvent('quantityChanged', { // 库存标签的值的变化
+      this.dispatchEvent(new CustomEvent('quantityChanged', {
         bubbles: true,
         detail: {
           quantity: this.quantity,
         },
        }));
 
-      if (this.quantity == moqValue) { // 非购物车的css显示，不用管
+      if (this.quantity == moqValue) {
         $(this).prev().attr('disabled', true);
       } else {
         $(this).prev().attr('disabled', false);
       }
 
-      const isCartInput = this.getAttribute('data-cart'); // 购物车的数量更新值，不用管，由this.value控制
+      const isCartInput = this.getAttribute('data-cart');
       if (isCartInput == 1) {
         const varId = this.getAttribute('data-varid');
         const updates = {};
@@ -3364,7 +3364,7 @@
         cartInput(updates);
       }
 
-      let discountJson = this.getAttribute('data-discount');  //算非购物车，产品详情页价格，不用管
+      let discountJson = this.getAttribute('data-discount'); 
       let basePrice = this.getAttribute('data-price');
       if (basePrice) {
         basePrice = parseFloat(basePrice.replace(/,/g, ''));
@@ -3413,7 +3413,7 @@
   };
   window.customElements.define('input-number', InputNumber, { extends: 'input' });
 
-  // js/custom-element/section/announcement-bar/announcement-bar.js
+ 
   var AnnouncementBar = class extends CustomHTMLElement {
     async connectedCallback() {
       await customElements.whenDefined('announcement-bar-item');
@@ -3484,7 +3484,7 @@
   };
   window.customElements.define('announcement-bar', AnnouncementBar);
 
-  // js/custom-element/section/announcement-bar/item.js
+ 
   var AnnouncementBarItem = class extends CustomHTMLElement {
     connectedCallback() {
       if (this.hasContent) {
@@ -3571,7 +3571,7 @@
   };
   window.customElements.define('announcement-bar-item', AnnouncementBarItem);
 
-  // js/custom-element/section/search/search-page.js
+ 
   var SearchPage = class extends HTMLElement {
     connectedCallback() {
       this.facetToolbar = document.getElementById('mobile-facet-toolbar');
@@ -3620,7 +3620,7 @@
   };
   window.customElements.define('search-page', SearchPage);
 
-  // js/custom-element/section/footer/cookie-bar.js
+ 
   var CookieBar = class extends CustomHTMLElement {
     connectedCallback() {
       if (window.Shopify && window.Shopify.designMode) {
@@ -3658,7 +3658,7 @@
   };
   window.customElements.define('cookie-bar', CookieBar);
 
-  // js/custom-element/section/product-recommendations/product-recommendations.js
+ 
   var ProductRecommendations = class extends HTMLElement {
     async connectedCallback() {
       if (!this.hasAttribute('use-automatic-recommendations')) {
@@ -3718,12 +3718,12 @@
           $formWrapper.css('visibility', 'visible');
         },
         methods: {
-          // 高亮显示匹配的部分
+         
           highlightMatch(value) {
             if (!this.searchStr.trim()) {
               return value;
             }
-            // 将特殊字符转义
+           
             const escapedSearchStr = this.searchStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             const regex = new RegExp(`(${escapedSearchStr})`, 'gi');
             return value.replace(regex, '<span class="highlight">$1</span>');
@@ -3758,7 +3758,7 @@
                 if (res.code === 200) {
                   results = res.data.map(item => ({
                     value: item,
-                    highlightedValue: this.highlightMatch(item) // 应用高亮后的值
+                    highlightedValue: this.highlightMatch(item)
                   }));
                 }
               } catch (error) {
@@ -3766,7 +3766,7 @@
               }
             }
   
-            // 设置 cb 回调，传递高亮处理后的结果
+           
             this.cb = cb;
             cb(results);
           },
@@ -3909,23 +3909,23 @@
           async getAllList() {
             function generateHandles(data, parentHandle = '') {
               return data.map(item => {
-                // 生成当前节点的handle
+               
                 const handle = item.name
-                  .toLowerCase()                  // 转小写
-                  .replace(/[^a-z0-9\s-]/g, '')    // 移除特殊字符，只保留字母、数字、空格和短横线
-                  .trim()                          // 去除首尾空格
-                  .replace(/\s+/g, '-')            // 替换多个空格为一个短横线
-                  .replace(/-+/g, '-');            // 多个短横线合并为一个
+                  .toLowerCase()                 
+                  .replace(/[^a-z0-9\s-]/g, '')   
+                  .trim()                         
+                  .replace(/\s+/g, '-')           
+                  .replace(/-+/g, '-');           
 
-                // 拼接父节点的handle和当前节点的handle
+               
                 const fullHandle = parentHandle ? `${parentHandle}-${handle}` : handle;
 
-                // 如果当前节点有子节点，递归处理子节点
+               
                 if (item.children && item.children.length > 0) {
-                  item.children = generateHandles(item.children, fullHandle); // 递归处理子节点
+                  item.children = generateHandles(item.children, fullHandle);
                 }
 
-                // 为当前节点添加完整的handle字段
+               
                 item.handle = fullHandle;
                 item.isSelected = false;
                 return item;
@@ -3985,22 +3985,22 @@
           getAllList() {
             function generateHandles(data, parentHandle = '') {
               return data.map(item => {
-                // 生成当前节点的handle
+               
                 const handle = item.name
-                  .toLowerCase()                  // 转小写
-                  .replace(/[^a-z0-9\s-]/g, '')    // 移除特殊字符，只保留字母、数字、空格和短横线
-                  .trim()                          // 去除首尾空格
-                  .replace(/\s+/g, '-')            // 替换多个空格为一个短横线
-                  .replace(/-+/g, '-');            // 多个短横线合并为一个
+                  .toLowerCase()                 
+                  .replace(/[^a-z0-9\s-]/g, '')   
+                  .trim()                         
+                  .replace(/\s+/g, '-')           
+                  .replace(/-+/g, '-');           
 
-                // 拼接父节点的handle和当前节点的handle
+               
                 const fullHandle = parentHandle ? `${parentHandle}-${handle}` : handle;
 
-                // 如果当前节点有子节点，递归处理子节点
+               
                 if (item.children && item.children.length > 0) {
-                  item.children = generateHandles(item.children, fullHandle); // 递归处理子节点
+                  item.children = generateHandles(item.children, fullHandle);
                 }
-                // 为当前节点添加完整的handle字段
+               
                 item.handle = fullHandle;
                 return item;
               });
@@ -4024,16 +4024,16 @@
         const targetInput = $(`input[data-input-varid='${this.inputVarid}']`)[0];
         this.setStcokText($(targetInput).val());
         const observer = new MutationObserver((mutationsList) => {
-          // 后续监听
+         
           for (let mutation of mutationsList) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'data-demand') {
               this.setStcokText($(targetInput).val());
             }
           }
         });
-        // 配置 MutationObserver 监听属性变化
+       
         const config = { attributes: true, attributeFilter: ['data-demand'] };
-        // 启动监听
+       
         observer.observe(targetInput, config);
       } catch(e) {
         console.error(e)
@@ -4061,7 +4061,7 @@
   };
   window.customElements.define('stock-label', StockLabel);
 
-  // js/custom-element/section/product-recommendations/recently-viewed-products.js
+ 
   var RecentlyViewedProducts = class extends HTMLElement {
     async connectedCallback() {
       if (this.searchQueryString === '') {
@@ -4139,7 +4139,7 @@
   };
   window.customElements.define('recently-viewed-products', RecentlyViewedProducts);
 
-  // js/helper/image.js
+ 
   function getSizedMediaUrl(media, size) {
     let src = typeof media === 'string' ? media : media['preview_image'] ? media['preview_image']['src'] : media['url'];
     if (size === null) {
@@ -4185,7 +4185,7 @@
     });
   }
 
-  // js/helper/animation.js
+ 
   var CustomAnimation = class {
     constructor(effect) {
       this._effect = effect;
@@ -4304,7 +4304,7 @@
     }
   };
 
-  // js/custom-element/section/slideshow/slideshow-item.js
+ 
   var SlideshowItem = class extends HTMLElement {
     async connectedCallback() {
       this._pendingAnimations = [];
@@ -4503,7 +4503,7 @@
   };
   window.customElements.define('slide-show-item', SlideshowItem);
 
-  // js/mixin/vertical-scroll-blocker.js
+ 
   var VerticalScrollBlockerMixin = {
     _blockVerticalScroll(threshold = 18) {
       this.addEventListener('touchstart', (event) => {
@@ -4522,7 +4522,7 @@
     },
   };
 
-  // js/custom-element/section/slideshow/slideshow.js
+ 
   var Slideshow = class extends CustomHTMLElement {
     connectedCallback() {
       this.items = Array.from(this.querySelectorAll('slide-show-item'));
@@ -4596,7 +4596,7 @@
   Object.assign(Slideshow.prototype, VerticalScrollBlockerMixin);
   window.customElements.define('slide-show', Slideshow);
 
-  // js/custom-element/section/image-with-text/image-with-text-item.js
+ 
   var ImageWithTextItem = class extends HTMLElement {
     get index() {
       return [...this.parentNode.children].indexOf(this);
@@ -4654,7 +4654,7 @@
   };
   window.customElements.define('image-with-text-item', ImageWithTextItem);
 
-  // js/custom-element/section/image-with-text/image-with-text.js
+ 
   var ImageWithText = class extends CustomHTMLElement {
     connectedCallback() {
       this.items = Array.from(this.querySelectorAll('image-with-text-item'));
@@ -4733,7 +4733,7 @@
   };
   window.customElements.define('image-with-text', ImageWithText);
 
-  // js/custom-element/section/testimonials/testimonial-item.js
+ 
   var TestimonialItem = class extends CustomHTMLElement {
     connectedCallback() {
       this.addEventListener('split-lines:re-split', (event) => {
@@ -4801,7 +4801,7 @@
   };
   window.customElements.define('testimonial-item', TestimonialItem);
 
-  // js/custom-element/section/testimonials/testimonial-list.js
+ 
   var TestimonialList = class extends CustomHTMLElement {
     connectedCallback() {
       this.items = Array.from(this.querySelectorAll('testimonial-item'));
@@ -4857,7 +4857,7 @@
   Object.assign(TestimonialList.prototype, VerticalScrollBlockerMixin);
   window.customElements.define('testimonial-list', TestimonialList);
 
-  // js/custom-element/section/shop-the-look/shop-the-look-item.js
+ 
   var ShopTheLookItem = class extends HTMLElement {
     get index() {
       return [...this.parentNode.children].indexOf(this);
@@ -4910,7 +4910,7 @@
   };
   window.customElements.define('shop-the-look-item', ShopTheLookItem);
 
-  // js/custom-element/section/shop-the-look/shop-the-look-nav.js
+ 
   var ShopTheLookNav = class extends CustomHTMLElement {
     connectedCallback() {
       this.shopTheLook = this.closest('shop-the-look');
@@ -4951,7 +4951,7 @@
   };
   window.customElements.define('shop-the-look-nav', ShopTheLookNav);
 
-  // js/custom-element/section/shop-the-look/shop-the-look.js
+ 
   var ShopTheLook = class extends CustomHTMLElement {
     connectedCallback() {
       this.lookItems = Array.from(this.querySelectorAll('shop-the-look-item'));
@@ -5013,7 +5013,7 @@
   };
   window.customElements.define('shop-the-look', ShopTheLook);
 
-  // js/custom-element/section/collection-list/collection-list.js
+ 
   var CollectionList = class extends CustomHTMLElement {
     async connectedCallback() {
       this.items = Array.from(this.querySelectorAll('.list-collections__item'));
@@ -5092,7 +5092,7 @@
   };
   window.customElements.define('collection-list', CollectionList);
 
-  // js/custom-element/section/product-list/product-list.js
+ 
   var ProductList = class extends CustomHTMLElement {
     constructor() {
       super();
@@ -5189,7 +5189,7 @@
   __publicField(ProductList, 'observedAttributes', ['hidden']);
   window.customElements.define('product-list', ProductList);
 
-  // js/custom-element/section/logo-list/logo-list.js
+ 
   var LogoList = class extends CustomHTMLElement {
     async connectedCallback() {
       this.items = Array.from(this.querySelectorAll('.logo-list__item'));
@@ -5252,7 +5252,7 @@
   };
   window.customElements.define('logo-list', LogoList);
 
-  // js/custom-element/section/blog/blog-post-navigation.js
+ 
   var BlogPostNavigation = class extends HTMLElement {
     connectedCallback() {
       window.addEventListener('scroll', throttle(this._updateProgressBar.bind(this), 15));
@@ -5284,7 +5284,7 @@
   };
   window.customElements.define('blog-post-navigation', BlogPostNavigation);
 
-  // js/custom-element/section/multi-column/multi-column.js
+ 
   var MultiColumn = class extends CustomHTMLElement {
     connectedCallback() {
       if (!this.hasAttribute('stack')) {
@@ -5361,7 +5361,7 @@
   };
   window.customElements.define('multi-column', MultiColumn);
 
-  // js/custom-element/section/gallery/gallery-list.js
+ 
   var GalleryList = class extends HTMLElement {
     connectedCallback() {
       this.listItems = Array.from(this.querySelectorAll('gallery-item'));
@@ -5396,7 +5396,7 @@
   };
   window.customElements.define('gallery-list', GalleryList);
 
-  // js/custom-element/section/gallery/gallery-item.js
+ 
   var GalleryItem = class extends HTMLElement {
     get index() {
       return [...this.parentNode.children].indexOf(this);
@@ -5418,7 +5418,7 @@
   };
   window.customElements.define('gallery-item', GalleryItem);
 
-  // js/custom-element/section/image-with-text-overlay/image-with-text-overlay.js
+ 
   var ImageWithTextOverlay = class extends CustomHTMLElement {
     connectedCallback() {
       if (this.hasAttribute('parallax') && !MediaFeatures.prefersReducedMotion()) {
@@ -5507,7 +5507,7 @@
   };
   window.customElements.define('image-with-text-overlay', ImageWithTextOverlay);
 
-  // js/custom-element/section/image-with-text-block/image-with-text-block.js
+ 
   var ImageWithTextBlock = class extends CustomHTMLElement {
     async connectedCallback() {
       if (this.hasAttribute('reveal-on-scroll')) {
@@ -5570,7 +5570,7 @@
   };
   window.customElements.define('image-with-text-block', ImageWithTextBlock);
 
-  // js/custom-element/section/blog/article-list.js
+ 
   var ArticleList = class extends CustomHTMLElement {
     async connectedCallback() {
       this.articleItems = Array.from(this.querySelectorAll('.article-item'));
@@ -5608,7 +5608,7 @@
   };
   window.customElements.define('article-list', ArticleList);
 
-  // js/custom-element/section/blog/blog-post-header.js
+ 
   var BlogPostHeader = class extends HTMLElement {
     async connectedCallback() {
       const image = this.querySelector('.article__image');
@@ -5625,15 +5625,15 @@
   };
   window.customElements.define('blog-post-header', BlogPostHeader);
 
-  // js/custom-element/section/search/predictive-search-input.js
+ 
   var PredictiveSearchInput = class extends HTMLInputElement {
-    // connectedCallback() {
-    //   this.addEventListener("click", () => document.getElementById(this.getAttribute("aria-controls")).open = true);
-    // }
+   
+   
+   
   };
   window.customElements.define('predictive-search-input', PredictiveSearchInput, { extends: 'input' });
 
-  // js/custom-element/ui/drawer.js
+ 
   var DrawerContent = class extends OpenableElement {
     connectedCallback() {
       super.connectedCallback();
@@ -5664,7 +5664,7 @@
   };
   window.customElements.define('drawer-content', DrawerContent);
 
-  // js/custom-element/section/search/predictive-search-drawer.js
+ 
   var PredictiveSearchDrawer = class extends DrawerContent {
     connectedCallback() {
       super.connectedCallback();
@@ -5835,7 +5835,7 @@
   };
   window.customElements.define('predictive-search-drawer', PredictiveSearchDrawer);
 
-  // js/custom-element/section/timeline/timeline.js
+ 
   var Timeline = class extends HTMLElement {
     connectedCallback() {
       this.prevNextButtons = this.querySelector('prev-next-buttons');
@@ -5920,7 +5920,7 @@
   };
   window.customElements.define('time-line', Timeline);
 
-  // js/custom-element/section/press/press-list.js
+ 
   var PressList = class extends CustomHTMLElement {
     connectedCallback() {
       this.pressItemsWrapper = this.querySelector('.press-list__wrapper');
@@ -5969,7 +5969,7 @@
   Object.assign(PressList.prototype, VerticalScrollBlockerMixin);
   window.customElements.define('press-list', PressList);
 
-  // js/custom-element/section/press/press-item.js
+ 
   var PressItem = class extends HTMLElement {
     connectedCallback() {
       this.addEventListener('split-lines:re-split', (event) => {
@@ -6037,7 +6037,7 @@
   };
   window.customElements.define('press-item', PressItem);
 
-  // js/custom-element/section/header/desktop-navigation.js
+ 
   var DesktopNavigation = class extends CustomHTMLElement {
     connectedCallback() {
       this.openingTimeout = null;
@@ -6142,7 +6142,7 @@
   };
   window.customElements.define('desktop-navigation', DesktopNavigation);
 
-  // js/custom-element/section/header/mobile-navigation.js
+ 
   var MobileNavigation = class extends DrawerContent {
     get apparitionAnimation() {
       if (this._apparitionAnimation) {
@@ -6205,7 +6205,7 @@
   };
   window.customElements.define('mobile-navigation', MobileNavigation);
 
-  // js/custom-element/section/header/store-header.js
+ 
   var StoreHeader = class extends CustomHTMLElement {
     connectedCallback() {
       if (window.ResizeObserver) {
@@ -6284,7 +6284,7 @@
   };
   window.customElements.define('store-header', StoreHeader);
 
-  // js/custom-element/section/product/image-zoom.js
+ 
   var PhotoSwipeUi = class {
     constructor(pswp) {
       this.photoSwipeInstance = pswp;
@@ -6471,7 +6471,7 @@
   };
   window.customElements.define('product-image-zoom', ProductImageZoom);
 
-  // js/custom-element/section/product/inventory.js
+ 
   var ProductInventory = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -6497,7 +6497,7 @@
   };
   window.customElements.define('product-inventory', ProductInventory);
 
-  // js/custom-element/section/product/payment-container.js
+ 
   var PaymentContainer = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -6552,7 +6552,7 @@
   };
   window.customElements.define('product-payment-container', PaymentContainer);
 
-  // js/custom-element/section/product/payment-terms.js
+ 
   var PaymentTerms = class extends CustomHTMLElement {
     connectedCallback() {
       var _a;
@@ -6571,7 +6571,7 @@
   };
   window.customElements.define('product-payment-terms', PaymentTerms);
 
-  // js/custom-element/section/product/product-form.js
+ 
   var ProductForm = class extends HTMLFormElement {
     connectedCallback() {
       this.id.disabled = false;
@@ -6622,7 +6622,7 @@
           }
         ]
       };
-      await this.setLineAttr(formData.items); //清空购物车属性
+      await this.setLineAttr(formData.items);
       const response = await fetch(`${window.themeVariables.routes.cartAddUrl}.js`, {
         body: JSON.stringify(formData),
         method: 'POST',
@@ -6642,6 +6642,7 @@
             bubbles: true,
             detail: {
               variant: responseJson.hasOwnProperty('items') ? responseJson['items'][0] : responseJson,
+              recommendModule: event.target.getAttribute('data-recommend-module') || '',
             },
           })
         );
@@ -6688,7 +6689,7 @@
   };
   window.customElements.define('product-form', ProductForm, { extends: 'form' });
 
-  // js/custom-element/section/product/product-media.js
+ 
   var ProductMedia = class extends CustomHTMLElement {
     async connectedCallback() {
       var _a;
@@ -6860,7 +6861,7 @@
   };
   window.customElements.define('product-media', ProductMedia);
 
-  //详情start
+ 
   var ProductAttrs = class extends CustomHTMLElement {
     async connectedCallback() {
       try {
@@ -6892,7 +6893,7 @@
         this.handleError();
       }
     }
-    // 初始化产品属性
+   
     initializeProductAttributes(selectionAttrs) {
       if (this.shouldHideAttributeSelector(selectionAttrs)) {
         $('.product-attrs-wrapper').hide();
@@ -6904,7 +6905,7 @@
         this.updateAttributeAvailability();
       }
     }
-    // 判断是否应该隐藏属性选择器
+   
     shouldHideAttributeSelector(selectionAttrs) {
       return (
         selectionAttrs.find((item) => item.attrName === 'match') ||
@@ -6912,7 +6913,7 @@
         (selectionAttrs.length === 1 && selectionAttrs[0].values.length <= 1)
       );
     }
-    // 初始化产品信息
+   
     initializeProductInformation({ weightDimensions, specifications, complianceCertificate, detailImages }) {
       try {
         triggerEvent(this, 'build-product-information', {
@@ -6932,21 +6933,21 @@
     }
     processAvailableCombinations() {
       this.availableCombinations = new Set();
-      this.skuCodeMap = new Map(); // 新增 skuCode 映射
+      this.skuCodeMap = new Map();
       if (!this.availableAttrs || this.availableAttrs.length === 0) return;
       const attrNameOrder = this.selectionAttrs.map(attr => attr.attrName);
       this.availableAttrs.forEach(variant => {
         if (variant.attrs && variant.attrs.length === attrNameOrder.length) {
           const comboKey = variant.attrs.join('|');
           this.availableCombinations.add(comboKey);
-          // 保存组合与 skuCode 的映射关系
+         
           if (variant.skuCode) {
             this.skuCodeMap.set(comboKey, variant.skuCode);
           }
         }
       });
     }
-    // 获取当前选中的属性值数组
+   
     getCurrentSelectionArray() {
       const selectionMap = new Map();
       this.updatedAttrs.forEach(attr => {
@@ -6957,7 +6958,7 @@
       });
       return this.selectionAttrs.map(attr => selectionMap.get(attr.attrName));
     }
-    // 更新属性按钮的可用状态
+   
     updateAttributeAvailability() {
       if (!this.availableCombinations || this.availableCombinations.size === 0) {
         this.enableAllButtons();
@@ -6976,7 +6977,7 @@
     enableAllButtons() {
       $(this).find('.attr-btn').prop('disabled', false);
     }
-    updateSecondCategoryAvailability(currentSelection) { // 更新第二个分类的可用状态
+    updateSecondCategoryAvailability(currentSelection) {
       if (this.selectionAttrs.length <= 1) return;
       const secondCategoryLine = $(this).find(`.attr-line[data-attr="${this.selectionAttrs[1].attrName}"]`);
       secondCategoryLine.find('.attr-btn').each((btnIndex, btn) => {
@@ -6990,7 +6991,7 @@
         }
       });
     }
-    // 检查第二个分类的值是否可用
+   
     isSecondCategoryValueAvailable(firstCategoryValue, secondCategoryValue) {
       for (const combo of this.availableCombinations) {
         const [first, second] = combo.split('|');
@@ -7000,7 +7001,7 @@
       }
       return false;
     }
-    clearSelectionIfDisabled(btn, categoryLine) { // 如果禁用的按钮是已选中状态，则清除选择
+    clearSelectionIfDisabled(btn, categoryLine) {
       if ($(btn).hasClass('selected')) {
         $(btn).removeClass('selected');
         this.updatedAttrs = this.updatedAttrs.map(item => {
@@ -7015,7 +7016,7 @@
         });
       }
     }
-    // 检查并更新操作按钮状态
+   
     checkAndUpdateActions() {
       const currentSelection = this.getCurrentSelectionArray();
       const requiredSelections = Math.min(2, this.selectionAttrs.length);
@@ -7027,7 +7028,7 @@
         this.disableActions();
       }
     }
-    // 检查是否是有效组合
+   
     isValidCombination(currentSelection, requiredSelections) {
       const selectionString = currentSelection.slice(0, requiredSelections).join('|');
       for (const combo of this.availableCombinations) {
@@ -7037,7 +7038,7 @@
       }
       return false;
     }
-    disableActions() {  // 禁用操作按钮
+    disableActions() { 
       $('.cus-product .shopify-product-form .product-form__add-button')
         .addClass('disabled')
         .prop('disabled', true);
@@ -7045,7 +7046,7 @@
       $('.cus-product .buy-bottom-box .ships .form .input-container input').prop('disabled', true);
       $('.cus-product .btn-wishlist').prop('disabled', true);
     }
-    enableActions() { // 启用操作按钮
+    enableActions() {
       $('.cus-product .shopify-product-form .product-form__add-button')
         .removeClass('disabled')
         .prop('disabled', false);
@@ -7059,11 +7060,11 @@
         .find('.attr-btn')
         .off('click')
         .on('click', async function() {
-          // 如果按钮已禁用，直接返回
+         
           if ($(this).hasClass('disabled') || $(this).prop('disabled')) {
             return;
           }
-          // 如果按钮已经被选中，直接返回，不执行任何操作
+         
           if ($(this).hasClass('selected')) {
             return;
           }
@@ -7071,7 +7072,7 @@
           const attrValue = ($(this).data('attr-value') || '').toString();
           _this.handleSelection(this, attrName, attrValue);
           if (_this.shouldAttemptNavigation()) {
-            if (_this.currentSkuCode) { // 如果有 skuCode
+            if (_this.currentSkuCode) {
               window.location.href = `/products/${_this.currentSkuCode}`;
             } else {
               _this.showProductUnavailableMessage();
@@ -7094,13 +7095,13 @@
       });
       this.updateAttributeAvailability();
     }
-    shouldAttemptNavigation() { // 判断是否有组合
+    shouldAttemptNavigation() {
       const currentSelection = this.getCurrentSelectionArray();
       const requiredSelections = Math.min(2, this.selectionAttrs.length);
       const selectedCount = currentSelection.filter(val => val !== undefined).length;
       if (selectedCount >= requiredSelections) {
-        const selectionKey = currentSelection.slice(0, requiredSelections).join('|');   // 获取当前选择的组合键
-        this.currentSkuCode = this.getSkuCodeForSelection(selectionKey);   // 检查是否有对应的 skuCode
+        const selectionKey = currentSelection.slice(0, requiredSelections).join('|');  
+        this.currentSkuCode = this.getSkuCodeForSelection(selectionKey);  
         return this.isValidCombination(currentSelection, requiredSelections);
       }
       return false;
@@ -7117,7 +7118,7 @@
       }
       return null;
     }
-    // 显示产品不可用消息
+   
     showProductUnavailableMessage() {
       window.vue_message.$message({
         showClose: true,
@@ -7125,7 +7126,7 @@
         type: 'warning',
       });
     }
-    handleFakeObj(fakeObj) {  // 处理对象转Map
+    handleFakeObj(fakeObj) { 
       if (!fakeObj) return new Map();
       const map = new Map();
       Object.keys(fakeObj).forEach(key => {
@@ -7160,7 +7161,7 @@
       });
       this.initAttrBtnEvent();
     }
-    updatedJsonMap(selectionAttrs, attrJsonMap) { // 更新JSON映射
+    updatedJsonMap(selectionAttrs, attrJsonMap) {
       return selectionAttrs
         .map(item => {
           const values = item.values.map(value => {
@@ -7171,14 +7172,14 @@
         })
         .filter(item => item.values.length > 0);
     }
-    handleJsonMap() { // 处理JSON映射
+    handleJsonMap() {
       const salesFakeJson = $(this).data('sales') || {};
       const commonFakeJson = $(this).data('common') || {};
       const salesMap = this.handleFakeObj(salesFakeJson);
       const commonMap = this.handleFakeObj(commonFakeJson);
       return new Map([...salesMap, ...commonMap]);
     }
-    async getProductAttrs() { // 获取产品属性
+    async getProductAttrs() {
       try {
         const response = await fetch(`${window.zkh.api}/spu/selection-attrs?sku=${this.sku}`);
         const res = await response.json();
@@ -7194,7 +7195,7 @@
         return null;
       }
     }
-    // 显示API错误消息
+   
     showApiErrorMessage(message) {
       window.vue_message.$message({
         showClose: true,
@@ -7202,7 +7203,7 @@
         type: 'warning',
       });
     }
-    // 隐藏产品元素
+   
     hideProductElements() {
       $('.product-overview .product-desc').hide();
       $('.product-attrs-wrapper').hide();
@@ -7211,7 +7212,7 @@
       $('.product-information .product-info-line.compliance-certificates').hide();
       $('.product-media-detail-wrapper').hide();
     }
-    // 获取SKU
+   
     get sku() {
       return $(this).data('sku');
     }
@@ -7237,7 +7238,7 @@
     }
     checkAllBlank() {
       if ($(this).find('.product-info-line[hide]').length == 4) {
-        // 如果都值，整个模块隐藏
+       
         $(".product-anchor [data-target-id='product-information-wrapper']").hide().attr('data-hide', true);
         if($(".product-anchor [data-hide='true']").length == 2) {
           $('.product-anchor-sticky-wrapper').hide();
@@ -7303,15 +7304,15 @@
           keys.forEach((key) => {
             let wrappedValue
             if (key === 'Prop65') {
-              const linkPattern = /www\.[^\s]+/; // 匹配以 www. 开头的网址
-              const warningPattern = /(WARNING:\s+)/; // 匹配 'WARNING' 字符串
+              const linkPattern = /www\.[^\s]+/;
+              const warningPattern = /(WARNING:\s+)/;
               wrappedValue = detail[itemKey][key]
                 .replace(warningPattern, (match) => {
-                  // 把 'WARNING' 替换为 <span> 标签，并单独起一行
+                 
                   return `<span class="warning-text">${match}</span><br/>`;
                 })
                 .replace(linkPattern, (match) => {
-                  // 替换链接为 <a> 标签
+                 
                   return `<a href="https://${match}" target="_blank" class="warning-href">${match}</a>`;
                 })
             }
@@ -7320,7 +7321,7 @@
                   <span class="key">
                       ${ key === 'Prop65' ? 
                         `${key} <?xml version="1.0" encoding="utf-8"?>
-                        <!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                        
                         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
                         <svg version="1.1"
                            id="svg2" xmlns:svg="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" inkscape:version="0.48.4 r9939" sodipodi:docname="AJAX1.svg"
@@ -7378,9 +7379,9 @@
     }
   };
   window.customElements.define('more-product-media', MoreProductMedia);
-  //详情end
+ 
 
-  // js/helper/currency.js
+ 
   function formatMoney(cents, format = '') {
     if (typeof cents === 'string') {
       cents = cents.replace('.', '');
@@ -7437,7 +7438,7 @@
     }
   }
 
-  // js/custom-element/section/product/product-meta.js
+ 
   var ProductMeta = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -7547,7 +7548,7 @@
   };
   window.customElements.define('product-meta', ProductMeta);
 
-  // js/custom-element/section/product-list/quick-buy-drawer.js
+ 
   var QuickBuyDrawer = class extends DrawerContent {
     connectedCallback() {
       super.connectedCallback();
@@ -7584,7 +7585,7 @@
   };
   window.customElements.define('quick-buy-drawer', QuickBuyDrawer);
 
-  // js/custom-element/section/product-list/quick-buy-popover.js
+ 
   var QuickBuyPopover = class extends PopoverContent {
     connectedCallback() {
       super.connectedCallback();
@@ -7619,7 +7620,7 @@
   };
   window.customElements.define('quick-buy-popover', QuickBuyPopover);
 
-  // js/custom-element/section/product/store-pickup.js
+ 
   var StorePickup = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -7645,7 +7646,7 @@
   };
   window.customElements.define('store-pickup', StorePickup);
 
-  // js/custom-element/section/product/variants.js
+ 
   var ProductVariants = class extends CustomHTMLElement {
     async connectedCallback() {
       this.masterSelector = document.getElementById(this.getAttribute('form-id')).id;
@@ -7902,7 +7903,7 @@
         new Swiper(`.section-${sectionId} .swiper`, {
           spaceBetween: 8,
           autoplay: {
-            delay: 8000, // 间隔时间
+            delay: 8000,
           },
           pagination: {
             el: `.section-${sectionId} .swiper-pagination`,
@@ -7917,7 +7918,7 @@
   window.customElements.define('mobile-hero', MobileHero);
 
 
-  // js/custom-element/section/product-list/product-item.js
+ 
   var ProductItem = class extends CustomHTMLElement {
     connectedCallback() {
       this.primaryImageList = Array.from(this.querySelectorAll('.product-item__primary-image'));
@@ -7943,7 +7944,7 @@
     }
     async handleClickFavoritebutton(e) {
       e.preventDefault();
-      // 添加或取消心愿单
+     
       const formData = {
         customerId: $(this).data('customer-id'),
         productId: $(this).data('product-id'),
@@ -8104,7 +8105,7 @@
   };
   window.customElements.define('product-item', ProductItem);
 
-  // js/custom-element/section/product-facet/product-facet.js
+ 
   var ProductFacet = class extends CustomHTMLElement {
     connectedCallback() {
       this.delegate.on('pagination:page-changed', this._rerender.bind(this));
@@ -8160,12 +8161,12 @@
 
         var searchInput = $('.collapsible-search .search__input');
         var searchInputSpan = $('.collapsible-search .search__input-span');
-        // 添加键盘按下事件的监听器
+       
         $(searchInput).keydown(function (event) {
           var keyCode = event.keyCode || event.which;
-          // 如果按下的是回车键（Enter）
+         
           if (keyCode === 13) {
-            // 执行你的操作...
+           
             search();
           }
         });
@@ -8175,14 +8176,14 @@
         function search(event) {
           let searchval = $(searchInput).val();
           searchval = searchval.toLowerCase();
-          var hasMatchingItem = false; // 标记是否有匹配项
+          var hasMatchingItem = false;
 
           $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
             var title = $(this).find('.checkbox').val();
             title = title.toLowerCase();
             if (title.indexOf(searchval) !== -1) {
               $(this).show();
-              hasMatchingItem = true; // 有匹配项则将标记设为true
+              hasMatchingItem = true;
             } else {
               $(this).hide();
               $('.no-results-message').show();
@@ -8190,9 +8191,9 @@
           });
 
           if (!hasMatchingItem) {
-            $('.no-results-message').show(); // 所有项都不匹配时显示消息
+            $('.no-results-message').show();
           } else {
-            $('.no-results-message').hide(); // 有匹配项则隐藏消息
+            $('.no-results-message').hide();
           }
         }
 
@@ -8223,7 +8224,7 @@
   };
   window.customElements.define('product-facet', ProductFacet);
 
-  // js/custom-element/section/product-facet/product-facet.js
+ 
   var ProductSearchFacet = class extends CustomHTMLElement {
     connectedCallback() {
       this.delegate.on('pagination:page-changed', this._rerender.bind(this));
@@ -8247,23 +8248,23 @@
 
   var ProductFacetSpu = class extends CustomHTMLElement {
     connectedCallback() {
-      // this.delegate.on('pagination:page-changed', this._rerender.bind(this));
+     
       this.delegate.on('facet:criteria-changed', this._rerender.bind(this));
       this.delegate.on('facet:abort-loading', this._abort.bind(this));
-      // document.dispatchEvent(new CustomEvent('facet-rerender'));
+     
     }
     
     async _rerender(event) {
-      // 只更新 URL，不刷新页面
+     
       history.replaceState({}, '', event.detail.url);
       this._abort();
       this.showLoadingBar();
       try {
-        // 直接处理搜索功能，不获取和处理 HTML 内容
+       
         this.setupSearchFunctionality();
-        // 隐藏加载状态条
+       
         this.hideLoadingBar();
-        // 触发 facet-rerender 事件
+       
         document.dispatchEvent(new CustomEvent('facet-rerender'));
       } catch (e) {
         if (e.name === 'AbortError') {
@@ -8275,10 +8276,10 @@
     setupSearchFunctionality() {
       var searchInput = $('.collapsible-search .search__input');
       var searchInputSpan = $('.collapsible-search .search__input-span');
-      // 添加键盘按下事件的监听器
+     
       $(searchInput).off('keydown').on('keydown', function (event) {
         var keyCode = event.keyCode || event.which;
-        // 如果按下的是回车键（Enter）
+       
         if (keyCode === 13) {
           search();
         }
@@ -8289,31 +8290,31 @@
       function search() {
         let searchval = $(searchInput).val();
         searchval = searchval.toLowerCase();
-        var hasMatchingItem = false; // 标记是否有匹配项
+        var hasMatchingItem = false;
         $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
           var title = $(this).find('.checkbox').val();
           title = title.toLowerCase();
           if (title.indexOf(searchval) !== -1) {
             $(this).show();
-            hasMatchingItem = true; // 有匹配项则将标记设为true
+            hasMatchingItem = true;
           } else {
             $(this).hide();
           }
         });
         if (!hasMatchingItem) {
-          $('.no-results-message').show(); // 所有项都不匹配时显示消息
+          $('.no-results-message').show();
         } else {
-          $('.no-results-message').hide(); // 有匹配项则隐藏消息
+          $('.no-results-message').hide();
         }
       }
-      // 重置为初始状态的函数
+     
       function resetToInitialState() {
         $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
           $(this).show();
           $('.no-results-message').hide();
         });
       }
-      // 监听输入变化，当输入为空时重置
+     
       searchInput.off('input').on('input', function () {
         if (searchInput.val() === '') {
           resetToInitialState();
@@ -8329,7 +8330,7 @@
   };
   window.customElements.define('product-facet-spu', ProductFacetSpu);
 
-  // js/custom-element/section/facet/facet-filters.js
+ 
   var FacetFilters = class extends DrawerContent {
     connectedCallback() {
       super.connectedCallback();
@@ -8353,7 +8354,7 @@
       const formData = new FormData(this.querySelector('#facet-filters-form'));
       const searchParamsAsString = new URLSearchParams(formData).toString();
       triggerEvent(this, 'facet:criteria-changed', { url: `${window.location.pathname}?${searchParamsAsString}` });
-      //window.location.href = `${window.location.pathname}?${searchParamsAsString}`
+     
     }
     _adjustDrawer(match) {
       this.classList.toggle('drawer', match.matches);
@@ -8362,7 +8363,7 @@
   };
   window.customElements.define('facet-filters', FacetFilters);
 
-  // js/custom-element/section/facet/sort-by-popover.js
+ 
   var SortByPopover = class extends PopoverContent {
     connectedCallback() {
       super.connectedCallback();
@@ -8385,7 +8386,7 @@
   };
   window.customElements.define('sort-by-popover', SortByPopover);
 
-  // js/custom-element/section/cart/cart-count.js
+ 
   var CartCount = class extends CustomHTMLElement {
     async connectedCallback() {
       const email = $(this).data('email');
@@ -8393,7 +8394,7 @@
         const cartRes = await fetch(`${window.zkh.api}/shopping/cart?email=${email}`);
         const cartData = await cartRes.json();
         if(cartData.data.length > 0) {
-          Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 });  // 登录的时候查一下，customer对应的cart cookie
+          Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 }); 
         }
       }
       this.rootDelegate.on('cart:updated', (event) => {
@@ -8443,7 +8444,7 @@
   };
   window.customElements.define('cart-count', CartCount);
 
-  // js/custom-element/section/cart/cart-drawer.js
+ 
   var CartDrawer = class extends DrawerContent {
     connectedCallback() {
       super.connectedCallback();
@@ -8573,7 +8574,7 @@
   };
   window.customElements.define('cart-drawer', CartDrawer);
 
-  // js/custom-element/section/cart/cart-drawer-recommendations.js
+ 
   var _CartDrawerRecommendations = class extends HTMLElement {
     async connectedCallback() {
       if (!_CartDrawerRecommendations.recommendationsCache[this.productId]) {
@@ -8602,7 +8603,7 @@
   __publicField(CartDrawerRecommendations, 'recommendationsCache', {});
   window.customElements.define('cart-drawer-recommendations', CartDrawerRecommendations);
 
-  // js/custom-element/section/cart/cart-note.js
+ 
   var CartNote = class extends HTMLTextAreaElement {
     connectedCallback() {
       this.addEventListener('change', this._onNoteChanged.bind(this));
@@ -8638,7 +8639,7 @@
   };
   window.customElements.define('cart-note', CartNote, { extends: 'textarea' });
 
-  // js/custom-element/section/cart/free-shipping-bar.js
+ 
   var FreeShippingBar = class extends HTMLElement {
     connectedCallback() {
       document.documentElement.addEventListener('cart:updated', this._onCartUpdated.bind(this));
@@ -8655,7 +8656,7 @@
   };
   window.customElements.define('free-shipping-bar', FreeShippingBar);
 
-  // js/custom-element/section/cart/item-quantity.js
+ 
   var LineItemQuantity = class extends CustomHTMLElement {
     connectedCallback() {
       this.delegate.on('click', 'a', this._onQuantityLinkClicked.bind(this));
@@ -8680,10 +8681,10 @@
       );
     }
     async _updateFromLink(link, isRemove = false) {
-      // if (window.themeVariables.settings.pageType === 'cart' && !isRemove) {
-      //   window.location.href = link;
-      //   return;
-      // }
+     
+     
+     
+     
       const changeUrl = new URL(link, `https://${window.themeVariables.routes.host}`),
       searchParams = changeUrl.searchParams,
       line = searchParams.get('line'),
@@ -8735,7 +8736,7 @@
   };
   window.customElements.define('line-item-quantity', LineItemQuantity);
 
-  // js/custom-element/section/cart/line-item.js
+ 
   var LineItem = class extends HTMLElement {
     connectedCallback() {
       this.lineItemLoader = this.querySelector('.line-item__loader');
@@ -8779,7 +8780,7 @@
   };
   window.customElements.define('line-item', LineItem);
 
-  // js/custom-element/section/cart/notification.js
+ 
   var CartNotification = class extends CustomHTMLElement {
     connectedCallback() {
       this.rootDelegate.on('cart-notification:show', this._onShow.bind(this), !this.hasAttribute('global'));
@@ -8880,7 +8881,7 @@
   };
   window.customElements.define('cart-notification', CartNotification);
 
-  // js/custom-element/section/cart/shipping-estimator.js
+ 
   var ShippingEstimator = class extends HTMLElement {
     connectedCallback() {
       this.submitButton = this.querySelector('[type="button"]');
@@ -8956,7 +8957,7 @@
   };
   window.customElements.define('shipping-estimator', ShippingEstimator);
 
-  // js/custom-element/section/product/review-link.js
+ 
   var ReviewLink = class extends HTMLAnchorElement {
     constructor() {
       super();
@@ -8978,7 +8979,7 @@
   };
   window.customElements.define('review-link', ReviewLink, { extends: 'a' });
 
-  // js/custom-element/section/product/sticky-form.js
+ 
   var ProductStickyForm = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -9074,7 +9075,7 @@
   };
   window.customElements.define('product-sticky-form', ProductStickyForm);
 
-  // js/index.js
+ 
   (() => {
     new InputBindingManager();
   })();
@@ -9158,18 +9159,18 @@
   })();
   (() => {
     window.validateInteger = (input) => {
-      input.value = input.value.replace(/[^0-9]/g, ''); // 移除非数字
+      input.value = input.value.replace(/[^0-9]/g, '');
     }
   })();
   (async () => {
     try {
-      // 获取分类数据
+     
       const response = await fetch(`${window.zkh.api}/openapi/adlink/product/collection/tree`, {
         method: 'GET',
       });
       const { data } = await response.json();
       localStorage.setItem('all-category', JSON.stringify(data));
-      // 生成分类元素
+     
       document.dispatchEvent(new CustomEvent('tree-get', { detail: {
         data,
       }}));
@@ -9179,11 +9180,5 @@
   })()
 })();
 
-/*!
- * focus-trap 6.7.1
- * @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
- */
-/*!
- * tabbable 5.2.1
- * @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
- */
+
+

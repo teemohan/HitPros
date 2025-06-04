@@ -102,9 +102,7 @@
       },
       mounted() {
         const queryString = window.location.search;
-        // 将查询字符串解析为对象
         const params = new URLSearchParams(queryString);
-        // 获取特定参数的值
         const linkSlug = params.get('slug');
         if (linkSlug) {
           try {
@@ -121,17 +119,11 @@
           window.location.href = '/account';
         },
         navToMenu() {
-          // 获取当前页面的 URL
           const currentUrl = new URL(window.location.href);
-          // 获取 slug 参数值
           const slug = currentUrl.searchParams.get('slug');
-          // 构建重定向链接
-          const redirectSlug = slug || 'account-info'; // 如果没有 slug，默认为 'account-info'
+          const redirectSlug = slug || 'account-info';
           const redirectUrl = `/pages/account-nav?slug=${redirectSlug}`;
-          // 执行跳转
           window.location.href = redirectUrl;
-          // $('body').addClass('no-scroll');
-          // $('#mobile_main_nav').addClass('nav-open');
         },
         resetActive() {
           this.menuList.map((links) => {
@@ -141,7 +133,7 @@
           });
         },
         logout() {
-          Cookies.remove('cart'); // 购物车相关
+          Cookies.remove('cart');
           if(window.themeVariables.userCompany.isB2b == 'true') {
             Cookies.set('logout', 1);
             window.location.href = `${window.zkh.b2b_url}/logout`;
@@ -155,11 +147,8 @@
           this.linkActiveIdx.idx = idx;
           this.linkActiveIdx.idx1 = idx1;
           const currentParams = new URLSearchParams(window.location.search);
-          // 设置新的参数值
           currentParams.set('slug', link.linkSlug);
-          // 生成新的URL
           const newURL = window.location.pathname + '?' + currentParams.toString();
-          // 使用replaceState()替换当前URL，不添加新的历史记录
           history.replaceState({}, '', newURL);
           this.$emit('menuchange', link.linkSlug);
           link.isActive = true;

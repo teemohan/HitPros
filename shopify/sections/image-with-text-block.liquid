@@ -58,11 +58,11 @@
 
     {%- unless section.settings.text_position contains 'overlap' -%}
       #shopify-section-{{ section.id }} .image-with-text-block__content {
-        margin: 0 !important; /* Because it blends with the background we have to remove double margin */
+        margin: 0 !important; 
       }
     {%- elsif is_boxed == false -%}
       #shopify-section-{{ section.id }} .section {
-        margin-top: 0 !important; /* We need to remove the margin on the section if the image overlap */
+        margin-top: 0 !important; 
       }
     {%- endunless -%}
   }
