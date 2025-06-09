@@ -35,7 +35,7 @@
           "settings": {
             "bg_img": "shopify://shop_images/shutterstock_1744015958_2_1_1.png",
             "h5_bg_img": "shopify://shop_images/shutterstock_1744015958_2_1_3.png",
-            "brand_img": "shopify://shop_images/Olympia_logo.svg",
+            "brand_img": "shopify://shop_images/Olympia_logo_a1ae6431-9cf5-4fa8-81a0-82f61d5868a3.svg",
             "title": "Protect Your Hands + Your Budget",
             "text": "Disposable Nitrile Gloves",
             "tip": "<p>Starts at  <em>$</em><strong>8.95</strong> / box of 100</p>",
@@ -116,18 +116,18 @@
         "collection": ""
       }
     },
-    "h_blogs_GHEBgy": {
-      "type": "h-blogs",
-      "settings": {
-        "title": "Industry Insights",
-        "blog": "industry-insights"
-      }
-    },
     "guess_you_like_Nmc4wp": {
       "type": "guess-you-like",
       "name": "guess-you-like",
       "settings": {
         "title": "Products You May Like"
+      }
+    },
+    "h_blogs_GHEBgy": {
+      "type": "h-blogs",
+      "settings": {
+        "title": "Industry Insights",
+        "blog": "industry-insights"
       }
     }
   },
