@@ -74,7 +74,23 @@ or change the format of some info
           }
         }{% unless forloop.last %},{% endunless %}
         {% endfor %}
-      ]
+      ],
+      "application Country": [
+        "@type": "Country",
+        "name": "United States"
+      ],
+      {%- if product.metafields.product.sales.value -%}
+        "additionalProperty": [
+            {%- assign sales_data = product.metafields.product.sales.value -%}
+            {%- for item in sales_data -%}
+              {
+                "@type": "PropertyValue",
+                "name": {{ item[0] | json }},
+                "value": {{ item[1] | json }}
+              },
+            {%- endfor -%}
+         ]
+      {%- endif -%}
     {%- endcapture -%}
     
 {%- elsif request.page_type == 'article' -%}
