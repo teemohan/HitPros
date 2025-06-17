@@ -75,10 +75,6 @@ or change the format of some info
         }{% unless forloop.last %},{% endunless %}
         {% endfor %}
       ],
-      "application Country": [
-        "@type": "Country",
-        "name": "United States"
-      ],
       {%- if product.metafields.product.sales.value -%}
         "additionalProperty": [
             {%- assign sales_data = product.metafields.product.sales.value -%}
@@ -87,10 +83,14 @@ or change the format of some info
                 "@type": "PropertyValue",
                 "name": {{ item[0] | json }},
                 "value": {{ item[1] | json }}
-              },
+              }{% unless forloop.last %},{% endunless %}
             {%- endfor -%}
-         ]
+         ],
       {%- endif -%}
+      "applicationCountry": {
+        "@type": "Country",
+        "name": "United States"
+      }
     {%- endcapture -%}
     
 {%- elsif request.page_type == 'article' -%}

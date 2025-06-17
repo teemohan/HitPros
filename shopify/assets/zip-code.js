@@ -438,9 +438,9 @@ const DataLayerManagerFactory = (function() {
         this.pushToDataLayer({
           event: 'select_item',
           request_id: this.sessionId,
-          item_list_id: "recommended_product_click",
           recommend_module: this.recommend_module,
           ecommerce: { 
+            item_list_id: "recommended_product_click",
             items: itemData
           }
         });
