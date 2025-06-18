@@ -109,13 +109,13 @@
                     </div>
                   </div>
                   <template v-if="!order.fulfillment_status || order.fulfillment_status == 'unfulfilled'">
-                    <div class="hidden-tablet-and-up delivery-date">${ line_item.properties[0]?.value }</div>
+                    <div class="hidden-tablet-and-up delivery-date" v-if="line_item.properties && line_item.properties[0]">${ line_item.properties[0]?.value }</div>
                   </template>
                   <div class="hidden-phone item-info">
                     <span class="title">QTY</span>
                     <span>${ line_item.quantity }</span>
                     <template v-if="!order.fulfillment_status || order.fulfillment_status == 'unfulfilled'">
-                      <div class="delivery-date">${ line_item.properties[0]?.value }</div>
+                      <div class="delivery-date" v-if="line_item.properties && line_item.properties[0]">${ line_item.properties[0]?.value }</div>
                     </template>
                   </div>
                   <div class="hidden-phone item-info">
