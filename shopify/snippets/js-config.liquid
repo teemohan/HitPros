@@ -14,6 +14,23 @@
 {%- if is_online_shop -%}
   <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47344356.js"></script>
 {% endif %}
-
-
-
+<script>
+  (function () { 
+    const STORAGE_KEY = 'tidio_current_url'; 
+    function onTidioChatApiReady() { 
+    const currentUrl = window.location.href; 
+    const lastUrl = localStorage.getItem(STORAGE_KEY); 
+    if (currentUrl !== lastUrl) { 
+    window.tidioChatApi.setContactProperties({ 
+    current_url: currentUrl 
+    }); 
+    localStorage.setItem(STORAGE_KEY, currentUrl); 
+    } 
+    } 
+    if (window.tidioChatApi) { 
+    window.tidioChatApi.on('ready', onTidioChatApiReady); 
+    } else { 
+    document.addEventListener('tidioChat-ready', onTidioChatApiReady); 
+    } 
+   })();
+</script>
