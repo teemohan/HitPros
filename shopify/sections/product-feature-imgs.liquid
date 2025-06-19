@@ -12,7 +12,7 @@
         <div class="feature-imgs-item type-01 {{ is_hase_media }}">
           {% if item.imageData.imageOne.contentType contains 'image' %}
             <div class="img-wrapper">
-              <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+              <img src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
             </div>
           {% elsif item.imageData.imageOne.contentType contains 'video' %}
             <div class="video-wrapper">
