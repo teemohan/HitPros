@@ -29,7 +29,7 @@
             </div>
           </div>
           <div class="img-wrapper">
-            <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+            <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
           </div>
         </div>
       {% elsif item.templateType == 4 %}
@@ -40,19 +40,19 @@
               <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
             </div>
             <div class="img-wrapper hidden-phone">
-              <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+              <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
             </div>
           </div>
           <div class="img-wrapper">
-            <img class="js-lazy-image" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
-            <img class="js-lazy-image hidden-tablet-and-up" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+            <img class="lazyload" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
+            <img class="lazyload hidden-tablet-and-up" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
           </div>
         </div>
       {% elsif item.templateType == 5 %}
         <div class="feature-imgs-item type-45 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %} {{ is_hase_media }}">
           <div class="img-wrapper">
-            <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
-            <img class="js-lazy-image hidden-tablet-and-up" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
+            <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+            <img class="lazyload hidden-tablet-and-up" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
           </div>
           <div class="img-text-wrapper">
             <div class="text-container">
@@ -60,17 +60,17 @@
               <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
             </div>
             <div class="img-wrapper hidden-phone">
-              <img class="js-lazy-image" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
+              <img class="lazyload" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
             </div>
           </div>
         </div>
       {% elsif item.templateType == 6 %}
         <div class="feature-imgs-item type-6 bgColorType{{ item.bgColorType }} {{ is_hase_media }}">
           <div class="img-wrapper">
-            <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+            <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
           </div>
           <div class="img-wrapper">
-            <img class="js-lazy-image" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
+            <img class="lazyload" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
           </div>
         </div>
       {% elsif item.templateType == 7 or item.templateType == 8 %}
@@ -81,7 +81,7 @@
               <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
             </div>
             <div class="img-wrapper">
-              <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+              <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
             </div>
           </div>
           <div class="img-text-wrapper">
@@ -90,7 +90,7 @@
               <div class="text-desc">{{ item.imageData.featureDescTwo | replace: '&nbsp;', ' ' }}</div>
             </div>
             <div class="img-wrapper">
-              <img class="js-lazy-image" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
+              <img class="lazyload" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
             </div>
           </div>
         </div>
@@ -101,7 +101,7 @@
             <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
           </div>
           <div class="img-wrapper">
-            <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+            <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
           </div>
         </div>
       {% elsif item.templateType == 10 %}
@@ -130,7 +130,7 @@
                       {% assign key = header.value %}
                       <td>
                         {% if row[key].objectUrl %}
-                          <img class="js-lazy-image" data-src="{{ row[key].objectUrl }}" width="auto" height="auto" alt="{{ row[key].objectName | default: '' }}">
+                          <img class="lazyload" data-src="{{ row[key].objectUrl }}" width="auto" height="auto" alt="{{ row[key].objectName | default: '' }}">
                         {% else %}
                           {{ row[key] }}
                         {% endif %}
@@ -154,7 +154,7 @@
           </div>
           {% if item.imageData.imageOne.objectUrl %}
           <div class="img-wrapper">
-            <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne | default: '' }}">
+            <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne | default: '' }}">
           </div>
           {% endif %}
           <div class="table-wrapper-common">
@@ -173,7 +173,7 @@
                       {% assign key = header.value %}
                       <td>
                         {% if row[key].objectUrl %}
-                          <img class="js-lazy-image" data-src="{{ row[key].objectUrl }}" width="auto" height="auto" alt="{{ row[key].objectName | default: '' }}">
+                          <img class="lazyload" data-src="{{ row[key].objectUrl }}" width="auto" height="auto" alt="{{ row[key].objectName | default: '' }}">
                         {% else %}
                           {{ row[key] }}
                         {% endif %}
@@ -200,7 +200,7 @@
           </div>
           {% if item.imageData.imageOne.objectUrl %}
           <div class="img-wrapper">
-            <img class="js-lazy-image" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne | default: '' }}">
+            <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne | default: '' }}">
           </div>
           {% endif %}
           <div class="table-right-wrapper js-customer-table">
@@ -223,7 +223,7 @@
                         {% assign key = header.value %}
                         <td>
                           {% if row[key].objectUrl %}
-                            <img class="js-lazy-image" data-src="{{ row[key].objectUrl }}" width="auto" height="auto" alt="{{ row[key].objectName | default: '' }}">
+                            <img class="lazyload" data-src="{{ row[key].objectUrl }}" width="auto" height="auto" alt="{{ row[key].objectName | default: '' }}">
                           {% else %}
                             {{ row[key] }}
                           {% endif %}

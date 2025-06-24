@@ -40,7 +40,7 @@
       </div>
     {% endif %}
       <img
-        class="product-item__primary-image js-lazy-image"
+        class="product-item__primary-image lazyload"
         loading="lazy"
         data-media-id="{{ product.featured_image.id | escape }}"
         width="300"
@@ -63,7 +63,7 @@
       {%- if settings.show_secondary_image and product.media.size > 1 and hide_secondary_image != true -%}
         {%- assign next_media = product.media[product.featured_image.position] | default: product.media[1] -%}
         <img
-          class="product-item__secondary-image js-lazy-image"
+          class="product-item__secondary-image lazyload"
           loading="lazy"
           width="300"
           height="300"

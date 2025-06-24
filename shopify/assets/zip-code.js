@@ -105,7 +105,6 @@ class Ajax {
 // Create instance
 const kkAjax = new Ajax();
 
-// 优化的懒加载指令
 Vue.directive('lazy', {
   inserted: el => {
     // Create placeholder image
@@ -122,10 +121,26 @@ Vue.directive('lazy', {
       const img = new Image();
       img.onload = () => {
         el.src = src;
-        // Use requestAnimationFrame to optimize rendering performance
-        requestAnimationFrame(() => {
-          el.classList.add('loaded');
-        });
+        
+        // 使用setTimeout确保图片有足够时间渲染
+        setTimeout(() => {
+          // 检查图片是否真的加载成功
+          if (el.complete && el.naturalWidth > 0) {
+            el.classList.add('loaded');
+          } else {
+            // 如果图片未成功加载，重试一次
+            el.src = src + '?retry=' + new Date().getTime();
+            setTimeout(() => {
+              if (el.complete && el.naturalWidth > 0) {
+                el.classList.add('loaded');
+              } else {
+                // 如果重试后仍然失败，使用占位图
+                console.log('Image loading failed after retry:', src);
+                el.src = placeholder;
+              }
+            }, 500);
+          }
+        }, 100);
       };
       
       img.onerror = () => {
@@ -167,216 +182,6 @@ Vue.directive('lazy', {
     }
   }
 });
-(function() {
-  // Create placeholder image
-  const placeholder = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
-  
-  // Store all lazy loading image elements
-  let lazyImages = [];
-  
-  // Store IntersectionObserver instance
-  let observer = null;
-  
-  /**
-   * Load image
-   * @param {HTMLImageElement} img - Image element
-   */
-  function loadImage(img) {
-    const src = img.dataset.src;
-    if (!src) return;
-    
-    // Preload with new image object
-    const imgLoader = new Image();
-    imgLoader.onload = function() {
-      img.src = src;
-      // Use requestAnimationFrame to optimize rendering performance
-      requestAnimationFrame(function() {
-        img.classList.add('loaded');
-        img.removeAttribute('data-src'); // Clean up data attribute
-      });
-    };
-    
-    imgLoader.onerror = function() {
-      console.log('Image loading failed:', src);
-      img.src = placeholder;
-    };
-    
-    imgLoader.src = src;
-  }
-  
-  /**
-   * Handle IntersectionObserver callback
-   * @param {IntersectionObserverEntry[]} entries - Observer entries
-   * @param {IntersectionObserver} observer - Observer instance
-   */
-  function handleIntersect(entries, observer) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        
-        // Use requestIdleCallback to load images during browser idle time
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(function() {
-            loadImage(img);
-          }, { timeout: 2000 });
-        } else {
-          loadImage(img);
-        }
-        
-        // Stop observing loaded images
-        observer.unobserve(img);
-        
-        // Remove from lazy loading array
-        lazyImages = lazyImages.filter(function(lazyImg) {
-          return lazyImg !== img;
-        });
-      }
-    });
-  }
-  
-  /**
-   * Create IntersectionObserver
-   */
-  function createObserver() {
-    const options = {
-      root: null, // Use viewport as root
-      rootMargin: '100px 0px', // Start loading 100px ahead
-      threshold: 0.1 // Trigger when 10% of image enters viewport
-    };
-    
-    // 如果已经存在观察者，则不重新创建
-    if (!observer) {
-      observer = new IntersectionObserver(handleIntersect, options);
-    }
-    
-    // Start observing all lazy loading images
-    lazyImages.forEach(function(img) {
-      observer.observe(img);
-    });
-  }
-  
-  /**
-   * Fallback: Handle lazy loading with scroll events
-   */
-  function lazyLoadFallback() {
-    let active = false;
-    
-    function lazyLoad() {
-      if (active === false) {
-        active = true;
-        
-        setTimeout(function() {
-          lazyImages.forEach(function(img) {
-            if ((img.getBoundingClientRect().top <= window.innerHeight && 
-                img.getBoundingClientRect().bottom >= 0) && 
-                getComputedStyle(img).display !== 'none') {
-              
-              loadImage(img);
-              
-              // Remove from lazy loading array
-              lazyImages = lazyImages.filter(function(lazyImg) {
-                return lazyImg !== img;
-              });
-              
-              // Remove event listeners if all images are loaded
-              if (lazyImages.length === 0) {
-                document.removeEventListener('scroll', lazyLoad);
-                window.removeEventListener('resize', lazyLoad);
-                window.removeEventListener('orientationchange', lazyLoad);
-              }
-            }
-          });
-          
-          active = false;
-        }, 200);
-      }
-    }
-    
-    // Add event listeners
-    document.addEventListener('scroll', lazyLoad);
-    window.addEventListener('resize', lazyLoad);
-    window.addEventListener('orientationchange', lazyLoad);
-    
-    // Initial check
-    lazyLoad();
-  }
-  
-  /**
-   * Initialize lazy loading
-   * @param {string} selector - Selector, defaults to '.js-lazy-image'
-   * @param {HTMLElement} container - Optional container to search within, defaults to document
-   */
-  function initLazyLoad(selector, container) {
-    selector = selector || '.js-lazy-image';
-    container = container || document;
-    
-    // Get all lazy loading images
-    const newImages = Array.from(container.querySelectorAll(selector + '[data-src]'));
-    
-    // Filter out already processed images
-    const unprocessedImages = newImages.filter(img => {
-      return !lazyImages.includes(img) && !img.classList.contains('loaded');
-    });
-    
-    // Set placeholder image for new images
-    unprocessedImages.forEach(function(img) {
-      img.src = placeholder;
-    });
-    
-    // Add new images to the tracking array
-    lazyImages = [...lazyImages, ...unprocessedImages];
-    
-    // Return if no images found
-    if (lazyImages.length === 0) return;
-    
-    // Check IntersectionObserver support
-    if ('IntersectionObserver' in window) {
-      createObserver();
-    } else {
-      // Fallback to scroll events
-      lazyLoadFallback();
-    }
-  }
-  
-  /**
-   * Observe DOM changes to detect dynamically added images
-   */
-  function observeDOMChanges() {
-    if (!('MutationObserver' in window)) return;
-    
-    const observer = new MutationObserver(function(mutations) {
-      let shouldRefresh = false;
-      
-      mutations.forEach(function(mutation) {
-        // Check for added nodes
-        if (mutation.addedNodes && mutation.addedNodes.length > 0) {
-          shouldRefresh = true;
-        }
-      });
-      
-      if (shouldRefresh) {
-        // Reinitialize lazy loading for the whole document
-        initLazyLoad();
-      }
-    });
-    
-    // Start observing the document for DOM changes
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-  }
-
-  window.refreshLazyLoad = function(selector, container) {
-    initLazyLoad(selector, container);
-  };
-
-  // Auto initialize when DOM is ready
-  document.addEventListener('DOMContentLoaded', function() {
-    initLazyLoad();
-    observeDOMChanges();
-  });
-})();
 
 // DataLayer Manager Factory
 const DataLayerManagerFactory = (function() {
