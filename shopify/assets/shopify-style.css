@@ -1098,20 +1098,12 @@ video {
   max-height: 7rem;
 }
 
-.max-h-\[80\%\] {
-  max-height: 80%;
-}
-
-.max-h-\[500\] {
-  max-height: 500;
-}
-
-.max-h-\[500px\] {
-  max-height: 500px;
-}
-
 .max-h-37r {
   max-height: 37rem;
+}
+
+.max-h-\[80\%\] {
+  max-height: 80%;
 }
 
 .min-h-10 {
@@ -1128,14 +1120,6 @@ video {
 
 .min-h-\[162px\] {
   min-height: 162px;
-}
-
-.min-h-11r {
-  min-height: 11rem;
-}
-
-.min-h-20r {
-  min-height: 20rem;
 }
 
 .\!w-8 {
@@ -1725,11 +1709,6 @@ video {
 .bg-D3DEF1 {
   --tw-bg-opacity: 1;
   background-color: rgb(211 222 241 / var(--tw-bg-opacity, 1));
-}
-
-.bg-E3EEF9 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(227 238 249 / var(--tw-bg-opacity, 1));
 }
 
 .bg-EAEEF1 {
@@ -2664,24 +2643,24 @@ video {
     height: 100%;
   }
 
-  .fb-sm\:max-h-\[80\%\] {
-    max-height: 80%;
-  }
-
   .fb-sm\:max-h-37r {
     max-height: 37rem;
+  }
+
+  .fb-sm\:max-h-\[80\%\] {
+    max-height: 80%;
   }
 
   .fb-sm\:min-h-30r {
     min-height: 30rem;
   }
 
-  .fb-sm\:min-h-\[200px\] {
-    min-height: 200px;
-  }
-
   .fb-sm\:min-h-37r {
     min-height: 37rem;
+  }
+
+  .fb-sm\:min-h-\[200px\] {
+    min-height: 200px;
   }
 
   .fb-sm\:\!w-10 {
