@@ -47,8 +47,12 @@
       {%- if settings.favicon -%}
         <link rel="shortcut icon" href="{{ settings.favicon | img_url: '96x96' }}" type="image/png">
       {%- endif -%}
-  
-      <script>
+      {% if customer.b2b? %}
+        {% assign zip = customer.current_location.shipping_address.zip %}
+      {% else %}
+        {% assign zip = customer.default_address.zip | default: '' %}
+      {% endif %}
+      <script type="text/javascript" async>
         window.zkh = {
           api: {%- if shop.name == 'TestHitpros' -%}'https://doc-shop-uat.northskysupply.com/web'{%- else -%}'https://doc-sp.northskysupply.com/web'{%- endif -%},
           pixi_url: {%- if shop.name == 'TestHitpros' -%}'https://pixi-forge.astrl.link/pdf/view/cm06akk9w00t0umfav1ovty8a/cm06aleng004wgt6jefp60ntq'{%- else -%}'https://pixi.storetools.io/api/pdf/clrh58bin00qamc07qcfwpkvs/clrh59cmq00qemc07xzzvb1nt'{%- endif -%},
@@ -56,6 +60,7 @@
           b2b_url: {%- if shop.name == 'TestHitpros' -%}'https://shopify.com/87140565299/account'{%- else -%}'https://shopify.com/62373298359/account'{%- endif -%},
           customerId: {%- if customer.id -%}'{{ customer.id }}'{%- else -%}null{%- endif -%},
           customerEmail: {%- if customer.email -%}'{{ customer.email }}'{%- else -%}null{%- endif -%},
+          customerZipCode: '{{ zip }}' || localStorage.getItem('customerZipCode')
         }
       </script>
       {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
@@ -66,7 +71,6 @@
       {%- unless settings.heading_font.system? and settings.text_font.system? -%}
         <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
       {%- endunless -%}
-  
       {%- comment -%}Preload important resources{%- endcomment -%}
       {% if template == 'collection' %}
         <link rel="preload" as="script" href="{{ 'jquery.min.js' | asset_url }}">
@@ -89,7 +93,7 @@
           <link rel="preload" as="script" href="{{ 'zip-code.js' | asset_url }}">
           <link rel="preload" as="script" href="{{ 'lib-phone.js' | asset_url }}">
       {% endif %}
-  
+
       {%- if request.page_type == 'product' -%}
         {%- assign selected_media = product.selected_variant.featured_media | default: product.featured_media -%}
   
@@ -261,6 +265,15 @@
       </div>
       {% sections 'footer-group' %}
       {% render 'globo.form.custom' %}
+      {% section 'fb-public-dialog' %}
+    {% if template == 'product' %}
+        <cart-notification
+          global
+          hidden
+          class="cart-notification cart-notification--fixed" 
+          style="z-index: 10000"
+        ></cart-notification>
+      {% endif %}
     </body>
      {% render 'js-config' %}
      {% render 'js-gtm' %}

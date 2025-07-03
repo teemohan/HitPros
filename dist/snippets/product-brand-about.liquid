@@ -1,0 +1,90 @@
+{% if brand == 'Black Canyon' %}
+  {%- assign back_img_class = 'black-canyon-bag' -%}
+  {%- assign color_1 = 'bg-12254D' -%}
+  {%- assign text_1 = 'text-F3F8FC' -%}
+  {%- assign title = 'Professional-Grade Tools, Unbeatable Value' -%}
+  {%- assign img_icon = 'https://cdn.shopify.com/s/files/1/0623/7329/8359/files/log-blak.png?v=1749526462' -%}
+  {%- assign name_1 = 'Quality' -%}
+  {%- assign name_2 = 'Value' -%}
+  {%- assign name_3 = 'Innovation' -%}
+  {%- assign name_4 = 'Support' -%}
+  {%- assign desc_1 = 'Vast industry knowledge, carefully curated manufacturing partnerships and rigorous testing help us not just meet industry standards, but exceed them.' -%}
+  {%- assign desc_2 = 'We bring you closer to the source of your tools, allowing us to pass on direct-to-you savings without ever sacrificing quality.' -%}
+  {%- assign desc_3 = 'From ergonomic grips to intuitive controls, every product detail is intentionally designed with your comfort and efficiency in mind.' -%}
+  {%- assign desc_4 = 'Our comprehensive warranty program and dedicated customer service team help ensure your investment is protected for years to come.' -%}
+{% elsif brand == 'Olympia' %}
+  {%- assign back_img_class = 'olympia-bag' -%}
+  {%- assign color_1 = 'bg-FFB72F' -%}
+  {%- assign text_1 = 'text-main' -%}
+  {%- assign title = 'Protect Your Team, Respect Your Budget' -%}
+  {%- assign img_icon = 'https://cdn.shopify.com/s/files/1/0623/7329/8359/files/olpina.png?v=1749539701' -%}
+  {%- assign name_1 = 'Quality' -%}
+  {%- assign name_2 = 'Value' -%}
+  {%- assign name_3 = 'Purpose' -%}
+  {%- assign name_4 = 'Support'-%}
+  {%- assign desc_1 = 'Extensive industry knowledge, carefully curated manufacturing partnerships and stringent testing help us not just meet industry standards, but exceed them.' -%}
+  {%- assign desc_2 = 'By bringing you closer to the source of your safety and PPE products, we can pass on significant savings without sacrificing quality.' -%}
+  {%- assign desc_3 = "We've made sure our safety equipment is simple, intuitive and comfortable enough for all-day use, enhancing your safety and efficiency in critical situations." -%}
+  {%- assign desc_4 = "Your safety is our priority. Our team is here to help you choose the right equipment, ensuring you're safe, satisfied and compliant. " -%}
+
+ {% endif %}
+  <div class="section-anchor-target container js-brand-about fb-sm:bg-transparent mb-4.5 fb-sm:mb-6" id="js-brand-section">
+    <div class="w-full bg-white fb-sm:border fb-sm:border-D3DEF1 px-3 py-2.5 rounded-sm fb-sm:px-5 fb-sm:pt-10">
+      <p class="text-main text-12 fb-sm:text-18 font-bold">About the Brand</p>
+      <div class="flex flex-col space-y-2.5 mt-1 fb-sm:mt-10">
+        <div class="relative overflow-hidden rounded-sm  text-white">
+          <div class="{{ back_img_class }} h-16r fb-sm:h-21r w-full flex flex-col items-center justify-center text-center">
+            <img src="{{ img_icon }}" 
+              width="100%"
+              height="100%"
+              alt="BLACK CANYON" 
+              class="w-14r h-auto fb-sm:w-21.5r mb-4 fb-sm:mb-9"
+            >
+            <h3 class="text-20 px-10 fb-sm:text-24">
+              {{ title }}
+            </h3>
+          </div>
+          <div class="px-3 fb-sm:px-6 {{ color_1 }} pb-4 fb-sm:pb-0">
+            <div class="w-full grid grid-cols-2 gap-5 fb-sm:gap-0 fb-sm:flex fb-sm:justify-between border-t border-F3F8FC">
+              <div class="fb-sm:w-14r -mt-4.5">
+                <div class="text-center h-9 flex items-center justify-center bg-F3F8FC mb-2 fb-sm:mb-[22px] rounded-sm">
+                  <h4 class="text-18 fb-sm:text-20 text-main">
+                    {{ name_1 }}
+                  </h4>
+                </div>
+                <p class="text-10 fb-sm:text-14 fb-sm:pb-7.5 {{ text_1 }}">
+                  {{ desc_1 }}
+                </p>
+              </div>
+              <div class="fb-sm:w-14r -mt-4.5">
+                <div class="text-center h-9 flex items-center justify-center bg-F3F8FC mb-2 fb-sm:mb-[22px] rounded-sm">
+                  <h4 class="text-18 fb-sm:text-20 text-main">
+                     {{ name_2 }}
+                  </h4>
+                </div>
+                <p class="text-10 fb-sm:text-14 fb-sm:pb-7.5 {{ text_1 }}">
+                  {{ desc_2 }}
+                </p>
+              </div>
+              <div class="fb-sm:w-14r fb-sm:-mt-4.5">
+                <div class="text-center h-9 flex items-center justify-center bg-F3F8FC mb-2 fb-sm:mb-[22px] rounded-sm">
+                  <h4 class="text-18 fb-sm:text-20 text-main">{{ name_3 }}</h4>
+                </div>
+                <p class="text-10 fb-sm:text-14 fb-sm:pb-7.5 {{ text_1 }}">
+                  {{ desc_3 }}
+                </p>
+              </div>
+              <div class="fb-sm:w-14r fb-sm:-mt-4.5">
+                <div class="text-center h-9 flex items-center justify-center bg-F3F8FC mb-2 fb-sm:mb-[22px] rounded-sm">
+                  <h4 class="text-18 fb-sm:text-20 text-main">{{ name_4 }}</h4>
+                </div>
+                <p class="text-10 fb-sm:text-14 fb-sm:pb-7.5 {{ text_1 }}">
+                  {{ desc_4 }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

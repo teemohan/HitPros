@@ -7,6 +7,11 @@
   <script src="{{ 'facet-filters-newcol.js' | asset_url }}" defer></script>
   <script src="{{ 'main-collection-vue.js' | asset_url }}"  defer></script>
 {% endif %}
+{% if template == 'product' %}
+  <script src="{{ 'gumshoe.polyfills.min.js' | asset_url }}"> </script>
+  <script src="{{'main-product.js' | asset_url }}"  defer></script>
+{% endif %}
+
 {% render 'js-page-customer'%}
 
 <script src="//code.tidio.co/dzwcvyci274aolrpev5ilpboec1objxi.js" defer></script>

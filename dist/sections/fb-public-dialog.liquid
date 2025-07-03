@@ -1,0 +1,113 @@
+
+<div id="ruledialog" class="hidden w-full h-screen bg-black/50 fixed top-0 left-0 z-[100000000001]">
+  <div class="w-full h-full flex items-center justify-center">
+    <div class="js-rule-dialogcontent w-[90%] max-h-[80%] bg-white relative py-4 px-4 rounded-sm fb-sm:px-6  fb-sm:py-6 fb-sm:w-36r fb-sm:max-h-[80%] flex flex-col">
+      <div class="w-full border-b border-D3DEF1 pb-4 flex items-center justify-between">
+          <span class="text-16 text-main  fb-sm:text-16  text-center font-bold">
+            Shipping & Returns
+          </span>
+          <span  class="js-close-ruledialog w-5 h-5 cursor-pointer fb-sm:w-6 fb-sm:h-6 fb-sm:right-4 fb-sm:top-4">
+            {%- render 'icon' with 'close' -%}
+          </span>
+      </div>
+      <div class="pt-5  overflow-y-auto flex-1 text-left">
+        <p class="text-12 text-1E1E1E">
+          Enjoy free standard ground shipping on most orders of $75+. Orders under $75 incur a flat $5 shipping and handling fee. Exceptions for oversized items will be clearly noted. Orders placed by 2:30 PM local time typically ship the same day, with delivery in 1-2 days within the contiguous U.S. Orders placed after 2:30 PM ship the next day, with expected delivery in 2-3 days. You will receive a tracking email once your order ships.
+        </p>
+        <p class="mt-4 text-12 text-1E1E1E">
+          Most of our products are eligible for hassle-free return within 30 days, with NorthSky covering all return shipping costs. Refunds are issued to your original payment method upon receipt and approval of the returned items. To initiate a return, visit the "My Orders" section in your user account. Choose the order, select "Request a return" and enter your details. You will receive a confirmation email with a return shipping label and instructions.
+        </p>
+        <div class="bg-F3F8FC text-12 py-2 px-5 rounded-sm mt-5">
+          <p class="text-main flex items-center space-x-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M7.99982 9.88009C7.71182 9.88009 7.47982 9.64809 7.47982 9.36009V5.36009C7.47982 5.07209 7.71182 4.84009 7.99982 4.84009C8.28782 4.84009 8.51982 5.07209 8.51982 5.36009V9.36009C8.51982 9.64809 8.28782 9.88009 7.99982 9.88009ZM7.21582 11.2001C7.21582 11.6321 7.56782 11.9841 7.99982 11.9841C8.43182 11.9841 8.78382 11.6321 8.78382 11.2001C8.78382 10.7681 8.43182 10.4161 7.99982 10.4161C7.56782 10.4161 7.21582 10.7681 7.21582 11.2001Z" fill="#FABE00"/>
+              <path d="M13.272 13.896H2.728C2.248 13.896 1.816 13.648 1.576 13.232C1.336 12.816 1.336 12.312 1.576 11.896L6.848 2.768C7.088 2.352 7.52 2.104 8 2.104C8.48 2.104 8.912 2.352 9.152 2.768L14.424 11.896C14.664 12.312 14.664 12.816 14.424 13.232C14.184 13.648 13.752 13.896 13.272 13.896ZM7.712 3.272L2.44 12.4C2.352 12.552 2.408 12.688 2.44 12.736C2.472 12.784 2.552 12.904 2.728 12.904H13.272C13.448 12.904 13.536 12.784 13.56 12.736C13.592 12.688 13.648 12.552 13.56 12.4L8.288 3.272C8.2 3.12 8.056 3.104 8 3.104C7.944 3.104 7.8 3.12 7.712 3.272Z" fill="#FABE00"/>
+            </svg>
+            <strong>Exclusions</strong></p>
+          <ul class="ml-4">
+            <li class="list-disc text-1E1E1E mt-1.5">Products must be in new condition.</li>
+            <li class="list-disc text-1E1E1E mt-0.5">Additional details/photos may be requested for approval.</li>
+            <li class="list-disc text-1E1E1E mt-0.5">Returns that don't meet the criteria may face fees, be ineligible for a refund or qualify for store credit.</li>
+          </ul>
+        </div>
+        <div class="bg-D3DEF1 text-12 py-2 px-5 rounded-sm mt-2.5">
+          <p class="text-main flex items-center space-x-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M11.6602 12.876C8.9895 12.8767 7.35216 12.876 6.74816 12.8734C6.70219 12.8704 6.6562 12.8787 6.61416 12.8976C6.57212 12.9164 6.53528 12.9451 6.50683 12.9814C6.13216 13.412 5.59816 14.0214 4.90416 14.8094C4.83009 14.8935 4.73597 14.9577 4.63053 14.9958C4.52509 15.034 4.41172 15.0449 4.30093 15.0277C4.19013 15.0104 4.08549 14.9654 3.99667 14.897C3.90786 14.8285 3.83775 14.7388 3.79283 14.636C3.55227 14.0871 3.3136 13.5373 3.07683 12.9867C3.03816 12.896 2.9915 12.8734 2.89816 12.8734C2.6735 12.876 2.37416 12.8767 2.00016 12.8767C1.82335 12.8767 1.65378 12.8064 1.52876 12.6814C1.40373 12.5564 1.3335 12.3868 1.3335 12.21V5.15002C1.3335 4.97321 1.40373 4.80364 1.52876 4.67861C1.65378 4.55359 1.82335 4.48335 2.00016 4.48335H11.6602C11.837 4.48335 12.0065 4.55359 12.1316 4.67861C12.2566 4.80364 12.3268 4.97321 12.3268 5.15002V12.2094C12.3268 12.3862 12.2566 12.5557 12.1316 12.6808C12.0065 12.8058 11.837 12.876 11.6602 12.876ZM11.1128 11.6767V5.68469L2.66016 5.68869V11.68L3.31816 11.676C3.5755 11.676 3.72283 11.6867 3.75883 11.7074C3.79416 11.7307 4.0055 12.234 4.39216 13.218C4.40061 13.2392 4.41434 13.2579 4.43205 13.2722C4.44977 13.2866 4.47087 13.2962 4.49334 13.3C4.51581 13.3039 4.5389 13.302 4.56041 13.2944C4.58191 13.2868 4.60111 13.2738 4.61616 13.2567C5.2075 12.5854 5.64283 12.0934 5.9215 11.7807C5.95216 11.746 6.01883 11.712 6.12083 11.68L11.1122 11.6767H11.1128ZM5.3335 8.00002H8.3955C8.48305 8.00001 8.56975 8.01724 8.65065 8.05074C8.73154 8.08423 8.80505 8.13334 8.86697 8.19524C8.92888 8.25715 8.978 8.33065 9.01151 8.41154C9.04502 8.49243 9.06226 8.57913 9.06226 8.66669C9.06226 8.75424 9.04502 8.84094 9.01151 8.92183C8.978 9.00272 8.92888 9.07622 8.86697 9.13813C8.80505 9.20003 8.73154 9.24914 8.65065 9.28263C8.56975 9.31613 8.48305 9.33337 8.3955 9.33335H5.3335C5.1567 9.33332 4.98716 9.26308 4.86216 9.13805C4.73716 9.01303 4.66693 8.84348 4.66693 8.66669C4.66693 8.48989 4.73716 8.32034 4.86216 8.19532C4.98716 8.0703 5.1567 8.00005 5.3335 8.00002ZM14.0002 10.4967H13.2495C13.2057 10.4967 13.1624 10.4881 13.1219 10.4713C13.0815 10.4546 13.0447 10.43 13.0138 10.3991C12.9828 10.3681 12.9583 10.3314 12.9415 10.2909C12.9248 10.2505 12.9162 10.2071 12.9162 10.1634V9.63869C12.9162 9.59491 12.9248 9.55157 12.9415 9.51112C12.9583 9.47068 12.9828 9.43394 13.0138 9.40298C13.0447 9.37203 13.0815 9.34748 13.1219 9.33073C13.1624 9.31397 13.2057 9.30535 13.2495 9.30535H13.4522V3.22269H5.55216V3.48002C5.55216 3.56842 5.51704 3.65321 5.45453 3.71572C5.39202 3.77823 5.30723 3.81335 5.21883 3.81335H4.6855C4.59709 3.81335 4.51231 3.77823 4.44979 3.71572C4.38728 3.65321 4.35216 3.56842 4.35216 3.48002V2.66935C4.35216 2.49254 4.4224 2.32297 4.54742 2.19795C4.67245 2.07292 4.84202 2.00269 5.01883 2.00269H14.0002C14.177 2.00269 14.3465 2.07292 14.4716 2.19795C14.5966 2.32297 14.6668 2.49254 14.6668 2.66935V9.83002C14.6668 10.0068 14.5966 10.1764 14.4716 10.3014C14.3465 10.4264 14.177 10.4967 14.0002 10.4967Z" fill="#FABE00"/>
+            </svg>
+            <strong>Contact Us</strong></p>
+          <ul class="ml-4">
+            
+            <li class="list-disc text-1E1E1E mt-1.5">
+              <strong>Email:</strong> customerservice@northskysupply.com 
+            </li>
+            <li class="list-disc text-1E1E1E mt-0.5"> 
+              <strong>Phone:</strong> 800-805-6686
+            </li>
+            <li class="list-disc text-1E1E1E mt-0.5">
+              <strong>Hours:</strong> Monday–Friday, 7 AM–7 PM CST
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function() {
+    const $rule_dialog = $('#ruledialog');
+    const $rule_dialogContent = $('.js-rule-dialogcontent');
+    const $rule_closeButtons = $('.js-close-ruledialog'); 
+    const $body = $('body');
+    let isScrollLocked = false;
+
+    function lockScroll() {
+      if (!isScrollLocked) {
+        const scrollY = window.scrollY;
+        $body.css({
+          'position': 'fixed',
+          'top': `-${scrollY}px`,
+          'left': '0',
+          'right': '0',
+          'bottom': '0'
+        });
+        isScrollLocked = true;
+      }
+    }
+
+    function unlockScroll() {
+      if (isScrollLocked) {
+        const scrollY = parseInt($body.css('top')) * -1;
+        $body.css({
+          'position': '',
+          'top': '',
+          'left': '',
+          'right': '',
+          'bottom': ''
+        });
+        window.scrollTo(0, scrollY);
+        isScrollLocked = false;
+      }
+    }
+
+    function closeDialog() {
+      $rule_dialog.hide();
+      unlockScroll();
+    }
+
+    $rule_dialog.on('click', function(event) {
+      if(!$rule_dialogContent.is(event.target) && $rule_dialogContent.has(event.target).length === 0) {
+        closeDialog();
+      }
+    });
+
+    $rule_closeButtons.on('click', function() {
+      closeDialog(); 
+    });
+
+    $('body').on('click', '.js-open-rule-dialog', function () {
+      $rule_dialog.show();
+      lockScroll();
+    });
+  })
+</script>

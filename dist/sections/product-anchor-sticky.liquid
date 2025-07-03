@@ -1,34 +1,257 @@
-{{ 'product-anchor-sticky.css' | asset_url | stylesheet_tag }}
-<div class="container">
-  <div class="product-anchor-sticky">
-    <div class="product-anchor">
-      <span data-target-id="feature-imgs-wrapper" class="product-anchor-item">Details</span>
-      <span data-target-id="product-information-wrapper" class="product-anchor-item active">Product Information</span>
+{% capture btn_text %}
+  <div class="flex items-center gap-2 js-btn-text">
+    Add to Cart
+    {%- render 'icon', icon: 'product-item-cart' -%}
+  </div>
+  <div class="spinner hidden js-btn-loading">
+    <svg focusable="false" class="w-4 h-4" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+      <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+    </svg>
+  </div>
+{% endcapture %}
+{% assign unit_sale = product.metafields.product.sale_unit.value %}
+{% if unit_sale != blank %}
+  {% assign unit_sale = unit_sale | split: ':' %}
+  {% assign unit_sale = unit_sale.first %}
+{% endif %}
+{%- assign featured_media = product.selected_or_first_available_variant.featured_image | default: product.featured_media -%}
+<section class="w-full bg-F3F8FC relative">
+  <div class="js-anchor-section container w-full h-10 fb-sm:h-18">
+    <div class="w-full h-full relative flex items-center justify-between">
+      <div class="flex items-center justify-start h-full fb-sm:hidden fb-md:flex fb-sm:flex-1 fb-sm:overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <ul class="js-product-anchor flex items-center justify-start h-full shrink-0 space-x-10 fb-sm:space-x-5 fb-md:space-x-8 fb-1700:space-x-10">
+          {% for i in (1..5) %}
+            <li class="animate-pulse bg-gray-200 h-6 w-24 fb-sm:w-32 rounded shrink-0 mr-6 fb-sm:mr-10 fb-md:mr-40 last:mr-0"></li>
+          {% endfor %}
+        </ul>
+        <div class="w-10 h-full shrink-0 hidden fb-sm:block fb-1700:hidden">
+        </div>
+      </div>
+      <div
+        id="js-nav-quick"
+        data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+        data-price="{{ product.price | money_without_currency }}"
+        {% if product.metafields.product.quantity_discount != blank %}
+          data-discount="{{- product.metafields.product.quantity_discount | replace: '"', "'" -}}"
+        {% else %}
+          data-discount="[]"
+        {% endif %}
+        class="hidden relative h-full fb-sm:w-full fb-sm:block fb-md:max-w-[400px] fb-1700:hidden"
+        >
+          {% comment %} <div class="fb-sm:w-25 fb-md:w-30 h-full absolute -left-25 fb-md:-left-30 top-0" 
+            style="background: linear-gradient(to left, #F3F8FC 0px, #F3F8FC calc(100% - 150px), rgba(243,248,252,0) 100%);"
+          >
+          </div> {% endcomment %}
+          <div class="w-full flex items-center justify-end h-full space-x-4">
+            <div class="pl-4 flex h-full flex-col items-center justify-center space-y-2 fb-md:hidden fb-1700:flex">
+              {%- if product.metafields.product.brand.value != blank and product.metafields.product.brand.value != 'null' and product.metafields.product.brand.value != '-' -%}
+                <div class="text-12254D text-xs font-bold">
+                  {{- product.metafields.product.brand -}}
+                </div>
+              {% endif %}
+              {% if product.metafields.product.manufacturer_model_number != blank %}
+                <div class="text-main text-xs">
+                  <span>Model:</span>
+                  <span> {{- product.metafields.product.manufacturer_model_number -}}</span>
+                </div>
+              {% endif %}
+            </div>
+            <div class="text-main text-26  font-bold flex items-center justify-center text-right">
+              <span class="js-nav-current-price">
+              </span>
+            </div>
+            <div class="w-30 h-10">
+              <div
+                 class="border border-D3DEF1 bg-white rounded-sm h-full flex justify-between items-center px-2 space-x-0.5 w-full"
+                 data-max="{% if product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
+                >
+                <button disabled type="button" class="js-nav-quick-minus flex justify-center items-center w-4 ">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.17585 6.8436H9.07417H1.20312V9.09247H9.07417H9.17585H14.6964V6.8436H9.17585Z" fill="#092A6F"></path></svg>
+                </button>
+                <input
+                  type="number"
+                  max="1000000"
+                  inputmode="numeric"
+                  name="quantity4" 
+                  autocomplete="off"
+                  class="js-nav-current-input text-20 px-1 outline-none border-none text-center w-10 flex-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  name="quantity"
+                  value="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+                  data-moq="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+                  data-mpq="{% if product.metafields.product.mpq != blank %}{{ product.metafields.product.mpq }}{% else %}1{% endif %}"
+                >
+                <button type="button" class="js-nav-quick-plus flex justify-center items-center w-4">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.07417 6.84361V1.22144H6.8253V6.84361H1.20312V9.09248H6.8253V14.7147H9.07417V9.09248H14.6964V6.84361H9.07417Z" fill="#08296F"></path></svg>
+                </button>
+              </div>
+            </div>
+            <div class="w-32 h-10 shrink-0">
+              <button class="js-navquickbuy-addtocart w-full h-full flex items-center justify-center rounded-sm bg-button text-main font-bold text-14 relative">
+                {{ btn_text }}
+              </button>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div 
+    id="js-product-quikbuy"
+    class="absolute right-0 top-20 w-15r bg-white shadow-md rounded-sm z-[5] hidden border border-" 
+    data-sku="{{ product.selected_or_first_available_variant.sku }}"
+    data-id="{{ product.id }}"
+    style="box-shadow:4px 4px 8px rgba(10, 43, 111, 0.25)"
+    >
+     <div class="w-full px-2.5 py-2 ">
+       <div class="w-full flex items-center justify-between space-x-2">
+         <div class="w-25 h-25 fb-flex-center">
+           <img class="w-full h-auto js-current-img" width="100" height="100" src="{{ featured_media | img_url: '' }}" />
+         </div>
+         <div class="flex-1 flex items-start justify-center flex-col space-y-1">
+          {% if product.metafields.product.brand != blank and  product.metafields.product.brand != 'null' %}
+            <h2 class="text-12 font-bold text-main">
+              {{ product.metafields.product.brand }}
+            </h2>
+          {% endif %}
+           <div class="js-current-model w-full flex items-center text-12 text-main">
+            {% if product.metafields.product.manufacturer_model_number %}
+                Model: {{- product.metafields.product.manufacturer_model_number -}}
+            {% endif %}
+           </div>
+           <div class="flex items-center">
+            
+             <span class="text-main text-20 font-bold" id="js-quickbuy-price">
+               {%- if settings.currency_code_enabled -%}
+                 {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+               {%- else -%}
+                 {{- product.selected_or_first_available_variant.price | money -}}
+               {%- endif -%}
+             </span>
+           
+              <span class="text-12  text-12254D ml-1" id="js-quickbuy-unit">
+                {%- if unit_sale -%}
+                  /{{ unit_sale }}
+                {%- endif -%}
+              </span>
+           </div>
+         </div>
+       </div>
+       <div class="w-full mt-2" id="js-quickbuy-selectedbox">
+          <div class="skeleton-loading">
+            <div class="mb-3 last:mb-0">
+              <div class="h-6 w-24 bg-gray-200 animate-pulse rounded"></div>
+              <div class="mt-3.5 h-8 w-12r bg-gray-200 animate-pulse rounded-sm"></div>
+            </div>
+          </div>
+       </div>
+       <div class="w-full mt-1.5">
+         <span  class="cursor-pointer hidden text-12 text-main font-bold underline" id="js-view-product-details">
+           View Product Details
+         </span>
+       </div>
+       <div class="w-full mt-2.5 pt-1.5">
+         <div class="product-stock-wrapper w-full flex items-center justify-between">
+          <div class="flex text-12 font-bold text-12254D w-1/2 shrink-0">
+            <span class="js-current-price">
+            </span>
+          </div>
+           {% comment %} <div class="product-stock js-current-stock">
+             {% assign stock_num = product.selected_or_first_available_variant.inventory_quantity %}
+             {% assign varid = product.selected_or_first_available_variant.id %}
+             {% render 'stock-label', stock_num: stock_num, varid: varid %}
+           </div> {% endcomment %}
+           <div class="h-9 w-1/2 shrink-0">
+             <div class="border border-D3DEF1 w-full bg-white rounded-sm h-full flex justify-between items-center px-2 space-x-0.5">
+               <button disabled type="button" class="js-quick-minus flex justify-center items-center w-6 h-full">
+                 <span class="hidden">{{ 'cart.general.decrease_quantity' | t }}</span>
+                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.17585 6.8436H9.07417H1.20312V9.09247H9.07417H9.17585H14.6964V6.8436H9.17585Z" fill="#092A6F"></path></svg>
+               </button>
+               <input
+                 type="number"
+                 max="1000000"
+                 inputmode="numeric"
+                name="quantity2" 
+                autocomplete="off"
+                 class="js-current-input text-14 outline-none border-none text-center w-15 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                 name="quantity"
+                 value="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+               >
+               <button type="button" class="js-quick-plus flex justify-center items-center w-6 h-full">
+                 <span class="hidden">{{ 'cart.general.increase_quantity' | t }}</span>
+                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.07417 6.84361V1.22144H6.8253V6.84361H1.20312V9.09248H6.8253V14.7147H9.07417V9.09248H14.6964V6.84361H9.07417Z" fill="#08296F"></path></svg>
+               </button>
+             </div>
+           </div>
+         </div>
+         <div class="w-full h-9 mt-3.5">
+           <button id="js-quickbuy-add-to-cart" class="w-full h-full flex items-center justify-center rounded-sm bg-button text-main font-bold text-sm fb-sm:text-base relative">
+              {{ btn_text }}
+           </button>
+         </div>
+       </div>
+     </div>
+   </div>
+</section>
+<div class="js-bottom-addcart w-full hidden bg-EAEEF1 !fb-sm:hidden fixed bottom-0 left-0 z-7" style="box-shadow: rgba(10, 43, 111, 0.25) 4px 4px 8px;">
+  <div class="max-w-[375px] pt-1.5 pb-4 px-5 mx-auto">
+    {% comment %} <div class="grid grid-cols-2 gap-2">
+      <div class="h-18 flex items-center justify-center">
+        <img class="w-auto h-full js-current-img" width="100" height="100" src="{{ featured_media | img_url: '' }}" />
+      </div>
+      <div class=" flex h-full flex-col items-start justify-center space-y-2">
+        {%- if product.metafields.product.brand.value != blank and product.metafields.product.brand.value != 'null' and product.metafields.product.brand.value != '-' -%}
+          <div class="text-12254D text-14 font-bold fb-md:text-16">
+            {{- product.metafields.product.brand -}}
+          </div>
+        {% endif %}
+        {% if product.metafields.product.manufacturer_model_number != blank %}
+          <div class="text-main text-14">
+            <span>Model:</span>
+            <span> {{- product.metafields.product.manufacturer_model_number -}}</span>
+          </div>
+        {% endif %}
+        <div class="flex items-center justify-center text-right">
+          <span class="js-nav-current-price text-main text-20 fb-md:text-32 font-bold">
+          </span>
+          {%- if unit_sale -%}
+            <span class="text-12  text-12254D ml-1">
+            /{{ unit_sale }}
+            </span>
+          {%- endif -%}
+        </div>
+      </div>
+    </div> {% endcomment %}
+    <div class="h-9 w-full grid grid-cols-2 gap-2">
+      <div
+         class="border border-D3DEF1 bg-white rounded-sm h-full flex justify-between items-center px-2 space-x-0.5"
+         data-max="{% if product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
+        >
+        <button disabled type="button" class="js-nav-quick-minus flex justify-center items-center w-4 ">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.17585 6.8436H9.07417H1.20312V9.09247H9.07417H9.17585H14.6964V6.8436H9.17585Z" fill="#092A6F"></path></svg>
+        </button>
+        <input
+          type="number"
+          max="1000000"
+          inputmode="numeric"
+          name="quantity3" 
+          autocomplete="off"
+          class="js-nav-current-input text-20 px-1 outline-none border-none text-center w-10 flex-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          name="quantity"
+          value="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+          data-moq="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+          data-mpq="{% if product.metafields.product.mpq != blank %}{{ product.metafields.product.mpq }}{% else %}1{% endif %}"
+        >
+        <button type="button" class="js-nav-quick-plus flex justify-center items-center w-4">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.07417 6.84361V1.22144H6.8253V6.84361H1.20312V9.09248H6.8253V14.7147H9.07417V9.09248H14.6964V6.84361H9.07417Z" fill="#08296F"></path></svg>
+        </button>
+      </div>
+      <div class="h-full">
+        <button class="js-navquickbuy-addtocart w-full h-full flex items-center justify-center rounded-sm bg-button text-main font-bold text-14 fb-md:text-16 relative">
+          {{ btn_text }}
+        </button>
+      </div>
     </div>
   </div>
 </div>
-<script>
-  (() => {
-    $('.product-anchor .product-anchor-item').click(function () {
-      if (!$(this).hasClass('active')) {
-        $(this).addClass('active').siblings().removeClass('active');
-        $('.product-anchor-sticky').removeClass('show');
-      }
-      $('.product-anchor-active span').text($(this).find('span').text());
-      const targetId = $(this).data('target-id');
-      const $target = $(`.${targetId}`);
-      $('html, body').animate(
-        {
-          scrollTop: $target.offset().top - $('.shopify-section--header').outerHeight() - $('.product-sticky-form').outerHeight(),
-        },
-        600
-      );
-    });
-    $('.product-anchor-active').click(function () {
-      $('.product-anchor-sticky').toggleClass('show');
-    });
-  })();
-</script>
 {% schema %}
 {
   "name": "Product Anchor Sticky",

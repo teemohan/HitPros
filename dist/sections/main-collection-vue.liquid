@@ -24,7 +24,7 @@
     <div class="{{ section.id }} container fb-sm:pt-2 js-topheader-mob">
       {%- if collection.handle != 'all' -%}
         <div class="js-categories pb-10 hidden">
-          <div class="js-categories-list grid grid-cols-2 fb-sm:grid-cols-4 fb-sm:border-l fb-sm:border-F0F0F0">
+          <div class="js-categories-list grid grid-cols-2 fb-sm:grid-cols-6 fb-sm:border-l fb-sm:border-F0F0F0">
           </div>
         </div>
       {%- endif -%}
@@ -84,7 +84,7 @@
                       </div>
                       <div class="flex flex-col">
                         <h2 :title="item.spuTitle" class="hidden fb-sm:block text-base text-main m-0 font-bold fb-sm:text-xl hover:underline">[[ item.spuTitle ]]</h2>
-                        <span class="hidden fb-sm:block text-xs text-666666 mt-2 fb-sm:mt-2.5">[[item.skus.length]] [[item.skus.length > 1 ? 'products' : 'product']]</span>
+                        <span class="hidden fb-sm:block text-xs text-666666 mt-2 fb-sm:mt-2.5">[[item.skus.length]] [[item.skus.length > 1 ? 'options' : 'option']]</span>
                         <div :title="item.spuDesc" class="hidden fb-sm:line-clamp-2 text-sm mt-5 text-black">
                           [[ item.spuDesc ]]
                         </div>

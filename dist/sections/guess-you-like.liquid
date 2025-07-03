@@ -76,7 +76,7 @@
                   <a href="/products/${item.skuCode}" 
                     data-sku="${item.skuCode || ''}" 
                     datalayer-link
-                    class="block relative aspect-square"
+                    class="relative aspect-square min-h-[162px] fb-sm:min-h-[200px] flex items-center justify-center"
                   >
                     ${item.newTag ? `<div class="z-2 absolute left-0 fb-flex-center">
                       <span class="absolute font-bold text-sm leading-[150%] text-white left-1.5 top-3 -rotate-45">NEW</span>
@@ -174,18 +174,22 @@
               0: {
                 spaceBetween: 12,
                 slidesPerView: 2,
+                slidesPerGroup: 2,
               },
               768: {
                 spaceBetween: 24,
                 slidesPerView: 3,
+                slidesPerGroup: 3
               },
               1024: {
                 spaceBetween: 24,
                 slidesPerView: 4,
+                slidesPerGroup: 4
               },
               1280: {
                 spaceBetween: 24,
                 slidesPerView: 5,
+                slidesPerGroup: 5
               },
             }
           });

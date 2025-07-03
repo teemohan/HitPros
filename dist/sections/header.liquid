@@ -28,7 +28,7 @@
     {%- endif -%}
 
     top: {% if section.settings.enable_sticky_header %}calc(var(--enable-sticky-announcement-bar) * var(--announcement-bar-height, 0px)){% else %}0{% endif %};
-    z-index: 8;
+    z-index: 9;
   }
 
   {%- if request.page_type == 'index' and section.settings.enable_transparent_header -%}
@@ -297,7 +297,7 @@
 >
   {%- assign menu = section.settings.navigation_menu -%}
 
-  <div class="header__wrapper container">
+  <div class="js-header-logo header__wrapper container">
     <!-- LOGO PART -->
     {%- capture logo -%}
       <a class="header__logo-link" href="{{ routes.root_url }}">
@@ -597,12 +597,14 @@
     CART NOTIFICATION: it is used to show the notification when a product is added in message mode
   ------------------------------------------------------------------------------------
 {%- endcomment -%}
+{% if template != 'product' %}
+    <cart-notification
+    global
+    hidden
+    class="cart-notification {% unless section.settings.enable_sticky_header %}cart-notification--fixed{% endunless %}"
+  ></cart-notification>
+{% endif %}
 
-<cart-notification
-  global
-  hidden
-  class="cart-notification {% unless section.settings.enable_sticky_header %}cart-notification--fixed{% endunless %}"
-></cart-notification>
 
 {%- render 'pc-sidebar' -%}
 {%- render 'mobile-sidebar' -%}

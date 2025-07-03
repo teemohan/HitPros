@@ -1,4 +1,4 @@
- {% raw %}
+{% raw %}
   <script type="text/x-template" id="product-item-delevery">
     <div class="buy-bottom-box-wrapper">
       <div class="buy-bottom-box">
@@ -38,11 +38,7 @@
   </script>
 {% endraw %}
 <script>
-  {% if customer.b2b? %}
-    {% assign zip = customer.current_location.shipping_address.zip %}
-  {% else %}
-    {% assign zip = customer.default_address.zip | default: '' %}
-  {% endif %}
+
   Vue.component('product-item-delevery', {
     template: '#product-item-delevery',
     props: {
@@ -64,12 +60,25 @@
         stockDateEnd: 0,
         deleveryRes: null,
         ruleForm: {
-          zipCode: '{{ zip }}' || '',
+          zipCode: window.zkh.customerZipCode || '',
         },
+        isChangedZip: false,
         rules: {
           zipCode: [{ validator: this.validateZipCode, trigger: 'blur' }],
         },
+        zipcodeUpdateHandler: null
       };
+    },
+    mounted() {
+      this.zipcodeUpdateHandler = (event) => {
+        if(!this.isChangedZip) {
+          this.ruleForm.zipCode = event.detail;
+          localStorage.setItem('customerZipCode', event.detail);
+        } else {
+          this.isChangedZip = false;
+        }
+      };
+      document.addEventListener('zipcode-updated', this.zipcodeUpdateHandler);
     },
     methods: {
       validateZipCode(rule, value, callback) {
@@ -78,14 +87,14 @@
         } else if (String(value).length !== 5) {
           return callback(new Error('Zip code must be 5 digits'));
         } else {
-
-          getZipCode('US', value, function (result) {
+          return callback();
+          {% comment %} getZipCode('US', value, function (result) {
             if(result?.valid) {
               return callback();
             } else {
               return callback(new Error('The ZIP Code is invalid.'));
             }
-          });
+          }); {% endcomment %}
         }
       },
       formatDate(timestamp, timezoneOffset = -5) {
@@ -134,62 +143,36 @@
         const _this = this;
         const quantity = +this.productDemand || 1;
         const sku = this.product.sku;
-        this.$refs.ruleForm.validate((valid) => {
-          if (valid) {
-            this.loading = true;
-            getZipCode('US', _this.ruleForm.zipCode, async function (result) {
-              const deliveryParam = {
-                MATNR: sku,
-                ZQTY: quantity,
-                Z004: result.lookup.adminName1,
-                Z002: 'US',
-                POST_CODE2: _this.ruleForm.zipCode,
-              };
-              if (deliveryParam.ZQTY == 0) {
-                _this.$message({
-                  showClose: true,
-                  message: 'Sold out',
-                  type: 'warning',
-                });
-                _this.loading = false;
-                return;
-              }
-
-              try {
-                const response = await fetch(
-                  `${window.zkh.api}/openapi/adlink/delivery-calculation`,
-                  {
-                    method: 'POST',
-                    body: JSON.stringify(deliveryParam),
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                  }
-                );
-                const res = await response.json();
-                _this.deleveryRes = res;
-
-                if (res.transitInventoryDeliveryTimeStampMin && res.transitInventoryDeliveryTimeStampMax) {
-                  _this.stockDateStart = +res.transitInventoryDeliveryTimeStampMin;
-                  _this.stockDateEnd = +res.transitInventoryDeliveryTimeStampMax;
-                }
-                if (res.outOfStockDeliveryTimeStampMin && res.outOfStockDeliveryTimeStampMax) {
-                  _this.stockDateStart = +res.outOfStockDeliveryTimeStampMin;
-                  _this.stockDateEnd = +res.outOfStockDeliveryTimeStampMax;
-                }
-
-                _this.isEstimateShow = true;
-              } catch (error) {
-                console.error('Error fetching status:', error);
-              } finally {
-                _this.loading = false;
-              }
+        getDeliveryEstimate({
+          zipCode: _this.ruleForm.zipCode,
+          sku: sku,
+          quantity: quantity,
+          onLoadingChange: (loading) => {
+            _this.loading = loading;
+          },
+          onError: (error) => {
+            console.error('Error fetching delivery data:', error);
+            _this.$message({
+              showClose: true,
+              message: error.message || 'Failed to get delivery estimate',
+              type: 'error'
             });
+          },
+          onSuccess: (result) => {
+            _this.deleveryRes = result.deliveryData;
+            _this.stockDateStart = result.stockDateStart;
+            _this.stockDateEnd = result.stockDateEnd;
+            _this.isEstimateShow = true;
+            _this.isChangedZip = true;
           }
-        });
-      },
+        }).catch(error => {
+          console.error('Delivery estimate failed:', error);
+        })
+          
+      }
     },
-    mounted() {
+    beforeDestroy() {
+      document.removeEventListener('zipcode-updated', this.zipcodeUpdateHandler);
     },
   });
 </script>

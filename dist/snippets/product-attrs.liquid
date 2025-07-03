@@ -1,17 +1,13 @@
 <style>
-  .product-attrs-wrapper {
-    display: none;
-    background-color: #fff;
-  }
   .product-attrs-wrapper .product-attrs {
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
   .product-attrs-wrapper .product-attrs .attr-line .attr-name-header {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--my-black);
+    font-size: 16px;
+    font-weight: bold;
+    color: #12254D;
   }
   .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper {
     margin-top: 12px;
@@ -50,8 +46,10 @@
   }
   @media screen and (max-width: 999px) {
     .product-attrs-wrapper .product-attrs .attr-line .attr-name-header {
-      font-size: 12px;
+      font-size: 14px;
       line-height: 1;
+      font-weight: normal;
+      color: #12254D;
     }
     .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn {
       min-width: 80px;
@@ -64,12 +62,25 @@
     }
   }
 </style>
-<div class="product-attrs-wrapper product-meta-line product-meta-line-top">
+<div class="product-attrs-wrapper w-full pt-0 pb-4.5 fb-sm:pb-7">
   <product-attrs
     data-sku="{{ product.selected_or_first_available_variant.sku }}" 
     data-common='{{ product.metafields.product.common }}'
     data-sales='{{ product.metafields.product.sales }}'
   >
-    <div class="product-attrs"></div>
+    <div class="product-attrs">
+      <div class="attr-line animate-pulse">
+        <div class="w-full flex items-center justify-start">
+          <span class="bg-gray-200 h-4 w-24 rounded"></span>
+          <span class="bg-gray-200 h-4 w-16 rounded ml-2"></span>
+        </div>
+        <div class="attrs-wrapper flex space-x-2 mt-2">
+          <div class="bg-gray-200 h-8 w-16 rounded"></div>
+          <div class="bg-gray-200 h-8 w-16 rounded"></div>
+          <div class="bg-gray-200 h-8 w-16 rounded"></div>
+          <div class="bg-gray-200 h-8 w-24 rounded"></div>
+        </div>
+      </div>
+    </div>
   </product-attrs>
 </div>
