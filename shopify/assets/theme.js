@@ -2737,14 +2737,14 @@
         $prevButtons
           .css({
             background: 'unset',
-            border: '1px solid #E6E6E6',
+            border: 'none',
           })
           .find('path')
           .css('fill', '#E6E6E6');
         $nextButtons
           .css({
-            background: '#F4F8FC',
-            border: '1px solid #E3EEF9',
+            background: 'transparent',
+            border: 'none',
           })
           .find('path')
           .css('fill', 'var(--my-blue)');
@@ -2752,27 +2752,27 @@
         $nextButtons
           .css({
             background: 'unset',
-            border: '1px solid #E6E6E6',
+            border: 'none',
           })
           .find('path')
           .css('fill', '#E6E6E6');
         $prevButtons
           .css({
-            background: '#F4F8FC',
-            border: '1px solid #E3EEF9',
+            background: 'transparent',
+            border: 'none',
           })
           .find('path')
           .css('fill', 'var(--my-blue)');
       } else {
         $prevButtons
           .css({
-            background: '#F4F8FC',
+            background: 'transparent',
           })
           .find('path')
           .css('fill', 'var(--my-blue)');
         $nextButtons
           .css({
-            background: '#F4F8FC',
+            background: 'transparent',
           })
           .find('path')
           .css('fill', 'var(--my-blue)');
@@ -3099,7 +3099,7 @@
             basePrice = parseFloat(basePrice.replace(/,/g, ''));
             const finalPrice = computed_price(discountJson, basePrice, quantity);
             $('.cus-product .subtotal .computed_price').text(`${finalPrice}`);
-            $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
+            // $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
           }
         }
 
@@ -3107,6 +3107,7 @@
           this.minusElement.disabled = true;
         }
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
+        document.dispatchEvent(new CustomEvent('quantitySelectorUpdated', { detail: this.quantitySelector.quantity }));
       });
       this.delegate.on('click', 'button:last-child', () => {
         this.minusElement.disabled = false;
@@ -3126,10 +3127,12 @@
         this.highlightPriceRange(this.inputElement.quantity);
         
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
+        document.dispatchEvent(new CustomEvent('quantitySelectorUpdated', { detail: this.quantitySelector.quantity }));
       });
       this.addEventListener('quantityChanged', ({detail: {quantity}}) => {
         event.stopPropagation();
         $(this.quantitySelector).attr('data-demand', quantity);
+        document.dispatchEvent(new CustomEvent('quantitySelectorUpdated', { detail: this.quantitySelector.quantity }));
       });
       this.quantitySelector.addEventListener('change', () => {
         this.maxQuantityWarning();
@@ -3216,6 +3219,7 @@
         }
         this.$hiddenQuantity.val(this.quantitySelector.quantity);
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
+        
       });
       this.delegate.on('click', 'button:last-child', () => {
         this.quantitySelector.quantity = this.quantitySelector.quantity + mpqValue;
@@ -6889,7 +6893,7 @@
           detailImages
         });
       } catch (error) {
-        console.error('初始化产品属性时出错:', error);
+        console.error(error);
         this.handleError();
       }
     }
@@ -6924,7 +6928,7 @@
         $('.product-information-wrapper').css('visibility', 'visible');
         triggerEvent(this, 'build-product-media', { detailImages });
       } catch (error) {
-        console.error('初始化产品信息时出错:', error);
+        console.error('error', error);
       }
     }
     handleError() {
@@ -6991,7 +6995,6 @@
         }
       });
     }
-   
     isSecondCategoryValueAvailable(firstCategoryValue, secondCategoryValue) {
       for (const combo of this.availableCombinations) {
         const [first, second] = combo.split('|');
@@ -7237,16 +7240,16 @@
       this.initActionClick();
     }
     checkAllBlank() {
-      if ($(this).find('.product-info-line[hide]').length == 4) {
-       
+      // $(".product-anchor [data-target-id='product-information-wrapper']").show();
+      if ($(this).find('.product-info-line-wrapper .product-info-line[hide]').length >= 4) {
         $(".product-anchor [data-target-id='product-information-wrapper']").hide().attr('data-hide', true);
-        if($(".product-anchor [data-hide='true']").length == 2) {
-          $('.product-anchor-sticky-wrapper').hide();
-        }
-        $(this).hide();
+        // if($(".product-anchor [data-hide='true']").length == 2) {
+          // $('.product-anchor-sticky-wrapper').hide();
+        // }
+        $(this).find(".product-information").hide();
       } else {
         $(".product-anchor [data-target-id='product-information-wrapper']").show();
-        $('.product-anchor-sticky-wrapper').show();
+        // $('.product-anchor-sticky-wrapper').show();
       }
     }
     isGeneralInfoExistBlankValue() {
@@ -7264,16 +7267,17 @@
     }
     initActionClick() {
       $(this)
-        .find('.overlay-wrapper')
+        .find('.js-overlay-wrapper')
         .click(function () {
           $(this).closest('.product-info-line').toggleClass('show-all');
-          $(this).toggleClass('relative');
+          $(this).toggleClass('js-relative');
         });
     }
     renderInformation({ detail }) {
+      if(!detail) return;
       Object.keys(detail).forEach((itemKey) => {
-        const keys = Object.keys(detail[itemKey]);
-        if (keys.length === 0) {
+        const keys = detail[itemKey] ? Object.keys(detail[itemKey]) : null;
+        if (!keys || keys.length === 0) {
           switch (itemKey) {
             case 'weightDimensions':
               $(this).find('.weight-dimensions').attr('hide', true);
@@ -7348,7 +7352,7 @@
           });
           const infoTableDom = $productInfoLine.find('.info-table')[0];
           if(infoTableDom.children.length > 3) {
-            $(infoTableDom).closest('.product-info-line').find('.overlay-wrapper').css('display', 'flex');
+            $(infoTableDom).closest('.product-info-line').find('.js-overlay-wrapper').css('display', 'flex');
           }
         }
       });
@@ -7870,18 +7874,22 @@
           0: {
             spaceBetween: 12,
             slidesPerView: 2,
+            slidesPerGroup: 2,
           },
           768: {
             spaceBetween: 24,
             slidesPerView: 3,
+            slidesPerGroup: 3,
           },
           1024: {
             spaceBetween: 24,
             slidesPerView: 4,
+            slidesPerGroup: 4,
           },
           1280: {
             spaceBetween: 24,
             slidesPerView: 5,
+            slidesPerGroup: 5,
           },
         },
         scrollbar: {

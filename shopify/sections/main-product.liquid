@@ -50,11 +50,10 @@
     }
   </style>
 
-  <section class="cus-product">
-    {%- if section.settings.show_sticky_add_to_cart and product.available -%}
-      {%- render 'product-sticky-form', product: product -%}
-    {%- endif -%}
-
+  <section class="js-cus-product cus-product bg-white fb-sm:pb-12">
+    {% comment %} {%- if section.settings.show_sticky_add_to_cart and product.available -%}
+      {% comment %} {%- render 'product-sticky-form', product: product -%} {% endcomment %}
+    {%- endif -%}  {% endcomment %}
     <div class="container">
       <nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="breadcrumb text--xsmall text--subdued">
         <ol class="breadcrumb__list product-breadcrumb__list" role="list">
@@ -72,6 +71,7 @@
               src="https://cdn.shopify.com/s/files/1/0653/5439/9934/files/non-feature-img.png?v=1712729064"
               alt="non product"
               width="100%"
+              height="100%"
             >
           </div>
         {% else %}
@@ -92,9 +92,9 @@
       {%- assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
 
       {%- if template.suffix == 'quick-buy-drawer' -%}
-        <img loading="lazy" sizes="114px" class="quick-buy-product__image" {% render 'image-attributes', image: featured_media, sizes: '114,228,342' %}>
+        <img loading="lazy" sizes="114px" width="114" height="114" class="quick-buy-product__image" {% render 'image-attributes', image: featured_media, sizes: '114,228,342' %}>
       {%- else -%}
-        <img loading="lazy" sizes="65px" class="quick-buy-product__image" {% render 'image-attributes', image: featured_media, sizes: '65,130,195' %}>
+        <img loading="lazy" sizes="65px" width="65" height="65" class="quick-buy-product__image" {% render 'image-attributes', image: featured_media, sizes: '65,130,195' %}>
       {%- endif -%}
 
       <div class="quick-buy-product__info {% if template.suffix == 'quick-buy-popover' %}text--small{% endif %}">
@@ -117,17 +117,14 @@
               {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
                 <span class="price price--highlight">
                   <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
-
                   {%- if settings.currency_code_enabled -%}
                     {{- product.selected_or_first_available_variant.price | money_with_currency -}}
                   {%- else -%}
                     {{- product.selected_or_first_available_variant.price | money -}}
                   {%- endif -%}
                 </span>
-
                 <span class="price price--compare">
                   <span class="visually-hidden">{{ 'product.general.regular_price' | t }}</span>
-
                   {%- if settings.currency_code_enabled -%}
                     {{- product.selected_or_first_available_variant.compare_at_price | money_with_currency -}}
                   {%- else -%}

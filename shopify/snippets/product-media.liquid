@@ -39,7 +39,7 @@
       reveal-on-scroll
     {% endif %}
     product-handle="{{ product.handle }}"
-    class="product__media position-sticky"
+    class="product__media position-sticky relative"
     style="--largest-image-aspect-ratio: {{ largest_image_aspect_ratio }}"
   >
     <div class="product__media-list-wrapper" style="max-width: {{ max_width }}px">
@@ -215,15 +215,16 @@
     {%- endif -%}
 
     {%- if product.media.size > 1 -%}
-      <flickity-controls controls="product-{{ section.id }}-{{ product.id }}-media-list" class="product__media-nav">
+      <flickity-controls controls="product-{{ section.id }}-{{ product.id }}-media-list" class="w-full !p-0">
         <button
-          class="product__media-prev-next"
+          class="hidden absolute top-10r left-2 fb-sm:left-2 w-8 h-6.5 fb-sm:w-11 fb-sm:h-9 fb-sm:top-15r"
           aria-label="{{ 'general.accessibility.previous' | t }}"
           data-action="prev"
         >
-          {% render 'icon' with 'footer-arrow' %}
+          <svg style="transform: scale(-1);" width="100%" height="100%" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30.7507 13.4255L20.7512 3.3996L24.1745 0L40 15.7507L24.2653 31.9246C24.1263 32.0478 24.0411 31.9982 23.8985 31.9246C23.089 31.5107 21.6496 29.3822 20.7512 28.7862L30.936 18.2085H0V13.7014L0.277868 13.4255H30.7507Z" fill="#0A2B6F"/>
+          </svg>
         </button>
-
         {%- unless section.settings.show_thumbnails_on_mobile -%}
           <div class="dots-nav dots-nav--centered hidden-lap-and-up">
             {%- for media in product.media -%}
@@ -251,7 +252,7 @@
           </div>
         {%- endunless -%}
 
-        <scroll-shadow class="product__thumbnail-scroll-shadow {% unless section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endunless %}">
+        <scroll-shadow class="product__thumbnail-scroll-shadow mt-3 {% unless section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endunless %}">
           <div class="product__thumbnail-list hide-scrollbar">
             <div class="product__thumbnail-list-inner">
               {%- for media in product.media -%}
@@ -363,8 +364,10 @@
           </div>
         </scroll-shadow>
 
-        <button class="product__media-prev-next" aria-label="{{ 'general.accessibility.next' | t }}" data-action="next">
-          {% render 'icon' with 'footer-arrow' %}
+        <button class="hidden absolute top-10r right-2 fb-sm:right-2  w-8 h-6.5 fb-sm:w-11 fb-sm:h-9 fb-sm:top-15r" aria-label="{{ 'general.accessibility.next' | t }}" data-action="next">
+          <svg width="100%" height="100%" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30.7507 13.4255L20.7512 3.3996L24.1745 0L40 15.7507L24.2653 31.9246C24.1263 32.0478 24.0411 31.9982 23.8985 31.9246C23.089 31.5107 21.6496 29.3822 20.7512 28.7862L30.936 18.2085H0V13.7014L0.277868 13.4255H30.7507Z" fill="#0A2B6F"/>
+          </svg>
         </button>
       </flickity-controls>
     {%- endif -%}
@@ -434,5 +437,6 @@
         </div>
       </product-image-zoom>
     {%- endif -%}
+    {%- render 'product-features', product: product , show: true-%}
   </product-media>
 {%- endif -%}

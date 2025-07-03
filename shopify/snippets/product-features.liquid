@@ -1,69 +1,15 @@
-<style>
-  .product-features ul {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding-left: 14px;
-    word-break: break-word;
-  }
-  .product-features li {
-    list-style: disc;
-    font-size: 14px;
-    color: var(--my-black);
-    line-height: 21px;
-  }
-  .product-features li .key {
-    font-weight: bold;
-  }
-  .product-features .show-btn {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #1A1A1A;
-    line-height: 21px;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  @media screen and (max-width:740px) {
-    .product-features ul {
-      padding: 0;
-    }
-    .product-features .show-btn {
-      margin-top: 16px;
-      margin-bottom: 40px;
-      font-size: 12px;
-      color: #1A1A1A;
-      line-height: 15px;
-    }
-    .product-features li {
-      list-style: none;
-      font-size: 12px;
-      line-height: 14px;
-    }
-  }
-</style>
-<div class="product-features product-meta-line product-meta-line-bottom">
-  <ul class="product-list-desc"></ul>
-  <div class="show-btn">View More</div>
+{%- assign isshow_css = 'border-t border-D3DEF1 pb-4.5 fb-sm:pb-6 flex flex-col fb-sm:hidden' -%}
+{%- if show -%}
+  {%- assign isshow_css = 'hidden fb-sm:flex flex-col px-3.5' -%}
+{%- endif -%}
+<div class="js-product-features w-full {{ isshow_css }}">
+  <div class="skeleton-loader animate-pulse">
+    <div class="flex flex-col gap-2">
+      <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+      <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+      <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+    </div>
+  </div>
+  <ul class="product-list-desc [&_a]:text-main [&_a]:underline mt-4.5 fb-sm:mt-6 flex-col gap-0 pl-3.5 marker:text-12254D marker:text-xs fb-sm:marker:text-14 hidden">
+  </ul>
 </div>
-<script>
-  (() => {
-    const productCharacter = {{ product.metafields.product.product_character }}
-    if(productCharacter instanceof Array) {
-      productCharacter.forEach(item => {
-        const $li = `<li><span class="key">${item.featureTitle} </span><span class="value">${item.featureContent}</span></li>`
-        $('.product-features').find('.product-list-desc').append($li);
-      })
-      $('.product-features .show-btn').click(() => {
-        const $target = $(".product-information-wrapper");
-        $('html, body').animate(
-          {
-            scrollTop: $target.offset().top - 220,
-          },
-          600
-        );
-      })
-    } else {
-      $('.product-features').find('.product-list-desc').hide();
-    }
-  })();
-</script>

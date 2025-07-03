@@ -1,0 +1,93 @@
+<div class="section-anchor-target js-review-rate" id="js-review-section">
+  <div class="js-review-container invisible container b-sm:bg-transparent mb-4.5 fb-sm:mb-6">
+    <div class="w-full bg-white fb-sm:border fb-sm:border-D3DEF1 px-3 py-2.5 rounded-sm fb-sm:px-5 fb-sm:pt-10" >
+      <p class="text-main text-12 fb-sm:text-18 font-bold">See Reviews</p>
+      {%- for block in section.blocks -%}
+      {%- render block -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+.js-review-rate .jdgm-rev-widg__title{
+  display: none;
+}
+.js-review-rate .jdgm-rev-widg__header{
+  border-bottom: 1px solid #D3DEF1;
+}
+.js-review-rate *{
+  font-family: 'Inter', sans-serif;
+}
+.js-review-rate .jdgm-sort-dropdown-wrapper{
+  display: flex!important;
+  align-items: center;
+  justify-content: flex-end;
+}
+.js-review-rate .jdgm-rev-widg__summary-average{
+  font-weight: bold;
+}
+.js-review-rate .jdgm-rev-widg__summary-text{
+  color: black;
+  font-size: 14px;
+  text-align: center;
+}
+.js-review-rate .jdgm-histogram__bar-content{
+  background-color: #FABE00;
+}
+.js-review-rate .jdgm-rev-widg .jdgm-star, .js-review-rate .jdgm-revs-tab .jdgm-star,.js-review-rate .jdgm-all-reviews .jdgm-star, .js-review-rate .jdgm-gallery-popup .jdgm-star {
+  font-size: 18px;
+}
+.js-review-rate .jdgm-sort-dropdown-wrapper .jdgm-sort-dropdown{
+  font-size: 16px;
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+.js-review-rate .jdgm-sort-dropdown-wrapper .jdgm-sort-dropdown:focus{
+  box-shadow: none!important;
+}
+.js-review-rate .jdgm-rev__title{
+  font-size: 16px;
+  font-weight: bold;
+}
+{% comment %} .js-review-rate .jdgm-rev__icon, .js-review-rate .jdgm-widget div:empty{
+  display: none;
+} {% endcomment %}
+.js-review-rate  .jdgm-rev__body  p{
+  font-size: 14px;
+}
+
+</style>
+{% schema %}
+{
+  "name": "Apps-review",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "include_horizontal_margins",
+      "label": "Include horizontal margins",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "include_vertical_margins",
+      "label": "Include vertical margins",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ReviewApps"
+    }
+  ]
+}
+{% endschema %}

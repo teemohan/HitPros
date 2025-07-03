@@ -387,4 +387,185 @@ const getZipCode = (countryCode, value, callback) => {
     }))
     .catch(error => callback({ valid: false, message: error.message, input: { country: countryCode, zip: value } }));
 };
+const getLocalZipCode = (callback) => {
+    fetch(`https://ipinfo.io/json/?token=5eb142213a9cfb`)
+    .then(res => res.json())
+    .then(data => {
+      console.log("data", data)
+      if (data && data.country && (data.country == 'US' || data.country == 'us') && data.postal) {
+        const localzip = (data.postal.length == 5) ? data.postal : '77380'
+        callback(localzip)
+        localStorage.setItem('customerZipCode', localzip)
+      } else {
+        callback('77380');
+         localStorage.setItem('customerZipCode', '77380')
+      }
+    }).catch( err => {
+       callback('77380');
+        localStorage.setItem('customerZipCode', '77380')
+    })
+}
+const throttleNew = (action, delay, context, iselapsed)=> {
+  let timeout = null;
+  let lastRun = 0;
+  return function () {
+    if (timeout) {
+      if (iselapsed) {
+        return;
+      } else {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+    }
+    let elapsed = Date.now() - lastRun;
+    let args = arguments;
+    if (iselapsed && elapsed >= delay) {
+      runCallback();
+    } else {
+      timeout = setTimeout(runCallback, delay);
+    }
+    /**
+     * 执行回调
+     */
+    function runCallback() {
+      lastRun = Date.now();
+      timeout = false;
+      action.apply(context, args);
+    }
+  }
+}
+const FbIsInViewPort = (element) => {
+  const offset = element.getBoundingClientRect();
+  const offsetTop = offset.top;
+  const offsetBottom = offset.bottom;
+  const offsetHeight = offset.height;
+  const windowHeight = window.innerHeight;
+  if ((offsetTop <= windowHeight && offsetTop >= 0) || (offsetBottom >= 0 && offsetBottom <= windowHeight) || (offsetTop <= 0 && offsetBottom >= windowHeight)) { 
+    return true;
+  } else {
+    return false;
+  }
+}
 
+const zkhFormatMoney = (cents, format = '') =>{
+  if (typeof cents === 'string') {
+    cents = cents.replace('.', '');
+  }
+  const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/,
+    formatString = format || window.themeVariables.settings.moneyFormat;
+  function defaultTo(value2, defaultValue) {
+    return value2 == null || value2 !== value2 ? defaultValue : value2;
+  }
+  function formatWithDelimiters(number, precision, thousands, decimal) {
+    precision = defaultTo(precision, 2);
+    thousands = defaultTo(thousands, ',');
+    decimal = defaultTo(decimal, '.');
+    if (isNaN(number) || number == null) {
+      return 0;
+    }
+    number = (number / 100).toFixed(precision);
+    let parts = number.split('.'),
+      dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+      centsAmount = parts[1] ? decimal + parts[1] : '';
+    return dollarsAmount + centsAmount;
+  }
+  let value = '';
+  switch (formatString.match(placeholderRegex)[1]) {
+    case 'amount':
+      value = formatWithDelimiters(cents, 2);
+      break;
+    case 'amount_no_decimals':
+      value = formatWithDelimiters(cents, 0);
+      break;
+    case 'amount_with_space_separator':
+      value = formatWithDelimiters(cents, 2, ' ', '.');
+      break;
+    case 'amount_with_comma_separator':
+      value = formatWithDelimiters(cents, 2, '.', ',');
+      break;
+    case 'amount_with_apostrophe_separator':
+      value = formatWithDelimiters(cents, 2, "'", '.');
+      break;
+    case 'amount_no_decimals_with_comma_separator':
+      value = formatWithDelimiters(cents, 0, '.', ',');
+      break;
+    case 'amount_no_decimals_with_space_separator':
+      value = formatWithDelimiters(cents, 0, ' ');
+      break;
+    case 'amount_no_decimals_with_apostrophe_separator':
+      value = formatWithDelimiters(cents, 0, "'");
+      break;
+  }
+  if (formatString.indexOf('with_comma_separator') !== -1) {
+    return formatString.replace(placeholderRegex, value);
+  } else {
+    return formatString.replace(placeholderRegex, value);
+  }
+}
+
+window.zkh.updateZipCode = function(newZipCode) {
+  window.zkh.customerZipCode = newZipCode;
+  document.dispatchEvent(new CustomEvent('zipcode-updated', { detail: newZipCode }));
+};
+async function getDeliveryEstimate({
+  zipCode,
+  sku,
+  quantity = 1,
+  onLoadingChange = null,
+  onError = null,
+  onSuccess = null
+}) {
+  if (onLoadingChange) onLoadingChange(true);
+  try {
+    // Validate zip code
+    const zipResult = await new Promise((resolve, reject) => {
+      getZipCode('US', zipCode, function(result) {
+        if (result?.valid) {
+          resolve(result);
+        } else {
+          reject(new Error('Invalid ZIP code'));
+        }
+      });
+    });
+
+    const deliveryParam = {
+      MATNR: sku,
+      ZQTY: quantity,
+      Z004: zipResult.lookup.adminName1,
+      Z002: 'US',
+      POST_CODE2: zipCode
+    };
+    if (deliveryParam.MATNR == 0) {
+      throw new Error('Sold out');
+    }
+    const res = await kkAjax.post('/openapi/adlink/delivery-calculation', deliveryParam);
+    res.availableInventoryCount = res.availableInventoryCount || 0;
+    const result = {
+      deliveryData: res,
+      stockDateStart: null,
+      stockDateEnd: null
+    };
+
+    if (res.transitInventoryDeliveryTimeStampMin) {
+      result.stockDateStart = +res.transitInventoryDeliveryTimeStampMin;
+    } else if (res.outOfStockDeliveryTimeStampMin) {
+      result.stockDateStart = +res.outOfStockDeliveryTimeStampMin;
+    }
+    
+    if (res.outOfStockDeliveryTimeStampMax) {
+      result.stockDateEnd = +res.outOfStockDeliveryTimeStampMax;
+    } else if (res.transitInventoryDeliveryTimeStampMax) {
+      result.stockDateEnd = +res.transitInventoryDeliveryTimeStampMax;
+    }
+    localStorage.setItem('customerZipCode', zipCode);
+    window.zkh.updateZipCode(zipCode);
+    if (onSuccess) onSuccess(result);
+    return result;
+  } catch (error) {
+    console.error('Error fetching delivery data:', error);
+    if (onError) onError(error);
+    throw error;
+  } finally {
+    if (onLoadingChange) onLoadingChange(false);
+  }
+}

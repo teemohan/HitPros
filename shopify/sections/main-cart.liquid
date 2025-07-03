@@ -195,8 +195,10 @@
                               {%- assign max_allowed_quantity = line_item.variant.inventory_quantity -%}
                               {%- assign allow_more = false -%}
                             {%- endif -%}
-                            {% assign moq_value = line_item.product.metafields.product.moq | plus: 0 %}
-                            {% assign mpq_value = line_item.product.metafields.product.mpq | plus: 0 %}
+                            {%- assign mymoq = line_item.product.metafields.product.moq | default: 1 -%}
+                            {%- assign mympq = line_item.product.metafields.product.mpq | default: 1 -%}
+                            {% assign moq_value = mymoq | plus: 0 %}
+                            {% assign mpq_value = mympq | plus: 0 %}
                             {% comment %} {% assign remainder = line_item.variant.inventory_quantity | divided_by: mpq_value %}
                             {% assign max_allowed_quantity = remainder | times: mpq_value %} {% endcomment %}
                             {%- capture quantity_selector_inner -%}
@@ -552,10 +554,10 @@
   })();
   {% if customer.b2b? %}
     {% assign province_code = customer.current_location.shipping_address.province_code %}
-    {% assign zip = customer.current_location.shipping_address.zip %}
+    {% comment %} {% assign zip = customer.current_location.shipping_address.zip %} {% endcomment %}
   {% else %}
     {% assign province_code = customer.default_address.province_code | default: 'DC'  %}
-    {% assign zip = customer.default_address.zip | default: 20500 %}
+    {% comment %} {% assign zip = customer.default_address.zip | default: 20500 %} {% endcomment %}
   {% endif %}
   (() => {
     $('.quantity-selector__input').on('keydown', function(event) {
@@ -573,7 +575,7 @@
         ZQTY: {{ line_item.quantity }},
         Z004: '{{ province_code }}',
         Z002: 'US',
-        POST_CODE2: '{{ zip }}'
+        POST_CODE2: window.zkh.customerZipCode || '77380'
       });
     {% endfor %}
 
@@ -760,7 +762,7 @@
           city: "Washington",
           province: "District of Columbia",
           street: "1600 Pennsylvania Avenue NW",
-          zipCode: "20500"
+          zipCode: window.zkh.customerZipCode || "77380"
         };
       {% endif %}
       const sendAddress = {
@@ -819,7 +821,7 @@
           city: "Washington",
           region: "{{ province_code }}",
           country: "US",
-          postalCode: "20500"
+          postalCode: window.zkh.customerZipCode || "77380"
         };
       {% endif %}
       const taxParam = {

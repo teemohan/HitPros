@@ -207,7 +207,7 @@
     {% assign zip = customer.current_location.shipping_address.zip %}
   {% else %}
     {% assign province_code = customer.default_address.province_code | default: 'DC'  %}
-    {% assign zip = customer.default_address.zip | default: 20500 %}
+    {% assign zip = customer.default_address.zip | default: '77380' %}
   {% endif %}
 
   {% for line_item in cart.items %}
@@ -389,9 +389,11 @@
                     <div class="line-item-price">{{ computed_final_line_price_total | money }}</div>
                   {% endif %}
                 </div>
-
-                {% assign moq_value = line_item.product.metafields.product.moq | plus: 0 %}
-                {% assign mpq_value = line_item.product.metafields.product.mpq | plus: 0 %}
+                {%- assign mymoq = line_item.product.metafields.product.moq | default: 1 -%}
+                {%- assign mympq = line_item.product.metafields.product.mpq | default: 1 -%}
+                
+                {% assign moq_value = mymoq | plus: 0 %}
+                {% assign mpq_value = mympq | plus: 0 %}
                 {% assign remainder = line_item.variant.inventory_quantity | divided_by: mpq_value %}
                 {% assign max_allowed_quantity = remainder | times: mpq_value %}
                 {%- assign allow_more = true -%}
@@ -589,12 +591,17 @@
 <script>
   (() => {
     async function getDeleveryDate(deliveryParams) { 
+      {% comment %} xuteshuchuli {% endcomment %}
+      const param = deliveryParams.map((param) => {
+        param.POST_CODE2 =  window.zkh.customerZipCode || '77380'
+        return param
+      })
       try {
         const response = await fetch(`${window.zkh.api}/openapi/adlink/delivery-calculation/batch`, {
           method: 'POST',
           body: JSON.stringify({
             checkoutToken: null,
-            deliveryCalculationParam: deliveryParams
+            deliveryCalculationParam: param
           }),
           headers:{
             'Content-Type':'application/json',

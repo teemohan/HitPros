@@ -1,44 +1,9 @@
-<style>
-  .product-video-wrapper  {
-    margin: 40px 0;
-  }
-  .product-video-wrapper h2 {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  .product-video-wrapper h2 span{
-    font-size: 32px;
-    font-weight: bold;
-    line-height: normal;
-    color: #0B2C66;
-    display: inline-flex;
-    padding-bottom: 10px;
-    border-bottom: 4px solid #F4BF18;
-  }
-  @media screen and (max-width: 740px) {
-    .product-video-wrapper  {
-      margin: 20px 0;
-    }
-    .product-video-wrapper h2 {
-      margin-bottom: 10px;
-    }
-    .product-video-wrapper h2 span{
-      font-size: 16px;
-    }
-    .video-wrapper__poster-content svg {
-      width: 36px;
-      height: 36px;
-    }
-  }
-</style>
-
 {%- for media in product.media -%}
   {% case media.media_type %}
     {%- when 'video' -%}
-      <div class="product-video-wrapper">
-        <h2>
-          <span>Video Showcase</span>
+      <div class="my-10 md:my-10">
+        <h2 class="flex justify-center mb-5 md:mb-5">
+          <span class="text-base md:text-32 font-bold leading-normal text-[#0B2C66] inline-flex pb-2.5 border-b-4 border-[#F4BF18]">Video Showcase</span>
         </h2>
         <native-video
           class="video-wrapper video-wrapper--native"
@@ -64,7 +29,7 @@
                   class="video-wrapper__play-button"
                   title="{{ 'general.accessibility.play_video' | t | escape }}"
                 >
-                  {%- render 'icon' with 'play', width: 72, height: 72 -%}
+                  {%- render 'icon' with 'play', class: 'w-9 h-9 md:w-[72px] md:h-[72px]' -%}
                 </button>
               </div>
             </div>
@@ -84,8 +49,9 @@
         </native-video>
       </div>
     {% endcase %}
-  {% endfor %}
-{% schema %}
+{% endfor %}
+
+  {% schema %}
 {
   "name": "product video",
   "class": "container",

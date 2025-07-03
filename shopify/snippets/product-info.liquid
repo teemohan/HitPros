@@ -1,61 +1,68 @@
 {%- capture product_form_id -%}product-form-{{ section.id }}-{{ product.id }}{%- endcapture -%}
 
-<div class="product__info position-sticky">
+<div class="product__info position-sticky mt-4 fb-sm:mt-6">
   <!-- PRODUCT META -->
   <product-meta form-id="{{ product_form_id }}" price-class="" class="product-meta">
-    {%- if product.metafields.product.brand.value != blank
-      and product.metafields.product.brand.value != 'null'
-      and product.metafields.product.brand.value != '-'
-    -%}
-      <span class="product-meta__vendor">
-        {{ product.metafields.product.brand }}
-      </span>
-    {% endif %}
+    <div class="w-full flex items-center justify-start space-x-3 mb-3 ">
+      {%- if product.metafields.product.brand.value != blank
+        and product.metafields.product.brand.value != 'null'
+        and product.metafields.product.brand.value != '-'
+      -%}
+        <div class="text-12254D text-14 font-bold fb-sm:text-16">
+          {{ product.metafields.product.brand }}
+        </div>
+        <div class="h-3.5 w-0 border-l border-142A6B">
+        </div>
+      {% endif %}
+        <div
+          class="text-main text-xs fb-sm:text-14"
+          {% if product.metafields.product.manufacturer_model_number == blank %}
+            style="display: none"
+          {% endif %}
+          data-product-sku-container
+        >
+          <span>Model:</span>
+          <span class="product-meta__sku-number" data-product-sku-number>
+            {{- product.metafields.product.manufacturer_model_number -}}
+          </span>
+        </div>
+    </div>
     {% unless featured %}
-      <h1 class="product-meta__title heading">{{ product.title }}</h1>
+      <h1 class="text-18 font-bold text-main mb-3 fb-sm:text-26">{{ product.title }}</h1>
     {% else %}
-      <h2 class="product-meta__title heading">
+      <h2 class="text-18 font-bold text-main mb-3 fb-sm:text-26">
         <a href="{{ product.url }}">{{ product.title }}</a>
       </h2>
     {% endunless %}
-
-    <div class="product-meta-box">
-      <div
-        class="product-meta__sku"
-        {% if product.metafields.product.manufacturer_model_number == blank %}
-          style="display: none"
-        {% endif %}
-        data-product-sku-container
-      >
-        <span>Model:</span>
-        <span class="product-meta__sku-number" data-product-sku-number>
-          {{- product.metafields.product.manufacturer_model_number -}}
-        </span>
-      </div>
-    </div>
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when '@app' -%}
+          <div class="zkh-single-reviews mb-3 fb-sm:mb-3">
+            {%- render block -%}
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
     {% assign unit_sale = product.metafields.product.sale_unit.value %}
     {% if unit_sale != blank %}
       {% assign unit_sale = unit_sale | split: ':' %}
       {% assign unit_sale = unit_sale.first %}
     {% endif %}
-    <div class="product-meta__price-list-container" role="region" aria-live="polite">
-      <div class="price-list" data-product-price-list>
-        {%- if product.selected_or_first_available_variant.compare_at_price
-            > product.selected_or_first_available_variant.price
-        -%}
-          <span class="price price--highlight ">
+    <div class="w-full flex items-center justify-start pb-3.5 fb-sm:pb-7" role="region" aria-live="polite">
+      <div class="w-full flex items-center justify-start" data-product-price-list>
+        {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+          <span class="text-main text-18 mr-2 font-bold fb-sm:text-26">
             <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
-
             {%- if settings.currency_code_enabled -%}
               {{- product.selected_or_first_available_variant.price | money_with_currency -}}
             {%- else -%}
               {{- product.selected_or_first_available_variant.price | money -}}
             {%- endif -%}
           </span>
-          <span class="unit">
-            /{{ unit_sale }}
-          </span>
-
+          {% if unit_sale != blank %}
+            <span class="text-14 text-12254D">
+              /{{ unit_sale }}
+            </span>
+          {% endif %}
           <div class="price-discount">
             <span class="price price--compare">
               <span class="visually-hidden">{{ 'product.general.regular_price' | t }}</span>
@@ -76,7 +83,7 @@
             <span class="discount">{{ discount_percentage }}%OFF</span>
           </div>
         {%- else -%}
-          <span class="price ">
+          <span class="text-main text-18 mr-2 font-bold fb-sm:text-26">
             <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
             {%- if settings.currency_code_enabled -%}
               {{- product.selected_or_first_available_variant.price | money_with_currency -}}
@@ -84,9 +91,11 @@
               {{- product.selected_or_first_available_variant.price | money -}}
             {%- endif -%}
           </span>
-          <span class="unit">
-            /{{ unit_sale }}
-          </span>
+          {% if unit_sale != blank %}
+            <span class="text-14 text-12254D">
+              /{{ unit_sale }}
+            </span>
+          {% endif %}
         {%- endif -%}
 
         {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
@@ -166,5 +175,6 @@
   </product-meta>
   {%- render 'product-attrs', product: product -%}
   {%- render 'product-form', product: product, update_url: update_url -%}
+  {%- render 'product-truest', product: product -%}
   {%- render 'product-features', product: product -%}
 </div>

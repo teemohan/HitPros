@@ -949,7 +949,7 @@
               skuTitle: item.title,
               skuCount: item.refundQty,
               skuPrice: Number(item.price),
-              currencyType: item.price_set.shop_money.currency_code,
+              currencyType: item.price_set?.shop_money?.currency_code || 'USD',
               skuPicture: item.imageUrl,
               skuInfoUrl:item.productUrl
             })),

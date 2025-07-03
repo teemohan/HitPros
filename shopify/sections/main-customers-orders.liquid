@@ -128,7 +128,7 @@
                   </div>
                   <div class="hidden-phone item-info">
                     <span class="title">TOTAL</span>
-                    <span>$${ (line_item.quantity * line_item.price).toFixed(2) }</span>
+                    <span>$${ ((Number(line_item.quantity || 0) * Number(line_item.price || 0)) + Number(line_item.tax_price?.replace('$','') || 0)).toFixed(2) }</span>
                   </div>
                   <div class="hidden-tablet-and-up phone-order-info">
                     <div><span>QTY</span>${ line_item.quantity }</div>

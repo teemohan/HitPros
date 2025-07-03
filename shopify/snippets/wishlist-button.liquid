@@ -1,37 +1,7 @@
-<style>
-  .wishlist {
-    border: 1px solid var(--my-blue);
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    padding: 0 10px;
-  }
-
-  .ti-heart {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
-  @media screen and (max-width:999px) {
-    .wishlist {
-      width: 36px;
-      height: 36px;
-    }
-    .wishlist svg {
-      width: 14px;
-    }
-  }
-
-</style>
-
 <div id="btn-wishlist">
   {% if customer %}
-    <button class="btn-wishlist wishlist" @click="toggleWish">
-      <span data-toggle="tooltip" class="ti-heart" v-if="isDelete === 1">
+    <button class="flex items-center justify-center w-5 h-5 p-0 cursor-pointer" @click="toggleWish">
+      <span data-toggle="tooltip" class="flex items-center justify-center cursor-pointer" v-if="isDelete === 1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -44,7 +14,7 @@
           <g><path d="M10.5494,1.67758L9.99759,2.24804L9.44575,1.6751C7.29622,-0.549658,3.79963,-0.559579,1.64046,1.65526L1.62118,1.6751C-0.540394,3.90979,-0.540394,7.52347,1.62118,9.76064L9.10597,17.6155C9.59034,18.1215,10.3807,18.1289,10.8748,17.6329L10.8916,17.6155L18.3788,9.76064C20.5404,7.52595,20.5404,3.91227,18.3788,1.6751C16.2293,-0.549658,12.7327,-0.559579,10.5735,1.65278L10.5494,1.67758Z" fill="#0A3164" fill-opacity="1"/></g>
         </svg>
       </span>
-      <span data-toggle="tooltip" class="ti-heart" v-else>
+      <span data-toggle="tooltip" class="flex items-center justify-center cursor-pointer" v-else>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -60,8 +30,8 @@
     </button>
 
   {% else %}
-    <a class="wishlist" href="/account/login">
-      <span data-toggle="tooltip" title="Add to Wishlist" class="ti-heart">
+    <a class="flex items-center justify-center w-5 h-5 p-0 cursor-pointer" href="/account/login">
+      <span data-toggle="tooltip" title="Add to Wishlist" class="flex items-center justify-center cursor-pointer">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
