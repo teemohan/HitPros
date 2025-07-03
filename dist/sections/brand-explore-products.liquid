@@ -1,0 +1,213 @@
+<style>
+    @media screen and (min-width:1000px){
+        #shopify-section-{{ section.id }}{
+            margin-top: {{ section.settings.pc_top }}px;
+            margin-bottom: {{ section.settings.pc_bottom }}px;
+        }
+        #shopify-section-{{ section.id }} .head_title{
+            font-size: 48px;
+            text-align: left;
+        }
+        #shopify-section-{{ section.id }} .head_content{
+            font-size: 18px;
+            margin-top: 16px;
+        }
+        .Brand_Explore_Products{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 12px;
+            margin-top: 80px;
+        }
+        #shopify-section-{{ section.id }} .View_All{
+            padding: 12px 36px;
+            margin: 40px auto 0;
+        }
+    }
+    @media screen and (max-width:999px){
+        #shopify-section-{{ section.id }}{
+            margin-top: {{ section.settings.mobile_top }}px;
+            margin-bottom: {{ section.settings.mobile_bottom }}px;
+        }
+        #shopify-section-{{ section.id }} .head_title{
+            font-size: 24px;
+            text-align: center;
+        }
+        #shopify-section-{{ section.id }} .head_content{
+            font-size: 16px;
+            margin-top: 16px;
+            text-align: center!important;
+        }
+        .Brand_Explore_Products{
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 8px;
+            margin-top: 14px;
+        }
+        #shopify-section-{{ section.id }} .View_All{
+            padding: 10px 26px;
+            margin: 20px auto 0;
+        }
+        #shopify-section-{{ section.id }} .index-product-item .product-item__quick-form .button{
+            height: 30px;
+            line-height: 30px;
+            font-size: 12px;
+        }
+        #shopify-section-{{ section.id }} .index-product-item .product-item__quick-form .button svg{
+            width: 12px;
+            height: 12px;
+        }
+        #shopify-section-{{ section.id }} .index-product-item .price{
+            font-size: 18px;
+        }
+    }
+    #shopify-section-{{ section.id }} .head_title{
+        color: var(--Text-primary, #000);
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 120%; 
+    }
+    #shopify-section-{{ section.id }} .head_content{
+        color: var(--Text-primary, #000);
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%; 
+        text-align: left;
+    }
+    #shopify-section-{{ section.id }} .View_All{
+        color: var(--my-blue);
+        font-family: Inter;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        letter-spacing: 0.144px;
+        border-radius: 2px;
+        border: 1px solid #0A2B6F;
+        width: fit-content;
+          display: block;
+        cursor: pointer;
+    }
+    #shopify-section-{{ section.id }} .index-product-item:not(:nth-child(-n+4)){
+        display: none;
+    }
+    #shopify-section-{{ section.id }} .index-product-item .product-item__quick-form .button{
+        border-radius: 2px;
+        background: #FABE00;
+        border: none;
+    }
+</style>
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+<div class="container {{ section.id }}">
+    <h2 class="head_title">{{ section.settings.title }}</h2>
+    <div class="head_content hidden-phone">{{ section.settings.content }}</div>
+    <div class="head_content hidden-tablet-and-up">{{ section.settings.content | strip_html }}</div>
+    <div class="Brand_Explore_Products">
+        {% for product in section.settings.product_list %}
+            {% render 'index-product-item', product: product %}
+        {% endfor %}
+    </div>
+    <a href="{{ section.settings.all_link }}" class="View_All">View All</a>
+</div>
+<script>
+  (() => {
+    const setWish = async () => {
+      const skus = [];
+      $('.{{ section.id }} .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        skus.push(sku);
+      })
+      const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
+        method: 'POST',
+        body: JSON.stringify({
+          customerId: '{{ customer.id}}',
+          skus
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      const res = await response.json();
+      $('.{{ section.id }} .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        if(res.data.includes(sku)) {
+          $(this).find('.favorite-button').addClass('favorited')
+        }
+      })
+    }
+    if('{{ customer.id }}') {
+      setWish()
+    }
+  })();
+  (() => {
+    const pageTitle = '{{ page.title }}';
+    if(pageTitle == 'Black Canyon') {
+
+    } else if(pageTitle == 'Olympia') {
+
+    } else if(pageTitle == 'NorthSky Select') {
+
+    }
+
+    $('.{{ section.id }} .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+    })
+  })();
+</script>
+{% schema %}
+{
+    "name": "Brand Explore Products",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "title"
+        },
+        {
+            "type": "richtext",
+            "id": "content",
+            "label": "content"
+        },
+        {
+            "type": "number",
+            "id": "pc_top",
+            "label": "pc top",
+            "default": 128
+        },
+        {
+            "type": "number",
+            "id": "pc_bottom",
+            "label": "pc bottom",
+            "default": 128
+        },
+        {
+            "type": "number",
+            "id": "mobile_top",
+            "label": "mobile top",
+            "default": 60
+        },
+        {
+            "type": "number",
+            "id": "mobile_bottom",
+            "label": "mobile bottom",
+            "default": 60
+        },
+        {
+            "type": "product_list",
+            "id": "product_list",
+            "label": "product list"
+        },
+      {
+            "type": "url",
+            "id": "all_link",
+            "label": "View All link"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Brand Explore Products"
+        }
+    ]
+}
+{% endschema %}

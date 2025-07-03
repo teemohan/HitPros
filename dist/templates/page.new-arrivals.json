@@ -1,0 +1,43 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "seo_h1_title_qCmj7Q": {
+      "type": "seo-h1-title",
+      "settings": {
+        "title": "New Arrivals"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_title": true,
+        "page_width": "medium",
+        "secondary-directory": "",
+        "secondary-directory-link": "",
+        "third-directory": ""
+      }
+    },
+    "new_arrivals_list_aTPdbX": {
+      "type": "new-arrivals-list",
+      "settings": {
+        "title": "New Arrivals",
+        "text": "<p>At NorthSky, we’re constantly expanding our catalogue to meet your need for high-<br/>quality products at a low price. Explore our latest offerings below.</p>",
+        "collection": "new-tag"
+      }
+    }
+  },
+  "order": [
+    "seo_h1_title_qCmj7Q",
+    "main",
+    "new_arrivals_list_aTPdbX"
+  ]
+}

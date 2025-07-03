@@ -1,0 +1,80 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "Footer",
+  "type": "footer",
+  "sections": {
+    "h_newsletter_eVDR7W": {
+      "type": "h-newsletter",
+      "settings": {
+        "title": "Stay informed with NorthSky",
+        "tip": "Sign up to receive product updates, exclusive deals, and news.",
+        "btn_title": "Subscribe"
+      }
+    },
+    "footer_4gNzL9": {
+      "type": "footer",
+      "blocks": {
+        "links_KGfryh": {
+          "type": "links",
+          "settings": {
+            "menu": "company-information"
+          }
+        },
+        "links_Qm48ep": {
+          "type": "links",
+          "settings": {
+            "menu": "my-account"
+          }
+        },
+        "links_n8Bx9c": {
+          "type": "links",
+          "settings": {
+            "menu": "help"
+          }
+        },
+        "links_QTzhVf": {
+          "type": "links",
+          "settings": {
+            "menu": ""
+          }
+        }
+      },
+      "block_order": [
+        "links_KGfryh",
+        "links_Qm48ep",
+        "links_n8Bx9c",
+        "links_QTzhVf"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/normal.svg",
+        "image_width": 220,
+        "m_image_width": 150,
+        "footer_desc": "BUILT STRONG, PRICED RIGHT™",
+        "contact1": "1-800-805-6686",
+        "contact2": "customerservice@northskysupply.com",
+        "copyright_content": "<p>© 2024 NorthSky Supply. All Rights Reserved.</p>",
+        "copyright_content_left": "©",
+        "copyright_content_right": "NorthSky Supply. All Rights Reserved.",
+        "policy_content": "",
+        "show_payment_icons": true,
+        "show_country_selector": true,
+        "show_locale_selector": true,
+        "show_cookie_bar": false,
+        "cookie_bar_title": "Cookie policy",
+        "cookie_bar_content": "<p>I agree to the processing of my data in accordance with the conditions set out in the policy of Privacy.</p>"
+      }
+    }
+  },
+  "order": [
+    "h_newsletter_eVDR7W",
+    "footer_4gNzL9"
+  ]
+}

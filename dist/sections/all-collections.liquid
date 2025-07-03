@@ -1,0 +1,111 @@
+<style>
+  .categories .product-categories-list .product-categories-item .hidden-img {
+    opacity: 0;
+    width: 100%;
+  }
+  .categories .product-categories-list .product-categories-item.product-categories-item-hidden {
+    border-color: transparent;
+  }
+</style>
+<div class="{{ section.id }} container categories">
+  <div class="index-cus-header">
+    <h2>{{ section.settings.title }}</h2>
+    <a class="hidden-phone" href="{{ section.settings.btn_link }}">
+      {{ section.settings.btn_title }}
+      {% render 'icon' with 'header-arrow' %}
+    </a>
+    <a class="hidden-tablet-and-up" href="{{ section.settings.btn_link }}"> View All </a>
+  </div>
+  <div class="product-categories-list">
+    {% assign c_numebr = section.settings.collection_number %}
+    {% for i in (1..c_numebr) %}
+      <a href="#" class="product-categories-item product-categories-item-hidden">
+        <img class="hidden-img" width="auto" height="auto">
+        <span></span>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+<script>
+(() => {
+  async function getAllList() {
+    const setData = (data) => {
+      const categories = data.slice(0, 10).map(collection => {
+        const handle = collection.name
+          .toLowerCase()                 
+          .replace(/[^a-z0-9\s-]/g, '')   
+          .trim()                        
+          .replace(/\s+/g, '-')          
+          .replace(/-+/g, '-');           
+        
+        const anchor = document.createElement('a');
+        anchor.href = `/collections/${handle}`;
+        anchor.className = 'product-categories-item';
+
+        const img = document.createElement('img');
+        img.loading = 'lazy';
+        img.src = collection?.img || '';
+        img.alt = collection.name;
+        img.width = 'auto';
+        img.height = 'auto';
+
+        const span = document.createElement('span');
+        span.textContent = collection.name;
+
+        anchor.appendChild(img);
+        anchor.appendChild(span);
+
+        return anchor;
+      });
+
+      const categoriesList = document.querySelector('.product-categories-list');
+      categoriesList.innerHTML = ''; 
+      categories.forEach(category => categoriesList.appendChild(category));
+    }
+    try {
+      const categories = JSON.parse(localStorage.getItem('all-category'));
+      if(categories) setData(categories);
+    } catch {}
+    document.addEventListener('tree-get', ({ detail }) => {
+      setData(detail.data);
+    });
+  }
+  getAllList();
+})();
+</script>
+{% schema %}
+{
+  "name": "index-all-collection",
+  "class": "section-gap",
+  "settings": [
+    {
+      "type": "number",
+      "id": "collection_number",
+      "label": "Collection Number",
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "Top Product Categories"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Btn Url"
+    },
+    {
+      "type": "text",
+      "id": "btn_title",
+      "label": "Btn Title",
+      "default": "View All Product Categories"
+    }
+  ],
+  "presets": [
+    {
+      "name": "index-all-collection"
+    }
+  ]
+}
+{% endschema %}

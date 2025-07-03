@@ -1,0 +1,276 @@
+{{ 'h-hero.css' | asset_url | stylesheet_tag }}
+<h1 style="display: none;">NorthSky: B2B MRO distribution & e-commerce platform, providing high quality supplies to businesses with unbeatable prices, fast & reliable shipping and hassle-free returns </h1>
+<div class="container hidden-phone">
+  <div class="h-hero">
+    {% for block in section.blocks %}
+      <div class="h-hero-item-wrapper">
+        <img src="{{ block.settings.img | image_url }}" alt="{{ block.settings.img.alt }}" width="auto" height="auto">
+        {% if block.type == 'block1' %}
+          <a href="{{ block.settings.url }}" class="h-hero-item type1">
+            <div>
+              <div class="line1-text font-46 color-orange">{{ block.settings.line1_text }}</div>
+              <div class="line2-text font-24 color-white">{{ block.settings.line2_text }}</div>
+              <div class="line"></div>
+              <div class="line3-text font-24 color-white rich-text-bold">{{ block.settings.line3_text }}</div>
+              <button class="line-btn-box">{{ block.settings.btn_text }}</button> 
+            </div>
+          </a>
+        {% elsif block.type == 'block2' %}
+          <a href="{{ block.settings.url }}" class="h-hero-item type2">
+            <div class="top-title">
+              <div class="line1-text font-24 color-white">{{ block.settings.line1_text }}<span>TM</span></div>
+              <div class="font-16 color-white">{{ block.settings.line2_text }}</div>
+            </div>
+            <p class="font-16 color-orange">{{ block.settings.btn_text }}</p>
+          </a>
+        {% elsif block.type == 'block3' %}
+          <a href="{{ block.settings.url }}" class="h-hero-item type3">
+            <div class="font-14 color-white">{{ block.settings.line1_text }}</div>
+            <div class="font-30 color-orange">{{ block.settings.line2_text }}</div>
+            <div class="font-14 color-white rich-text-bold">{{ block.settings.line3_text }}</div>
+            {% unless customer %}
+              <p class="font-16 color-orange">{{ block.settings.btn_text }}</p>
+            {% endunless %}
+          </a>
+        {% elsif block.type == 'block4' %}
+          <a href="{{ block.settings.url }}" class="h-hero-item type4">
+            <div class="font-16 color-white">{{ block.settings.line1_text }}</div>
+            <p class="font-16 color-orange">{{ block.settings.btn_text }}</p>
+          </a>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+<mobile-hero data-section-id="{{ section.id }}" class="hidden-tablet-and-up">
+  <div class="mobile-h-hero IndexBestswiper section-{{ section.id }}">
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          <div class="swiper-slide">
+            <div class="h-hero-item-wrapper">
+              <img src="{{ block.settings.mobile_img | image_url: width: 750 }}" alt="{{ block.settings.mobile_img.alt }}" width="auto" height="auto">
+              {% if block.type == 'block1' %}
+                <a href="{{ block.settings.url }}" class="h-hero-item type1">
+                  <div>
+                    <div class="line1-text font-46 color-orange">{{ block.settings.line1_text }}</div>
+                    <div class="line2-text font-24 color-white">{{ block.settings.line2_text }}</div>
+                    <div class="line"></div>
+                    <div class="line3-text font-24 color-white rich-text-bold">{{ block.settings.line3_text }}</div>
+                    <button class="line-btn-box">{{ block.settings.btn_text }}</button> 
+                  </div>
+                </a>
+              {% elsif block.type == 'block2' %}
+                <a href="{{ block.settings.url }}" class="h-hero-item type2">
+                  <div class="top-title">
+                    <div class="line1-text font-24 color-white">{{ block.settings.line1_text }}<span>TM</span></div>
+                    <div class="line2-text font-16 color-white">{{ block.settings.line2_text }}</div>
+                    <div class="line"></div>
+                  </div>
+                  <p class="font-16 color-orange">{{ block.settings.btn_text }}</p>
+                </a>
+              {% elsif block.type == 'block3' %}
+                <a href="{{ block.settings.url }}" class="h-hero-item type3">
+                  <div class="line1-text font-14 color-white">{{ block.settings.line1_text }}</div>
+                  <div class="line2-text font-30 color-orange">{{ block.settings.line2_text }}</div>
+                  <div class="line3-text font-14 color-white rich-text-bold">{{ block.settings.line3_text }}</div>
+                  {% unless customer %}
+                    <p class="line-btn font-16 color-orange">{{ block.settings.btn_text }}</p>
+                  {% endunless %}
+                </a>
+              {% elsif block.type == 'block4' %}
+                <a href="{{ block.settings.url }}" class="h-hero-item type4">
+                  <div class="top-title">
+                    <div class="line1-text color-white">{{ block.settings.h5_line1_text }}</div>
+                    <div class="line2-text color-white">{{ block.settings.h5_line2_text }}</div>
+                    <div class="line"></div>
+                  </div>
+                  <p class="font-16 color-orange">{{ block.settings.btn_text }}</p>
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</mobile-hero>
+
+{% schema %}
+{
+  "tag": "section",
+  "name": "h-hero",
+  "class": "h-hero-wrapper",
+  "blocks": [
+    {
+      "type": "block1",
+      "name": "block1",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "line1_text",
+          "label": "Line1 Text"
+        },
+        {
+          "type": "text",
+          "id": "line2_text",
+          "label": "Line2 Text"
+        },
+        {
+          "type": "richtext",
+          "id": "line3_text",
+          "label": "Line3 Text"
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "Btn Text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Url"
+        },
+        {
+          "type": "image_picker",
+          "id": "img",
+          "label": "Img"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_img",
+          "label": "Mobile Img"
+        }
+      ]
+    },
+    {
+      "type": "block2",
+      "name": "block2",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "line1_text",
+          "label": "Line1 Text"
+        },
+        {
+          "type": "text",
+          "id": "line2_text",
+          "label": "Line2 Text"
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "Btn Text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Url"
+        },
+        {
+          "type": "image_picker",
+          "id": "img",
+          "label": "Img"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_img",
+          "label": "Mobile Img"
+        }
+      ]
+    },
+    {
+      "type": "block3",
+      "name": "block3",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "line1_text",
+          "label": "Line1 Text"
+        },
+        {
+          "type": "text",
+          "id": "line2_text",
+          "label": "Line2 Text"
+        },
+        {
+          "type": "richtext",
+          "id": "line3_text",
+          "label": "Line3 Text"
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "Btn Text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Url"
+        },
+        {
+          "type": "image_picker",
+          "id": "img",
+          "label": "Img"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_img",
+          "label": "Mobile Img"
+        }
+      ]
+    },
+    {
+      "type": "block4",
+      "name": "block4",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "line1_text",
+          "label": "Line1 Text"
+        },
+        {
+          "type": "text",
+          "id": "h5_line1_text",
+          "label": "H5 Line1 Text"
+        },
+        {
+          "type": "text",
+          "id": "h5_line2_text",
+          "label": "H5 Line2 Text"
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "Btn Text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Url"
+        },
+        {
+          "type": "image_picker",
+          "id": "img",
+          "label": "Img"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_img",
+          "label": "Mobile Img"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "h-hero"
+    }
+  ]
+}
+{% endschema %}

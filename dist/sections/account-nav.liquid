@@ -1,0 +1,272 @@
+<style>
+  .account-main-nav,
+  li,
+  h1,
+  h2,
+  p {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .account-main-nav {
+    line-height: 1;
+  }
+  .visible-hidden {
+    visibility: hidden;
+  }
+  .account-main-nav .mobile-menu {
+    transition: all 0.3s ease;
+    background-color: #fff;
+    padding: 20px 16px;
+  }
+
+  .account-main-nav .mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 20px 15px;
+  }
+
+  .account-main-nav .mobile-menu-top button {
+    margin-top: 8px;
+    color: var(--my-blue);
+    text-decoration: underline;
+  }
+
+  .account-main-nav .mobile-menu-top h3 {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--my-blue);
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .account-main-nav .mobile-menu-top h3 > div {
+    justify-self: center;
+  }
+  .account-main-nav .mobile-menu-top h4 {
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    color: var(--my-grey);
+    margin-top: 8px;
+  }
+
+  .account-main-nav .mobile-menu-main {
+    margin-top: 14px;
+    padding: 16px 0;
+    border-top: 1px solid var(--my-border);
+  }
+  .order-tips {
+    color: #142A6A;
+    text-align: center;
+    padding: 10px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.2;
+    background-color: #F1C142;
+  }
+
+  .account-main-nav .account-main-list {
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .account-main-nav .account-main-list h4 {
+    color: var(--my-black);
+    margin-bottom: 18px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .account-main-nav .account-main-list ul li {
+    font-size: 12px;
+    color: #7f7f7f;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .account-main-nav .account-main-list ul li.active {
+    color: var(--my-yellow);
+  }
+
+  .account-main-nav .account-main-list ul li.active svg path {
+    fill: var(--my-yellow);
+  }
+
+  .account-main-list ul {
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+  }
+
+  .account-main-list ul li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #1A1A1A;
+    cursor: pointer;
+  }
+  .aside-main-logout a {
+    font-size: 12px;
+    color: #7f7f7f;
+  }
+</style>
+<div id="accountNav">
+  {% for block in section.blocks %}
+    {% if block.type == 'order_tips' and customer.orders.size == 0 %}
+      <div class="order-tips">
+        <span>First order?</span>
+        <span class="save">Save {{ block.settings.save }}</span>
+        <span>with code</span>
+        <span class="code">{{ block.settings.code }}</span>
+      </div>
+    {% endif %}
+  {% endfor %}
+  <div class="account-main-nav visible-hidden" id="account_main_nav">
+    <div class="mobile-menu">
+      <div class="mobile-menu-top">
+        <h3>
+          <div>Hi, {{ customer.first_name }}</div>
+        </h3>
+        <h4>ID # {{ customer.id }}</h4>
+      </div>
+      <div class="mobile-menu-main">
+        <div class="account-main-list" v-for="(item, idx) in menuList" :key="idx">
+          <h4>${ item.linkTitle }</h4>
+          <ul>
+            <li v-for="(link, idx1) in item.child" :key="idx1" :class="link.isActive ? 'active': undefined">
+              <template v-if="link.linkSlug == 'account-orders'">
+                {%- render 'icon' with 'v3-order' -%}
+              </template>
+              <template v-else-if="link.linkSlug == 'account-wish'">
+                {%- render 'icon' with 'v3-wish' -%}
+              </template>
+              <template v-else-if="link.linkSlug == 'account-service'">
+                {%- render 'icon' with 'v3-return' -%}
+              </template>
+              <template v-else-if="link.linkSlug == 'account-info'">
+                {%- render 'icon' with 'v3-user' -%}
+              </template>
+              <template v-else="link.linkSlug == 'account-address'">
+                {%- render 'icon' with 'v3-address' -%}
+              </template>
+              <a :href="`{{ routes.account_url }}?slug=${link.linkSlug}`">${ link.linkName }</a>
+            </li>
+          </ul>
+        </div>
+        <div class="aside-main-logout" @click="logout">
+          <a href="javascript:void(0)" data-no-instant>Log Out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  (() => {
+    new Vue({
+      el: '#accountNav',
+      delimiters: ['${', '}'],
+      data() {
+        const slugIdxMap = new Map();
+        slugIdxMap.set('account-orders', [0, 0]);
+        slugIdxMap.set('account-wish', [0, 1]);
+        slugIdxMap.set('account-service', [0, 2]);
+        slugIdxMap.set('account-info', [1, 0]);
+        slugIdxMap.set('account-address', [1, 1]);
+        return {
+          slugIdxMap,
+          linkActiveIdx: {
+            idx: 0,
+            idx1: 0,
+          },
+          menuList: [
+            {
+              linkTitle: 'Orders',
+              child: [
+                { linkName: 'My Orders', linkSlug: 'account-orders', isActive: false },
+                { linkName: 'My List', linkSlug: 'account-wish', isActive: false },
+                { linkName: 'Customer Service', linkSlug: 'account-service', isActive: false },
+              ],
+            },
+            {
+              linkTitle: 'Account',
+              child: [
+                { linkName: 'My Account', linkSlug: 'account-info', isActive: false },
+                {% unless customer.b2b? %}
+                  { linkName: 'My Addresses', linkSlug: 'account-address', isActive: false },
+                {% endunless %}
+              ],
+            },
+          ],
+        };
+      },
+      mounted() {
+        if('{{ customer.id }}') {
+          $('.account-main-nav').removeClass('visible-hidden')
+        }
+      },
+      methods: {
+        resetActive() {
+          this.menuList.map((links) => {
+            links.child.map((item) => {
+              item.isActive = false;
+            });
+          });
+        },
+        handleCancellation() {
+          $('#cancellation-toast').addClass('open');
+          $('body').addClass('no-scroll');
+        },
+        handleNavClose() {
+          $('body').removeClass('no-scroll');
+          $('#account_main_nav').removeClass('nav-open');
+        },
+        logout() {
+          Cookies.remove('cart');
+          if(window.themeVariables.userCompany.isB2b == 'true') {
+            Cookies.set('logout', 1);
+            window.location.href = `${window.zkh.b2b_url}/logout`;
+          } else {
+            window.location.href = "/account/logout";
+          }
+        },
+      },
+    });
+  })();
+</script>
+{% schema %}
+  {
+    "name": "Account Nav",
+    "blocks": [
+      {
+        "type": "order_tips",
+        "name": "Order Tips",
+        "settings": [
+          {
+            "type": "text",
+            "id": "save",
+            "label": "Save",
+            "default": "10%"
+          },
+          {
+            "type": "text",
+            "id": "code",
+            "label": "Code",
+            "default": "FIRST10"
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}
+  

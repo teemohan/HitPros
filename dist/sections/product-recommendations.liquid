@@ -1,0 +1,136 @@
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+
+{%- assign use_recommendations = true -%}
+{%- if section.settings.products.count > 0 -%}
+  {%- assign use_recommendations = false -%}
+{%- endif -%}
+
+<div
+  class="product-recommendations product-x-hidde {{ section.id }}"
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{section.settings.recommendations_count}}"
+>
+  <div class="container cl-container">
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      <div class="index-cus-header">
+        <h2>{{ section.settings.title }}</h2>
+        {% render 'swiper-buttons' %}
+      </div>
+      <div class="IndexBestswiper">
+        <div class="swiper {{ section.id }}-IndexBestswiper">
+          <div class="swiper-wrapper">
+            {%- if use_recommendations -%}
+              {% assign recommendations_products  = recommendations.products %}
+              {%- for product in recommendations_products -%}
+                <div class="swiper-slide">
+                  {%- render 'index-product-item', product: product -%}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+            {% assign recommendations_products = section.settings.products %}
+              {%- for product in recommendations_products -%}
+                <div class="swiper-slide">
+                  {%- render 'index-product-item', product: product -%}
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        <div class="swiper-scrollbar"></div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (() => {
+    const productRecommendationsSection = document.querySelector('.product-recommendations');
+    const url = productRecommendationsSection.dataset.url;
+    fetch(url)
+      .then((response) => response.text())
+      .then((text) => {
+        const html = document.createElement('div');
+        html.innerHTML = text;
+        const recommendations = html.querySelector('.product-recommendations');
+        if (recommendations && recommendations.innerHTML.trim().length) {
+          productRecommendationsSection.innerHTML = recommendations.innerHTML;
+          var alsolikeSwiper = new Swiper(`.{{ section.id }}-IndexBestswiper`, {
+            observer: true,
+            observeParents: true,
+            touchStartPreventDefault: true,
+            passiveListeners: false,
+            touchAngle: 70,              
+            threshold: 10,
+            breakpoints: {
+              0: {
+                spaceBetween: 12,
+                slidesPerView: 2,
+              },
+              768: {
+                spaceBetween: 24,
+                slidesPerView: 3,
+              },
+              1024: {
+                spaceBetween: 24,
+                slidesPerView: 4,
+              },
+              1280: {
+                spaceBetween: 24,
+                slidesPerView: 5,
+              },
+            },
+            scrollbar: {
+              el:".{{ section.id }} .swiper-scrollbar"
+            },
+            navigation: {
+              nextEl: ".{{ section.id }} .swiper-button-next",
+              prevEl: ".{{ section.id }} .swiper-button-prev",
+            },
+          });
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product recommendation",
+  "class": "shopify-section--product-recommendation section-gap section-padding product-swiper-list",
+  "templates": ["product"],
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Dynamic recommendations change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products). You can manually select products by adding content."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Recommended for you"
+    },
+    {
+      "type": "range",
+      "id": "recommendations_count",
+      "min": 7,
+      "max": 12,
+      "label": "Recommendations count",
+      "default": 7
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Manual products",
+      "info": "When selected, automatic recommendations do not show.",
+      "limit": 10
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product recommendation"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,123 @@
+<style>
+    .{{ section.id }} .about-img-bac {
+      position: relative;
+      {% if section.settings.image %}
+        background-image: url("{{ section.settings.image | image_url }}");
+      {% endif %}
+      padding: 64px 32px;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-color: #F6F6F6;
+    }
+    .{{ section.id }} .about-img-bac h4 {
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 120%;
+      margin-bottom: 32px;
+      color: var(--my-blue);
+    }
+    .{{ section.id }} .about-img-bac .mission-wrapper {
+      display: grid;
+      -webkit-display: grid;
+      gap: 32px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .{{ section.id }} .about-img-bac .mission-wrapper .mission-item {
+      border-radius: 16px;
+      padding: 32px;
+      background-color: var(--my-blue);
+    }
+    .{{ section.id }} .about-img-bac .mission-wrapper .mission-item h5 {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--my-yellow);
+      margin-bottom: 20px;
+    }
+    .{{ section.id }} .about-img-bac .mission-wrapper .mission-item .text {
+      font-size: 30px;
+      line-height: 1.4;
+      color: #fff;
+    }
+
+  @media screen and (max-width: 740px) {
+    .{{ section.id }} .about-img-bac {
+      padding: 16px;
+    }
+    .{{ section.id }} .about-img-bac h4 {
+      font-size: 28px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .{{ section.id }} .about-img-bac .mission-wrapper .mission-item {
+      padding: 20px;
+    }
+    .{{ section.id }} .about-img-bac .mission-wrapper .mission-item h5 {
+      font-size: 16px;
+    }
+    .{{ section.id }} .about-img-bac .mission-wrapper {
+      gap: 16px;
+      grid-template-columns: repeat(1, 1fr);
+    }
+    .{{ section.id }} .about-img-bac .mission-wrapper .mission-item .text {
+      font-size: 16px;
+    }
+  }
+</style>
+
+<div class="{{ section.id }} section-padding-bottom">
+  <div class="container">
+    <div class="about-img-bac {{ section.settings.paragraph_position }}">
+      <h4>{{ section.settings.title }}</h4>
+      <div class="mission-wrapper">
+        {% for block in section.blocks %}
+          <div class="mission-item">
+            <h5>{{ block.settings.title }}</h5>
+            <div class="text">
+              {{ block.settings.text }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "about us mission",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "block",
+      "name": "block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "text"
+        }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "about us mission"
+  }]
+}
+{% endschema %}

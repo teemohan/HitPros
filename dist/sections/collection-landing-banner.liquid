@@ -1,0 +1,153 @@
+<style>
+  .hero-banner {
+    line-height: 1.5;
+  }
+  .hero-banner-link {
+    width: 100%;
+    display: block;
+    position: relative;
+    aspect-ratio: 1440 / 320;
+    background-position: left;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url('{{ section.settings.bg_img | image_url }}');
+  }
+
+  .hero-banner-content-wrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .hero-banner-title {
+    color: {{ section.settings.title_color }};
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .hero-banner-text {
+    color: {{ section.settings.text_color }};
+    margin-top: 18px;
+    font-size: 32px;
+  }
+  .hero-banner-content-wrapper > div {
+    width: {{ section.settings.text_width }}%;
+  }
+  .free-tip {
+    text-align: center;
+    background-color: #FABE00;
+    padding: 8px 0;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 24px;
+    color: #fff;
+  }
+  @media screen and (max-width: 1280px) {
+    .hero-banner-title {
+      font-size: 36px;
+    }
+    .hero-banner-text {
+      font-size: 20px;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    .free-tip {
+      font-size: 16px;
+    }
+    .hero-banner-text {
+      margin-top: 6px;
+    }
+    .hero-banner-content-wrapper > div {
+      width: 100%;
+      line-height: 1.2;
+    }
+    .hero-banner-link {
+      height: auto;
+      aspect-ratio: 372 / 220;
+      background-image: url('{{ section.settings.h5_bg_img | image_url }}');
+    }
+    .hero-banner-content-wrapper {
+      padding: 16px 0; 
+      justify-content: center; 
+      align-items: end;
+      text-align: center;
+    }
+  }
+</style>
+<div class="hero-banner-link">
+  <div class="hero-banner-content-wrapper container">
+    <div>
+      <h2 class="hero-banner-title">{{ section.settings.title }}</h2>
+      <div class="hero-banner-text">{{ section.settings.text }}</div>
+    </div>
+  </div>
+</div>
+{% if section.settings.free_tip != blank %}
+  <div class="free-tip">
+    <div class="container">
+      {{ section.settings.free_tip }}
+    </div>
+  </div>
+{% endif %}
+{% schema %}
+  {
+    "name": "Ladning Banner",
+    "settings": [
+      {
+        "type": "text",
+        "id": "free_tip",
+        "label": "Free Tip"
+      },
+      {
+        "type": "range",
+        "id": "text_width",
+        "label": "Text Width",
+        "unit": "%",
+        "min": 40,
+        "max": 100,
+        "step": 1,
+        "default": 40
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "color",
+        "id": "title_color",
+        "label": "Title Color"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text Color"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_img",
+        "label": "Bg Img"
+      },
+      {
+        "type": "image_picker",
+        "id": "h5_bg_img",
+        "label": "H5 Bg Img"
+      }
+    ],
+    "presets": [
+
+      {
+        "name": "Ladning Banner"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,269 @@
+<script type="text/javascript">
+  var cart_data_gtm = []
+  function pushToDataLayer(eventName, data = {}) {
+    const ip = Cookies.get('ip');
+    if (!ip) return;
+    const commonData = {
+      'event': eventName,
+      'zip': '{{ customer.default_address.zip }}',
+      'username': '{{ customer.name }}',
+      'email': '{{ customer.email }}',
+      'ip': ip
+    };
+    dataLayer.push({ ...commonData, ...data });
+  }
+  const listenUserEvent = ({ eventName, skuCode}) => {
+    fetch(`${window.zkh.api}/openapi/listen/event`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        shopifyUserId: window.themeVariables.userId || null,
+        ga4UserId: window.gaGlobal?.vid,
+        eventName,
+        skuCode
+      }),
+    })
+  }
+  const SESSION_KEY = 'session_start';
+  const addSessionStart = () => {
+    if (!localStorage.getItem(SESSION_KEY)) {
+      localStorage.setItem(SESSION_KEY, JSON.stringify({ timestamp: Date.now() }));
+      pushToDataLayer('custom_session_started');
+    }
+  };
+  const removeSessionStart = () => {
+    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) return;
+    const nextPageDomain = document.activeElement?.href || document.referrer || '';
+    const currentDomain = window.location.origin;
+    if (nextPageDomain.includes('/account') || 
+        nextPageDomain.includes('multipass') || 
+        nextPageDomain.includes('northskysupply')) return;
+
+    if (!nextPageDomain.includes(currentDomain)) {
+      localStorage.removeItem(SESSION_KEY);
+    }
+  };
+  const handleCreateAccount = () => {
+    pushToDataLayer('custom_create_account_clicked', {
+      'industry': '{{ customer.metafields.custom.domesticcustomserviceid }}',
+      'company': '{{ customer.metafields.custom.overseascustomserviceid }}'
+    });
+  };
+  const handlePageView = () => {
+    pushToDataLayer('custom_page_viewed', {
+      'initial_landing_page_url': window.location.href
+    });
+  };
+  const initEventListeners = () => {
+    $('#createAccount').click(handleCreateAccount);
+    handlePageView();
+    addSessionStart();
+  };
+  document.addEventListener('DOMContentLoaded', initEventListeners);
+  window.addEventListener('beforeunload', () => {
+    if ('{{ customer.id }}') return;
+    let currentPath = window.location.pathname;
+    if (currentPath === '/account/login' || currentPath === '/account/register') {
+      currentPath = 'index';
+    }
+    Cookies.set('pagePath', currentPath);
+    removeSessionStart();
+  });
+  if ({{ cart.items | size }}) {
+    cart_data_gtm = {{ cart.items | json }}
+  }
+  const handleVariantAdded = (event) => {
+    const variant = event.detail?.variant;
+    const recommendModule = event.detail?.recommendModule;
+    if (!variant) return;
+    let adddquantity = variant.quantity || 1;
+    if(cart_data_gtm && cart_data_gtm.length) {
+      cart_data_gtm.forEach((item, index) => {
+        if (item.sku === variant.sku) {
+          adddquantity = variant.quantity - item.quantity;
+        }
+      })
+    }
+    const eventData = {
+      event: "custom_add_to_cart",
+      url: window.location.href,
+      recommend_module: recommendModule,
+      ecommerce: {
+        ecomm_pagetype: "cart",
+        ecomm_prodid: [variant.sku || ''],
+        ecomm_totalvalue: Number((variant.presentment_price || 0) * (adddquantity || 0)),
+        currency: {{ shop.currency | json }},
+        value: Number((variant.presentment_price || 0) * (adddquantity || 0)),
+        items: [{
+          item_id: variant.sku || '',
+          item_name: variant.product_title,
+          price: variant.presentment_price || '',
+          quantity: adddquantity || 1,
+          item_brand: variant.vendor,
+          item_category: variant.product_type,
+          currency: {{ shop.currency | json }}
+        }]
+      }
+    };
+    window.dataLayer.push(eventData);
+    listenUserEvent({
+      eventName: 'add_to_cart',
+      skuCode: variant.sku
+    })
+  };
+  document.addEventListener('variant:added', handleVariantAdded);
+  const cartRefrsh = (event) => {
+    const variant = event.detail?.cart.items || [];
+    if (!variant) return
+    cart_data_gtm = variant;
+  }
+  document.addEventListener('cart:refresh', cartRefrsh);
+  const previewProductPageGtm = () => {
+    {% if template == 'product' %}
+      const eventData = {
+        event: "custom_view_item",
+        url: window.location.href,
+        ecommerce: {
+          ecomm_pagetype: "product",
+          ecomm_prodid: ["{{ product.selected_or_first_available_variant.sku }}"],
+          ecomm_totalvalue: Number({{ product.selected_or_first_available_variant.price | money_without_currency | remove: ',' }}),
+          currency: {{ shop.currency | json }},
+          value: Number({{ product.selected_or_first_available_variant.price | money_without_currency | remove: ',' }}),
+          items: [{
+            item_id: "{{ product.selected_or_first_available_variant.sku }}",
+            item_name: "{{ product.title | escape }}",
+            price: Number({{ product.selected_or_first_available_variant.price | money_without_currency | remove: ',' }}),
+            quantity: 1,
+            item_brand: "{{ product.vendor | escape }}",
+            item_category: "{{ product.type }}",
+            currency: {{ shop.currency | json }}
+          }]
+        }
+      };
+      window.dataLayer.push(eventData);
+    {% endif %}
+  };
+  const handleCartItemRemove = (event) => {
+    const changeCart = event.detail?.cart;
+    const newLineQuantity = event.detail?.newLineQuantity || 0;
+    if (!changeCart || newLineQuantity) return;
+    const item = changeCart.items_removed[0];
+    if (!item) return;
+    const eventData = {
+      event: "custom_remove_from_cart",
+      url: window.location.href,
+      ecommerce: {
+        ecomm_pagetype: "cart",
+        ecomm_prodid: [item.sku || ''],
+        ecomm_totalvalue: (item.presentment_price || 0) * (item.quantity || 1),
+        currency: {{ shop.currency | json }},
+        value: (item.presentment_price || 0) * (item.quantity || 1),
+        items: [{
+          item_id: item.sku || '',
+          item_name: item.product_title,
+          price: item.presentment_price || '',
+          quantity: item.quantity || 0,
+          item_brand: item.vendor,
+          item_category: item.product_type,
+          currency: {{ shop.currency | json }}
+        }]
+      }
+    };
+    window.dataLayer.push(eventData);
+  };
+  document.addEventListener('line-item-quantity:change:end', handleCartItemRemove);
+
+  {% if template == 'cart' %}
+    if ({{ cart.items | size }}) {
+      const cartViewEventData = {
+        event: "custom_view_cart",
+        url: window.location.href,
+        ecommerce: {
+          currency: "{{ shop.currency }}",
+          value: {{ cart.total_price | money_without_currency | remove: ',' }},
+          items: [
+            {% for item in cart.items %}
+              {
+                item_id: "{{ item.sku | escape }}",
+                item_name: "{{ item.product.title | escape }}",
+                price: {{ item.price | money_without_currency | remove: ',' }},
+                quantity: {{ item.quantity }},
+                item_brand: "{{ item.vendor | escape }}",
+                item_category: "{{ item.product.type }}"
+              }{% unless forloop.last %},{% endunless %}
+            {% endfor %}
+          ]
+        }
+      };
+      window.dataLayer.push(cartViewEventData);
+    } else {
+      const cartViewEventDataEmpt = {
+        event: "custom_view_cart",
+        url: window.location.href,
+        ecommerce: {
+          currency: "{{ shop.currency }}",
+          value: 0,
+          items: []
+        }
+      };
+      window.dataLayer.push(cartViewEventDataEmpt);
+    }
+  {% endif %}
+  document.addEventListener('DOMContentLoaded', () => {
+    {% if template == 'product' %}
+      previewProductPageGtm();
+      listenUserEvent({
+        eventName: 'product_page_view',
+        skuCode: '{{ product.selected_or_first_available_variant.sku }}'
+      });
+     
+      document.querySelector('.btn-wishlist')?.addEventListener('click', () => {
+        listenUserEvent({
+          eventName: 'add_to_wishlist',
+          skuCode: '{{ product.selected_or_first_available_variant.sku }}'
+        });
+      });
+    {% endif %}
+    {%- if template contains 'page.Olympia' or template == 'page.black-canyon-mockup' or template == 'page.northsky-select' -%}
+      {%- if template contains 'page.Olympia' -%}
+        {%- assign banrd_type = 1 -%}
+        {%- assign banrd_name = "Olympia" -%}
+      {%- elsif template == 'page.black-canyon-mockup' -%}
+        {%- assign banrd_type = 2 -%}
+        {%- assign banrd_name = "Black Canyon" -%}
+      {%- elsif template == 'page.northsky-select' -%}
+          {%- assign banrd_type = 3 -%}
+          {%- assign banrd_name = "NorthSky Select" -%}
+      {%- endif -%}
+      const brandextractItemData=(element, index) =>{
+        try {
+          return {
+            item_id: element.getAttribute('data-sku') || element.getAttribute('data-product-id') || '',
+            item_name: element.getAttribute('data-product-title') || '',
+            item_brand: element.getAttribute('data-brand') || '',
+            index: index + 1,
+          };
+        } catch {
+          return {};
+        }
+      }
+      const handlePageBrandsView = () => {
+        
+        const productItems = document.querySelectorAll('.index-product-item');
+        const itemsData = productItems?.length ? Array.from(productItems).map((item, index) => brandextractItemData(item, index)) : [];
+        const eventData = {
+          event: "view_item_list",
+          brand_name: "{{ banrd_name }}",
+          ecommerce: {
+            item_list_id: "brand_page_view",
+            items: itemsData.slice(0, 4)
+          }
+        };
+        window.dataLayer.push(eventData);
+      };
+      handlePageBrandsView();
+    {%- endif -%}
+  })
+</script>

@@ -1,0 +1,335 @@
+{
+  "sections": {
+    "seo_h1_title_WrAb9y": {
+      "type": "seo-h1-title",
+      "settings": {
+        "title": "About Us"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "show_title": false,
+        "page_width": "medium",
+        "secondary-directory": "",
+        "secondary-directory-link": "",
+        "third-directory": ""
+      }
+    },
+    "31fbf931-333a-464b-b9ae-533406de7c9e": {
+      "type": "about-us-banner",
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "paragraph": "",
+        "paragraph_position": "left",
+        "image": "shopify:\/\/shop_images\/about-us0_1400x_c16a2689-8a9c-498f-9d71-8b0052ae9b10.webp",
+        "center_text": "",
+        "show_img_top": false
+      }
+    },
+    "about_us_banner_aVBwEP": {
+      "type": "about-us-banner",
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "paragraph": "",
+        "paragraph_position": "left",
+        "image": "shopify:\/\/shop_images\/about-us1_1400x_a567e20a-b072-406a-8dec-99f2bedf4a53.webp",
+        "center_text": "Who we are",
+        "show_img_top": false
+      }
+    },
+    "about_us_banner_XajhMN": {
+      "type": "about-us-banner",
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "paragraph": "<p>Skyline Supply Is A Streamlined, User-Friendly B2b Ecommerce Platform For Global Industrial Mro Products, We Provide Industrial Supplies Of Reliable Quality And Lower Prices, And Serve A Diverse Range Of Industrial And Manufacturing Customers.<\/p>",
+        "paragraph_position": "center",
+        "image": "shopify:\/\/shop_images\/about-us2_1400x_9bf5b654-eae2-43db-bcee-2d651eb02c54.webp",
+        "center_text": "",
+        "show_img_top": false
+      }
+    },
+    "about_us_banner_9Yjmb9": {
+      "type": "about-us-banner",
+      "disabled": true,
+      "settings": {
+        "title": "What we have",
+        "paragraph": "<p>Our Product Portfolio Spans A Wide Array Of Industrial Solutions, Including But Not Limited To Safety And Security, Material Handling, Shipment And Packaging, Hand Tools, Power Tools, Cleaning And Janitorial Supplies, Test Instruments, Office Furniture, Abrasives, Pumps And Plumbing, As Well As Pipes, Hoses, Tubes, Fittings, And Compact Equipment, With Thousands Of Selected Skus Comprising Of Both Private Label And 3rd Party Brand Name Products, Respectively. <\/p><p>Zkh, Andanda, And Skyline Are All Of Our Private Labels. We Showcase A Varied Assortment Of Market-Tested Products And Skus In Each Corresponding Category To Assist Our Customers In Making Hassle-Free And Insightful Choices.<\/p>",
+        "paragraph_position": "left",
+        "image": "shopify:\/\/shop_images\/about-us3_1400x_8f084314-07e5-40df-be09-f497f2598351.webp",
+        "center_text": "",
+        "show_img_top": false
+      }
+    },
+    "about_us_img_text_XUW3eC": {
+      "type": "about-us-img-text",
+      "disabled": true,
+      "settings": {
+        "text1": "<h3>For customers<\/h3><p>Catering To The Needs Of Business Customers, We Offer Bulk Ordering Options, Flexible Payment Options, Fast And Reliable Shipping, And The Ability To Track Orders In Real-Time.<\/p><p><\/p>",
+        "text2": "<p>Our Customer Service Center And Distribution Center In Houston Guarantee Timely Response And Technical Support. We Also Offer Sample Testing, And No-Hassle Return Policy To Elevate Customer Experience.<\/p>",
+        "image": "shopify:\/\/shop_images\/about-us4.webp",
+        "image_bottom": "shopify:\/\/shop_images\/about-us5.webp"
+      }
+    },
+    "about_us_banner_jrAyai": {
+      "type": "about-us-banner",
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "paragraph": "",
+        "paragraph_position": "left",
+        "image": "shopify:\/\/shop_images\/about-us4.webp",
+        "center_text": "Sustainability commitment",
+        "show_img_top": false
+      }
+    },
+    "about_us_text_top_4yGdWz": {
+      "type": "about-us-text-top",
+      "disabled": true,
+      "settings": {
+        "paragraph": "<p>We Actively Participate In Local Residents And Children'S Development Projects, Advocate For The Use And Promotion Of Energy-Saving And Environmentally Friendly Products, And Maintain Safety And Energy Conservation And Environmental Protection In Office Spaces And During Operational Processes.<\/p>",
+        "phone_paragraph": "",
+        "text_bottom_phone": true,
+        "text_color": "#1a1a1a",
+        "paragraph_position": "right",
+        "image": "shopify:\/\/shop_images\/about-us6.webp"
+      }
+    },
+    "about_us_mission_nWEckk": {
+      "type": "about-us-mission",
+      "blocks": {
+        "block_tJUjDc": {
+          "type": "block",
+          "settings": {
+            "title": "Our mission",
+            "text": "<p>To Be The Most Value-Delivering Industrial Supply Platform In The World.<\/p>"
+          }
+        },
+        "block_yzPqHk": {
+          "type": "block",
+          "settings": {
+            "title": "Our vision",
+            "text": "<p>We Aim To Synergize Global Industrial Products Supply Chain, Exploiting Value By Simplifying And Upgrading Product Offerings And Procurement Process.<\/p>"
+          }
+        },
+        "block_FAe8Ht": {
+          "type": "block",
+          "settings": {
+            "title": "Our core value",
+            "text": "<p>· Customer Centric<br\/>· Seek For Synergy<br\/>· Proactive<br\/>· Professionalism<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "block_tJUjDc",
+        "block_yzPqHk",
+        "block_FAe8Ht"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Mission statement"
+      }
+    },
+    "about_us_banner_wEwfQ7": {
+      "type": "about-us-banner",
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "paragraph": "",
+        "paragraph_position": "left",
+        "image": "shopify:\/\/shop_images\/about-us8_1400x_4a52fb22-05d4-466c-bb70-b92e50d4ae5b.webp",
+        "center_text": "",
+        "show_img_top": false
+      }
+    },
+    "about_us_text_top_rdjUbg": {
+      "type": "about-us-text-top",
+      "disabled": true,
+      "settings": {
+        "paragraph": "<p>At Skyline Supply, We Are More Than Just A Supplier; We Are A Partner Committed <\/p><p>To Delivering Value, Quality, And Innovation To The Global <br\/>Industrial Marketplace.<\/p>",
+        "phone_paragraph": "<p>At Skyline Supply, We Are More Than Just A Sup<\/p><p>plier;We Are A Partner Committed To Delivering <\/p><p>Value, Quality, And Innovation To The Global <\/p><p>Industrial Marketplace.<\/p>",
+        "text_bottom_phone": false,
+        "text_color": "#ffffff",
+        "paragraph_position": "center",
+        "image": "shopify:\/\/shop_images\/about-us9.webp"
+      }
+    },
+    "about_us_content_img_RUrRKa": {
+      "type": "about-us-content-img",
+      "settings": {
+        "title": "<p><strong>NorthSky<\/strong>: Revolutionizing How Businesses Manage Industrial Supply Needs <\/p>",
+        "img_text_inner": "1",
+        "features": "Product Driven. Technology Driven. People Driven.",
+        "description": "NorthSky is a streamlined, eCommerce-forward, innovative B2B MRO distribution platform. Our mission is to save businesses money on the products they need most to run efficiently, without ever compromising on quality.",
+        "button_text": "SHOP NOW",
+        "button_link": "shopify:\/\/collections\/all",
+        "right_image": "shopify:\/\/shop_images\/image_28.jpg"
+      }
+    },
+    "about_us_separate_gBNV4G": {
+      "type": "about-us-separate",
+      "settings": {
+        "gap_top": 30,
+        "gap_bottom": 30
+      }
+    },
+    "about_us_ways_PeTbUA": {
+      "type": "about-us-ways",
+      "blocks": {
+        "content_jNmV7Q": {
+          "type": "content",
+          "settings": {
+            "item_image": "shopify:\/\/shop_images\/Light-Bulb--Streamline-Kameleon.jpg",
+            "item_title": "Innovative Approach",
+            "description": "We're continuously innovating our product lines, enhancing durability, efficiency, and ease of use beyond what's currently available in the market."
+          }
+        },
+        "content_nfGWdK": {
+          "type": "content",
+          "settings": {
+            "item_image": "shopify:\/\/shop_images\/Box-Open--Streamline-Kameleon.jpg",
+            "item_title": "Global Partnerships",
+            "description": "We've built an extensive network of international manufacturers who share our commitment to excellence."
+          }
+        },
+        "content_Q37ytY": {
+          "type": "content",
+          "settings": {
+            "item_image": "shopify:\/\/shop_images\/Stamp-Paper--Streamline-Kameleon.jpg",
+            "item_title": "Rigorous Quality Control",
+            "description": "Every product undergoes detailed inspection and testing, meeting or exceeding industry standards. "
+          }
+        }
+      },
+      "block_order": [
+        "content_jNmV7Q",
+        "content_nfGWdK",
+        "content_Q37ytY"
+      ],
+      "settings": {
+        "title": "<p><strong>How We Do it<\/strong><\/p>"
+      }
+    },
+    "about_us_banner_text_3QfL7n": {
+      "type": "about-us-banner-text",
+      "settings": {
+        "background_image": "shopify:\/\/shop_images\/image_28_2.jpg",
+        "did": "",
+        "title": "Quality Without Compromise ",
+        "title_color": "#facb1b",
+        "description": "<p>In your business, there's no room for error. That's why we've implemented stringent quality control measures at every step of our supply chain. Every product we sell undergoes thorough inspection and testing, ensuring we meet or exceed relevant standards.<\/p>",
+        "description_color": "#ffffff",
+        "button_text": "",
+        "button_text1": "EXPLORE NOW",
+        "button_link": "",
+        "image_height": 120,
+        "margin_bottom": 0
+      }
+    },
+    "about_us_separate_hpfc8T": {
+      "type": "about-us-separate",
+      "settings": {
+        "gap_top": 30,
+        "gap_bottom": 0
+      }
+    },
+    "about_us_content_img_NXHCzF": {
+      "type": "about-us-content-img",
+      "settings": {
+        "title": "<p><strong>Choose From Our:<\/strong><\/p><ul><li><strong>Exclusive Branded Products: <\/strong>High-quality, feature-rich options<\/li><li><strong>NorthSky Select:<\/strong> Cost-effective, dependable, and consistent solutions <\/li><\/ul>",
+        "img_text_inner": "0",
+        "features": "",
+        "description": "Growth is our focus. We have detailed product assortment expansion plans to help solve  more of your problems.  Check back frequently for new solutions and opportunities to save money with high quality products at advantaged prices. ",
+        "button_text": "FIND PRODUCTS",
+        "button_link": "shopify:\/\/collections\/all",
+        "right_image": "shopify:\/\/shop_images\/image_28_3.jpg"
+      }
+    },
+    "about_us_banner_text_dKA6fn": {
+      "type": "about-us-banner-text",
+      "settings": {
+        "background_image": "shopify:\/\/shop_images\/image_28_1.jpg",
+        "did": "",
+        "title": "Your Success, Our Priority",
+        "title_color": "#0a2b6f",
+        "description": "<p>At NorthSky, we're more than just a provider; we're your partner. Our dedicated team of industry experts offers: <\/p><ul><li>Knowledgeable & dedicated customer support <\/li><li>Personalized product recommendations <\/li><li>Expedited shipping options <\/li><li>Hassle-free returns<\/li><\/ul>",
+        "description_color": "#1a1a1a",
+        "button_text": "",
+        "button_text1": "EXPLORE NOW",
+        "button_link": "",
+        "image_height": 150,
+        "margin_bottom": 0
+      }
+    },
+    "about_us_separate_CQLbp7": {
+      "type": "about-us-separate",
+      "settings": {
+        "gap_top": 30,
+        "gap_bottom": 0
+      }
+    },
+    "about_us_content_img_zktVct": {
+      "type": "about-us-content-img",
+      "settings": {
+        "title": "<p><strong>Innovation at Heart<\/strong><\/p>",
+        "img_text_inner": "0",
+        "features": "",
+        "description": "Our Category Management and R&D team continuously analyzes the market, identifying opportunities to surpass industry standards. We're committed to designing products that outperform existing options in durability, efficiency, and practicality. When you choose NorthSky, you're choosing a future-focused partner committed to helping your business thrive.",
+        "button_text": "EXPLORE SOLUTIONS",
+        "button_link": "shopify:\/\/collections\/all",
+        "right_image": "shopify:\/\/shop_images\/image_28_4.jpg"
+      }
+    },
+    "about_us_separate_tJrhjk": {
+      "type": "about-us-separate",
+      "settings": {
+        "gap_top": 30,
+        "gap_bottom": 30
+      }
+    },
+    "about_us_banner_text_bwDfzf": {
+      "type": "about-us-banner-text",
+      "settings": {
+        "background_image": "shopify:\/\/shop_images\/4_yellow_squares.jpg",
+        "did": "aa",
+        "title": "Join the NorthSky Family",
+        "title_color": "#0a2b6f",
+        "description": "<p>Experience the NorthSky difference today. Let us show you how we're transforming the MRO landscape, one quality product and satisfied customer at a time. <\/p>",
+        "description_color": "#1a1a1a",
+        "button_text": "JOIN US",
+        "button_text1": "JOIN US",
+        "button_link": "https:\/\/www.linkedin.com\/company\/northskysupply",
+        "image_height": 150,
+        "margin_bottom": 30
+      }
+    }
+  },
+  "order": [
+    "seo_h1_title_WrAb9y",
+    "main",
+    "31fbf931-333a-464b-b9ae-533406de7c9e",
+    "about_us_banner_aVBwEP",
+    "about_us_banner_XajhMN",
+    "about_us_banner_9Yjmb9",
+    "about_us_img_text_XUW3eC",
+    "about_us_banner_jrAyai",
+    "about_us_text_top_4yGdWz",
+    "about_us_mission_nWEckk",
+    "about_us_banner_wEwfQ7",
+    "about_us_text_top_rdjUbg",
+    "about_us_content_img_RUrRKa",
+    "about_us_separate_gBNV4G",
+    "about_us_ways_PeTbUA",
+    "about_us_banner_text_3QfL7n",
+    "about_us_separate_hpfc8T",
+    "about_us_content_img_NXHCzF",
+    "about_us_banner_text_dKA6fn",
+    "about_us_separate_CQLbp7",
+    "about_us_content_img_zktVct",
+    "about_us_separate_tJrhjk",
+    "about_us_banner_text_bwDfzf"
+  ]
+}

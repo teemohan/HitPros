@@ -1,0 +1,168 @@
+<style>
+  @media screen and (min-width: 741px) {
+    .new-arrivals-header {
+      padding-top: 80px;
+      padding-bottom: 40px;
+      text-align: center;
+      color: var(--my-blue);
+    }
+
+    .new-arrivals-header h4 {
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 38.4px;
+      margin-bottom: 0 !important;
+    }
+
+    .new-arrivals-header .text {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      margin-top: 12px;
+    }
+
+    .new-arrivals-list {
+      
+    }
+
+    .new-arrivals-bg:nth-child(odd) {
+      background: #F1F6FA;  
+    }
+    .new-arrivals-bg:nth-child(even) {
+      background: #FFFFFF;  
+    }
+    .new-arrivals-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+  }
+
+  @media screen and (max-width: 740px) {
+    .new-arrivals-header {
+      padding-top: 40px;
+      padding-bottom: 20px;
+      text-align: center;
+      color: var(--my-blue);
+    }
+
+    .new-arrivals-header h4 {
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 26.4px;
+      margin-bottom: 0 !important;
+    }
+
+    .new-arrivals-header .text {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 18px;
+      margin-top: 6px;
+    }
+
+    .new-arrivals-list {
+      
+    }
+    
+    .new-arrivals-bg:nth-child(odd) {
+      background: #F1F6FA;  
+    }
+    .new-arrivals-bg:nth-child(even) {
+      background: #FFFFFF;  
+    }
+    .new-arrivals-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+
+  }
+</style>
+
+
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+<div class="new-arrivals-all {{ section.id }}">
+  <div class="">
+    <div class="new-arrivals-header container">
+      <h4>{{ section.settings.title }}</h4>
+      <div class="text hidden-phone">{{ section.settings.text }}</div>
+      <div class="text hidden-tablet-and-up">{{ section.settings.text | strip_html }}</div>
+    </div>
+    <div class="new-arrivals-list ">
+      {% for i in (0..2) %}
+        <div class="new-arrivals-bg">
+          <div class="new-arrivals-row container">
+            {%- assign collection = section.settings.collection -%}
+            {%- assign nums = i | times: 4 -%}
+            {%- for product in collection.products limit: 4 offset: nums -%}
+              {% render 'index-product-item', product: product %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<script>
+  (() => {
+    const setWish = async () => {
+      const skus = [];
+      $('.{{ section.id }} .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        skus.push(sku);
+      })
+      const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
+        method: 'POST',
+        body: JSON.stringify({
+          customerId: '{{ customer.id}}',
+          skus
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      const res = await response.json();
+      $('.{{ section.id }} .index-product-item').each(function() {
+        const sku = $(this).data('sku');
+        if(res.data.includes(sku)) {
+          $(this).find('.favorite-button').addClass('favorited')
+        }
+      })
+    }
+    if('{{ customer.id }}') {
+      setWish()
+    }
+  })();
+</script>
+{% schema %}
+{
+  "name": "new arrivals list",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "text"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "collection"
+    }
+  ],
+  "presets": [
+    {
+      "name": "new arrivals list"
+    }
+  ]
+}
+{% endschema %}

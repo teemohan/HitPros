@@ -1,0 +1,36 @@
+{%- if shop.name != 'TestHitpros' -%}
+  {%- assign is_online_shop = true -%}
+{%- else -%}
+  {%- assign is_online_shop = false -%}
+{%- endif -%}
+{% if template == 'collection' %}
+  <script src="{{ 'facet-filters-newcol.js' | asset_url }}" defer></script>
+  <script src="{{ 'main-collection-vue.js' | asset_url }}"  defer></script>
+{% endif %}
+{% render 'js-page-customer'%}
+
+<script src="//code.tidio.co/dzwcvyci274aolrpev5ilpboec1objxi.js" defer></script>
+{{ "//cdn.shopify.com/s/files/1/0773/5273/0914/files/footer.js?v=1718022933" | script_tag }}
+{%- if is_online_shop -%}
+  <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47344356.js"></script>
+{% endif %}
+<script>
+  (function () { 
+    const STORAGE_KEY = 'tidio_current_url'; 
+    function onTidioChatApiReady() { 
+    const currentUrl = window.location.href; 
+    const lastUrl = localStorage.getItem(STORAGE_KEY); 
+    if (currentUrl !== lastUrl) { 
+    window.tidioChatApi.setContactProperties({ 
+    current_url: currentUrl 
+    }); 
+    localStorage.setItem(STORAGE_KEY, currentUrl); 
+    } 
+    } 
+    if (window.tidioChatApi) { 
+    window.tidioChatApi.on('ready', onTidioChatApiReady); 
+    } else { 
+    document.addEventListener('tidioChat-ready', onTidioChatApiReady); 
+    } 
+   })();
+</script>

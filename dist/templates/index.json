@@ -1,0 +1,144 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "zkh_hero_banner_4_gz7YDr": {
+      "type": "zkh-hero-banner-4",
+      "settings": {
+        "title": "",
+        "new_title": "<p> High-Quality Supplies,<br/>Industry-Best Prices.</p>",
+        "text": "<p>Save 30-70% on premium industrial supplies.</p>",
+        "bg_img": "shopify://shop_images/Group_421.png",
+        "h5_bg_img": "shopify://shop_images/Left_bunner_1.png",
+        "btn_text": "Explore",
+        "btn_url": "shopify://collections/featured-products"
+      }
+    },
+    "zkh_category_4_D6yMN7": {
+      "type": "zkh-category-4",
+      "settings": {
+        "title": "Product Categories"
+      }
+    },
+    "zkh_swiper_banner_4_FYm8JF": {
+      "type": "zkh-swiper-banner-4",
+      "blocks": {
+        "block_V3LUWt": {
+          "type": "block",
+          "settings": {
+            "bg_img": "shopify://shop_images/shutterstock_1744015958_2_1_1.png",
+            "h5_bg_img": "shopify://shop_images/shutterstock_1744015958_2_1_3.png",
+            "brand_img": "shopify://shop_images/Olympia_logo_a1ae6431-9cf5-4fa8-81a0-82f61d5868a3.svg",
+            "title": "Protect Your Hands + Your Budget",
+            "text": "Disposable Nitrile Gloves",
+            "tip": "<p>Starts at  <em>$</em><strong>8.95</strong> / box of 100</p>",
+            "btn_text": "Stock Up Today",
+            "btn_url": "/collections/safety-personal-protective-equipment-hand-arm-protection-disposable-gloves"
+          }
+        },
+        "block_fQAdBR": {
+          "type": "block",
+          "settings": {
+            "bg_img": "shopify://shop_images/6_1.png",
+            "h5_bg_img": "shopify://shop_images/6_1_1.png",
+            "brand_img": "shopify://shop_images/BlackCanyon_Logo.png",
+            "title": "Pro-Grade Tools, Built to Last ",
+            "text": "Ball-Peen Hammers",
+            "tip": "<p>Starting at <em>$</em><strong>9.95</strong></p>",
+            "btn_text": "Stock Up Today",
+            "btn_url": "/products/ae8233676"
+          }
+        }
+      },
+      "block_order": [
+        "block_V3LUWt",
+        "block_fQAdBR"
+      ],
+      "settings": {}
+    },
+    "6d3130cf-a40f-4b1d-8550-86b9ae2563e4": {
+      "type": "index-product-list",
+      "settings": {
+        "title": "Featured Products",
+        "collection": "featured-products"
+      }
+    },
+    "zkh_img_text_list_4_Ndiqhn": {
+      "type": "zkh-img-text-list-4",
+      "blocks": {
+        "block_Ua9H8E": {
+          "type": "block",
+          "settings": {
+            "title": "<p>Safety First</p>",
+            "text": "Your One-Stop PPE Shop",
+            "url": "shopify://collections/safety-first",
+            "img": "shopify://shop_images/NSS7451179337_3_2.png"
+          }
+        },
+        "block_eHHFcV": {
+          "type": "block",
+          "settings": {
+            "title": "<p>Trending Tools</p>",
+            "text": "Shop Must-Haves & More",
+            "url": "shopify://collections/trending-tools",
+            "img": "shopify://shop_images/shutterstock_2444877531_1.png"
+          }
+        },
+        "block_4zppph": {
+          "type": "block",
+          "settings": {
+            "title": "<p>We Cut Costs, <br/>Not Corners </p>",
+            "text": "See How We Do It",
+            "url": "shopify://pages/about-us",
+            "img": "shopify://shop_images/5_1.png"
+          }
+        }
+      },
+      "block_order": [
+        "block_Ua9H8E",
+        "block_eHHFcV",
+        "block_4zppph"
+      ],
+      "settings": {}
+    },
+    "recently_viewed_products_eBQU9V": {
+      "type": "recently-viewed-products",
+      "disabled": true,
+      "settings": {
+        "title": "Recently Viewed",
+        "collection": ""
+      }
+    },
+    "guess_you_like_Nmc4wp": {
+      "type": "guess-you-like",
+      "name": "guess-you-like",
+      "settings": {
+        "title": "Products You May Like"
+      }
+    },
+    "h_blogs_GHEBgy": {
+      "type": "h-blogs",
+      "settings": {
+        "title": "Industry Insights",
+        "blog": "industry-insights"
+      }
+    }
+  },
+  "order": [
+    "zkh_hero_banner_4_gz7YDr",
+    "zkh_category_4_D6yMN7",
+    "zkh_swiper_banner_4_FYm8JF",
+    "6d3130cf-a40f-4b1d-8550-86b9ae2563e4",
+    "zkh_img_text_list_4_Ndiqhn",
+    "recently_viewed_products_eBQU9V",
+    "guess_you_like_Nmc4wp",
+    "h_blogs_GHEBgy"
+  ]
+}

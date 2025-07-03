@@ -1,0 +1,57 @@
+<style>
+  .main_address {
+    height: 600px;
+  }
+</style>
+<section>
+  <div id="main_address" class="custom-el">
+    <el-button
+      v-loading.fullscreen.lock="fullscreenLoading">
+    </el-button>
+  </div>
+</section>
+<script>
+  (() => {
+    window.location.href = '/account?slug=account-address'
+    new Vue({
+      el: '#main_address',
+      data(){
+        return {
+          fullscreenLoading: true
+        }
+      },
+      mounted() {
+      },
+      methods: {
+      }
+    })
+  })();
+</script>
+{% schema %}
+{
+  "name": "Customer addresses",
+  "class": "shopify-section--main-customers-addresses",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "liquid",
+      "name": "Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "liquid",
+          "label": "Liquid",
+          "info": "Add app snippets or other Liquid code to create advanced customizations."
+        }
+      ]
+    },
+    {
+      "type": "addresses",
+      "name": "Address list",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}

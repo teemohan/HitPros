@@ -1,0 +1,65 @@
+<div class="w-full">
+  <div class="hidden fb-sm:block pt-6">
+    <div class="w-full h-30  mb-4 bg-gray-200 pulse"></div>
+    <div class="w-full h-[244px] mt-6  mb-4 bg-gray-200 pulse"></div>
+    <div class="fb-sm:flex fb-sm:justify-center fb-sm:mt-9">
+      <div class="flex-none mr-10 fb-md:w-21r">
+        <div class="w-full h-30 bg-gray-200 pulse"></div>
+      </div>
+      <div class="product-facet__main">
+        <div class="space-y-5 fb-sm:space-y-6">
+          {% for i in (1..2) %}
+            <div class="fb-sm:bg-white fb-sm:p-6 fb-sm:rounded-sm">
+              <div class="flex gap-3 fb-sm:gap-8">
+                <div class="w-[30%] h-32 fb-sm:w-[130px] fb-sm:h-[130px] flex-shrink-0 bg-gray-200 pulse"></div>
+                <div class="flex-1">
+                  <div class="hidden fb-sm:block h-7 w-4/5 bg-gray-200 pulse"></div>
+                  <div class="hidden fb-sm:block h-4 w-24 bg-gray-200 pulse mt-2"></div>
+                  <div class="hidden fb-sm:block h-12 w-full bg-gray-200 pulse mt-5"></div>
+                  <div class="fb-sm:hidden h-20 w-full bg-gray-200 pulse"></div>
+                </div>
+              </div>
+              <div class="mt-5">
+                <div class="hidden fb-sm:flex justify-between items-center py-1.5 mb-1">
+                  <div class="flex-1 flex justify-between">
+                    {% for i in (1..6) %}
+                      <div class="flex-1 h-4 bg-gray-200 pulse mx-1"></div>
+                    {% endfor %}
+                  </div>
+                  <div class="w-[148px] h-4 bg-gray-200 pulse"></div>
+                </div>
+                {% for i in (1..5) %}
+                  <div class="hidden fb-sm:flex justify-between items-center py-2">
+                    <div class="flex-1 flex justify-between">
+                      {% for j in (1..6) %}
+                        <div class="flex-1 h-4 bg-gray-200 pulse mx-1"></div>
+                      {% endfor %}
+                    </div>
+                    <div class="w-[148px] h-8 bg-gray-200 first:pulse">
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fb-sm:hidden">
+    <div class="w-full h-16 mb-4 bg-gray-200 pulse"></div>
+    {% for i in (1..2) %}
+      <div class="w-full bg-white rounded-sm mb-5">
+        <div class="w-full h-20 pulse ">
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-5">
+          {% for j in (1..2) %}
+            <div class="w-full bg-white h-[298px] rounded-sm p-3 pulse">
+            
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>

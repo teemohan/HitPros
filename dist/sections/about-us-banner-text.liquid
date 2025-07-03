@@ -1,0 +1,194 @@
+<style>
+    .{{ section.id }} .about-banner-text{
+      margin-bottom: {{ section.settings.margin_bottom }}px;
+    }
+  .{{ section.id }} .about-banner-text__container {
+    width: 100%;
+    height: 250px;
+    background-image: url('{{ section.settings.background_image | img_url: 'x250' }}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .about-banner-text__title{
+    margin-bottom: 20px;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 38.4px;
+  }
+  .about-banner-text__description{
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 21.6px;
+  }
+  .about-banner-text__description ul{
+    margin: 0;
+    padding-left: 30px;
+  }
+  .about-banner-text__description ul li{
+    list-style: disc;
+  }
+  .{{ section.id }} .about-banner-text__title{
+    color: {{ section.settings.title_color }};
+  }
+
+  .{{ section.id }} .about-banner-text__description{
+    color: {{ section.settings.description_color }};
+  }
+  .about-banner-text__content {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: 100px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .about-banner-text__button{
+    margin-top: 20px;
+  }
+  .about-banner-text__button a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 36px;
+    border-radius: 99px;
+    background: #0a2b6f;
+    color: #fff;
+    font-weight: 700;
+  }
+  @media screen and (max-width: 740px) {
+    .about-banner-text .container{
+        padding: 0;
+    }
+    .about-banner-text__title{
+        font-size: 12px;
+        line-height: 1;
+        margin-bottom: 6px;
+    }
+    .about-banner-text__content{
+        margin-right: 26px;
+    }
+    .about-banner-text__description{
+        font-size: 10px;
+        line-height: 1.2;
+    }
+    .about-banner-text__content{
+        max-width: 176px;
+    }
+    .{{ section.id }} .about-banner-text__container {
+        height: {{ section.settings.image_height }}px;
+    }
+    .about-banner-text__button a{
+        height: 30px;
+        width: fit-content;
+        padding: 0 10px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .about-banner-text__button{
+         margin: 10px 0 0 0;
+    }
+    .{{ section.id }} .about-banner-text{
+      margin-bottom: {{ section.settings.margin_bottom |  divided_by: 2 }}px;
+    }
+  }
+</style>
+
+<section class="{{ section.id }}">
+  <div class="about-banner-text">
+    <div class="container">
+      <div class="about-banner-text__container">
+        <div class="about-banner-text__content">
+          <div class="about-banner-text__title">
+            {{ section.settings.title }}
+          </div>
+          {% if section.settings.description != blank %}
+            <div class="about-banner-text__description">
+              {{ section.settings.description }}
+            </div>
+          {% endif %}
+          {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+            <div class="about-banner-text__button">
+              <a href="{{ section.settings.button_link }}" class="btn btn-primary">
+                {{- section.settings.button_text -}}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "about-banner-text",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+        {
+      "type": "text",
+      "id": "did",
+      "label": "check"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text"
+    },
+    {
+      "type": "text",
+      "id": "button_text1",
+      "label": "Button Text1",
+      "default": "EXPLORE NOW"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "number",
+      "id": "image_height",
+      "label": "Mobile Image Height",
+      "default": 200
+    },
+    {
+      "type": "number",
+      "id": "margin_bottom",
+      "label": "Margin Bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "about-banner-text"
+    }
+  ]
+}
+{% endschema %}

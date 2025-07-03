@@ -1,0 +1,75 @@
+<style>
+  .product-attrs-wrapper {
+    display: none;
+    background-color: #fff;
+  }
+  .product-attrs-wrapper .product-attrs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .product-attrs-wrapper .product-attrs .attr-line .attr-name-header {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--my-black);
+  }
+  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn {
+    min-width: 120px;
+    padding: 0 20px;
+    font-size: 14px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+    color: #1c406a;
+    border: 1px solid #0e255d;
+    background-color: #f0f7fb;
+  }
+
+  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn.selected {
+    border: 1px solid #002b58;
+    color: white;
+    font-weight: 500;
+    background-color: #002b58;
+  }
+  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn[disabled] {
+    background-color: #f0f7fb;
+    border: 1px solid #cbd9ee;
+    color: #cbd9ee;
+  }
+  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn[disabled],
+  .btn-wishlist[disabled], .btn-wishlist[disabled] .ti-heart{
+    cursor: not-allowed!important;
+  }
+  @media screen and (max-width: 999px) {
+    .product-attrs-wrapper .product-attrs .attr-line .attr-name-header {
+      font-size: 12px;
+      line-height: 1;
+    }
+    .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn {
+      min-width: 80px;
+      padding: 0 10px;
+      font-size: 12px;
+      height: 32px;
+    }
+    .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper {
+      gap: 10px;
+    }
+  }
+</style>
+<div class="product-attrs-wrapper product-meta-line product-meta-line-top">
+  <product-attrs
+    data-sku="{{ product.selected_or_first_available_variant.sku }}" 
+    data-common='{{ product.metafields.product.common }}'
+    data-sales='{{ product.metafields.product.sales }}'
+  >
+    <div class="product-attrs"></div>
+  </product-attrs>
+</div>

@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "seo_h1_title_qBDckg": {
+      "type": "seo-h1-title",
+      "settings": {
+        "title": "Contact Us"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_title": true,
+        "page_width": "medium",
+        "secondary-directory": "",
+        "secondary-directory-link": "",
+        "third-directory": ""
+      }
+    },
+    "contact_us_form_WBhqMP": {
+      "type": "contact-us-form",
+      "settings": {
+        "title": "Contact Us",
+        "desc": "We are happy to answer your questions. We respond to most inquiries within 24 hours."
+      }
+    }
+  },
+  "order": [
+    "seo_h1_title_qBDckg",
+    "main",
+    "contact_us_form_WBhqMP"
+  ]
+}

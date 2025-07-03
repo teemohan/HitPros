@@ -1,0 +1,339 @@
+
+{{ 'el-reset.css' | asset_url | stylesheet_tag }}
+{{ 'customer-register.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .form-box {
+    min-width: 558px;
+  }
+  #contact-wrapper {
+    display: none;
+  }
+</style>
+<section id="contact-wrapper" class="el-reset-from">
+  <div class="form-container">
+    <div class="form-box">
+      <h3 class="block-title">{{ section.settings.title }}</h3>
+      <div class="block-text">
+        {{ section.settings.desc }}
+      </div>
+      <el-form
+        autocomplete="off"
+        label-width="0"
+        :status-icon="false"
+        :model="ruleForm"
+        :rules="rules"
+        action="/contact#contact_form"
+        method="post"
+        ref="ruleForm"
+        class="form-wrapper"
+      >
+        {%- if form.posted_successfully? -%}
+          <div class="banner banner--success form__banner">
+            <span class="banner__ribbon">{% render 'icon' with 'form-success' %}</span>
+            <p class="banner__content">{{ 'contact.form.successfully_sent' | t }}</p>
+          </div>
+        {%- endif -%}
+        <input type="hidden" name="form_type" value="contact">
+        <input type="hidden" name="utf8" value="✓">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item prop="first_name">
+              <el-input
+                id="contact[first_name]"
+                name="contact[first_name]"
+                v-model="ruleForm.first_name"
+                v-focus-input="ruleForm.first_name"
+              ></el-input>
+              <label for="contact[first_name]" class="el-label">First Name*</label>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="last_name">
+              <el-input
+                id="contact[last_name]"
+                name="contact[last_name]"
+                v-model="ruleForm.last_name"
+                v-focus-input="ruleForm.last_name"
+              ></el-input>
+              <label for="contact[last_name]" class="el-label">Last Name*</label>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item prop="phone">
+              <el-input
+                id="contact[phone]"
+                name="contact[phone]"
+                v-model="ruleForm.phone"
+                v-focus-input="ruleForm.phone"
+              ></el-input>
+              <label for="contact[phone]" class="el-label">Phone*</label>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="company">
+              <el-input
+                id="contact[company]"
+                name="contact[company]"
+                v-model="ruleForm.company"
+                v-focus-input="ruleForm.company"
+              ></el-input>
+              <label for="contact[company]" class="el-label">Company Name</label>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-form-item prop="email">
+            <el-input
+              id="contact[email]"
+              name="contact[email]"
+              v-model="ruleForm.email"
+              v-focus-input="ruleForm.email"
+            ></el-input>
+            <label for="contact[email]" class="el-label">Email*</label>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item class="common-select" prop="category">
+            <el-select
+              id="contact[category]"
+              name="contact[category]"
+              v-model="ruleForm.category"
+              placeholder=""
+              @blur="selectBlur"
+              v-focus-input="ruleForm.category"
+            >
+              <el-option
+                v-for="item in catelogOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+                <div class="common-dropdown-item" @click="handleButtonClick($event, item)">
+                  <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                  <div>${ item.value }</div>
+                  <el-input
+                    placeholder="Please enter your single*"
+                    v-if="showCatelogEdit && item.value == 'Other'"
+                    v-model="ruleForm.category"
+                  ></el-input>
+                </div>
+              </el-option>
+            </el-select>
+            <label for="contact[category]" class="el-label">Category*</label>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item prop="message">
+            <el-input
+              type="textarea"
+              id="contact[message]"
+              name="contact[message]"
+              v-model="ruleForm.message"
+              v-focus-input="ruleForm.message"
+            ></el-input>
+            <label for="contact[message]" class="el-label">Message*</label>
+          </el-form-item>
+        </el-row>
+        <div class="el-form-btn">
+          <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')">Submit</el-button>
+        </div>
+      </el-form>
+    </div>
+    {% if section.settings.img != blank %}
+      <div class="form-img">
+        <img
+          src="{{ section.settings.img | image_url }}"
+          alt="{{ section.settings.img.alt }}"
+          width="auto"
+          height="auto"
+        >
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+  (() => {
+    Vue.directive('focus-input', {
+      inserted(el, binding, vnode) {
+        const inputEl = el.querySelector('input') || el.querySelector('textarea');
+        if (!inputEl) return;
+        const $label = $(inputEl).closest('.el-form-item__content').find('label');
+        
+        const toggleLabelFocus = () => {
+          if ($(inputEl).val().length === 0 && !inputEl.matches(':focus')) {
+            $label.removeClass('label--focus');
+          }
+        };
+
+        inputEl.addEventListener('focus', () => {
+          $label.addClass('label--focus');
+        });
+
+        inputEl.addEventListener('blur', () => {
+          setTimeout(toggleLabelFocus, 100);
+        });
+
+        if (binding.value) {
+          $label.addClass('label--focus');
+        } else {
+          $label.removeClass('label--focus');
+        }
+      },
+      update(el, binding, vnode) {
+        const inputEl = el.querySelector('input');
+        if (!inputEl) return;
+        const $label = $(inputEl).closest('.el-form-item__content').find('label');
+        if (binding.value) {
+          $label.addClass('label--focus');
+        } else if (!inputEl.matches(':focus')) {
+          $label.removeClass('label--focus');
+        }
+      },
+    });
+
+    new Vue({
+      el: '#contact-wrapper',
+      delimiters: ['${', '}'],
+      data() {
+        const checkEmail = (rule, value, callback) => {
+          const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+          if (value === '') {
+            callback(new Error('Email is required.'));
+          } else if (!emailPattern.test(value)) {
+            callback(new Error('Please enter a valid email address.'));
+          } else {
+            callback();
+          }
+        };
+        const validatePhoneNumber = (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('Phone is required'));
+          } else {
+            const phone = libphonenumber.parsePhoneNumberFromString(value, 'US');
+            if(!phone || !phone.isValid()) return callback(new Error('Invalid phonenumber'));
+            return callback();
+          }
+        };
+        const noWhitespaceValidator = (rule, value, callback) => {
+          if (!value || value.trim() === '') {
+            callback(new Error(rule.message));
+          } else {
+            callback();
+          }
+        };
+        return {
+          ruleForm: {
+            first_name: '',
+            last_name: '',
+            email: '',
+            company: '',
+            phone: '',
+            category: '',
+            message: '',
+          },
+          category: '',
+          showCatelogEdit: false, 
+          catelogOptions: [
+            { isSelected: false, value: 'Billing', label: 'Billing' },
+            { isSelected: false, value: 'Orders', label: 'Orders' },
+            { isSelected: false, value: 'Product', label: 'Product' },
+            { isSelected: false, value: 'Website', label: 'Website' },
+            { isSelected: false, value: 'Pricing', label: 'Pricing' },
+            { isSelected: false, value: 'Customer Feedback', label: 'Customer Feedback' },
+            { isSelected: false, value: 'Technical Support', label: 'Technical Support' },
+            { isSelected: false, value: 'Other', label: 'Other' },
+          ],
+          rules: {
+            first_name: [{ validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' }],
+            last_name: [{ validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' }],
+            category: [{ validator: noWhitespaceValidator, message: 'Category is required', trigger: 'blur' }],
+            email: [{ validator: checkEmail, trigger: 'blur' }],
+            phone: [{ validator: validatePhoneNumber, trigger: 'blur' }],
+            message: [{ validator: noWhitespaceValidator, message: 'Message is required', trigger: 'blur' }],
+          },
+          loading: false,
+        };
+      },
+      mounted() {
+        $('#contact-wrapper').show();
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('contact_posted') === 'true') {
+          this.$message({
+            showClose: true,
+            message: 'Submitted successfully',
+            type: 'success',
+          });
+          const url = window.location.href;
+          const newUrl = url.split('?contact')[0];
+          window.history.replaceState(null, null, newUrl);
+        }
+      },
+      watch: {
+        "ruleForm.category"(newVal, oldVal) {
+          const category = this.catelogOptions.find((item) => item.value == 'Other');
+          if(category.isSelected) {
+            this.category = newVal;
+          }
+        }
+      },
+      methods: {
+        submitForm(formName) { 
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              this.loading = true;
+              this.$refs.ruleForm.$el.submit();
+            };
+          });
+        },
+        selectBlur() {
+          if (this.showCatelogEdit) {
+            this.$refs.ruleForm.clearValidate(["category"]);
+          }
+        },
+        handleButtonClick(event, catelogItem) {
+          event.stopPropagation(); 
+          if (catelogItem.isSelected) return;
+          this.catelogOptions.map((item) => (item.isSelected = false));
+          const category = this.catelogOptions.find((item) => item.value == catelogItem.value);
+          if (catelogItem.value == 'Other') {
+            this.showCatelogEdit = true;
+            this.ruleForm.category = this.category;
+          } else {
+            this.showCatelogEdit = false;
+            this.ruleForm.category = category.value;
+          }
+          category.isSelected = true;
+        },
+      },
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Contact us",
+  "class": "customers-register",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Img"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "desc",
+      "label": "Desc"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,610 @@
+{%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+{%- else -%}
+  {%- assign blends_with_background = true -%}
+{%- endif -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_background == 'rgba(0,0,0,0)' -%}
+      {%- assign button_background = settings.primary_button_background -%}
+    {%- else -%}
+      {%- assign button_background = section.settings.button_background -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign button_text_color = settings.primary_button_text_color -%}
+    {%- else -%}
+      {%- assign button_text_color = section.settings.button_text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
+    --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
+
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+  }
+  #shopify-section-{{ section.id }} .heading{
+    background: #0A3164;
+    color: #fff;
+    text-transform: unset;
+  }
+  .section_contact_form{
+    background-color: #fff;
+  }
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .heading{
+      padding: 8px 24px;
+    }
+    .section--tight {
+      margin-top: 32px;
+      margin-bottom: 32px;
+    }
+    .contact {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: center;
+      gap: 40px;
+      padding: 32px;
+    }
+    .contact__main {
+      width: 50%;
+      max-width: unset;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-left: 1px solid var(--my-border);
+      padding-left: 48px;
+      margin-left: 48px;
+    }
+    .contact__aside {
+      width: 50%;
+      margin-top: 0 !important;
+      margin-right: 0 !important;
+      max-width: unset;
+    }
+
+    .contact .section__header {
+      text-align: left;
+    }
+    .contact .section__header .heading {
+      margin-bottom: 0 !important;
+    }
+
+    .contact-subtitle {
+      font-weight: 900;
+      margin-top: 40px;
+    }
+
+    .contact-text {
+      line-height: 1.5 !important;
+      color: var(--my-grey);
+      margin-top: 20px;
+    }
+
+    .contacts__text-list {
+      line-height: 1.5 !important;
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    .contacts__text-list a{
+      text-decoration: unset !important;
+      color: #000;
+    }
+    .contacts__text-list a:hover{
+      text-decoration: underline;
+      color: #0A3164 !important;
+    }
+    .contacts__text-list strong{
+      font-size: 16px;
+      color: var(--my-grey)
+    }
+
+    
+    .contact__form {
+      width: 100%;
+      max-width: 100%;
+      margin-top: 34px;
+      padding: 0;
+    }
+    .contact-form-title {
+      text-align: left;
+      font-weight: 900;
+      line-height: 1.3 !important;
+      width: 100%;
+    }
+
+    .contact__form .input+.input {
+      --form-input-gap: 20px;
+    }
+    .contact__form .input__label {
+      display: block;
+      position: unset;
+      text-transform: capitalize;
+      padding: 0 0 10px 0;
+      color: var(--my-black);
+    }
+    .contact__form .input__field,
+    .contact__form .select {
+      --form-input-field-height: 40px;
+    }
+    .contact__form .form__submit {
+      --button-height: 40px;
+      text-transform: capitalize;
+      font-size: 16px;
+      letter-spacing: 0;
+      background: var(--my-yellow) !important;
+      color: #0A3164;
+      font-weight: 900;
+    }
+  }
+
+  @media screen and (max-width: 740px) {
+    #shopify-section-{{ section.id }} .heading{
+      padding: 12px 8px;
+    }
+    .section--tight {
+      --vertical-breather-tight: 40px;
+      margin-top: 32px;
+      margin-bottom: 32px;
+    }
+    .contact {
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: center;
+      padding: 32px 12px;
+    }
+    .contact__main {
+      max-width: unset;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid var(--my-border);
+      padding-top: 36px;
+      margin-top: 36px;
+    }
+    .contact__aside {
+      margin-top: 0 !important;
+      margin-right: 0 !important;
+      max-width: unset;
+    }
+
+    .contact .section__header {
+      text-align: left;
+      margin-bottom: 0 !important;
+    }
+
+    .contact .section__header .heading {
+      font-size: 18px !important;
+      margin-bottom: 0 !important;
+    }
+
+    .contact-subtitle {
+      font-size: 18px !important;
+      font-weight: 900;
+      margin-top: 30px;
+    }
+
+    .contact-text {
+      line-height: 1.5 !important;
+      color: var(--my-grey);
+      margin-top: 15px;
+    }
+    .contacts__text-list strong{
+      font-size: 12px;
+      color: var(--my-grey);
+    }
+    .contacts__text-list {
+      font-size: 14px !important;
+      line-height: 1.5 !important;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .contacts__text-list a{
+      text-decoration: underline;
+      color: #0A3164 !important;
+    }
+
+    
+    .contact__form {
+      width: 100%;
+      max-width: 100%;
+      margin-top: 0;
+      padding: 0;
+    }
+    .contact-form-title {
+      font-size: 14px !important;
+      text-align: left;
+      font-weight: 600;
+      line-height: 1.5 !important;
+      width: 100%;
+    }
+
+    .contact__form .input+.input {
+      --form-input-gap: 20px;
+    }
+    .contact__form .input__label {
+      font-size: 14px !important;
+      display: block;
+      position: unset;
+      text-transform: capitalize;
+      padding: 0 0 10px 0;
+      color: var(--my-black);
+    }
+    .contact__form .input__field,
+    .contact__form .select {
+      --form-input-field-height: 40px;
+      padding: 0 10px;
+    }
+    .contact__form .form__submit {
+      --button-height: 40px;
+      text-transform: capitalize;
+      font-size: 18px;
+      letter-spacing: 0;
+      background: var(--my-yellow) !important;
+      color: #0A3164;
+      font-weight: 900;
+    }
+    .contact__form .el-col-12 {
+      width: 100%;
+    }
+    .contact__form .el-row {
+      margin-top: 0;
+    }
+    .contact__form .el-row .el-col {
+      --form-input-gap: 20px;
+      margin-top: var(--form-input-gap);
+    }
+
+  }
+</style>
+
+<section class="section {% if template.name == 'page' and template.suffix contains 'contact' %}section--tight{% endif %} {% unless blends_with_background %}section--flush{% endunless %}">
+  <div class=" container">
+    <div class="section_contact_form">
+      {%- if section.settings.title != blank -%}
+        <h1 class="heading h2 my-32">{{ section.settings.title }}</h1>
+      {%- endif -%}
+      <div class="contact {% unless blends_with_background %}vertical-breather{% endunless %}">
+        {%- capture aside_content -%}
+          {%- if section.settings.title != blank or section.settings.content != blank -%}
+            <header class="section__header {% if section.settings.content != blank %}section__header--tight{% endif %} text-container">
+              
+              
+              <div class="contact-subtitle ol-my-22">{{ section.settings.subtitle }}</div>
+
+              <div class="contact-text ol-my-14">
+              {%- if section.settings.content != blank -%}
+                {{- section.settings.content -}}
+              {%- endif -%}
+              </div>
+            </header>
+
+            <div class="contacts__text-list ol-my-18">
+              {%- if section.settings.text_1_text != blank -%}
+                <div class="contacts__text-item">
+                  {{- section.settings.text_1_text -}}
+                </div>
+              {%- endif -%}
+
+              {%- if section.settings.text_2_text != blank -%}
+                <div class="contacts__text-item">
+                  {{- section.settings.text_2_text -}}
+                </div>
+              {%- endif -%}
+
+              {%- if section.settings.text_3_text != blank -%}
+                <div class="contacts__text-item">
+                  {{- section.settings.text_3_text -}}
+                </div>
+              {%- endif -%}
+            </div>
+
+          {%- endif -%}
+
+          
+
+          
+        {%- endcapture -%}
+
+        <div class="contact__main">
+          <div class="contact-form-title ol-my-22 hidden-phone">{{ section.settings.form_title }}</div>
+          <div class="contact-form-title ol-my-18 hidden-tablet-and-up">
+            {{ section.settings.form_title | strip_html }}
+          </div>
+          <div id="service-main-form" class="service-main-form">
+            <el-form ref="form" :model="form" :rules="rules" label-position="top">
+              <div class="form-line">
+                <div class="form-item">
+                  <el-form-item label="Name" prop="name">
+                    <el-input v-model="form.name"></el-input>
+                  </el-form-item>
+                </div>
+                <div class="form-item">
+                  <el-form-item label="Email *" prop="email">
+                    <el-input :disabled="form.email ? true: false" v-model="form.email"></el-input>
+                  </el-form-item>
+                </div>
+              </div>
+              <div class="form-line">
+                <div class="form-item">
+                  <el-form-item label="Phone" prop="phone">
+                    <el-input v-model="form.phone"></el-input>
+                  </el-form-item>
+                </div>
+                <div class="form-item">
+                  <el-form-item label="Order Numbers *" prop="orderNumber">
+                    <el-input v-model="form.orderNumber"></el-input>
+                  </el-form-item>
+                </div>
+              </div>
+              <div class="form-line">
+                <div class="form-item">
+                  <el-form-item label="Category *" prop="category">
+                    <el-select v-model="form.category" placeholder="">
+                      <el-option v-for="item in categoryOptions" :key="item.id" :label="item.label" :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </div>
+              <div class="form-line">
+                <div class="form-item">
+                  <el-form-item label="Details *" prop="details">
+                    <el-input type="textarea" v-model="form.details"></el-input>
+                  </el-form-item>
+                </div>
+              </div>
+            </el-form>
+            <button v-loading="loading" class="sunmit-btn" @click="submitForm">Submit</button>
+          </div>
+        </div>
+
+        {%- if aside_content != blank -%}
+          <aside class="contact__aside">
+            {{- aside_content -}}
+          </aside>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const idFromURL = searchParams.get('id');
+    new Vue({
+      el: '#service-main-form',
+      delimiters: ['${', '}'],
+      data() {
+        return {
+          loading: false,
+          categoryOptions: [
+            { label: ' Order Modification', value: '0' },
+            { label: 'Refund', value: '1' },
+            { label: 'Return and Refund', value: '2' },
+          ],
+          form: {
+            name: '',
+            email: '{{ customer.email }}',
+            phone: '',
+            orderNumber: idFromURL || '',
+            category: '',
+            details: '',
+          },
+          rules: {
+            email: [{ required: true, message: 'Please enter your email address', trigger: 'blur' }],
+            orderNumber: [{ required: true, message: 'Please enter the order number', trigger: 'blur' }],
+            details: [{ required: true, message: 'Please enter detailed information', trigger: 'blur' }],
+            category: [{ required: true, message: 'Please select a category', trigger: 'change' }],
+          },
+        };
+      },
+      methods: {
+        submitForm() {
+          const _this = this;
+          this.$refs['form'].validate(async (valid) => {
+            if (valid) {
+              _this.loading = true;
+              try {
+                const res = await fetch(`${window.zkh.api}/after/sales/request`, {
+                  method: 'POST',
+                  body: JSON.stringify(this.form),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                });
+                const data = await res.json();
+                if (data.code == 200) {
+                  _this.$message({
+                    showClose: true,
+                    message: 'form submitted',
+                    type: 'success',
+                  });
+                  window.location.href = '/account?slug=account-service&wrapper=list';
+                } else {
+                  _this.$message({
+                    showClose: true,
+                    message: data.msg,
+                    type: 'warning',
+                  });
+                }
+              } catch (error) {
+                _this.$message({
+                  showClose: true,
+                  message: error,
+                  type: 'error',
+                });
+              } finally {
+                _this.loading = false;
+              }
+            }
+          });
+        },
+      },
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Contact",
+  "class": "shopify-section--contact-form",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Title",
+      "default": "We’re Not Satisfied Until You Are"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "header",
+      "content": "Block 1"
+    },
+    {
+      "type": "richtext",
+      "id": "text_1_text",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Block 2"
+    },
+    {
+      "type": "richtext",
+      "id": "text_2_text",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Block 3"
+    },
+    {
+      "type": "richtext",
+      "id": "text_3_text",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Form title"
+    },
+    {
+      "type": "richtext",
+      "id": "form_title",
+      "label": "Form title"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Name",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "Use long text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Field is required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "dropdown",
+      "name": "Dropdown",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Name",
+          "default": "Custom field"
+        },
+        {
+          "type": "text",
+          "id": "values",
+          "label": "Values",
+          "info": "Separate each value by a comma.",
+          "default": "value 1, value 2, value 3"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact form",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

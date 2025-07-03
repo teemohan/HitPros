@@ -1,0 +1,671 @@
+{{ 'el-reset.css' | asset_url | stylesheet_tag }}
+{{ 'main-customers-orders.css' | asset_url | stylesheet_tag }}
+<style>
+  .order-section {
+    display: none;
+  }
+  @media screen and (max-width: 740px) {
+    .el-reset-from .el-button--text {
+      font-size: 12px;
+    }
+    .order-action > button {
+      max-width: unset!important;
+    }
+    .order-action > button ,
+    .order-action > a {
+      width: 50%!important;
+    }
+  }
+</style>
+<nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="breadcrumb text--xsmall">
+  <ol class="collection_breadcrumb__list breadcrumb__list" role="list">
+    <li class="breadcrumb__item">
+      <a class="breadcrumb__link" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+    </li>
+    <li class="breadcrumb__item">
+      <a class="breadcrumb__link" href="/account?slug=account-orders">My Orders</a>
+    </li>
+    <li class="breadcrumb__item">
+      <span class="breadcrumb__link" aria-current="page">Order Details</span>
+    </li>
+  </ol>
+</nav>
+<section id="order_section" class="order-section el-reset-from">
+  <div class="skeleton-wrapper" v-if="isFetching">
+    <el-skeleton :rows="6" :animated="true" />
+  </div>
+  <div class="order-item" v-else-if="!isFetching && order">
+    <el-dialog
+      width="484px"
+      title="Cancel Order"
+      :visible.sync="dialogVisibleCancel"
+      :show-close="true"
+    >
+      <div>Are you sure you want to cancel this order?</div>
+      <div slot="footer" style="margin-top: 24px;">
+        <div class="el-form-btn dialog-form-btn">
+          <el-button
+            :loading="cancelOrderLoading"
+            @click="handleCancelOrder"
+            class="el-dialog--btn-cancel"
+          >
+            Yes
+          </el-button>
+          <div @click="dialogVisibleCancel = false" class="el-dialog--btn-cancel">No, Go Back</div>
+        </div>
+      </div>
+    </el-dialog>
+    <div class="order-main">
+      <div class="order-main-wrapper">
+        <div class="order-main-table">
+          <div class="order-status-wrapper">
+            <div class="order-status">
+              <div class="status-item">
+                <span>Order Number:</span>
+                <div class="order-id-wrapper" @click="handleCopy(order.name)">
+                  <p class="order-id">${ order.name }</p>
+                  <span style="display: flex;">
+                    {% render 'icon' with 'v3-copy' %}
+                  </span>
+                </div>
+              </div>
+              <div class="status-item">
+                <span>Order placed on:</span>
+                <p>${ formatDate(order.created_at) }</p>
+              </div>
+              <div class="status-item">
+                <span>Order Status:</span>
+                <div class="status-type">
+                  <template v-if="order.cancelled_at">
+                    <div>Cancelled;</div>
+                    <div>Refunded</div>
+                  </template>
+                  <template v-else>
+                    <div>${ order.fulfillmentStatus };</div>
+                    <div> ${ order.financialStatus }</div>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-body">
+            <template v-for="line_item in order.line_items">
+              <div class="order-line-item-wrapper">
+                <div class="order-line-item layout-container">
+                  <div class="product-info">
+                    <div class="product-img">
+                      <img
+                        :src="line_item.imageUrl"
+                        width="auto"
+                        height="auto"
+                        alt="Product Image"
+                      >
+                    </div>
+                    <div class="product-detail">
+                      <p class="ellipsis3 product-title">
+                        <a :href="line_item.productUrl">${ line_item.title }</a>
+                      </p>
+                      <span class="product-sku">MODEL: ${ line_item.model }</span>
+                    </div>
+                  </div>
+                  <template v-if="!order.fulfillment_status || order.fulfillment_status == 'unfulfilled'">
+                    <div class="hidden-tablet-and-up delivery-date" v-if="line_item.properties && line_item.properties[0]">${ line_item.properties[0]?.value }</div>
+                  </template>
+                  <div class="hidden-phone item-info">
+                    <span class="title">QTY</span>
+                    <span>${ line_item.quantity }</span>
+                    <template v-if="!order.fulfillment_status || order.fulfillment_status == 'unfulfilled'">
+                      <div class="delivery-date" v-if="line_item.properties && line_item.properties[0]">${ line_item.properties[0]?.value }</div>
+                    </template>
+                  </div>
+                  <div class="hidden-phone item-info">
+                    <span class="title">PRICE</span>
+                    <span>$${ line_item.price }</span>
+                  </div>
+                  <div class="hidden-phone item-info">
+                    <span class="title">TAX</span>
+                    <span>${ line_item.tax_price }</span>
+                  </div>
+                  <div class="hidden-phone item-info">
+                    <span class="title">TOTAL</span>
+                    <span>$${ (line_item.quantity * line_item.price).toFixed(2) }</span>
+                  </div>
+                  <div class="hidden-tablet-and-up phone-order-info">
+                    <div><span>QTY</span>${ line_item.quantity }</div>
+                    <div><span>PRICE</span>$${ line_item.price }</div>
+                    <div><span>TAX</span>${ line_item.tax_price }</div>
+                    <div><span>TOTAL</span>$${ line_item.quantity * line_item.price }</div>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <div class="order-detail-container">
+              <div class="order-detail">
+                <div>
+                  <span>Subtotal</span>
+                  <p>$${ order.total_line_items_price }</p>
+                </div>
+                <div>
+                  <span>TAX</span>
+                  <p>$${ order.total_tax }</p>
+                </div>
+                <div>
+                  <span>Estimated Shipping</span>
+                  <p>$${ order.shipping_price }</p>
+                </div>
+                <div v-if="order.total_discounts != 0">
+                  <span>Subtotal Discount</span>
+                  <p>-$${ order.total_discounts }</p>
+                </div>
+              </div>
+            </div>
+            <div class="order-total">
+              <div>
+                <span>Total</span>
+                <p>$${ order.total_price }</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="order.fulfillments?.length > 0" class="order-fulfillments">
+          <div v-for="(item, idx) in order.fulfillments" :key="idx" class="order-fulfillments-item">
+            <span>Logistics Tracking ${ idx + 1 }: ${ item.tracking_number }</span>
+            <el-button type="text" @click="handleTrackLog(item.tracking_number)">Check</el-button>
+          </div>
+        </div>
+        <div class="order-action">
+          <el-button type="primary" :loading="loading" @click="handleBuyAgain">Buy Again</el-button>
+          <template v-if="!order.cancelled_at && !cancelled">
+            <a
+              v-if="order.payment_terms?.payment_terms_type == 'net'"
+              target="_blank"
+              :href="`${ pixiNetUrl }/${ order.id }`"
+              >Invoice/Receipt
+            </a>
+            <a
+              v-else
+              target="_blank"
+              :href="`${ pixiUrl }/${ order.id }`"
+              >Invoice/Receipt
+            </a>
+          </template>
+        </div>
+      </div>
+      <div>
+        <div class="order-main-detail" :class="{'hidden': !showMoreDetail}">
+          <div class="detail-wrap">
+            <div class="aside-item">
+              <span>SHIP TO</span>
+              <div>
+                <p>${ order.shipping_address?.name } ${ order.shipping_address?.phone }</p>
+                <p>
+                  <template v-if="order.shipping_address?.address2">
+                    ${ order.shipping_address?.address2 },
+                  </template>
+                  ${ order.shipping_address?.address1 }, ${ order.shipping_address?.city }, ${ order.shipping_address?.province },
+                  ${ order.shipping_address?.country },
+                  ${ order.shipping_address?.zip }
+                </p>
+              </div>
+            </div>
+            <div class="aside-item">
+              <span>BILLING ADDRESS</span>
+              <div>
+                <p>${ order.billing_address?.name } ${ order.billing_address?.phone }</p>
+                <p>
+                  <template v-if="order.billing_address?.address2">
+                    ${ order.billing_address?.address2 },
+                  </template>
+                  ${ order.billing_address?.address1 }, ${ order.billing_address?.city }, ${ order.billing_address?.province },
+                  ${ order.billing_address?.country },
+                  ${ order.billing_address?.zip }
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="overlay-wrapper" :class="{'relative': showMoreDetail}">
+            <div class="overlay-action view-less" @click="showMoreDetail = false">
+              {% render 'icon' with 'footer-arrow-top' %}
+              <span>View Less</span>
+            </div>
+            <div class="overlay-action view-more" @click="showMoreDetail = true">
+              {% render 'icon' with 'footer-arrow' %}
+              <span>View More</span>
+            </div>
+          </div>
+        </div>
+        <div class="order-refund-detail-wrapper">
+          <div class="order-refund-detail" v-if="refundDetail.length">
+            <div class="title" @click="viewAllService(order)">HISTORY</div>
+            <ul :class="{'hidden': !showMoreRefund && refundDetail.length > 2 }">
+              <li v-for="(item, idx) in refundDetail" :key="idx" :class="`refund-status-${item.status}`" @click="navToServiceDetail(item)">
+                <span class="number">${ refundDetail.length - idx }. Refund Amount: </span>
+                <span class="amount">${ formatMoney(item.refundAmount * 100) }</span>
+              </li>
+            </ul>
+            <div v-if="refundDetail.length > 2" class="overlay-wrapper" :class="{'relative': showMoreRefund}">
+              <div class="overlay-action view-less" @click="showMoreRefund = false">
+                {% render 'icon' with 'footer-arrow-top' %}
+                <span>View Less</span>
+              </div>
+              <div class="overlay-action view-more" @click="showMoreRefund = true">
+                {% render 'icon' with 'footer-arrow' %}
+                <span>View More</span>
+              </div>
+            </div>
+          </div>
+          <div class="actions" v-if="!cancelled" :class="{'is-center': !(order.fulfillment_status && order.fulfillment_status != 'unfulfilled')}">
+            <el-button type="text" @click="navToSales(order)">Refund Only</el-button >
+            <span v-if="order.fulfillment_status && order.fulfillment_status != 'unfulfilled'" class="dot hidden-phone"></span>
+            <el-button v-if="order.fulfillment_status && order.fulfillment_status != 'unfulfilled'" type="text" @click="navToRefund(order)">Return & Refund</el-button >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  (() => {
+    if('{{ customer.email }}' == '') {
+      window.location.href = '/account/login';
+      return;
+    }
+    function formatMoney(cents, format = '') {
+      if (typeof cents === 'string') {
+        cents = cents.replace('.', '');
+      }
+      const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/,
+        formatString = format || window.themeVariables.settings.moneyFormat;
+      function defaultTo(value2, defaultValue) {
+        return value2 == null || value2 !== value2 ? defaultValue : value2;
+      }
+      function formatWithDelimiters(number, precision, thousands, decimal) {
+        precision = defaultTo(precision, 2);
+        thousands = defaultTo(thousands, ',');
+        decimal = defaultTo(decimal, '.');
+        if (isNaN(number) || number == null) {
+          return 0;
+        }
+        number = (number / 100).toFixed(precision);
+        let parts = number.split('.'),
+          dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+          centsAmount = parts[1] ? decimal + parts[1] : '';
+        return dollarsAmount + centsAmount;
+      }
+      let value = '';
+      switch (formatString.match(placeholderRegex)[1]) {
+        case 'amount':
+          value = formatWithDelimiters(cents, 2);
+          break;
+        case 'amount_no_decimals':
+          value = formatWithDelimiters(cents, 0);
+          break;
+        case 'amount_with_space_separator':
+          value = formatWithDelimiters(cents, 2, ' ', '.');
+          break;
+        case 'amount_with_comma_separator':
+          value = formatWithDelimiters(cents, 2, '.', ',');
+          break;
+        case 'amount_with_apostrophe_separator':
+          value = formatWithDelimiters(cents, 2, "'", '.');
+          break;
+        case 'amount_no_decimals_with_comma_separator':
+          value = formatWithDelimiters(cents, 0, '.', ',');
+          break;
+        case 'amount_no_decimals_with_space_separator':
+          value = formatWithDelimiters(cents, 0, ' ');
+          break;
+        case 'amount_no_decimals_with_apostrophe_separator':
+          value = formatWithDelimiters(cents, 0, "'");
+          break;
+      }
+      if (formatString.indexOf('with_comma_separator') !== -1) {
+        return formatString.replace(placeholderRegex, value);
+      } else {
+        return formatString.replace(placeholderRegex, value);
+      }
+    }
+    new Vue({
+      el: '#order_section',
+      delimiters: ['${', '}'],
+      data() {
+        return {
+          pixiUrl: window.zkh.pixi_url,
+          pixiNetUrl: window.zkh.pixi_net_url,
+          dialogVisibleCancel: false,
+          showMoreDetail: true, 
+          showMoreRefund: false, 
+          cancelOrderLoading: false,
+          cancelled:false,
+          param: null,
+          orderId: 0,
+          loading: false,
+          isFetching: true,
+          refundDetail: [],
+          order: null,
+          orderRuleForm: {
+            orderId: 0,
+            reason: "OTHER",
+            userEmail: '{{ customer.email }}'
+          }
+        }
+      },
+      mounted() {
+        $('.order-section').show();
+        const orderId = Number(window.location.href.split('=')[1]);
+        this.orderId = orderId;
+        this.getOrderDetail(orderId);
+        let _this = this
+        document.addEventListener('keydown', (event) => {
+          
+          if (event.key === 'Enter' && _this.dialogVisibleCancel) {
+            event.preventDefault(); 
+            event.stopPropagation();
+            _this.dialogVisibleCancel = false;
+          }
+        });
+      },
+      methods: {
+        handleBeforeCancelOrder() {
+          this.orderRuleForm.orderId = +this.order.id;
+          this.dialogVisibleCancel = true;
+        },
+        async handleCancelOrder() {
+          this.cancelOrderLoading = true;
+          try {
+            const response = await fetch(`${window.zkh.api}/order/cancel`, {
+              method: 'PUT',
+              body: JSON.stringify(this.orderRuleForm),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const res = await response.json();
+            if (res.code === 200) {
+              if(res.msg == 'order is synced to sap, can not cancel.') {
+                this.$message({
+                  showClose: true,
+                  message: 'Can not cancel.',
+                  type: 'warning',
+                });
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: 'Cancelled.',
+                  type: 'success',
+                });
+                this.order.canCancel = false;
+                this.order.cancelled_at = true;
+                this.cancelled = true
+              }
+            }
+          } catch (error) {
+            console.error(error);
+          } finally {
+            this.dialogVisibleCancel = this.cancelOrderLoading = false;
+          }
+        },
+        viewAllService(order) {
+          window.location.href= `/account?slug=account-service&orderId=${ order.name }`
+        },
+        navToServiceDetail(serviceItem) {
+          window.location.href = `/pages/refund-details?requestId=${ serviceItem.requestId }`
+        },
+        navToSales(order) {
+          window.location.href = `/pages/after-sales-request?id=${ order.id }`
+        },
+        navToRefund(order) {
+          window.location.href = `/pages/after-sales-return-request?id=${ order.id }`
+        },
+        async getOrderRefundDetail() {
+          const formData = {
+            refundOrderIds: [this.order.name],
+            userEmail: '{{ customer.email }}'
+          }
+          try {
+            const response = await fetch(`${window.zkh.api}/openapi/shopify/refund/query`, {
+              method: 'POST',
+              body: JSON.stringify(formData),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const res = await response.json();
+            return res.data;
+          } catch (error) {
+            console.error(error);
+          }
+        },
+        formatMoney(cents, format = '') {
+          if (typeof cents === 'string') {
+            cents = cents.replace('.', '');
+          }
+          const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/,
+            formatString = format || window.themeVariables.settings.moneyFormat;
+          function defaultTo(value2, defaultValue) {
+            return value2 == null || value2 !== value2 ? defaultValue : value2;
+          }
+          function formatWithDelimiters(number, precision, thousands, decimal) {
+            precision = defaultTo(precision, 2);
+            thousands = defaultTo(thousands, ',');
+            decimal = defaultTo(decimal, '.');
+            if (isNaN(number) || number == null) {
+              return 0;
+            }
+            number = (number / 100).toFixed(precision);
+            let parts = number.split('.'),
+              dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+              centsAmount = parts[1] ? decimal + parts[1] : '';
+            return dollarsAmount + centsAmount;
+          }
+          let value = '';
+          switch (formatString.match(placeholderRegex)[1]) {
+            case 'amount':
+              value = formatWithDelimiters(cents, 2);
+              break;
+            case 'amount_no_decimals':
+              value = formatWithDelimiters(cents, 0);
+              break;
+            case 'amount_with_space_separator':
+              value = formatWithDelimiters(cents, 2, ' ', '.');
+              break;
+            case 'amount_with_comma_separator':
+              value = formatWithDelimiters(cents, 2, '.', ',');
+              break;
+            case 'amount_with_apostrophe_separator':
+              value = formatWithDelimiters(cents, 2, "'", '.');
+              break;
+            case 'amount_no_decimals_with_comma_separator':
+              value = formatWithDelimiters(cents, 0, '.', ',');
+              break;
+            case 'amount_no_decimals_with_space_separator':
+              value = formatWithDelimiters(cents, 0, ' ');
+              break;
+            case 'amount_no_decimals_with_apostrophe_separator':
+              value = formatWithDelimiters(cents, 0, "'");
+              break;
+          }
+          if (formatString.indexOf('with_comma_separator') !== -1) {
+            return formatString.replace(placeholderRegex, value);
+          } else {
+            return formatString.replace(placeholderRegex, value);
+          }
+        },
+        formatDate(dateString) {
+          const date = new Date(dateString);
+          date.setMilliseconds(0); 
+          const offset = -5 * 60; 
+          const localTime = new Date(date.getTime() + (date.getTimezoneOffset() + offset) * 60000);
+          const monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
+          const month = monthNames[localTime.getMonth()];
+          const day = localTime.getDate();
+          const year = localTime.getFullYear();
+          let hours = localTime.getHours();
+          const period = hours >= 12 ? 'PM' : 'AM';
+          hours = hours % 12 || 12;
+          const minutes = String(localTime.getMinutes()).padStart(2, '0');
+          const seconds = String(localTime.getSeconds()).padStart(2, '0');
+          return `${month} ${day}, ${year} at ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${period}`;
+        },
+        async getOrderDetail(orderId) {
+          function calculateTotalAmount(taxes) {
+              return taxes.reduce((total, tax) => {
+                  const amount = tax.price * 100; 
+                  return total + amount;
+              }, 0); 
+          }
+          try {
+            const response = await fetch(`${window.zkh.api}/order/${orderId}`);
+            const res = await response.json();
+            if(res.code == 200) {
+              res.data.order.line_items.map(item => {
+                item.tax_price = formatMoney(calculateTotalAmount(item.tax_lines))
+              });
+              res.data.order.shipping_price = res.data.order.shipping_lines[0]?.price || 0;
+              this.param = res.data.order.line_items.map(item => ({
+                id: item.variant_id,
+                quantity: item.quantity
+              }))
+              const createdAtTimestamp = new Date(res.data.order.created_at).getTime();
+              const currentTimestamp = Date.now(); 
+              const canCancel = (currentTimestamp - createdAtTimestamp) < 15 * 60 * 1000;
+              res.data.order.canCancel = canCancel;
+              if(!res.data.order.fulfillment_status) {
+                res.data.order.fulfillmentStatus = 'Not shipped'
+              } else if(res.data.order.fulfillment_status == 'fulfilled') {
+                res.data.order.fulfillmentStatus = 'Shipped'
+              } else if(res.data.order.fulfillment_status == 'unfulfilled') {
+                res.data.order.fulfillmentStatus = 'Not shipped'
+              } else if(res.data.order.fulfillment_status == 'partial') {
+                res.data.order.fulfillmentStatus = 'Partially shipped'
+              }
+              
+              function capitalizeWords(str) {
+                return str
+                  .split('_') 
+                  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(''); 
+              }
+
+              if(res.data.order.financial_status) {
+                res.data.order.financialStatus = capitalizeWords(res.data.order.financial_status.split('_').join(' '));
+              }
+
+              if(res.data.order.cancelled_at != null){
+                this.cancelled = true
+              }
+              this.order = res.data.order;
+              this.refundDetail = await this.getOrderRefundDetail();
+              this.refundDetail = this.refundDetail.reverse();
+            }
+          } catch (error) {
+            console.error(error)
+          } finally {
+            this.isFetching = false;
+          }
+        },
+        handleCopy(id) {
+          navigator.clipboard.writeText(id).then(() => {
+            this.$message({
+              showClose: true,
+              message: 'Copied',
+              type: 'success',
+            });
+          });
+        },
+        handleTrackLog(trackNum) {
+          window.location.href = `/apps/track123?nums=${trackNum}`;
+        },
+        async setLineAttr(cartItems) {
+          const response = await fetch('/cart.js');
+          const res = await response.json();
+          if(res.items.length == 0) return;
+          cartItems.map(cartItem => {
+            const line_item = res.items.find(item => item.id == cartItem.id);
+            if(line_item) cartItem.properties = line_item.properties;
+          })
+        },
+        async handleBuyAgain() {
+          this.loading = true;
+          try {
+            await this.setLineAttr(this.param);
+            const response = await fetch('/cart/add.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                items: this.param
+              })
+            })
+            const responseJson = await response.json();
+            let errorMsg;
+            if (response.ok) {
+              document.documentElement.dispatchEvent(
+                new CustomEvent('variant:added', {
+                  bubbles: true,
+                  detail: {
+                    variant: responseJson.hasOwnProperty('items') ? responseJson['items'][0] : responseJson,
+                  },
+                })
+              );
+              fetch(`${window.themeVariables.routes.cartUrl}.js`).then(async (response2) => {
+                const cartContent = await response2.json();
+                document.documentElement.dispatchEvent(
+                  new CustomEvent('cart:updated', {
+                    bubbles: true,
+                    detail: {
+                      cart: cartContent,
+                    },
+                  })
+                );
+                cartContent['sections'] = responseJson['sections'];
+                document.documentElement.dispatchEvent(
+                  new CustomEvent('cart:refresh', {
+                    bubbles: true,
+                    detail: {
+                      cart: cartContent,
+                      openMiniCart: window.themeVariables.settings.cartType === 'drawer',
+                    },
+                  })
+                );
+              });
+            } else {
+              if (responseJson['description'].endsWith('are in your cart.')) {
+                errorMsg = 'Your cart already contains all available stock Unable to add more';
+              } else if (responseJson['description'].endsWith('to the cart.')) {
+                errorMsg =
+                  'The available stock has been added to your cart，the excess quantity beyond available stock cannot be added';
+              }
+            }
+            document.documentElement.dispatchEvent(
+              new CustomEvent('cart-notification:show', {
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                  status: response.ok ? 'success' : 'error',
+                  error: errorMsg || responseJson['description'] || '',
+                },
+              })
+            );
+          } catch (error) {
+            console.error(error);
+          } finally {
+            this.loading = false;
+          }
+        },
+      },
+    });
+  })();
+</script>
+{% schema %}
+{
+  "name": "Customer orders",
+  "class": "shopify-section--main-customers-order container",
+  "presets": [
+    {
+      "name": "customer-orders"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,33 @@
+{%- liquid
+  assign description = description | default: collection.description
+  assign custom_class = class_name | default: ''
+-%}
+{%- if collection.handle == 'all' -%}    
+  <div class="w-full text-left mt-0 pb-6">
+    <h1 class="text-xl font-bold text-main fb-sm:text-32">All Products</h1>
+  </div>
+{%- else -%}
+  <div class="w-full text-left mt-0">
+    <h1 class="text-xl font-bold text-main fb-sm:text-32">{{ collection.title | split: "~" | last }}</h1>
+  </div>
+{%- endif -%}
+{%- if collection.description != blank and collection.handle != 'all' -%}
+  <div class="my-collection-block pt-6 pb-8 fb-sm:pt-6 relative {{ custom_class }}">
+    <div class="collection-desc relative transition-all duration-300 ease-in-out">
+      <p class="desc-content text-sm fb-sm:text-base text-1A1A1A overflow-hidden m-0 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] line-clamp-2">
+        {{ description }}
+      </p>
+      <div class="js-view-more-btn fb-flex-center h-5 fb-sm:h-8 absolute right-0 cursor-pointer border-none fb-flex-center -bottom-1">
+        <div class="w-15 fb-sm:w-18 h-full fb-left-right"></div>
+        <div class="pl-1 underline h-full fb-flex-center bg-white text-xs fb-sm:text-sm">
+        <span class="js-cl-viewmores text-main hidden fb-sm:block mr-2.5 underline">View More </span> 
+        <span class="js-cl-icon transition-all text-button w-2.5 h-4">
+          <svg width="100%" height="100%" viewBox="0 0 30 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.4134 9.35079L26.8128 -1.33743e-07L30 3.20123L15.2335 18L0.0702705 3.28611C-0.0452824 3.15619 0.00128365 3.07651 0.0702705 2.94312C0.458319 2.18612 2.45375 0.840149 3.01254 -1.13247e-06L12.9293 9.52401L14.9998 11.4543L17.4134 9.35079Z" fill="#FABE00"/>
+          </svg>
+        </span>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "show_title": false,
+        "page_width": "medium",
+        "secondary-directory": "Customer Service",
+        "secondary-directory-link": "https:\/\/northskysupply.com\/account?slug=account-service",
+        "third-directory": "Request Detail"
+      }
+    },
+    "after_service_order_aQY3EY": {
+      "type": "after-service-order",
+      "settings": {
+        "policy_url": "shopify:\/\/pages\/hassle-free-return-policy"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "after_service_order_aQY3EY"
+  ]
+}

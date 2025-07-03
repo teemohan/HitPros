@@ -1,0 +1,118 @@
+<style>
+  @media screen and (min-width: 741px) {
+    .main-collection2-page .page-header__text-wrapper {
+      text-align: left;
+      max-width: unset;
+      margin-bottom: 0;
+    }
+    .main-collection2-page .page-header__text-wrapper .heading {
+      margin-bottom: 10px !important;
+      text-transform: capitalize;
+    }   
+    .main-collection2-page .page-content {
+      max-width: unset !important;
+      line-height: 1.3 !important;
+      color: var(--my-grey);
+    }
+  }
+
+  @media screen and (max-width: 740px) {
+    .main-collection2-page .page-header__text-wrapper {
+      text-align: left;
+      max-width: unset;
+      margin-top: 54px;
+      margin-bottom: 0;
+    }
+    .main-collection2-page .page-header__text-wrapper .heading {
+      font-size: 20px !important;
+      margin-bottom: 15px !important;
+      text-transform: capitalize;
+    }   
+    .main-collection2-page .page-content {
+      max-width: unset !important;
+      font-size: 14px !important;
+      line-height: 1.3 !important;
+      color: var(--my-grey);
+    }
+  }
+  
+</style>
+
+<section>
+  <div class="container">
+    <div class="page-header">
+      <nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="breadcrumb breadcrumb--floating text--xsmall">
+        <ol class="breadcrumb__list" role="list">
+          <li class="breadcrumb__item">
+            <a class="breadcrumb__link" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+          </li>
+          <li class="breadcrumb__item">
+            <a class="breadcrumb__link" href="/pages/all-product-categories">All Categories</a>
+          </li>
+          <li class="breadcrumb__item">
+            <span class="breadcrumb__link title" aria-current="page"></span>
+          </li>
+        </ol>
+      </nav>
+
+      <div class="page-header__text-wrapper text-container">
+        {%- if section.settings.show_title -%}
+          <h1 class="heading h2 ol-my-28"></h1>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="page-content page-content--{{ section.settings.page_width }} rte ol-my-16">
+    </div>
+  </div>
+</section>
+<script>
+  (() => {
+    const params = new URLSearchParams(window.location.href.split('?')[1]);
+    const title = params.get('title')
+    $('.main-collection2-page .heading, .main-collection2-page .title').text(title)
+    const all_collection = [
+      {% for collection in collections %}
+        {
+          "title": "{{ collection.title }}",
+          "description": "{{ collection.description }}"
+        },
+      {% endfor %}
+    ]
+    const collection = all_collection.find(item => item.title == title);
+    $('.main-collection2-page .page-content').text(collection.description);
+  })();
+</script>
+{% schema %}
+{
+  "name": "Main Collection2 Page",
+  "class": "main-collection2-page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "page_width",
+      "label": "Page width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    }
+  ]
+}
+{% endschema %}

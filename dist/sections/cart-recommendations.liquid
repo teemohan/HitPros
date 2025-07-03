@@ -1,0 +1,119 @@
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+<div
+  class="js-cart-recommendations product-recommendations {{ section.id }} product-x-hidde bg-EAEEF1 py-6 fb-sm:py-17 hidden"
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ cart.items.first.product_id }}&limit=12"
+>
+  {%- assign acceptable_recommendations_count = 0 -%}
+
+  {%- for product in recommendations.products -%}
+    {%- assign matching_product = cart.items | where: 'product_id', product.id | first -%}
+
+    {%- if matching_product == blank -%}
+      {%- assign acceptable_recommendations_count = acceptable_recommendations_count | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if recommendations.performed and acceptable_recommendations_count > 0 -%}
+    <div class="container cl-container">
+      <div class="index-cus-header">
+        <h2>{{ section.settings.title }}</h2>
+        {% render 'swiper-buttons' %}
+      </div>
+      <div class="IndexBestswiper">
+        <div class="swiper">
+          <div class="swiper-wrapper">
+            {% assign recommendations_products  = recommendations.products %}
+            {%- for product in recommendations_products -%}
+              <div class="swiper-slide">
+                {%- render 'index-product-item', product: product -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="swiper-scrollbar"></div>
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+  (() => {
+    const handleIntersection = () => {
+      const productRecommendationsSection = document.querySelector('.product-recommendations');
+      const url = productRecommendationsSection.dataset.url;
+      fetch(url)
+        .then((response) => response.text())
+        .then((text) => {
+          if(!text || text.trim().length === 0) {
+            return false
+          }
+          const html = document.createElement('div');
+          html.innerHTML = text;
+          const recommendations = html.querySelector('.product-recommendations');
+          if (recommendations && recommendations.innerHTML.trim().length) {
+            document.querySelector('.js-cart-recommendations').classList.remove('hidden')
+            productRecommendationsSection.innerHTML = recommendations.innerHTML; 
+            var cartalsolikeSwiper = new Swiper(".{{ section.id }} .swiper", {
+              observer: true,
+              observeParents: true,
+              touchStartPreventDefault: true,
+              passiveListeners: false,
+              touchAngle: 70,              
+              threshold: 10,
+              breakpoints: {
+                0: {
+                  spaceBetween: 12,
+                  slidesPerView: 2,
+                },
+                768: {
+                  spaceBetween: 24,
+                  slidesPerView: 3,
+                },
+                1024: {
+                  spaceBetween: 24,
+                  slidesPerView: 4,
+                },
+                1280: {
+                  spaceBetween: 24,
+                  slidesPerView: 5,
+                },
+              },
+              scrollbar: {
+                el:".{{ section.id }} .swiper-scrollbar"
+              },
+              navigation: {
+                nextEl: ".{{ section.id }} .swiper-button-next",
+                prevEl: ".{{ section.id }} .swiper-button-prev",
+              }
+            });
+          }
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    };
+    handleIntersection()
+    {% comment %} const productRecommendationsSection = document.querySelector('.product-recommendations');
+    const observer = new IntersectionObserver(handleIntersection, { rootMargin: '0px 0px 200px 0px' });
+    observer.observe(productRecommendationsSection); {% endcomment %}
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Cart recommendations",
+  "class": "shopify-section--cart-recommendations product-swiper-list",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Dynamic recommendations are based on the items in your cart. They change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "You may also like"
+    }
+  ]
+}
+{% endschema %}

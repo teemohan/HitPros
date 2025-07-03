@@ -1,0 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection_landing_banner_fyYgD7": {
+      "type": "collection-landing-banner",
+      "settings": {
+        "free_tip": "FREE shipping on orders of $75+",
+        "text_width": 48,
+        "title": "Essential Safety & PPE ",
+        "title_color": "#fabe00",
+        "text": "<p>Stay safe and compliant on the job </p>",
+        "text_color": "#ffffff",
+        "bg_img": "shopify://shop_images/Group_423_1.png",
+        "h5_bg_img": "shopify://shop_images/Group_426.png"
+      }
+    },
+    "main_collection_landing_9HCtJm": {
+      "type": "main-collection-landing",
+      "settings": {
+        "title": "Shop Everyday Safety",
+        "show_view_all": false
+      }
+    }
+  },
+  "order": [
+    "collection_landing_banner_fyYgD7",
+    "main_collection_landing_9HCtJm"
+  ]
+}

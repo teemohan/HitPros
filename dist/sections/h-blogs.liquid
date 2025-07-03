@@ -1,0 +1,80 @@
+<div class="{{ section.id }} product-x-hidde">
+  <div class="container cl-container">
+    <div class="index-cus-header">
+      <h2>{{ section.settings.title }}</h2>
+      {% render 'swiper-buttons' %}
+    </div>
+    <div class="IndexBestswiper">
+      <div class="swiper {{ section.id }}-IndexBestswiper">
+        <div class="swiper-wrapper">
+          {% for article in section.settings.blog.articles %}
+            <div class="swiper-slide">
+              {% render 'article-common-item', article: article %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <div class="swiper-scrollbar"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    new Swiper(".{{ section.id }}-IndexBestswiper", {
+      observer: true,
+      observeParents: true,
+      touchStartPreventDefault: true,
+      passiveListeners: false,
+      touchAngle: 70,              
+      threshold: 10,
+      breakpoints: {
+        0: {
+          spaceBetween: 12,
+          slidesPerView: 1,
+        },
+        768: {
+          spaceBetween: 20,
+          slidesPerView: 2.2,
+        },
+        1280: {
+          spaceBetween: 20,
+          slidesPerView: 3.2,
+        },
+      },
+      scrollbar: {
+          el: ".{{ section.id }} .swiper-scrollbar"
+        },
+      navigation: {
+        nextEl: ".{{ section.id }} .swiper-button-next",
+        prevEl: ".{{ section.id }} .swiper-button-prev",
+      },
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "h-blogs",
+  "class": "section-gap h-blogs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "Blogs"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "blog"
+    }
+  ],
+  "presets": [
+    {
+      "name": "h-blogs"
+    }
+  ]
+}
+{% endschema %}

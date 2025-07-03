@@ -1,0 +1,513 @@
+{{ 'account-wish.css' | asset_url | stylesheet_tag }}
+<template id="accountWish">
+  <div class="account-main-container account-wish">
+    <header class="account-item-header-wrapper">
+      <div class="account-item-header">
+        <h1>My List</h1>
+        <div v-if="total > 0" class="account-wish-header none-copy hidden-tablet-and-up">
+          <div class="account-action">
+            <el-button @click="handleClearAllWish" type="text">Remove All</el-button>
+            <el-button
+              type="text"
+              :loading="all_selected_loading"
+              @click="handleAddToCart({type: 'all'})"
+              >Add All to Cart</el-button
+            >
+          </div>
+        </div>
+      </div>
+      <div class="account-item-num-wrapper">
+        <span class="account-item-num">${ total } ${ total == 0 || total == 1 ? 'item' : 'items' }</span>
+        <div v-if="wishList.length > 0" class="account-wish-header none-copy hidden-phone">
+          <div class="account-action">
+            <el-button :loading="clear_all_loading" type="text" @click="handleClearAllWish">Clear All</el-button>
+            <span class="dot"></span>
+            <el-button
+              type="text"
+              :loading="all_selected_loading"
+              @click="handleAddToCart({type: 'all'})"
+              >Add All to Cart</el-button
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="skeleton-wrapper" v-if="list_loading">
+      <el-skeleton :rows="6" :animated="true" />
+    </div>
+    <template v-else-if="wishList.length > 0">
+      <div class="account-list-wrapper">
+        <div class="account-wish-item" v-for="(item, idx) in wishList" :key="item.id">
+          <div class="account-wish-item-product hidden-phone">
+            <div class="product-img ">
+              <img :src="item.featuredImage" alt="Product Image" width="auto" height="auto">
+            </div>
+            <div class="product-info">
+              <div class="global-vendor">
+                <a :href="`/collections/vendors?q=${item.vendor}`">${ item.brand }</a>
+              </div>
+              <p class="product-name global-title ellipsis2">
+                <a :href="`/products/${item.handle}`">${ item.title }</a>
+              </p>
+              <span class="product-sku">Model: ${ item.model }</span>
+            </div>
+          </div>
+          <div class="account-wish-item-action hidden-phone">
+            <header>
+              <div class="cus-price-list">
+                <div class="price">$${ item.price }</div>
+                <div v-if="item.compareAtPrice" class="discount-price">
+                  <span>$${ item.compareAtPrice }</span>
+                  <span>${item.discountPercent}%OFF</span>
+                </div>
+              </div>
+              <div class="stock-label-container">
+                <template v-if="item.totalInventory <= 0">
+                  <span class="coming-stock stock-tag">Restocking</span>
+                </template>
+                <template v-else-if="item.totalInventory >= item.quantity">
+                  <span class="instock-ready stock-tag">In Stock</span>
+                </template>
+                <template v-else>
+                  <span class="instock-partial stock-tag">In Stock</span>
+                </template>
+              </div>
+            </header>
+            <main>
+              <div class="account-wish-counter">
+                <button @click="decrement(item)">
+                  {% render 'icon' with 'v3-counter-minus' %}
+                </button>
+                <input max="1000000" :data-demand="item.quantity" :data-input-varid="item.variantId" type="text" @change="handleValueChange(item, $event)" v-model="item.quantity">
+                <button @click="increment(item)">
+                  {% render 'icon' with 'v3-counter-plus' %}
+                </button>
+              </div>
+            </main>
+            <footer>
+              <el-button :loading="item.btn_remove_loading" type="text" @click="removeWishItem(item)">Remove</el-button>
+              <el-button
+                type="primary"
+                :disabled="!item.availableForSale"
+                :loading="item.btn_loading"
+                @click="handleAddToCart({type: 'single', productItem: item})"
+              >
+                ${ item.availableForSale ? "Add to Cart" : "Sold Out" }
+              </el-button>
+            </footer>
+          </div>
+          <div class="hidden-tablet-and-up">
+            <div class="product-img">
+              <img :src="item.featuredImage" alt="Product Image" width="auto" height="auto">
+            </div>
+          </div>
+          <div class="hidden-tablet-and-up">
+            <div class="account-wish-item-product">
+              <div class="cus-price-list">
+                <div class="price">
+                  $${ item.price }
+                  <div class="stock-label-container">
+                    <template v-if="item.totalInventory <= 0">
+                      <span class="coming-stock stock-tag">Restocking</span>
+                    </template>
+                    <template v-else-if="item.totalInventory >= item.quantity">
+                      <span class="instock-ready stock-tag">In Stock</span>
+                    </template>
+                    <template v-else>
+                      <span class="instock-partial stock-tag">In Stock</span>
+                    </template>
+                  </div>
+                </div>
+                <div v-if="item.compareAtPrice" class="discount-price">
+                  <span>$${ item.compareAtPrice }</span>
+                  <span>${item.discountPercent}%OFF</span>
+                </div>
+              </div>
+              <div class="product-info">
+                <div class="global-vendor">
+                  <a :href="`/collections/vendors?q=${item.vendor}`">${ item.brand }</a>
+                </div>
+                <p class="product-name global-title ellipsis2">
+                  <a :href="`/products/${item.handle}`">${ item.title }</a>
+                </p>
+                <span class="product-sku global-sku">Model: ${ item.model }</span>
+              </div>
+            </div>
+            <div class="account-wish-item-action">
+              <main>
+                <div class="account-wish-counter">
+                  <button @click="decrement(item)">
+                    {% render 'icon' with 'v3-counter-minus' %}
+                  </button>
+                  <input :data-demand="item.quantity" :data-input-varid="item.variantId" @change="handleValueChange(item, $event)" type="text"  v-model="item.quantity">
+                  <button @click="increment(item)">
+                    {% render 'icon' with 'v3-counter-plus' %}
+                  </button>
+                </div>
+              </main>
+              <footer>
+                <el-button
+                  type="primary"
+                  :disabled="!item.availableForSale"
+                  :loading="item.btn_loading"
+                  @click="handleAddToCart({type: 'single', productItem: item})"
+                >
+                  ${ item.availableForSale ? "Add to Cart" : "Sold Out" }
+                </el-button>
+                <el-button :loading="item.btn_remove_loading" type="text" @click="removeWishItem(item)">Remove</el-button>
+              </footer>
+            </div>
+          </div>
+        </div>
+      </div>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :current-page.sync="queryParam.page"
+        :page-size="queryParam.pageSize"
+        :total="total"
+        @current-change="handlePageChange"
+      >
+      </el-pagination>
+    </template>
+    <div class="empty-notify" v-else>
+      <p>No records found. </p>
+      <a href="/collections/all">Add Now</a>
+    </div>
+  </div>
+</template>
+<script> 
+  (() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('slug') === 'account-wish') {
+      const ip = Cookies.get('ip');
+      if(ip) {
+        dataLayer.push({
+          'event': 'custom_wishlist_viewed',
+          'zip': '{{ customer.default_address.zip  }}',   
+          'username': '{{customer.name }}',
+          'email':'{{ customer.email }}',
+          'ip': ip
+        });
+      }
+    }
+    window.accountWish = {
+      template:'#accountWish',
+      delimiters: ['${', '}'],
+      mounted(){
+        this.initList()
+      },
+      data(){
+        return {
+          wishList: [],
+          total: 0,
+          clear_all_loading: false,
+          all_selected_loading: false,
+          list_loading: true,
+          selectAllValue: false,
+          queryParam: {
+            page: 1,
+            pageSize: 10,
+            customerId: {{ customer.id }}
+          }
+        }
+      },
+      methods: {
+        async setLineAttr(cartItems) {
+          const response = await fetch('/cart.js');
+          const res = await response.json();
+          if(res.items.length == 0) return;
+          cartItems.map(cartItem => {
+            const line_item = res.items.find(item => item.id == cartItem.id);
+            if(line_item) cartItem.properties = line_item.properties;
+          })
+        },
+        handlePageChange(newPage) {
+          this.queryParam.page = newPage;
+          this.initList();
+        },
+        async handleClearAllWish() {
+          const param = {
+            customerId: {{ customer.id }}
+          }
+          this.clear_all_loading = true;
+          try {
+            const res = await fetch(`${window.zkh.api}/wish/clear/all`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(param)
+            })
+            const data = await res.json()
+            if(data.code === 200) {
+              this.wishList = []
+              this.total = 0;
+              document.dispatchEvent(new CustomEvent('wish-refreash'));
+            }
+          } catch (error) {
+            this.$message({
+              showClose: true,
+              message: error,
+              type: 'warning'
+            });
+          } finally {
+            this.clear_all_loading = false;
+          }
+        },
+        debounce(func, wait) {
+          let timeout;
+          return function(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+              func.apply(this, args);
+            }, wait);
+          };
+        },
+        handleValueChange(item, event) {
+          const positiveIntegerRegex = /^[1-9]\d*$/;
+          let quantity = event.target.value;
+          if(!positiveIntegerRegex.test(quantity) || quantity < item.moq) {
+            quantity = item.moq;
+          }
+          item.quantity = Math.ceil((quantity - item.moq) / item.mpq) * item.mpq + item.moq;
+          if(item.quantity > 1000000) {
+            item.quantity = 1000000;
+          }
+        },
+        async getProductData(id) {
+          const url = `${window.zkh.api}/graphQL/api`; 
+          const headers = {
+            'Content-Type': 'application/json',
+          };
+          const shopifyProductId = `gid://shopify/Product/${id}`
+          try {
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: headers,
+              body: JSON.stringify({ 
+                shopifyProductId
+              }),
+            })
+            const res = await response.json()
+            const graphqlNode = res.data
+            if(!graphqlNode) return null
+            const graphqlVariant = res.data.variants.edges[0].node
+            const variantId = graphqlVariant.id.split('/')
+            const productId = graphqlNode.id.split('/')
+            const resData = {
+              handle: graphqlNode.handle,
+              vendor: graphqlNode.vendor,
+              title: graphqlNode.title,
+              totalInventory: graphqlNode.totalInventory,
+              featuredImage: graphqlNode.featuredImage?.url,
+              moq: Number(graphqlNode.moq?.value) || 1, 
+              mpq: Number(graphqlNode.mpq?.value) || 1, 
+              model: graphqlNode.manufacturer_model_number?.value, 
+              brand: graphqlNode.brand?.value, 
+              quantity: Number(graphqlNode.moq?.value) || 1,
+              btn_loading: false,
+              btn_remove_loading: false,
+              sku: graphqlVariant.sku,
+              variantId: +variantId[variantId.length - 1],
+              productId: +productId[productId.length - 1],
+              price: graphqlVariant.price,
+              compareAtPrice: graphqlVariant.compareAtPrice,
+              inventoryPolicy: graphqlVariant.inventoryPolicy,
+              availableForSale: graphqlVariant.availableForSale,
+              isSelected: false
+            }
+            resData.discountPercent = Math.ceil(resData.compareAtPrice? ((resData.compareAtPrice - resData.price) / resData.compareAtPrice) * 100 : 0)
+            return resData
+          } catch (error) {
+          }
+        },
+        initList(){
+          fetch(`${window.zkh.api}/wish/list`, {
+            method: 'POST',
+            headers:{
+              'Content-Type':'application/json',
+            },
+            body: JSON.stringify(this.queryParam)
+          })
+          .then(response => response.json())
+          .then(data => {
+            this.total = data.data.total;
+            const productIdList = data.data.list.map(item => item.productId)
+            const fetchProductList = productIdList.map(productId => this.getProductData(productId))
+            Promise.all(fetchProductList).then(data => {
+              this.wishList = data
+            }).finally(() => {
+              this.list_loading = false
+            })
+          })
+        },
+        handleSelectToggle(type) {  
+          if(type === 1) {
+            this.selectAllValue = !this.selectAllValue
+            this.selectAllValue ? 
+            this.wishList.map(item => { item.isSelected = true }) : 
+            this.wishList.map(item => { item.isSelected = false })
+          } else if(type === 0) {
+            this.selectAllValue = false
+            this.wishList.map(item => { item.isSelected = false })
+          }
+        },
+        handleSelectItem(productItem) { 
+          productItem.isSelected = !productItem.isSelected
+          this.selectAllValue = this.wishList.every(item => item.isSelected)
+        },
+        async handleAddToCart({type, productItem}) {
+          let param
+          if(type === 'all') {
+            const response = await fetch(`${window.zkh.api}/wish/list`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                page: 1,
+                pageSize: this.total,
+                customerId: {{ customer.id }}
+              })
+            });
+            const res = await response.json();
+            param = {
+              items: res.data.list.map(item => {
+                const product = this.wishList.find(i => i.variantId == item.variantId);
+                return {
+                  id: item.variantId,
+                  quantity: product?.quantity ?? item.productNum,
+                };
+              })
+            }
+            this.all_selected_loading = true;
+          } else if(type === 'single'){
+            param = {
+              items: [{
+                id: productItem.variantId,
+                quantity: productItem.quantity,
+              }]
+            }
+            productItem.btn_loading = true;
+          }
+          await this.setLineAttr(param.items); 
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(param)
+          })
+          const responseJson = await response.json();
+          let errorMsg;
+          if (response.ok) {
+            document.documentElement.dispatchEvent(
+              new CustomEvent('variant:added', {
+                bubbles: true,
+                detail: {
+                  variant: responseJson.hasOwnProperty('items') ? responseJson['items'][0] : responseJson,
+                },
+              })
+            );
+            fetch(`${window.themeVariables.routes.cartUrl}.js`).then(async (response2) => {
+              const cartContent = await response2.json();
+              document.documentElement.dispatchEvent(
+                new CustomEvent('cart:updated', {
+                  bubbles: true,
+                  detail: {
+                    cart: cartContent,
+                  },
+                })
+              );
+              cartContent['sections'] = responseJson['sections'];
+              document.documentElement.dispatchEvent(
+                new CustomEvent('cart:refresh', {
+                  bubbles: true,
+                  detail: {
+                    cart: cartContent,
+                    openMiniCart: window.themeVariables.settings.cartType === 'drawer',
+                  },
+                })
+              );
+            });
+          } else {
+            if (responseJson['description'].endsWith('are in your cart.')) {
+              errorMsg = 'Your cart already contains all available stock Unable to add more';
+            } else if (responseJson['description'].endsWith('to the cart.')) {
+              errorMsg =
+                'The available stock has been added to your cart，the excess quantity beyond available stock cannot be added';
+            }
+          }
+          document.documentElement.dispatchEvent(
+            new CustomEvent('cart-notification:show', {
+              bubbles: true,
+              cancelable: true,
+              detail: {
+                status: response.ok ? 'success' : 'error',
+                error: errorMsg || responseJson['description'] || '',
+              },
+            })
+          );
+
+          if(type === 'all') {
+            this.all_selected_loading = false;
+          } else if(type === 'single'){
+            productItem.btn_loading = false;
+          }
+         
+        },
+        async removeWishItem(productItem) {
+          const param = {
+            customerId: {{ customer.id }},
+            productId: productItem.productId,
+            sku: productItem.sku
+          }
+          productItem.btn_remove_loading = true;
+          try {
+            const res = await fetch(`${window.zkh.api}/wish/clear`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(param)
+            })
+            const data = await res.json()
+            if(data.code === 200) {
+              if(this.wishList.length == 1 && this.queryParam.page != 1) this.queryParam.page = this.queryParam.page - 1
+              this.initList();
+              document.dispatchEvent(new CustomEvent('wish-refreash'));
+            }
+          } catch (error) {
+            this.$message({
+              showClose: true,
+              message: error,
+              type: 'warning'
+            });
+          } finally {
+            productItem.btn_remove_loading = false;
+          }
+        },
+        increment(productItem) {
+          productItem.quantity += productItem.mpq;
+          if (productItem.quantity > 1000000) {
+            productItem.quantity = 1000000;
+          }
+          if(productItem.inventoryPolicy != 'CONTINUE' && productItem.quantity > productItem.totalInventory) {
+            productItem.quantity = productItem.totalInventory;
+            this.$message({
+              showClose: true,
+              message: `The maximum quantity available is ${productItem.totalInventory}`,
+              type: 'warning'
+            });
+          }
+        },
+        decrement(productItem) {
+          if (productItem.quantity > productItem.moq) {
+            productItem.quantity -= productItem.mpq;
+          }
+        }
+      }
+    } 
+  })();
+</script>

@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "show_title": false,
+        "page_width": "medium",
+        "secondary-directory": "Customer Service",
+        "secondary-directory-link": "\/account?slug=account-service",
+        "third-directory": "Refund Detail"
+      }
+    },
+    "refund_detail_qnnDmR": {
+      "type": "refund-detail",
+      "settings": {
+        "policy_url": "shopify:\/\/pages\/hassle-free-return-policy"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "refund_detail_qnnDmR"
+  ]
+}

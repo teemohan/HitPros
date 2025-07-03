@@ -1,0 +1,105 @@
+{{ 'mobile-menu-sidebar.css' | asset_url | stylesheet_tag }}
+<mobile-menu-sidebar>
+  <div id="mobile-menu-nav" class="mobile-menu-nav">
+    <div class="menu-nav-wrapper">
+      <div class="menu-nav" v-if="menuStack.length < 2">
+        <header>
+          <div class="title">
+            <span>Menu</span>
+            <span class="close" @click="closeMenu">
+              {%- render 'icon' with 'menu-close' -%}
+            </span>
+          </div>
+          <div class="user-account">
+            {%- render 'icon' with 'menu-user' -%}
+            {% if customer %}
+              <a href="/account/">
+                {{ customer.name }}
+              </a>
+            {% else %}
+              <a href="/account/login">
+                Sign in
+              </a>
+            {% endif %}
+            </div>
+        </header>
+        <main>
+          <div class="main-title">Product Categories</div>
+          <ul>
+            <li v-for="(menu, idx) in showMenu" :key="idx" @click.top="navToCollection(menu)">
+              <img :data-src="menu.img"   v-lazy :title="menu.name"  class="lazy-image"  />
+              <span>${ menu.name }</span>
+              <span class="arrow" v-if="menu.children?.length > 0" @click.stop="navToCollection(menu)">
+                {%- render 'icon' with 'menu-arrow-right' -%}
+              </span>
+            </li>
+          </ul>
+        </main>
+        <footer>
+          <a href="/pages/about-us" class="link-item">About Us</a>
+          <a href="/pages/help" class="link-item">Help</a>
+          <a href="/blogs/industry-insights"  class="link-item">Blog</a>
+          <div class="social-media-link">
+            {%- if settings.social_facebook != blank -%}
+              <li class="social-media__item social-media__item--facebook">
+                <a href="{{ settings.social_facebook | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Facebook' }}">
+                  {%- render 'icon' with 'menu-facebook' -%}
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_instagram != blank -%}
+              <li class="social-media__item social-media__item--instagram">
+                <a href="{{ settings.social_instagram | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Instagram' }}">
+                  {%- render 'icon' with 'menu-instagram' -%}
+                </a>
+              </li>
+            {%- endif -%}
+
+            {%- if settings.social_youtube != blank -%}
+              {%- assign active_accounts = active_accounts | plus: 1 -%}
+          
+              <li class="social-media__item social-media__item--youtube">
+                <a href="{{ settings.social_youtube | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'YouTube' }}">
+                  {%- render 'icon' with 'menu-youtube' -%}
+                </a>
+              </li>
+            {%- endif -%}
+
+            {%- if settings.social_linkedin != blank -%}
+              {%- assign active_accounts = active_accounts | plus: 1 -%}
+          
+              <li class="social-media__item social-media__item--linkedin">
+                <a href="{{ settings.social_linkedin | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'LinkedIn' }}">
+                  {%- render 'icon' with 'menu-linkedin' -%}
+                </a>
+              </li>
+            {%- endif -%}
+          </div>
+        </footer>
+      </div>
+      <div class="menu-nav-next" v-else>
+        <div class="menu-header" @click.top="menuNavToBack">
+          {%- render 'icon' with 'menu-arrow-left' -%}
+          <span>
+            Main Menu
+          </span>
+        </div>
+        <main>
+          <div class="main-title">
+            <span>${ showMenu.name }</span>
+            <a :href="`/collections/${showMenu.handle}`">View All</a>
+          </div>
+          <ul>
+            <li v-for="(menu, idx) in showMenu.children" :key="idx"  @click.top="navToCollection(menu)">
+              <img :data-src="menu.img" class="lazy-image" v-lazy :title="menu.name">
+              <span>${ menu.name }</span>
+              <span class="arrow"  v-if="menu.children?.length > 0" @click.stop="navToCollection(menu)">
+                {%- render 'icon' with 'menu-arrow-right' -%}
+              </span>
+            </li>
+          </ul>
+        </main>
+      </div>
+    </div>
+  </div>
+</mobile-menu-sidebar>

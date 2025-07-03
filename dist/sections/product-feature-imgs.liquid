@@ -1,0 +1,285 @@
+{{ 'product-feature-imgs.css' | asset_url | stylesheet_tag }}
+
+<div id="feature-imgs" class="feature-imgs">
+  {% assign imgsArr = product.metafields.product.pdp.value %}
+  {% if imgsArr.size > 0 %}
+    {% for item in imgsArr %}
+      {%- assign is_hase_media = ''  -%}
+      {%- if item.imageData.imageOne.contentType contains 'image' or  item.imageData.imageOne.contentType contains 'video' -%}
+        {%- assign is_hase_media = 'min-h-media'  -%}
+      {%- endif -%}
+      {% if item.templateType == 0 or item.templateType == 1 %}
+        <div class="feature-imgs-item type-01 {{ is_hase_media }}">
+          {% if item.imageData.imageOne.contentType contains 'image' %}
+            <div class="img-wrapper">
+              <img src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+            </div>
+          {% elsif item.imageData.imageOne.contentType contains 'video' %}
+            <div class="video-wrapper">
+              <video controls muted src="{{ item.imageData.imageOne.objectUrl }}" alt="{{ item.imageData.altTagOne }}"></video>
+            </div>
+          {% endif %}
+        </div>
+      {% elsif item.templateType == 2 or item.templateType == 3 %}
+        <div class="feature-imgs-item type-23 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %} {{ is_hase_media }}">
+          <div class="img-text-wrapper">
+            <div class="text-container">
+              <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+              <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
+            </div>
+          </div>
+          <div class="img-wrapper">
+            <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+          </div>
+        </div>
+      {% elsif item.templateType == 4 %}
+        <div class="feature-imgs-item type-45 bgColorType{{ item.bgColorType }} {{ is_hase_media }}">
+          <div class="img-text-wrapper">
+            <div class="text-container">
+              <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+              <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
+            </div>
+            <div class="img-wrapper hidden-phone">
+              <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+            </div>
+          </div>
+          <div class="img-wrapper">
+            <img class="lazyload" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
+            <img class="lazyload hidden-tablet-and-up" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+          </div>
+        </div>
+      {% elsif item.templateType == 5 %}
+        <div class="feature-imgs-item type-45 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %} {{ is_hase_media }}">
+          <div class="img-wrapper">
+            <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+            <img class="lazyload hidden-tablet-and-up" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
+          </div>
+          <div class="img-text-wrapper">
+            <div class="text-container">
+              <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+              <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
+            </div>
+            <div class="img-wrapper hidden-phone">
+              <img class="lazyload" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
+            </div>
+          </div>
+        </div>
+      {% elsif item.templateType == 6 %}
+        <div class="feature-imgs-item type-6 bgColorType{{ item.bgColorType }} {{ is_hase_media }}">
+          <div class="img-wrapper">
+            <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+          </div>
+          <div class="img-wrapper">
+            <img class="lazyload" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
+          </div>
+        </div>
+      {% elsif item.templateType == 7 or item.templateType == 8 %}
+        <div class="feature-imgs-item type-78 bgColorType{{ item.bgColorType }} {% if item.flag %}flag{% endif %} {{ is_hase_media }}">
+          <div class="img-text-wrapper">
+            <div class="text-container">
+              <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+              <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
+            </div>
+            <div class="img-wrapper">
+              <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+            </div>
+          </div>
+          <div class="img-text-wrapper">
+            <div class="text-container">
+              <h2 class="text-title">{{ item.imageData.featureTitleTwo }}</h2>
+              <div class="text-desc">{{ item.imageData.featureDescTwo | replace: '&nbsp;', ' ' }}</div>
+            </div>
+            <div class="img-wrapper">
+              <img class="lazyload" data-src="{{ item.imageData.imageTwo.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagTwo }}">
+            </div>
+          </div>
+        </div>
+      {% elsif item.templateType == 9 %}
+        <div class="feature-imgs-item type-9 bgColorType{{ item.bgColorType }} {{ is_hase_media }}">
+          <div class="text-container">
+            <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+            <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
+          </div>
+          <div class="img-wrapper">
+            <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne }}">
+          </div>
+        </div>
+      {% elsif item.templateType == 10 %}
+        <div class="feature-imgs-item2 type-10 bgColorType{{ item.bgColorType }} js-customer-table {{ is_hase_media }}">
+          <div class="img-text-wrapper">
+            <div class="text-container">
+              <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+              {% if item.imageData.featureDescOne != blank %}
+                <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="table-wrapper-common">
+            <table>
+              <thead>
+                <tr>
+                  {% for header in item.imageData.headerColumns %}
+                    <th>{{ header.label }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in item.imageData.tableData %}
+                  <tr>
+                    {% for header in item.imageData.headerColumns %}
+                      {% assign key = header.value %}
+                      <td>
+                        {% if row[key].objectUrl %}
+                          <img class="lazyload" data-src="{{ row[key].objectUrl }}" width="auto" height="auto" alt="{{ row[key].objectName | default: '' }}">
+                        {% else %}
+                          {{ row[key] }}
+                        {% endif %}
+                      </td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% elsif item.templateType == 11 %}
+        <div class="feature-imgs-item2 type-11 js-customer-table bgColorType{{ item.bgColorType }} {{ is_hase_media }}">
+          <div class="img-text-wrapper">
+            <div class="text-container">
+              <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+              {% if item.imageData.featureDescOne != blank %}
+                <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
+              {% endif %}
+            </div>
+          </div>
+          {% if item.imageData.imageOne.objectUrl %}
+          <div class="img-wrapper">
+            <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne | default: '' }}">
+          </div>
+          {% endif %}
+          <div class="table-wrapper-common">
+            <table>
+              <thead>
+                <tr>
+                  {% for header in item.imageData.headerColumns %}
+                    <th>{{ header.label }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in item.imageData.tableData %}
+                  <tr>
+                    {% for header in item.imageData.headerColumns %}
+                      {% assign key = header.value %}
+                      <td>
+                        {% if row[key].objectUrl %}
+                          <img class="lazyload" data-src="{{ row[key].objectUrl }}" width="auto" height="auto" alt="{{ row[key].objectName | default: '' }}">
+                        {% else %}
+                          {{ row[key] }}
+                        {% endif %}
+                      </td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% elsif item.templateType == 12 %}
+        {% capture dom_title %}
+          <div class="text-container">
+            <h2 class="text-title">{{ item.imageData.featureTitleOne }}</h2>
+            {% if item.imageData.featureDescOne != blank %}
+              <div class="text-desc">{{ item.imageData.featureDescOne | replace: '&nbsp;', ' ' }}</div>
+            {% endif %}
+          </div>
+        {% endcapture %}
+        <div class="feature-imgs-item2 type-12 bgColorType{{ item.bgColorType }} {{ is_hase_media }}">
+          <div class="img-text-wrapper mob-img-text-wrapper">
+            {{ dom_title }}
+          </div>
+          {% if item.imageData.imageOne.objectUrl %}
+          <div class="img-wrapper">
+            <img class="lazyload" data-src="{{ item.imageData.imageOne.objectUrl }}" width="100%" height="auto" alt="{{ item.imageData.altTagOne | default: '' }}">
+          </div>
+          {% endif %}
+          <div class="table-right-wrapper js-customer-table">
+            <div class="img-text-wrapper">
+               {{ dom_title }}
+            </div>
+            <div class="table-wrapper-common">
+              <table>
+                <thead>
+                  <tr>
+                    {% for header in item.imageData.headerColumns %}
+                      <th>{{ header.label }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in item.imageData.tableData %}
+                    <tr>
+                      {% for header in item.imageData.headerColumns %}
+                        {% assign key = header.value %}
+                        <td>
+                          {% if row[key].objectUrl %}
+                            <img class="lazyload" data-src="{{ row[key].objectUrl }}" width="auto" height="auto" alt="{{ row[key].objectName | default: '' }}">
+                          {% else %}
+                            {{ row[key] }}
+                          {% endif %}
+                        </td>
+                      {% endfor %}
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    try {
+      var imgsArr = {{ product.metafields.product.pdp.value | json }}
+      if (imgsArr && Array.isArray(imgsArr) && imgsArr.length > 0) {
+        document.querySelector(".product-anchor [data-target-id='feature-imgs-wrapper']").style.display = 'block';
+        document.querySelector('.product-anchor-sticky-wrapper').style.display = 'block';
+      } else {
+        document.querySelector('.feature-imgs-wrapper').style.display = 'none';
+        document.querySelector('.feature-imgs-wrapper').setAttribute('data-hide', 'true');
+        document.querySelector(".product-anchor [data-target-id='feature-imgs-wrapper']").style.display = 'none';
+        document.querySelector(".product-anchor [data-target-id='feature-imgs-wrapper']").setAttribute('data-hide', 'true');
+        
+        if (document.querySelectorAll(".product-anchor [data-hide='true']").length == 2) {
+          document.querySelector('.product-anchor-sticky-wrapper').style.display = 'none';
+        }
+      }
+    } catch (error) {
+      console.error('Error initializing feature images:', error);
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Feature Imgs",
+  "class": "container feature-imgs-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "Details"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Feature Imgs"
+    }
+  ]
+}
+{% endschema %}

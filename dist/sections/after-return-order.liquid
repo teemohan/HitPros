@@ -1,0 +1,501 @@
+{{ 'el-reset.css' | asset_url | stylesheet_tag }}
+{{ 'theme-v3.css' | asset_url | stylesheet_tag }}
+{{ 'main-customers-orders.css' | asset_url | stylesheet_tag }}
+<style>
+      .order-action {
+        margin-top: 40px;
+      }
+      #order_section {
+        display: none;
+      }
+     .{{ section.id }} .table-body .order-line-item-wrapper:last-child {
+       border: none;
+     }
+     .{{ section.id }} .order-line-item-wrapper .order-line-item {
+       flex: 1;
+     }
+     .{{ section.id }} .order-action{
+       height: 50px;
+       background: #f2f2f2;
+       flex-direction: row;
+       align-items: center;
+       padding-left: 20px;
+       justify-content: space-between;
+     }
+     .{{ section.id }} .select-all-wrapper{
+       display: flex;
+       align-items: center;
+       gap: 10px;
+     }
+     .{{ section.id }} .next-btn-wrapper{
+       height: 100%;
+     }
+     .{{ section.id }} .next-btn-wrapper .next-btn{
+       height: 100%;
+       border-radius: 0;
+     }
+
+     .{{ section.id }}  .order-action .next-btn-wrapper button[disabled]{
+       background-color: #cbcbcb;
+       cursor: not-allowed;
+     }
+     .return-policy {
+      margin-bottom: 24px;
+      line-height: 1;
+     }
+     .{{ section.id }} .return-policy a{
+       text-decoration: underline;
+       font-size: 14px;
+       color: #1a1a1a;
+     }
+     #shopify-section-{{ section.id }} .return-policy a{
+       text-decoration: underline;
+       font-size: 14px;
+       color: #1a1a1a;
+     }
+     .{{ section.id }} .copy-icon{
+       cursor: pointer;
+     }
+     .{{ section.id }} .order-line-item-wrapper__inner{
+       width: 100%;
+       display: flex;
+       gap:30px;
+     }
+     .{{ section.id }} .order-line-item-wrapper__inner .line-item-checkbox__title{
+       color: #999999;
+       font-size: 12px;
+       padding: 0;
+     }
+     .{{ section.id }} .order-line-item-wrapper__inner-checkbox{
+        line-height: 1;
+        gap: 8px;
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        justify-content: flex-end;
+     }
+
+     @media screen and (max-width: 740px) {
+      .product-info {
+        margin-bottom: 20px;
+      }
+       .{{ section.id }} .order-main-table{
+         padding:0;
+       }
+       .{{ section.id }} .status-item p{
+         margin-left: auto;
+       }
+       .{{ section.id }} .order-main-table{
+         border: none;
+       }
+       .{{ section.id }} .order-status-wrapper{
+         margin-bottom: 15px;
+         border: 1px solid var(--my-border);
+       }
+       .{{ section.id }} .table-body{
+         border: 1px solid var(--my-border);
+         padding: 0 10px;
+       }
+       .{{ section.id }} .order-line-item-wrapper{
+         padding: 15px 0;
+         flex-direction: column;
+       }
+       .{{ section.id }} .order-status{
+         padding: 10px;
+       }
+       .{{ section.id }} .order-line-item-wrapper__inner{
+         flex-direction: column;
+         gap:0;
+       }
+       .{{ section.id }} .order-line-item-wrapper__inner-checkbox{
+         flex-direction: row;
+       align-items: center;
+       justify-content: flex-start;
+       gap:5px;
+       }
+       .{{ section.id }} .product-detail{
+         gap: 5px;
+       }
+       .{{ section.id }} .product-detail p{
+         line-height: 1.3;
+         color: #142A6B;
+       }
+       .{{ section.id }} .order-line-item-wrapper__inner .layout-container{
+     margin-top: 10px;
+     padding-bottom: 0;
+   }
+   .{{ section.id }} .order-line-item-wrapper .hidden-tablet-and-up .item-info{
+     flex-direction: row;
+     align-items: center;
+     justify-content: space-between;
+   }
+     }
+</style>
+<div class="return-policy">
+  <a href="{{ section.settings.policy_url }}">View Policy</a>
+</div>
+<section id="order_section" class="order-section el-reset-from {{ section.id }}">
+  <div class="skeleton-wrapper" v-if="isFetching">
+    <el-skeleton :rows="6" :animated="true" />
+  </div>
+  <div v-else class="order-item" data-id="{{ order.id }}">
+    <div class="order-main">
+      <div class="order-main-wrapper">
+        <div class="order-main-table">
+          <div class="order-status-wrapper">
+            <div class="order-status">
+              <div class="status-item">
+                <span>Order Number:</span>
+                <p class="order-id">${ orderMain.name }</p>
+                <span class="copy-icon" @click="copyToClipboard(orderMain.name)">
+                  <svg
+                    t="1729757775593"
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="1857"
+                    width="12"
+                    height="12"
+                  >
+                    <path d="M924 862a40 40 0 0 1 0-80 20 20 0 0 0 20-20V100a20 20 0 0 0-20-20H262a20 20 0 0 0-20 20 40 40 0 0 1-80 0A100 100 0 0 1 262 0h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100z" fill="#808080" p-id="1858"></path><path d="M762 1024H100A100 100 0 0 1 0 924V262a100 100 0 0 1 100-100h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100zM100 242a20 20 0 0 0-20 20v662a20 20 0 0 0 20 20h662a20 20 0 0 0 20-20V262a20 20 0 0 0-20-20z" fill="#808080" p-id="1859"></path><path d="M431 807a40 40 0 0 1-40-40V419a40 40 0 0 1 80 0v348a40 40 0 0 1-40 40z" fill="#808080" p-id="1860"></path><path d="M605 633H257a40 40 0 0 1 0-80h348a40 40 0 0 1 0 80z" fill="#808080" p-id="1861"></path>
+                  </svg>
+                </span>
+              </div>
+              <div class="status-item">
+                <span>Order Date:</span>
+                <p>${ formateDate(orderMain.created_at)}</p>
+              </div>
+            </div>
+          </div>
+          <div class="table-body">
+            {% raw %}
+              <div
+                class="order-line-item-wrapper"
+                :class="{ active: order.current_quantity-order.fulfillable_quantity > 0 && Number(order.pre_tax_price) != 0 }"
+                v-for="(order, index) in orderMain.line_items"
+                :key="order.id"
+                :data-variant="order.variant_id"
+                v-show="order.current_quantity-order.fulfillable_quantity > 0 && Number(order.pre_tax_price) != 0"
+              >
+              <div class="order-line-item-wrapper__inner">
+                <div class="order-line-item-wrapper__inner-checkbox">
+                  <input
+                    :id="index"
+                    v-if="order.current_quantity-order.fulfillable_quantity > 0 && Number(order.pre_tax_price) != 0"
+                    type="checkbox"
+                    class="line-item-checkbox checkbox"
+                    @change="toggleSelection($event, index)"
+                  >
+                <label :for="index" class="line-item-checkbox__title">SELECT</label>
+                </div>
+              
+                <div
+                  class="order-line-item layout-container"
+                  :data-variant="order.variant_id"
+                  :data-quantity="order.current_quantity-order.fulfillable_quantity"
+                >
+                  <div class="product-info-wrapper">
+                    <span class="title hidden-phone">PRODUCT${index+1}</span>
+                    <div class="product-info">
+                      <div class="product-img">
+                        <img
+                          :src="order.imageUrl"
+                          width="auto"
+                          height="auto"
+                          alt="Product Image"
+                        >
+                      </div>
+                      <div class="product-detail">
+                        <span class="title hidden-tablet-and-up">PRODUCT${index+1}</span>
+                        <p class="ellipsis3 product-title">
+                          <a :href="order.productUrl">${ order.title }</a>
+                        </p>
+                        <span class="product-sku">Model: ${ order.model }</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="hidden-phone item-info">
+                    <span class="title">PROPERTY</span>
+                     <span v-if="Object.keys(order.salesAndCommon || {}).length > 0">
+                      <div v-for="(value, key) in order.salesAndCommon" :key="key" >
+                        <span>${ key }: </span><span>${ value }</span>
+                      </div>
+                    </span>
+                    <span v-else>-</span>
+                    
+                  </div>
+                  <div class="hidden-phone item-info">
+                    <span class="title">QTY</span>
+                    <span>${ order.current_quantity-order.fulfillable_quantity }</span>
+                  </div>
+                  <div class="hidden-phone item-info">
+                    <span class="title">PRICE</span>
+                    <span> ${ formatCurrency(order.price)}</span>
+                  </div>
+                  <div class="hidden-phone item-info">
+                    <span class="title">TOTAL</span>
+                    <span>${ formatCurrency(order.totalPrice)}</span>
+                  </div>
+                  <div class="hidden-phone item-info">
+                    <span class="title">STATUS</span>
+                    <span>${orderMain.financial_status};${ orderMain.fulfillment_status == 'partial' ? 'Partial Shipped' : orderMain.fulfillment_status}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden-tablet-and-up">
+                <div class="item-info">
+                  <span class="title">PROPERTY</span>
+                  <span>
+                    <span v-for="(value, key) in order.sales" :key="key" style="margin-right: 5px;">
+                      <span >${ key }: </span><span>${ value }</span>
+                    </span>
+                  </span>
+                </div>
+                <div class="item-info">
+                  <span class="title">QTY</span>
+                  <span>${ order.current_quantity-order.fulfillable_quantity }</span>
+                </div>
+                <div class="item-info">
+                  <span class="title">PRICE</span>
+                  <span> ${ formatCurrency(order.price)}</span>
+                </div>
+                <div class="item-info">
+                  <span class="title">TOTAL</span>
+                  <span>${ formatCurrency(order.totalPrice)}</span>
+                </div>
+                <div class="item-info">
+                  <span class="title">STATUS</span>
+                  <span>${ orderMain.fulfillment_status ? orderMain.fulfillment_status : orderMain.financial_status}</span>
+                </div>
+              </div>
+              </div>
+            {% endraw %}
+          </div>
+        </div>
+        <div class="order-action">
+          <div class="select-all-wrapper">
+            <input type="checkbox" class="checkbox" id="select-all" @change="toggleSelectAll($event)"> SELECT ALL
+          </div>
+          <div class="next-btn-wrapper">
+            <button class="next-btn el-button el-button--primary" disabled @click="goToNextPage">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  (() => {
+    new Vue({
+    el: '#order_section',
+    delimiters: ['${', '}'],
+    data() {
+      return {
+        param: null,
+        orderId: 0,
+        isFetching: true,
+        loading: false,
+        orderMain: {},
+        currencySymbols: {
+          USD: '$', // US Dollar
+          EUR: '€', // Euro
+          GBP: '£', // British Pound
+          JPY: '¥', // Japanese Yen
+          CNY: '¥', // Chinese Yuan
+          AUD: '$', // Australian Dollar
+          CAD: '$', // Canadian Dollar
+          CHF: 'CHF', // Swiss Franc
+          NZD: '$', // New Zealand Dollar
+          INR: '₹', // Indian Rupee
+          RUB: '₽', // Russian Ruble
+          KRW: '₩', // Korean Won
+          SGD: '$', // Singapore Dollar
+          HKD: '$', // Hong Kong Dollar
+          SEK: 'kr', // Swedish Krona
+          NOK: 'kr', // Norwegian Krone
+          TRY: '₺', // Turkish Lira
+          MXN: '$', // Mexican Peso
+          BRL: 'R$', // Brazilian Real
+          ZAR: 'R', // South African Rand
+        },
+      };
+    },
+    mounted() {
+      $('#order_section').show();
+      const orderId = Number(window.location.href.split('=')[1]);
+      $.ajax({
+        url: `${window.zkh.api}/order/${orderId}`,
+        method: 'GET',
+        success: (data) => {
+          this.orderMain = data.data.order;
+          this.orderMain.line_items = this.orderMain.line_items.map((item) => ({
+            ...item,
+            totalPrice: Number(item.price) * Number(item.current_quantity-item.fulfillable_quantity),
+          }));
+          this.isFetching = false;
+        },
+      });
+      this.orderId = orderId;
+    },
+    methods: {
+      toggleSelection(event, index) {
+        const lineItemWrapper = document.querySelectorAll('.order-line-item-wrapper')[index];
+        if (event.target.checked) {
+          lineItemWrapper.classList.add('selected');
+          lineItemWrapper.setAttribute('selected', true);
+        } else {
+          lineItemWrapper.classList.remove('selected');
+          lineItemWrapper.removeAttribute('selected');
+        }
+        this.checkIsAllSelected();
+        this.checkIsButtonAvailable();
+      },
+      toggleSelectAll(event) {
+        const checkboxes = document.querySelectorAll('.order-line-item-wrapper.active .line-item-checkbox');
+        const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper.active');
+        checkboxes.forEach((checkbox, index) => {
+          checkbox.checked = event.target.checked;
+          if (event.target.checked) {
+            lineItemWrappers[index].classList.add('selected');
+            lineItemWrappers[index].setAttribute('selected', true);
+          } else {
+            lineItemWrappers[index].classList.remove('selected');
+            lineItemWrappers[index].removeAttribute('selected');
+          }
+        });
+        this.checkIsButtonAvailable();
+      },
+      handleTrackLog({ name, email }) {
+        let nameId;
+        const base64Email = btoa(email);
+        if (name.startsWith('#')) {
+          nameId = name.split('#')[1];
+          window.location.href = `/apps/track123?order=%23${nameId}&id=${base64Email}`;
+        } else {
+          nameId = name;
+          window.location.href = `/apps/track123?order=${nameId}&id=${base64Email}`;
+        }
+      },
+      checkIsAllSelected() {
+        // Get all inputs under order-line-item-wrapper
+        const checkboxes = document.querySelectorAll('.order-line-item-wrapper.active .line-item-checkbox');
+        const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper.active');
+        let isAllSelected = true;
+        checkboxes.forEach((checkbox, index) => {
+          if (!checkbox.checked) {
+            isAllSelected = false;
+            return false;
+          }
+        });
+        if (isAllSelected) {
+          document.getElementById('select-all').checked = true;
+        } else {
+          document.getElementById('select-all').checked = false;
+        }
+      },
+      checkIsButtonAvailable() {
+        // Get all inputs under order-line-item-wrapper
+        const checkboxes = document.querySelectorAll('.order-line-item-wrapper.active .line-item-checkbox');
+        let isAnySelected = false;
+        // If any checkbox is selected, set isAnySelected to true
+        checkboxes.forEach((checkbox) => {
+          if (checkbox.checked) {
+            isAnySelected = true;
+          }
+        });
+        // Set button disabled state based on checkbox selection
+        if (isAnySelected) {
+          document.querySelector('.next-btn').removeAttribute('disabled');
+        } else {
+          document.querySelector('.next-btn').setAttribute('disabled', 'disabeld');
+        }
+      },
+      goToNextPage() {
+        // Redirect to refund page
+        window.location.href = `/pages/after-return-return-request-details?id=${this.orderId}${this.collectSelectedItems()}`;
+        this.clearChecked();
+      },
+      collectSelectedItems() {
+        // Get selected product information
+        let selectedItems = '';
+        const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper');
+        lineItemWrappers.forEach((lineItemWrapper, index) => {
+          if (lineItemWrapper.hasAttribute('selected')) {
+            const variantId = lineItemWrapper.getAttribute('data-variant');
+            selectedItems += `&product${index}=${variantId}`;
+          }
+        });
+        return selectedItems;
+      },
+      clearChecked() {
+        // Clear all selected states
+        const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper');
+        lineItemWrappers.forEach((lineItemWrapper) => {
+          lineItemWrapper.querySelector('.line-item-checkbox').checked = false;
+        });
+        document.getElementById('select-all').checked = false;
+      },
+      formateDate(dateString) {
+        if (dateString) {
+          // Create date object (auto parse timezone offset)
+          const date = new Date(dateString);
+          date.setMilliseconds(0); // Set milliseconds to 0
+          // Convert datetime to specified timezone (GMT-0500)
+          const offset = -5 * 60; // GMT-0500 to minutes
+          const localTime = new Date(date.getTime() + (date.getTimezoneOffset() + offset) * 60000);
+          // Format month (abbreviated with dot)
+          const monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
+          const month = monthNames[localTime.getMonth()];
+          // Format date and year
+          const day = localTime.getDate();
+          const year = localTime.getFullYear();
+          // Format hours (12-hour format)
+          let hours = localTime.getHours();
+          const period = hours >= 12 ? 'PM' : 'AM';
+          hours = hours % 12 || 12; // Convert to 12-hour format
+          const minutes = String(localTime.getMinutes()).padStart(2, '0');
+          const seconds = String(localTime.getSeconds()).padStart(2, '0');
+          // Return formatted date string
+          return `${month} ${day}, ${year} at ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${period}`;
+        }
+      },
+      formatCurrency(price) {
+        const currency = this.orderMain.currency;
+        const symbol = this.currencySymbols[currency];
+        return `${symbol}${Number(price).toFixed(2)}`;
+      },
+      copyToClipboard(name) {
+        const el = document.createElement('textarea');
+        el.value = name;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        this.$message({
+          message: 'Copied to clipboard',
+          type: 'success',
+        });
+      },
+    },
+  });
+  })();
+</script>
+{% schema %}
+{
+  "name": "After service orders",
+  "class": "shopify-section--main-customers-order container",
+  "settings": [
+    {
+      "type": "url",
+      "id": "policy_url",
+      "label": "Policy URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "service-orders"
+    }
+  ]
+}
+{% endschema %}

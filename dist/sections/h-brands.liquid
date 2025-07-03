@@ -1,0 +1,117 @@
+{{ 'h-brands.css' | asset_url | stylesheet_tag }}
+<style>
+  .section-{{ section.id }} .swiper {
+    overflow: unset;
+  }
+</style>
+<div class="container">
+  <div class="index-cus-header">
+    <h2>{{ section.settings.title }}</h2>
+  </div>
+  <div class="h-brands hidden-phone">
+    {% for block in section.blocks %}
+      <a href="{{ block.settings.url }}">
+        <img src="{{ block.settings.img | image_url }}" alt="{{ block.settings.img.alt }}" width="auto" height="auto">
+        <div class="brand-text">
+          <div class="icon">{{ block.settings.icon }}</div>
+          <span class="btn">{{ section.settings.btn_title }}</span>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+  <div class="mobile-h-brands IndexBestswiper section-{{ section.id }} hidden-tablet-and-up">
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          <div class="swiper-slide">
+            <a href="{{ block.settings.url }}">
+              <img src="{{ block.settings.mobile_img | image_url }}" alt="{{ block.settings.img.alt }}" width="auto" height="auto">
+              <div class="brand-text">
+                <div class="icon">{{ block.settings.icon }}</div>
+                <span class="btn">{{ section.settings.btn_title }}</span>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.section-{{ section.id }} .swiper', {
+      observer: true,
+      observeParents: true,
+      touchStartPreventDefault: true,
+      passiveListeners: false,
+      touchAngle: 70,              
+      threshold: 10,
+      breakpoints: {
+        0: {
+          spaceBetween: 8,
+          slidesPerView: 1.15,
+        },
+      },
+      pagination: {
+        el: '.section-{{ section.id }} .swiper-pagination',
+        clickable: true,
+      },
+    });
+  });
+</script>
+{% schema %}
+{
+  "tag": "section",
+  "name": "h-brands",
+  "class": "h-brands-wrapper section-gap",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Featured Brands"
+    },
+    {
+      "type": "text",
+      "id": "btn_title",
+      "label": "Btn Title",
+      "default": "Shop Now"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "block",
+      "name": "block",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "img",
+          "label": "Img"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_img",
+          "label": "Mobile Img"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Url"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "h-brands"
+    }
+  ]
+}
+{% endschema %}

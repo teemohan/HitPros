@@ -1,0 +1,178 @@
+{% raw %}
+  <script type="text/x-template" id="product-item-card">
+    <div class="index-product-item search gird-type product-item">
+      <div class="product-item__image-wrapper">
+        <a
+          :href="product.productUrl"
+          @click="handleClickLink"
+          class="product-item__aspect-ratio aspect-ratio"
+          style="padding-bottom: 100.0%; --aspect-ratio: 1.0"
+        >
+          <img
+            class="product-item__primary-image"
+            :src="product.images[0]"
+            loading="lazy"
+            width="auto"
+            height="auto"
+          >
+        </a>
+        <div>
+          <span class="product-item-meta__vendor">
+            {{ product.brand }}
+          </span>
+          <a :href="product.productUrl" @click="handleClickLink" :title="product.title" class="product-item-meta__title ol-my-14 ellipsis2">{{ product.title }}</a>
+        </div>
+      </div>
+
+      <div class="product-item__info {% if show_cta %}product-item__info--with-button{% endif %} {% if reduced_font_size %}text--small{% endif %}">
+        <div class="product-item-meta">
+          <div class="product-item-meta__price-list-container">
+            <div class="price-list">
+              <span class="price">
+                {{ product.priceFormat }}
+              </span>
+              <template v-if="product.compareAtPrice && product.compareAtPrice > product.price">
+                <span class="compare-price">
+                  <s>{{ product.compareAtPriceFormat }}</s>
+                  <span>{{ product.discountPercentage }}%OFF</span>
+                </span>
+              </template>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-item__quick-form">
+          <el-button :loading="cartLoading" @click="handleAddToCart" class="button yellow button--outline button--text button--full ">
+            <span class="loader-button__text">
+              Add to Cart
+              <icon-cart />
+            </span>
+          </el-button>
+        </div>
+      </div>
+    </div>
+  </script>
+{% endraw %}
+<script>
+    Vue.component('product-item-card', {
+    template: '#product-item-card',
+    props: {
+      product: {
+        type: Object,
+        required: true
+      },
+      dataLayerForm: {
+        type: Object,
+        required: true
+      }
+    },
+    data() {
+      return {
+        cartLoading: false
+      }
+    },
+    methods: {
+      handleClickLink(event) {
+        event.preventDefault(); 
+        dataLayer.push({
+          ...this.dataLayerForm,
+          event: 'select_item',
+          ecommerce: {
+            item_list_id: "search_result_click",
+            items: [{
+              index: this.product.calculatedIndex,
+              item_id: this.product.sku,
+              sku_code: this.product.sku,
+              item_name: this.product.title
+            }]
+          }
+        });
+        window.location.href = this.product.productUrl;
+      },
+      handleWishChange() {
+        this.$emit('wish-change', this.product)
+      },
+      async setLineAttr(param) {
+        const response = await fetch('/cart.js');
+        const res = await response.json();
+        if(res.items.length == 0) return;
+        const line_item = res.items.find(item => item.id == param.id);
+        if(line_item) param.properties = line_item.properties;
+      },
+      async handleAddToCart() {
+        try {
+          const param = {
+            items: [{
+              id: this.product.variantId,
+              quantity: +this.product.moq || 1,
+            }]
+          }
+          this.cartLoading = true;
+          await this.setLineAttr(param.items[0]);
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(param)
+          })
+          const responseJson = await response.json();
+          let errorMsg;
+          if (response.ok) {
+            document.documentElement.dispatchEvent(
+              new CustomEvent('variant:added', {
+                bubbles: true,
+                detail: {
+                  variant: responseJson.hasOwnProperty('items') ? responseJson['items'][0] : responseJson,
+                },
+              })
+            );
+            fetch(`${window.themeVariables.routes.cartUrl}.js`).then(async (response2) => {
+              const cartContent = await response2.json();
+              document.documentElement.dispatchEvent(
+                new CustomEvent('cart:updated', {
+                  bubbles: true,
+                  detail: {
+                    cart: cartContent,
+                  },
+                })
+              );
+              cartContent['sections'] = responseJson['sections'];
+              document.documentElement.dispatchEvent(
+                new CustomEvent('cart:refresh', {
+                  bubbles: true,
+                  detail: {
+                    cart: cartContent,
+                    openMiniCart: window.themeVariables.settings.cartType === 'drawer',
+                  },
+                })
+              );
+            });
+          } else {
+            if (responseJson['description'].endsWith('are in your cart.')) {
+              errorMsg = 'Your cart already contains all available stock Unable to add more';
+            } else if (responseJson['description'].endsWith('to the cart.')) {
+              errorMsg =
+                'The available stock has been added to your cart，the excess quantity beyond available stock cannot be added';
+            }
+          }
+          document.documentElement.dispatchEvent(
+            new CustomEvent('cart-notification:show', {
+              bubbles: true,
+              cancelable: true,
+              detail: {
+                status: response.ok ? 'success' : 'error',
+                error: errorMsg || responseJson['description'] || '',
+              },
+            })
+          );
+        } catch (error) {
+          console.error(error);
+        } finally {
+          this.cartLoading = false;
+        }
+      },
+    }
+  })
+</script>
+

@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "seo_h1_title_mra4UY": {
+      "type": "seo-h1-title",
+      "settings": {
+        "title": "Shipping and Order Processing"
+      }
+    },
+    "return_shpping_PWP9FM": {
+      "type": "return-shpping",
+      "settings": {
+        "title1": "Hassle-Free Returns",
+        "title2": "Shipping and Order Processing",
+        "title_highlight": "2",
+        "link1": "shopify:\/\/pages\/hassle-free-return-policy",
+        "link2": "shopify:\/\/pages\/shipping-and-order-processing",
+        "page": "shipping-and-order-processing"
+      }
+    }
+  },
+  "order": [
+    "seo_h1_title_mra4UY",
+    "return_shpping_PWP9FM"
+  ]
+}

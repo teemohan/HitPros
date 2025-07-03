@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main_service_detail_aTimMy": {
+      "type": "main-service-detail",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main_service_detail_aTimMy"
+  ]
+}

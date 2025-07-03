@@ -1,0 +1,11 @@
+<div id="vue-message"></div>
+<script>
+  (() => {
+    new Vue({
+      el: '#vue-message',
+      created() {
+        window.vue_message = this;
+      }
+    })
+  })();
+</script>

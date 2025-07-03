@@ -1,0 +1,306 @@
+
+{% raw %}
+  <script type="text/x-template" id="product-item-search">
+    <div class="index-product-item list-type product-item" :data-product-id="product.productId">
+      <div class="list-product-media">
+        <div class="product-img-swiper swiper">
+          <div class="swiper-button-prev">
+            <icon-media-swiper-prev />
+          </div>
+          <div class="swiper-wrapper">
+            <template v-for="(url, idx) in product.images">
+              <div v-if="url" :key="idx" class="swiper-slide">
+                <img loading="lazy" :src="url" width="auto" height="auto">
+              </div>
+            </template>
+          </div>
+          <div class="swiper-button-next">
+            <icon-media-swiper-next />
+          </div>
+        </div>
+        <div thumbsSlider="" class="product-img-swiper-thumbs swiper">
+          <div class="swiper-wrapper">
+            <template v-for="(url, idx) in product.images">
+              <div v-if="url" :key="idx" class="swiper-slide">
+                <img loading="lazy" :src="url" width="auto" height="auto">
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+      
+      <div class="list-product-info hidden-phone">
+        <span class="product-item-meta__vendor">{{ product.brand }}</span>
+        <a @click="handleClickLink" :href="product.productUrl" :title="product.title" class="list-product-title ellipsis2">{{ product.title }}</a>
+        <span v-if="product.manufacturerModelNumber" class="model">Model: {{ product.manufacturerModelNumber }}</span>
+        <ul v-if="product.productCharacter" class="product-feature">
+          <li v-for="(character, idx) in product.productCharacter.slice(0, 3)" :key="idx">{{ character }}</li>
+        </ul>
+      </div>
+
+      <div class="product-item__info">
+        <div class="product-item-meta">
+          <span class="product-item-meta__vendor hidden-lap-and-up">{{ product.brand }}</span>
+          <a
+            @click="handleClickLink"
+            :href="product.productUrl"
+            :title="product.title"
+            class="product-item-meta__title ellipsis2 hidden-tablet-and-up"
+          >
+            {{ product.title }}
+          </a>
+
+          <div v-if="String(product.inventoryQuantity)" class="inventoryQuantity hidden-tablet-and-up">
+            <span v-if="product.inventoryQuantity <= 0" class="coming-stock stock-tag">Restocking</span>
+            <span v-else-if="product.inventoryQuantity >= productDemand" class="instock-ready stock-tag">In Stock</span>
+            <span v-else class="instock-partial stock-tag">In Stock</span>
+          </div>
+          
+          <div class="cus-price-list">
+            <span class="price">{{ product.priceFormat }}</span>
+            <template v-if="product.compareAtPrice && product.compareAtPrice > product.price">
+              <div class="discount-price">
+                <span>
+                  {{ product.compareAtPriceFormat }}
+                </span>
+                <span>{{ product.discountPercentage }}%OFF</span>
+              </div>
+            </template>
+          </div>
+          <div v-if="String(product.inventoryQuantity)" class="inventoryQuantity hidden-phone">
+            <span v-if="product.inventoryQuantity <= 0" class="coming-stock stock-tag">Restocking</span>
+            <span v-else-if="+product.inventoryQuantity >= +productDemand" class="instock-ready stock-tag">In Stock</span>
+            <span v-else class="instock-partial stock-tag">In Stock</span>
+          </div>
+          <product-item-delevery :product="product" :productDemand="productDemand"></product-item-delevery>
+        </div>
+        <div class="list-quantity">
+          <div class="list-quantity-title hidden-phone">Quantity</div>
+          <div class="quantity-selector">
+            <button type="button" @click="handleQuantityMinus" class="quantity-selector__button minus">
+              <icon-quantity-minus />
+            </button>
+            <input
+              type="text"
+              size="2"
+              v-model.number="productDemand" 
+              @change="handleQuantityChange"
+              class="quantity-selector__input"
+            >
+            <button type="button" @click="handleQuantityPlus" class="quantity-selector__button plus">
+              <icon-quantity-plus />
+            </button>
+          </div>
+        </div>
+
+        <div class="product-item__quick-form">
+          <el-button :loading="cartLoading" @click="handleAddToCart" class="button yellow button--outline button--text button--full ">
+            <span class="loader-button__text">
+              Add to Cart
+              <icon-cart />
+            </span>
+          </el-button>
+        </div>
+      </div>
+    </div>
+  </script>
+{% endraw %}
+
+<script>
+  Vue.component('product-item-search', {
+    template: '#product-item-search',
+    props: {
+      product: {
+        type: Object,
+        required: true
+      },
+      dataLayerForm: {
+        type: Object,
+        required: true
+      }
+    },
+    computed: {
+      moq() {
+        return +this.product.moq || 1
+      },
+      mpq() {
+        return +this.product.mpq || 1
+      },
+      minQty() {
+        return this.product.moq ? +this.product.moq : 1
+      }
+    },
+    data(){
+      return {
+        cartLoading: false,
+        productDemand: this.product.moq ? +this.product.moq : 1
+      }
+    },
+    mounted() {
+      this.initMediaSwiper();
+    },
+    methods: {
+      handleClickLink(event) {
+        event.preventDefault();
+        dataLayer.push({
+          event: 'select_item',
+          top_price: this.dataLayerForm.top_price || '',
+          bottom_price: this.dataLayerForm.bottom_price || '',
+          brand_filter: this.dataLayerForm.brand_filter || '',
+          ecommerce: {
+            item_list_id: "search_result_click",
+            items: [{
+              index: this.product.calculatedIndex,
+              item_id: this.product.sku,
+              sku_code: this.product.sku,
+              item_name: this.product.title
+            }]
+          }
+        });
+        window.location.href = this.product.productUrl;
+      },
+      handleWishChange() {
+        this.$emit('wish-change', this.product)
+      },
+      handleQuantityPlus() {
+        this.productDemand = this.productDemand + this.mpq;
+        if(this.productDemand > 1000000) {
+          this.productDemand = 1000000;
+        }
+      },
+
+      handleQuantityMinus() {
+        this.productDemand = this.productDemand - this.mpq;
+        if (this.productDemand <= this.minQty) this.productDemand = this.minQty;
+      },
+
+      handleQuantityChange() {
+        if (isNaN(this.productDemand) || this.productDemand < 0) {
+          this.productDemand = this.moq;
+        }
+        this.productDemand = Math.ceil((this.productDemand - this.moq) / this.mpq) * this.mpq + this.moq;
+        if (this.productDemand < this.minQty) {
+          this.productDemand = this.minQty;
+        } else if(this.productDemand > 1000000) {
+          this.productDemand = Math.floor((1000000 - this.moq) / this.mpq) * this.mpq + this.moq;
+        }
+      },
+
+      initMediaSwiper() {
+        const thumbnails = new Swiper(`.list-type[data-product-id='${this.product.productId}'] .product-img-swiper-thumbs`, {
+          spaceBetween: 6,
+          slidesPerView: 3,
+          freeMode: true,
+          watchSlidesProgress: true,
+          lazy: true,
+          observer: true,
+          observeParents: true,
+          breakpoints: {
+            740: {
+              slidesPerView: 4,
+            },
+          },
+          on: {
+            init: () => {
+              $(this).find('.product-img-swiper-thumbs').css('visibility', 'visible');
+            },
+          },
+        });
+        new Swiper(`.list-type[data-product-id='${this.product.productId}'] .product-img-swiper`, {
+          touchStartPreventDefault: true,
+          passiveListeners: false,
+          touchAngle: 70,              
+          threshold: 10,
+          lazy: true,
+          navigation: {
+            nextEl: `.list-type[data-product-id='${this.product.productId}'] .swiper-button-next`,
+            prevEl: `.list-type[data-product-id='${this.product.productId}'] .swiper-button-prev`,
+          },
+          thumbs: {
+            swiper: thumbnails,
+          },
+        });
+      },
+      async setLineAttr(param) {
+        const response = await fetch('/cart.js');
+        const res = await response.json();
+        if(res.items.length == 0) return;
+        const line_item = res.items.find(item => item.id == param.id);
+        if(line_item) param.properties = line_item.properties;
+      },
+      async handleAddToCart() {
+        try {
+          const param = {
+            items: [{
+              id: this.product.variantId,
+              quantity: this.productDemand,
+            }]
+          }
+          this.cartLoading = true;
+          await this.setLineAttr(param.items[0]);
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(param)
+          })
+          const responseJson = await response.json();
+          let errorMsg;
+          if (response.ok) {
+            document.documentElement.dispatchEvent(
+              new CustomEvent('variant:added', {
+                bubbles: true,
+                detail: {
+                  variant: responseJson.hasOwnProperty('items') ? responseJson['items'][0] : responseJson,
+                },
+              })
+            );
+            fetch(`${window.themeVariables.routes.cartUrl}.js`).then(async (response2) => {
+              const cartContent = await response2.json();
+              document.documentElement.dispatchEvent(
+                new CustomEvent('cart:updated', {
+                  bubbles: true,
+                  detail: {
+                    cart: cartContent,
+                  },
+                })
+              );
+              cartContent['sections'] = responseJson['sections'];
+              document.documentElement.dispatchEvent(
+                new CustomEvent('cart:refresh', {
+                  bubbles: true,
+                  detail: {
+                    cart: cartContent,
+                    openMiniCart: window.themeVariables.settings.cartType === 'drawer',
+                  },
+                })
+              );
+            });
+          } else {
+            if (responseJson['description'].endsWith('are in your cart.')) {
+              errorMsg = 'Your cart already contains all available stock Unable to add more';
+            } else if (responseJson['description'].endsWith('to the cart.')) {
+              errorMsg =
+                'The available stock has been added to your cart，the excess quantity beyond available stock cannot be added';
+            }
+          }
+          document.documentElement.dispatchEvent(
+            new CustomEvent('cart-notification:show', {
+              bubbles: true,
+              cancelable: true,
+              detail: {
+                status: response.ok ? 'success' : 'error',
+                error: errorMsg || responseJson['description'] || '',
+              },
+            })
+          );
+        } catch (error) {
+          console.error(error);
+        } finally {
+          this.cartLoading = false;
+        }
+      },
+    }
+  });
+</script>

@@ -1,0 +1,130 @@
+{{ 'mobile-sidebar.css' | asset_url | stylesheet_tag }}
+
+<template id="mobileSidebar">
+  <div class="mobile-main-nav" id="mobile_main_nav">
+    <div class="mobile-mask" @click.stop="handleNavClose"></div>
+    <div class="mobile-aside">
+      <div class="mobile-aside-top">
+        <h3>
+          <div>Hi, {{ customer.first_name }}</div>
+          <span class="close-btn" @click="handleNavClose">
+            {%- render 'icon' with 'close' -%}
+          </span>
+        </h3>
+        <h4>ID # {{ customer.id }}</h4>
+      </div>
+      <div class="mobile-aside-main">
+        <div class="aside-main-list" v-for="(item, idx) in menuList" :key="idx">
+          <h4>${ item.linkTitle }</h4>
+          <ul>
+            <li v-for="(link, idx1) in item.child" :key="idx1" :class="link.isActive ? 'active': undefined">
+              <template v-if="link.linkSlug == 'account-orders'">
+                {%- render 'icon' with 'v3-order' -%}
+              </template>
+              <template v-else-if="link.linkSlug == 'account-wish'">
+                {%- render 'icon' with 'v3-wish' -%}
+              </template>
+              <template v-else-if="link.linkSlug == 'account-service'">
+                {%- render 'icon' with 'v3-return' -%}
+              </template>
+              <template v-else-if="link.linkSlug == 'account-info'">
+                {%- render 'icon' with 'v3-user' -%}
+              </template>
+              <template v-else="link.linkSlug == 'account-address'">
+                {%- render 'icon' with 'v3-address' -%}
+              </template>
+              <a :href="`{{ routes.account_url }}?slug=${link.linkSlug}`">${ link.linkName }</a>
+            </li>
+          </ul>
+        </div>
+        <div class="aside-main-logout" @click="logout">
+          <a href="javascript:void(0)" data-no-instant>Log Out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  (() => {
+    window.mobileSidebar = {
+      template: '#mobileSidebar',
+      delimiters: ['${', '}'],
+      props: {
+        mobile_sidebar_show: Boolean,
+      },
+      data() {
+        const slugIdxMap = new Map();
+        slugIdxMap.set('account-orders', [0, 0]);
+        slugIdxMap.set('account-wish', [0, 1]);
+        slugIdxMap.set('account-service', [0, 2]);
+        slugIdxMap.set('account-info', [1, 0]);
+        slugIdxMap.set('account-address', [1, 1]);
+        return {
+          slugIdxMap,
+          linkActiveIdx: {
+            idx: 0,
+            idx1: 0,
+          },
+          menuList: [
+            {
+              linkTitle: 'Orders',
+              child: [
+                { linkName: 'My Orders', linkSlug: 'account-orders', isActive: false },
+                { linkName: 'My List', linkSlug: 'account-wish', isActive: false },
+                { linkName: 'Customer Service', linkSlug: 'account-service', isActive: false },
+              ],
+            },
+            {
+              linkTitle: 'Account',
+              child: [
+                { linkName: 'My Account', linkSlug: 'account-info', isActive: true },
+                {% unless customer.b2b? %}
+                  { linkName: 'My Addresses', linkSlug: 'account-address', isActive: false },
+                {% endunless %}
+              ],
+            },
+          ],
+        };
+      },
+      mounted() {
+        const queryString = window.location.search;
+        const params = new URLSearchParams(queryString);
+        const linkSlug = params.get('slug');
+        if (linkSlug) {
+          try {
+            const [idx, idx1] = this.slugIdxMap.get(linkSlug);
+            this.resetActive();
+            this.menuList[idx].child[idx1].isActive = true;
+          } catch (error) {
+          }
+        }
+      },
+      methods: {
+        resetActive() {
+          this.menuList.map((links) => {
+            links.child.map((item) => {
+              item.isActive = false;
+            });
+          });
+        },
+        handleCancellation() {
+          $('#cancellation-toast').addClass('open');
+          $('body').addClass('no-scroll');
+        },
+        handleNavClose() {
+          $('body').removeClass('no-scroll');
+          $('#mobile_main_nav').removeClass('nav-open');
+        },
+        logout() {
+          Cookies.remove('cart');
+          if(window.themeVariables.userCompany.isB2b == 'true') {
+            Cookies.set('logout', 1);
+            window.location.href = `${window.zkh.b2b_url}/logout`;
+          } else {
+            window.location.href = "/account/logout";
+          }
+        },
+      },
+    };
+  })();
+</script>

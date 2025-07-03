@@ -1,0 +1,58 @@
+{{ 'h-features-img-text.css' | asset_url | stylesheet_tag }}
+
+<div class="container">
+  <div class="h-features">
+    <img
+      src="{{ section.settings.img | image_url }}"
+      alt="{{ section.settings.img.alt }}"
+      width="auto"
+      height="auto"
+    >
+    <div class="h-features-info">
+      <h3 class="h-features-title">{{ section.settings.title }}</h3>
+      <div class="h-features-text">{{ section.settings.text }}</div>
+      <a href="{{ section.settings.link_url }}" class="h-features-btn-title">{{ section.settings.Link_title }}</a>
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "tag": "section",
+    "name": "h-features",
+    "class": "h-features-wrapper section-gap",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "img",
+        "label": "Img"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Growth is Our Focus"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "url",
+        "id": "link_url",
+        "label": "Link Url"
+      },
+      {
+        "type": "text",
+        "id": "Link_title",
+        "label": "Link Title",
+        "default": "Click here for New Product Updates"
+      }
+    ],
+    "presets": [
+      {
+        "name": "h-features"
+      }
+    ]
+  }
+  {% endschema %}

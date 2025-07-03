@@ -1,0 +1,67 @@
+{% if section.settings.collection.products.size > 0 %}
+  {{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+  <product-index-list data-section-id="{{ section.id }}" class="{{ section.id }} product-x-hidde">
+    <div class="container cl-container hover-cl-container">
+      <div class="index-cus-header">
+        <h2>{{ section.settings.title }}</h2>
+        {% render 'swiper-buttons' %}
+      </div>
+      <div class="IndexBestswiper hover-list">
+        <div class="swiper {{ section.id }}-IndexBestswiper">
+          <div class="swiper-wrapper"
+            data-datalayer="true" 
+            data-event-type="view_item_list" 
+            data-list-name="recommended_product_exposure" 
+            data-scope-id="{{ section.id }}"
+            data-recommend-module="homepage/{{- section.settings.title -}}"
+          >
+            {% assign sort_collection_products = section.settings.collection.products %}
+            {%- for product in sort_collection_products -%}
+              <div class="swiper-slide">
+                {% render 'index-product-item', product: product, position: forloop.index,
+                  add_datalayer: true  %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="swiper-scrollbar"></div>
+      </div>
+    </div>
+  </product-index-list>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      DataLayerManagerFactory.getInstance('{{ section.id }}').init();
+    })
+  </script>
+{% else %} 
+    {% style %}
+      #shopify-section-{{ section.id }} {
+        display: none;
+      }
+    {% endstyle %}
+{% endif %}
+  {% schema %}
+  {
+    "name": "product list",
+    "class": "section-padding section-gap featured-product-list product-swiper-list",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "title",
+        "default": "Featured Brands"
+      },
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "collection"
+      }
+    ],
+    "presets": [
+      {
+        "name": "product list"
+      }
+    ]
+  }
+  {% endschema %}
+  

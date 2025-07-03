@@ -1,0 +1,546 @@
+<style>
+    @media screen and (min-width: 1000px){
+        .help-center-faq{
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+        .help-center-faq .left_navigation{
+            padding-right: 30px;
+            margin-right: 30px;
+            padding-top: 60px;
+            display: flex;
+            align-items: center;
+            grid-gap: 60px;
+        }
+        .help-center-faq .head_title{
+            font-size: 56px;
+            font-weight: 400;
+            line-height: 67.2px;
+            text-align: left;
+            margin: 0;
+        }
+        .help-center-faq .right_question_answer{
+            padding-top: 40px;
+        }
+        .help-center-faq .menu-item{
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 40px;
+            text-align: left;
+            color: #727272;
+            cursor: pointer;
+        }
+        .help-center-faq .menu-item.active{
+            color: #000000;
+            text-decoration: underline;
+        }
+        .help-center-faq .faqs-paragraph{
+            display: none;
+        }
+        .help-center-faq .faqs-paragraph.selected{
+            display: block;
+        }
+        .help-center-faq .faqs-title{
+            font-size: 40px;
+            font-weight: 400;
+            line-height: 48px;
+            text-align: left;
+            margin: 60px 0 40px;
+        }
+        .help-center-faq .faqs-item{
+            background: transparent;
+            margin-top: 0;
+            border-top: 1px solid #727272;
+            border-left: 1px solid #727272;
+            border-right: 1px solid #727272;
+            padding: 16px 20px 16px 20px;
+        }
+        .help-center-faq .faqs-item .card-header .title{
+            background: transparent;
+        }
+        .help-center-faq .faqs-item:last-child{
+            border-bottom: 1px solid #727272;
+        }
+        .help-center-faq .faqs-item .card-header .title{
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 40px;
+            text-align: left;
+            padding-right: 28px;
+        }
+        .help-center-faq .faqs-item .card-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+       
+        .help-center-faq .faqs-item .card-header::before{
+            right: 12px;
+            width: 2px;
+            height: 28px;
+        }
+        .help-center-faq .faqs-item .card-header::after{
+            right: 0;
+            width: 28px;
+            height: 2px;
+        }
+        .help-center-faq .faqs-item .card-header::after,.help-center-faq .faqs-item .card-header::before{
+            content: "";
+            position: absolute;
+            top: calc(50% - 1.5px);
+            z-index: 2;
+            transform: translateY(-50%) rotate(0);
+            background: #000;
+            transition: all .3s;
+        }
+        .help-center-faq  .faqs-item_answer{
+            font-size: 16px;
+        }
+        .help-center-faq  .faqs-item_answer .answer{
+            display: grid;
+            -webkit-display: grid;
+            grid-template-columns: repeat(3,1fr);
+            justify-content: space-between;
+        }
+        .help-center-faq  .faqs-item_answer .answer p{
+            font-size: 24px;
+            font-weight: 500;
+            line-height: 31.2px;
+            text-align: left;
+        }
+        .help-center-faq  .faqs-item_answer .answer ul{
+            padding-left: 16px;
+        }
+        .mobile_navigation{
+            display: none !important;
+        }
+    }
+   
+    .help-center-faq  .faqs-item_answer{
+        display: none;
+    }
+    .help-center-faq .faqs-item .card-header.active::before{
+        transform: translateY(-50%) rotate(90deg);
+    }
+    .help-center-faq .faqs-item .card-header.active::after{
+        transform: translateY(-50%) rotate(180deg);
+    }
+    @media screen and (max-width: 999px){
+        .help-center-faq{
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+        .help-center-faq .head_title{
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 24px;
+            text-align: left;
+            margin: 0;
+        }
+        .help-center-faq .menu-item{
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 40px;
+            text-align: left;
+            color: #727272;
+            cursor: pointer;
+        }
+        .help-center-faq .menu-item:not(:first-child){
+            padding-top: 20px;
+        }
+        .help-center-faq .menu-item.active{
+            color: #000000;
+            text-decoration: underline;
+        }
+        .help-center-faq .faqs-paragraph{
+            display: none;
+        }
+        .help-center-faq .faqs-paragraph.selected{
+            display: block;
+        }
+        .help-center-faq .faqs-title{
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 24px;
+            text-align: left;
+            margin: 60px 0 23px;
+        }
+        .help-center-faq .faqs-item{
+            background: transparent;
+            margin-top: 0;
+            border-top: 1px solid #727272;
+            border-left: 1px solid #727272;
+            border-right: 1px solid #727272;
+            padding: 20px 15px;
+        }
+        .help-center-faq .faqs-item .card-header .title{
+            background: transparent;
+        }
+        .help-center-faq .faqs-item:last-child{
+            border-bottom: 1px solid #727272;
+        }
+        .help-center-faq .faqs-item .card-header .title{
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 18px;
+            text-align: left;
+            padding-right: 16px;
+        }
+        .help-center-faq .faqs-item .card-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+       
+        .help-center-faq .faqs-item .card-header::before{
+            right: 6px;
+            width: 2px;
+            height: 14px;
+        }
+        .help-center-faq .faqs-item .card-header::after{
+            right: 0;
+            width: 14px;
+            height: 2px;
+        }
+        .help-center-faq .faqs-item .card-header::after,.help-center-faq .faqs-item .card-header::before{
+            content: "";
+            position: absolute;
+            top: calc(50% - 1.5px);
+            z-index: 2;
+            transform: translateY(-50%) rotate(0);
+            background: #000;
+            transition: all .3s;
+        }
+        .help-center-faq  .faqs-item_answer{
+            font-size: 14px;
+        }
+        .pc_image{
+            display: none !important;
+        }
+        .pc_navigation{
+            display: none;
+        }
+        .help-center-faq .menu-select{
+            font-size: 16px;
+            font-weight: 400;
+            padding: 20px 30px 20px 0;
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #727272;
+        }
+    }
+
+</style>
+<div>
+    <div class="help-center-faq container">
+        <h1 class="head_title">{{section.settings.title}}</h1>
+        <div class="left_navigation pc_navigation">
+            {% for item in section.blocks %}
+                {% if item.type == "faq-base" %}
+                    <div class="menu-item {% if forloop.index == 1 %}active{% endif %}" >
+                        <div>{{item.settings.tag}}</div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="left_navigation mobile_navigation">
+            <select class="menu-select">
+                {% for item in section.blocks %}
+                    {% if item.type == "faq-base" %}
+                        <option value="{{ forloop.index | minus:1 }}" >{{ item.settings.tag }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="right_question_answer">
+            {% for item in section.blocks %}
+                {% if item.type == "faq-base" %}
+                    <div class="faqs-paragraph {% if forloop.index == 1 %}selected{% endif %}" id="paragraph-{{ title | handleize }}">
+                        
+                        {% for block in section.blocks %}
+                            {% if block.type == 'paragraph' and block.settings.quesId == item.settings.tagId %}
+                                <h3 class="faqs-title">
+                                    {{block.settings.title}}
+                                </h3>
+                                <div class="faqs-body">
+                                    <div class="faqs-row">
+                                        {%- for i in (1..10) -%}
+                                            {% capture cap_question %}question_{{ i }}{% endcapture %}
+                                            {% capture cap_answer %}answer_{{ i }}{% endcapture %}
+                
+                                            {%- liquid
+                                                assign question = block.settings[cap_question]
+                                                assign answer = block.settings[cap_answer]
+                                            -%}
+                                            {%- if question != blank -%}
+                                                <div class="faqs-item">
+                                                    <div class="card">
+                                                        <div class="card-header collapsed" id="question-{{ block.id }}-{{ forloop.index }}" data-toggle="collapse" data-target="#collapse-{{ block.id }}-{{ forloop.index }}" aria-expanded="true" aria-controls="collapse-{{ block.id }}-{{ forloop.index }}">
+                                                            <div class="title" role="button" tabindex="0">
+                                                                {{ question }}
+                                                            </div>
+                                                            <span class="icon-plus"> </span>
+                                                        </div>
+                                                        <div id="collapse-{{ block.id }}-{{ forloop.index }}" class="faqs-item_answer" data-parent="#accordion">
+                                                            <div class="card-body" id="answer-{{ block.id }}-{{ forloop.index }}">
+                                                                <div class="answer">
+                                                                    {{ answer }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {%- endif -%}
+                                        {%- endfor -%}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+    (() => {
+        $(".help-center-faq .left_navigation .menu-item").click(function(){
+        $(this).addClass("active").siblings(".menu-item").removeClass("active");
+        var pcIndex = $(this).index();
+            $(".help-center-faq .right_question_answer .faqs-paragraph:eq("+pcIndex+")").show().siblings(".help-center-faq .right_question_answer .faqs-paragraph").hide();
+        });
+        $(".help-center-faq .left_navigation .menu-select").change(function(){
+            var mIndex = $(this).val();
+            $(".help-center-faq .right_question_answer .faqs-paragraph:eq("+mIndex+")").show().siblings(".help-center-faq .right_question_answer .faqs-paragraph").hide();
+        });
+        $(".help-center-faq .faqs-item .card-header").click(function(){
+            if ($(this).parent().find('.faqs-item_answer').css("display") == "none") {
+                $(this).parent().find('.faqs-item_answer').slideDown();
+                $(this).addClass("active")
+            }else{
+                $(this).parent().find('.faqs-item_answer').slideUp();
+                $(this).removeClass("active")
+            }
+        })
+    })();
+</script>
+{% schema %}
+{
+    "name": "help-center-faq",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "title",
+        "default": "Frequently Asked Questions"
+      }
+    ],
+    "blocks": [
+        {
+            "type" : "paragraph",
+            "name" : "t:sections.main_faqs.blocks.paragraph.name",
+            "settings":
+            [
+                {
+                    "type": "text",
+                    "id": "quesId",
+                    "label": "question Id"
+                },
+                {
+                    "type": "header",
+                    "content": "t:sections.main_faqs.blocks.paragraph.settings.header__1"
+                },
+                {
+                    "type" : "text",
+                    "id" : "title",
+                    "label" : "t:sections.image-banner.blocks.image.settings.content.label__19",
+                    "default": "Presale"
+                },
+                {
+                    "type": "header",
+                    "content": "t:sections.main_faqs.blocks.paragraph.settings.header__2"
+                },
+                {
+                    "type" : "text",
+                    "id" : "question_1",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__1",
+                    "default": "Question"
+                },
+                {
+                    "type" : "html",
+                    "id" : "answer_1",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__2",
+                    "default": "<p>Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.</p>"
+                },
+                {
+                    "type": "header",
+                    "content": "t:sections.main_faqs.blocks.paragraph.settings.header__3"
+                },
+                {
+                    "type" : "text",
+                    "id" : "question_2",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__1",
+                    "default": "Question"
+                },
+                {
+                    "type" : "html",
+                    "id" : "answer_2",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__2",
+                    "default": "<p>Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.</p>"
+                },
+                {
+                    "type": "header",
+                    "content": "t:sections.main_faqs.blocks.paragraph.settings.header__4"
+                },
+                {
+                    "type" : "text",
+                    "id" : "question_3",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__1",
+                    "default": "Question"
+                },
+                {
+                    "type" : "html",
+                    "id" : "answer_3",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__2",
+                    "default": "<p>Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.</p>"
+                },
+                {
+                    "type": "header",
+                    "content": "t:sections.main_faqs.blocks.paragraph.settings.header__5"
+                },
+                {
+                    "type" : "text",
+                    "id" : "question_4",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__1",
+                    "default": "Question"
+                },
+                {
+                    "type" : "html",
+                    "id" : "answer_4",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__2",
+                    "default": "<p>Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.</p>"
+                },
+                {
+                    "type": "header",
+                    "content": "t:sections.main_faqs.blocks.paragraph.settings.header__6"
+                },
+                {
+                    "type" : "text",
+                    "id" : "question_5",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__1",
+                    "default": "Question"
+                },
+                {
+                    "type" : "html",
+                    "id" : "answer_5",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__2",
+                    "default": "<p>Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.</p>"
+                },
+                {
+                    "type": "header",
+                    "content": "t:sections.main_faqs.blocks.paragraph.settings.header__7"
+                },
+                {
+                    "type" : "text",
+                    "id" : "question_6",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__1",
+                    "default": "Question"
+                },
+                {
+                    "type" : "html",
+                    "id" : "answer_6",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__2",
+                    "default": "<p>Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.</p>"
+                },
+                {
+                    "type": "header",
+                    "content": "t:sections.main_faqs.blocks.paragraph.settings.header__8"
+                },
+                {
+                    "type" : "text",
+                    "id" : "question_7",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__1",
+                    "default": "Question"
+                },
+                {
+                    "type" : "html",
+                    "id" : "answer_7",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__2",
+                    "default": "<p>Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.</p>"
+                },
+                {
+                    "type": "header",
+                    "content": "t:sections.main_faqs.blocks.paragraph.settings.header__9"
+                },
+                {
+                    "type" : "text",
+                    "id" : "question_8",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__1",
+                    "default": "Question"
+                },
+                {
+                    "type" : "html",
+                    "id" : "answer_8",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__2",
+                    "default": "<p>Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.</p>"
+                },
+                {
+                    "type": "header",
+                    "content": "t:sections.main_faqs.blocks.paragraph.settings.header__10"
+                },
+                {
+                    "type" : "text",
+                    "id" : "question_9",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__1",
+                    "default": "Question"
+                },
+                {
+                    "type" : "html",
+                    "id" : "answer_9",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__2",
+                    "default": "<p>Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.</p>"
+                },
+                {
+                    "type": "header",
+                    "content": "t:sections.main_faqs.blocks.paragraph.settings.header__11"
+                },
+                {
+                    "type" : "text",
+                    "id" : "question_10",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__1",
+                    "default": "Question"
+                },
+                {
+                    "type" : "html",
+                    "id" : "answer_10",
+                    "label" : "t:sections.main_faqs.blocks.paragraph.settings.question.label__2",
+                    "default": "<p>Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.</p>"
+                }
+            ]
+        },
+        {
+            "type": "faq-base",
+            "name": "faq-base",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "tag",
+                    "label": "tag Name"
+                },{
+                    "type": "text",
+                    "id": "tagId",
+                    "label": "tag Id"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "help-center-faq"
+        }
+    ]
+}
+{% endschema %}

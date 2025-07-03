@@ -1,0 +1,1149 @@
+{{ 'header-menu.css' | asset_url | stylesheet_tag }}
+{{ 'v3-header.css' | asset_url | stylesheet_tag }}
+
+<style>
+  :root {
+    --enable-sticky-header: {% if section.settings.enable_sticky_header %}1{% else %}0{% endif %};
+    --enable-transparent-header: {% if request.page_type == 'index' and section.settings.enable_transparent_header %}1{% else %}0{% endif %};
+    --loading-bar-background: {{ settings.header_text_color.red }}, {{ settings.header_text_color.green }}, {{ settings.header_text_color.blue }}; /* Prevent the loading bar to be invisible */
+  }
+  {% if customer %}
+    .header__icon-wrapper {
+      max-width: 124px;
+    }
+  {% endif %}
+  #shopify-section-{{ section.id }} {
+    {%- assign header_border_color = settings.header_background | color_mix: settings.header_text_color, 85 -%}
+
+    --header-background: {{ settings.header_background.red }}, {{ settings.header_background.green }}, {{ settings.header_background.blue }};
+    --header-text-color: {{ settings.header_text_color.red }}, {{ settings.header_text_color.green }}, {{ settings.header_text_color.blue }};
+    --header-border-color: {{ header_border_color.red }}, {{ header_border_color.green }}, {{ header_border_color.blue }};
+    --reduce-header-padding: {% if section.settings.reduce_desktop_padding %}1{% else %}0{% endif %};
+
+    {%- if section.settings.enable_sticky_header -%}
+      position: -webkit-sticky;
+      position: sticky;
+    {%- else -%}
+      position: relative;
+    {%- endif -%}
+
+    top: {% if section.settings.enable_sticky_header %}calc(var(--enable-sticky-announcement-bar) * var(--announcement-bar-height, 0px)){% else %}0{% endif %};
+    z-index: 8;
+  }
+
+  {%- if request.page_type == 'index' and section.settings.enable_transparent_header -%}
+    #shopify-section-{{ section.id }} {
+      margin-bottom: calc(-1 * (var(--header-height, 0px) + var(--enable-sticky-announcement-bar) * var(--announcement-bar-height, 0px)));
+    }
+
+    .js #shopify-section-{{ section.id }} .header--transparent {
+      {%- if settings.header_text_color == section.settings.transparent_header_text_color -%}
+        {%- assign header_bubble_text_color = settings.header_background -%}
+      {%- else -%}
+        {%- assign header_bubble_text_color = settings.header_text_color -%}
+      {%- endif -%}
+
+      --header-background: transparent;
+      --header-text-color: {{ section.settings.transparent_header_text_color.red }}, {{ section.settings.transparent_header_text_color.green }}, {{ section.settings.transparent_header_text_color.blue }};
+      --header-border-color: {{ section.settings.transparent_header_text_color.red }}, {{ section.settings.transparent_header_text_color.green }}, {{ section.settings.transparent_header_text_color.blue }}, 0.15;
+      --header-transparent-bubble-text-color: {{ header_bubble_text_color.red }}, {{ header_bubble_text_color.green }}, {{ header_bubble_text_color.blue }};
+    }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} .header__logo-image {
+    max-width: {{ section.settings.mobile_logo_max_width }}px;
+  }
+  .header-right-list {
+    display: flex;
+    /* gap: 16px; */
+    padding-right: 4px;
+    font-size: 14px;
+    color: #191C1F;
+    font-weight: 500;
+  }
+  {%- if request.page_type == '404' -%}
+    .shopify-section--404 {
+      /* For the 404 page, we re-use the same colors as the header for design reason */
+      --background: {{ settings.header_background.red }}, {{ settings.header_background.green }}, {{ settings.header_background.blue }};
+      --heading-color: {{ settings.header_text_color.red }}, {{ settings.header_text_color.green }}, {{ settings.header_text_color.blue }};
+      --text-color: {{ settings.header_text_color.red }}, {{ settings.header_text_color.green }}, {{ settings.header_text_color.blue }};
+      --primary-button-background: {{ settings.header_text_color.red }}, {{ settings.header_text_color.green }}, {{ settings.header_text_color.blue }};
+      --primary-button-text-color: {{ settings.header_background.red }}, {{ settings.header_background.green }}, {{ settings.header_background.blue }};
+    }
+  {%- endif -%}
+
+  .header__wrapper {
+    justify-content: space-between;
+    /* gap: 36px; */
+  }
+  .header__search-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin:0 72px;
+  }
+  .predictive-search__form {
+    align-items: unset;
+    flex: 1;
+    height: 48px;
+  }
+  .header__wrapper .predictive-search__input {
+    color: var(--my-black);
+    width: 100%;
+    border: none;
+    padding-left: 20px;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .header__wrapper .predictive-search__form {
+    border: 1px solid #8080808C;
+    box-shadow: 0px 8px 32px 0px #00000014;
+  }
+  .predictive-search__input::placeholder {
+    color: #77878F;
+  }
+  .header__search-btn {
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .header__search-btn span {
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0em;
+    color: #fff;
+
+  }
+  .header__cart-count {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: -18px;
+    color: var(--my-blue);
+    background: var(--my-yellow);
+    border-radius: 100%;
+    font-size: 12px;
+    line-height: 1;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .header-right-list {
+    display: flex;
+    /* gap: 16px; */
+    font-size: 14px;
+    color: #0A2B6F;
+    font-weight: 500;
+  }
+  .header-right-list .list-item {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .header-right-list svg{
+    margin-right:6px;
+  }
+  .header-right-list .list-item.cart-item {
+    width: 160px;
+    padding: 0 22px;
+    justify-content: space-between;
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  .header-right-list .list-item.cart-item::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateY(-50%);
+    left: 65px;
+    width: 2px;
+    height: 28px;
+    top: 50%;
+    background-color: #fff;
+  }
+  .header-right-list .list-item .wish-len {
+    content: '';
+    position: absolute;
+    font-weight: 600;
+    left: 14px;
+    top: -18px;
+    color: var(--my-blue);
+    background: var(--my-yellow);
+    border-radius: 100%;
+    font-size: 12px;
+    line-height: 1;
+    width: 24px;
+    height: 24px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .account-box {
+    position: relative;
+    display: flex;
+    /* gap: 4px; */
+    align-items: center;
+    cursor: pointer;
+  }
+  @media screen and (min-width: 741px) {
+    .header-right-list .list-item:hover {
+      color: #FABE00;
+      transition: all .3s;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    {%- if section.settings.header_layout == 'logo_left_navigation_inline' -%}
+      /* For this navigation we have to move the logo at the first and add a margin */
+      [dir="rtl"] .header__logo {
+        margin-left: 40px;
+      }
+
+      [dir="ltr"] .header__logo {
+        margin-right: 40px;
+      }
+
+      .header__logo {
+        order: -1;
+      }
+
+      @media screen and (min-width: 741px) {
+        .header__secondary-links {
+          max-width: max-content;
+          margin-inline-start: 48px;
+        }
+      }
+    {%- endif -%}
+
+    {%- if section.settings.header_layout == 'logo_left_navigation_center' -%}
+      /* For this navigation we have to move the logo and make sure the navigation takes the whole width */
+      .header__logo {
+        order: -1;
+        /* flex: 1 1 0; */
+      }
+
+      .header__inline-navigation {
+        flex: 1 1 auto;
+        justify-content: center;
+        max-width: max-content;
+        margin-inline: 48px;
+      }
+    {%- endif -%}
+  }
+
+  @media screen and (min-width: 741px) {
+    .header-right-list {
+      padding-right: 0;
+    }
+    #shopify-section-{{ section.id }} .header__logo-image {
+      max-width: {{ section.settings.logo_max_width }}px;
+    }
+    #pc-sidebar-section {
+      position: absolute;
+      z-index: 1;
+      left: 50%;
+      display: {% if template.name == 'account' %} none {% endif %}
+    }
+    #pc-user-link:hover #pc-sidebar-section .pc-main-nav {
+      display: block;
+    }
+    #pc-sidebar-section .mask {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 192px;
+      height: calc(100vh - 192px);
+      background: rgba(0, 0, 0, .6)
+    }
+    #pc-user-link:hover #pc-sidebar-section .mask {
+      display: block;
+    }
+    #pc-sidebar-section .mask.hidden, #pc-sidebar-section .pc-main-nav.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+  @media screen and (max-width: 999px) {
+    .header-right-list .list-item {
+      padding-right: 4px;
+    }
+    .header-right-list {
+      padding-right: 0;
+      gap: 16px;
+    }
+    .header__wrapper {
+      gap: 0;
+    }
+  }
+</style>
+<store-header
+  {% if section.settings.enable_sticky_header %}
+    sticky
+  {% endif %}
+  {% if request.page_type == 'index' and section.settings.enable_transparent_header %}
+    transparent
+  {% endif %}
+  class="header {% if settings.background == settings.header_background %}header--bordered{% endif %} {% if request.page_type == 'index' and section.settings.enable_transparent_header %}header--transparent{% endif %}"
+  role="banner"
+>
+  {%- assign menu = section.settings.navigation_menu -%}
+
+  <div class="header__wrapper container">
+    <!-- LOGO PART -->
+    {%- capture logo -%}
+      <a class="header__logo-link" href="{{ routes.root_url }}">
+        {%- if section.settings.logo != blank -%}
+          {%- capture logo_size -%}{{ section.settings.logo_max_width | at_least: section.settings.mobile_logo_max_width | times: 2 | append: 'x' }}{%- endcapture -%}
+          <span class="visually-hidden">{{ shop.name }}</span>
+          <img class="header__logo-image" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}" src="{{ section.settings.logo | img_url: logo_size }}" alt="{{ section.settings.logo.alt | escape }}">
+
+          {%- if request.page_type == 'index' and section.settings.enable_transparent_header and section.settings.transparent_logo != blank -%}
+            <img class="header__logo-image header__logo-image--transparent" width="{{ section.settings.transparent_logo.width }}" height="{{ section.settings.transparent_logo.height }}" src="{{ section.settings.transparent_logo | img_url: logo_size }}" alt="{{ section.settings.transparent_logo.alt | escape }}">
+          {%- endif -%}
+        {%- else -%}
+          <span class="header__logo-text heading h5">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>        
+    {%- endcapture -%}
+
+    {%- if request.page_type == 'index' -%}
+      <h1 class="header__logo">{{ logo }}</h1>
+    {%- else -%}
+      <span class="header__logo">{{ logo }}</span>
+    {%- endif -%}
+
+    <div class="header__search-bar predictive-search hidden-pocket">
+      {% render 'header-search-form', type: 'pc' %}
+    </div>
+
+    <!-- SECONDARY LINKS PART -->
+    <div id="header-link" class="header__secondary-links">
+      {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}
+        {%- assign country_selector = true -%}
+      {%- endif -%}
+
+      {%- if section.settings.show_locale_selector and localization.available_languages.size > 1 -%}
+        {%- assign locale_selector = true -%}
+      {%- endif -%}
+
+      {%- if locale_selector or country_selector -%}
+        {%- form 'localization', id: 'header-localization-form', class: 'header__cross-border hidden-pocket' -%}
+          {%- if country_selector -%}
+            <div class="popover-container">
+              <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+              <span class="visually-hidden">{{ 'header.general.country' | t }}</span>
+
+              <button
+                type="button"
+                is="toggle-button"
+                class="popover-button text--small"
+                aria-expanded="false"
+                aria-controls="header-localization-form-currency"
+              >
+                {{- localization.country.name }} ({{ localization.country.currency.iso_code }}
+                {% if localization.country.currency.symbol %}{{ localization.country.currency.symbol }}{%- endif -%}
+                )
+                {%- render 'icon' with 'chevron', width: 9, height: 6, inline: true -%}
+              </button>
+
+              <popover-content id="header-localization-form-currency" class="popover">
+                <span class="popover__overlay"></span>
+
+                <header class="popover__header">
+                  <span class="popover__title heading h6">{{- 'header.general.country' | t -}}</span>
+
+                  <button
+                    type="button"
+                    class="popover__close-button tap-area tap-area--large"
+                    data-action="close"
+                    title="{{ 'general.accessibility.close' | t | escape }}"
+                  >
+                    {%- render 'icon' with 'close' -%}
+                  </button>
+                </header>
+
+                <div class="popover__content popover__content--restrict">
+                  <div class="popover__choice-list">
+                    {%- for country in localization.available_countries -%}
+                      <button
+                        type="submit"
+                        name="country_code"
+                        value="{{ country.iso_code }}"
+                        class="popover__choice-item"
+                      >
+                        <span
+                          class="popover__choice-label"
+                          {% if country.iso_code == localization.country.iso_code %}
+                            aria-current="true"
+                          {% endif %}
+                        >
+                          {{- country.name }} ({{ country.currency.iso_code }}
+                          {% if country.currency.symbol %}{{ country.currency.symbol }}{%- endif -%}
+                          )
+                        </span>
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </popover-content>
+            </div>
+          {%- endif -%}
+
+          {%- if locale_selector -%}
+            <div class="popover-container">
+              <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
+              <span class="visually-hidden">{{ 'header.general.language' | t }}</span>
+
+              <button
+                type="button"
+                is="toggle-button"
+                class="popover-button text--small"
+                aria-expanded="false"
+                aria-controls="header-localization-form-locale"
+              >
+                {{- localization.language.endonym_name | capitalize -}}
+                {%- render 'icon' with 'chevron', width: 9, height: 6, inline: true -%}
+              </button>
+
+              <popover-content id="header-localization-form-locale" class="popover">
+                <span class="popover__overlay"></span>
+
+                <header class="popover__header">
+                  <span class="popover__title heading h6">{{- 'header.general.language' | t -}}</span>
+
+                  <button
+                    type="button"
+                    class="popover__close-button tap-area tap-area--large"
+                    data-action="close"
+                    title="{{ 'general.accessibility.close' | t | escape }}"
+                  >
+                    {%- render 'icon' with 'close' -%}
+                  </button>
+                </header>
+
+                <div class="popover__content">
+                  <div class="popover__choice-list">
+                    {%- for language in localization.available_languages -%}
+                      <button
+                        type="submit"
+                        name="locale_code"
+                        value="{{ language.iso_code }}"
+                        class="popover__choice-item"
+                      >
+                        <span
+                          class="popover__choice-label"
+                          {% if language.iso_code == localization.language.iso_code %}
+                            aria-current="true"
+                          {% endif %}
+                        >
+                          {{- language.endonym_name | capitalize -}}
+                        </span>
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </popover-content>
+            </div>
+          {%- endif -%}
+        {%- endform -%}
+      {%- endif -%}
+
+      <div class="header-right-list">
+        <a href="/account?slug=account-wish" class="list-item">
+          {% if customer %}
+            <span class="wish-len">0</span>
+          {% endif %}
+
+          <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 17.1768L8.89625 16.1845C7.23858 14.6807 5.86775 13.3884 4.78375 12.3077C3.69975 11.2269 2.84075 10.265 2.20675 9.422C1.57275 8.57917 1.12983 7.81025 0.878 7.11525C0.626 6.42042 0.5 5.71533 0.5 5C0.5 3.58083 0.9785 2.39267 1.9355 1.4355C2.89267 0.4785 4.08083 0 5.5 0C6.373 0 7.198 0.204167 7.975 0.6125C8.752 1.02083 9.427 1.60642 10 2.36925C10.573 1.60642 11.248 1.02083 12.025 0.6125C12.802 0.204167 13.627 0 14.5 0C15.9192 0 17.1073 0.4785 18.0645 1.4355C19.0215 2.39267 19.5 3.58083 19.5 5C19.5 5.71533 19.374 6.42042 19.122 7.11525C18.8702 7.81025 18.4272 8.57917 17.7932 9.422C17.1592 10.265 16.3018 11.2269 15.221 12.3077C14.1403 13.3884 12.7679 14.6807 11.1038 16.1845L10 17.1768ZM10 15.15C11.6 13.7103 12.9167 12.4763 13.95 11.448C14.9833 10.4198 15.8 9.52658 16.4 8.76825C17 8.00992 17.4167 7.3365 17.65 6.748C17.8833 6.15967 18 5.577 18 5C18 4 17.6667 3.16667 17 2.5C16.3333 1.83333 15.5 1.5 14.5 1.5C13.7103 1.5 12.9805 1.724 12.3105 2.172C11.6407 2.62017 11.1102 3.24358 10.7192 4.04225H9.28075C8.88325 3.23708 8.35117 2.61208 7.6845 2.16725C7.01783 1.72242 6.28967 1.5 5.5 1.5C4.50633 1.5 3.67458 1.83333 3.00475 2.5C2.33492 3.16667 2 4 2 5C2 5.577 2.11667 6.15967 2.35 6.748C2.58333 7.3365 3 8.00992 3.6 8.76825C4.2 9.52658 5.01667 10.4183 6.05 11.4433C7.08333 12.4683 8.4 13.7038 10 15.15Z" fill="#FABE00"/>
+          </svg>
+          
+          <span class="hidden-pocket">
+            My List
+          </span>
+        </a>
+
+        <div class="header__icon-list list-item">
+          <div
+            id="pc-user-link"
+            class="header__icon-wrapper "
+            aria-label="{% if customer %}{{ 'header.general.account' | t | escape }}{% else %}{{ 'header.general.login' | t | escape }}{% endif %}"
+          >
+            {% if customer.id %}
+              <a href="/account" class="hidden-pocket">
+                <div class="account-box">
+                  <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3.523 15.2923C4.373 14.6616 5.299 14.1635 6.301 13.798C7.30283 13.4327 8.36917 13.25 9.5 13.25C10.6308 13.25 11.6972 13.4327 12.699 13.798C13.701 14.1635 14.627 14.6616 15.477 15.2923C16.0987 14.6089 16.5912 13.8179 16.9548 12.9192C17.3183 12.0206 17.5 11.0475 17.5 10C17.5 7.78333 16.7208 5.89583 15.1625 4.3375C13.6042 2.77917 11.7167 2 9.5 2C7.28333 2 5.39583 2.77917 3.8375 4.3375C2.27917 5.89583 1.5 7.78333 1.5 10C1.5 11.0475 1.68175 12.0206 2.04525 12.9192C2.40875 13.8179 2.90133 14.6089 3.523 15.2923ZM9.50025 10.75C8.58725 10.75 7.81733 10.4367 7.1905 9.81C6.5635 9.18317 6.25 8.41325 6.25 7.50025C6.25 6.58725 6.56333 5.81733 7.19 5.1905C7.81683 4.5635 8.58675 4.25 9.49975 4.25C10.4128 4.25 11.1827 4.56333 11.8095 5.19C12.4365 5.81683 12.75 6.58675 12.75 7.49975C12.75 8.41275 12.4367 9.18267 11.81 9.8095C11.1832 10.4365 10.4133 10.75 9.50025 10.75ZM9.5 19.5C8.18083 19.5 6.94333 19.2519 5.7875 18.7558C4.63167 18.2596 3.62625 17.5839 2.77125 16.7288C1.91608 15.8738 1.24042 14.8683 0.74425 13.7125C0.248083 12.5567 0 11.3192 0 10C0 8.68083 0.248083 7.44333 0.74425 6.2875C1.24042 5.13167 1.91608 4.12625 2.77125 3.27125C3.62625 2.41608 4.63167 1.74042 5.7875 1.24425C6.94333 0.748084 8.18083 0.5 9.5 0.5C10.8192 0.5 12.0567 0.748084 13.2125 1.24425C14.3683 1.74042 15.3738 2.41608 16.2288 3.27125C17.0839 4.12625 17.7596 5.13167 18.2558 6.2875C18.7519 7.44333 19 8.68083 19 10C19 11.3192 18.7519 12.5567 18.2558 13.7125C17.7596 14.8683 17.0839 15.8738 16.2288 16.7288C15.3738 17.5839 14.3683 18.2596 13.2125 18.7558C12.0567 19.2519 10.8192 19.5 9.5 19.5ZM9.5 18C10.4025 18 11.2727 17.8548 12.1105 17.5645C12.9483 17.274 13.6923 16.8679 14.3422 16.3462C13.6923 15.8436 12.958 15.4519 12.1395 15.1712C11.3208 14.8904 10.441 14.75 9.5 14.75C8.559 14.75 7.67758 14.8888 6.85575 15.1663C6.03392 15.4439 5.30125 15.8372 4.65775 16.3462C5.30775 16.8679 6.05167 17.274 6.8895 17.5645C7.72733 17.8548 8.5975 18 9.5 18ZM9.5 9.25C9.9975 9.25 10.4135 9.08267 10.748 8.748C11.0827 8.4135 11.25 7.9975 11.25 7.5C11.25 7.0025 11.0827 6.5865 10.748 6.252C10.4135 5.91733 9.9975 5.75 9.5 5.75C9.0025 5.75 8.5865 5.91733 8.252 6.252C7.91733 6.5865 7.75 7.0025 7.75 7.5C7.75 7.9975 7.91733 8.4135 8.252 8.748C8.5865 9.08267 9.0025 9.25 9.5 9.25Z" fill="#FABE00"/>
+                  </svg>
+                  <div>
+                    <div title="{{ customer.name }}" class="account-box-login ellipsis account-text">
+                      {{ customer.first_name }}
+                    </div>
+                    <div id="pc-sidebar-section">
+                      {% comment %} <div class="mask"></div> {% endcomment %}
+                      <pc-sidebar />
+                    </div>
+                  </div>
+                </div>
+              </a>
+              <a href="/pages/account-nav" class="hidden-lap-and-up">
+                <div class="account-box">
+                  <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3.523 15.2923C4.373 14.6616 5.299 14.1635 6.301 13.798C7.30283 13.4327 8.36917 13.25 9.5 13.25C10.6308 13.25 11.6972 13.4327 12.699 13.798C13.701 14.1635 14.627 14.6616 15.477 15.2923C16.0987 14.6089 16.5912 13.8179 16.9548 12.9192C17.3183 12.0206 17.5 11.0475 17.5 10C17.5 7.78333 16.7208 5.89583 15.1625 4.3375C13.6042 2.77917 11.7167 2 9.5 2C7.28333 2 5.39583 2.77917 3.8375 4.3375C2.27917 5.89583 1.5 7.78333 1.5 10C1.5 11.0475 1.68175 12.0206 2.04525 12.9192C2.40875 13.8179 2.90133 14.6089 3.523 15.2923ZM9.50025 10.75C8.58725 10.75 7.81733 10.4367 7.1905 9.81C6.5635 9.18317 6.25 8.41325 6.25 7.50025C6.25 6.58725 6.56333 5.81733 7.19 5.1905C7.81683 4.5635 8.58675 4.25 9.49975 4.25C10.4128 4.25 11.1827 4.56333 11.8095 5.19C12.4365 5.81683 12.75 6.58675 12.75 7.49975C12.75 8.41275 12.4367 9.18267 11.81 9.8095C11.1832 10.4365 10.4133 10.75 9.50025 10.75ZM9.5 19.5C8.18083 19.5 6.94333 19.2519 5.7875 18.7558C4.63167 18.2596 3.62625 17.5839 2.77125 16.7288C1.91608 15.8738 1.24042 14.8683 0.74425 13.7125C0.248083 12.5567 0 11.3192 0 10C0 8.68083 0.248083 7.44333 0.74425 6.2875C1.24042 5.13167 1.91608 4.12625 2.77125 3.27125C3.62625 2.41608 4.63167 1.74042 5.7875 1.24425C6.94333 0.748084 8.18083 0.5 9.5 0.5C10.8192 0.5 12.0567 0.748084 13.2125 1.24425C14.3683 1.74042 15.3738 2.41608 16.2288 3.27125C17.0839 4.12625 17.7596 5.13167 18.2558 6.2875C18.7519 7.44333 19 8.68083 19 10C19 11.3192 18.7519 12.5567 18.2558 13.7125C17.7596 14.8683 17.0839 15.8738 16.2288 16.7288C15.3738 17.5839 14.3683 18.2596 13.2125 18.7558C12.0567 19.2519 10.8192 19.5 9.5 19.5ZM9.5 18C10.4025 18 11.2727 17.8548 12.1105 17.5645C12.9483 17.274 13.6923 16.8679 14.3422 16.3462C13.6923 15.8436 12.958 15.4519 12.1395 15.1712C11.3208 14.8904 10.441 14.75 9.5 14.75C8.559 14.75 7.67758 14.8888 6.85575 15.1663C6.03392 15.4439 5.30125 15.8372 4.65775 16.3462C5.30775 16.8679 6.05167 17.274 6.8895 17.5645C7.72733 17.8548 8.5975 18 9.5 18ZM9.5 9.25C9.9975 9.25 10.4135 9.08267 10.748 8.748C11.0827 8.4135 11.25 7.9975 11.25 7.5C11.25 7.0025 11.0827 6.5865 10.748 6.252C10.4135 5.91733 9.9975 5.75 9.5 5.75C9.0025 5.75 8.5865 5.91733 8.252 6.252C7.91733 6.5865 7.75 7.0025 7.75 7.5C7.75 7.9975 7.91733 8.4135 8.252 8.748C8.5865 9.08267 9.0025 9.25 9.5 9.25Z" fill="#FABE00"/>
+                  </svg>
+                </div>
+              </a>
+            {% else %}
+              <a href="/account/login" class="account-box">
+                <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.523 15.2923C4.373 14.6616 5.299 14.1635 6.301 13.798C7.30283 13.4327 8.36917 13.25 9.5 13.25C10.6308 13.25 11.6972 13.4327 12.699 13.798C13.701 14.1635 14.627 14.6616 15.477 15.2923C16.0987 14.6089 16.5912 13.8179 16.9548 12.9192C17.3183 12.0206 17.5 11.0475 17.5 10C17.5 7.78333 16.7208 5.89583 15.1625 4.3375C13.6042 2.77917 11.7167 2 9.5 2C7.28333 2 5.39583 2.77917 3.8375 4.3375C2.27917 5.89583 1.5 7.78333 1.5 10C1.5 11.0475 1.68175 12.0206 2.04525 12.9192C2.40875 13.8179 2.90133 14.6089 3.523 15.2923ZM9.50025 10.75C8.58725 10.75 7.81733 10.4367 7.1905 9.81C6.5635 9.18317 6.25 8.41325 6.25 7.50025C6.25 6.58725 6.56333 5.81733 7.19 5.1905C7.81683 4.5635 8.58675 4.25 9.49975 4.25C10.4128 4.25 11.1827 4.56333 11.8095 5.19C12.4365 5.81683 12.75 6.58675 12.75 7.49975C12.75 8.41275 12.4367 9.18267 11.81 9.8095C11.1832 10.4365 10.4133 10.75 9.50025 10.75ZM9.5 19.5C8.18083 19.5 6.94333 19.2519 5.7875 18.7558C4.63167 18.2596 3.62625 17.5839 2.77125 16.7288C1.91608 15.8738 1.24042 14.8683 0.74425 13.7125C0.248083 12.5567 0 11.3192 0 10C0 8.68083 0.248083 7.44333 0.74425 6.2875C1.24042 5.13167 1.91608 4.12625 2.77125 3.27125C3.62625 2.41608 4.63167 1.74042 5.7875 1.24425C6.94333 0.748084 8.18083 0.5 9.5 0.5C10.8192 0.5 12.0567 0.748084 13.2125 1.24425C14.3683 1.74042 15.3738 2.41608 16.2288 3.27125C17.0839 4.12625 17.7596 5.13167 18.2558 6.2875C18.7519 7.44333 19 8.68083 19 10C19 11.3192 18.7519 12.5567 18.2558 13.7125C17.7596 14.8683 17.0839 15.8738 16.2288 16.7288C15.3738 17.5839 14.3683 18.2596 13.2125 18.7558C12.0567 19.2519 10.8192 19.5 9.5 19.5ZM9.5 18C10.4025 18 11.2727 17.8548 12.1105 17.5645C12.9483 17.274 13.6923 16.8679 14.3422 16.3462C13.6923 15.8436 12.958 15.4519 12.1395 15.1712C11.3208 14.8904 10.441 14.75 9.5 14.75C8.559 14.75 7.67758 14.8888 6.85575 15.1663C6.03392 15.4439 5.30125 15.8372 4.65775 16.3462C5.30775 16.8679 6.05167 17.274 6.8895 17.5645C7.72733 17.8548 8.5975 18 9.5 18ZM9.5 9.25C9.9975 9.25 10.4135 9.08267 10.748 8.748C11.0827 8.4135 11.25 7.9975 11.25 7.5C11.25 7.0025 11.0827 6.5865 10.748 6.252C10.4135 5.91733 9.9975 5.75 9.5 5.75C9.0025 5.75 8.5865 5.91733 8.252 6.252C7.91733 6.5865 7.75 7.0025 7.75 7.5C7.75 7.9975 7.91733 8.4135 8.252 8.748C8.5865 9.08267 9.0025 9.25 9.5 9.25Z" fill="#FABE00"/>
+                </svg>
+                <span class="hidden-pocket">Sign in</span>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="list-item">
+          <cart-count data-email="{{ customer.email }}" class="{% if cart.item_count == 0 %}visually-hidden{% endif %} header__cart-count header__cart-count--floating bubble-count">
+            {% if cart.item_count > 99 %}
+              99+
+            {% else %}
+              {{- cart.item_count -}}
+            {% endif %}
+          </cart-count>
+          <a style="display: flex;" href="/cart">
+            <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.65375 19.5578C5.16792 19.5578 4.75483 19.3875 4.4145 19.047C4.07417 18.7067 3.904 18.2936 3.904 17.8078C3.904 17.3218 4.07417 16.9086 4.4145 16.5683C4.75483 16.2279 5.16792 16.0577 5.65375 16.0577C6.13975 16.0577 6.55292 16.2279 6.89325 16.5683C7.23358 16.9086 7.40375 17.3218 7.40375 17.8078C7.40375 18.2936 7.23358 18.7067 6.89325 19.047C6.55292 19.3875 6.13975 19.5578 5.65375 19.5578ZM15.3463 19.5578C14.8603 19.5578 14.4471 19.3875 14.1068 19.047C13.7664 18.7067 13.5963 18.2936 13.5963 17.8078C13.5963 17.3218 13.7664 16.9086 14.1068 16.5683C14.4471 16.2279 14.8603 16.0577 15.3463 16.0577C15.8321 16.0577 16.2452 16.2279 16.5855 16.5683C16.9258 16.9086 17.096 17.3218 17.096 17.8078C17.096 18.2936 16.9258 18.7067 16.5855 19.047C16.2452 19.3875 15.8321 19.5578 15.3463 19.5578ZM4.51525 3.75L7.05 9.05775H13.8673C13.9249 9.05775 13.9763 9.04333 14.0213 9.0145C14.0661 8.98567 14.1045 8.94558 14.1365 8.89425L16.8193 4.01925C16.8578 3.94875 16.8609 3.88625 16.8288 3.83175C16.7968 3.77725 16.7423 3.75 16.6653 3.75H4.51525ZM3.79625 2.25H17.6808C18.0898 2.25 18.399 2.42408 18.6085 2.77225C18.8182 3.12025 18.8282 3.47567 18.6385 3.8385L15.4345 9.64225C15.2705 9.93075 15.0536 10.1554 14.7838 10.3162C14.5138 10.4773 14.2179 10.5577 13.8963 10.5577H6.6L5.44225 12.673C5.39092 12.75 5.38933 12.8333 5.4375 12.923C5.4855 13.0128 5.55758 13.0577 5.65375 13.0577H17.096V14.5577H5.65375C4.98708 14.5577 4.48617 14.2703 4.151 13.6953C3.81567 13.1203 3.80383 12.5462 4.1155 11.973L5.54225 9.40775L1.904 1.75H0V0.25H2.84625L3.79625 2.25Z" fill="#FABE00"/>
+            </svg>
+            <span class="hidden-pocket">Cart</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header-bottom-wrapper hidden-lap-and-up">
+    {%- render 'mobile-menu-sidebar' -%}
+    <div class="container">
+      <div class="header-bottom">
+        <span class="flex-center mobile-menu-action">
+          {% render 'icon' with 'header-mobile-menu' %}
+        </span>
+        {% render 'header-search-form', type: 'mobile' %}
+      </div>
+    </div>
+  </div>
+  <div class="header-menu-wrapper hidden-pocket">
+    <div class="container">
+      <div class="header-menu">
+        <ul>
+          <li class="all-products-menu-action">
+            <div class="all-products-menu">
+              {% render 'icon' with 'v3-menu' %}
+              <span>All Products</span>
+            </div>
+            {%- render 'pc-menu-sidebar' -%}
+          </li>
+          {% assign menu_blocks = section.blocks | where: 'type', 'menu_link' %}
+          {% for menu_block in menu_blocks %}
+            <li class="{% if menu_block.settings.isBrand %}exclusive-container{% endif %}">
+              {% if menu_block.settings.isBrand %}
+                <div>
+                  {{ menu_block.settings.title }}
+                </div>
+                <div class="barnd-list">
+                  <a href="/pages/black-canyon">Black Canyon</a>
+                  <a href="/pages/olympia">Olympia</a>
+                  <a href="/pages/northsky-select">NorthSky Select</a>
+                </div>
+              {% else %}
+                <a {% if menu_block.settings.new_window %}target="_blank"{% endif %} href="{{ menu_block.settings.link_url }}">
+                  {% if menu_block.settings.icon != blank %}
+                    {{ menu_block.settings.icon }}
+                  {% endif %}
+                  {{ menu_block.settings.title }}
+                </a>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="account-user-status">
+    {% if customer.id %}
+      <div class="account-user-login"></div>
+    {% else %}
+      <div class="account-user-unlogin"></div>
+    {% endif %}
+  </div>
+  <!-- LEFT PART -->
+  <nav class="hidden-lap-and-up">
+    <div id="mobile-sidebar-section">
+      <mobile-sidebar />
+    </div>
+  </nav>
+</store-header>
+{%- comment -%}
+  ------------------------------------------------------------------------------------
+    CART NOTIFICATION: it is used to show the notification when a product is added in message mode
+  ------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+<cart-notification
+  global
+  hidden
+  class="cart-notification {% unless section.settings.enable_sticky_header %}cart-notification--fixed{% endunless %}"
+></cart-notification>
+
+{%- render 'pc-sidebar' -%}
+{%- render 'mobile-sidebar' -%}
+<script>
+  (() => {
+    if($('#pc-sidebar-section').length) {
+      new Vue({
+        el: '#pc-sidebar-section',
+        delimiters: ['${', '}'],
+        components: {
+          pcSidebar,
+        },
+      });
+    }
+
+    new Vue({
+      el: '#mobile-sidebar-section',
+      delimiters: ['${', '}'],
+      components: {
+        mobileSidebar,
+      },
+    });
+  })();
+</script>
+
+<script>
+  (() => {
+    $('.mobile-menu-action').click(function() {
+      $('.mobile-menu-nav').addClass('nav-open');
+      $('body').addClass('no-scroll');
+    })
+
+    $('#menu-list').on('click', function () {
+      $('body').addClass('no-scroll');
+      $('#mobile_main_nav1').addClass('nav-open');
+    });
+  })();
+</script>
+
+<script>
+  (() => {
+    function getWishCount() {
+      {% if customer %}
+        const customerId = +"{{ customer.id }}"
+        fetch(`${window.zkh.api}/wish/nums?customerId=${customerId}`)
+        .then(response => response.json())
+        .then(data => {
+          if(data.data.nums) {
+            $('.wish-len').css('display', 'flex').removeClass('visually-hidden').text(data.data.nums > 99 ? '99+': data.data.nums);
+          } else {
+            $('.wish-len').addClass('visually-hidden');
+          }
+        })
+      {% endif %}
+    }
+    getWishCount(); 
+    document.addEventListener('wish-refreash', function() {
+      getWishCount();
+    });
+    $('#pc-user-link').hover(
+      function() {
+        $('#tidio-chat').addClass('top_index')
+        $('#pc-sidebar-section .mask, #pc-sidebar-section .pc-main-nav').removeClass('hidden');
+      },
+      function() {
+        $('#tidio-chat').removeClass('top_index')
+      }
+    );
+    $('.header .predictive-search__form').on('submit', function(e) {
+      var $input = $('.header .predictive-search__input');
+      if ($input.val().trim() === '') {
+        $input.val('The search input cannot be empty.');
+      }
+    });
+    $('#pc-sidebar-section .mask').hover(
+      function() {
+        $('#pc-sidebar-section .mask, #pc-sidebar-section .pc-main-nav').addClass('hidden');
+      }
+    );
+
+    let header_menu_timer;  
+    $('.header-menu-item').hover(
+      function() {
+        var $this = $(this); 
+        header_menu_timer = setTimeout(function() {
+            $this.addClass('hover');
+        }, 300); 
+      },
+      function() {
+        clearTimeout(header_menu_timer);
+        $(this).removeClass('hover');
+      }
+    );
+
+    let header_scroll_timer; 
+    $('.header-menu-item:first-child').hover(
+      function() {
+        header_scroll_timer = setTimeout(function() {
+          $('body').addClass('no-scroll'); 
+        }, 300); 
+      },
+      function() {
+        clearTimeout(header_scroll_timer);
+        $('body').removeClass('no-scroll');
+      }
+    );
+
+    const headerElement = document.getElementById('shopify-section-{{ section.id }}'),
+    headerHeight = headerElement.clientHeight,
+    headerHeightWithoutBottomNav = headerElement.querySelector('.header__wrapper').clientHeight;
+
+    document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
+    document.documentElement.style.setProperty('--header-height-without-bottom-nav', headerHeightWithoutBottomNav + 'px');
+  })();
+</script>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    {% if section.settings.logo %}
+      {% assign image_size = section.settings.logo.width | append: 'x' %}
+      "logo": {{ section.settings.logo | img_url: image_size | prepend: 'https:' | json }},
+    {% endif %}
+    "url": {{ shop.url | append: page.url | json }}
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "shopify-section--header",
+  "settings": [
+    {
+      "type": "url",
+      "id": "catalog",
+      "label": "Catalog link"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "label": "Enable sticky header",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Image",
+      "info": "280 x 80px .png recommended"
+    },
+    {
+      "type": "range",
+      "id": "logo_max_width",
+      "min": 50,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "label": "Image width",
+      "default": 140
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_max_width",
+      "min": 50,
+      "max": 170,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile image width",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Bulk Order"
+    },
+    {
+      "type": "text",
+      "id": "bulk_text",
+      "label": "text",
+      "default": "Bulk Order"
+    },
+    {
+      "type": "url",
+      "id": "bulk_link",
+      "label": "Bulk link"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "navigation_menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "sidebar_navigation_menu",
+      "label": "Mobile menu",
+      "info": "Select a different menu for mobile sidebar. If none is set the main menu is used."
+    },
+    {
+      "type": "header",
+      "content": "Desktop",
+      "info": "Those settings apply on large screen only"
+    },
+    {
+      "type": "select",
+      "id": "header_layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "logo_left_navigation_inline",
+          "label": "Logo left, navigation inline"
+        },
+        {
+          "value": "logo_left_navigation_center",
+          "label": "Logo left, navigation center"
+        },
+        {
+          "value": "logo_center_navigation_inline",
+          "label": "Logo center, navigation inline"
+        },
+        {
+          "value": "logo_center_search_open",
+          "label": "Logo center, search highlighted"
+        },
+        {
+          "value": "drawer",
+          "label": "Drawer"
+        }
+      ],
+      "default": "logo_left_navigation_inline"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icons",
+      "label": "Show icons",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "reduce_desktop_padding",
+      "label": "Reduce padding",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Language selector",
+      "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_locale_selector",
+      "label": "Show language selector",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Country/region selector",
+      "info": "To add a country/region, go to your [currency settings.](/admin/settings/payments)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country_selector",
+      "label": "Show country/region selector",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Transparent header",
+      "info": "Home page only. For best results, use an image section such as slideshow."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_transparent_header",
+      "label": "Enable",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "transparent_header_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "image_picker",
+      "id": "transparent_logo",
+      "label": "Logo image",
+      "info": "Uses the dimensions set on your main logo."
+    },
+    {
+      "type": "header",
+      "content": "Search"
+    },
+    {
+      "type": "link_list",
+      "id": "search_menu",
+      "label": "Quick links menu",
+      "info": "Display quick links when empty. This menu has limited support for dropdown items."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu_link",
+      "name": "Menu Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Link name"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "isBrand",
+          "label": "is Brand",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "new_window",
+          "label": "Open link in new window",
+          "default": false
+        },
+        {
+          "type": "html",
+          "id": "icon",
+          "label": "Icon (optional)"
+        }
+      ]
+    },
+    {
+      "type": "menu_list",
+      "name": "Menu List",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_name",
+          "label": "Menu Name"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_list",
+          "label": "Menu List"
+        },
+        {
+          "type": "url",
+          "id": "menu_url",
+          "label": "Menu Url"
+        }
+      ]
+    },
+    {
+      "type": "mega_menu",
+      "name": "Mega menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_item",
+          "label": "Menu item",
+          "info": "Enter menu item to apply a mega menu dropdown. [Learn more](https://iadlink.com/)."
+        },
+        {
+          "type": "select",
+          "id": "images_position",
+          "label": "Images position",
+          "info": "When featuring 4 images or more, we recommend to not use any dropdown links to keep the navigation easy to use.",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "right"
+        },
+        {
+          "type": "header",
+          "content": "Image 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Image",
+          "info": "560 x 420px .jpg recommended"
+        },
+        {
+          "type": "text",
+          "id": "image_1_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "image_1_text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "image_1_link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Image 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Image",
+          "info": "560 x 420px .jpg recommended"
+        },
+        {
+          "type": "text",
+          "id": "image_2_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "image_2_text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "image_2_link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Image 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Image",
+          "info": "560 x 420px .jpg recommended"
+        },
+        {
+          "type": "text",
+          "id": "image_3_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "image_3_text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "image_3_link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Image 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_4",
+          "label": "Image",
+          "info": "560 x 420px .jpg recommended"
+        },
+        {
+          "type": "text",
+          "id": "image_4_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "image_4_text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "image_4_link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Image 5"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_5",
+          "label": "Image",
+          "info": "560 x 420px .jpg recommended"
+        },
+        {
+          "type": "text",
+          "id": "image_5_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "image_5_text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "image_5_link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Image 6"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_6",
+          "label": "Image",
+          "info": "560 x 420px .jpg recommended"
+        },
+        {
+          "type": "text",
+          "id": "image_6_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "image_6_text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "image_6_link",
+          "label": "Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

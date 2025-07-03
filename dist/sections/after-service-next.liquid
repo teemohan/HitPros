@@ -1,0 +1,1231 @@
+{{ 'el-reset.css' | asset_url | stylesheet_tag }}
+{{ 'theme-v3.css' | asset_url | stylesheet_tag }}
+{{ 'main-customers-orders.css' | asset_url | stylesheet_tag }}
+
+<style>
+      #order_section {
+        display: none;
+      }
+      .refund-amount-box {
+        line-height: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .refund-qty-wrapper .el-input__inner:focus {
+        border: unset!important;
+        border-top: 1px solid #ccc!important;
+        border-bottom: 1px solid #ccc!important;
+      }
+          .table-body .order-line-item-wrapper:last-child {
+            border: none;
+          }
+          .order-line-item-wrapper {
+            display: flex;
+            gap: 20px;
+          }
+          .order-line-item-wrapper .order-line-item {
+            flex: 1;
+          }
+          .{{ section.id }} .order-action{
+            height: 50px;
+            background: #f2f2f2;
+            flex-direction: row;
+            align-items: center;
+            padding-left: 20px;
+            justify-content: space-between;
+          }
+          .select-all-wrapper{
+            align-items: center;
+            display: flex;
+            gap: 10px;
+          }
+          .total-rp{
+            align-items: center;
+                width: 460px !important;
+          }
+          .total-rp p{
+                display: flex;
+            align-items: center;
+          }
+          .total-rp p span{
+            width: 80px;
+          }
+          .next-btn-wrapper{
+            height: 100%;
+          }
+          .order-action .next-btn-wrapper button{
+            height: 100%;
+            border: none;
+            border-radius: 0;
+            background:#fabe00;
+            width: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: #142A6B;
+            line-height: 21px;
+          }
+          .order-action .next-btn-wrapper button[disabled]{
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+          .refund-qty-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .refund-qty-btn {
+          width: 30px;
+          height: 30px;
+          border: 1px solid #666;
+          background-color: #fff;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 20px;
+        }
+
+        .refund-qty-btn:disabled {
+          cursor: not-allowed;
+          color: #CCCCCC;
+          border: 1px solid #ccc;
+        }
+        .order-more-info {
+        margin-top: 24px;
+      }
+
+      .order-more-info label {
+        display: block;
+        font-weight: bold;
+      }
+
+
+      .additional-details {
+        position: relative;
+        display: flex;
+        gap: 20px;
+      }
+
+      .additional-details textarea {
+        width: 100%;
+        height: 80px;
+        padding: 10px;
+      }
+
+      .char-count {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        font-size: 0.9em;
+        color: #888;
+      }
+
+  .add-attachment {
+    margin-bottom: 10px;
+    border: 1px solid var(--my-blue);
+    padding: 10px;
+    border-radius: 2px;
+    max-height: 80px;
+    flex-shrink: 0;
+    color: var(--my-blue);
+  }
+  .attachment-preview {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .uploaded-image-container {
+    position: relative;
+    margin-right: 20px;
+    margin-bottom: 10px;
+  }
+  .uploaded-image {
+    height: 80px;
+    border-radius: 2px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+  }
+  .remove-attachment {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #fff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  .service-input {
+    width: 70px;
+  }
+  .service-input input {
+    height: 30px;
+    border-radius: 0;
+    text-align: center;
+    border: 0!important;
+  }
+  .file-preview {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid #CCCCCC;
+    padding: 5px;
+    border-radius: 2px;
+  }
+  .uploaded-image-container video{
+    height: 80px;
+  }
+  .return-policy {
+    margin-bottom: 24px;
+    line-height: 1;
+  }
+  .return-policy a{
+    text-decoration: underline;
+    font-size: 14px;
+    color: #1a1a1a;
+  }
+  .{{ section.id }} .copy-icon{
+    cursor: pointer;
+  }
+  .order-total-estimate{
+    padding: 20px 16px 10px;
+    display: flex;
+    justify-content: end;
+  }
+  .order-total-estimate>div{
+    width: 394px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .order-total-estimate >div>span{
+    font-size: 14px;
+    color: #999999;
+    line-height: 21px;
+  }
+  .order-total-estimate >div>p{
+    font-size: 14px;
+    color: #1a1a1a;
+    line-height: 21px;
+  }
+  .order-more-info__reason{
+    display: flex;
+    gap: 20px;
+  }
+  .order-more-info__reason .common-select{
+    width: 100%;
+  }
+
+  .attachment {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .order-more-info__reason select{
+    height: 40px;
+    color: #ccc;
+  }
+  .order-more-info__reason select option:not(:first-child){
+    color: #1a1a1a;
+  }
+  .order-more-info__reason select:focus{
+    border: none;
+    padding-left: 10px;
+    appearance: none;        
+    -webkit-appearance: none; 
+    -moz-appearance: none;  
+  }
+  .order-more-info__reason.is-filled select{
+    color: #1a1a1a;
+  }
+  .{{ section.id }} .select-all-wrapper{
+    margin-left: auto;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .common-dropdown-item{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .order-more-info .el-form .el-row{
+    display: flex;
+  }
+  .order-more-info .el-form .el-row >div:first-child{
+    width: 150px;
+  }
+  .order-more-info .el-form .el-row:last-child{
+    margin-top: 22px;
+  }
+  .order-more-info .el-form .el-row >div:last-child{
+    flex: 1;
+  }
+  .{{ section.id }} .el-reset-from .el-label{
+    width: fit-content;
+  }
+  .{{ section.id }} .order-action .next-btn-wrapper button[disabled]{
+    opacity: 1;
+    background-color: #cbcbcb;
+  }
+  .order-more-info label {
+    margin-right: 20px;
+  }
+  .select-label {
+    margin-top: 6px;
+  }
+  .text-label {
+    margin-top: 8px;
+  }
+  .file-label {
+    margin-top: 10px;
+  }
+  @media screen and (max-width: 740px) {
+    .order-more-info label {
+      font-size: 12px;
+      font-weight: 400;
+    }
+    .order-more-info .el-form .el-row >div:first-child{
+      width: 130px;
+    }
+    .refund-qty-btn {
+      width: 20px;
+      height: 20px;
+    }
+       .{{ section.id }} .order-main-table{
+         padding:0;
+       }
+       .status-item p{
+         margin-left: auto;
+       }
+       .{{ section.id }} .order-main-table{
+         border: none;
+       }
+       .{{ section.id }} .order-status-wrapper{
+         margin-bottom: 15px;
+         border: 1px solid var(--my-border);
+       }
+       .{{ section.id }} .table-body{
+         border: 1px solid var(--my-border);
+         padding: 0 10px;
+       }
+       .{{ section.id }}  .order-line-item-wrapper{
+         padding: 15px 0;
+         flex-direction: column;
+       }
+       .order-status{
+         padding: 10px;
+       }
+       .order-line-item-wrapper__inner{
+         flex-direction: column;
+         gap:0;
+       }
+       .order-line-item-wrapper__inner-checkbox{
+         flex-direction: row;
+          align-items: center;
+          justify-content: flex-start;
+          gap:5px;
+       }
+       .product-detail{
+         gap: 5px;
+       }
+       .product-detail p{
+         line-height: 1.3;
+         color: #142A6B;
+       }
+       .{{ section.id }} .layout-container{
+     margin-top: 10px;
+     padding-bottom: 0;
+     display: flex;
+     flex-direction: column;
+   }
+   .order-line-item-wrapper .hidden-tablet-and-up .item-info{
+     flex-direction: row;
+     align-items: center;
+     justify-content: space-between;
+   }
+   .order-more-info__reason{
+    gap:10px;
+   }
+   .additional-details{
+    gap:10px;
+   }
+   .attachment{
+    flex-wrap: wrap;
+    gap:10px;
+   }
+   .additional-details textarea{
+    height: 100px;
+    line-height: 1.2;
+   }
+   .order-total-estimate{
+    padding: 10px 0;
+   }
+   .{{ section.id }} .order-total{
+    padding: 10px 0;
+   }
+   .{{ section.id }} .order-total>div{
+    width: 100%;
+   }
+   .order-total>div>p{
+    font-size: 14px;
+   }
+     }
+</style>
+<div class="return-policy">
+  <a href="{{ section.settings.policy_url }}">View Policy</a>
+</div>
+<section id="order_section" class="order-section el-reset-from {{ section.id }}">
+  <div class="order-item" data-id="{{ order.id }}">
+    <div class="order-main">
+      <div class="order-main-wrapper">
+        <div class="order-main-table">
+          <div class="order-status-wrapper">
+            <div class="order-status">
+              <div class="status-item">
+                <span>Order Number:</span>
+                <p class="order-id">${ orderMain.name }</p>
+                <span class="copy-icon" @click="copyToClipboard(orderMain.name)">
+                  <svg
+                    t="1729757775593"
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="1857"
+                    width="12"
+                    height="12"
+                  >
+                    <path d="M924 862a40 40 0 0 1 0-80 20 20 0 0 0 20-20V100a20 20 0 0 0-20-20H262a20 20 0 0 0-20 20 40 40 0 0 1-80 0A100 100 0 0 1 262 0h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100z" fill="#808080" p-id="1858"></path><path d="M762 1024H100A100 100 0 0 1 0 924V262a100 100 0 0 1 100-100h662a100 100 0 0 1 100 100v662a100 100 0 0 1-100 100zM100 242a20 20 0 0 0-20 20v662a20 20 0 0 0 20 20h662a20 20 0 0 0 20-20V262a20 20 0 0 0-20-20z" fill="#808080" p-id="1859"></path><path d="M431 807a40 40 0 0 1-40-40V419a40 40 0 0 1 80 0v348a40 40 0 0 1-40 40z" fill="#808080" p-id="1860"></path><path d="M605 633H257a40 40 0 0 1 0-80h348a40 40 0 0 1 0 80z" fill="#808080" p-id="1861"></path>
+                  </svg>
+                </span>
+              </div>
+              <div class="status-item">
+                <span>Order Date:</span>
+                <p>${ formateDate(orderMain.created_at)}</p>
+              </div>
+            </div>
+          </div>
+          <div class="skeleton-wrapper" v-if="isFetching">
+          <el-skeleton :rows="6" :animated="true" />
+        </div>
+          <div class="table-body">
+            <div
+              v-for="(order, index) in filteredOrderItems"
+              :key="order.id"
+              :data-variant="order.variant_id"
+              class="order-line-item-wrapper"
+            >
+              <div
+                class="order-line-item layout-container"
+              >
+                <div class="product-info-wrapper">
+                  <span class="title hidden-phone">PRODUCT${index}</span>
+                  <div class="product-info">
+                    <div class="product-img">
+                      <img
+                        :src="order.imageUrl"
+                        alt="Product Image"
+                      >
+                    </div>
+                    <div class="product-detail">
+                      <span class="title hidden-tablet-and-up">PRODUCT${index}</span>
+                      <p class="ellipsis3 product-title">
+                        <a :href="order.productUrl">${ order.title }</a>
+                      </p>
+                      <span class="product-sku">Model: ${ order.model }</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="hidden-tablet-and-up">
+                  <div class="item-info">
+                    <span class="title">PROPERTY</span>
+                     <span v-if="Object.keys(order.salesAndCommon || {}).length > 0">
+                      <div v-for="(value, key) in order.salesAndCommon" :key="key" >
+                        <span>${ key }: </span><span>${ value }</span>
+                      </div>
+                    </span>
+                    <span v-else>-</span>
+                  </div>
+                  <div class="item-info">
+                    <span class="title">AVAILABLE</span>
+                    <span>${ order.current_quantity }</span>
+                  </div>
+                  <div class="item-info">
+                    <span class="title">REFUND QTY</span>
+                    <div class="refund-qty-wrapper">
+                      <button
+                        :disabled="order.refundQty == 1"
+                        class="refund-qty-btn minus-btn"
+                        @click="decrementQty(order, order.price)"
+                      >
+                        -
+                      </button>
+                      <el-input class="service-input" @change="handleChange(order)" v-model="order.refundQty"></el-input>
+                      <button
+                        :disabled="order.refundQty == order.quantity"
+                        class="refund-qty-btn plus-btn"
+                        @click="incrementQty(order.current_quantity, order)"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                  <div class="item-info">
+                    <span class="title">REFUND AMOUNT</span>
+                    <span>${ order.refundAmount }<span class="tip">(TAX included)</span></span>
+                  </div>
+                </div>
+                <div class="hidden-phone item-info">
+                  <span class="title">PROPERTY</span>
+
+                  <span v-if="Object.keys(order.salesAndCommon || {}).length > 0">
+                      <div v-for="(value, key) in order.salesAndCommon" :key="key" >
+                        <span>${ key }: </span><span>${ value }</span>
+                      </div>
+                    </span>
+                    <span v-else>-</span>
+                </div>
+                <div class="hidden-phone item-info">
+                  <span class="title">AVAILABLE</span>
+                  <span>${ order.current_quantity }</span>
+                </div>
+                <div class="hidden-phone item-info">
+                  <span class="title">REFUND QTY</span>
+                  <div class="refund-qty-wrapper">
+                    <button
+                      :disabled="order.refundQty == 1"
+                      class="refund-qty-btn minus-btn"
+                      @click="decrementQty(order, order.price)"
+                    >
+                      -
+                    </button>
+                    <el-input class="service-input" @change="handleChange(order)" v-model="order.refundQty"></el-input>
+                    <button
+                      :disabled="order.refundQty == order.quantity"
+                      class="refund-qty-btn plus-btn"
+                      @click="incrementQty(order.current_quantity, order)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <div class="hidden-phone item-info">
+                  <span class="title">REFUND AMOUNT</span>
+                  <span class="refund-amount-box">${ order.refundAmount }<span class="tip">(TAX included)</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="order-total-estimate">
+              <div>
+                <span>Estimated Refund Amount:</span>
+                <p>${ estimatedAmount }</p>
+              </div>
+            </div>
+            <div class="order-total">
+              <div class="total-rp">
+                <span>Total Refund Amount:</span>
+                
+                <p>
+                    <span>USD $</span>
+                  <el-input v-model="refundAmount" :min="0"
+      :max="refundAmountMax" @change="validateInput"></el-input>
+                </p>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="order-more-info">
+          <el-form>
+            <el-row>
+              <el-col>
+                <div>
+                  <label class="alert-label select-label">Please Select*</label>
+                </div>
+              </el-col>
+              <el-col>
+                <div class="order-more-info__reason">
+                  <el-form-item class="common-select" prop="refundOption">
+                    <el-select
+                      ref="sel"
+                      id="refund-reason"
+                      v-model="refundOption"
+                      placeholder=""
+                      v-focus-input="refundOption"
+                    >
+                      <el-option
+                        v-for="item in industryOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      >
+                        <div class="common-dropdown-item" @click="handleButtonClick($event, item)">
+                          <div>${ item.value }</div>
+                          <el-input
+                            v-if="showIndustryEdit && item.value == 'Other'"
+                            v-model="refundOption"
+                            placeholder="Please enter your reason*"
+                          ></el-input>
+                        </div>
+                      </el-option>
+                    </el-select>
+                    <label for="refund-reason" class="el-label">Please Select*</label>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col>
+                <div>
+                  <label class="text-label">Additional Details:</label>
+                </div>
+              </el-col>
+              <el-col>
+                <!-- Additional Details Textarea -->
+                <div class="additional-details">
+                  <el-input
+                    id="additional-details"
+                    @input="updateCharCount"
+                    type="textarea"
+                    :rows="3"
+                    :maxlength="200"
+                    v-model="refundReason"
+                    placeholder="Tell us more about why you're returning our products. (200 character limit)"
+                  >
+                  </el-input>
+                  <span class="char-count">0/200</span>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col>
+                <div>
+                  <label class="file-label">Attachment:</label>
+                </div>
+              </el-col>
+              <!-- Attachment Button -->
+              <el-col>
+                <div class="attachment">
+                  <button type="button" @click="handleAttachmentUpload" class="add-attachment">Add Attachment</button>
+                  <div class="attachment-preview">
+                    <div
+                      v-for="(file, index) in attachmentPreviewUrls"
+                      :key="index"
+                      class="uploaded-image-container"
+                    >
+                      <template v-if="file.type.startsWith('image/')">
+                        <img :src="file.url" alt="Uploaded Image" class="uploaded-image">
+                      </template>
+                      <template v-else-if="file.type.startsWith('video/')">
+                        <video :src="file.url" controls class="uploaded-video"></video>
+                      </template>
+                      <template v-else-if="file.type === 'application/msword' ">
+                        <div class="file-preview">
+                          <svg
+                            t="1731392215850"
+                            class="icon"
+                            viewBox="0 0 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            p-id="1090"
+                            width="40"
+                            height="40"
+                          >
+                            <path d="M535.119473 0h69.599248v95.247413C729.226717 96.331138 853.614299 93.92286 977.881468 96.331138a40.459078 40.459078 0 0 1 44.914393 45.516463c2.047037 234.566322 0 469.614299 1.204139 703.819379-1.204139 24.082785 2.287865 50.694262-11.318909 72.248354-16.978363 12.041392-38.893697 10.837253-58.761994 12.041392h-349.200376V1023.518344h-72.248354C354.980245 990.886171 177.490122 960.541863 0 928.752587V95.488241C178.33302 63.578551 356.786453 32.511759 535.119473 0z" fill="#2A5699" p-id="1091"></path><path d="M604.718721 131.010348H988.598307v761.979304H604.718721v-95.247413h302.479774v-48.165569H604.718721v-59.002822h302.479774v-48.16557H604.718721v-59.002822h302.479774v-48.165569H604.718721v-60.206961h302.479774V428.673565H604.718721v-60.206961h302.479774v-46.96143H604.718721v-59.604892h302.479774V214.336783H604.718721zM240.827846 341.373471c22.156162-1.324553 44.19191-2.287865 66.348071-3.492003 15.533396 80.4365 31.30762 160.632173 48.165569 240.827845 13.125118-82.724365 27.695202-165.087488 41.783632-247.571025 23.239887-0.842897 46.479774-2.167451 69.719661-3.612418-26.370649 115.356538-49.369708 231.796802-78.148636 346.430856-19.386642 10.355597-48.165569 0-71.52587 1.204139C301.034807 596.169332 283.093133 517.779868 269.245532 438.667921c-13.606773 76.944497-31.30762 153.16651-46.841016 229.508937-22.39699-1.204139-44.793979-2.528692-67.311383-4.094073-19.266228-104.760113-42.024459-208.918156-60.206962-313.919097 19.868297-0.963311 39.857008-1.806209 60.206962-2.528693 12.041392 75.860771 25.648166 151.360301 36.124177 227.341487 16.135466-77.907808 32.873001-155.695202 49.610536-233.603011z" fill="#FFFFFF" p-id="1092"></path>
+                          </svg>
+                          <a :href="file.url" target="_blank"> ${ file.name } </a>
+                        </div>
+                      </template>
+                      <template v-else-if="file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ">
+                        <div class="file-preview">
+                          <svg
+                            t="1731392215850"
+                            class="icon"
+                            viewBox="0 0 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            p-id="1090"
+                            width="40"
+                            height="40"
+                          >
+                            <path d="M535.119473 0h69.599248v95.247413C729.226717 96.331138 853.614299 93.92286 977.881468 96.331138a40.459078 40.459078 0 0 1 44.914393 45.516463c2.047037 234.566322 0 469.614299 1.204139 703.819379-1.204139 24.082785 2.287865 50.694262-11.318909 72.248354-16.978363 12.041392-38.893697 10.837253-58.761994 12.041392h-349.200376V1023.518344h-72.248354C354.980245 990.886171 177.490122 960.541863 0 928.752587V95.488241C178.33302 63.578551 356.786453 32.511759 535.119473 0z" fill="#2A5699" p-id="1091"></path><path d="M604.718721 131.010348H988.598307v761.979304H604.718721v-95.247413h302.479774v-48.165569H604.718721v-59.002822h302.479774v-48.16557H604.718721v-59.002822h302.479774v-48.165569H604.718721v-60.206961h302.479774V428.673565H604.718721v-60.206961h302.479774v-46.96143H604.718721v-59.604892h302.479774V214.336783H604.718721zM240.827846 341.373471c22.156162-1.324553 44.19191-2.287865 66.348071-3.492003 15.533396 80.4365 31.30762 160.632173 48.165569 240.827845 13.125118-82.724365 27.695202-165.087488 41.783632-247.571025 23.239887-0.842897 46.479774-2.167451 69.719661-3.612418-26.370649 115.356538-49.369708 231.796802-78.148636 346.430856-19.386642 10.355597-48.165569 0-71.52587 1.204139C301.034807 596.169332 283.093133 517.779868 269.245532 438.667921c-13.606773 76.944497-31.30762 153.16651-46.841016 229.508937-22.39699-1.204139-44.793979-2.528692-67.311383-4.094073-19.266228-104.760113-42.024459-208.918156-60.206962-313.919097 19.868297-0.963311 39.857008-1.806209 60.206962-2.528693 12.041392 75.860771 25.648166 151.360301 36.124177 227.341487 16.135466-77.907808 32.873001-155.695202 49.610536-233.603011z" fill="#FFFFFF" p-id="1092"></path>
+                          </svg>
+                          <a :href="file.url" target="_blank"> ${ file.name } </a>
+                        </div>
+                      </template>
+                      <template v-else-if=" file.type === 'application/vnd.ms-excel'">
+                        <div class="file-preview">
+                          <svg
+                            t="1731391554679"
+                            class="icon"
+                            viewBox="0 0 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            p-id="1339"
+                            width="40"
+                            height="40"
+                          >
+                            <path d="M535.601129 0h68.997178v95.247413h349.200376c19.747883 0.842897 41.301976 0 58.400753 12.041392 12.041392 17.580433 10.596425 39.977422 12.041392 60.206962q-0.963311 310.186265 0 619.890875c0 34.67921 3.130762 70.080903-3.97366 104.158043-4.575729 24.805268-33.715898 25.407338-53.10254 26.250235H605.32079V1023.518344h-72.248353C355.100659 991.006585 177.490122 960.541863 0 928.752587V95.367827C178.573848 63.578551 357.147695 32.270931 535.601129 0z" fill="#207245" p-id="1340"></path><path d="M604.598307 131.010348h383.879586v750.058326H604.598307v-71.405457h93.079962v-83.326434h-93.079962v-48.165569h93.079962v-82.844779h-93.079962v-47.5635h93.079962v-83.446848h-93.079962v-48.16557h93.079962v-82.724365h-93.079962v-48.165569h93.079962v-82.844779h-93.079962z" fill="#FFFFFF" p-id="1341"></path><path d="M744.278457 202.415804h162.799624v83.326435H744.278457z" fill="#207245" p-id="1342"></path><path d="M344.504233 314.039511q39.616181-2.889934 79.111948-4.936971-46.600188 97.655691-93.802446 195.190969c31.90969 66.588899 64.662277 132.455315 96.331138 199.52587l-84.289746-5.418626c-19.747883-49.73095-43.830668-97.655691-58.039511-149.674507-15.774224 48.165569-38.412041 94.043274-56.594544 141.365946-25.407338 0-50.935089-1.444967-76.342427-2.528692 29.862653-60.206961 58.761994-120.413923 89.587959-179.777987-26.250235-61.290687-54.908749-121.377234-81.881468-182.427093l76.703669-4.455316c17.339605 46.600188 36.124177 92.477893 50.573848 140.282221 16.135466-50.694262 39.254939-98.257761 58.64158-147.145814z" fill="#FFFFFF" p-id="1343"></path><path d="M744.278457 333.426152h162.799624v83.326435H744.278457zM744.278457 464.316087h162.799624v83.446848H744.278457zM744.278457 595.326435h162.799624v83.326434H744.278457zM744.278457 726.336783h162.799624v83.326434H744.278457z" fill="#207245" p-id="1344"></path>
+                          </svg>
+                          <a :href="file.url" target="_blank"> ${ file.name } </a>
+                        </div>
+                      </template>
+                      <template v-else-if=" file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'">
+                        <div class="file-preview">
+                          <svg
+                            t="1731391554679"
+                            class="icon"
+                            viewBox="0 0 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            p-id="1339"
+                            width="40"
+                            height="40"
+                          >
+                            <path d="M535.601129 0h68.997178v95.247413h349.200376c19.747883 0.842897 41.301976 0 58.400753 12.041392 12.041392 17.580433 10.596425 39.977422 12.041392 60.206962q-0.963311 310.186265 0 619.890875c0 34.67921 3.130762 70.080903-3.97366 104.158043-4.575729 24.805268-33.715898 25.407338-53.10254 26.250235H605.32079V1023.518344h-72.248353C355.100659 991.006585 177.490122 960.541863 0 928.752587V95.367827C178.573848 63.578551 357.147695 32.270931 535.601129 0z" fill="#207245" p-id="1340"></path><path d="M604.598307 131.010348h383.879586v750.058326H604.598307v-71.405457h93.079962v-83.326434h-93.079962v-48.165569h93.079962v-82.844779h-93.079962v-47.5635h93.079962v-83.446848h-93.079962v-48.16557h93.079962v-82.724365h-93.079962v-48.165569h93.079962v-82.844779h-93.079962z" fill="#FFFFFF" p-id="1341"></path><path d="M744.278457 202.415804h162.799624v83.326435H744.278457z" fill="#207245" p-id="1342"></path><path d="M344.504233 314.039511q39.616181-2.889934 79.111948-4.936971-46.600188 97.655691-93.802446 195.190969c31.90969 66.588899 64.662277 132.455315 96.331138 199.52587l-84.289746-5.418626c-19.747883-49.73095-43.830668-97.655691-58.039511-149.674507-15.774224 48.165569-38.412041 94.043274-56.594544 141.365946-25.407338 0-50.935089-1.444967-76.342427-2.528692 29.862653-60.206961 58.761994-120.413923 89.587959-179.777987-26.250235-61.290687-54.908749-121.377234-81.881468-182.427093l76.703669-4.455316c17.339605 46.600188 36.124177 92.477893 50.573848 140.282221 16.135466-50.694262 39.254939-98.257761 58.64158-147.145814z" fill="#FFFFFF" p-id="1343"></path><path d="M744.278457 333.426152h162.799624v83.326435H744.278457zM744.278457 464.316087h162.799624v83.446848H744.278457zM744.278457 595.326435h162.799624v83.326434H744.278457zM744.278457 726.336783h162.799624v83.326434H744.278457z" fill="#207245" p-id="1344"></path>
+                          </svg>
+                          <a :href="file.url" target="_blank"> ${ file.name } </a>
+                        </div>
+                      </template>
+                      <button type="button" @click="removeAttachment(index)" class="remove-attachment">
+                        <svg
+                          t="1730967383369"
+                          class="icon"
+                          viewBox="0 0 1024 1024"
+                          version="1.1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          p-id="9276"
+                          width="20"
+                          height="20"
+                        >
+                          <path d="M512 0C794.769794 0 1024 229.805588 1024 512 1024 794.769794 794.194408 1024 512 1024 229.230208 1024 0 794.194408 0 512 0 229.230208 229.805588 0 512 0ZM512 984.615385C772.648448 984.615385 984.615385 772.81286 984.615385 512 984.615385 251.351552 772.81286 39.384615 512 39.384615 251.351552 39.384615 39.384615 251.18714 39.384615 512 39.384615 772.648448 251.18714 984.615385 512 984.615385ZM512 539.849129 358.829792 693.019336C351.139468 700.70966 338.670988 700.70966 330.980664 693.019336 323.29034 685.329012 323.29034 672.860532 330.980664 665.170208L484.150871 512 330.980664 358.829792C323.29034 351.139468 323.29034 338.670988 330.980664 330.980664 338.670988 323.29034 351.139468 323.29034 358.829792 330.980664L512 484.150871 665.170208 330.980664C672.860532 323.29034 685.329012 323.29034 693.019336 330.980664 700.70966 338.670988 700.70966 351.139468 693.019336 358.829792L539.849129 512 693.019336 665.170208C700.70966 672.860532 700.70966 685.329012 693.019336 693.019336 685.329012 700.70966 672.860532 700.70966 665.170208 693.019336L512 539.849129Z" fill="#cccccc" p-id="9277"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+        <div class="order-action" v-if="showBtn">
+          <div class="select-all-wrapper"><span @click="backToPreviousPage">Back</span></div>
+          <div class="next-btn-wrapper">
+            <button class="next-btn el-button el-button--primary" @click="handleSubmit" :disabled="buttonIsDisable">
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  (() => {
+    Vue.directive('focus-input', {
+      inserted(el, binding, vnode) {
+        const inputEl = el.querySelector('input');
+        if (!inputEl) return;
+        const $label = $(inputEl).closest('.el-form-item__content').find('label');
+        const toggleLabelFocus = () => {
+          if ($(inputEl).val().length > 0) {
+            $label.addClass('label--focus');
+          } else {
+            $label.removeClass('label--focus');
+          }
+        };
+        inputEl.addEventListener('focus', () => {
+          $label.addClass('label--focus');
+        });
+        inputEl.addEventListener('blur', () => {
+          setTimeout(toggleLabelFocus, 100); 
+        });
+
+        if (binding.value) {
+          $label.addClass('label--focus');
+        } else {
+          $label.removeClass('label--focus');
+        }
+      },
+      update(el, binding, vnode) {
+        const inputEl = el.querySelector('input');
+        if (!inputEl) return;
+        const $label = $(inputEl).closest('.el-form-item__content').find('label');
+        if (binding.value) {
+          $label.addClass('label--focus');
+        } else {
+          $label.removeClass('label--focus');
+        }
+      },
+    });
+    new Vue({
+      el: '#order_section',
+      delimiters: ['${', '}'],
+      data() {
+        return {
+          showBtn:true,
+          isFetching: true,
+          param: null,
+          orderId: 0,
+          refundQty: 1, 
+          refundAmount: 0,
+          orderItems: [],
+          orderMain: {},
+          refundReason: '',
+          ordersItemsIds: [],
+          refundAmountMax: 0, 
+          refundOption: '',
+          buttonIsDisableTemp: false, 
+          params: {},
+          refundFileUrl: [],
+          estimatedAmount: 0,
+          attachmentPreviewUrls: [],
+          showIndustryEdit: false,
+          currencySymbols: {
+            USD: '$', 
+            EUR: '€', 
+            GBP: '£', 
+            JPY: '¥',
+            CNY: '¥', 
+            AUD: '$',
+            CAD: '$', 
+            CHF: 'CHF', 
+            NZD: '$', 
+            INR: '₹', 
+            RUB: '₽', 
+            KRW: '₩', 
+            SGD: '$', 
+            HKD: '$', 
+            SEK: 'kr', 
+            NOK: 'kr', 
+            TRY: '₺', 
+            MXN: '$', 
+            BRL: 'R$', 
+            ZAR: 'R', 
+          },
+          industryOptions: [
+            { value: 'Bought by mistake', label: 'Bought by mistake', isSelected: false },
+            { value: 'Received the wrong item', label: 'Received the wrong item', isSelected: false },
+            { value: 'Product damaged', label: 'Product damaged', isSelected: false },
+            { value: 'Item is defective', label: 'Item is defective', isSelected: false },
+            { value: 'No longer needed', label: 'No longer needed', isSelected: false },
+            { value: 'Item arrived too late', label: 'Item arrived too late', isSelected: false },
+            { value: 'Better price available elsewhere', label: 'Better price available elsewhere', isSelected: false },
+            { value: 'Missing or broken parts', label: 'Missing or broken parts', isSelected: false },
+            { value: 'Inaccurate website description', label: 'Inaccurate website description', isSelected: false },
+            { value: 'Other', label: 'Other', isSelected: false },
+          ],
+        };
+      },
+      mounted() {
+        $('#order_section').show();
+        const orderId = Number(window.location.href.split('=')[1].split('&')[0]);
+        $.ajax({
+          url: `${window.zkh.api}/order/${orderId}`,
+          method: 'GET',
+          success: (data) => {
+            this.orderMain = data.data.order;
+            const currencySymbol = this.currencySymbols[this.orderMain.currency] || '$';
+            this.orderItems = this.orderMain.line_items.map((item) => {
+              const taxTotal = item.tax_lines.reduce((sum, taxLine) => sum + parseFloat(taxLine.price), 0);
+              const priceOneTotal = parseFloat(item.pre_tax_price) / item.quantity;
+              const priceTotal = priceOneTotal * parseInt(item.current_quantity, 10);
+              const taxCurrentTotal = this.roundUpToSecondDecimal((parseFloat(taxTotal) / item.quantity) * item.current_quantity);
+              this.isFetching = false
+              return {
+                ...item,
+                refundQty: item.current_quantity, // Default refund quantity
+                refundAmount: `${currencySymbol}${(parseFloat(priceTotal) + parseFloat(taxCurrentTotal)).toFixed(2)}`, // 扣除税金总和
+              };
+            });
+          },
+        });
+        const _this = this;
+      },
+      watch: {
+        orderItems(newVal) {
+          if (newVal.length > 0) {
+            this.$nextTick(() => {
+              let orders = window.location.href.split('=').slice(2);
+              if (orders.length > 0) {
+                orders = orders.map((item) => Number(item.split('&')[0]));
+                this.ordersItemsIds = orders;
+                $('.order-line-item-wrapper').each(function () {
+                  let variant = Number($(this).data('variant'));
+                  if (!orders.includes(variant)) {
+                    $(this).attr('data-visible', 'false'); 
+                    $(this).remove();
+                  } else {
+                    $(this).attr('data-visible', 'true');
+                  }
+                });
+                this.$nextTick(() => {
+                  this.calculateTotalRefundAmount(); 
+                });
+              }
+            });
+          }
+        },
+      },
+      computed: {
+        filteredOrderItems() {
+          let orders = window.location.href.split('=').slice(2);
+          if (orders.length > 0) {
+            orders = orders.map((item) => Number(item.split('&')[0]));
+            return this.orderItems.filter((item) => orders.includes(item.variant_id));
+          }
+          return [];
+        },
+        buttonIsDisable() {
+          return this.refundOption === '' || this.buttonIsDisableTemp;
+        },
+      },
+      methods: {
+        handleChange(order) {
+          const maxValue = order.quantity;
+          const regex = new RegExp("^\\d+$");
+          if (!regex.test(order.refundQty) || order.refundQty > maxValue) {
+            order.refundQty = maxValue;
+          } else if (!order.refundQty || order.refundQty == 0) {
+            order.refundQty = 1;
+          }
+          this.updateRefundAmount(order);
+        },
+        handleTrackLog({ name, email }) {
+          let nameId;
+          const base64Email = btoa(email);
+          if (name.startsWith('#')) {
+            nameId = name.split('#')[1];
+            window.location.href = `/apps/track123?order=%23${nameId}&id=${base64Email}`;
+          } else {
+            nameId = name;
+            window.location.href = `/apps/track123?order=${nameId}&id=${base64Email}`;
+          }
+        },
+        checkIsAllSelected() {
+          const checkboxes = document.querySelectorAll('.line-item-checkbox');
+          const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper');
+          let isAllSelected = true;
+          checkboxes.forEach((checkbox, index) => {
+            if (!checkbox.checked) {
+              isAllSelected = false;
+              return false;
+            }
+          });
+          if (isAllSelected) {
+            document.getElementById('select-all').checked = true;
+          } else {
+            document.getElementById('select-all').checked = false;
+          }
+        },
+        handleSubmit() {
+          this.buttonIsDisableTemp = true;
+
+          this.params = {
+            orderRefundMain: {
+              refundOrderId: this.orderMain.name,
+              channelCode: 'NorthSky-US',
+              orderAmount: Number(this.orderMain.total_price),
+              refundAmount: parseFloat(this.refundAmount.replace(/[^\d.]/g, '')),
+              currencyType: this.orderMain.currency,
+              refundSkuCount: this.filteredOrderItems.reduce((total, item) => total + item.refundQty, 0),
+              refundType: 0,
+              userEmail: this.orderMain.contact_email,
+              userName: this.orderMain.customer.first_name + '' + this.orderMain.customer.last_name,
+              userCompany: "{{ customer.metafields.custom.overseascustomserviceid }}",
+              refundReasonDescription:this.refundReason,
+              refundReason: this.refundOption,
+              refundFileUrl: this.refundFileUrl,
+            },       
+            skuList: this.filteredOrderItems.map((item) => ({
+              skuCode: item.sku,
+              skuModel: item.model,
+              skuTitle: item.title,
+              skuCount: item.refundQty,
+              skuPrice: Number(item.price),
+              currencyType: item.price_set.shop_money.currency_code,
+              skuPicture: item.imageUrl,
+              skuInfoUrl:item.productUrl
+            })),
+          };
+          const selectElement = document.getElementById('refund-reason');
+          const selectElementPrev = document.querySelector('.alert-label');
+          if (!selectElement.value) {
+            selectElement.style.borderColor = '#F0B429'; 
+            selectElementPrev.style.color = '#F0B429'; 
+            setTimeout(() => {
+              this.$message({
+                showClose: true,
+                message: 'Please select a refund reason.',
+                type: 'error',
+              });
+            }, 100);
+            this.buttonIsDisableTemp = false;
+            return false;
+          } else {
+            this.params.orderRefundMain.refundType = 1;
+            this.createRefund(this.params);
+          }
+        },
+        async createRefund(params) {
+          this.buttonIsDisableTemp = true;
+          try {
+            const res = await fetch(`${window.zkh.api}/openapi/shopify/refund/create`, {
+              method: 'POST',
+              body: JSON.stringify({
+                orderRefundMain: params.orderRefundMain,
+                skuList: params.skuList,
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            if (!res.ok) {
+              throw new Error(`Error: ${res.status} - ${res.statusText}`);
+            }
+            const data = await res.json();
+            if (data.msg === 'success') {
+              dataLayer.push({
+                'event': 'refund',
+                'return': 0,
+                'ecommerce': {
+                  'currency': 'USD',
+                  'value': this.params.orderRefundMain.refundAmount,
+                  'shipping': +this.orderMain.total_shipping_price_set?.shop_money?.amount || 0,
+                  'tax': +this.orderMain.current_total_tax,
+                  'coupon': this.orderMain.discount_codes[0] || '',
+                  'transaction_id': this.orderMain.id,
+                  'items': this.filteredOrderItems.map(item => ({
+                    'item_id': item.sku,
+                    'item_name': item.name,
+                    'price': +item.price,
+                    'discount': +item.total_discount,
+                    'currency': 'USD',
+                    'quantity': item.refundQty,
+                  }))
+                }
+              });
+              window.location.href = '/account?slug=account-service';
+            } else {
+              this.$message({
+                showClose: true,
+                message: 'There seems to be a problem with your request. Could you please try again',
+                type: 'error',
+              });
+            }
+            return data;
+          } catch (error) {
+            console.error('Request failed');
+          } finally {
+            this.buttonIsDisableTemp = false;
+          }
+        },
+        incrementQty(maxQty, order) {
+          if (order.refundQty < maxQty) {
+            order.refundQty = Number(+order.refundQty + 1);
+            this.updateRefundAmount(order);
+          }
+        },
+        decrementQty(order, price) {
+          if (order.refundQty > 1) {
+            order.refundQty = Number(+order.refundQty - 1);
+            this.updateRefundAmount(order);
+          }
+        },
+        updateRefundAmount(order) {
+          const taxTotal = order.tax_lines.reduce((sum, taxLine) => sum + parseFloat(taxLine.price), 0);
+
+          const taxCurrentTotal = this.roundUpToSecondDecimal((parseFloat(taxTotal) / order.quantity) * order.current_quantity);        
+         const priceOneTotal = parseFloat(order.pre_tax_price) / order.quantity;
+          const onePrice = parseFloat(priceOneTotal) +  parseFloat(taxCurrentTotal) / order.current_quantity;
+          
+
+          const currencySymbol = this.currencySymbols[this.orderMain.currency] || '$';
+          order.refundAmount = `${currencySymbol}${ (order.refundQty * (onePrice)).toFixed(2) }`;
+          // this.refundAmount = `${currencySymbol}${ (order.refundQty * (onePrice)).toFixed(2) }`;
+        
+          
+          this.calculateTotalRefundAmount();
+        },
+        updateCharCount() {
+          this.charCount = document.getElementById('additional-details').value.length;
+          document.querySelector('.char-count').textContent = `${this.charCount}/200`;
+        },
+        roundUpToSecondDecimal(value) {
+          return Math.ceil(value * 100) / 100;
+        },
+        calculateTotalRefundAmount() {
+          let totalRefundAmount = 0;
+          const currencySymbol = this.currencySymbols[this.orderMain.currency] || '$';
+          this.filteredOrderItems.forEach((item) => {
+            const numericRefundAmount = parseFloat(
+              item.refundAmount.replace(currencySymbol, '').replace(/[^0-9.]/g, '')
+            );
+            if (!isNaN(numericRefundAmount)) {
+              totalRefundAmount += numericRefundAmount;
+            }
+          });
+          this.refundAmount = `${totalRefundAmount.toFixed(2)}`;
+          this.refundAmountMax = `${totalRefundAmount.toFixed(2)}`
+          this.estimatedAmount = `${currencySymbol}${totalRefundAmount.toFixed(2)}`;
+          if(this.refundAmountMax <= 0){
+            this.showBtn = false
+          }
+        },
+        validateInput() {
+          if ( Number(this.refundAmount) < 0) {
+            this.refundAmount = 0;
+          } else if ( Number(this.refundAmount) >  Number(this.refundAmountMax)) {
+            this.refundAmount = this.refundAmountMax;
+          }
+    
+        },
+        handleAttachmentUpload() {
+          const uploadUrl = `${window.zkh.api}/openapi/shopify/refund/file`;
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = 'image/*,video/*,.xlsx,.xls,.doc,.docx';
+          input.multiple = true;
+          input.style.display = 'none';
+
+          if (this.refundFileUrl.length > 15) {
+            this.$message({
+              showClose: true,
+              message: 'You can only upload up to 15 files.',
+              type: 'error',
+            });
+            return; 
+          }
+
+          input.addEventListener('change', async (event) => {
+            const files = event.target.files;
+
+            const totalFiles = this.refundFileUrl.length + files.length;
+
+            if (totalFiles > 15) {
+              this.$message({
+                showClose: true,
+                message: 'You can only upload up to 15 files.',
+                type: 'error',
+              });
+              return; 
+            }
+
+            if (files) {
+              for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const previewUrl = URL.createObjectURL(file);
+                this.attachmentPreviewUrls.push({ url: previewUrl, type: file.type, name: file.name });
+
+                const formData = new FormData();
+                formData.append('file', file);
+
+                try {
+                  const response = await fetch(uploadUrl, {
+                    method: 'POST',
+                    body: formData,
+                  });
+
+                  if (!response.ok) {
+                    throw new Error(`Upload failed: ${response.status} - ${response.statusText}`);
+                  }
+
+                  const result = await response.json();
+                  this.refundFileUrl.push(result.data);
+                  // if (this.refundFileUrl.length <= 15) {
+                  //   this.refundFileUrl.push(result.data);
+                  // } else {
+                  //   this.$message({
+                  //     showClose: true,
+                  //     message: 'You can only upload up to 15 files.',
+                  //     type: 'error',
+                  //   });
+                  // }
+                } catch (error) {
+                  console.error('Upload error:', error);
+                }
+              }
+            }
+          });
+
+          input.click();
+        },
+        removeAttachment(index) {
+          URL.revokeObjectURL(this.attachmentPreviewUrls[index].url);
+          this.attachmentPreviewUrls.splice(index, 1);
+          this.refundFileUrl.splice(index, 1); 
+        },
+        copyToClipboard(name) {
+          const el = document.createElement('textarea');
+          el.value = name;
+          document.body.appendChild(el);
+          el.select();
+          document.execCommand('copy');
+          document.body.removeChild(el);
+          this.$message({
+            message: 'Copied to clipboard',
+            type: 'success',
+          });
+        },
+        formateDate(dateString) {
+          if (dateString) {
+            const date = new Date(dateString);
+            date.setMilliseconds(0);
+            const offset = -5 * 60; 
+            const localTime = new Date(date.getTime() + (date.getTimezoneOffset() + offset) * 60000);
+            const monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
+            const month = monthNames[localTime.getMonth()];
+            const day = localTime.getDate();
+            const year = localTime.getFullYear();
+            let hours = localTime.getHours();
+            const period = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12; 
+            const minutes = String(localTime.getMinutes()).padStart(2, '0');
+            const seconds = String(localTime.getSeconds()).padStart(2, '0');
+            return `${month} ${day}, ${year} at ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${period}`;
+          }
+        },
+        backToPreviousPage() {
+          window.history.back();
+        },
+        handleButtonClick(event, industryItem) {
+          event.stopPropagation(); 
+          this.industryOptions.map((item) => (item.isSelected = false));
+          const industry = this.industryOptions.find((item) => item.value == industryItem.value);
+          industry.isSelected = true;
+          this.refundOption = industry.value;
+          if (industryItem.value == 'Other') {
+            this.refundOption = '';
+            this.showIndustryEdit = true;
+          } else {
+            this.$refs.sel.blur(); 
+            this.showIndustryEdit = false;
+          }
+        },
+      },
+    });
+  })();
+</script>
+{% schema %}
+{
+  "name": "After service next",
+  "class": "shopify-section--main-customers-order container",
+  "settings": [
+    {
+      "type": "url",
+      "id": "policy_url",
+      "label": "Policy URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "service-next"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-customers-register",
+      "settings": {
+        "img": "shopify:\/\/shop_images\/Create_an_Account_Page.png"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,171 @@
+{{ 'account-sidebar.css' | asset_url | stylesheet_tag }}
+{%- render 'mobile-sidebar' -%}
+<template id="accountSidebar">
+  <div class="account-aside-wrapper">
+    <div v-if="showUser" id="logined-user" @click="navToMenu" class="account-menu-top hidden-tablet-and-up">
+      <span class="left-arrow">
+        {% render 'icon' with 'account-menu-left' %}
+      </span>
+      <span>Hi, {{ customer.name }}</span>
+    </div>
+    <div v-else @click="navToAccount" class="account-menu-top hidden-tablet-and-up">
+      <span class="left-arrow">
+        {% render 'icon' with 'account-menu-left' %}
+      </span>
+      <span>Manage Company Users</span>
+    </div>
+    <div class="account-aside hidden-phone">
+      <div class="account-aside-top">
+        <div class="account-name ellipsis" :title="`${first_name} ${last_name}`">Hi, ${ first_name }</div>
+        <div class="account-id">Id # {{ customer.id }}</div>
+      </div>
+      <div class="account-aside-main">
+        <div class="aside-main-list" v-for="(item, idx) in menuList" :key="idx">
+          <h3>${ item.linkTitle }</h3>
+          <ul>
+            <li
+              v-for="(link, idx1) in item.child"
+              :key="idx1"
+              :class="link.isActive ? 'active': undefined"
+              @click="handleClickLink(link, idx, idx1)"
+            >
+              <template v-if="link.linkSlug == 'account-orders'">
+                {%- render 'icon' with 'v3-order' -%}
+              </template>
+              <template v-else-if="link.linkSlug == 'account-wish'">
+                {%- render 'icon' with 'v3-wish' -%}
+              </template>
+              <template v-else-if="link.linkSlug == 'account-service'">
+                {%- render 'icon' with 'v3-return' -%}
+              </template>
+              <template v-else-if="link.linkSlug == 'account-info'">
+                {%- render 'icon' with 'v3-user' -%}
+              </template>
+              <template v-else="link.linkSlug == 'account-address'">
+                {%- render 'icon' with 'v3-address' -%}
+              </template>
+              <span>${ link.linkName }</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="account-aside-bottom">
+        <div class="account-logout" @click="logout" data-no-instant>Log Out</div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  (() => {
+    window.accountSidebar = {
+      template: '#accountSidebar',
+      delimiters: ['${', '}'],
+      components: {
+        mobileSidebar,
+      },
+      data() {
+        const slugIdxMap = new Map();
+        slugIdxMap.set('account-orders', [0, 0]);
+        slugIdxMap.set('account-wish', [0, 1]);
+        slugIdxMap.set('account-service', [0, 2]);
+        slugIdxMap.set('account-info', [1, 0]);
+        slugIdxMap.set('account-address', [1, 1]);
+        return {
+          slugIdxMap,
+          showUser: true,
+          first_name: '{{ customer.first_name }}',
+          last_name: '{{ customer.last_name }}',
+          linkActiveIdx: {
+            idx: 0,
+            idx1: 0,
+          },
+          menuList: [
+            {
+              linkTitle: 'Orders',
+              child: [
+                { linkName: 'My Orders', linkSlug: 'account-orders', isActive: false },
+                { linkName: 'My List', linkSlug: 'account-wish', isActive: false },
+                { linkName: 'Customer Service', linkSlug: 'account-service', isActive: false },
+              ],
+            },
+            {
+              linkTitle: 'Account',
+              child: [
+                { linkName: 'My Account', linkSlug: 'account-info', isActive: true },
+                {% unless customer.b2b? %}
+                  { linkName: 'My Addresses', linkSlug: 'account-address', isActive: false },
+                {% endunless %}
+              ],
+            },
+          ],
+        };
+      },
+      mounted() {
+        const queryString = window.location.search;
+        const params = new URLSearchParams(queryString);
+        const linkSlug = params.get('slug');
+        if (linkSlug) {
+          try {
+            const [idx, idx1] = this.slugIdxMap.get(linkSlug);
+            this.resetActive();
+            this.menuList[idx].child[idx1].isActive = true;
+          } catch (error) {
+            this.showUser = false;
+          }
+        }
+      },
+      methods: {
+        navToAccount() {
+          window.location.href = '/account';
+        },
+        navToMenu() {
+          const currentUrl = new URL(window.location.href);
+          const slug = currentUrl.searchParams.get('slug');
+          const redirectSlug = slug || 'account-info';
+          const redirectUrl = `/pages/account-nav?slug=${redirectSlug}`;
+          window.location.href = redirectUrl;
+        },
+        resetActive() {
+          this.menuList.map((links) => {
+            links.child.map((item) => {
+              item.isActive = false;
+            });
+          });
+        },
+        logout() {
+          Cookies.remove('cart');
+          if(window.themeVariables.userCompany.isB2b == 'true') {
+            Cookies.set('logout', 1);
+            window.location.href = `${window.zkh.b2b_url}/logout`;
+          } else {
+            window.location.href = "/account/logout";
+          }
+        },
+        handleClickLink(link, idx, idx1) {
+          this.resetActive();
+          this.menuList[this.linkActiveIdx.idx].child[this.linkActiveIdx.idx1].isActive = false;
+          this.linkActiveIdx.idx = idx;
+          this.linkActiveIdx.idx1 = idx1;
+          const currentParams = new URLSearchParams(window.location.search);
+          currentParams.set('slug', link.linkSlug);
+          const newURL = window.location.pathname + '?' + currentParams.toString();
+          history.replaceState({}, '', newURL);
+          this.$emit('menuchange', link.linkSlug);
+          link.isActive = true;
+          if(link.linkSlug == 'account-wish') {
+            const ip = Cookies.get('ip');
+            if(ip) {
+              dataLayer.push({
+                'event': 'custom_wishlist_viewed',
+                'zip': '{{ customer.default_address.zip  }}',   
+                'username': '{{customer.name }}',
+                'email':'{{customer.email }}',
+                'ip': ip
+              });
+            }
+          }
+        },
+      },
+    };
+  })();
+</script>

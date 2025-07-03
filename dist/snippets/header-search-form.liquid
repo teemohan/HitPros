@@ -1,0 +1,80 @@
+<style>
+  .header-search-form {
+    border: 1px solid #808080;
+    border-radius: 2px;
+  }
+  .header-search-form-wrapper {
+    visibility: hidden;
+  }
+  .header-search-form-wrapper .el-input__inner {
+    color: var(--my-black);
+    border: none;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    height: 48px;
+  }
+  .header-search-form-wrapper .el-input__inner::placeholder {
+    color: #77878F;
+  }
+  .header-search-form-wrapper,
+  .header-search-form,
+  .header-search-form .el-autocomplete {
+    width: 100%;
+  }
+  .header-search-form-wrapper .el-input-group__append {
+    border: none;
+    background-color: #fff;
+  }
+  .search-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .highlight {
+    font-weight: bold;
+  }
+  @media (max-width: 990px) {
+    .header-search-form-wrapper .el-input__inner {
+      height: 38px;
+    }
+    .header-search-form {
+      border: none;
+    }
+  }
+  @media (max-width: 740px) {
+    .header-search-form-wrapper .el-input__inner {
+      height: 36px;
+      line-height: 36px;
+    }
+  }
+</style>
+<header-search-form class="header-search-form-wrapper">
+  <div id="header-search-form-{{ type }}" class="header-search-form">
+    <el-autocomplete
+      v-model="searchStr"
+      :fetch-suggestions="querySearchAsync"
+      placeholder="Enter keyword, model #"
+      @select="handleSelect"
+      @keyup.enter.native="handleSearch"
+    >
+      <el-button slot="append" @click="handleSearch">
+        <span>{% render 'icon' with 'header-search' %}</span>
+      </el-button>
+      <template slot-scope="{ item }">
+        <div class="search-item">
+          <template v-if="searchStr">
+            <div  class="search-result" v-html="item.highlightedValue"></div>
+          </template>
+          <template v-else >
+            <div class="search-result ellipsis">${ item.value }</div>
+            <span  class="delete" @click.stop="handleDeleteHistory(item)">
+              {% render 'icon' with 'v3-delete' %}
+            </span>
+          </template>
+        </div>
+      </template>         
+    </el-autocomplete>
+  </div>
+</header-search-form>

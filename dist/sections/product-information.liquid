@@ -1,0 +1,168 @@
+{{ 'product-information.css' | asset_url | stylesheet_tag }}
+<div class="container">
+  <product-information>
+    <h2 class="product-information-title">{{ section.settings.title }}</h2>
+    <product-overview>
+      <div class="product-overview">
+        <div class="product-meta">
+          <div class="product-desc"></div>
+          <ul class="product-list-desc">
+          </ul>
+          <div class="product-tags" data-applicable-scene='{{ product.metafields.product.applicable_scene.value }}'>
+            <span>Mainly used in the following industries:</span>
+            <span>{{ product.metafields.product.applicable_scene.value | replace: '[', '' | replace: ']', '' }}</span>
+          </div>
+        </div>
+      </div>
+    </product-overview>
+    <div class="product-information">
+      <aside>
+        {% assign brand = product.metafields.product.brand.value | strip %}
+        {% if brand == 'Black Canyon' %}
+          {% render 'icon' with 'canyon-brand' %}
+        {% elsif brand == 'Olympia' %}
+          {% render 'icon' with 'olympia-brand' %}
+        {% elsif brand == 'NorthSky Select' %}
+          {% render 'icon' with 'north-select-brand' %}
+        {% elsif brand == 'WD-40' %}
+          {% render 'icon' with 'wd-40' %}
+        {% elsif brand == 'Physicians Care' %}
+          {% render 'icon' with 'physicians-care' %}
+        {% endif %}
+        <div class="product-info-line general-information">
+          <ul class="info-table">
+            {% if product.metafields.product.brand.value != blank and product.metafields.product.brand.value != 'null' and product.metafields.product.brand.value != '-' %}
+              <li><span class="key">Brand</span><span class="value">{{ product.metafields.product.brand.value }}</span></li>
+            {% endif %}
+            {% if product.metafields.product.manufacturer_model_number != blank %}
+              <li><span class="key">Model</span><span class="value">{{ product.metafields.product.manufacturer_model_number }}</span></li>
+            {% endif %}
+            {% comment %} {% if product.metafields.product.unspsc.value != blank %}
+              <li><span class="key">UNSPSC</span><span class="value">{{ product.metafields.product.unspsc.value }}</span></li> 
+            {% endif %} {% endcomment %}
+            {% if product.metafields.product.sale_unit.value != blank %}
+              {% assign sale_unit = product.metafields.product.sale_unit.value | split: ':' %}
+              <li><span class="key">Sales Unit</span><span class="value">{{ sale_unit[0] }}</span></li>
+            {% endif %}
+            {% if product.metafields.product.sale_package.value != blank %}
+              <li><span class="key">Sales Unit Package</span><span class="value">{{ product.metafields.product.sale_package.value }}</span></li>
+            {% endif %}
+            {% comment %} {% if product.metafields.product.origin.value != blank %}
+              <li><span class="key">Country of Origin</span><span class="value">{{ product.metafields.product.origin.value }}</span></li> 
+            {% endif %} {% endcomment %}
+          </ul>
+        </div>
+        {% if product.metafields.product.pdf.value != blank %}
+          <div class="product-files hidden-phone">
+            {% for file in product.metafields.product.pdf.value  %}
+              <a href="{{ file.pdf }}" target="_blank">
+                <span class="file-name">
+                  {{ file.title }}
+                </span>
+                <span class="download-text">
+                  Download
+                </span>
+              </a>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </aside>
+      <main>
+        <div class="product-info-line-wrapper">
+          <div class="product-info-line weight-dimensions">
+            <h3>
+              <span class="attr-header">Weight & Dimensions</span>
+            </h3>
+            <ul class="info-table"></ul>
+            <div class="overlay-wrapper">
+              <div class="overlay-action view-less">
+                {% render 'icon' with 'footer-arrow-top' %}
+                <span>View Less</span>
+              </div>
+              <div class="overlay-action view-more">
+                {% render 'icon' with 'footer-arrow' %}
+                <span>View More</span>
+              </div>
+            </div>
+          </div>
+          <div class="product-info-line specifications">
+            <h3>
+              <span class="attr-header">Specifications</span>
+            </h3>
+            <ul class="info-table"></ul>
+            <div class="overlay-wrapper">
+              <div class="overlay-action view-less">
+                {% render 'icon' with 'footer-arrow-top' %}
+                <span>View Less</span>
+              </div>
+              <div class="overlay-action view-more">
+                {% render 'icon' with 'footer-arrow' %}
+                <span>View More</span>
+              </div>
+            </div>
+          </div>
+          <div class="product-info-line compliance-certificates">
+            <h3>
+              <span class="attr-header">Compliance & Certificates</span>
+            </h3>
+            <ul class="info-table"></ul>
+            <div class="overlay-wrapper">
+              <div class="overlay-action view-less">
+                {% render 'icon' with 'footer-arrow-top' %}
+                <span>View Less</span>
+              </div>
+              <div class="overlay-action view-more">
+                {% render 'icon' with 'footer-arrow' %}
+                <span>View More</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% if product.metafields.product.pdf.value != blank %}
+          <div class="product-files hidden-tablet-and-up">
+            {% for file in product.metafields.product.pdf.value  %}
+              <a href="{{ file.pdf }}" target="_blank">
+                <span class="file-name">
+                  {{ file.title }}
+                </span>
+                <span class="download-text">
+                  Download
+                </span>
+              </a>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </main>
+    </div>
+  </product-information>
+</div>
+<script>
+  (() => {
+    const productCharacter = {{ product.metafields.product.product_character }}
+    if(productCharacter instanceof Array) {
+      productCharacter.forEach(item => {
+        const $li = `<li><span class="key">${item.featureTitle}</span><span class="value">${item.featureContent}</span></li>`
+        $('.product-overview').find('.product-list-desc').append($li);
+      })
+    } else {
+      $('.product-features').hide();
+    }
+  })();
+</script>
+{% schema %}
+{
+  "name": "Product Information",
+  "class": "product-information-wrapper section-gap",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "Product Information"
+    }
+  ],
+  "presets": [{
+    "name": "Product Information"
+  }]
+}
+{% endschema %}

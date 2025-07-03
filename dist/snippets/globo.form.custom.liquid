@@ -1,0 +1,17 @@
+<script>
+  
+  const sku = document.querySelector('.product-meta__sku-number') ? document.querySelector('.product-meta__sku-number').innerText : ""
+  document.addEventListener("globo.formbuilder.form.beforeSubmit",function(e){
+    const formId = e.detail.formId
+    if (formId == "26154") {
+      const skuInput = document.getElementById('hidden-2')
+      const quantityInput = document.getElementById('hidden-3')
+
+      
+      skuInput.value = sku
+      
+      const proQuantity = document.querySelector('.el-input .el-input__inner')
+      quantityInput.value = proQuantity.getAttribute('aria-valuenow')
+    }
+  });
+</script>

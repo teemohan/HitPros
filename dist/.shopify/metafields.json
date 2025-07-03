@@ -1,0 +1,2678 @@
+{
+  "article": [],
+  "blog": [],
+  "collection": [],
+  "company": [
+    {
+      "key": "credit_limit",
+      "namespace": "b2b",
+      "name": "Credit limit",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "credit_limit_remaining",
+      "namespace": "b2b",
+      "name": "cost",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "industry",
+      "namespace": "company",
+      "name": "industry",
+      "description": "行业",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    }
+  ],
+  "company_location": [],
+  "location": [],
+  "market": [],
+  "order": [
+    {
+      "key": "failure_reason",
+      "namespace": "order",
+      "name": "failure_reason",
+      "description": "",
+      "type": {
+        "name": "multi_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "sample",
+      "namespace": "order",
+      "name": "sample",
+      "description": "样品订单",
+      "type": {
+        "name": "boolean",
+        "category": "TRUE_FALSE"
+      }
+    }
+  ],
+  "page": [],
+  "product": [
+    {
+      "key": "queries",
+      "namespace": "shopify--discovery--product_search_boost",
+      "name": "搜索产品提升",
+      "description": "产品可在搜索结果中获得更高排名的搜索查询的列表",
+      "type": {
+        "name": "list.single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "related_products",
+      "namespace": "shopify--discovery--product_recommendation",
+      "name": "相关产品",
+      "description": "相关产品列表",
+      "type": {
+        "name": "list.product_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "related_products_display",
+      "namespace": "shopify--discovery--product_recommendation",
+      "name": "相关产品设置",
+      "description": "确定如何显示相关产品以及算法产品推荐",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "complementary_products",
+      "namespace": "shopify--discovery--product_recommendation",
+      "name": "互补产品",
+      "description": "互补产品列表",
+      "type": {
+        "name": "list.product_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "applicable_scene",
+      "namespace": "product",
+      "name": "applicable_scene",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "usage_method",
+      "namespace": "product",
+      "name": "usage_method",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "attention",
+      "namespace": "product",
+      "name": "attention",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "moq",
+      "namespace": "product",
+      "name": "moq",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "mpq",
+      "namespace": "product",
+      "name": "mpq",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "manufacturer_model_number",
+      "namespace": "product",
+      "name": "manufacturer_model_number",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "variant_length",
+      "namespace": "product",
+      "name": "variant_length",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "variant_width",
+      "namespace": "product",
+      "name": "variant_width",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "variant_height",
+      "namespace": "product",
+      "name": "variant_height",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "variant_volume",
+      "namespace": "product",
+      "name": "variant_volume",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "sale_unit",
+      "namespace": "product",
+      "name": "sale_unit",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "sale_package",
+      "namespace": "product",
+      "name": "sale_package",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "key",
+      "namespace": "product",
+      "name": "key",
+      "description": "",
+      "type": {
+        "name": "json",
+        "category": "JSON"
+      }
+    },
+    {
+      "key": "common",
+      "namespace": "product",
+      "name": "common",
+      "description": "",
+      "type": {
+        "name": "json",
+        "category": "JSON"
+      }
+    },
+    {
+      "key": "sales",
+      "namespace": "product",
+      "name": "sales",
+      "description": "",
+      "type": {
+        "name": "json",
+        "category": "JSON"
+      }
+    },
+    {
+      "key": "tree_list",
+      "namespace": "product",
+      "name": "tree_list",
+      "description": "",
+      "type": {
+        "name": "json",
+        "category": "JSON"
+      }
+    },
+    {
+      "key": "quantity_discount",
+      "namespace": "product",
+      "name": "quantity_discount",
+      "description": "",
+      "type": {
+        "name": "json",
+        "category": "JSON"
+      }
+    },
+    {
+      "key": "pdf",
+      "namespace": "product",
+      "name": "pdf",
+      "description": "",
+      "type": {
+        "name": "json",
+        "category": "JSON"
+      }
+    },
+    {
+      "key": "sample",
+      "namespace": "product",
+      "name": "sample",
+      "description": "",
+      "type": {
+        "name": "boolean",
+        "category": "TRUE_FALSE"
+      }
+    },
+    {
+      "key": "product_variants",
+      "namespace": "custom",
+      "name": "product_variants",
+      "description": "",
+      "type": {
+        "name": "rich_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "product_character",
+      "namespace": "product",
+      "name": "product_character",
+      "description": "产品特性",
+      "type": {
+        "name": "multi_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "voltagerange",
+      "namespace": "product",
+      "name": "voltage range",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "unspsc",
+      "namespace": "product",
+      "name": "unspsc",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "brand",
+      "namespace": "product",
+      "name": "brand",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "special_item",
+      "namespace": "product",
+      "name": "special_item",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "series",
+      "namespace": "product",
+      "name": "series",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "sale_box",
+      "namespace": "product",
+      "name": "sale_box",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "origin",
+      "namespace": "product",
+      "name": "origin",
+      "description": "",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "FoamLined",
+      "namespace": "product",
+      "name": "Foam Lined",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "FrameType",
+      "namespace": "product",
+      "name": "Frame Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "LensCoating",
+      "namespace": "product",
+      "name": "Lens Coating",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "GlassesFrameStyle",
+      "namespace": "product",
+      "name": "Glasses Frame Style",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Material",
+      "namespace": "product",
+      "name": "Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ProductType",
+      "namespace": "product",
+      "name": "Product Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "PlierType",
+      "namespace": "product",
+      "name": "Plier Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "GloveStyle",
+      "namespace": "product",
+      "name": "Glove Style",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "CoatingType",
+      "namespace": "product",
+      "name": "Coating Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "GloveCoatingMaterial",
+      "namespace": "product",
+      "name": "Glove Coating Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "GloveCoatingCoverage",
+      "namespace": "product",
+      "name": "Glove Coating Coverage",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "EarplugType",
+      "namespace": "product",
+      "name": "Earplug Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "EarplugShape",
+      "namespace": "product",
+      "name": "Earplug Shape",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TrafficType",
+      "namespace": "product",
+      "name": "Traffic Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "JawShape",
+      "namespace": "product",
+      "name": "Jaw Shape",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "HandleOpeningType",
+      "namespace": "product",
+      "name": "Handle Opening Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "SnipType",
+      "namespace": "product",
+      "name": "Snip Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "HandleStyle",
+      "namespace": "product",
+      "name": "Handle Style",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "OverallLength",
+      "namespace": "product",
+      "name": "Overall Length",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "HandOrientation",
+      "namespace": "product",
+      "name": "Hand Orientation",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "HandleMaterial",
+      "namespace": "product",
+      "name": "Handle Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "BladeType",
+      "namespace": "product",
+      "name": "Blade Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "AdjustmentMechanism",
+      "namespace": "product",
+      "name": "Adjustment Mechanism",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Shape",
+      "namespace": "product",
+      "name": "Shape",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "AdjustableWrenchType",
+      "namespace": "product",
+      "name": "Adjustable Wrench Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MeasurementType",
+      "namespace": "product",
+      "name": "Measurement Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "BoxEndType",
+      "namespace": "product",
+      "name": "Box End Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "PrimaryMaterialApplication",
+      "namespace": "product",
+      "name": "Primary Material Application",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ShankType",
+      "namespace": "product",
+      "name": "Shank Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "DrillBitSize",
+      "namespace": "product",
+      "name": "Drill Bit Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ChiselCollarShape",
+      "namespace": "product",
+      "name": "Chisel Collar Shape",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "WaterResistant_Waterproof",
+      "namespace": "product",
+      "name": "Water Resistant/Waterproof",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ToolType",
+      "namespace": "product",
+      "name": "Tool Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Magnetic",
+      "namespace": "product",
+      "name": "Magnetic",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "VialTypes",
+      "namespace": "product",
+      "name": "Vial Types",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "LevelType",
+      "namespace": "product",
+      "name": "Level Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "UseLocation",
+      "namespace": "product",
+      "name": "Use Location",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "WheelType",
+      "namespace": "product",
+      "name": "Wheel Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "NumberofWheels",
+      "namespace": "product",
+      "name": "Number of Wheels",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Type",
+      "namespace": "product",
+      "name": "Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Application",
+      "namespace": "product",
+      "name": "Application",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "HazardType",
+      "namespace": "product",
+      "name": "Hazard Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "NIOSHRating",
+      "namespace": "product",
+      "name": "NIOSH Rating",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ExhalationValve",
+      "namespace": "product",
+      "name": "Exhalation Valve",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MaskShape",
+      "namespace": "product",
+      "name": "Mask Shape",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "DimensionType",
+      "namespace": "product",
+      "name": "Dimension Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "JawMaterial",
+      "namespace": "product",
+      "name": "Jaw Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "RuleType",
+      "namespace": "product",
+      "name": "Rule Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "SquareType",
+      "namespace": "product",
+      "name": "Square Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "FrameColor",
+      "namespace": "product",
+      "name": "Frame Color",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "PaddingLocations",
+      "namespace": "product",
+      "name": "Padding Locations",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "IncludesBrowLining",
+      "namespace": "product",
+      "name": "Includes Brow Lining",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ArmColor",
+      "namespace": "product",
+      "name": "Arm Color",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "AdjustableArmLength",
+      "namespace": "product",
+      "name": "Adjustable Arm Length",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "EyewearSize",
+      "namespace": "product",
+      "name": "Eyewear Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ArmMaterial",
+      "namespace": "product",
+      "name": "Arm Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ContainerType",
+      "namespace": "product",
+      "name": "Container Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "IncludesEyeSocketLining",
+      "namespace": "product",
+      "name": "Includes Eye Socket Lining",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "LensColor",
+      "namespace": "product",
+      "name": "Lens Color",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ShankDiameter",
+      "namespace": "product",
+      "name": "Shank Diameter",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Color",
+      "namespace": "product",
+      "name": "Color",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Style",
+      "namespace": "product",
+      "name": "Style",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "InputDriveSize",
+      "namespace": "product",
+      "name": "Input Drive Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "OutputDriveSize",
+      "namespace": "product",
+      "name": "Output Drive Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Finish",
+      "namespace": "product",
+      "name": "Finish",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Locking",
+      "namespace": "product",
+      "name": "Locking",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "GripStyle",
+      "namespace": "product",
+      "name": "Grip Style",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "JawWidth",
+      "namespace": "product",
+      "name": "Jaw Width",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "JawLength",
+      "namespace": "product",
+      "name": "Jaw Length",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "IncludesWireCutter",
+      "namespace": "product",
+      "name": "Includes Wire Cutter",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MaximumJawOpening",
+      "namespace": "product",
+      "name": "Maximum Jaw Opening",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Thickness",
+      "namespace": "product",
+      "name": "Thickness",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "KnitMaterial",
+      "namespace": "product",
+      "name": "Knit Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "CoatingTexture",
+      "namespace": "product",
+      "name": "Coating Texture",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "KnitMaterialColor",
+      "namespace": "product",
+      "name": "Knit Material Color",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Size",
+      "namespace": "product",
+      "name": "Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "IncludesReinforcedThumbCrotch",
+      "namespace": "product",
+      "name": "Includes Reinforced Thumb Crotch",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ANSI_ISEACutLevel",
+      "namespace": "product",
+      "name": "ANSI/ISEA Cut Level",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TouchscreenCompatible",
+      "namespace": "product",
+      "name": "Touchscreen Compatible",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ANSI_ISEAAbrasionLevel",
+      "namespace": "product",
+      "name": "ANSI/ISEA Abrasion Level",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "GloveCoatingColor",
+      "namespace": "product",
+      "name": "Glove Coating Color",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Thickness_ga_",
+      "namespace": "product",
+      "name": "Thickness (ga)",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Silicone-Free",
+      "namespace": "product",
+      "name": "Silicone-Free",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Latex-Free",
+      "namespace": "product",
+      "name": "Latex-Free",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Reusability",
+      "namespace": "product",
+      "name": "Reusability",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "NoiseReductionRating_NRR_",
+      "namespace": "product",
+      "name": "Noise Reduction Rating (NRR)",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "EarplugColor",
+      "namespace": "product",
+      "name": "Earplug Color",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Metal-Detectable",
+      "namespace": "product",
+      "name": "Metal-Detectable",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "InsertionMethod",
+      "namespace": "product",
+      "name": "Insertion Method",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "GritSize",
+      "namespace": "product",
+      "name": "Grit Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TapeAdhesiveMaterial",
+      "namespace": "product",
+      "name": "Tape Adhesive Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TapeThickness",
+      "namespace": "product",
+      "name": "Tape Thickness",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TapePattern",
+      "namespace": "product",
+      "name": "Tape Pattern",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TapeColor",
+      "namespace": "product",
+      "name": "Tape Color",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ImperialTapeWidth",
+      "namespace": "product",
+      "name": "Imperial Tape Width",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ImperialTapeLength",
+      "namespace": "product",
+      "name": "Imperial Tape Length",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "SurfaceAbrasive",
+      "namespace": "product",
+      "name": "Surface Abrasive",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TetherReady",
+      "namespace": "product",
+      "name": "Tether Ready",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "JawThickness",
+      "namespace": "product",
+      "name": "Jaw Thickness",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "BladeMaterial",
+      "namespace": "product",
+      "name": "Blade Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "GripMaterial",
+      "namespace": "product",
+      "name": "Grip Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "CuttingDirection",
+      "namespace": "product",
+      "name": "Cutting Direction",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "CuttingLength",
+      "namespace": "product",
+      "name": "Cutting Length",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "CuttingEdgeType",
+      "namespace": "product",
+      "name": "Cutting Edge Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "HandleColor",
+      "namespace": "product",
+      "name": "Handle Color",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TipShape",
+      "namespace": "product",
+      "name": "Tip Shape",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "LengthofCut",
+      "namespace": "product",
+      "name": "Length of Cut",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "CuttingCapacityType",
+      "namespace": "product",
+      "name": "Cutting Capacity Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "BladeThickness",
+      "namespace": "product",
+      "name": "Blade Thickness",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "BladeLength",
+      "namespace": "product",
+      "name": "Blade Length",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "BladeWidth",
+      "namespace": "product",
+      "name": "Blade Width",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "GripType",
+      "namespace": "product",
+      "name": "Grip Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "BladeTip",
+      "namespace": "product",
+      "name": "Blade Tip",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "JawTexture",
+      "namespace": "product",
+      "name": "Jaw Texture",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "NumberofJawPositions",
+      "namespace": "product",
+      "name": "Number of Jaw Positions",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ClampingForce",
+      "namespace": "product",
+      "name": "Clamping Force",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ThroatDepth",
+      "namespace": "product",
+      "name": "Throat Depth",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MaximumWorkingOpening",
+      "namespace": "product",
+      "name": "Maximum Working Opening",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "JawCapacity",
+      "namespace": "product",
+      "name": "Jaw Capacity",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "HeadSize",
+      "namespace": "product",
+      "name": "Head Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "HeadType",
+      "namespace": "product",
+      "name": "Head Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "OpeningAngle",
+      "namespace": "product",
+      "name": "Opening Angle",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "HeadOffsetAngle",
+      "namespace": "product",
+      "name": "Head Offset Angle",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "BodyMaterial",
+      "namespace": "product",
+      "name": "Body Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MaximumDrillingDepth",
+      "namespace": "product",
+      "name": "Maximum Drilling Depth",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TipType",
+      "namespace": "product",
+      "name": "Tip Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "NumberofDrillBits",
+      "namespace": "product",
+      "name": "Number of Drill Bits",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "FluteType",
+      "namespace": "product",
+      "name": "Flute Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "FasteningSize",
+      "namespace": "product",
+      "name": "Fastening Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ShankSize",
+      "namespace": "product",
+      "name": "Shank Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ToothMaterial",
+      "namespace": "product",
+      "name": "Tooth Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "NumberofTeeth",
+      "namespace": "product",
+      "name": "Number of Teeth",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "NumberofPieces",
+      "namespace": "product",
+      "name": "Number of Pieces",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Max_CuttingDepth",
+      "namespace": "product",
+      "name": "Max. Cutting Depth",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MaterialsCut",
+      "namespace": "product",
+      "name": "Materials Cut",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "SawDia_",
+      "namespace": "product",
+      "name": "Saw Dia.",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ThreadSize",
+      "namespace": "product",
+      "name": "Thread Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ShankHexSize",
+      "namespace": "product",
+      "name": "Shank Hex Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "HeadWidth",
+      "namespace": "product",
+      "name": "Head Width",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Includes",
+      "namespace": "product",
+      "name": "Includes",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ShankStyle",
+      "namespace": "product",
+      "name": "Shank Style",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "FasteningToolItem",
+      "namespace": "product",
+      "name": "Fastening Tool Item",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TarpFinishedLength",
+      "namespace": "product",
+      "name": "Tarp Finished Length",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Thickness_mil_",
+      "namespace": "product",
+      "name": "Thickness (mil)",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TarpFinishedWidth",
+      "namespace": "product",
+      "name": "Tarp Finished Width",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "FinishedSize_LxW_",
+      "namespace": "product",
+      "name": "Finished Size (L x W)",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TarpResistantFeatures",
+      "namespace": "product",
+      "name": "Tarp Resistant Features",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "CutSize",
+      "namespace": "product",
+      "name": "Cut Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TarpSeamFinish",
+      "namespace": "product",
+      "name": "Tarp Seam Finish",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Weight",
+      "namespace": "product",
+      "name": "Weight",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Capacity",
+      "namespace": "product",
+      "name": "Capacity",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Permanence",
+      "namespace": "product",
+      "name": "Permanence",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "FrameMaterial",
+      "namespace": "product",
+      "name": "Frame Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MagnetType",
+      "namespace": "product",
+      "name": "Magnet Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "VialReadability_Level_",
+      "namespace": "product",
+      "name": "Vial Readability (Level)",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MeasuringDistance_Maximum_",
+      "namespace": "product",
+      "name": "Measuring Distance (Maximum)",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "WheelCircumference",
+      "namespace": "product",
+      "name": "Wheel Circumference",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "TreadMaterial",
+      "namespace": "product",
+      "name": "Tread Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Precision",
+      "namespace": "product",
+      "name": "Precision",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Length",
+      "namespace": "product",
+      "name": "Length",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MeasuringUnits",
+      "namespace": "product",
+      "name": "Measuring Units",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Display_Resolution",
+      "namespace": "product",
+      "name": "Display Resolution",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "WheelDiameter",
+      "namespace": "product",
+      "name": "Wheel Diameter",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Diameter",
+      "namespace": "product",
+      "name": "Diameter",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "SeamStyle",
+      "namespace": "product",
+      "name": "Seam Style",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ClosureType",
+      "namespace": "product",
+      "name": "Closure Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "IncludesSlipResistantSole",
+      "namespace": "product",
+      "name": "Includes Slip Resistant Sole",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MaskSize",
+      "namespace": "product",
+      "name": "Mask Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MaskHeadstrapType",
+      "namespace": "product",
+      "name": "Mask Headstrap Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "FaceSealType",
+      "namespace": "product",
+      "name": "Face Seal Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "IndividuallyPackaged",
+      "namespace": "product",
+      "name": "Individually Packaged",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "NosepieceType",
+      "namespace": "product",
+      "name": "Nosepiece Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "DustResistant",
+      "namespace": "product",
+      "name": "Dust Resistant",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MaximumMeasurement",
+      "namespace": "product",
+      "name": "Maximum Measurement",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Measurements",
+      "namespace": "product",
+      "name": "Measurements",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "RangeperRevolution",
+      "namespace": "product",
+      "name": "Range per Revolution",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "JawDepth-UpperJaw",
+      "namespace": "product",
+      "name": "Jaw Depth - Upper Jaw",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "JawDepth",
+      "namespace": "product",
+      "name": "Jaw Depth",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Range",
+      "namespace": "product",
+      "name": "Range",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Repeatability",
+      "namespace": "product",
+      "name": "Repeatability",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "IncludesBattery",
+      "namespace": "product",
+      "name": "Includes Battery",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Accuracy",
+      "namespace": "product",
+      "name": "Accuracy",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "IPRating",
+      "namespace": "product",
+      "name": "IP Rating",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Resolution",
+      "namespace": "product",
+      "name": "Resolution",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "SystemofMeasurement",
+      "namespace": "product",
+      "name": "System of Measurement",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "GraduationMarks",
+      "namespace": "product",
+      "name": "Graduation Marks",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Width",
+      "namespace": "product",
+      "name": "Width",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Flexibility",
+      "namespace": "product",
+      "name": "Flexibility",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "SquareSize",
+      "namespace": "product",
+      "name": "Square Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "GraduationMarkStyle",
+      "namespace": "product",
+      "name": "Graduation Mark Style",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Coating",
+      "namespace": "product",
+      "name": "Coating",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "BladeSize",
+      "namespace": "product",
+      "name": "Blade Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "SpecializedScales",
+      "namespace": "product",
+      "name": "Specialized Scales",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "BatterySize",
+      "namespace": "product",
+      "name": "Battery Size",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "DisplayType",
+      "namespace": "product",
+      "name": "Display Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ForSmallHeadsDesignation",
+      "namespace": "product",
+      "name": "For Small Heads Designation",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "IncludesPaddedNosePiece",
+      "namespace": "product",
+      "name": "Includes Padded Nose Piece",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "IncludesPaddedArms",
+      "namespace": "product",
+      "name": "Includes Padded Arms",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Gender",
+      "namespace": "product",
+      "name": "Gender",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "MetalDetectable",
+      "namespace": "product",
+      "name": "Metal Detectable",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Standards",
+      "namespace": "product",
+      "name": "Standards",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "AdjustableNosePiece",
+      "namespace": "product",
+      "name": "Adjustable Nose Piece",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "PhotochromaticLens",
+      "namespace": "product",
+      "name": "Photochromatic Lens",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "LensMaterial",
+      "namespace": "product",
+      "name": "Lens Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "IncludesPolarizedLensCoating",
+      "namespace": "product",
+      "name": "Includes Polarized Lens Coating",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "DielectricProtection",
+      "namespace": "product",
+      "name": "Dielectric Protection",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "X-RayDetectable",
+      "namespace": "product",
+      "name": "X-Ray Detectable",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ANSIDust_SplashRating",
+      "namespace": "product",
+      "name": "ANSI Dust/Splash Rating",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Prop65",
+      "namespace": "product",
+      "name": "Prop65",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ANSI",
+      "namespace": "product",
+      "name": "ANSI",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ForToolType",
+      "namespace": "product",
+      "name": "For Tool Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "CenterGuidePoint",
+      "namespace": "product",
+      "name": "Center Guide Point",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ToothType",
+      "namespace": "product",
+      "name": "Tooth Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "BeltAttachmentMaterial",
+      "namespace": "product",
+      "name": "Belt Attachment Material",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "ImpactRated",
+      "namespace": "product",
+      "name": "Impact Rated",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "InputDriveGender",
+      "namespace": "product",
+      "name": "Input Drive Gender",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "DriveShape",
+      "namespace": "product",
+      "name": "Drive Shape",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "DriveType",
+      "namespace": "product",
+      "name": "Drive Type",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    }
+  ],
+  "variant": [
+    {
+      "key": "custom_label_4",
+      "namespace": "mm-google-shopping",
+      "name": "Google: Custom Label 4",
+      "description": "Label that you assign to a product to help organize bidding and reporting in Shopping campaigns.",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "custom_label_3",
+      "namespace": "mm-google-shopping",
+      "name": "Google: Custom Label 3",
+      "description": "Label that you assign to a product to help organize bidding and reporting in Shopping campaigns.",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "custom_label_2",
+      "namespace": "mm-google-shopping",
+      "name": "Google: Custom Label 2",
+      "description": "Label that you assign to a product to help organize bidding and reporting in Shopping campaigns.",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "custom_label_1",
+      "namespace": "mm-google-shopping",
+      "name": "Google: Custom Label 1",
+      "description": "Label that you assign to a product to help organize bidding and reporting in Shopping campaigns.",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "custom_label_0",
+      "namespace": "mm-google-shopping",
+      "name": "Google: Custom Label 0",
+      "description": "Label that you assign to a product to help organize bidding and reporting in Shopping campaigns.",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "size_system",
+      "namespace": "mm-google-shopping",
+      "name": "Google: Size System",
+      "description": "The country of the size system used by your product.",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "size_type",
+      "namespace": "mm-google-shopping",
+      "name": "Google: Size Type",
+      "description": "Your apparel product’s cut.",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "mpn",
+      "namespace": "mm-google-shopping",
+      "name": "Google: MPN",
+      "description": "Your product’s Manufacturer Part Number (MPN).",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "gender",
+      "namespace": "mm-google-shopping",
+      "name": "Google: Gender",
+      "description": "The gender for which your product is intended.",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "condition",
+      "namespace": "mm-google-shopping",
+      "name": "Google: Condition",
+      "description": "The condition of your product at time of sale.",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "age_group",
+      "namespace": "mm-google-shopping",
+      "name": "Google: Age Group",
+      "description": "The demographic for which your product is intended.",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    }
+  ],
+  "shop": []
+}

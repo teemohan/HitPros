@@ -1,0 +1,69 @@
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+<recently-viewed-products
+  section-id="{{ section.id }}"
+  data-customer="{{ customer.id }}"
+  products-count="10"
+  {% if request.page_type == 'product' %}
+    exclude-product-id="{{ product.id | escape }}"
+  {% endif %}
+  class="product-x-hidde"
+>
+  {%- if request.page_type == 'search' and search.performed and search.results_count > 0 -%}
+    <div class="{{ section.id }} recently-viewed">
+      <div class="container cl-container hover-cl-container">
+        <div class="index-cus-header">
+          <h2>{{ section.settings.title }}</h2>
+          {% render 'swiper-buttons' %}
+        </div>
+        <div class="IndexBestswiper hover-list">
+          <div class="swiper {{ section.id }}-IndexBestswiper">
+            <div class="swiper-wrapper">
+              {%- assign parsed_terms = search.terms | split: ' OR ' -%}
+              {%- for parsed_term in parsed_terms -%}
+                {%- assign id = parsed_term | split: 'id:' | last | times: 1 -%}
+                {%- for product in search.results -%}
+                  {%- if product.id == id -%}
+                    <div class="swiper-slide">
+                      {%- render 'index-product-item', product: product -%}
+                    </div>
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endfor -%}
+            </div>
+          </div>
+          <div class="swiper-scrollbar"></div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+</recently-viewed-products>
+
+{% schema %}
+{
+  "name": "Recently viewed products",
+  "class": "shopify-section--recently-viewed-products section-gap section-padding product-swiper-list",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "Recently Viewed"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "collection"
+    },
+    {
+      "type": "paragraph",
+      "content": "If there is no browsing history, it will be collected by default. If there is, the browsing history will be displayed."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently viewed products"
+    }
+  ]
+}
+{% endschema %}

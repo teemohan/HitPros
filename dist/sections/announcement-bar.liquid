@@ -1,0 +1,236 @@
+<style>
+  :root {
+    --enable-sticky-announcement-bar: {% if section.settings.announcement_bar_position == 'non_sticky' or section.settings.announcement_bar_position == 'sticky_desktop' %}0{% else %}1{% endif %};
+  }
+
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.announcement_bar_position == 'sticky' or section.settings.announcement_bar_position == 'sticky_mobile' -%}
+      position: -webkit-sticky;
+      position: sticky;
+    {%- else -%}
+      position: relative;
+    {%- endif -%}
+
+    top: 0;
+  }
+
+  @media screen and (min-width: 741px) {
+    :root {
+      --enable-sticky-announcement-bar: {% if section.settings.announcement_bar_position == 'non_sticky' or section.settings.announcement_bar_position == 'sticky_mobile' %}0{% else %}1{% endif %};
+    }
+
+    #shopify-section-{{ section.id }} {
+      {%- if section.settings.announcement_bar_position == 'sticky' or section.settings.announcement_bar_position == 'sticky_desktop' -%}
+        position: -webkit-sticky;
+        position: sticky;
+      {%- else -%}
+        position: relative;
+      {%- endif -%}
+    }
+  }
+
+  .announcement-bar-wrapper {
+    background-color: #F3F8FC;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 400;
+    color: #0A2B6F;
+    padding: 4px 0;
+  }
+  .announcement-bar-item {
+    display: flex;
+    justify-content: space-between;
+  }
+  .announcement-bar-wrapper .links {
+    display: flex;
+    align-items: center;
+    
+  }
+  .announcement-bar-wrapper .links a{
+    margin:0 10px
+  }
+  .announcement-bar-wrapper .links a:hover {
+    text-decoration: underline;
+  }
+  .announcement-bar-wrapper .contacts {
+    display: flex;
+    align-items: center;
+    
+  }
+  .announcement-bar-wrapper .contacts span{
+  margin:0 10px  
+  }
+  .announcement-bar-wrapper .contacts span,
+  .announcement-bar-wrapper .contacts a
+  {
+    display: flex;
+    align-items: center;
+    
+  }
+  .announcement-bar-wrapper .contacts a svg{
+    margin-right:4px;
+  }
+  
+  .announcement-bar-wrapper .line {
+    width: 1px;
+    height: 28px;
+    background-color: #0A2B6F;
+    opacity: .2;
+  }
+</style>
+
+<section>
+<announcement-bar class="announcement-bar-wrapper">
+  <div class="announcement-bar__list container">
+    <announcement-bar-item class="announcement-bar-item">
+      <div class="contacts">
+        <a href="tel:{{ section.settings.phone }}">
+          {% render 'icon' with 'top-bar-phone' %}
+          {{ section.settings.phone }}
+        </a>
+        <span class="line"></span>
+        <a href="mailto:{{ section.settings.email }}">
+          {% render 'icon' with 'top-bar-email' %}
+          {{ section.settings.email }}
+        </a>
+      </div>
+      <div class="links">
+        <a href="{{ section.settings.about_url }}">About Us</a>
+        <span class="line"></span>
+        <a href="{{ section.settings.help_url }}">Help</a>
+        <span class="line"></span>
+        <a href="{{ section.settings.blog_url }}">Blog</a>
+      </div>
+
+    </announcement-bar-item>
+  </div>
+
+  
+</announcement-bar>
+</section>
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "class": "shopify-section--announcement-bar hidden-pocket",
+  "settings": [
+    {
+      "type": "url",
+      "id": "about_url",
+      "label": "About Url"
+    },
+    {
+      "type": "url",
+      "id": "help_url",
+      "label": "Help Url"
+    },
+    {
+      "type": "url",
+      "id": "blog_url",
+      "label": "Blog Url"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone",
+      "default": "(123) 123-4567"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "support@northsky.com"
+    },
+    {
+      "type": "select",
+      "id": "announcement_bar_position",
+      "label": "Position",
+      "options": [
+        {
+          "value": "non_sticky",
+          "label": "Non sticky"
+        },
+        {
+          "value": "sticky_desktop",
+          "label": "Sticky on desktop only"
+        },
+        {
+          "value": "sticky_mobile",
+          "label": "Sticky on mobile only"
+        },
+        {
+          "value": "sticky",
+          "label": "Sticky everywhere"
+        }
+      ],
+      "default": "non_sticky"
+    },
+    {
+      "type": "select",
+      "id": "announcement_text_size",
+      "label": "Text size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto rotate between messages",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "cycle_speed",
+      "min": 3,
+      "max": 20,
+      "step": 1,
+      "unit": "sec",
+      "label": "Change message every",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#1e2d7d"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#1e2d7d"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    }
+  ]
+}
+{% endschema %}

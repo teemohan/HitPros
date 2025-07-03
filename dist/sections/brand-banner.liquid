@@ -1,0 +1,358 @@
+<style>
+    @media screen and (min-width:1000px){
+        #shopify-section-{{ section.id }}{
+            margin-top: {{ section.settings.pc_top }}px;
+            margin-bottom: {{ section.settings.pc_bottom }}px;
+        }
+        #shopify-section-{{ section.id }} .desc{
+            padding: 72px;
+        }
+        #shopify-section-{{ section.id }} .title{
+            font-size:{{ section.settings.pc_title_size }}px;
+        }
+        #shopify-section-{{ section.id }} .title strong{
+            font-size: 48px;
+        }
+        #shopify-section-{{ section.id }} .content{
+            font-size:{{ section.settings.pc_content_size }}px;
+            margin-top:20px;
+        }
+        #shopify-section-{{ section.id }} .content ul{
+            padding-left: 26px;
+        }
+        #shopify-section-{{ section.id }} .brand_button{
+            gap: 16px;
+            margin-top: 50px;
+        }
+        #shopify-section-{{ section.id }} .button_label_1,#shopify-section-{{ section.id }} .button_label_2{
+            padding: 14px 28px;
+            font-size: 16px;
+        }
+    }
+    #shopify-section-{{ section.id }} .desc .icon {
+        margin-bottom: 40px;
+    }
+    @media screen and (max-width:999px){
+        .brand_banner {
+            aspect-ratio: 16 / 9;
+            object-fit: contain;
+        }
+        #shopify-section-{{ section.id }}{
+            margin-top: {{ section.settings.mobile_top }}px;
+            margin-bottom: {{ section.settings.mobile_bottom }}px;
+        }
+        #shopify-section-{{ section.id }} .container{
+            padding-left: 0;
+            padding-right: 0;
+        }
+        #shopify-section-{{ section.id }} .desc{
+            padding: 20px;
+        }
+        #shopify-section-{{ section.id }} .title{
+            font-size:{{ section.settings.mobile_title_size }}px;
+        }
+        #shopify-section-{{ section.id }} .content{
+            font-size:{{ section.settings.mobile_content_size }}px;
+            margin-top:6px;
+            width: 66%;
+        }
+        #shopify-section-{{ section.id }} .content.large-width {
+            width: 77%;
+        }
+        #shopify-section-{{ section.id }} .content ul{
+            padding-left: 18px;
+        }
+        #shopify-section-{{ section.id }} .brand_button{
+            gap: 8px;
+            margin-top: 8px;
+        }
+        #shopify-section-{{ section.id }} .button_label_1,#shopify-section-{{ section.id }} .button_label_2{
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+        #shopify-section-{{ section.id }} .desc .icon  {
+            margin-bottom: 0;
+        }
+        #shopify-section-{{ section.id }} .desc .icon svg {
+            width: 100px;
+            height: auto;
+        }
+    }
+    #shopify-section-{{ section.id }} .brand_banner{
+        position: relative;
+    }
+    #shopify-section-{{ section.id }} .brand_banner.bac-cover {
+        object-fit: cover;
+    }
+    #shopify-section-{{ section.id }} .desc{
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+    }
+    #shopify-section-{{ section.id }} .title{
+        color: {{ section.settings.title_color }};
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 120%;
+    }
+    #shopify-section-{{ section.id }} .content{
+        color: {{ section.settings.content_color }};
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 120%; 
+    }
+    
+    #shopify-section-{{ section.id }} .content li{
+        list-style: disc;
+    }
+    #shopify-section-{{ section.id }} .brand_button{
+        display: flex;
+        align-items: center;
+    }
+    #shopify-section-{{ section.id }} .button_label_1,#shopify-section-{{ section.id }} .button_label_2{
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        letter-spacing: 0.192px;
+        
+    }
+    #shopify-section-{{ section.id }} .button_label_1{
+        color: {{ section.settings.first_button_color }};
+        background: {{ section.settings.first_button_background }};
+        border: 1px solid {{ section.settings.first_button_border }};
+    }
+    #shopify-section-{{ section.id }} .button_label_2{
+        color: {{ section.settings.second_button_color }};
+        background: {{ section.settings.second_button_background }};
+        border: 1px solid {{ section.settings.second_button_border }};
+    }
+    #shopify-section-{{ section.id }} img{
+        width: 100%;
+    }
+</style>
+<div class="container">
+    <div class="brand_banner">
+        <img class="brand_banner hidden-pocket" loading="lazy" src="{{ section.settings.pc_image | img_url: '1400x' }}" width="auto" height="auto">
+        <img class="brand_banner hidden-lap-and-up {% if section.settings.cover == '1' %}bac-cover{% endif %}" loading="lazy" src="{{ section.settings.mobile_image | img_url: '750x' }}" width="auto" height="auto">
+        <div class="desc">
+            <div class="icon">
+                {{ section.settings.icon }}
+            </div>
+            <h1 class="title">{{ section.settings.title }}</h1>
+            {% if section.settings.maintain_pc == '1' %}
+                <div class="content large-width">{{ section.settings.content }}</div>
+            {% else %}
+                <div class="content hidden-pocket">{{ section.settings.content }}</div>
+                <div class="content hidden-lap-and-up">{{ section.settings.content | strip_html }}</div>
+            {% endif %}
+            {% if section.settings.button_label_1 != blank or section.settings.button_label_2 != blank %}
+                <div class="brand_button">
+                    {% if section.settings.button_label_1 != blank %}
+                        <a class="button_label_1" href="{{ section.settings.button_link_1 }}">{{ section.settings.button_label_1 }}</a>
+                    {% endif %}
+                    {% if section.settings.button_label_2 != blank %}
+                        <a class="button_label_2" href="{{ section.settings.button_link_2 }}">{{ section.settings.button_label_2 }}</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script>
+    (() => {
+        const firstSelectionId = $('.selection-process').first().attr('id');
+        if (firstSelectionId) {
+            $('.button_label_2').attr('href', `#${firstSelectionId}`);
+        }
+    })();
+</script>
+{% schema %}
+{
+    "name": "brand banner",
+    "settings": [
+        {
+            "type": "select",
+            "id": "cover",
+            "label": "Cover",
+            "options": [
+            {
+                "value": "1",
+                "label": "Yes"
+            },
+            {
+                "value": "0",
+                "label": "No"
+            }
+            ],
+            "default": "0"
+        },
+        {
+            "type": "select",
+            "id": "maintain_pc",
+            "label": "Maintain Pc",
+            "options": [
+            {
+                "value": "1",
+                "label": "Yes"
+            },
+            {
+                "value": "0",
+                "label": "No"
+            }
+            ],
+            "default": "0"
+        },
+        {
+            "type": "image_picker",
+            "id": "pc_image",
+            "label": "pc image"
+        },
+        {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "mobile image"
+        },
+        {
+            "type": "richtext",
+            "id": "title",
+            "label": "title"
+        },
+        {
+            "type": "html",
+            "id": "icon",
+            "label": "Icon"
+        },
+        {
+            "type": "number",
+            "id": "pc_title_size",
+            "label": "pc title fontSize"
+        },
+        {
+            "type": "number",
+            "id": "mobile_title_size",
+            "label": "mobile title fontSize"
+        },
+        {
+            "type": "color",
+            "id": "title_color",
+            "label": "title color",
+            "default": "#fff"
+        },
+        {
+            "type": "richtext",
+            "id": "content",
+            "label": "content"
+        },
+        {
+            "type": "number",
+            "id": "pc_content_size",
+            "label": "pc content fontSize"
+        },
+        {
+            "type": "number",
+            "id": "mobile_content_size",
+            "label": "mobile content fontSize"
+        },
+        {
+            "type": "color",
+            "id": "content_color",
+            "label": "content color",
+            "default": "#fff"
+        },
+        {
+            "type": "text",
+            "id": "button_label_1",
+            "default": "Button label",
+            "label": "First button label"
+        },
+        {
+            "type": "url",
+            "id": "button_link_1",
+            "label": "First button link"
+        },
+        {
+            "type": "color",
+            "id": "first_button_color",
+            "label": "First button color",
+            "default": "#fff"
+        },
+        {
+            "type": "color",
+            "id": "first_button_background",
+            "label": "First button background"
+        },
+        {
+            "type": "color",
+            "id": "first_button_border",
+            "label": "First button border color",
+             "default": "#fff"
+        },
+        {
+            "type": "text",
+            "id": "button_label_2",
+            "default": "Button label",
+            "label": "Second button label"
+        },
+        {
+            "type": "url",
+            "id": "button_link_2",
+            "label": "Second button link"
+        },
+        {
+            "type": "color",
+            "id": "second_button_color",
+            "label": "Second button color",
+            "default": "#fff"
+        },
+        {
+            "type": "color",
+            "id": "second_button_background",
+            "label": "Second button background"
+        },
+        {
+            "type": "color",
+            "id": "second_button_border",
+            "label": "Second button border color",
+            "default": "#fff"
+        },
+        {
+            "type": "number",
+            "id": "pc_top",
+            "label": "pc top",
+            "default": 128
+        },
+        {
+            "type": "number",
+            "id": "pc_bottom",
+            "label": "pc bottom",
+            "default": 128
+        },
+        {
+            "type": "number",
+            "id": "mobile_top",
+            "label": "mobile top",
+            "default": 60
+        },
+        {
+            "type": "number",
+            "id": "mobile_bottom",
+            "label": "mobile bottom",
+            "default": 60
+        }
+    ],
+    "presets": [
+        {
+            "name": "brand banner"
+        }
+    ]
+}
+{% endschema %}

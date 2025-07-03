@@ -1,0 +1,87 @@
+<facet-filters always-visible="" id="facet-filters" class="product-facet__filters">
+  <span class="drawer__overlay"></span>
+
+  <header class="drawer__header">
+      <p class="drawer__title heading h6">
+          Filter
+      </p><button type="button" class="drawer__close-button" data-action="close" title="Close">
+          <svg t="1730104106901" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7792" width="18" height="18">
+              <path d="M948.6 131.1l-67.2-67.2-380.6 380.7L142.6 86.3l-67.2 67.2 358.2 361.3L75.4 873l67.2 67.2 358.2-361.3 380.6 380.7 67.2-67.2L568 511.8z" p-id="7793" fill="#767676"></path>
+          </svg>
+      </button>
+  </header>
+  <div class="overflow-x-hidden overflow-y-auto grow p-8 fb-md:p-0">
+      <form id="facet-filters-form">
+          <input type="hidden" name="sort_by" value="title-ascending">
+          <div class="grid gap-0 w-full">
+              <div class="price-range">
+                  <button  type="button" is="toggle-button" 
+                    class="collapsible-toggle w-full bg-F3F8FC h-12 text-main font-bold px-5 flex items-center justify-between" aria-controls="facet-filter-filter.v.price" aria-expanded="true">
+                    <span>Price</span> 
+                    <span class="w-4">
+                      <svg width="100%" height="100%" viewBox="0 0 28 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.2525 8.31181L25.0253 -1.68202e-07L28 2.84554L14.2179 16L0.0655841 2.92099C-0.0422632 2.8055 0.0011977 2.73467 0.0655841 2.61611C0.427763 1.94322 2.29016 0.746798 2.8117 -1.42426e-06L12.0674 8.46579L13.9998 10.1816L16.2525 8.31181Z" fill="#0A2B6F"/>
+                      </svg>
+                    </span>
+                  </button>
+                  <collapsible-content  animate-items="" id="facet-filter-filter.v.price" class="collapsible filter-v-price" open style="overflow: visible;">
+                      <div class="collapsible__content">
+                          <price-range class="price-range">
+                              <div class="price-range__range-group range-group" style="--range-min: 0.0%; --range-max: 99.96551724137932%">
+                                  <input type="range" aria-label="From price" class="range" min="0" max="9999999" value="0">
+                                  <input type="range" aria-label="To price" class="range" min="0" max="9999999" value="999999">
+                              </div>
+
+                              <div class="price-range__input-group space-x-3  flex items-center text-xs text-black justify-between bg-white p-5">
+                                  <div class="price-range__input w-30 h-10 relative text-xs text-black border rounded-sm">
+                                    <p class="w-3 h-full absolute flex items-center font-base font-semibold left-3 top-0">$</p>
+                                    <input type="number" inputmode="numeric" 
+                                      oninput="validateInteger(this)" 
+                                      name="filter.v.price.gte" 
+                                      id="filter.v.price.gte" min="0" max="999999" 
+                                      placeholder="MIN"
+                                      class="js-price-gte w-full text-center text-xs pl-9 pr-2 h-full rounded-sm border-D3DEF1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                                      id="price-min" />
+                                  </div>
+                                  <span class="font-base font-semibold">TO</span>
+                                  <div class="price-range__input w-30 h-10 relative text-xs text-black border rounded-sm">
+                                    <p class="w-3 h-full absolute flex items-center font-base font-semibold left-3 top-0">$</p>
+                                    <input type="number" 
+                                      inputmode="numeric" 
+                                      oninput="validateInteger(this)" 
+                                      name="filter.v.price.lte" 
+                                      id="filter.v.price.lte" min="0" max="999999" 
+                                      placeholder="MAX"
+                                      class="js-price-lte w-full text-center pl-9 pr-2 text-xs h-full rounded-sm border-D3DEF1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                                      id="price-max" />
+                                  </div>
+                              </div>
+                          </price-range>
+                      </div>
+                  </collapsible-content>
+              </div>
+              <div class="price-range border-t border-white">
+                 <button type="button"  is="toggle-button" class="collapsible-toggle w-full bg-F3F8FC h-12 text-main font-bold px-5 flex items-center justify-between" aria-controls="facet-filter-filter.p.m.product.brand" aria-expanded="true">
+                  <span> Brand </span>
+                    <span class="w-4">
+                      <svg width="100%" height="100%" viewBox="0 0 28 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.2525 8.31181L25.0253 -1.68202e-07L28 2.84554L14.2179 16L0.0655841 2.92099C-0.0422632 2.8055 0.0011977 2.73467 0.0655841 2.61611C0.427763 1.94322 2.29016 0.746798 2.8117 -1.42426e-06L12.0674 8.46579L13.9998 10.1816L16.2525 8.31181Z" fill="#0A2B6F"/>
+                      </svg>
+                    </span>
+                  </button>
+                  <collapsible-content  animate-items="" id="facet-filter-filter.p.m.product.brand" class="collapsible filter-p-m-product-brand" open style="overflow: visible;">
+                    <div class="js-col-filter overflow-y-auto grid gap-4 pb-4 bg-white fb-sm:p-5">
+                    </div>
+                  </collapsible-content>
+              </div>
+
+          </div>
+
+          <noscript>
+              <button type="submit" class="product-facet__submit button button--secondary">
+                  Apply filters
+              </button>
+          </noscript>
+      </form>
+  </div>
+</facet-filters>

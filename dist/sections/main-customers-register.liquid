@@ -1,0 +1,1226 @@
+{{ 'el-reset.css' | asset_url | stylesheet_tag }}
+{{ 'customer-register.css' | asset_url | stylesheet_tag }}
+
+<section id="register-wrapper" class="el-reset-from">
+  <div class="form-container">
+    <div class="form-box">
+      <h3 class="block-title">Create Account</h3>
+      <div class="block-text">
+        Do you have an account?<a class="block-url" href="{{ routes.account_login_url }}">Sign In</a>
+      </div>
+      <div class="register-type-option">
+        <div :class="{active: registerType == 1}" @click="registerType = '1'">Personal Account</div>
+        <div :class="{active: registerType == 2}" @click="registerType = '2'">Business Account</div>
+      </div>
+      <el-form
+        autocomplete="off"
+        label-width="0"
+        :status-icon="false"
+        :model="ruleForm"
+        :rules="currentRules"
+        ref="ruleForm"
+        :validate-on-rule-change="false"
+        class="form-wrapper"
+        id="customer-register-form"
+      >
+        <div v-show="registerType == '2'">
+          <el-row>
+            <el-form-item prop="tag">
+              <el-select
+                v-focus-input="ruleForm.tag"
+                v-model="ruleForm.tag"
+                id="ruleForm[tag]"
+                placeholder=""
+              >
+                <el-option
+                  v-for="item in registerOptions"
+                  :key="item[0]"
+                  :label="item[0]"
+                  :value="item[1]"
+                >
+                </el-option>
+              </el-select>
+              <label for="ruleForm[tag]" class="el-label">Registration Type*</label>
+            </el-form-item>
+          </el-row>
+
+          <div v-show="ruleForm.tag == '1'">
+            <el-row>
+              <el-form-item prop="companyId">
+                <el-select
+                  id="register_company_code"
+                  v-model="ruleForm.companyId"
+                  filterable
+                  remote
+                  placeholder=""
+                  @blur="removeReadOnly('register_company_code')"
+                  @focus="removeReadOnlyFocus('register_company_code')"
+                  :remote-method="companyRemoteSearch"
+                  :loading="codeSearchLoading">
+                  <el-option
+                    v-for="item in companyOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+                <label for="register_company_code" class="el-label" :class="{ 'label--focus': elSelectFocus }">Company Authorization Code*</label>
+              </el-form-item>
+            </el-row>
+          </div>
+          <div v-show="ruleForm.tag != '1'">
+            <el-row>
+              <el-form-item prop="companyName">
+                <el-input
+                  maxlength="150"
+                  id="register_company_name"
+                  v-model="ruleForm.companyName"
+                  v-focus-input="ruleForm.companyName"
+                ></el-input>
+                <label for="register_company_name" class="el-label">Company Name*</label>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item class="common-select" prop="industry">
+                <el-select
+                  ref="selIndustryCompany"
+                  id="register_industry"
+                  v-model="ruleForm.industry"
+                  placeholder=""
+                  v-focus-input="ruleForm.industry"
+                >
+                  <el-option
+                    v-for="item in industryOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                    <div class="common-dropdown-item" @click="handleButtonClickIndustryCompany($event, item)">
+                      <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                      <div>${ item.value }</div>
+                      <el-input
+                        @focus="selectIndustyCompanyFocus"
+                        placeholder="Please enter your industry"
+                        maxlength="150"
+                        ref="selIndustryCompanyInput"
+                        v-if="showIndustryCompanyEdit && item.value == 'Other'"
+                        v-model="ruleForm.industry"
+                      ></el-input>
+                    </div>
+                  </el-option>
+                </el-select>
+                <label for="register_industry" class="el-label">Industry*</label>
+              </el-form-item>
+            </el-row>
+          </div>
+          <el-row>
+            <el-form-item class="common-select" prop="jobCompany">
+              <el-select
+                ref="selJobCompany"
+                id="register_job_company"
+                v-model="ruleForm.jobCompany"
+                placeholder=""
+                v-focus-input="ruleForm.jobCompany"
+              >
+                <el-option
+                  v-for="item in jobOptionsCompany"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                  <div class="common-dropdown-item" @click="handleButtonClickJobCompany($event, item)">
+                    <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                    <div>${ item.value }</div>
+                    <el-input
+                      ref="selJobCompanyInput"
+                      @focus="selectJobCompanyFocus"
+                      placeholder="Please enter your job"
+                      maxlength="150"
+                      v-if="showJobCompanyEdit && item.value == 'Other'"
+                      v-model="ruleForm.jobCompany"
+                    ></el-input>
+                  </div>
+                </el-option>
+              </el-select>
+              <label for="register_job_company" class="el-label">Job Function*</label>
+            </el-form-item>
+          </el-row>
+          <div v-show="ruleForm.tag != '1'">
+            <div class="form-sec-title">Company Address</div>
+            <el-row>
+              <el-form-item prop="address1">
+                <el-input
+                  id="ruleForm[address1]"
+                  v-model="ruleForm.address1"
+                  v-focus-input="ruleForm.address1"
+                ></el-input>
+                <label for="ruleForm[address1]" class="el-label">Street Address*</label>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item prop="address2">
+                <el-input
+                  id="ruleForm[address2]"
+                  v-model="ruleForm.address2"
+                  v-focus-input="ruleForm.address2"
+                ></el-input>
+                <label for="ruleForm[address2]" class="el-label">Suite，Building，Department，etc.</label>
+              </el-form-item>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="8" :xs="{ span: 24 }">
+                <el-form-item prop="city">
+                  <el-input
+                    id="ruleForm[city]"
+                    v-model="ruleForm.city"
+                    v-focus-input="ruleForm.city"
+                  ></el-input>
+                  <label for="ruleForm[city]" class="el-label">City*</label>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8" :xs="{ span: 24 }">
+                <el-form-item prop="state">
+                  <el-select
+                    v-focus-input="ruleForm.state"
+                    v-model="ruleForm.state"
+                    @change="handleCompanyStateChange"
+                    id="ruleForm[state]"
+                    placeholder=""
+                  >
+                    <el-option
+                      v-for="item in stateOptions"
+                      :key="item[0]"
+                      :label="item[0]"
+                      :value="item[1]"
+                    >
+                    </el-option>
+                  </el-select>
+                  <label for="ruleForm[state]" class="el-label">State*</label>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8" :xs="{ span: 24 }">
+                <el-form-item prop="zipCode">
+                  <el-input
+                    id="ruleForm[zipCode]"
+                    @blur="handleCompanyZipBlur"
+                    v-model="ruleForm.zipCode"
+                    v-focus-input="ruleForm.zipCode"
+                  ></el-input>
+                  <label for="ruleForm[zipCode]" class="el-label">ZIP Code*</label>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+        <div class="form-sec-title">Account</div>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item prop="firstname">
+              <el-input
+                id="register_first_name"
+                maxlength="150"
+                v-model="ruleForm.firstname"
+                v-focus-input="ruleForm.firstname"
+              ></el-input>
+              <label for="register_first_name" class="el-label">First Name*</label>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="lastname">
+              <el-input
+                id="register_last_name"
+                maxlength="150"
+                v-model="ruleForm.lastname"
+                v-focus-input="ruleForm.lastname"
+              ></el-input>
+              <label for="register_last_name" class="el-label">Last Name*</label>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-form-item prop="email">
+            <el-input id="register_email" v-model="ruleForm.email" v-focus-input="ruleForm.email"></el-input>
+            <label for="register_email" class="el-label">Email*</label>
+          </el-form-item>
+        </el-row>
+        <div v-show="registerType == '1'">
+          <el-row>
+            <el-form-item prop="companyName">
+              <el-input
+                maxlength="150"
+                id="register_company_name_personal"
+                v-model="ruleForm.companyNamePersonal"
+                v-focus-input="ruleForm.companyNamePersonal"
+              ></el-input>
+              <label for="register_company_name_personal" class="el-label">Company Name</label>
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-form-item class="common-select">
+              <el-select
+                ref="selIndustryPersonal"
+                id="register_industryPersonal"
+                v-model="ruleForm.industryPersonal"
+                placeholder=""
+                v-focus-input="ruleForm.industryPersonal"
+              >
+                <el-option
+                  v-for="item in industryOptionsPersonal"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                  <div class="common-dropdown-item" @click="handleButtonClickIndustryPersonal($event, item)">
+                    <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                    <div>${ item.value }</div>
+                    <el-input
+                      placeholder="Please enter your industry"
+                      maxlength="150"
+                      v-if="showIndustryPersonalEdit && item.value == 'Other'"
+                      v-model="ruleForm.industryPersonal"
+                    ></el-input>
+                  </div>
+                </el-option>
+              </el-select>
+              <label for="register_industryPersonal" class="el-label">Industry</label>
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-form-item class="common-select">
+              <el-select
+                ref="selJobPersonal"
+                id="register_jobPersonal"
+                v-model="ruleForm.jobPersonal"
+                placeholder=""
+                v-focus-input="ruleForm.jobPersonal"
+              >
+                <el-option
+                  v-for="item in jobOptionsPersonal"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                  <div class="common-dropdown-item" @click="handleButtonClickJobPersonal($event, item)">
+                    <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
+                    <div>${ item.value }</div>
+                    <el-input
+                      placeholder="Please enter your job"
+                      maxlength="150"
+                      v-if="showJobPersonalEdit && item.value == 'Other'"
+                      v-model="ruleForm.jobPersonal"
+                    ></el-input>
+                  </div>
+                </el-option>
+              </el-select>
+              <label for="register_jobPersonal" class="el-label">Job Function</label>
+            </el-form-item>
+          </el-row>
+        </div>
+        <el-row>
+          <el-form-item class="line-input" prop="password">
+            <el-input
+              @input="trimPassword"
+              autocomplete="new-password"
+              id="register_password"
+              v-model="ruleForm.password"
+              :type="!showPass? 'password': 'text'"
+              v-focus-input="ruleForm.password"
+            ></el-input>
+            <label for="register_password" class="el-label">Password*</label>
+            <span class="text-show" @click="showPass = !showPass">
+              <template v-if="!showPass">Show</template>
+              <template v-else>Hide</template>
+            </span>
+          </el-form-item>
+          <ul class="reset-form-tips">
+            <li :class="{ valid: passwordCriteria.minLength }">
+              <template v-if="passwordCriteria.minLength">
+                {% render 'icon' with 'v3-yes' %}
+              </template>
+              6-20 characters
+            </li>
+            <li :class="{ valid: passwordCriteria.hasLetter }">
+              <template v-if="passwordCriteria.hasLetter">
+                {% render 'icon' with 'v3-yes' %}
+              </template>
+              1 uppercase and 1 lowercase letter
+            </li>
+            <li :class="{ valid: passwordCriteria.hasNumber }">
+              <template v-if="passwordCriteria.hasNumber">
+                {% render 'icon' with 'v3-yes' %}
+              </template>
+              1 number
+            </li>
+          </ul>
+        </el-row>
+        <el-row>
+          <el-form-item class="line-input" prop="confirmPassword">
+            <el-input
+              @input="trimPassword"
+              autocomplete="new-password"
+              id="register_confirm_password"
+              v-model="ruleForm.confirmPassword"
+              :type="!showPass1? 'password': 'text'"
+              v-focus-input="ruleForm.confirmPassword"
+            ></el-input>
+            <label for="register_confirm_password" class="el-label">Confirm Password*</label>
+            <span class="text-show" @click="showPass1 = !showPass1">
+              <template v-if="!showPass1">Show</template>
+              <template v-else>Hide</template>
+            </span>
+          </el-form-item>
+        </el-row>
+        <el-row v-show="registerType == 2" class="code-container">
+          <el-form-item prop="code">
+            <el-input 
+              id="register_code" 
+              v-model="ruleForm.code" 
+              v-focus-input="ruleForm.code">
+            </el-input>
+            <label for="register_code" class="el-label">Verification Code*</label>
+            <span :class="{
+              'is-send': isSendCode
+            }" class="verify-btn" @click.stop="handleSendVerifiyCode">
+              <template v-if="isShowCodeLoading">
+                <span class="spinner">
+                  {%- render 'icon' with 'spinner', stroke_width: 3, width: 40, height: 40 -%}
+                </span>
+              </template>
+              <template v-else>
+                ${ codeMsg }
+              </template>
+            </span>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <ul class="subscribe-wrapper">
+            <li>
+              <el-checkbox v-model="ruleForm.checked"></el-checkbox>
+              <div>
+                Sign me up for NorthSky updates, including product news, expert tips, industry insights,and exclusive
+                offers.
+              </div>
+            </li>
+          </ul>
+          <div class="register-tips">
+            Your data privacy matters. We do not sell or share your information with third parties.
+          </div>
+        </el-row>
+        <div class="el-form-btn">
+          <el-button :loading="loading" type="primary"  @click="submitForm('ruleForm')">Create Account</el-button>
+        </div>
+      </el-form>
+    </div>
+    <div class="form-img">
+      <img
+        class="hidden-phone"
+        src="{{ section.settings.img | image_url }}"
+        alt="{{ section.settings.img.alt }}"
+        width="auto"
+        height="auto"
+      >
+      {% if section.settings.mobile_img %}
+        <img
+          class="hidden-tablet-and-up"
+          src="{{ section.settings.mobile_img | image_url }}"
+          alt="{{ section.settings.mobile_img.alt }}"
+          width="auto"
+          height="auto"
+        >
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    Vue.directive('focus-input', {
+      inserted(el, binding, vnode) {
+        const inputEl = el.querySelector('input');
+        if (!inputEl) return;
+        const $label = $(inputEl).closest('.el-form-item__content').find('label');
+        
+        const toggleLabelFocus = () => {
+         
+          if ($(inputEl).val().length === 0 && !inputEl.matches(':focus')) {
+            $label.removeClass('label--focus');
+          }
+        };
+
+        inputEl.addEventListener('focus', () => {
+          $label.addClass('label--focus');
+        });
+
+        inputEl.addEventListener('blur', () => {
+          setTimeout(toggleLabelFocus, 100);
+        });
+        if (binding.value) {
+          $label.addClass('label--focus');
+        } else {
+          $label.removeClass('label--focus');
+        }
+      },
+      update(el, binding, vnode) {
+        const inputEl = el.querySelector('input');
+        if (!inputEl) return;
+        const $label = $(inputEl).closest('.el-form-item__content').find('label');
+        if (binding.value) {
+          $label.addClass('label--focus');
+        } else if (!inputEl.matches(':focus')) {
+          $label.removeClass('label--focus');
+        }
+      },
+    });
+
+    const noWhitespaceValidator = (rule, value, callback) => {
+      if (!value || value.trim() === '') {
+        callback(new Error(rule.message));
+      } else {
+        callback();
+      }
+    };
+
+    const validateEnglishLettersOnly = (rule, value, callback) => {
+      const englishLetterPattern = /^[a-zA-Z]+$/;
+      if (!englishLetterPattern.test(value)) {
+        return callback(new Error('Special characters are not allowed'));
+      }
+      callback();
+    };
+
+    new Vue({
+      el: '#register-wrapper',
+      delimiters: ['${', '}'],
+      data() {
+        const validateCompanyName = async (rule, value, callback) => {
+          try {
+            const response = await fetch(`${window.zkh.api}/companies?name=${value}`);
+            const res = await response.json();
+            if (res.code === 200) {
+              callback(); 
+            } else {
+              callback(new Error('Company already existed.'));
+            }
+          } catch (error) {
+            callback(new Error('Validation failed due to a network error.'));
+          }
+        };
+        const checkEmail = (rule, value, callback) => {
+          const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+          if (value === '') {
+            callback(new Error('Email is required.'));
+          } else if (!emailPattern.test(value)) {
+            callback(new Error('Please enter a valid email address.'));
+          } else {
+            callback();
+          }
+        };
+        const validateCompanyZipCode = async (rule, value, callback) => {
+          if (!value) {
+            callback(new Error('ZIP Code is required'));
+          } else if (value.length !== 5) {
+            callback(new Error('Zip code must be 5 digits'));
+          } else {
+            return new Promise((resolve, reject) => {
+              getZipCode('US', value, function(result) {
+                try {
+                  if (!result.valid) {
+                    reject(new Error('The zip code is invalid.'));
+                  } else if (this.ruleForm.state && result.lookup.adminCode1 !== this.ruleForm.state) {
+                    reject(new Error('Not matching with the state.'));
+                  } else {
+                    resolve();
+                  }
+                } catch (error) {
+                  console.error(error)
+                }
+              }.bind(this));
+            })
+          }
+        };
+
+        const validateCompanyState = async (rule, value, callback) => {
+          if (!value) {
+            callback(new Error('Please select a state'));
+          } else if (this.ruleForm.zipCode.length && this.ruleForm.zipCode.length !== 5) {
+            callback(new Error('Does not match zip code.'));
+          } else {
+            callback();
+          }
+        };
+
+        const companyCodeValidator = async (rule, value, callback) => {
+          if (!value || value.trim() === '') {
+            callback(new Error('Company Authentication Code is required'));
+            return;
+          }
+          try {
+            const response = await fetch(`${window.zkh.api}/companies/${value}/name`);
+            const res = await response.json();
+            if (res.code === 200) {
+              this.validCompanyData = {
+                companyId: +value,
+                companyName: res.data.companyName
+              }
+              callback(); 
+            } else {
+              callback(new Error('This code does not exist, please check and try again.'));
+            }
+          } catch (error) {
+            callback(new Error('Validation failed due to a network error.'));
+          }
+        };
+
+        return {
+          elSelectFocus: false,
+          isShowCodeLoading: false,
+          isSendCode: false,
+          codeMsg: 'Send Verification',
+          companyOptions: [],
+          codeSearchLoading: false,
+          registerType: '1',
+          passwordCriteria: {
+            minLength: false,
+            hasLetter: false,
+            hasNumber: false,
+          },
+          registerOptions: [
+            ['Join an existing company', '1'],
+            ['Register a new company', '0'],
+          ],
+          stateOptions: [
+            ["Alabama", "AL"],
+            ["Alaska", "AK"],
+            ["Arizona", "AZ"],
+            ["Arkansas", "AR"],
+            ["California", "CA"],
+            ["Colorado", "CO"],
+            ["Connecticut", "CT"],
+            ["Delaware", "DE"],
+            ["Florida", "FL"],
+            ["Georgia", "GA"],
+            ["Hawaii", "HI"],
+            ["Idaho", "ID"],
+            ["Illinois", "IL"],
+            ["Indiana", "IN"],
+            ["Iowa", "IA"],
+            ["Kansas", "KS"],
+            ["Kentucky", "KY"],
+            ["Louisiana", "LA"],
+            ["Maine", "ME"],
+            ["Maryland", "MD"],
+            ["Massachusetts", "MA"],
+            ["Michigan", "MI"],
+            ["Minnesota", "MN"],
+            ["Mississippi", "MS"],
+            ["Missouri", "MO"],
+            ["Montana", "MT"],
+            ["Nebraska", "NE"],
+            ["Nevada", "NV"],
+            ["New Hampshire", "NH"],
+            ["New Jersey", "NJ"],
+            ["New Mexico", "NM"],
+            ["New York", "NY"],
+            ["North Carolina", "NC"],
+            ["North Dakota", "ND"],
+            ["Ohio", "OH"],
+            ["Oklahoma", "OK"],
+            ["Oregon", "OR"],
+            ["Pennsylvania", "PA"],
+            ["Rhode Island", "RI"],
+            ["South Carolina", "SC"],
+            ["South Dakota", "SD"],
+            ["Tennessee", "TN"],
+            ["Texas", "TX"],
+            ["Utah", "UT"],
+            ["Vermont", "VT"],
+            ["Virginia", "VA"],
+            ["Washington", "WA"],
+            ["West Virginia", "WV"],
+            ["Wisconsin", "WI"],
+            ["Wyoming", "WY"],
+            ["American Samoa", "AS"],
+            ["Armed Forces Americas", "AA"],
+            ["Armed Forces Europe", "AE"],
+            ["Armed Forces Pacific", "AP"],
+            ["District of Columbia", "DC"],
+            ["Federated States of Micronesia", "FM"],
+            ["Guam", "GU"],
+            ["Marshall Islands", "MH"],
+            ["Northern Mariana Islands", "MP"],
+            ["Puerto Rico", "PR"],
+            ["Virgin Islands", "VI"],
+            ["Palau", "PW"]
+          ],
+          ruleForm: {
+            firstname: '',
+            lastname: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            checked: true,
+            companyId: '',
+            companyName: '',
+            industry: '',
+            industryPersonal: '',
+            companyNamePersonal: '',
+            jobPersonal: '',
+            jobCompany: '',
+            state: '',
+            tag: '0',
+            city: '',
+            zipCode: '',
+            address1: '',
+            address2: '',
+            code: ''
+          },
+          industry: '',
+          industryPersonal: '',
+          jobPersonal: '',
+          jobCompany: '',
+          validCompanyData: null,
+          showIndustryCompanyEdit: false,
+          showIndustryPersonalEdit: false,
+          showJobPersonalEdit: false,
+          showJobCompanyEdit: false,
+          industryOptions: [
+            { isSelected: false, value: 'Manufacturing', label: 'Manufacturing' },
+            { isSelected: false, value: 'Warehousing', label: 'Warehousing' },
+            { isSelected: false, value: 'Transportation', label: 'Transportation' },
+            { isSelected: false, value: 'Government / Municipality', label: 'Government / Municipality' },
+            { isSelected: false, value: 'Hospitality', label: 'Hospitality' },
+            { isSelected: false, value: 'Healthcare', label: 'Healthcare' },
+            { isSelected: false, value: 'Retail/Commercial', label: 'Retail/Commercial' },
+            { isSelected: false, value: 'Property Management', label: 'Property Management' },
+            { isSelected: false, value: 'Professional Services', label: 'Professional Services' },
+            { isSelected: false, value: 'Construction', label: 'Construction' },
+            { isSelected: false, value: 'Mining', label: 'Mining' },
+            { isSelected: false, value: 'Agriculture', label: 'Agriculture' },
+            { isSelected: false, value: 'Education', label: 'Education' },
+            { isSelected: false, value: 'Energy / Oil & Gas', label: 'Energy / Oil & Gas' },
+            { isSelected: false, value: 'Food & Beverage', label: 'Food & Beverage' },
+            { isSelected: false, value: 'Personal Use', label: 'Personal Use' },
+            { isSelected: false, value: 'Other', label: 'Other' },
+          ],
+          industryOptionsPersonal: [
+            { isSelected: false, value: 'Manufacturing', label: 'Manufacturing' },
+            { isSelected: false, value: 'Warehousing', label: 'Warehousing' },
+            { isSelected: false, value: 'Transportation', label: 'Transportation' },
+            { isSelected: false, value: 'Government / Municipality', label: 'Government / Municipality' },
+            { isSelected: false, value: 'Hospitality', label: 'Hospitality' },
+            { isSelected: false, value: 'Healthcare', label: 'Healthcare' },
+            { isSelected: false, value: 'Retail/Commercial', label: 'Retail/Commercial' },
+            { isSelected: false, value: 'Property Management', label: 'Property Management' },
+            { isSelected: false, value: 'Professional Services', label: 'Professional Services' },
+            { isSelected: false, value: 'Construction', label: 'Construction' },
+            { isSelected: false, value: 'Mining', label: 'Mining' },
+            { isSelected: false, value: 'Agriculture', label: 'Agriculture' },
+            { isSelected: false, value: 'Education', label: 'Education' },
+            { isSelected: false, value: 'Energy / Oil & Gas', label: 'Energy / Oil & Gas' },
+            { isSelected: false, value: 'Food & Beverage', label: 'Food & Beverage' },
+            { isSelected: false, value: 'Personal Use', label: 'Personal Use' },
+            { isSelected: false, value: 'Other', label: 'Other' },
+          ],
+          jobOptionsPersonal: [
+            { isSelected: false, value: 'Maintenance & Engineering', label: 'Maintenance & Engineering ' },
+            { isSelected: false, value: 'Safety /EHS', label: 'Safety /EHS' },
+            { isSelected: false, value: 'Purchasing', label: 'Purchasing' },
+            { isSelected: false, value: 'Production', label: 'Production' },
+            { isSelected: false, value: 'Operations', label: 'Operations' },
+            { isSelected: false, value: 'Management', label: 'Management' },
+            { isSelected: false, value: 'Contractor', label: 'Contractor' },
+            { isSelected: false, value: 'Student', label: 'Student' },
+            { isSelected: false, value: 'Other', label: 'Other' },
+          ],
+          jobOptionsCompany: [
+            { isSelected: false, value: 'Maintenance & Engineering', label: 'Maintenance & Engineering ' },
+            { isSelected: false, value: 'Safety /EHS', label: 'Safety /EHS' },
+            { isSelected: false, value: 'Purchasing', label: 'Purchasing' },
+            { isSelected: false, value: 'Production', label: 'Production' },
+            { isSelected: false, value: 'Operations', label: 'Operations' },
+            { isSelected: false, value: 'Management', label: 'Management' },
+            { isSelected: false, value: 'Contractor', label: 'Contractor' },
+            { isSelected: false, value: 'Student', label: 'Student' },
+            { isSelected: false, value: 'Other', label: 'Other' },
+          ],
+          showPass: false,
+          showPass1: false,
+          personalRules: {
+            firstname: [
+              { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
+            ],
+            lastname: [
+              { validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' },
+            ],
+            email: [{ validator: checkEmail, trigger: 'blur' }],
+            password: [{ validator: this.checkPass, trigger: 'blur' }],
+            confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'blur' }]
+          },
+          companyJoinRules: {
+            companyId: [
+              { validator: companyCodeValidator, trigger: 'change' },
+            ],
+            firstname: [
+              { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
+            ],
+            lastname: [
+              { validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' },
+            ],
+            email: [{ validator: checkEmail, trigger: 'blur' }],
+            password: [{ validator: this.checkPass, trigger: 'blur' }],
+            confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'blur' }],
+            code: [
+              { validator: noWhitespaceValidator, message: 'Code is required', trigger: 'blur' }
+            ],
+          },
+          companyCreateRules: {
+            companyName: [
+              { validator: noWhitespaceValidator, message: 'CompanyName is required', trigger: 'blur' },
+              { validator: validateCompanyName, trigger: 'blur' },
+            ],
+            industry: [
+              { validator: noWhitespaceValidator, message: 'industryName is required', trigger: 'change' }
+            ],
+            jobCompany: [
+              { validator: noWhitespaceValidator, message: 'Job Fcuntion is required', trigger: 'change' }
+            ],
+            address1: [
+              { validator: noWhitespaceValidator, message: 'Street Address is required', trigger: 'blur' }
+            ],
+            city: [{ validator: noWhitespaceValidator, message: 'City is required', trigger: 'blur' }],
+            state: [{ validator: validateCompanyState, trigger: 'change' }],
+            zipCode: [{ validator: validateCompanyZipCode, trigger: 'blur' }],
+            firstname: [
+              { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
+            ],
+            lastname: [
+              { validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' },
+            ],
+            email: [{ validator: checkEmail, trigger: 'blur' }],
+            password: [{ validator: this.checkPass, trigger: 'blur' }],
+            confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'blur' }],
+            code: [
+              { validator: noWhitespaceValidator, message: 'Code is required', trigger: 'blur' }
+            ],
+          },
+          loading: false,
+        };
+      },
+      computed: {
+        currentRules() {
+          if (this.registerType === '1') {
+            return this.personalRules;
+          } else if (this.registerType === '2') {
+            if (this.ruleForm.tag === '0') {
+              return this.companyCreateRules;
+            } else if (this.ruleForm.tag === '1') {
+              return this.companyJoinRules;
+            }
+          }
+          return {};
+        },
+      },
+      mounted() {
+        document.getElementById("register_company_code")?.removeAttribute("readOnly");
+        $('#register-wrapper').show();
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') {
+            this.submitForm('ruleForm');
+          }
+        });
+      },
+      watch: {
+        "ruleForm.industry"(newVal, oldVal) {
+          const industry = this.industryOptions.find((item) => item.value == 'Other');
+          if(industry.isSelected) {
+            this.industry = newVal;
+          }
+        },
+        "ruleForm.industryPersonal"(newVal, oldVal) {
+          const industryPersonal = this.industryOptionsPersonal.find((item) => item.value == 'Other');
+          if(industryPersonal.isSelected) {
+            this.industryPersonal = newVal;
+          }
+        },
+        "ruleForm.jobPersonal"(newVal, oldVal) {
+          const jobPersonal = this.jobOptionsPersonal.find((item) => item.value == 'Other');
+          if(jobPersonal.isSelected) {
+            this.jobPersonal = newVal;
+          }
+        },
+        "ruleForm.jobCompany"(newVal, oldVal) {
+          const jobCompany = this.jobOptionsCompany.find((item) => item.value == 'Other');
+          if(jobCompany.isSelected) {
+            this.jobCompany = newVal;
+          }
+        }
+      },
+      methods: {
+        trimPassword() {
+          this.ruleForm.password = this.ruleForm.password.trim();
+          this.ruleForm.confirmPassword = this.ruleForm.confirmPassword.trim();
+        },
+        removeReadOnlyFocus(id) {
+          document.getElementById(id).removeAttribute("readOnly");
+          if (this.companyOptions.length > 0) {
+            this.ruleForm.companyId = this.companyOptions[0].value;
+          }
+          this.elSelectFocus = true;
+        },
+        removeReadOnly(id) {
+          document.getElementById(id).removeAttribute("readOnly");
+          if (this.companyOptions.length > 0) {
+            this.ruleForm.companyId = this.companyOptions[0].value;
+          }
+          if(this.ruleForm.companyId) {
+            this.elSelectFocus = true;
+          } else {
+            this.elSelectFocus = false;
+          }
+        },
+        async handleSendVerifiyCode() {
+          if(this.isSendCode) return
+          const email = this.ruleForm.email;
+          if(!email) {
+            this.$message({
+              showClose: true,
+              message: 'Please input your email.',
+              type: 'warning',
+            });
+            return
+          }
+          this.isShowCodeLoading = true;
+          try {
+            const response = await fetch(`${window.zkh.api}/email/code?email=${email}`, {
+              method: 'POST'
+            })
+            const res = await response.json();
+            if(res.code == 200) {
+              this.$message({
+                showClose: true,
+                message: 'Please check your email for the verification code.',
+                type: 'success',
+              });
+              let countDown = 60;
+              this.isSendCode = true;
+              this.codeMsg = `Resend (60s)`
+              const timer = setInterval(() => {
+                countDown -= 1;
+                this.codeMsg = `Resend (${countDown}s)`
+                if(countDown == 0) {
+                  this.isSendCode = false;
+                  this.codeMsg = 'Send Verification';
+                  clearInterval(timer);
+                }
+              }, 1000);
+            } else {
+              this.$message({
+                showClose: true,
+                message: res.msg,
+                type: 'warning',
+              });
+            }
+          } catch (error) {
+            console.error(error)
+          } finally {
+            this.isShowCodeLoading = false;
+          }
+        },
+        async companyRemoteSearch(query) {
+          this.$refs.ruleForm.clearValidate("companyId");
+          if (query !== '') {
+            this.codeSearchLoading = true;
+            try {
+              const response = await fetch(`${window.zkh.api}/companies/${query}/name`);
+              const res = await response.json();
+              if (res.code === 200) {
+                this.companyOptions = [{
+                  value: query,
+                  label: res.data.companyName
+                }]
+              }
+            } catch (error) {
+            } finally {
+              this.codeSearchLoading = false;
+            }
+          } else {
+            this.companyOptions = [];
+          }
+        },
+        handleCompanyStateChange() {
+          if(this.ruleForm.zipCode) {
+            this.$refs.ruleForm.validateField('zipCode');
+          }
+        },
+        handleCompanyZipBlur() {
+          if(this.ruleForm.state) {
+            this.$refs.ruleForm.validateField('state');
+          }
+        },
+        checkPasswordCriteria() {
+          const password = this.ruleForm.password;
+          this.passwordCriteria.minLength = password.length >= 6 && password.length <= 20;
+          this.passwordCriteria.hasLetter = /[A-Z]/.test(password) && /[a-z]/.test(password);
+          this.passwordCriteria.hasNumber = /\d/.test(password);
+        },
+        checkPass(rule, value, callback) {
+          this.checkPasswordCriteria();
+          if (
+            !this.passwordCriteria.minLength ||
+            !this.passwordCriteria.hasLetter ||
+            !this.passwordCriteria.hasNumber
+          ) {
+            callback(new Error('Password does not meet all criteria.'));
+          } else {
+            if (this.ruleForm.confirmPassword) {
+              this.$refs.ruleForm.validateField('confirmPassword');
+            }
+            callback();
+          }
+        },
+        checkConfirmPass(rule, value, callback) {
+          if (value === '') {
+            callback(new Error('Confirm password is required.'));
+          } else if (value !== this.ruleForm.password) {
+            callback(new Error('Password inconsistency.'));
+          } else {
+            callback();
+          }
+        },
+        async submit() {
+          let form = null;
+          this.loading = true;
+          if(this.registerType == '1') {
+            form = {
+              firstname: this.ruleForm.firstname,
+              lastname: this.ruleForm.lastname,
+              companyName: this.ruleForm.companyNamePersonal,
+              industry: this.ruleForm.industryPersonal,
+              jobFunction: this.ruleForm.jobPersonal,
+              email: this.ruleForm.email,
+              password: this.ruleForm.password, 
+              checked: this.ruleForm.checked,
+            };
+            try {
+              const formData = new FormData();
+              for (const key in form) {
+                formData.append(key, form[key]);
+              }
+
+              const response = await fetch(`${window.zkh.api}/register`, {
+                method: 'POST',
+                body: formData,
+              });
+              const res = await response.json();
+              if (res.code == '200') {
+                dataLayer.push({
+                  'event': 'custom_account_created',
+                  'account_type': 'Personal',
+                  'company': null,
+                });
+                this.$message({
+                  showClose: true,
+                  message: 'A confirmation email has been sent to the address you provided. Please check your inbox and click the confirmation link to finish creating your account.',
+                  type: 'success',
+                });
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: res.msg,
+                  type: 'warning',
+                });
+              }
+            } catch (error) {
+              this.$message({
+                showClose: true,
+                message: error,
+                type: 'error',
+              });
+            } finally {
+              this.loading = false;
+            }
+          } else {
+            if(this.ruleForm.tag == '0') {
+              form = {
+                firstname: this.ruleForm.firstname,
+                lastname: this.ruleForm.lastname,
+                email: this.ruleForm.email,
+                password: this.ruleForm.password,
+                checked: this.ruleForm.checked,
+                tag: 0,
+                code: this.ruleForm.code,
+                jobFunction: this.ruleForm.jobCompany,
+                company: {
+                  companyName: this.ruleForm.companyName,
+                  industry: this.ruleForm.industry,
+                  state: this.ruleForm.state,
+                  city: this.ruleForm.city,
+                  zipCode: this.ruleForm.zipCode,
+                  address1: this.ruleForm.address1,
+                  address2: this.ruleForm.address2
+                }
+              };
+            } else {
+              form = {
+                firstname: this.ruleForm.firstname,
+                lastname: this.ruleForm.lastname,
+                email: this.ruleForm.email,
+                password: this.ruleForm.password,
+                checked: this.ruleForm.checked,
+                tag: 1,
+                jobFunction: this.ruleForm.jobCompany,
+                code: this.ruleForm.code,
+                company: {
+                  ...this.validCompanyData
+                }
+              };
+            }
+            try {
+              const response = await fetch(`${window.zkh.api}/register/tob`, {
+                method: 'POST',
+                body: JSON.stringify(form),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+              const res = await response.json();
+              if (res.code == 200) {
+                if(this.ruleForm.tag == '0'){
+                  dataLayer.push({
+                    'event': 'custom_business_added',
+                    'company': this.ruleForm.companyName,
+                    'add_type': 'sign up',
+                  });
+                } else if(this.ruleForm.tag == '1'){
+                  dataLayer.push({
+                    'event': 'custom_business_link_requested',
+                    'company': this.validCompanyData.companyName,
+                    'add_type': 'add',
+                  });
+                }
+                dataLayer.push({
+                  'event': 'custom_account_created',
+                  'account_type': 'Business',
+                  'company': this.ruleForm?.companyName || this.validCompanyData?.companyName,
+                });
+                window.location.href = res.data.redirectUrl;
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: res.msg,
+                  type: 'warning',
+                });
+              }
+            } catch (error) {
+              this.$message({
+                showClose: true,
+                message: error,
+                type: 'error',
+              });
+            } finally {
+              this.loading = false;
+            }
+          }
+        },
+        submitForm(formName) {
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              this.submit();
+            }
+          });
+        },
+        selectIndustyCompanyFocus() {
+          this.$refs.ruleForm.clearValidate(["industry"]);
+        },
+        selectJobCompanyFocus() {
+          this.$refs.ruleForm.clearValidate(["jobCompany"]);
+        },
+        handleButtonClickIndustryCompany(event, industryItem) {
+          event.stopPropagation();
+          if (industryItem.isSelected) return;
+          this.industryOptions.map((item) => (item.isSelected = false));
+          const industry = this.industryOptions.find((item) => item.value == industryItem.value);
+          if (industryItem.value == 'Other') {
+            this.showIndustryCompanyEdit = true;
+            this.ruleForm.industry = this.industry;
+            this.$nextTick(() => {
+              this.$refs.selIndustryCompanyInput[0].focus();
+            })
+          } else {
+            this.showIndustryCompanyEdit = false;
+            this.ruleForm.industry = industry.value;
+            this.$refs.selIndustryCompany.blur();
+          }
+          industry.isSelected = true;
+        },
+        handleButtonClickIndustryPersonal(event, industryItem) {
+          event.stopPropagation();
+          if (industryItem.isSelected) return;
+          this.industryOptionsPersonal.map((item) => (item.isSelected = false));
+          const industryPersonal = this.industryOptionsPersonal.find((item) => item.value == industryItem.value);
+          if (industryItem.value == 'Other') {
+            this.showIndustryPersonalEdit = true;
+            this.ruleForm.industryPersonal = this.industryPersonal;
+          } else {
+            this.showIndustryPersonalEdit = false;
+            this.ruleForm.industryPersonal = industryPersonal.value;
+            this.$refs.selIndustryPersonal.blur();
+          }
+          industryPersonal.isSelected = true;
+        },
+        handleButtonClickJobPersonal(event, jobItem) {
+          event.stopPropagation();
+          if (jobItem.isSelected) return;
+          this.jobOptionsPersonal.map((item) => (item.isSelected = false));
+          const jobPersonal = this.jobOptionsPersonal.find((item) => item.value == jobItem.value);
+          if (jobItem.value == 'Other') {
+            this.showJobPersonalEdit = true;
+            this.ruleForm.jobPersonal = this.jobPersonal;
+          } else {
+            this.showJobPersonalEdit = false;
+            this.ruleForm.jobPersonal = jobPersonal.value;
+            this.$refs.selJobPersonal.blur();
+          }
+          jobPersonal.isSelected = true;
+        },
+        handleButtonClickJobCompany(event, jobItem) {
+          event.stopPropagation();
+          if (jobItem.isSelected) return;
+          this.jobOptionsCompany.map((item) => (item.isSelected = false));
+          const jobCompany = this.jobOptionsCompany.find((item) => item.value == jobItem.value);
+          if (jobItem.value == 'Other') {
+            this.showJobCompanyEdit = true;
+            this.ruleForm.jobCompany = this.jobCompany;
+            this.$nextTick(() => {
+              this.$refs.selJobCompanyInput[0].focus();
+            })
+          } else {
+            this.showJobCompanyEdit = false;
+            this.ruleForm.jobCompany = jobCompany.value;
+            this.$refs.selJobCompany.blur();
+          }
+          jobCompany.isSelected = true;
+        },
+      },
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Customer register",
+  "class": "customers-register",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Img"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_img",
+      "label": "Mobile Img"
+    }
+  ]
+}
+{% endschema %}

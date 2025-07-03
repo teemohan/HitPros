@@ -1,0 +1,44 @@
+<script type="text/javascript" defer>
+  document.addEventListener('DOMContentLoaded', () => {
+    {% if template == 'collection' or template == 'page.all-collection' %}
+      initCollectionDescription();
+    {% endif %}
+  });
+  function initCollectionDescription() {
+    const viewMoreBtns = document.querySelectorAll('.js-view-more-btn');
+    viewMoreBtns.forEach(btn => {
+      const descContent = btn.parentElement.querySelector('.desc-content');
+      if (descContent.scrollHeight <= descContent.clientHeight) {
+        btn.style.display = 'none';
+      }
+      btn.removeEventListener('click', handleViewMoreClick);
+      btn.addEventListener('click', handleViewMoreClick);
+    });
+  }
+  function handleViewMoreClick() {
+    const elements = {
+      descContent: this.parentElement.querySelector('.desc-content'),
+      viewMoreText: this.querySelector('.js-cl-viewmores'),
+      icon: this.querySelector('.js-cl-icon')
+    };
+    
+    const isExpanded = !elements.descContent.classList.contains('line-clamp-2');
+    
+    if (isExpanded) {
+      elements.descContent.classList.add('line-clamp-2');
+      elements.viewMoreText.textContent = 'View More';
+      elements.icon.style.transform = 'rotate(0deg)';
+      this.classList.remove('-bottom-5');
+      this.classList.remove('fb-sm:-bottom-8');
+      this.classList.add('-bottom-1');
+    } else {
+      elements.descContent.classList.remove('line-clamp-2');
+      elements.viewMoreText.textContent = 'View Less';
+      elements.icon.style.transform = 'rotate(180deg)';
+      this.classList.add('-bottom-5');
+      this.classList.add('fb-sm:-bottom-8');
+      this.classList.remove('-bottom-1');
+    }
+  }
+  
+</script>

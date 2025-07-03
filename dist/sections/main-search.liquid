@@ -1,0 +1,755 @@
+{%- assign active_filters_count = 0 -%}
+
+{%- for filter in search.filters -%}
+  {%- if filter.type == 'list' -%}
+    {%- assign active_filters_count = active_filters_count | plus: filter.active_values.size -%}
+  {%- elsif filter.type == 'price_range' and filter.min_value.value or filter.max_value.value -%}
+    {%- assign active_filters_count = active_filters_count | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
+{{ 'aside-filter-reset.css' | asset_url | stylesheet_tag }}
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+{{ 'index-product-item-swiper.css' | asset_url | stylesheet_tag }}
+{{ 'main-search.css' | asset_url | stylesheet_tag }}
+
+<section>
+  {%- if search.performed -%}
+    <div class="container">
+      <search-page
+        complete-for="[]"
+        section-id="{{ section.id }}"
+        terms="{{ search.terms | escape }}"
+        class="main-search__results"
+      >
+        <div class="result-text-wrapper">
+          <div class="result-text">Showing Results For {{ 'search.general.terms' | t: terms: search.terms }}</div>
+          <div class="result-num">(0 products)</div>
+        </div>
+        <div
+          id="search-{{ section.id }}-product"
+          class="main-search__category-result"
+        >
+        <product-search-facet section-id="{{ section.id }}" class="product-facet">
+          <div class="product-facet__aside">
+            <safe-sticky offset="30" class="product-facet__aside-inner">
+              <div class="product-facet__filters-header hidden-pocket">
+                <p class="heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}">
+                  {{ 'collection.general.filters' | t }}
+                </p>
+              </div>
+              {%- render 'facet-filters-search',
+                filters: search.filters,
+                filters_position: section.settings.filter_position
+              -%}
+            </safe-sticky>
+          </div>
+
+          <div id="facet-main" class="product-facet__main anchor" role="region" aria-live="polite">
+            <div class="results-wrapper">
+              <div class="product-facet__meta-bar anchor">
+                {%- if section.settings.filter_position == 'drawer'
+                  and section.settings.show_filters
+                -%}
+                  <button
+                    type="submit"
+                    is="toggle-button"
+                    class="product-facet__meta-bar-item product-facet__meta-bar-item--filter hidden-pocket"
+                    aria-controls="facet-filters"
+                    aria-expanded="false"
+                  >
+                    {%- render 'icon' with 'filters', inline: true -%}
+                    {{- 'collection.general.show_filters' | t -}}
+                    <span class="product-facet__active-count bubble-count">0</span>
+                  </button>
+                {%- endif -%}
+
+                <div class="product-facet-radio">
+                  <div class="fixed-toolbar">
+                    <button
+                      is="toggle-button"
+                      class="mobile-toolbar__item mobile-toolbar__item--filters {% if active_filters_count > 0 %}has-filters{% endif %}"
+                      aria-expanded="false"
+                      aria-controls="facet-filters"
+                    >
+                      {%- render 'icon' with 'filters' -%}
+                    </button>
+                  </div>
+                  <div class="product-facet__meta-bar-item product-facet__meta-bar-item--sort">
+                    <span class="product-facet__sort-by-title text--subdued">Sort By:</span>
+                    <div class="popover-container ol-my-14">
+                      <button
+                        type="button"
+                        is="toggle-button"
+                        class="popover-button"
+                        aria-expanded="false"
+                        aria-controls="sort-by-popover"
+                      >
+                        <span id="sort-by-selected-value" style="pointer-events: none">
+                          Relevance
+                        </span>
+                        {%- render 'icon' with 'chevron', inline: true -%}
+                      </button>
+
+                      <sort-by-popover id="sort-by-popover" class="popover">
+                        <span class="popover__overlay"></span>
+
+                        <header class="popover__header">
+                          <span class="popover__title heading h6">
+                            {{- 'collection.general.sort_by' | t -}}
+                          </span>
+
+                          <button
+                            type="button"
+                            class="popover__close-button tap-area tap-area--large"
+                            data-action="close"
+                            title="{{ 'general.accessibility.close' | t | escape }}"
+                          >
+                            {%- render 'icon' with 'close' -%}
+                          </button>
+                        </header>
+
+                        <div class="popover__content">
+                          <div class="popover__choice-list">
+                            <label class="popover__choice-item">
+                              <input type="radio" data-bind-value="sort-by-selected-value" class="visually-hidden" name="sort_by" value="Relevance" title="Relevance">
+                              <span class="popover__choice-label">Relevance</span>
+                            </label>
+                            <label class="popover__choice-item">
+                              <input type="radio" data-bind-value="sort-by-selected-value" class="visually-hidden" name="sort_by" value="Asc" title="Price, low to high">
+                              <span class="popover__choice-label">Price, low to high</span>
+                            </label>
+                            <label class="popover__choice-item">
+                              <input type="radio" data-bind-value="sort-by-selected-value" class="visually-hidden" name="sort_by" value="Desc" title="Price, high to low">
+                              <span class="popover__choice-label">Price, high to low</span>
+                            </label>
+                          </div>
+                        </div>
+                      </sort-by-popover>
+                    </div>
+                  </div>
+                  <div class="viewTab">
+                    <div class="viewTab_text ">
+                      <span class="listView">
+                        {% render 'icon' with 'v3-list' %}
+                        List
+                      </span>
+                      <span class="gridView">
+                        {% render 'icon' with 'v3-grid' %}
+                        Grid
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="product-facet__product-list-wrapper product-search-wrapper">
+                <div
+                  id="search-result"
+                  class="product-facet__product-list product-list anchor"
+                >
+                  <template>
+                    <skeleton-search v-if="pageLoading"></skeleton-search>
+                    <div class="product-list__inner">
+                      <template v-if="products.length && !pageLoading">
+                        <product-item-search v-for="(product, index) in products" :key="`list-${product.productId}-${index}`" :data-layer-form="dataLayerForm" :product="product" @wish-change="handleWishChange" />
+                      </template>
+                    </div>
+                    <div class="product-list__inner">
+                      <template v-if="products.length && !pageLoading">
+                        <product-item-card v-for="(product, index) in products" :key="`grid-${product.productId}-${index}`" :data-layer-form="dataLayerForm" :product="product" @wish-change="handleWishChange" />
+                      </template>
+                    </div>
+                    <el-pagination
+                      v-if="products.length && !pageLoading"
+                      background
+                      layout="prev, pager, next"
+                      :current-page.sync="pageParam.page"
+                      :page-size="pageParam.pageSize"
+                      :total="total"
+                      @current-change="handlePageChange"
+                    >
+                    </el-pagination>
+                  </template>
+                </div>
+              </div>
+            </div>
+            <div class="filter-no-search">No matches found</div>
+            <div class="search-empty-state">
+              <div class="result-tip">No results for {{ 'search.general.terms' | t: terms: search.terms }}</div>
+              <div class="following-tips">
+                <header>TRY the FOLLOWING:</header>
+                <main>
+                  <ul>
+                    <li>· Entering a description of the product you are looking for</li>
+                    <li>· Checking your original search for typos</li>
+                    <li>· Using a synonym for the product you are looking for</li>
+                  </ul>
+                </main>
+              </div>
+            </div>
+          </div>
+        </product-search-facet>
+        </div>
+      </search-page>
+    </div>
+  {%- else -%}
+  {% endif %}
+</section>
+{% liquid
+  render 'product-item-search'
+  render 'product-item-card'
+  render 'product-item-delevery'
+  render 'search-product-skeleton'
+  render 'my-icon'
+%}
+<script>
+  (() => {
+    function formatMoney(cents, format = '') {
+      if (typeof cents === 'string') {
+        cents = cents.replace('.', '');
+      }
+      const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/,
+        formatString = format || window.themeVariables.settings.moneyFormat;
+      function defaultTo(value2, defaultValue) {
+        return value2 == null || value2 !== value2 ? defaultValue : value2;
+      }
+      function formatWithDelimiters(number, precision, thousands, decimal) {
+        precision = defaultTo(precision, 2);
+        thousands = defaultTo(thousands, ',');
+        decimal = defaultTo(decimal, '.');
+        if (isNaN(number) || number == null) {
+          return 0;
+        }
+        number = (number / 100).toFixed(precision);
+        let parts = number.split('.'),
+          dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+          centsAmount = parts[1] ? decimal + parts[1] : '';
+        return dollarsAmount + centsAmount;
+      }
+      let value = '';
+      switch (formatString.match(placeholderRegex)[1]) {
+        case 'amount':
+          value = formatWithDelimiters(cents, 2);
+          break;
+        case 'amount_no_decimals':
+          value = formatWithDelimiters(cents, 0);
+          break;
+        case 'amount_with_space_separator':
+          value = formatWithDelimiters(cents, 2, ' ', '.');
+          break;
+        case 'amount_with_comma_separator':
+          value = formatWithDelimiters(cents, 2, '.', ',');
+          break;
+        case 'amount_with_apostrophe_separator':
+          value = formatWithDelimiters(cents, 2, "'", '.');
+          break;
+        case 'amount_no_decimals_with_comma_separator':
+          value = formatWithDelimiters(cents, 0, '.', ',');
+          break;
+        case 'amount_no_decimals_with_space_separator':
+          value = formatWithDelimiters(cents, 0, ' ');
+          break;
+        case 'amount_no_decimals_with_apostrophe_separator':
+          value = formatWithDelimiters(cents, 0, "'");
+          break;
+      }
+      if (formatString.indexOf('with_comma_separator') !== -1) {
+        return formatString.replace(placeholderRegex, value);
+      } else {
+        return formatString.replace(placeholderRegex, value);
+      }
+    }
+
+    function setJqueryView() {
+      const productListInner = $('.product-list__inner');
+      $('.listView').click(function () {
+        $(this).addClass('active');
+        Cookies.set('searchView', 'list', { expires: 36500 });
+        $(this).siblings().removeClass('active');
+        productListInner.removeClass('grid-inner');
+        productListInner.addClass('list-inner');
+      });
+
+      $('.gridView').click(function () {
+        $(this).addClass('active');
+        Cookies.set('searchView', 'grid', { expires: 36500 });
+        $(this).siblings().removeClass('active');
+        productListInner.addClass('grid-inner');
+        productListInner.removeClass('list-inner');
+      });
+      const searchView = Cookies.get('searchView') || 'grid';
+      if (searchView == 'grid') {
+        $('.listView').removeClass('active');
+        $('.gridView').addClass('active');
+        productListInner.addClass('grid-inner');
+        productListInner.removeClass('list-inner');
+      } else if(searchView == 'list') {
+        $('.listView').addClass('active');
+        $('.gridView').removeClass('active');
+        productListInner.addClass('list-inner');
+        productListInner.removeClass('grid-inner');
+      }
+    }
+
+    function showEmtpy() {
+      $('.result-text-wrapper').hide();
+      $('.search-empty-state').show();
+      $('.main-search__category-result').css({
+        marginTop: 0,
+        paddingBottom: 0,
+      })
+      $('.product-facet__aside, .results-wrapper').hide();
+      $('.result-num').text("(0 products)");
+    }
+
+    function generateUUID() {
+      return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
+    }
+    {% if customer.b2b? %}
+      {% assign customer_zip = customer.current_location.shipping_address.zip %}
+    {% else %}
+      {% assign customer_zip = customer.default_address.zip | default: '' %}
+    {% endif %}
+    new Vue({
+      el: '#search-result',
+      created() {
+        this.initPageFrom();
+        this.setSortFilterStatus();
+        this.initPageView();
+        document.addEventListener('facet-search-rerender', async ({ detail }) => {
+          this.loadingBar = detail;
+          this.initPageView();
+        });
+      },
+      mounted() {
+        setJqueryView();
+      },
+      data() {
+        const ga4Id = window.gaGlobal?.vid ? window.gaGlobal?.vid : 0;
+        const request_id = generateUUID();
+        return {
+          firstSearch: true,
+          priceFilterInit: true,
+          brandFilterInit: true,
+          request_id: request_id,
+          dataLayerForm: null,
+          pageInit: true,
+          firstShowLoading: true,
+          abortController: null,
+          loadingBar: null,
+          brandsData: [],
+          total: 0,
+          pageLoading: true,
+          pageParam: {
+            page: 1,
+            pageSize: 12,
+          },
+          queryParam: {
+            userId: '{{ customer.id }}' ? '{{ customer.id }}' : ga4Id,
+            hasLogin: '{{ customer.id }}' ? true : false,
+            from: 0,
+            size: 12,
+            productFilter: {
+              minPrice: 0,
+              maxPrice: undefined,
+              brandId: undefined,
+            },
+            sortField: undefined,
+            keyword: "",
+            channelCode: "NorthSky-US",
+            sortOrder: undefined
+          },
+          products: []
+        }
+      },
+      methods: {
+        initPageView() {
+          this.handleUrlChange();
+          this.getProducts();
+        },
+        getBrandNames() {
+          if (!this.queryParam?.productFilter?.brandId) {
+            return null
+          }
+          const brandIds = this.queryParam.productFilter.brandId.trim()
+          if (!brandIds) {
+            return null;
+          }
+          const brandNames = brandIds.split(',')
+            .map(id => {
+              const brand = this.brandsData?.find(b => b.brandId.toString() === id.trim())
+              return brand?.brandName
+            })
+            .filter(name => name)
+            .join(',')
+          return brandNames || null
+        },
+        getDataLayerFormAndPush() { 
+          const queryString = window.location.search;
+          const params = new URLSearchParams(queryString);
+          const page = +params.get('page') || 1;
+          const keyword = params.get('q');
+          const pageSize = this.queryParam.size;
+          const sortBy = params.get('sort_by');
+          let rank_type = 'Relevance';
+          if(sortBy == 'Asc') {
+            rank_type = 'PRICE_ASC';
+          } else if(sortBy == 'Desc') {
+            rank_type = 'PRICE_DESC';
+          }
+          const items = this.products.map((product, idx) => {
+            const calculatedIndex = (page - 1) * pageSize + (idx + 1);
+            return {
+              index: calculatedIndex,
+              item_id: product.sku,
+              sku_code: product.sku,
+              item_name: product.title
+            }
+          });
+
+          this.dataLayerForm = {
+            event: 'view_item_list',
+            request_id: this.request_id,
+            keyword,
+            rank_type,
+            ecommerce: {
+              item_list_id: "search_result_exposure",
+              items
+            },
+            top_price: this.queryParam.productFilter.maxPrice || '',
+            bottom_price: this.queryParam.productFilter.minPrice || '',
+            brand_filter: this.getBrandNames()
+          }
+          dataLayer.push(this.dataLayerForm);
+        },
+        setEventTrackingFirst10() { 
+          const skuString = this.products.slice(0, 10).map(item => item.sku).join('');
+          const ip = Cookies.get('ip');
+          if(ip) {
+            dataLayer.push({
+              'event': 'custom_search_performed',
+              'zip': '{{ customer_zip }}',   
+              'username': '{{customer.name }}',
+              'email':'{{customer.email }}',
+              'search_parameters': $('.main-search__results').attr('terms'),
+              'search_outcome': skuString,
+              'ip': ip,
+              'number_of_results': this.total || 0
+            });
+          }
+        },
+        _abort() {
+          if (this.abortController) {
+            this.abortController.abort();
+          }
+        },
+        initPageFrom() {
+          const urlParams = new URLSearchParams(window.location.search);
+          this.pageParam.page = +urlParams.get('page') || 1;
+          this.queryParam.from = (this.pageParam.page - 1) * this.queryParam.size;
+        },
+        scrollToTop() {
+          const scrollTo =
+            document.querySelector('.product-facet__meta-bar') ||
+            document.querySelector('.product-facet__product-list') ||
+            document.querySelector('.product-facet__main');
+          requestAnimationFrame(() => {
+            scrollTo.scrollIntoView({ block: 'start', behavior: 'smooth' });
+          });
+        },
+        setCollapsibleStatus() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const minPrice = +urlParams.get('filter.v.price.gte') || 0;
+          const maxPrice = +urlParams.get('filter.v.price.lte') || 0;
+          const brandQuery = +urlParams.getAll('filter.p.m.product.brand')?.length || 0;
+          if((minPrice || maxPrice) && $('[aria-controls="facet-filter-filter.v.price"]').attr("aria-expanded") == 'false') {
+            $('[aria-controls="facet-filter-filter.v.price"]').attr('aria-expanded', 'true').prop('open', true);
+            $('[aria-controls="facet-filter-filter.v.price"] + .collapsible').css('overflow', 'visible').attr('open', true);
+          } else if(!minPrice && !maxPrice){
+            if(this.priceFilterInit) {
+              $('[aria-controls="facet-filter-filter.v.price"]').attr('aria-expanded', 'false').prop('open', false);
+              $('[aria-controls="facet-filter-filter.v.price"] + .collapsible').css('overflow', 'hidden').attr('open', false);
+              this.priceFilterInit = false;
+            }
+          }
+          if(brandQuery && $('[aria-controls="facet-filter-filter.p.m.product.brand"]').attr("aria-expanded") == 'false') {
+            $('[aria-controls="facet-filter-filter.p.m.product.brand"]').attr('aria-expanded', 'true').attr('open', true);
+            $('[aria-controls="facet-filter-filter.p.m.product.brand"] + .collapsible').css('overflow', 'visible').attr('open', true);
+          } else if(!brandQuery){
+            if(this.brandFilterInit) {
+              $('[aria-controls="facet-filter-filter.p.m.product.brand"]').attr('aria-expanded', 'false').attr('open', false);
+              $('[aria-controls="facet-filter-filter.p.m.product.brand"] + .collapsible').css('overflow', 'hidden').attr('open', false);
+              this.brandFilterInit = false;
+            }
+          }
+        },
+        setSortFilterStatus() {
+          const urlParams = new URLSearchParams(window.location.search);
+          let sortByText = 'Relevance';
+          const sort_by = urlParams.get('sort_by') || 'Relevance';
+          if(sort_by === 'Asc') {
+            sortByText = 'Price, low to high';
+          } else if(sort_by === 'Desc') {
+            sortByText = 'Price, high to low';
+          }
+          $('#sort-by-selected-value').text(sortByText);
+          $(`.popover__choice-item input[value='${sort_by}']`).prop('checked', true);
+        },
+        buildBrandDom() {
+          const $container = $(".search-brand-collapsible");
+          const brandHtml = this.brandsData.reduce((html, brand) => {
+            return html + `
+                <div class="checkbox-container ol-my-14">
+                    <input
+                      class="checkbox"
+                      type="checkbox"
+                      ${ brand.number == 0 ? 'disabled': '' }
+                      name="filter.p.m.product.brand"
+                      id="filter.p.m.product.brand-${brand.brandId}"
+                      value="${brand.brandId}"
+                    />
+                    <label for="filter.p.m.product.brand-${brand.brandId}">${brand.brandName} (${brand.number})</label>
+                </div>
+            `;
+          }, "");
+
+          $container.html(brandHtml);
+          const urlParams = new URLSearchParams(window.location.search);
+          const brands = urlParams.getAll('filter.p.m.product.brand');
+          brands.map(brand => {
+            $(`.search-brand-collapsible input[value='${brand}']`).prop('checked', true);
+          });
+
+          this.$nextTick(() => { 
+            this.setCollapsibleStatus();
+          })
+        },
+        async handleWishChange(product) {
+          if('{{ customer.id }}' == '') {
+            window.location.href = '/account/login';
+            return
+          }
+          const formData = {
+            customerId: '{{ customer.id }}',
+            productId: product.productId,
+            sku: product.sku,
+            productNum: 1,
+          };
+          const status = product.favorited ? 1 : 0;
+          try {
+            const response = await fetch(`${window.zkh.api}/wish/${status == 1 ? 'clear' : 'save'}`, {
+              method: 'POST',
+              body: JSON.stringify(formData),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const res = await response.json();
+            if (res.code === 200) {
+              const isFavorited = res.data.wish ? 1 : 0;
+              this.$set(product, 'favorited', isFavorited);
+              document.dispatchEvent(new CustomEvent('wish-refreash'));
+            }
+          } catch (error) {
+            console.error('Error fetching favorite status:', error);
+          }
+        },
+        async setProductsData() {
+          try {
+            if(this.queryParam.hasLogin) {
+              const skus = this.products.map(product => product.sku);
+              const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
+                method: 'POST',
+                body: JSON.stringify({
+                  customerId: this.queryParam.userId,
+                  skus
+                }),
+                headers: {
+                  'Content-Type': 'application/json',
+                }
+              });
+              const res = await response.json();
+              this.products.map(item => {
+                item.favorited = res.data.includes(item.sku);
+              });
+            }
+          } catch (error) {
+          }
+        },
+        handleUrlChange() {
+          const urlParams = new URLSearchParams(window.location.search);
+          if(this.pageInit) {
+            this.pageInit = false;
+          } else {
+            this.queryParam.from = 0;
+            this.pageParam.page = 1;
+          }
+          const ga4Id = window.gaGlobal?.vid ? window.gaGlobal?.vid : 0;
+          this.queryParam.userId = '{{ customer.id }}' ? '{{ customer.id }}' : ga4Id,
+          this.queryParam.keyword = urlParams.get('q');
+          const sort_by = urlParams.get('sort_by');
+          this.queryParam.sortField = sort_by && sort_by != 'Relevance' ? 'PRICE' : undefined;
+          this.queryParam.sortOrder = sort_by && sort_by != 'Relevance' ? sort_by : undefined;
+          this.queryParam.productFilter.minPrice = +urlParams.get('filter.v.price.gte') || undefined;
+          this.queryParam.productFilter.maxPrice = +urlParams.get('filter.v.price.lte') || undefined;
+          const brandQuery = urlParams.getAll('filter.p.m.product.brand');
+          this.queryParam.productFilter.brandId = brandQuery.length > 0 ? brandQuery.toString() : undefined;
+          let activeFilter = brandQuery?.length || 0;
+          if(this.queryParam.productFilter.maxPrice || this.queryParam.productFilter.minPrice) {
+            activeFilter += 1;
+          }
+          $('.product-facet__active-count').text(activeFilter);
+          if (activeFilter > 0) {
+            $('#facet-filters .drawer__header-action').show();
+          } else {
+            $('#facet-filters .drawer__header-action').hide();
+          }
+          $('#filter\\.v\\.price\\.lte').val(this.queryParam.productFilter.maxPrice ?? '');
+          $('#filter\\.v\\.price\\.gte').val(this.queryParam.productFilter.minPrice ?? '');
+        },
+        setMaxPrice(max) {
+          $('.price-max, .price-min').attr('max', max);
+          $('.price-range__range-group .range').attr('max', max);
+          $('.price-max-range').attr('value', max);
+        },
+        async getProducts() {
+          this._abort();
+          this.loadingBar?.showLoadingBar();
+          if(this.firstShowLoading) {
+            this.pageLoading = true;
+            this.firstShowLoading = false;
+          }
+          try {
+            this.abortController = new AbortController();
+            const response = await fetch(`${window.zkh.api}/openapi/search/v2`, {
+              signal: this.abortController.signal,
+              method: 'POST',
+              body: JSON.stringify(this.queryParam),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const res = await response.json();
+            if (res.code === 200 && res.data.brand.length) {
+              this.total = +res.data.totalNum;
+              if(this.total == 1 && res.data.searchHitType == 'skuNo') {
+                window.location.href = res.data.skuInfos[0].productUrl;
+                return;
+              }
+              this.brandsData = res.data.brand;
+              this.setMaxPrice(res.data.maxPrice);
+              this.buildBrandDom(); 
+
+              const brandTotal = res.data.brand.reduce((accumulator, currentItem) => accumulator + currentItem.number, 0);
+              if(brandTotal) {
+                $('.filter-no-search').hide();
+                // $('.results-wrapper').show();
+              } else {
+                $('.filter-no-search').show();
+                // $('.results-wrapper').hide();
+              }
+
+              $('.result-num').text(`(${this.total} ${this.total > 1 ? 'products' : 'product'})`);
+              this.products = res.data.skuInfos.map((product, idx) => {
+                product.calculatedIndex = this.queryParam.from + idx + 1;
+                product.priceFormat = formatMoney(+product.price * 100);
+                product.favorited = false;
+                if(product.compareAtPrice && +product.compareAtPrice > +product.price) {
+                  product.compareAtPriceFormat = formatMoney(+(product.compareAtPrice || 0) * 100);
+                  product.discountPercentage = Math.ceil(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100);
+                }
+                return product;
+              });
+              this.setProductsData();
+              if(!this.firstSearch) {
+                this.scrollToTop();
+              } else {
+                this.firstSearch = false;
+              }
+            } else {
+              showEmtpy();
+            }
+          } catch (error) {
+            console.error(error)
+          } finally {
+            this.pageLoading = false;
+            this.loadingBar?.hideLoadingBar();
+            this.setEventTrackingFirst10(); 
+            try {
+              this.getDataLayerFormAndPush();
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        },
+        async handlePageChange(page) {
+          this.queryParam.from = (page - 1) * this.queryParam.size;
+          const url = new URL(window.location.href);
+          url.searchParams.set('page', page);
+          window.history.replaceState(null, '', url.toString());
+          this._abort();
+          await this.getProducts();
+        }
+      }
+    });
+  })()
+</script>
+{% schema %}
+{
+  "name": "Search",
+  "class": "shopify-section--main-search",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product results"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort_by",
+      "label": "Show sort by",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 50,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Product filters"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show filters",
+      "info": "[Customize filters](/admin/menus)",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "filter_position",
+      "label": "Position",
+      "options": [
+        {
+          "value": "always_visible",
+          "label": "Always visible"
+        },
+        {
+          "value": "drawer",
+          "label": "Drawer"
+        }
+      ],
+      "default": "always_visible"
+    },
+    {
+      "type": "header",
+      "content": "Blog post results"
+    }
+  ]
+}
+{% endschema %}

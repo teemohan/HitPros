@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "collection-banner": {
+      "type": "collection-banner",
+      "settings": {}
+    },
+    "main": {
+      "type": "main-collection-vue",
+      "settings": {
+        "collection_title": "Shop Self-Tapping Screws",
+        "show_sort_by": true,
+        "show_filters": true,
+        "show_filter_group_name": true,
+        "show_color_swatch": false,
+        "open_first_filter_group": true,
+        "filter_position": "always_visible",
+        "promotion_position": "top",
+        "promotion_height": "small"
+      }
+    }
+  },
+  "order": [
+    "collection-banner",
+    "main"
+  ]
+}
