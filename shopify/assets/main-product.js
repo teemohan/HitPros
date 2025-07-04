@@ -336,6 +336,7 @@ $(function () {
       mainProductUtils.checkElementDisplay('#judgeme_product_reviews', 10000, function (bol) {
         if (bol) {
           $('.js-review-container').removeClass('invisible')
+          $('.zkh-single-reviews').removeClass('invisible')
            $('.js-review-container').removeClass('h-0')
           $(`.js-nav-choose[data-desc='Reviews']`).closest('li').removeClass('hidden').addClass('flex');
         } else {
