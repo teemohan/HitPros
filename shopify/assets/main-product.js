@@ -105,7 +105,7 @@ $(function () {
           const element = document.querySelector(selector);
           if (element) {
             const height = element.offsetHeight;
-            if (height > 0) {
+            if (height > 120) {
               clearInterval(intervalId);
               callback && callback(true); 
               return true;
@@ -336,6 +336,7 @@ $(function () {
       mainProductUtils.checkElementDisplay('#judgeme_product_reviews', 10000, function (bol) {
         if (bol) {
           $('.js-review-container').removeClass('invisible')
+           $('.js-review-container').removeClass('h-0')
           $(`.js-nav-choose[data-desc='Reviews']`).closest('li').removeClass('hidden').addClass('flex');
         } else {
           $('.js-review-container').hide();
