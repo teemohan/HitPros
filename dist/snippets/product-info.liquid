@@ -2,7 +2,7 @@
 
 <div class="product__info position-sticky mt-4 fb-sm:mt-6">
   <!-- PRODUCT META -->
-  <product-meta form-id="{{ product_form_id }}" price-class="" class="product-meta">
+  <product-meta form-id="{{ product_form_id }}" price-class="" class="product-meta pb-3.5 fb-sm:pb-7">
     <div class="w-full flex items-center justify-start space-x-3 mb-3 ">
       {%- if product.metafields.product.brand.value != blank
         and product.metafields.product.brand.value != 'null'
@@ -47,7 +47,7 @@
       {% assign unit_sale = unit_sale | split: ':' %}
       {% assign unit_sale = unit_sale.first %}
     {% endif %}
-    <div class="w-full flex items-center justify-start pb-3.5 fb-sm:pb-7" role="region" aria-live="polite">
+    <div class="w-full flex items-center justify-start" role="region" aria-live="polite">
       <div class="w-full flex items-center justify-start" data-product-price-list>
         {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
           <span class="text-main text-18 mr-2 font-bold fb-sm:text-26">
