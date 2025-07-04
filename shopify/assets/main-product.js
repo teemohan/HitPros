@@ -817,8 +817,6 @@ $(function () {
     } else {
       quickBuyElement.fadeOut(); 
       tidioChat.fadeIn();
-      $('.js-product-anchor li').removeClass('active');
-      $('.js-product-anchor li:first-child').addClass('active');
     }
     if(window.innerWidth < 740) {
       const $bottomAddCart = $(".js-bottom-addcart");
@@ -837,6 +835,7 @@ $(function () {
       header.show();
     } else if(!isMainPaymentVisible && isHeaderVisible) {
       header.hide(); 
+
     }
    
   }
