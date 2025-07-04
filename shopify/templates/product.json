@@ -12,6 +12,10 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "omnisend_email_marketing_sms_star_ratings_bM3p8F": {
+          "type": "shopify://apps/omnisend-email-marketing-sms/blocks/star-ratings/44704aa2-794f-4c5d-8c8e-039c841158e9",
+          "settings": {}
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -24,6 +28,7 @@
         }
       },
       "block_order": [
+        "omnisend_email_marketing_sms_star_ratings_bM3p8F",
         "buy_buttons"
       ],
       "settings": {
@@ -67,6 +72,23 @@
         "title": "Product Information"
       }
     },
+    "apps_review_3qekf6": {
+      "type": "apps-review",
+      "blocks": {
+        "judge_me_reviews_review_widget_jyqep9": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_jyqep9"
+      ],
+      "name": "ReviewApps",
+      "settings": {
+        "include_horizontal_margins": true,
+        "include_vertical_margins": true
+      }
+    },
     "product_guess_like_XzHkjD": {
       "type": "product-guess-like",
       "name": "product-guess-like",
@@ -81,6 +103,7 @@
     "product_anchor_sticky_BjfWjt",
     "product_feature_imgs_6DU7qH",
     "1a730dce-30b8-4406-853e-3755765e1836",
+    "apps_review_3qekf6",
     "product_guess_like_XzHkjD"
   ]
 }
