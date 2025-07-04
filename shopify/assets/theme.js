@@ -7352,7 +7352,6 @@
           });
           const infoTableDom = $productInfoLine.find('.info-table')[0];
           if(infoTableDom.children.length > 4) {
-            console.log("infoTableDom.children.length", infoTableDom.children.length)
             $(infoTableDom).closest('.product-info-line').find('.js-overlay-wrapper').css('display', 'flex');
           }
         }

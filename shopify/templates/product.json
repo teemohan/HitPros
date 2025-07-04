@@ -50,6 +50,15 @@
     },
     "1732102745d9c872b0": {
       "type": "apps",
+      "blocks": {
+        "omnisend_email_marketing_sms_star_ratings_6wj38y": {
+          "type": "shopify://apps/omnisend-email-marketing-sms/blocks/star-ratings/44704aa2-794f-4c5d-8c8e-039c841158e9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "omnisend_email_marketing_sms_star_ratings_6wj38y"
+      ],
       "disabled": true,
       "settings": {
         "include_horizontal_margins": true,
