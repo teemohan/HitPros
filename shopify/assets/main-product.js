@@ -578,7 +578,7 @@ $(function () {
         html += `
           <div class="mb-1.5 fb-big:mb-3 last:mb-0 flex flex-col">
             <label class="text-12 w-full text-left text-main">${attr.attrName}:</label>
-            <div class="relative w-8r fb-big:w-12r h-8 mt-1.5">
+            <div class="relative w-12r h-8 mt-1.5">
               <select 
                 class="quick-buy-select border border-D3DEF1 rounded-sm w-full h-full text-14 font-bold  focus:border-main focus:border-none pl-2 pr-8 fb-big:pr-10 text-main cursor-pointer appearance-none"
                 data-attr-name="${attr.attrName}"
