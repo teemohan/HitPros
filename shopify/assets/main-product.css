@@ -14,7 +14,7 @@
   background-position: center;
 }
 .js-nav-box.active{
-  border-bottom: 4px solid #0A2B6F;
+  border-bottom: 6px solid #0A2B6F;
 }
 .js-nav-quick-plus[disabled],.js-nav-quick-minus[disabled],.js-quick-minus[disabled],.js-quick-plus[disabled], #js-quickbuy-add-to-cart[disabled]{
   cursor: not-allowed;
@@ -44,7 +44,12 @@
 }
 @media screen and (max-width: 759px) {
   .js-nav-box.active {
-    border-bottom: 4px solid #0A2B6F;
+    border-bottom: 4px solid #FABE00;
+    color: #FABE00;
+    font-weight: bold;
+  }
+  .js-nav-box.active span {
+    color: #FABE00;
   }
   body {
     background-color: #eaeef1;

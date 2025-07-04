@@ -1270,6 +1270,10 @@ video {
   width: 100%;
 }
 
+.w-4\.5 {
+  width: 18px;
+}
+
 .min-w-8r {
   min-width: 8rem;
 }
@@ -2014,6 +2018,10 @@ video {
   padding-top: 1.5rem;
 }
 
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -2228,6 +2236,11 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.text-darkmain {
+  --tw-text-opacity: 1;
+  color: rgb(20 42 107 / var(--tw-text-opacity, 1));
 }
 
 .underline {
@@ -2548,6 +2561,14 @@ video {
     margin-top: 2.25rem;
   }
 
+  .fb-sm\:mb-0 {
+    margin-bottom: 0px;
+  }
+
+  .fb-sm\:mb-8 {
+    margin-bottom: 2rem;
+  }
+
   .fb-sm\:line-clamp-2 {
     overflow: hidden;
     display: -webkit-box;
@@ -2771,6 +2792,10 @@ video {
     width: 100%;
   }
 
+  .fb-sm\:w-4 {
+    width: 1rem;
+  }
+
   .fb-sm\:min-w-9r {
     min-width: 9rem;
   }
@@ -2953,6 +2978,11 @@ video {
   .fb-sm\:bg-white {
     --tw-bg-opacity: 1;
     background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  }
+
+  .fb-sm\:bg-F3F8FC {
+    --tw-bg-opacity: 1;
+    background-color: rgb(243 248 252 / var(--tw-bg-opacity, 1));
   }
 
   .fb-sm\:p-0 {
@@ -3145,6 +3175,11 @@ video {
     font-weight: 700;
   }
 
+  .fb-sm\:text-black {
+    --tw-text-opacity: 1;
+    color: rgb(0 0 0 / var(--tw-text-opacity, 1));
+  }
+
   .fb-sm\:marker\:text-14 *::marker {
     font-size: 14px;
     line-height: 20px;
@@ -3275,8 +3310,20 @@ video {
     margin-top: 14px;
   }
 
+  .fb-big\:mt-2 {
+    margin-top: 0.5rem;
+  }
+
   .fb-big\:h-10 {
     height: 2.5rem;
+  }
+
+  .fb-big\:h-8 {
+    height: 32px;
+  }
+
+  .fb-big\:h-9 {
+    height: 36px;
   }
 
   .fb-big\:w-12r {
@@ -3410,4 +3457,20 @@ video {
 
 .\[\&_li_span\]\:text-left li span {
   text-align: left;
+}
+
+.\[\&_svg\]\:h-4 svg {
+  height: 1rem;
+}
+
+.\[\&_svg\]\:h-5 svg {
+  height: 20px;
+}
+
+.\[\&_svg\]\:w-4 svg {
+  width: 1rem;
+}
+
+.\[\&_svg\]\:w-5 svg {
+  width: 20px;
 }

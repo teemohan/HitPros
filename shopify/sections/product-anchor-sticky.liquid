@@ -15,7 +15,7 @@
   {% assign unit_sale = unit_sale.first %}
 {% endif %}
 {%- assign featured_media = product.selected_or_first_available_variant.featured_image | default: product.featured_media -%}
-<section class="w-full bg-F3F8FC relative">
+<section class="w-full bg-main fb-sm:bg-F3F8FC relative">
   <div class="js-anchor-section container w-full h-10 fb-sm:h-18">
     <div class="w-full h-full relative flex items-center justify-between">
       <div class="flex items-center justify-start h-full fb-sm:hidden fb-md:flex fb-sm:flex-1 fb-sm:overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
@@ -108,7 +108,7 @@
          </div>
          <div class="flex-1 flex items-start justify-center flex-col space-y-1">
           {% if product.metafields.product.brand != blank and  product.metafields.product.brand != 'null' %}
-            <h2 class="text-12 font-bold text-main">
+            <h2 class="text-12 text-main">
               {{ product.metafields.product.brand }}
             </h2>
           {% endif %}
@@ -118,7 +118,6 @@
             {% endif %}
            </div>
            <div class="flex items-center">
-            
              <span class="text-main text-20 font-bold" id="js-quickbuy-price">
                {%- if settings.currency_code_enabled -%}
                  {{- product.selected_or_first_available_variant.price | money_with_currency -}}
@@ -144,7 +143,7 @@
           </div>
        </div>
        <div class="w-full mt-1.5">
-         <span  class="cursor-pointer hidden text-12 text-main font-bold underline" id="js-view-product-details">
+         <span  class="cursor-pointer hidden text-12 text-main underline" id="js-view-product-details">
            View Product Details
          </span>
        </div>
@@ -159,7 +158,7 @@
              {% assign varid = product.selected_or_first_available_variant.id %}
              {% render 'stock-label', stock_num: stock_num, varid: varid %}
            </div> {% endcomment %}
-           <div class="h-9 w-1/2 shrink-0">
+           <div class="h-8 w-1/2 shrink-0">
              <div class="border border-D3DEF1 w-full bg-white rounded-sm h-full flex justify-between items-center px-2 space-x-0.5">
                <button disabled type="button" class="js-quick-minus flex justify-center items-center w-6 h-full">
                  <span class="hidden">{{ 'cart.general.decrease_quantity' | t }}</span>
@@ -171,7 +170,7 @@
                  inputmode="numeric"
                 name="quantity2" 
                 autocomplete="off"
-                 class="js-current-input text-14 outline-none border-none text-center w-15 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                 class="js-current-input text-darkmain text-14 outline-none border-none text-center w-15 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                  name="quantity"
                  value="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
                >
@@ -182,8 +181,8 @@
              </div>
            </div>
          </div>
-         <div class="w-full h-9 mt-3.5">
-           <button id="js-quickbuy-add-to-cart" class="w-full h-full flex items-center justify-center rounded-sm bg-button text-main font-bold text-sm fb-sm:text-base relative">
+         <div class="w-full h-10 mt-3">
+           <button id="js-quickbuy-add-to-cart" class="w-full h-full flex items-center justify-center rounded-sm bg-button text-main font-bold text-14 relative [&_svg]:w-5 [&_svg]:h-5">
               {{ btn_text }}
            </button>
          </div>

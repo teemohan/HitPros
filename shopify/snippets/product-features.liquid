@@ -1,6 +1,6 @@
-{%- assign isshow_css = 'border-t border-D3DEF1 pb-4.5 fb-sm:pb-6 flex flex-col fb-sm:hidden' -%}
+{%- assign isshow_css = 'pb-4.5 fb-sm:pb-6 flex flex-col fb-sm:hidden' -%}
 {%- if show -%}
-  {%- assign isshow_css = 'hidden fb-sm:flex flex-col px-3.5' -%}
+  {%- assign isshow_css = 'hidden fb-sm:flex flex-col px-3.5 fb-sm:mt-6' -%}
 {%- endif -%}
 <div class="js-product-features w-full {{ isshow_css }}">
   <div class="skeleton-loader animate-pulse">
@@ -10,6 +10,6 @@
       <div class="h-4 bg-gray-200 rounded w-2/3"></div>
     </div>
   </div>
-  <ul class="product-list-desc [&_a]:text-main [&_a]:underline mt-4.5 fb-sm:mt-6 flex-col gap-0 pl-3.5 marker:text-12254D marker:text-xs fb-sm:marker:text-14 hidden">
+  <ul class="product-list-desc [&_a]:text-main [&_a]:underline flex-col gap-0 pl-3.5 marker:text-12254D marker:text-xs fb-sm:marker:text-14 hidden">
   </ul>
 </div>

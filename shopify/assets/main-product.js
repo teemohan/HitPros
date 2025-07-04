@@ -311,7 +311,7 @@ $(function () {
     renderNavTitle: function () {
       let str = '';
       let getArr = [];
-      let str_css = 'text-black text-14 fb-sm:text-16 fb-1700:text-18 cursor-pointer shrink-0 fb-1700:w-11r h-full items-center justify-center';
+      let str_css = 'text-white fb-sm:text-black text-14 fb-sm:text-16 fb-1700:text-18 cursor-pointer shrink-0 fb-1700:w-11r h-full items-center justify-center';
       this.showSection.forEach((item, index) => {
         const $dom = $(item.ele);
         if ($dom.length) {
@@ -575,10 +575,10 @@ $(function () {
         const attr = this.selectionAttrs[i];
         html += `
           <div class="mb-1.5 fb-big:mb-3 last:mb-0 flex flex-col">
-            <label class="text-14 fb-big:text-16 font-bold w-full text-left text-main">${attr.attrName}:</label>
-            <div class="relative w-8r fb-big:w-12r h-8 mt-1.5 fb-big:mt-3.5 fb-big:h-10">
+            <label class="text-12 w-full text-left text-main">${attr.attrName}:</label>
+            <div class="relative w-8r fb-big:w-12r h-8 mt-1.5">
               <select 
-                class="quick-buy-select border border-main  rounded-sm w-full h-full text-14 fb-big:text-16 focus:border-main focus:border-none pl-2 pr-8 fb-big:pl-4 fb-big:pr-10 text-575757 cursor-pointer appearance-none"
+                class="quick-buy-select border border-D3DEF1 rounded-sm w-full h-full text-14 font-bold  focus:border-main focus:border-none pl-2 pr-8 fb-big:pr-10 text-main cursor-pointer appearance-none"
                 data-attr-name="${attr.attrName}"
                 data-attr-index="${i}"
               >
@@ -817,6 +817,8 @@ $(function () {
     } else {
       quickBuyElement.fadeOut(); 
       tidioChat.fadeIn();
+      $('.js-product-anchor li').removeClass('active');
+      $('.js-product-anchor li:first-child').addClass('active');
     }
     if(window.innerWidth < 740) {
       const $bottomAddCart = $(".js-bottom-addcart");

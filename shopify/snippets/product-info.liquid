@@ -8,14 +8,14 @@
         and product.metafields.product.brand.value != 'null'
         and product.metafields.product.brand.value != '-'
       -%}
-        <div class="text-12254D text-14 font-bold fb-sm:text-16">
+        <div class="text-12254D text-14 fb-sm:text-16">
           {{ product.metafields.product.brand }}
         </div>
         <div class="h-3.5 w-0 border-l border-142A6B">
         </div>
       {% endif %}
         <div
-          class="text-main text-xs fb-sm:text-14"
+          class="text-12254D text-14 fb-sm:text-16"
           {% if product.metafields.product.manufacturer_model_number == blank %}
             style="display: none"
           {% endif %}
@@ -28,9 +28,9 @@
         </div>
     </div>
     {% unless featured %}
-      <h1 class="text-18 font-bold text-main mb-3 fb-sm:text-26">{{ product.title }}</h1>
+      <h1 class="text-18 font-bold text-main pb-1 fb-sm:pb-4 fb-sm:text-26">{{ product.title }}</h1>
     {% else %}
-      <h2 class="text-18 font-bold text-main mb-3 fb-sm:text-26">
+      <h2 class="text-18 font-bold text-main pb-1 fb-sm:pb-4 fb-sm:text-26">
         <a href="{{ product.url }}">{{ product.title }}</a>
       </h2>
     {% endunless %}
