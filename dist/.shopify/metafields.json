@@ -282,16 +282,6 @@
       }
     },
     {
-      "key": "sample",
-      "namespace": "product",
-      "name": "sample",
-      "description": "",
-      "type": {
-        "name": "boolean",
-        "category": "TRUE_FALSE"
-      }
-    },
-    {
       "key": "product_variants",
       "namespace": "custom",
       "name": "product_variants",
@@ -308,16 +298,6 @@
       "description": "产品特性",
       "type": {
         "name": "multi_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "voltagerange",
-      "namespace": "product",
-      "name": "voltage range",
-      "description": null,
-      "type": {
-        "name": "single_line_text_field",
         "category": "TEXT"
       }
     },
@@ -675,16 +655,6 @@
       "key": "DrillBitSize",
       "namespace": "product",
       "name": "Drill Bit Size",
-      "description": null,
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "ChiselCollarShape",
-      "namespace": "product",
-      "name": "Chisel Collar Shape",
       "description": null,
       "type": {
         "name": "single_line_text_field",
@@ -2560,6 +2530,36 @@
         "name": "single_line_text_field",
         "category": "TEXT"
       }
+    },
+    {
+      "key": "OutputDriveGender",
+      "namespace": "product",
+      "name": "Output Drive Gender",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Insulated",
+      "namespace": "product",
+      "name": "Insulated",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "Non-Sparking",
+      "namespace": "product",
+      "name": "Non-Sparking",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
     }
   ],
   "variant": [
@@ -2668,6 +2668,16 @@
       "namespace": "mm-google-shopping",
       "name": "Google: Age Group",
       "description": "The demographic for which your product is intended.",
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "taxcode",
+      "namespace": "avalara",
+      "name": "Avalara Tax Code",
+      "description": "Used only for Avalara integration.",
       "type": {
         "name": "single_line_text_field",
         "category": "TEXT"
