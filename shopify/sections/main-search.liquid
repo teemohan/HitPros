@@ -640,7 +640,7 @@
               },
             });
             const res = await response.json();
-            if (res.code === 200 && res.data.skuInfos && res.data. skuInfos. length > 0) {
+            if (res.code === 200 && res.data.brand.length) {
               this.total = +res.data.totalNum;
               if(this.total == 1 && res.data.searchHitType == 'skuNo') {
                 window.location.href = res.data.skuInfos[0].productUrl;
