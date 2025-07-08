@@ -1,12 +1,12 @@
-<div class="w-full bg-EAEEF1 py-4 fb-sm:py-17 js-product-guess-{{ section.id }}"
+<div class="w-full bg-EAEEF1 fb-sm:py-10 js-product-guess-{{ section.id }}"
   data-sku="{{ product.selected_or_first_available_variant.sku }}"
 >
-  <div class="container w-full mb-10 fb-sm:mb-0">
+  <div class="container w-full mb-5 fb-sm:mb-0">
     <div class="flex items-center justify-between mb-4 fb-sm:mb-6">
       <h2 class="text-22 fb-sm:text-32 font-semibold text-main">{{ section.settings.title }}</h2>
     </div>
     <div class="relative w-full mx-auto fb-hover-list">
-      <div class="js-product-guess-content grid grid-cols-2 fb-sm:grid-cols-5 gap-x-2.5 gap-y-4.5 fb-sm:gap-6"
+      <div class="js-product-guess-content grid grid-cols-2 fb-sm:grid-cols-3 fb-md:grid-cols-5 gap-x-2.5 gap-y-4.5 fb-sm:gap-6"
         data-datalayer="true" 
         data-event-type="view_item_list" 
         data-list-name="recommended_product_exposure" 
@@ -17,7 +17,7 @@
           <div class="w-full h-full bg-gray-200 pulse"></div>
         </div>
       </div>
-      <div class="text-center mt-4 fb-sm:mt-12 js-view-more-container hidden">
+      <div class="text-center mt-4 fb-sm:mt-6 js-view-more-container hidden">
         <div class="flex flex-col items-center space-y-4">
           <div class="flex items-center justify-center space-x-2 js-view-more-btn cursor-pointer">
             <span class="text-main text-12 fb-sm:text-14 font-bold underline">View More</span>
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
       this.sectionId = sectionId;
       this.sectionElement = document.querySelector('.js-product-guess-' + sectionId);
       this.currentPage = 1;
-      this.itemsPerPage = window.innerWidth >= 1000 ? 10 : 4;
+      this.itemsPerPage = window.innerWidth >= 1199 ? 10 : window.innerWidth >= 740 ? 6 : 4;
       this.allProducts = [];
       this.isLoading = false;
       this.isExpanded = false;
