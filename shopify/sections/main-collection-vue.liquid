@@ -75,8 +75,7 @@
                           width="130" 
                           height="130" 
                           :alt="item.spuTitle" 
-                          class="lazy-image w-full mx-auto h-auto" 
-                          v-lazy 
+                          class="lazyload w-full mx-auto h-auto" 
                           :data-src="item.spuImg" 
                           :fetchpriority="itemindex < 3 ? 'high' : 'low'"
                           loading="eager"
@@ -203,9 +202,8 @@
                               v-else
                               width="130px" 
                               height="130px" 
-                              class="w-auto h-full"
+                              class="lazyload w-auto h-full"
                               :alt="lib.title" 
-                              v-lazy
                               :data-src="lib.mainPic"
                             /> 
                           </a>
@@ -214,7 +212,7 @@
                             {% comment %} <span class="text-10 text-666666"> [[lib.model]]</span> {% endcomment %}
                           </div>
                           <div class="w-full mt-1">
-                            <a :href="'/products/' + lib.skuCode" :title="lib.title" class="text-xs text-333333 mt-2 line-clamp-2">
+                            <a :href="'/products/' + lib.skuCode" :title="lib.title" class="text-xs text-333333 mt-2 line-clamp-2 h-8 fb-sm:h-auto">
                               [[lib.title]]
                           </a>
                          </div>
