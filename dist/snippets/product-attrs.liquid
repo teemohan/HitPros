@@ -1,86 +1,43 @@
-<style>
-  .product-attrs-wrapper .product-attrs {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .product-attrs-wrapper .product-attrs .attr-line .attr-name-header {
-    font-size: 16px;
-    font-weight: bold;
-    color: #12254D;
-  }
-  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper {
-    margin-top: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-  }
-  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn {
-    min-width: 120px;
-    padding: 0 20px;
-    font-size: 14px;
-    height: 32px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 2px;
-    color: #1c406a;
-    border: 1px solid #0e255d;
-    background-color: #f0f7fb;
-  }
-
-  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn.selected {
-    border: 1px solid #002b58;
-    color: white;
-    font-weight: 500;
-    background-color: #002b58;
-  }
-  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn[disabled] {
-    background-color: #f0f7fb;
-    border: 1px solid #cbd9ee;
-    color: #cbd9ee;
-  }
-  .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn[disabled],
-  .btn-wishlist[disabled], .btn-wishlist[disabled] .ti-heart{
-    cursor: not-allowed!important;
-  }
-  @media screen and (max-width: 999px) {
-    .product-attrs-wrapper .product-attrs .attr-line .attr-name-header {
-      font-size: 14px;
-      line-height: 1;
-      font-weight: normal;
-      color: #12254D;
-    }
-    .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper .attr-btn {
-      min-width: 80px;
-      padding: 0 10px;
-      font-size: 12px;
-      height: 32px;
-    }
-    .product-attrs-wrapper .product-attrs .attr-line .attrs-wrapper {
-      gap: 10px;
-    }
-  }
-</style>
-<div class="product-attrs-wrapper w-full pt-0 pb-4.5 fb-sm:pb-7">
-  <product-attrs
-    data-sku="{{ product.selected_or_first_available_variant.sku }}" 
-    data-common='{{ product.metafields.product.common }}'
-    data-sales='{{ product.metafields.product.sales }}'
-  >
-    <div class="product-attrs">
-      <div class="attr-line animate-pulse">
-        <div class="w-full flex items-center justify-start">
-          <span class="bg-gray-200 h-4 w-24 rounded"></span>
-          <span class="bg-gray-200 h-4 w-16 rounded ml-2"></span>
-        </div>
-        <div class="attrs-wrapper flex space-x-2 mt-2">
-          <div class="bg-gray-200 h-8 w-16 rounded"></div>
-          <div class="bg-gray-200 h-8 w-16 rounded"></div>
-          <div class="bg-gray-200 h-8 w-16 rounded"></div>
-          <div class="bg-gray-200 h-8 w-24 rounded"></div>
+<product-attrs class="w-full" data-sku="{{ product.selected_or_first_available_variant.sku }}" >
+  <div class="w-full" id="product-attrs">
+    <div class="js-attr-wrapper w-full hidden">
+      <div class="product-attrs-wrapper w-full pt-0 pb-4.5 fb-sm:pb-7" v-if="showAttrs && productAttrs.length > 0">
+        <div class="flex flex-col gap-3">
+          <div v-for="(attr, index) in productAttrs" :key="attr.attrName" v-if="attr" class="attr-line">
+            <div class="text-14 fb-sm:font-bold text-12254D fb-sm:text-16">
+              <span class="attr-name">[[ attr.attrName ]]: </span>
+              <span class="attr-value">[[ attr.selectedValue ]]</span>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-2.5 fb-sm:gap-3.5">
+              <button
+                v-for="value in attr.values"
+                :key="value"
+                class="min-w-20 border-solid fb-s:min-w-30 text-12 h-8 flex px-2.5 fb-sm:px-5 fb-sm:text-14 justify-center items-center rounded-sm border transition-all"
+                :class="getButtonClasses(index, value)"
+                :disabled="isButtonDisabled(index, value)"
+                @click="handleAttrSelect(attr.attrName, value)"
+              >
+                [[ value ]]
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </product-attrs>
-</div>
+    <div class="js-attr-loading w-full pt-0 pb-4.5 fb-sm:pb-7">
+      <div class="flex flex-col gap-3">
+        <div class="attr-line animate-pulse">
+          <div class="text-14 fb-sm:font-bold flex items-center">
+            <span class="bg-gray-200 h-4 w-24 rounded"></span>
+            <span class="bg-gray-200 h-4 w-16 rounded ml-2"></span>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-2.5 fb-sm:gap-3.5">
+            <div v-for="j in 4" :key="j" 
+              class="min-w-20 fb-s:min-w-30 h-8 bg-gray-200 rounded">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</product-attrs>

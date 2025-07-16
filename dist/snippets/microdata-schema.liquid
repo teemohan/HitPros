@@ -75,14 +75,14 @@ or change the format of some info
         }{% unless forloop.last %},{% endunless %}
         {% endfor %}
       ],
-      {%- if product.metafields.product.sales.value -%}
+      {%- if product.metafields.product.sales_attribute.value -%}
         "additionalProperty": [
-            {%- assign sales_data = product.metafields.product.sales.value -%}
+            {%- assign sales_data = product.metafields.product.sales_attribute.value -%}
             {%- for item in sales_data -%}
               {
                 "@type": "PropertyValue",
-                "name": {{ item[0] | json }},
-                "value": {{ item[1] | json }}
+                "name": "{{ item.attrName }}",
+                "value": "{{ item.attrValue }}"
               }{% unless forloop.last %},{% endunless %}
             {%- endfor -%}
          ],

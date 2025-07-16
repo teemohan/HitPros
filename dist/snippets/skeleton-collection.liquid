@@ -48,18 +48,12 @@
   </div>
   <div class="fb-sm:hidden">
     <div class="w-full h-16 mb-4 bg-gray-200 pulse"></div>
-    {% for i in (1..2) %}
-      <div class="w-full bg-white rounded-sm mb-5">
-        <div class="w-full h-20 pulse ">
+      <div class="grid grid-cols-2 gap-4 mt-5">
+      {% for j in (1..4) %}
+        <div class="w-full bg-white h-[298px] rounded-sm p-3 pulse">
+        
         </div>
-        <div class="grid grid-cols-2 gap-4 mt-5">
-          {% for j in (1..2) %}
-            <div class="w-full bg-white h-[298px] rounded-sm p-3 pulse">
-            
-            </div>
-          {% endfor %}
-        </div>
+      {% endfor %}
       </div>
-    {% endfor %}
   </div>
 </div>

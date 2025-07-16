@@ -1,0 +1,52 @@
+<div class="relative w-full">
+  <div class="hidden fb-sm:block">
+    <div class="relative w-full aspect-[1440/320] bg-cover bg-left bg-no-repeat" style="background-image: url('{{ collection.metafields.custom.marketing_pc_img | image_url }}')">
+      <div class="container h-full flex justify-end items-center">
+        <div class="max-w-[50%]">
+          <h2 class="text-36 fb-md:text-48 font-bold text-button">
+            {{ collection.metafields.custom.marketing_pc_title }}
+          </h2>
+          {% if collection.metafields.custom.marketing_pc_desc != blank %}
+            <div class="text-20 fb-md:text-32 text-white mt-4.5">
+              {{ collection.metafields.custom.marketing_pc_desc }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fb-sm:hidden">
+    <div class="relative w-full aspect-[372/220] bg-cover bg-left bg-no-repeat" style="background-image: url('{{ collection.metafields.custom.marketing_mob_img | image_url }}')">
+      <div class="container h-full flex justify-center items-end pb-4">
+        <div class="w-full text-center">
+          <h2 class="text-36 font-bold text-button">
+            {{ collection.metafields.custom.marketing_mob_title }}
+          </h2>
+          {% if collection.metafields.custom.marketing_mob_desc != blank %}
+            <div class="text-20 text-white leading-tight mt-1.5">
+              {{ collection.metafields.custom.marketing_mob_desc }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if collection.metafields.custom.marketing_tips != blank %}
+      <div class="w-full bg-button text-center text-white font-bold text-16 px-5 fb-sm:px-20 py-2 fb-sm:py-1 fb-sm:text-24">
+        {{ collection.metafields.custom.marketing_tips }}
+      </div>
+  {% endif %}
+</div>
+{% schema %}
+  {
+    "name": "Marketing Banner",
+    "presets": [
+      {
+        "name": "marketing-banner"
+      }
+    ]
+  }
+{% endschema %}
+<script>
+  console.log("text", {{ collection.metafields.custom.marketing_mob_text }});
+</script>

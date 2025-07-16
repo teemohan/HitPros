@@ -8,9 +8,6 @@
     {%- assign active_filters_count = active_filters_count | plus: 1 -%}
   {%- endif -%}
 {%- endfor -%}
-{{ 'main-collection-list.css' | asset_url | stylesheet_tag }}
-{{ 'main-collection-spu.css' | asset_url | stylesheet_tag }}
-{{ 'aside-filter-reset.css' | asset_url | stylesheet_tag }}
 {{ 'index-product-item.css' | asset_url | stylesheet_tag }}
 <section>
   <div class="{{ section.id }} container {% if collection.handle != 'all' %}top-header{% endif %}">

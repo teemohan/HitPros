@@ -15,12 +15,16 @@
       >
       <meta name="theme-color" content="{{ settings.header_background }}">
       <title>
-        {% if page_title == blank -%}
-          {{- shop.name -}}
+        {%- if template == 'search' -%}
+           Search: Search results for "{{ search.terms }}"
         {%- else -%}
-          {{- page_title -}}
-          {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
-        {%- endif %}
+          {% if page_title == blank -%}
+            {{- shop.name -}}
+          {%- else -%}
+            {{- page_title -}}
+            {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+          {%- endif %}
+        {%- endif -%}
       </title>
       {%- assign is_test_shop = shop.name == 'TestHitpros' -%}
       {%- if shop.name != 'TestHitpros' -%}
