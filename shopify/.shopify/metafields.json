@@ -722,16 +722,6 @@
       }
     },
     {
-      "key": "WheelType",
-      "namespace": "product",
-      "name": "Wheel Type",
-      "description": null,
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
       "key": "NumberofWheels",
       "namespace": "product",
       "name": "Number of Wheels",
@@ -2555,6 +2545,16 @@
       "key": "Non-Sparking",
       "namespace": "product",
       "name": "Non-Sparking",
+      "description": null,
+      "type": {
+        "name": "single_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "PlierMaterial",
+      "namespace": "product",
+      "name": "Plier Material",
       "description": null,
       "type": {
         "name": "single_line_text_field",

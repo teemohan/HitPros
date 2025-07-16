@@ -600,7 +600,7 @@ const mainProductUtils = {
         const element = document.querySelector(selector);
         if (element) {
           const height = element.offsetHeight;
-          if (height > 0) {
+          if (height > 120) {
             clearInterval(intervalId);
             callback && callback(true); 
             return true;
