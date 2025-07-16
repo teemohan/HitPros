@@ -11,7 +11,7 @@
   <div class="h-brands hidden-phone">
     {% for block in section.blocks %}
       <a href="{{ block.settings.url }}">
-        <img src="{{ block.settings.img | image_url }}" alt="{{ block.settings.img.alt }}" width="auto" height="auto">
+        <img  class="lazyload" data-src="{{ block.settings.img | image_url }}" alt="{{ block.settings.img.alt }}" width="auto" height="auto">
         <div class="brand-text">
           <div class="icon">{{ block.settings.icon }}</div>
           <span class="btn">{{ section.settings.btn_title }}</span>

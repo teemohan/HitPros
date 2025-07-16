@@ -104,85 +104,6 @@ class Ajax {
 }
 // Create instance
 const kkAjax = new Ajax();
-
-Vue.directive('lazy', {
-  inserted: el => {
-    // Create placeholder image
-    const placeholder = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
-    // Save original image URL
-    const src = el.dataset.src;
-    // Set placeholder image
-    el.setAttribute('src', placeholder);
-    
-    function loadImage() {
-      if (!src) return;
-      
-      // Preload with new image object
-      const img = new Image();
-      img.onload = () => {
-        el.src = src;
-        
-        // 使用setTimeout确保图片有足够时间渲染
-        setTimeout(() => {
-          // 检查图片是否真的加载成功
-          if (el.complete && el.naturalWidth > 0) {
-            el.classList.add('loaded');
-          } else {
-            // 如果图片未成功加载，重试一次
-            el.src = src + '?retry=' + new Date().getTime();
-            setTimeout(() => {
-              if (el.complete && el.naturalWidth > 0) {
-                el.classList.add('loaded');
-              } else {
-                // 如果重试后仍然失败，使用占位图
-                console.log('Image loading failed after retry:', src);
-                el.src = placeholder;
-              }
-            }, 500);
-          }
-        }, 100);
-      };
-      
-      img.onerror = () => {
-        console.log('Image loading failed');
-        el.src = placeholder;
-      };
-      
-      img.src = src;
-    }
-
-    function handleIntersect(entries, observer) {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Use requestIdleCallback to load images during browser idle time
-          if ('requestIdleCallback' in window) {
-            requestIdleCallback(() => loadImage(), { timeout: 2000 });
-          } else {
-            loadImage();
-          }
-          observer.unobserve(el);
-        }
-      });
-    }
-
-    function createObserver() {
-      const options = {
-        root: null,
-        rootMargin: '100px 0px', // Start loading 100px ahead
-        threshold: 0.1
-      };
-      const observer = new IntersectionObserver(handleIntersect, options);
-      observer.observe(el);
-    }
-
-    if ('IntersectionObserver' in window) {
-      createObserver();
-    } else {
-      loadImage(); // For browsers that don't support IntersectionObserver, load image directly
-    }
-  }
-});
-
 // DataLayer Manager Factory
 const DataLayerManagerFactory = (function() {
   const instances = new Map();
@@ -391,7 +312,6 @@ const getLocalZipCode = (callback) => {
     fetch(`https://ipinfo.io/json/?token=5eb142213a9cfb`)
     .then(res => res.json())
     .then(data => {
-      console.log("data", data)
       if (data && data.country && (data.country == 'US' || data.country == 'us') && data.postal) {
         const localzip = (data.postal.length == 5) ? data.postal : '77380'
         callback(localzip)
@@ -517,7 +437,12 @@ async function getDeliveryEstimate({
 }) {
   if (onLoadingChange) onLoadingChange(true);
   try {
-    // Validate zip code
+    if (!zipCode || !zipCode.trim()) {
+      throw new Error('ZIP Code is required');
+    } 
+    if (zipCode.length !== 5) {
+      throw new Error('Zip code must be 5 digits');
+    }
     const zipResult = await new Promise((resolve, reject) => {
       getZipCode('US', zipCode, function(result) {
         if (result?.valid) {
@@ -569,3 +494,243 @@ async function getDeliveryEstimate({
     if (onLoadingChange) onLoadingChange(false);
   }
 }
+const mainProductUtils = {
+  computePrice: function(discountJson, basePrice, quantity) {
+    let finalPrice;
+    if (discountJson && discountJson.length > 0) {
+      try {
+        let applicableDiscount = null;
+        for (let i = 0; i < discountJson.length; i++) {
+          if (quantity >= parseInt(discountJson[i].moq)) {
+            applicableDiscount = parseFloat(discountJson[i].discount);
+          }
+        }
+        if (applicableDiscount) {
+          let discountedUnitPrice = Math.round(basePrice * applicableDiscount * 100) / 100;
+          finalPrice = Math.round(discountedUnitPrice * quantity * 100) / 100;
+        } else {
+          finalPrice = Math.round(quantity * basePrice * 100) / 100;
+        }
+      } catch (e) {
+        console.error('Parsing error:', e);
+        finalPrice = Math.round(quantity * basePrice * 100) / 100;
+      }
+    } else {
+      finalPrice = Math.round(quantity * basePrice * 100) / 100;
+    }
+    return zkhFormatMoney(finalPrice * 100);
+  },
+  validateQuantity: function(inputValue, moq, mpq, maxQuantity = 1000000) {
+    let newQuantity = parseInt(inputValue);
+    if (isNaN(newQuantity) || newQuantity <= 0 || inputValue === '') {
+      return moq;
+    }
+    if (newQuantity < moq) {
+      return moq;
+    }
+    if (newQuantity > maxQuantity) {
+      return maxQuantity;
+    }
+    const exceededMoq = newQuantity - moq;
+    const remainder = exceededMoq % mpq;
+    if (remainder !== 0) {
+      return moq + (Math.ceil(exceededMoq / mpq) * mpq);
+    }
+    return newQuantity;
+  },
+  getCart: async function() {
+    try {
+      const response = await fetch('/cart.js');
+      return await response.json();
+    } catch (error) {
+      console.error('Error getting cart data:', error);
+      return { items: [] };
+    }
+  },
+  throttle: function(func, wait, context, immediate) {
+    let timeout;
+    let args;
+    let result;
+    let previous = 0;
+    
+    const later = function() {
+      previous = immediate === false ? 0 : Date.now();
+      timeout = null;
+      result = func.apply(context, args);
+      if (!timeout) args = null;
+    };
+    
+    return function() {
+      const now = Date.now();
+      const remaining = wait - (now - previous);
+      args = arguments;
+      
+      if (remaining <= 0 || remaining > wait) {
+        if (timeout) {
+          clearTimeout(timeout);
+          timeout = null;
+        }
+        previous = now;
+        result = func.apply(context, args);
+        if (!timeout) args = null;
+      } else if (!timeout && immediate !== true) {
+        timeout = setTimeout(later, remaining);
+      }
+      
+      return result;
+    };
+  },
+  formateDiscountJson: function(dom) {
+    let discountJson = $(dom).data('discount') || null
+    let newDiscountJson = []
+    if (discountJson && discountJson.length > 0) {
+      discountJson = discountJson.replace(/'/g, '"');
+      try {
+        newDiscountJson = JSON.parse(discountJson);
+        return newDiscountJson; 
+      } catch (e) {
+        console.error('Parsing error:', e);
+      }
+    }
+    return newDiscountJson;
+  },
+  checkElementDisplay: function (selector, maxDuration = 10000, callback) {
+      const startTime = Date.now();
+      const intervalId = setInterval(() => {
+        const element = document.querySelector(selector);
+        if (element) {
+          const height = element.offsetHeight;
+          if (height > 0) {
+            clearInterval(intervalId);
+            callback && callback(true); 
+            return true;
+          }
+        }
+        if (Date.now() - startTime >= maxDuration) {
+          clearInterval(intervalId);
+          callback && callback(false);
+          return false;
+        }
+      }, 200);
+      return intervalId;
+  }
+};
+const cartFormModule = {
+  maxQuantity: 1000000,
+  async handleAddToCart(result) {
+    try {
+      let errorMsg = '';
+      if (result.success) {
+        document.documentElement.dispatchEvent(
+          new CustomEvent('variant:added', {
+            bubbles: true,
+            detail: {
+              variant: result.data.hasOwnProperty('items') ? result.data['items'][0] : result.data,
+            },
+          })
+        );
+        const cartResponse = await fetch(`${window.themeVariables.routes.cartUrl}.js`);
+        const cartContent = await cartResponse.json();
+        document.documentElement.dispatchEvent(
+          new CustomEvent('cart:updated', {
+            bubbles: true,
+            detail: {
+              cart: cartContent,
+            },
+          })
+        );
+        cartContent['sections'] = result.data['sections'];
+        document.documentElement.dispatchEvent(
+          new CustomEvent('cart:refresh', {
+            bubbles: true,
+            detail: {
+              cart: cartContent,
+              openMiniCart: true,
+            },
+          })
+        );
+      } else {
+        const description = result.data?.description || '';
+        if (description.endsWith('are in your cart.')) {
+          errorMsg = 'Your cart already contains all available stock. Unable to add more';
+        } else if (description.endsWith('to the cart.')) {
+          errorMsg = 'The available stock has been added to your cart. The excess quantity beyond available stock cannot be added';
+        }
+        document.documentElement.dispatchEvent(
+          new CustomEvent('cart-notification:show', {
+            bubbles: true,
+            cancelable: true,
+            detail: {
+              status: result.success ? 'success' : 'error',
+              error: errorMsg || result.data?.description || '',
+            },
+          })
+        );
+      }
+    } catch (error) {
+      console.error('Failed to add to cart:', error);
+      document.documentElement.dispatchEvent(
+        new CustomEvent('cart-notification:show', {
+          bubbles: true,
+          cancelable: true,
+          detail: {
+            status: 'error',
+            error: 'Failed to add to cart, please try again later',
+          },
+        })
+      );
+    }
+  },
+  async addToCart(query, callback) {
+    try {
+      const variantId = query.variantId;
+      const formData = {
+        items: [{ id: variantId, quantity: query.quantity }],
+      };
+      const cart = await mainProductUtils.getCart();
+      if (cart.items.length > 0) {
+        const existingItem = cart.items.find((item) => item.id == variantId);
+        if (existingItem) {
+          formData.items[0].properties = existingItem.properties;
+          // const totalQuantity = parseFloat(existingItem.quantity) + parseFloat(query.quantity);
+          // if (totalQuantity > parseFloat(cartFormModule.maxQuantity)) {
+          //   this.handleAddToCart({ success: false, data: {description: 'Only 1000000 items were added to your cart due to availability.' } });
+          //   return false;
+          // }
+        }
+      }
+
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const resultObj = {
+        success: response.ok,
+        data: await response.json(),
+        status: response.status,
+      };
+      this.handleAddToCart(resultObj);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      this.handleAddToCart({ success: false, data: { description: error } });
+    } finally {
+      callback && callback();
+    }
+  },
+  validateQuantityInput: function($input, info, callback) {
+    if (!info) return;
+    const inputValue = $input.val();
+    const moq = info.moq || 1;
+    const mpq = info.mpq || 1;
+    const maxQuantity = this.maxQuantity;
+    const newQuantity = mainProductUtils.validateQuantity(inputValue, moq, mpq, maxQuantity);
+    $input.val(newQuantity);
+    if (typeof callback === 'function') {
+      callback(newQuantity);
+    }
+  },
+  computed_price: function(discountJson, basePrice, quantity) {
+    return mainProductUtils.computePrice(discountJson, basePrice, quantity);
+  }
+};

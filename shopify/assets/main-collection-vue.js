@@ -23,6 +23,7 @@ new Vue({
   data() {
     return {
       spuData: [],
+      mobSpuData: [],
       categories: [],
       brands: [],
       wishlist: [],
@@ -107,7 +108,6 @@ new Vue({
   },
   beforeDestroy() {
     window.removeEventListener('resize', this._throttledResize);
-   
     this.hideSketon()
     if (this.observer) {
       this.observer.disconnect();
@@ -258,118 +258,43 @@ new Vue({
         });
       });
     },
-    async getCart() {
-      try {
-        const response = await fetch('/cart.js');
-        return await response.json();
-      } catch (error) {
-        console.error('Error getting cart data:', error);
-        return { items: [] };
-      }
-    },
     showaddLoading(itemindex, libindex, bol) {
       if (this.spuData[itemindex]?.skus[libindex]) {
         const sku = this.spuData[itemindex].skus[libindex];
         this.$set(this.spuData[itemindex].skus[libindex], 'selected', bol);
       }
     },
+    showMobLoading (libindex, bol) {
+      if(this.mobSpuData[libindex]) {
+        this.$set(this.mobSpuData[libindex], 'selected', bol);
+      }
+    },
     async addToCart(variantId, quantity, itemindex, libindex) {
       try {
         this.showaddLoading(itemindex, libindex, true);
-        const formData = {
-          items: [{ id: variantId, quantity }],
-        };
-       
-        const cart = await this.getCart();
-        if (cart.items.length > 0) {
-          const existingItem = cart.items.find((item) => item.id == variantId);
-          if (existingItem) {
-            formData.items[0].properties = existingItem.properties;
-          }
-        }
-        const response = await fetch('/cart/add.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
+        await cartFormModule.addToCart({
+          variantId,
+          quantity
+        }, () => {
+          this.showaddLoading(itemindex, libindex, false);
         });
-        const resultObj = {
-          success: response.ok,
-          data: await response.json(),
-          status: response.status,
-        };
-        this.handleAddToCart(resultObj);
       } catch (error) {
-        this.handleAddToCart({ success: false, error });
-      } finally {
+        // cartFormModule.handleAddToCart({ success: false, error });
         this.showaddLoading(itemindex, libindex, false);
       }
     },
-    async handleAddToCart(result) {
+    async mobAddToCart(variantId, quantity, libindex) {
       try {
-        let errorMsg = '';
-        if (result.success) {
-         
-          document.documentElement.dispatchEvent(
-            new CustomEvent('variant:added', {
-              bubbles: true,
-              detail: {
-                variant: result.data.hasOwnProperty('items') ? result.data['items'][0] : result.data,
-              },
-            })
-          );
-         
-          const cartResponse = await fetch(`${window.themeVariables.routes.cartUrl}.js`);
-          const cartContent = await cartResponse.json();
-          document.documentElement.dispatchEvent(
-            new CustomEvent('cart:updated', {
-              bubbles: true,
-              detail: {
-                cart: cartContent,
-              },
-            })
-          );
-          cartContent['sections'] = result.data['sections'];
-          document.documentElement.dispatchEvent(
-            new CustomEvent('cart:refresh', {
-              bubbles: true,
-              detail: {
-                cart: cartContent,
-                openMiniCart: true,
-              },
-            })
-          );
-        } else {
-         
-          const description = result.data?.description || '';
-          if (description.endsWith('are in your cart.')) {
-            errorMsg = 'Your cart already contains all available stock. Unable to add more';
-          } else if (description.endsWith('to the cart.')) {
-            errorMsg = 'The available stock has been added to your cart. The excess quantity beyond available stock cannot be added';
-          }
-        }
-       
-        document.documentElement.dispatchEvent(
-          new CustomEvent('cart-notification:show', {
-            bubbles: true,
-            cancelable: true,
-            detail: {
-              status: result.success ? 'success' : 'error',
-              error: errorMsg || result.data?.description || '',
-            },
-          })
-        );
+        this.showMobLoading(libindex, true);
+        await cartFormModule.addToCart({
+          variantId,
+          quantity
+        }, () => {
+          this.showMobLoading(libindex, false);
+        });
       } catch (error) {
-        console.error('Failed to add to cart:', error);
-        document.documentElement.dispatchEvent(
-          new CustomEvent('cart-notification:show', {
-            bubbles: true,
-            cancelable: true,
-            detail: {
-              status: 'error',
-              error: 'Failed to add to cart, please try again later',
-            },
-          })
-        );
+        // cartFormModule.handleAddToCart({ success: false, error });
+        this.showMobLoading(libindex, false);
       }
     },
     observeLCP() {    
@@ -475,6 +400,9 @@ new Vue({
         if (result.code === 200) {
           const newData = this.processSpuData(result.data, true);
           this.spuData = [...this.spuData, ...(newData || [])];
+          this.mobSpuData = this.spuData.reduce((acc, item) => {
+            return acc.concat(item.skus)
+          }, [])
           if (result.data.extra && this.page == 1) {
             this.creatBrandList(result.data.extra);
           }

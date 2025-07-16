@@ -310,7 +310,7 @@ input[type="password"]::-ms-clear {
   -webkit-line-clamp: 3;
   overflow: hidden;
 }
-#preview-bar-iframe, #PBarNextFrameWrapper {
+#preview-bar-iframe {
   display: none;
 }
 .product-item-meta__title:hover {

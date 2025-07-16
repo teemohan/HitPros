@@ -110,6 +110,15 @@
 </section>
 
 <script>
+  function checkIfLoggedIn() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const checkoutUrl = urlParams.get('checkout_url');
+    return checkoutUrl || ''
+  }
+  const isCheckoutBack = checkIfLoggedIn();
+  if(window.zkh.customerId && isCheckoutBack) {
+      window.location.replace("/") 
+  }
   (() => {
     function startPolling() {
       setInterval(() => {
@@ -226,7 +235,10 @@
         } else if (Cookies.get('recover_customer_email')) {
           this.recoverRuleForm.email = Cookies.get('recover_customer_email');
         }
-
+        const isCheckoutUrl = checkIfLoggedIn();
+        if(isCheckoutUrl) {
+          this.ruleForm.returnTo = window.location.origin + isCheckoutUrl;
+        }
         document.addEventListener('keydown', (event) => {
           if (event.key === 'Enter') {
             if (this.show_recover) {
@@ -263,7 +275,7 @@
                 'account_type': data.data.userInfo.companyName ? 'Business': 'Personal',
                 'company': data.data.userInfo.companyName ? data.data.userInfo.companyName : null
               });
-              window.location.href = data.data.redirectUrl;
+              window.location.replace(data.data.redirectUrl)
             } else {
               this.$message({
                 showClose: true,

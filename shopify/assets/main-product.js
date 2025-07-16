@@ -1,125 +1,4 @@
 $(function () {
-  const mainProductUtils = {
-    computePrice: function(discountJson, basePrice, quantity) {
-      let finalPrice;
-      if (discountJson && discountJson.length > 0) {
-        try {
-          let applicableDiscount = null;
-          for (let i = 0; i < discountJson.length; i++) {
-            if (quantity >= parseInt(discountJson[i].moq)) {
-              applicableDiscount = parseFloat(discountJson[i].discount);
-            }
-          }
-          if (applicableDiscount) {
-            let discountedUnitPrice = Math.round(basePrice * applicableDiscount * 100) / 100;
-            finalPrice = Math.round(discountedUnitPrice * quantity * 100) / 100;
-          } else {
-            finalPrice = Math.round(quantity * basePrice * 100) / 100;
-          }
-        } catch (e) {
-          console.error('Parsing error:', e);
-          finalPrice = Math.round(quantity * basePrice * 100) / 100;
-        }
-      } else {
-        finalPrice = Math.round(quantity * basePrice * 100) / 100;
-      }
-      return zkhFormatMoney(finalPrice * 100);
-    },
-    validateQuantity: function(inputValue, moq, mpq, maxQuantity = 1000000) {
-      let newQuantity = parseInt(inputValue);
-      if (isNaN(newQuantity) || newQuantity <= 0 || inputValue === '') {
-        return moq;
-      }
-      if (newQuantity < moq) {
-        return moq;
-      }
-      if (newQuantity > maxQuantity) {
-        return maxQuantity;
-      }
-      const exceededMoq = newQuantity - moq;
-      const remainder = exceededMoq % mpq;
-      if (remainder !== 0) {
-        return moq + (Math.ceil(exceededMoq / mpq) * mpq);
-      }
-      return newQuantity;
-    },
-    getCart: async function() {
-      try {
-        const response = await fetch('/cart.js');
-        return await response.json();
-      } catch (error) {
-        console.error('Error getting cart data:', error);
-        return { items: [] };
-      }
-    },
-    throttle: function(func, wait, context, immediate) {
-      let timeout;
-      let args;
-      let result;
-      let previous = 0;
-      
-      const later = function() {
-        previous = immediate === false ? 0 : Date.now();
-        timeout = null;
-        result = func.apply(context, args);
-        if (!timeout) args = null;
-      };
-      
-      return function() {
-        const now = Date.now();
-        const remaining = wait - (now - previous);
-        args = arguments;
-        
-        if (remaining <= 0 || remaining > wait) {
-          if (timeout) {
-            clearTimeout(timeout);
-            timeout = null;
-          }
-          previous = now;
-          result = func.apply(context, args);
-          if (!timeout) args = null;
-        } else if (!timeout && immediate !== true) {
-          timeout = setTimeout(later, remaining);
-        }
-        
-        return result;
-      };
-    },
-    formateDiscountJson: function(dom) {
-      let discountJson = $(dom).data('discount') || null
-      let newDiscountJson = []
-      if (discountJson && discountJson.length > 0) {
-        discountJson = discountJson.replace(/'/g, '"');
-        try {
-          newDiscountJson = JSON.parse(discountJson);
-          return newDiscountJson; 
-        } catch (e) {
-          console.error('Parsing error:', e);
-        }
-      }
-      return newDiscountJson;
-    },
-    checkElementDisplay: function (selector, maxDuration = 10000, callback) {
-        const startTime = Date.now();
-        const intervalId = setInterval(() => {
-          const element = document.querySelector(selector);
-          if (element) {
-            const height = element.offsetHeight;
-            if (height > 120) {
-              clearInterval(intervalId);
-              callback && callback(true); 
-              return true;
-            }
-          }
-          if (Date.now() - startTime >= maxDuration) {
-            clearInterval(intervalId);
-            callback && callback(false);
-            return false;
-          }
-        }, 200);
-        return intervalId;
-    }
-  };
   const getInitPrice = () => {
     let basePrice = $('#js-nav-quick').data('price') || 0
     if (basePrice) {
@@ -136,126 +15,6 @@ $(function () {
       variantId: $('#js-nav-quick').data('variant-id'),
       quantity: $('.js-nav-current-input').data('moq') || 1,
       sku: $('#js-product-quikbuy').data('sku') || '',
-    }
-  };
-  const cartFormModule = {
-    maxQuantity: 1000000,
-    async handleAddToCart(result) {
-      try {
-        let errorMsg = '';
-        if (result.success) {
-          document.documentElement.dispatchEvent(
-            new CustomEvent('variant:added', {
-              bubbles: true,
-              detail: {
-                variant: result.data.hasOwnProperty('items') ? result.data['items'][0] : result.data,
-              },
-            })
-          );
-          const cartResponse = await fetch(`${window.themeVariables.routes.cartUrl}.js`);
-          const cartContent = await cartResponse.json();
-          document.documentElement.dispatchEvent(
-            new CustomEvent('cart:updated', {
-              bubbles: true,
-              detail: {
-                cart: cartContent,
-              },
-            })
-          );
-          cartContent['sections'] = result.data['sections'];
-          document.documentElement.dispatchEvent(
-            new CustomEvent('cart:refresh', {
-              bubbles: true,
-              detail: {
-                cart: cartContent,
-                openMiniCart: true,
-              },
-            })
-          );
-        } else {
-          const description = result.data?.description || '';
-          if (description.endsWith('are in your cart.')) {
-            errorMsg = 'Your cart already contains all available stock. Unable to add more';
-          } else if (description.endsWith('to the cart.')) {
-            errorMsg = 'The available stock has been added to your cart. The excess quantity beyond available stock cannot be added';
-          }
-          document.documentElement.dispatchEvent(
-            new CustomEvent('cart-notification:show', {
-              bubbles: true,
-              cancelable: true,
-              detail: {
-                status: result.success ? 'success' : 'error',
-                error: errorMsg || result.data?.description || '',
-              },
-            })
-         );
-        }
-      } catch (error) {
-        console.error('Failed to add to cart:', error);
-        document.documentElement.dispatchEvent(
-          new CustomEvent('cart-notification:show', {
-            bubbles: true,
-            cancelable: true,
-            detail: {
-              status: 'error',
-              error: 'Failed to add to cart, please try again later',
-            },
-          })
-        );
-      }
-    },
-    async addToCart(query, callback) {
-      try {
-        const variantId = query.variantId;
-        const formData = {
-          items: [{ id: variantId, quantity: query.quantity }],
-        };
-        const cart = await mainProductUtils.getCart();
-        if (cart.items.length > 0) {
-          const existingItem = cart.items.find((item) => item.id == variantId);
-          console.log("existingItem", existingItem)
-          if (existingItem) {
-            formData.items[0].properties = existingItem.properties;
-            // const totalQuantity = parseFloat(existingItem.quantity) + parseFloat(query.quantity);
-            // if (totalQuantity > parseFloat(cartFormModule.maxQuantity)) {
-            //   this.handleAddToCart({ success: false, data: {description: 'Only 1000000 items were added to your cart due to availability.' } });
-            //   return false;
-            // }
-          }
-        }
-
-        const response = await fetch('/cart/add.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
-        const resultObj = {
-          success: response.ok,
-          data: await response.json(),
-          status: response.status,
-        };
-        this.handleAddToCart(resultObj);
-      } catch (error) {
-        console.error('Error adding to cart:', error);
-        this.handleAddToCart({ success: false, data: { description: error } });
-      } finally {
-        callback && callback();
-      }
-    },
-    validateQuantityInput: function($input, info, callback) {
-      if (!info) return;
-      const inputValue = $input.val();
-      const moq = info.moq || 1;
-      const mpq = info.mpq || 1;
-      const maxQuantity = this.maxQuantity;
-      const newQuantity = mainProductUtils.validateQuantity(inputValue, moq, mpq, maxQuantity);
-      $input.val(newQuantity);
-      if (typeof callback === 'function') {
-        callback(newQuantity);
-      }
-    },
-    computed_price: function(discountJson, basePrice, quantity) {
-      return mainProductUtils.computePrice(discountJson, basePrice, quantity);
     }
   };
   const productNavBar = {
@@ -820,9 +579,9 @@ $(function () {
       quickBuyElement.fadeOut(); 
       tidioChat.fadeIn();
     }
+    const $bottomAddCart = $(".js-bottom-addcart");
+    const isBottomCartVisible = $bottomAddCart.is(':visible');
     if(window.innerWidth < 740) {
-      const $bottomAddCart = $(".js-bottom-addcart");
-      const isBottomCartVisible = $bottomAddCart.is(':visible');
       if (!isMainPaymentVisible && !isBottomCartVisible) {
         $bottomAddCart.fadeIn();
       } else if (isMainPaymentVisible && isBottomCartVisible) {
@@ -830,6 +589,9 @@ $(function () {
       }
       // js-bottom-addcart 
     } else if(window.innerWidth > 740) {
+      if(isBottomCartVisible) {
+        $bottomAddCart.fadeOut();
+      }
     }
     const header = $('#shopify-section-header');
     const isHeaderVisible = header.is(':visible');

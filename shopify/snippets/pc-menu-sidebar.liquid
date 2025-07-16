@@ -8,7 +8,7 @@
           <div class="menu-nav1">
             <ul>
               <li v-for="(menu, idx) in menu1" :class="{'is-selected': menu.isSelected}" :key="idx" @mouseenter="handleNextMenu(menu, 1)"  @click="navToCollection(menu)">
-                <img  :data-src="menu.img" class="lazy-image" v-lazy :title="menu.name">
+                <img  :data-src="menu.img" class="lazyload" :title="menu.name">
                 <span>{{ menu.name }}</span>
                 <svg v-if="menu.children?.length"  width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1.79363 12.5024L0.897461 11.6062L6.17046 6.33323L0.897461 1.06023L1.79363 0.164062L7.96279 6.33323L1.79363 12.5024Z" fill="#1C1B1F"/>

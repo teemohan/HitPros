@@ -6868,56 +6868,181 @@
  
   var ProductAttrs = class extends CustomHTMLElement {
     async connectedCallback() {
-      try {
-        const productData = await this.getProductAttrs();
-        if (!productData || !productData.selectionAttrs) {
-          $('.product-attrs-wrapper').hide();
-          return;
+      this.initVue()
+    }
+    get domsku() {
+      return $(this).data('sku');
+    }
+    initVue() {
+      let that = this
+      new Vue({
+        el: '#product-attrs',
+        name: 'ProductAttrs',
+        delimiters: ['[[', ']]'],
+        data() {
+          return {
+            sku: that.domsku,
+            showAttrs: true,
+            productAttrs: [],
+            currentAttrs: {},
+            availableCombinations: new Set(),
+            skuCodeMap: new Map(),
+            isProcessing: false
+          }
+        },
+        computed: {
+          selectedValues() {
+            return this.productAttrs.map(attr => attr?.selectedValue || '')
+          }
+        },
+        async created() {
+          await this.initializeProductData()
+        },
+        methods: {
+          getButtonClasses(attrIndex, value) {
+            const isSelected = value === this.productAttrs[attrIndex]?.selectedValue
+            const hasOtherSelected = this.selectedValues.some((val, idx) => idx != attrIndex && val != '')
+            let isDisabled = false
+
+            if (!isSelected && hasOtherSelected) {
+              const testSelection = [...this.selectedValues]
+              testSelection[attrIndex] = value
+              isDisabled = !this.isValidCombination(testSelection)
+            }
+
+            return {
+              'border-0E255D text-white font-medium bg-0E255D': isSelected,
+              'cursor-not-allowed bg-f0f7fb border-[#cbd9ee] text-[#cbd9ee]': isDisabled,
+              'text-1c406a border-0E255D bg-f0f7fb': !isSelected && !isDisabled
+            }
+          },
+          isButtonDisabled(attrIndex, value) {
+            const hasOtherSelected = this.selectedValues.some((val, idx) => idx != attrIndex && val != '')
+            if (!hasOtherSelected) return false
+
+            const testSelection = [...this.selectedValues]
+            testSelection[attrIndex] = value
+            return !this.isValidCombination(testSelection)
+          },
+          async initializeProductData() {
+            try {
+              const productData = await this.getProductAttrs()
+              if (!productData?.selectionAttrs) {
+                this.showAttrs = false
+                return
+              }
+              $('.js-attr-wrapper').removeClass('hidden')
+              const { selectionAttrs, availableAttrs = [], sku } = productData
+              this.currentAttrs = availableAttrs.find(item => item.skuCode == this.sku)?.attrs || []
+              this.processAvailableCombinations(selectionAttrs, availableAttrs) 
+              this.productAttrs = selectionAttrs.filter(attr => attr.attrName != 'match').map((attr, index) => ({
+                attrName: attr.attrName,
+                values: attr.values,
+                selectedValue: this.currentAttrs[index] || ''
+              }))
+              that.initializeProductInformation({
+                weightDimensions: sku.weightDimensions,
+                specifications: sku.specifications,
+                complianceCertificate: sku.complianceCertificate,
+                detailImages: sku.detailImages
+              });
+              triggerEvent(that, 'build-product-overview', { description: sku.description });
+            } catch (error) {
+              console.error(error)
+              this.showAttrs = false
+            } finally {
+              $('.js-attr-loading').addClass('hidden')
+            }
+          },
+          disableActions() { 
+            const addButton = document.querySelector('.cus-product .shopify-product-form .product-form__add-button') || '';
+            if (addButton) {
+              addButton.classList.add('disabled');
+              addButton.disabled = true;
+            }
+          },
+          enableActions() {
+            const addButton = document.querySelector('.cus-product .shopify-product-form .product-form__add-button') || '';
+            if (addButton) {
+              addButton.classList.remove('disabled');
+              addButton.disabled = false;
+            }
+          },
+          processAvailableCombinations(selectionAttrs, availableAttrs) {
+            const filteredAttrs = selectionAttrs.filter(attr => attr.attrName != 'match')
+             const attrNames = filteredAttrs.map(attr => attr.attrName)
+            const expectedLength = attrNames.length
+            const validVariants = availableAttrs.filter(variant => 
+              variant.attrs?.length == expectedLength
+            )
+            validVariants.forEach(variant => {
+              const comboKey = variant.attrs.join('|')
+              this.availableCombinations.add(comboKey)
+              if (variant.skuCode) {
+                this.skuCodeMap.set(comboKey, variant.skuCode)
+              }
+            })
+          },
+          handleAttrSelect(attrName, value) {
+            if (this.isProcessing) return
+            this.isProcessing = true
+            setTimeout(() => {
+              this.isProcessing = false
+            }, 300)
+            const attr = this.productAttrs.find(a => a.attrName == attrName)
+            if (!attr) return
+            attr.selectedValue = attr.selectedValue == value ? '' : value
+            this.checkAndNavigate()
+          },
+          checkAndNavigate() {
+            const selections = this.productAttrs.map(a => a.selectedValue)
+            if (selections.every(v => v) && this.isValidCombination(selections)) {
+              this.enableActions()
+              const skuCode = this.getSkuCodeForSelection(selections.join('|'))
+              if (skuCode && skuCode != this.sku) {
+                window.location.href = `/products/${skuCode}`
+              } else if (!skuCode) {
+                this.disableActions()
+                this.showWarningMessage()
+              }
+            } else {
+              this.disableActions()
+            }
+          },
+          showWarningMessage() {
+            this.$message({
+              showClose: true,
+              message: `Oops! We don't currently have it. Please check out other available options.`,
+              type: 'warning'
+            })
+          },
+          isValidCombination(selections) {
+            const selectionKey = selections.join('|')
+            return this.availableCombinations.has(selectionKey)
+          },
+          getSkuCodeForSelection(selectionKey) {
+            return this.skuCodeMap.get(selectionKey) || null
+          },
+          async getProductAttrs() {
+            try {
+              const res = await kkAjax.get(`/spu/selection-attrs?sku=${this.sku}`);
+              if (res.code == 200 && res.data) { 
+                return res.data
+              } else {
+                throw new Error(res.msg)
+              }
+            } catch (err) {
+              this.$message({
+                showClose: true,
+                message: err.message || 'Failed to get product information, please try again later',
+                type: 'warning'
+              })
+              return null
+            }
+          }
         }
-        const {
-          selectionAttrs,
-          spu,
-          availableAttrs = [],
-          sku: { description, weightDimensions, specifications, complianceCertificate, detailImages },
-        } = productData;
-        this.spu = spu;
-        this.selectionAttrs = selectionAttrs;
-        this.availableAttrs = availableAttrs;
-        this.processAvailableCombinations();
-        triggerEvent(this, 'build-product-overview', { description });
-        this.initializeProductAttributes(selectionAttrs);
-        this.initializeProductInformation({
-          weightDimensions,
-          specifications,
-          complianceCertificate,
-          detailImages
-        });
-      } catch (error) {
-        console.error(error);
-        this.handleError();
-      }
+      })
     }
-   
-    initializeProductAttributes(selectionAttrs) {
-      if (this.shouldHideAttributeSelector(selectionAttrs)) {
-        $('.product-attrs-wrapper').hide();
-      } else {
-        $('.product-attrs-wrapper').show();
-        const attrJsonMap = this.handleJsonMap();
-        this.updatedAttrs = this.updatedJsonMap(selectionAttrs, attrJsonMap);
-        this.buildAttrLine();
-        this.updateAttributeAvailability();
-      }
-    }
-   
-    shouldHideAttributeSelector(selectionAttrs) {
-      return (
-        selectionAttrs.find((item) => item.attrName === 'match') ||
-        selectionAttrs.length === 0 ||
-        (selectionAttrs.length === 1 && selectionAttrs[0].values.length <= 1)
-      );
-    }
-   
     initializeProductInformation({ weightDimensions, specifications, complianceCertificate, detailImages }) {
       try {
         triggerEvent(this, 'build-product-information', {
@@ -6930,294 +7055,6 @@
       } catch (error) {
         console.error('error', error);
       }
-    }
-    handleError() {
-      $('.product-attrs-wrapper').hide();
-      $('.product-information-wrapper').css('visibility', 'hidden');
-    }
-    processAvailableCombinations() {
-      this.availableCombinations = new Set();
-      this.skuCodeMap = new Map();
-      if (!this.availableAttrs || this.availableAttrs.length === 0) return;
-      const attrNameOrder = this.selectionAttrs.map(attr => attr.attrName);
-      this.availableAttrs.forEach(variant => {
-        if (variant.attrs && variant.attrs.length === attrNameOrder.length) {
-          const comboKey = variant.attrs.join('|');
-          this.availableCombinations.add(comboKey);
-         
-          if (variant.skuCode) {
-            this.skuCodeMap.set(comboKey, variant.skuCode);
-          }
-        }
-      });
-    }
-   
-    getCurrentSelectionArray() {
-      const selectionMap = new Map();
-      this.updatedAttrs.forEach(attr => {
-        const selected = attr.values.find(v => v.isSelected);
-        if (selected) {
-          selectionMap.set(attr.attrName, selected.value);
-        }
-      });
-      return this.selectionAttrs.map(attr => selectionMap.get(attr.attrName));
-    }
-   
-    updateAttributeAvailability() {
-      if (!this.availableCombinations || this.availableCombinations.size === 0) {
-        this.enableAllButtons();
-        return;
-      }
-      const currentSelection = this.getCurrentSelectionArray();
-      const firstCategorySelected = currentSelection[0] !== undefined;
-      if (!firstCategorySelected) {
-        this.enableAllButtons();
-        this.disableActions();
-        return;
-      }
-      this.updateSecondCategoryAvailability(currentSelection);
-      this.checkAndUpdateActions();
-    }
-    enableAllButtons() {
-      $(this).find('.attr-btn').prop('disabled', false);
-    }
-    updateSecondCategoryAvailability(currentSelection) {
-      if (this.selectionAttrs.length <= 1) return;
-      const secondCategoryLine = $(this).find(`.attr-line[data-attr="${this.selectionAttrs[1].attrName}"]`);
-      secondCategoryLine.find('.attr-btn').each((btnIndex, btn) => {
-      const btnValue = ($(btn).data('attr-value') || '').toString();
-        const isAvailable = this.isSecondCategoryValueAvailable(currentSelection[0], btnValue);
-        if (isAvailable) {
-          $(btn).prop('disabled', false);
-        } else {
-          $(btn).prop('disabled', true);
-          this.clearSelectionIfDisabled(btn, secondCategoryLine);
-        }
-      });
-    }
-    isSecondCategoryValueAvailable(firstCategoryValue, secondCategoryValue) {
-      for (const combo of this.availableCombinations) {
-        const [first, second] = combo.split('|');
-        if (first == firstCategoryValue && second == secondCategoryValue) {
-          return true;
-        }
-      }
-      return false;
-    }
-    clearSelectionIfDisabled(btn, categoryLine) {
-      if ($(btn).hasClass('selected')) {
-        $(btn).removeClass('selected');
-        this.updatedAttrs = this.updatedAttrs.map(item => {
-          if (item.attrName == this.selectionAttrs[1].attrName) {
-            item.values = item.values.map(valueItem => ({
-              ...valueItem,
-              isSelected: false
-            }));
-            categoryLine.find('.attr-value').text('');
-          }
-          return item;
-        });
-      }
-    }
-   
-    checkAndUpdateActions() {
-      const currentSelection = this.getCurrentSelectionArray();
-      const requiredSelections = Math.min(2, this.selectionAttrs.length);
-      const selectedCount = currentSelection.filter(val => val !== undefined).length;
-      
-      if (selectedCount >= requiredSelections && this.isValidCombination(currentSelection, requiredSelections)) {
-        this.enableActions();
-      } else {
-        this.disableActions();
-      }
-    }
-   
-    isValidCombination(currentSelection, requiredSelections) {
-      const selectionString = currentSelection.slice(0, requiredSelections).join('|');
-      for (const combo of this.availableCombinations) {
-        if (combo.startsWith(selectionString)) {
-          return true;
-        }
-      }
-      return false;
-    }
-    disableActions() { 
-      $('.cus-product .shopify-product-form .product-form__add-button')
-        .addClass('disabled')
-        .prop('disabled', true);
-      $('.cus-product .buy-bottom-box .ships .form button').prop('disabled', true);
-      $('.cus-product .buy-bottom-box .ships .form .input-container input').prop('disabled', true);
-      $('.cus-product .btn-wishlist').prop('disabled', true);
-    }
-    enableActions() {
-      $('.cus-product .shopify-product-form .product-form__add-button')
-        .removeClass('disabled')
-        .prop('disabled', false);
-      $('.cus-product .buy-bottom-box .ships .form button').prop('disabled', false);
-      $('.cus-product .buy-bottom-box .ships .form .input-container input').prop('disabled', false);
-      $('.cus-product .btn-wishlist').prop('disabled', false);
-    }
-    async initAttrBtnEvent() {
-      const _this = this;
-      $(this)
-        .find('.attr-btn')
-        .off('click')
-        .on('click', async function() {
-         
-          if ($(this).hasClass('disabled') || $(this).prop('disabled')) {
-            return;
-          }
-         
-          if ($(this).hasClass('selected')) {
-            return;
-          }
-          const attrName = $(this).closest('.attr-line').data('attr');
-          const attrValue = ($(this).data('attr-value') || '').toString();
-          _this.handleSelection(this, attrName, attrValue);
-          if (_this.shouldAttemptNavigation()) {
-            if (_this.currentSkuCode) {
-              window.location.href = `/products/${_this.currentSkuCode}`;
-            } else {
-              _this.showProductUnavailableMessage();
-              _this.disableActions();
-            }
-          }
-        });
-    }
-    handleSelection(button, attrName, attrValue) {
-      $(button).addClass('selected').siblings().removeClass('selected');
-      this.updatedAttrs = this.updatedAttrs.map(item => {
-        if (item.attrName == attrName) {
-          $(button).closest('.attr-line').find('.attr-value').text(attrValue);
-          item.values = item.values.map(valueItem => ({
-            ...valueItem,
-            isSelected: valueItem.value == attrValue
-          }));
-        }
-        return item;
-      });
-      this.updateAttributeAvailability();
-    }
-    shouldAttemptNavigation() {
-      const currentSelection = this.getCurrentSelectionArray();
-      const requiredSelections = Math.min(2, this.selectionAttrs.length);
-      const selectedCount = currentSelection.filter(val => val !== undefined).length;
-      if (selectedCount >= requiredSelections) {
-        const selectionKey = currentSelection.slice(0, requiredSelections).join('|');  
-        this.currentSkuCode = this.getSkuCodeForSelection(selectionKey);  
-        return this.isValidCombination(currentSelection, requiredSelections);
-      }
-      return false;
-    }
-    getSkuCodeForSelection(selectionKey) {
-      if (!this.skuCodeMap) return null;
-      if (this.skuCodeMap.has(selectionKey)) {
-        return this.skuCodeMap.get(selectionKey);
-      }
-      for (const [combo, skuCode] of this.skuCodeMap.entries()) {
-        if (combo.startsWith(selectionKey)) {
-          return skuCode;
-        }
-      }
-      return null;
-    }
-   
-    showProductUnavailableMessage() {
-      window.vue_message.$message({
-        showClose: true,
-        message: `Oops! We don't currently have it. Please check out other available options.`,
-        type: 'warning',
-      });
-    }
-    handleFakeObj(fakeObj) { 
-      if (!fakeObj) return new Map();
-      const map = new Map();
-      Object.keys(fakeObj).forEach(key => {
-        map.set(key, fakeObj[key]);
-      });
-      return map;
-    }
-    buildAttrLine() {
-      const container = $('.product-attrs-wrapper .product-attrs');
-      container.empty();
-      this.updatedAttrs.forEach(item => {
-        if (item.values.length <= 1) return;
-        const selectedValue = item.values.find(value => value.isSelected);
-        const attrLine = $(`
-          <div class="attr-line" data-attr="${item.attrName}">
-            <div class="attr-name-header">
-              <span class="attr-name">${item.attrName}: </span>
-              <span class="attr-value">${selectedValue ? selectedValue.value : ''}</span>
-            </div>
-            <div class="attrs-wrapper"></div>
-          </div>
-        `);
-        const attrsWrapper = attrLine.find('.attrs-wrapper');
-        item.values.forEach(value => {
-          const attrBtn = $(`
-            <button class="attr-btn ${value.isSelected ? 'selected' : ''}" 
-              data-attr-value="${value.value}">${value.value}</button>
-          `);
-          attrsWrapper.append(attrBtn);
-        });
-        container.append(attrLine);
-      });
-      this.initAttrBtnEvent();
-    }
-    updatedJsonMap(selectionAttrs, attrJsonMap) {
-      return selectionAttrs
-        .map(item => {
-          const values = item.values.map(value => {
-            const isSelected = attrJsonMap.has(item.attrName) &&  value == attrJsonMap.get(item.attrName);
-            return { value, isSelected };
-          });
-          return { ...item, values };
-        })
-        .filter(item => item.values.length > 0);
-    }
-    handleJsonMap() {
-      const salesFakeJson = $(this).data('sales') || {};
-      const commonFakeJson = $(this).data('common') || {};
-      const salesMap = this.handleFakeObj(salesFakeJson);
-      const commonMap = this.handleFakeObj(commonFakeJson);
-      return new Map([...salesMap, ...commonMap]);
-    }
-    async getProductAttrs() {
-      try {
-        const response = await fetch(`${window.zkh.api}/spu/selection-attrs?sku=${this.sku}`);
-        const res = await response.json();
-        if (res.code !== 200) {
-          this.showApiErrorMessage(res.msg);
-          this.hideProductElements();
-          return null;
-        }
-        return res.data;
-      } catch (err) {
-        this.showApiErrorMessage("Failed to get product information, please try again later");
-        this.hideProductElements();
-        return null;
-      }
-    }
-   
-    showApiErrorMessage(message) {
-      window.vue_message.$message({
-        showClose: true,
-        message,
-        type: 'warning',
-      });
-    }
-   
-    hideProductElements() {
-      $('.product-overview .product-desc').hide();
-      $('.product-attrs-wrapper').hide();
-      $('.product-information .product-info-line.weight-dimensions').hide();
-      $('.product-information .product-info-line.specifications').hide();
-      $('.product-information .product-info-line.compliance-certificates').hide();
-      $('.product-media-detail-wrapper').hide();
-    }
-   
-    get sku() {
-      return $(this).data('sku');
     }
   };
   window.customElements.define('product-attrs', ProductAttrs);
