@@ -154,11 +154,10 @@
 .product-img-swiper-thumbs .swiper-slide {
   width: 25%;
   height: 100%;
-  opacity: 0.4;
 }
 
 .product-img-swiper-thumbs .swiper-slide-thumb-active {
-  opacity: 1;
+  border: 1px solid #D3DEF1;
 }
 
 .swiper-slide img {

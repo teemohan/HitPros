@@ -1,108 +1,130 @@
 
 {% raw %}
   <script type="text/x-template" id="product-item-search">
-    <div class="index-product-item list-type product-item" :data-product-id="product.productId">
-      <div class="list-product-media">
-        <div class="product-img-swiper swiper">
-          <div class="swiper-button-prev">
-            <icon-media-swiper-prev />
-          </div>
-          <div class="swiper-wrapper">
-            <template v-for="(url, idx) in product.images">
-              <div v-if="url" :key="idx" class="swiper-slide">
-                <img loading="lazy" :src="url" width="auto" height="auto">
+    <div class="index-product-item js-list-type w-full bg-white rounded-sm px-2 pt-6 pb-3.5  fb-sm:px-5 fb-sm:pb-7 fb-sm:pt-6" :data-product-id="product.productId">
+      <div class="w-full h-full flex flex-col fb-sm:grid fb-sm:grid-cols-[1fr_148px] fb-sm:gap-4 fb-md:gap-5 fb-1300:gap-6">
+        <div class="w-full h-full flex justify-between space-x-5 fb-sm:space-x-12 fb-sm:flex-1">
+            <div class="w-25 h-full relative fb-sm:w-50">
+              <div class="product-img-swiper w-full h-full swiper relative fb-sm:w-full fb-sm:h-50">
+                <div class="js-swiper-button-prev left-0 shadow-[0_2px_2px_1px_rgba(0,0,0,0.06)] absolute w-6 h-6 bg-white rounded-full justify-center items-center z-2  top-10 hidden fb-sm:top-1/2 fb-sm:-translate-y-1/2">
+                  <icon-media-swiper-prev />
+                </div>
+                <div class="swiper-wrapper">
+                  <template v-for="(url, idx) in product.images">
+                    <div v-if="url" :key="idx" class="swiper-slide cursor-pointer h-full flex items-center justify-center">
+                      <img class="lazyload !h-auto" :data-src="url" width="400" height="400" />
+                    </div>
+                  </template>
+                </div>
+                <div class="js-swiper-button-next right-0 shadow-[0_2px_2px_1px_rgba(0,0,0,0.06)] absolute w-6 h-6 bg-white rounded-full justify-center items-center z-2  top-10 hidden fb-sm:top-1/2 fb-sm:-translate-y-1/2">
+                  <icon-media-swiper-next />
+                </div>
               </div>
-            </template>
-          </div>
-          <div class="swiper-button-next">
-            <icon-media-swiper-next />
-          </div>
-        </div>
-        <div thumbsSlider="" class="product-img-swiper-thumbs swiper">
-          <div class="swiper-wrapper">
-            <template v-for="(url, idx) in product.images">
-              <div v-if="url" :key="idx" class="swiper-slide">
-                <img loading="lazy" :src="url" width="auto" height="auto">
+              <div thumbsSlider="" class="product-img-swiper-thumbs swiper hidden fb-sm:block fb-sm:h-12">
+                <div class="swiper-wrapper">
+                  <template v-for="(url, idx) in product.images">
+                    <div v-if="url" :key="idx" class="swiper-slide w-full h-full flex items-center justify-center">
+                      <img class="lazyload !h-auto relative" :data-src="url" width="200" height="200" />
+                    </div>
+                  </template>
+                </div>
               </div>
-            </template>
-          </div>
-        </div>
-      </div>
-      
-      <div class="list-product-info hidden-phone">
-        <span class="product-item-meta__vendor">{{ product.brand }}</span>
-        <a @click="handleClickLink" :href="product.productUrl" :title="product.title" class="list-product-title ellipsis2">{{ product.title }}</a>
-        <span v-if="product.manufacturerModelNumber" class="model">Model: {{ product.manufacturerModelNumber }}</span>
-        <ul v-if="product.productCharacter" class="product-feature">
-          <li v-for="(character, idx) in product.productCharacter.slice(0, 3)" :key="idx">{{ character }}</li>
-        </ul>
-      </div>
-
-      <div class="product-item__info">
-        <div class="product-item-meta">
-          <span class="product-item-meta__vendor hidden-lap-and-up">{{ product.brand }}</span>
-          <a
-            @click="handleClickLink"
-            :href="product.productUrl"
-            :title="product.title"
-            class="product-item-meta__title ellipsis2 hidden-tablet-and-up"
-          >
-            {{ product.title }}
-          </a>
-
-          <div v-if="String(product.inventoryQuantity)" class="inventoryQuantity hidden-tablet-and-up">
-            <span v-if="product.inventoryQuantity <= 0" class="coming-stock stock-tag">Restocking</span>
-            <span v-else-if="product.inventoryQuantity >= productDemand" class="instock-ready stock-tag">In Stock</span>
-            <span v-else class="instock-partial stock-tag">In Stock</span>
-          </div>
-          
-          <div class="cus-price-list">
-            <span class="price">{{ product.priceFormat }}</span>
-            <template v-if="product.compareAtPrice && product.compareAtPrice > product.price">
-              <div class="discount-price">
-                <span>
-                  {{ product.compareAtPriceFormat }}
-                </span>
-                <span>{{ product.discountPercentage }}%OFF</span>
+            </div>
+            <div class="flex-1 flex flex-col fb-sm:justify-between">
+              <div class="w-full flex flex-col fb-sm:hidden">
+                <div v-if="product.brand" class="text-main text-14 font-bold mb-3 hover:underline" @click="handleClickLink">
+                  {{ product.brand }}
+                </div>
+                <div :title="product.title" class="text-main text-14 mb-4.5 hover:underline"  @click="handleClickLink">
+                  {{ product.title }}
+                </div>
+                <div v-if="product.manufacturerModelNumber" class="text-575757 text-12 mb-2">
+                  Model: {{ product.manufacturerModelNumber }}
+                </div>
+                <div class="w-full flex items-center justify-start space-x-3">
+                  <span class="text-main text-22 font-bold fb-sm:text-26">
+                    {{ product.priceFormat }}
+                  </span>
+                  <template v-if="product.compareAtPrice && product.compareAtPrice > product.price">
+                    <div class="flex flex-col">
+                      <span class="line-through text-10 text-main">{{ product.compareAtPriceFormat }}</span>
+                      <span class="text-10 text-red-600">{{ product.discountPercentage }}%OFF</span>
+                    </div>
+                  </template>
+                  <div v-if="String(product.inventoryQuantity)" class="inventoryQuantity">
+                    <span v-if="product.inventoryQuantity <= 0" class="coming-stock stock-tag">Restocking</span>
+                    <span v-else-if="product.inventoryQuantity >= productDemand" class="instock-ready stock-tag">In Stock</span>
+                    <span v-else class="instock-partial stock-tag">In Stock</span>
+                  </div>
+                </div>
               </div>
-            </template>
-          </div>
-          <div v-if="String(product.inventoryQuantity)" class="inventoryQuantity hidden-phone">
-            <span v-if="product.inventoryQuantity <= 0" class="coming-stock stock-tag">Restocking</span>
-            <span v-else-if="+product.inventoryQuantity >= +productDemand" class="instock-ready stock-tag">In Stock</span>
-            <span v-else class="instock-partial stock-tag">In Stock</span>
-          </div>
-          <product-item-delevery :product="product" :productDemand="productDemand"></product-item-delevery>
-        </div>
-        <div class="list-quantity">
-          <div class="list-quantity-title hidden-phone">Quantity</div>
-          <div class="quantity-selector">
-            <button type="button" @click="handleQuantityMinus" class="quantity-selector__button minus">
-              <icon-quantity-minus />
-            </button>
-            <input
-              type="text"
-              size="2"
-              v-model.number="productDemand" 
-              @change="handleQuantityChange"
-              class="quantity-selector__input"
-            >
-            <button type="button" @click="handleQuantityPlus" class="quantity-selector__button plus">
-              <icon-quantity-plus />
-            </button>
-          </div>
-        </div>
+              <div class="hidden fb-sm:flex flex-col">
+                <div class="w-full mb-2 space-x-3 line-clamp-1">
+                 <span class="text-12254D text-14 hover:underline cursor-pointer" v-if="product.brand" @click="handleClickLink"> {{ product.brand }} </span>          
+                 <span class="text-12254D text-14  hover:underline cursor-pointer" v-if="product.manufacturerModelNumber" @click="handleClickLink">Model: {{ product.manufacturerModelNumber }}</span>
+                </div>
+                <div class="w-full flex flex-col">
+                  <a @click="handleClickLink" :href="product.productUrl" :title="product.title" class="line-clamp-2 font-bold text-16 text-main cursor-pointer hover:underline">
+                    {{ product.title }}
+                  </a>
+                  <ul v-if="product.productCharacter" class="mt-4.5 pl-4">
+                    <li class="list-disc text-12254D text-14" v-for="(character, idx) in product.productCharacter.slice(0, 3)" :key="idx">
+                      <span class="cursor-pointer hover:underline" @click="handleClickLink">{{ character }} </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <product-item-delevery :product="product" :productDemand="productDemand"></product-item-delevery>
+            </div>
 
-        <div class="product-item__quick-form">
-          <el-button :loading="cartLoading" @click="handleAddToCart" class="button yellow button--outline button--text button--full ">
-            <span class="loader-button__text">
-              Add to Cart
-              <icon-cart />
+        </div>
+        <div class="w-full flex items-center justify-between h-8.5 fb-sm:flex-col fb-sm:h-full fb-sm:items-start">
+          <div class="w-full hidden fb-sm:flex items-center justify-start space-x-3 fb-sm:flex-col fb-sm:justify-between fb-sm:items-start fb-sm:space-x-0">
+            <span class="text-main text-22 font-bold fb-sm:text-26">
+              {{ product.priceFormat }}
             </span>
-          </el-button>
+            <template v-if="product.compareAtPrice && product.compareAtPrice > product.price">
+              <div class="flex items-center justify-start">
+                <span class="text-14 line-through text-main">{{ product.compareAtPriceFormat }}</span>
+                <span class="text-xs text-red-600 ml-1">{{ product.discountPercentage }}%OFF</span>
+              </div>
+            </template>
+            <div v-if="String(product.inventoryQuantity)" class="inventoryQuantity">
+              <span v-if="product.inventoryQuantity <= 0" class="coming-stock stock-tag">Restocking</span>
+              <span v-else-if="product.inventoryQuantity >= productDemand" class="instock-ready stock-tag">In Stock</span>
+              <span v-else class="instock-partial stock-tag">In Stock</span>
+            </div>
+          </div>
+          <div class="w-full flex justify-between space-x-5 items-center h-full fb-sm:space-x-0 fb-sm:h-auto fb-sm:block">
+
+            <div class="w-25 fb-sm:w-full">
+              <div class="w-full text-darkmain text-14 hidden fb-sm:mb-2 fb-sm:block">Quantity</div>
+              <div class="w-25 fb-sm:w-full border border-D3DEF1 bg-white h-8.5 fb-sm:h-10 fb-sm:px-3 rounded-sm flex justify-between items-center px-2 space-x-0.5">
+                <button type="button" @click="handleQuantityMinus" class="w-4 h-full">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.17585 6.8436H9.07417H1.20312V9.09247H9.07417H9.17585H14.6964V6.8436H9.17585Z" fill="#092A6F"></path></svg>
+                </button>
+                <input
+                  type="text"
+                  size="2"
+                  v-model.number="productDemand" 
+                  @change="handleQuantityChange"
+                  class="flex-1 w-14 fb-sm:w-30 flex justify-center text-center items-center px-1 border-none text-20 text-main"
+                >
+                <button type="button" @click="handleQuantityPlus" class="w-4 h-full">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.07417 6.84361V1.22144H6.8253V6.84361H1.20312V9.09248H6.8253V14.7147H9.07417V9.09248H14.6964V6.84361H9.07417Z" fill="#08296F"></path></svg>
+                </button>
+              </div>
+            </div>
+             <el-button :loading="cartLoading" @click="handleAddToCart" class="flex fb-sm:mt-2 w-full h-full fb-sm:h-10 bg-button text-main rounded-sm items-center justify-center border-none text-14 font-bold hover:border-none hover:bg-button hover:text-main">
+                <span class="loader-button__text">
+                  Add to Cart
+                  <icon-cart />
+                </span>
+              </el-button>
+          </div>
         </div>
       </div>
-    </div>
+    </div> 
   </script>
 {% endraw %}
 
@@ -159,9 +181,6 @@
         });
         window.location.href = this.product.productUrl;
       },
-      handleWishChange() {
-        this.$emit('wish-change', this.product)
-      },
       handleQuantityPlus() {
         this.productDemand = this.productDemand + this.mpq;
         if(this.productDemand > 1000000) {
@@ -187,7 +206,7 @@
       },
 
       initMediaSwiper() {
-        const thumbnails = new Swiper(`.list-type[data-product-id='${this.product.productId}'] .product-img-swiper-thumbs`, {
+        const thumbnails = new Swiper(`.js-list-type[data-product-id='${this.product.productId}'] .product-img-swiper-thumbs`, {
           spaceBetween: 6,
           slidesPerView: 3,
           freeMode: true,
@@ -206,98 +225,32 @@
             },
           },
         });
-        new Swiper(`.list-type[data-product-id='${this.product.productId}'] .product-img-swiper`, {
+        new Swiper(`.js-list-type[data-product-id='${this.product.productId}'] .product-img-swiper`, {
           touchStartPreventDefault: true,
           passiveListeners: false,
           touchAngle: 70,              
           threshold: 10,
           lazy: true,
           navigation: {
-            nextEl: `.list-type[data-product-id='${this.product.productId}'] .swiper-button-next`,
-            prevEl: `.list-type[data-product-id='${this.product.productId}'] .swiper-button-prev`,
+            nextEl: `.js-list-type[data-product-id='${this.product.productId}'] .js-swiper-button-next`,
+            prevEl: `.js-list-type[data-product-id='${this.product.productId}'] .js-swiper-button-prev`,
           },
           thumbs: {
             swiper: thumbnails,
           },
         });
       },
-      async setLineAttr(param) {
-        const response = await fetch('/cart.js');
-        const res = await response.json();
-        if(res.items.length == 0) return;
-        const line_item = res.items.find(item => item.id == param.id);
-        if(line_item) param.properties = line_item.properties;
-      },
       async handleAddToCart() {
+        this.cartLoading = true;
         try {
-          const param = {
-            items: [{
-              id: this.product.variantId,
-              quantity: this.productDemand,
-            }]
-          }
-          this.cartLoading = true;
-          await this.setLineAttr(param.items[0]);
-          const response = await fetch('/cart/add.js', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(param)
-          })
-          const responseJson = await response.json();
-          let errorMsg;
-          if (response.ok) {
-            document.documentElement.dispatchEvent(
-              new CustomEvent('variant:added', {
-                bubbles: true,
-                detail: {
-                  variant: responseJson.hasOwnProperty('items') ? responseJson['items'][0] : responseJson,
-                },
-              })
-            );
-            fetch(`${window.themeVariables.routes.cartUrl}.js`).then(async (response2) => {
-              const cartContent = await response2.json();
-              document.documentElement.dispatchEvent(
-                new CustomEvent('cart:updated', {
-                  bubbles: true,
-                  detail: {
-                    cart: cartContent,
-                  },
-                })
-              );
-              cartContent['sections'] = responseJson['sections'];
-              document.documentElement.dispatchEvent(
-                new CustomEvent('cart:refresh', {
-                  bubbles: true,
-                  detail: {
-                    cart: cartContent,
-                    openMiniCart: window.themeVariables.settings.cartType === 'drawer',
-                  },
-                })
-              );
-            });
-          } else {
-            if (responseJson['description'].endsWith('are in your cart.')) {
-              errorMsg = 'Your cart already contains all available stock Unable to add more';
-            } else if (responseJson['description'].endsWith('to the cart.')) {
-              errorMsg =
-                'The available stock has been added to your cart，the excess quantity beyond available stock cannot be added';
-            }
-          }
-          document.documentElement.dispatchEvent(
-            new CustomEvent('cart-notification:show', {
-              bubbles: true,
-              cancelable: true,
-              detail: {
-                status: response.ok ? 'success' : 'error',
-                error: errorMsg || responseJson['description'] || '',
-              },
-            })
-          );
+          await cartFormModule.addToCart({
+            variantId: this.product.variantId,
+            quantity: this.productDemand
+          }, () => {
+            this.cartLoading = false;
+          });
         } catch (error) {
           console.error(error);
-        } finally {
           this.cartLoading = false;
         }
       },

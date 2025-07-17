@@ -1330,6 +1330,10 @@ video {
   width: 100%;
 }
 
+.w-28 {
+  width: 7rem;
+}
+
 .min-w-20 {
   min-width: 5rem;
 }
@@ -1665,6 +1669,10 @@ video {
 
 .overflow-hidden {
   overflow: hidden;
+}
+
+.overflow-clip {
+  overflow: clip;
 }
 
 .overflow-visible {
@@ -2065,6 +2073,11 @@ video {
   padding-bottom: 2rem;
 }
 
+.px-0\.5 {
+  padding-left: 0.125rem;
+  padding-right: 0.125rem;
+}
+
 .pb-0\.5 {
   padding-bottom: 0.125rem;
 }
@@ -2165,6 +2178,10 @@ video {
   padding-top: 0.5rem;
 }
 
+.pt-3 {
+  padding-top: 0.75rem;
+}
+
 .pt-4 {
   padding-top: 1rem;
 }
@@ -2185,16 +2202,8 @@ video {
   padding-top: 1.5rem;
 }
 
-.pt-7 {
-  padding-top: 1.75rem;
-}
-
 .pt-8 {
   padding-top: 2rem;
-}
-
-.pt-3 {
-  padding-top: 0.75rem;
 }
 
 .text-left {
@@ -2738,6 +2747,11 @@ video {
     margin-bottom: 2.5rem;
   }
 
+  .fb-sm\:my-5 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
   .fb-sm\:-mt-3 {
     margin-top: -0.75rem;
   }
@@ -2828,6 +2842,18 @@ video {
 
   .fb-sm\:mt-9 {
     margin-top: 2.25rem;
+  }
+
+  .fb-sm\:mt-5 {
+    margin-top: 20px;
+  }
+
+  .fb-sm\:mb-5 {
+    margin-bottom: 20px;
+  }
+
+  .fb-sm\:mb-4 {
+    margin-bottom: 1rem;
   }
 
   .fb-sm\:line-clamp-2 {
@@ -3470,20 +3496,16 @@ video {
     padding-top: 0.5rem;
   }
 
+  .fb-sm\:pt-4 {
+    padding-top: 1rem;
+  }
+
   .fb-sm\:pt-4\.5 {
     padding-top: 18px;
   }
 
   .fb-sm\:pt-6 {
     padding-top: 1.5rem;
-  }
-
-  .fb-sm\:pt-8 {
-    padding-top: 2rem;
-  }
-
-  .fb-sm\:pt-4 {
-    padding-top: 1rem;
   }
 
   .fb-sm\:text-14 {
@@ -3521,6 +3543,11 @@ video {
     line-height: 30px;
   }
 
+  .fb-sm\:text-28 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
   .fb-sm\:text-32 {
     font-size: 32px;
     line-height: 40px;
@@ -3539,11 +3566,6 @@ video {
   .fb-sm\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
-  }
-
-  .fb-sm\:text-28 {
-    font-size: 28px;
-    line-height: 32px;
   }
 
   .fb-sm\:font-bold {

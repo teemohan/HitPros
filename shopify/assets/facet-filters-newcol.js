@@ -163,8 +163,14 @@ class FilterDrawer {
 handleFilterButtonClick(event) {
   const button = event.currentTarget;
   const filterType = button.getAttribute('data-filter-type');
-  const svg = button.querySelector('svg');
-  this.openDrawer(filterType, button);
+  const isDrawerOpen = !this.drawer.classList.contains('invisible');
+  const isCurrentFilterActive = button.classList.contains('bg-darkmain');
+
+  if (isDrawerOpen && isCurrentFilterActive) {
+    this.closeDrawer();
+  } else {
+    this.openDrawer(filterType, button);
+  }
 }
   handleDrawerBackgroundClick(event) {
    
@@ -211,7 +217,7 @@ handleFilterButtonClick(event) {
       if (e.name === 'AbortError') {
         return;
       }
-      console.error('筛选器处理错误:', e);
+      console.error('error:', e);
     }
     this.closeDrawer();
   }
@@ -264,7 +270,7 @@ handleFilterButtonClick(event) {
         if (e.name === 'AbortError') {
           return;
         }
-        console.error('筛选器处理错误:', e);
+        console.error('error:', e);
       }
       this.closeDrawer();
     }

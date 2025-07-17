@@ -1,38 +1,87 @@
+ {% comment %} <i class="el-icon-close text-18 font-bold text-main cursor-pointer"></i> {% endcomment %}
 {% raw %}
   <script type="text/x-template" id="product-item-delevery">
-    <div class="buy-bottom-box-wrapper">
-      <div class="buy-bottom-box">
+    <div class="w-full pb-2 fb-sm:pb-0">
+      <div class="bg-white hidden fb-sm:flex flex-col gap-1.5 mt-10 fb-sm:mt-2">
         <div class="ships">
-          <div class="expect">
-            <span>Enter a ZIP Code.</span>
+          <div class="expect text-14 text-12254D">
+            <span class="">Enter a ZIP Code.</span>
           </div>
-          <el-form class="form el-reset-from" ref="ruleForm" :model="ruleForm" :rules="rules">
-            <el-form-item prop="zipCode">
+          <el-form class="form reset-input-zip flex items-center justify-start space-x-5 mt-2" ref="ruleForm" :model="ruleForm">
+            <el-form-item class="w-8.75r !mb-0 h-9" prop="zipCode">
               <el-input
                 v-model="ruleForm.zipCode"
                 placeholder="ZIP Code"
-                @keydown.enter.native.prevent="handleComputedDeleveryDate">
+                class="[&_input]:h-9 [&_input]:w-8.75r [&_input]:text-darkmain text-center"
+                @keydown.enter.native.prevent="handleComputedDeleveryDate"
+              >
               </el-input>
             </el-form-item>
             <el-button
               :loading="loading"
-              @click.stop="handleComputedDeleveryDate">
+              @click.stop="handleComputedDeleveryDate"
+              class="border h-9 border-main text-main text-16 w-25 flex items-center justify-center rounded-[2px] hover:bg-white hover:text-main hover:border-main focus:text-white"
+              >
               Submit
             </el-button>
           </el-form>
-          <div class="line-item__property date" v-if="isEstimateShow">
+          <div class="text-14 mt-4 text-main" v-if="isEstimateShow">
             <template v-if="deleveryRes.availableInventoryCount === 0">
-              <span>Expected to arrive between {{ formatDate(stockDateStart) }} and {{ formatDate(stockDateEnd) }}.</span>
+              <div>Expected to arrive between <span class="font-bold">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold">{{ formatDate(stockDateEnd) }}</span>.</div>
             </template>
             <template v-else-if="deleveryRes.availableInventoryCount >= deleveryRes.demandQuantity">
-              <span>Expected to arrive on {{ formatDate(deleveryRes.availableInventoryDeliveryTimeStamp) }}.</span>
+              <div>Expected to arrive on <span class="font-bold">{{ formatDate(deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
             </template>
             <template v-else>
-              <span>Partial expected to arrive on {{ formatDate(+deleveryRes.availableInventoryDeliveryTimeStamp) }}.</span>
-              <span>The remaining balance is expected to arrive between {{ formatDate(stockDateStart) }} and {{ formatDate(stockDateEnd) }}.</span>
+              <div>Partial expected to arrive on <span class="font-bold">{{ formatDate(+deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
+              <div>The remaining balance is expected to arrive between <span class="font-bold">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold">{{ formatDate(stockDateEnd) }}</span>.</div>
             </template>
           </div>
         </div>
+      </div>
+      <div class="block w-full fb-sm:hidden mt-3.5 mb-2">
+        <el-dropdown class="w-full" trigger="click"  ref="dropdownRef"  placement="bottom-end">
+          <span class="el-dropdown-link text-darkmain text-14">
+            Enter Zip Code
+            <i class="el-icon-arrow-down el-icon--right text-darkmain font-bold"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown" class="w-15r pb-5 pt-2 px-2.5">
+            <div class="w-full h-5 flex items-end justify-end" @click="goCloseDrop">
+              <i class="el-icon-close text-18 font-bold text-main cursor-pointer"></i>
+            </div>
+            <div class="dropdown-form mt-2" @click.stop>
+              <el-form class="form flex items-center justify-between space-x-2" ref="mobileRuleForm" :model="ruleForm">
+                <el-form-item prop="zipCode" class="h-full w-23 !mb-0 flex items-center justify-between">
+                  <el-input
+                    v-model="ruleForm.zipCode"
+                    class="[&_input]:text-14 [&_input]:border [&_input]:border-D3DEF1 [&_input]:h-8 [&_input]:rounded-sm"
+                    placeholder="ZIP Code"
+                    @keydown.enter.native.prevent="handleComputedDeleveryDate">
+                  </el-input>
+                </el-form-item>
+                <el-button
+                  :loading="loading"
+                  @click.stop="handleComputedDeleveryDate"
+                  class="h-8 flex-1 text-darkmain text-14 font-bold border border-0A2B6F rounded-sm flex items-center justify-center hover:bg-white hover:text-main hover:border-main focus:text-white"
+                >
+                  Submit
+                </el-button>
+              </el-form>
+              <div class="text-main text-12" v-if="isEstimateShow">
+                <template v-if="deleveryRes.availableInventoryCount === 0">
+                  <div>Expected to arrive between <span class="font-bold">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold">{{ formatDate(stockDateEnd) }}</span>.</div>
+                </template>
+                <template v-else-if="deleveryRes.availableInventoryCount >= deleveryRes.demandQuantity">
+                  <div>Expected to arrive on <span class="font-bold">{{ formatDate(deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
+                </template>
+                <template v-else>
+                  <div>Partial expected to arrive on <span class="font-bold">{{ formatDate(+deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
+                  <div>The remaining balance is expected to arrive between <span class="font-bold">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold">{{ formatDate(stockDateEnd) }}</span>.</div>
+                </template>
+              </div>
+            </div>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </div>
   </script>
@@ -63,9 +112,6 @@
           zipCode: window.zkh.customerZipCode || '',
         },
         isChangedZip: false,
-        rules: {
-          zipCode: [{ validator: this.validateZipCode, trigger: 'blur' }],
-        },
         zipcodeUpdateHandler: null
       };
     },
@@ -81,21 +127,8 @@
       document.addEventListener('zipcode-updated', this.zipcodeUpdateHandler);
     },
     methods: {
-      validateZipCode(rule, value, callback) {
-        if (!value) {
-          return callback(new Error('ZIP Code is required'));
-        } else if (String(value).length !== 5) {
-          return callback(new Error('Zip code must be 5 digits'));
-        } else {
-          return callback();
-          {% comment %} getZipCode('US', value, function (result) {
-            if(result?.valid) {
-              return callback();
-            } else {
-              return callback(new Error('The ZIP Code is invalid.'));
-            }
-          }); {% endcomment %}
-        }
+      goCloseDrop () {
+        this.$refs.dropdownRef.hide();
       },
       formatDate(timestamp, timezoneOffset = -5) {
         const date = new Date(+timestamp);

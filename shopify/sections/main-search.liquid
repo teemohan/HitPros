@@ -7,187 +7,204 @@
     {%- assign active_filters_count = active_filters_count | plus: 1 -%}
   {%- endif -%}
 {%- endfor -%}
-{{ 'aside-filter-reset.css' | asset_url | stylesheet_tag }}
-{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
 {{ 'index-product-item-swiper.css' | asset_url | stylesheet_tag }}
 {{ 'main-search.css' | asset_url | stylesheet_tag }}
 
-<section>
+<section class="bg-EAEEF1 w-full pt-3 fb-sm:pt-4">
   {%- if search.performed -%}
-    <div class="container">
+    <div class="container bg-transparent">
       <search-page
         complete-for="[]"
         section-id="{{ section.id }}"
         terms="{{ search.terms | escape }}"
         class="main-search__results"
       >
-        <div class="result-text-wrapper">
-          <div class="result-text">Showing Results For {{ 'search.general.terms' | t: terms: search.terms }}</div>
-          <div class="result-num">(0 products)</div>
+        <div class="js-filter-noresult w-full fb-sm:mb-4">
+          <span class="text-24 text-main font-bold fb-sm:text-28">Results for {{ 'search.general.terms' | t: terms: search.terms }}</span>
+          <span class="js-result-num text-666666 text-12 fb-sm:text-14 hidden">(0 products)</span>
+        </div>
+        <div class="js-filter-show-noresult hidden mt-2 mb-4 fb-sm:mt-0 fb-sm:mb-4 w-full">
+          <div class="text-24 text-main font-bold fb-sm:text-28 text-center">No results for {{ 'search.general.terms' | t: terms: search.terms }}</div>
+          <div class="text-12 fb-sm:text-18 mt-4 fb-sm:mt-4 text-black text-center">
+            <p class="text-center">While we don't have that specific item right now, there's a lot more to discover! </p>
+            <p class="text-center">Take a look at these items we think you'll love: </p>
+          </div>
         </div>
         <div
-          id="search-{{ section.id }}-product"
-          class="main-search__category-result"
-        >
-        <product-search-facet section-id="{{ section.id }}" class="product-facet">
-          <div class="product-facet__aside">
-            <safe-sticky offset="30" class="product-facet__aside-inner">
-              <div class="product-facet__filters-header hidden-pocket">
-                <p class="heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}">
-                  {{ 'collection.general.filters' | t }}
-                </p>
-              </div>
-              {%- render 'facet-filters-search',
-                filters: search.filters,
-                filters_position: section.settings.filter_position
-              -%}
-            </safe-sticky>
-          </div>
-
-          <div id="facet-main" class="product-facet__main anchor" role="region" aria-live="polite">
-            <div class="results-wrapper">
-              <div class="product-facet__meta-bar anchor">
-                {%- if section.settings.filter_position == 'drawer'
-                  and section.settings.show_filters
+          id="search-{{ section.id }}-product" class="js-main-search-list w-full">
+          <product-search-facet section-id="{{ section.id }}" class="product-facet">
+            <div class="js-filter-noresult product-facet__aside">
+              <safe-sticky offset="30" class="product-facet__aside-inner">
+                <div class="product-facet__filters-header hidden-pocket">
+                  <p class="heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}">
+                    {{ 'collection.general.filters' | t }}
+                  </p>
+                </div>
+                {%- render 'facet-filters-search',
+                  filters: search.filters,
+                  filters_position: section.settings.filter_position
                 -%}
-                  <button
-                    type="submit"
-                    is="toggle-button"
-                    class="product-facet__meta-bar-item product-facet__meta-bar-item--filter hidden-pocket"
-                    aria-controls="facet-filters"
-                    aria-expanded="false"
-                  >
-                    {%- render 'icon' with 'filters', inline: true -%}
-                    {{- 'collection.general.show_filters' | t -}}
-                    <span class="product-facet__active-count bubble-count">0</span>
-                  </button>
-                {%- endif -%}
+              </safe-sticky>
+            </div>
 
-                <div class="product-facet-radio">
-                  <div class="fixed-toolbar">
+            <div id="facet-main" class="product-facet__main w-full mt-5 pb-8 fb-sm:pb-10 fb-sm:mt-0" role="region" aria-live="polite">
+              <div class="w-full">
+                <div class="w-full js-filter-noresult">
+                  {%- if section.settings.filter_position == 'drawer'
+                    and section.settings.show_filters
+                  -%}
                     <button
+                      type="submit"
                       is="toggle-button"
-                      class="mobile-toolbar__item mobile-toolbar__item--filters {% if active_filters_count > 0 %}has-filters{% endif %}"
-                      aria-expanded="false"
+                      class="product-facet__meta-bar-item product-facet__meta-bar-item--filter hidden-pocket"
                       aria-controls="facet-filters"
+                      aria-expanded="false"
                     >
-                      {%- render 'icon' with 'filters' -%}
+                      {%- render 'icon' with 'filters', inline: true -%}
+                      {{- 'collection.general.show_filters' | t -}}
+                      <span class="product-facet__active-count bubble-count">0</span>
                     </button>
-                  </div>
-                  <div class="product-facet__meta-bar-item product-facet__meta-bar-item--sort">
-                    <span class="product-facet__sort-by-title text--subdued">Sort By:</span>
-                    <div class="popover-container ol-my-14">
-                      <button
-                        type="button"
-                        is="toggle-button"
-                        class="popover-button"
-                        aria-expanded="false"
-                        aria-controls="sort-by-popover"
-                      >
-                        <span id="sort-by-selected-value" style="pointer-events: none">
-                          Relevance
+                  {%- endif -%}
+                </div>
+                <div class="js-filter-noresult fb-md:hidden fixed left-0 top-[36%] z-8 bg-button rounded-sm w-10 h-10 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
+                  <button
+                    is="toggle-button"
+                    class="bg-button w-full h-full flex items-center justify-center"
+                    aria-expanded="false"
+                    aria-controls="facet-filters"
+                  >
+                    {%- render 'icon' with 'filters' -%}
+                  </button>
+                </div>
+                <div class="product-facet__product-list-wrapper product-search-wrapper">
+                  <div
+                    id="search-result"
+                    class="product-facet__product-list product-list anchor"
+                    >
+                    <div class="js-filter-noresult w-full mx-auto max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full flex justify-between items-center my-5 fb-sm:mt-0 fb-sm:mb-10">
+                      <div class="fb-sort-box flex items-center justify-start space-x-1.5 fb-sm:space-x-4.5">
+                        <span class="text-14 text-main fb-sm:text-16">
+                          Sort By
                         </span>
-                        {%- render 'icon' with 'chevron', inline: true -%}
-                      </button>
-
-                      <sort-by-popover id="sort-by-popover" class="popover">
-                        <span class="popover__overlay"></span>
-
-                        <header class="popover__header">
-                          <span class="popover__title heading h6">
-                            {{- 'collection.general.sort_by' | t -}}
-                          </span>
-
-                          <button
-                            type="button"
-                            class="popover__close-button tap-area tap-area--large"
-                            data-action="close"
-                            title="{{ 'general.accessibility.close' | t | escape }}"
-                          >
-                            {%- render 'icon' with 'close' -%}
-                          </button>
-                        </header>
-
-                        <div class="popover__content">
-                          <div class="popover__choice-list">
-                            <label class="popover__choice-item">
-                              <input type="radio" data-bind-value="sort-by-selected-value" class="visually-hidden" name="sort_by" value="Relevance" title="Relevance">
-                              <span class="popover__choice-label">Relevance</span>
-                            </label>
-                            <label class="popover__choice-item">
-                              <input type="radio" data-bind-value="sort-by-selected-value" class="visually-hidden" name="sort_by" value="Asc" title="Price, low to high">
-                              <span class="popover__choice-label">Price, low to high</span>
-                            </label>
-                            <label class="popover__choice-item">
-                              <input type="radio" data-bind-value="sort-by-selected-value" class="visually-hidden" name="sort_by" value="Desc" title="Price, high to low">
-                              <span class="popover__choice-label">Price, high to low</span>
-                            </label>
+                        <el-select v-model="currentSort" @change="handleSortChange" class="w-9r [&_input]:h-9 fb-sm:[&_input]:h-10 [&_input]:text-14 [&_input]:text-main [&_input]:rounded-sm [&_input]:border-D3DEF1 fb-md:w-20r">  
+                          <el-option
+                            v-for="item in sortList"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </div>
+                      <div class="viewTab_text gap-2 fb-sm:gap-1.5 flex justify-end items-center">
+                        <span 
+                          class="cursor-pointer w-15 fb-sm:w-20 h-8  fb-sm:h-9  rounded-sm flex items-center justify-center gap-1 text-14 fb-sm:text-16  text-darkmain" 
+                          :class="{'font-bold bg-white': currentStyle == 'list'}"
+                          @click="changeStyle('list')"
+                        >
+                          {% render 'icon' with 'v3-list' %}
+                          List
+                        </span>
+                        <span 
+                          class="cursor-pointer w-15 fb-sm:w-20 h-8 fb-sm:gap-1 fb-sm:h-9 rounded-sm flex items-center justify-center text-14 fb-sm:text-16  text-darkmain" 
+                          :class="{'font-bold bg-white': currentStyle == 'grid'}"
+                          @click="changeStyle('grid')"
+                        >
+                          {% render 'icon' with 'v3-grid' %}
+                          Grid
+                        </span>
+                      </div>
+                    </div>
+                    <template>
+                      {% comment %} <skeleton-search v-if="pageLoading"></skeleton-search> {% endcomment %}
+                      <div class="w-full mx-auto max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full"  v-if="pageLoading">
+                        <div class="w-full" v-if="currentStyle == 'list'" >
+                          <div v-for="n in 2" :key="n" class="w-full flex flex-col fb-sm:flex-row gap-5 fb-sm:gap-12 bg-white rounded-sm p-6 mb-5">
+                            <div class="w-full fb-sm:w-1/3 max-w-[260px] h-20 fb-sm:h-50 relative bg-gray-200 rounded-sm skeleton-shimmer overflow-hidden"></div>
+                            <div class="flex-1 flex flex-col gap-3 h-20r fb-sm:h-16r">
+                              <div class="w-32 h-5 bg-gray-200 rounded-sm skeleton-shimmer relative overflow-hidden"></div>
+                              <div class="w-4/5 h-5 bg-gray-200 rounded-sm skeleton-shimmer relative overflow-hidden"></div>
+                              <div class="w-3/5 h-5 bg-gray-200 rounded-sm skeleton-shimmer relative overflow-hidden"></div>
+                            </div>
+                            <div class="w-full hidden fb-sm:w-[180px] fb-sm:flex flex-col gap-3">
+                              <div class="w-full h-5 bg-gray-200 rounded-sm skeleton-shimmer relative overflow-hidden"></div>
+                              <div class="flex gap-1.5 mt-auto">
+                                <div class="w-8 h-8 bg-gray-200 rounded-sm skeleton-shimmer relative overflow-hidden"></div>
+                                <div class="w-[84px] h-8 bg-gray-200 rounded-sm skeleton-shimmer relative overflow-hidden"></div>
+                                <div class="w-8 h-8 bg-gray-200 rounded-sm skeleton-shimmer relative overflow-hidden"></div>
+                              </div>
+                              <div class="w-full h-12 bg-gray-200 rounded-sm skeleton-shimmer relative overflow-hidden mt-3"></div>
+                            </div>
                           </div>
                         </div>
-                      </sort-by-popover>
-                    </div>
-                  </div>
-                  <div class="viewTab">
-                    <div class="viewTab_text ">
-                      <span class="listView">
-                        {% render 'icon' with 'v3-list' %}
-                        List
-                      </span>
-                      <span class="gridView">
-                        {% render 'icon' with 'v3-grid' %}
-                        Grid
-                      </span>
-                    </div>
+                        <div class="w-full" v-else>
+                          <div  class="grid grid-cols-2 fb-sm:grid-cols-3  fb-md:grid-cols-3 gap-4 fb-sm:gap-6">
+                            <div v-for="n in 8" :key="n" class="w-full bg-white rounded-sm p-4 fb-sm:p-6">
+                              <div class="w-full pb-[100%] relative bg-gray-200 rounded-sm skeleton-shimmer overflow-hidden"></div>
+                              <div class="flex flex-col gap-2 mt-4">
+                                <div class="w-20 h-5 bg-gray-200 rounded-sm skeleton-shimmer relative overflow-hidden"></div>
+                                <div class="w-full h-5 bg-gray-200 rounded-sm skeleton-shimmer relative overflow-hidden"></div>
+                                <div class="w-30 h-5 bg-gray-200 rounded-sm skeleton-shimmer relative overflow-hidden"></div>
+                                <div class="w-full h-12 bg-gray-200 rounded-sm skeleton-shimmer relative overflow-hidden mt-2"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="js-product-line w-full mx-auto max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full" v-if="currentStyle == 'list'">
+                        <div class="flex flex-col space-y-6 justify-center">
+                          <template v-if="products.length && !pageLoading">
+                            <product-item-search v-for="(product, index) in products" :key="`list-${product.productId}-${index}`" :data-layer-form="dataLayerForm" :product="product" />
+                          </template>
+                          <div class="w-full text-main text-16 fb-sm:text-18 pt-8 fb-sm:pt-2 h-10r fb-sm:h-20r text-left" v-if="!products.length && !pageLoading">
+                              No results found.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="js-product-grid w-full mx-auto max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full" v-if="currentStyle == 'grid' || currentStyle == 'recommend'">
+                        <div class="grid gap-x-3 gap-y-[18px] p-0 fb-sm:gap-x-4.5 fb-sm:gap-y-6"
+                         :class="currentStyle == 'recommend' ? 'grid-cols-2 fb-sm:grid-col-5 fb-md:grid-cols-5' : 'grid-cols-2 fb-sm:grid-cols-3'"
+                        >
+                          <template v-if="products.length && !pageLoading">
+                            <product-item-card v-for="(product, index) in products" :key="`grid-${product.productId}-${index}`" :data-layer-form="dataLayerForm" :product="product" />
+                          </template>
+                           <div class="w-full text-main text-16 fb-sm:text-18  pt-8 fb-sm:pt-2 h-10r fb-sm:h-20r text-left" v-if="!products.length && !pageLoading">
+                              No results found.
+                          </div>
+                        </div>
+                      </div>
+                     
+                      <div class="zkh-pagination w-full bg-transparent" v-if="currentStyle != 'recommend'"  v-loading="otherLoading">
+                        <el-pagination
+                          v-if="products.length && !pageLoading"
+                          background
+                          layout="prev, pager, next"
+                          :current-page.sync="pageParam.page"
+                          :page-size="pageParam.pageSize"
+                          :total="total"
+                          @current-change="handlePageChange"
+                        >
+                        </el-pagination>
+                      </div>
+                    </template>
                   </div>
                 </div>
               </div>
-              <div class="product-facet__product-list-wrapper product-search-wrapper">
-                <div
-                  id="search-result"
-                  class="product-facet__product-list product-list anchor"
-                >
-                  <template>
-                    <skeleton-search v-if="pageLoading"></skeleton-search>
-                    <div class="product-list__inner">
-                      <template v-if="products.length && !pageLoading">
-                        <product-item-search v-for="(product, index) in products" :key="`list-${product.productId}-${index}`" :data-layer-form="dataLayerForm" :product="product" @wish-change="handleWishChange" />
-                      </template>
-                    </div>
-                    <div class="product-list__inner">
-                      <template v-if="products.length && !pageLoading">
-                        <product-item-card v-for="(product, index) in products" :key="`grid-${product.productId}-${index}`" :data-layer-form="dataLayerForm" :product="product" @wish-change="handleWishChange" />
-                      </template>
-                    </div>
-                    <el-pagination
-                      v-if="products.length && !pageLoading"
-                      background
-                      layout="prev, pager, next"
-                      :current-page.sync="pageParam.page"
-                      :page-size="pageParam.pageSize"
-                      :total="total"
-                      @current-change="handlePageChange"
-                    >
-                    </el-pagination>
-                  </template>
+              {% comment %} <div class="filter-no-search">No matches found</div>
+              <div class="search-empty-state">
+                <div class="result-tip">No results for {{ 'search.general.terms' | t: terms: search.terms }}</div>
+                <div class="following-tips">
+                  <header>TRY the FOLLOWING:</header>
+                  <main>
+                    <ul>
+                      <li>· Entering a description of the product you are looking for</li>
+                      <li>· Checking your original search for typos</li>
+                      <li>· Using a synonym for the product you are looking for</li>
+                    </ul>
+                  </main>
                 </div>
-              </div>
+              </div> {% endcomment %}
             </div>
-            <div class="filter-no-search">No matches found</div>
-            <div class="search-empty-state">
-              <div class="result-tip">No results for {{ 'search.general.terms' | t: terms: search.terms }}</div>
-              <div class="following-tips">
-                <header>TRY the FOLLOWING:</header>
-                <main>
-                  <ul>
-                    <li>· Entering a description of the product you are looking for</li>
-                    <li>· Checking your original search for typos</li>
-                    <li>· Using a synonym for the product you are looking for</li>
-                  </ul>
-                </main>
-              </div>
-            </div>
-          </div>
-        </product-search-facet>
+          </product-search-facet>
         </div>
       </search-page>
     </div>
@@ -198,107 +215,13 @@
   render 'product-item-search'
   render 'product-item-card'
   render 'product-item-delevery'
-  render 'search-product-skeleton'
   render 'my-icon'
 %}
 <script>
   (() => {
-    function formatMoney(cents, format = '') {
-      if (typeof cents === 'string') {
-        cents = cents.replace('.', '');
-      }
-      const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/,
-        formatString = format || window.themeVariables.settings.moneyFormat;
-      function defaultTo(value2, defaultValue) {
-        return value2 == null || value2 !== value2 ? defaultValue : value2;
-      }
-      function formatWithDelimiters(number, precision, thousands, decimal) {
-        precision = defaultTo(precision, 2);
-        thousands = defaultTo(thousands, ',');
-        decimal = defaultTo(decimal, '.');
-        if (isNaN(number) || number == null) {
-          return 0;
-        }
-        number = (number / 100).toFixed(precision);
-        let parts = number.split('.'),
-          dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
-          centsAmount = parts[1] ? decimal + parts[1] : '';
-        return dollarsAmount + centsAmount;
-      }
-      let value = '';
-      switch (formatString.match(placeholderRegex)[1]) {
-        case 'amount':
-          value = formatWithDelimiters(cents, 2);
-          break;
-        case 'amount_no_decimals':
-          value = formatWithDelimiters(cents, 0);
-          break;
-        case 'amount_with_space_separator':
-          value = formatWithDelimiters(cents, 2, ' ', '.');
-          break;
-        case 'amount_with_comma_separator':
-          value = formatWithDelimiters(cents, 2, '.', ',');
-          break;
-        case 'amount_with_apostrophe_separator':
-          value = formatWithDelimiters(cents, 2, "'", '.');
-          break;
-        case 'amount_no_decimals_with_comma_separator':
-          value = formatWithDelimiters(cents, 0, '.', ',');
-          break;
-        case 'amount_no_decimals_with_space_separator':
-          value = formatWithDelimiters(cents, 0, ' ');
-          break;
-        case 'amount_no_decimals_with_apostrophe_separator':
-          value = formatWithDelimiters(cents, 0, "'");
-          break;
-      }
-      if (formatString.indexOf('with_comma_separator') !== -1) {
-        return formatString.replace(placeholderRegex, value);
-      } else {
-        return formatString.replace(placeholderRegex, value);
-      }
-    }
-
-    function setJqueryView() {
-      const productListInner = $('.product-list__inner');
-      $('.listView').click(function () {
-        $(this).addClass('active');
-        Cookies.set('searchView', 'list', { expires: 36500 });
-        $(this).siblings().removeClass('active');
-        productListInner.removeClass('grid-inner');
-        productListInner.addClass('list-inner');
-      });
-
-      $('.gridView').click(function () {
-        $(this).addClass('active');
-        Cookies.set('searchView', 'grid', { expires: 36500 });
-        $(this).siblings().removeClass('active');
-        productListInner.addClass('grid-inner');
-        productListInner.removeClass('list-inner');
-      });
-      const searchView = Cookies.get('searchView') || 'grid';
-      if (searchView == 'grid') {
-        $('.listView').removeClass('active');
-        $('.gridView').addClass('active');
-        productListInner.addClass('grid-inner');
-        productListInner.removeClass('list-inner');
-      } else if(searchView == 'list') {
-        $('.listView').addClass('active');
-        $('.gridView').removeClass('active');
-        productListInner.addClass('list-inner');
-        productListInner.removeClass('grid-inner');
-      }
-    }
-
     function showEmtpy() {
-      $('.result-text-wrapper').hide();
-      $('.search-empty-state').show();
-      $('.main-search__category-result').css({
-        marginTop: 0,
-        paddingBottom: 0,
-      })
-      $('.product-facet__aside, .results-wrapper').hide();
-      $('.result-num').text("(0 products)");
+      $('.js-filter-noresult').hide()
+      $('.js-filter-show-noresult').show()
     }
 
     function generateUUID() {
@@ -306,33 +229,9 @@
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       );
     }
-    {% if customer.b2b? %}
-      {% assign customer_zip = customer.current_location.shipping_address.zip %}
-    {% else %}
-      {% assign customer_zip = customer.default_address.zip | default: '' %}
-    {% endif %}
     new Vue({
       el: '#search-result',
-      created() {
-        if(!window.zkh.customerZipCode) {
-          try {
-            getLocalZipCode((zip) => {
-              window.zkh.customerZipCode = zip;
-            })
-          } catch (error) {
-              window.zkh.customerZipCode = '77380'
-          }
-        }
-        this.initPageFrom();
-        this.setSortFilterStatus();
-        this.initPageView();
-        document.addEventListener('facet-search-rerender', async ({ detail }) => {
-          this.loadingBar = detail;
-          this.initPageView();
-        });
-      },
       mounted() {
-        setJqueryView();
       },
       data() {
         const ga4Id = window.gaGlobal?.vid ? window.gaGlobal?.vid : 0;
@@ -346,7 +245,6 @@
           pageInit: true,
           firstShowLoading: true,
           abortController: null,
-          loadingBar: null,
           brandsData: [],
           total: 0,
           pageLoading: true,
@@ -355,8 +253,8 @@
             pageSize: 12,
           },
           queryParam: {
-            userId: '{{ customer.id }}' ? '{{ customer.id }}' : ga4Id,
-            hasLogin: '{{ customer.id }}' ? true : false,
+            userId: window.zkh.customerId || ga4Id,
+            hasLogin: window.zkh.customerId ? true : false,
             from: 0,
             size: 12,
             productFilter: {
@@ -369,13 +267,71 @@
             channelCode: "NorthSky-US",
             sortOrder: undefined
           },
-          products: []
+          products: [],
+          otherLoading: false,
+          currentStyle: Cookies.get('searchView') || 'grid',
+          sortList: [
+            {
+              value: 'Relevance',
+              label: 'Relevance'
+            }, {
+              value: 'Asc',
+              label: 'Price, low to high'
+            }, {
+              value: 'Desc',
+              label: 'Price, high to low'
+            }
+          ],
+          currentSort: 'Relevance',
+          facetSearchHandler: null
         }
       },
+      created() {
+        if(!window.zkh.customerZipCode) {
+          try {
+            getLocalZipCode((zip) => {
+              window.zkh.customerZipCode = zip;
+            })
+          } catch (error) {
+              window.zkh.customerZipCode = '77380'
+          }
+        }
+        this.initPageFrom();
+        this.initPageView();
+        document.addEventListener('facet-search-rerender', async ({ detail }) => {
+           this.initPageView();
+        });
+      },
+      beforeDestroy() {
+        document.removeEventListener('facet-search-rerender', this.facetSearchHandler);
+      },
       methods: {
-        initPageView() {
+        changeStyle (type) {
+          this.currentStyle = type
+          Cookies.set('searchView', type, { expires: 36500 });
+        },
+        initPageView () {
           this.handleUrlChange();
           this.getProducts();
+        },
+        handleSortChange (value) {
+          this.queryParam.from = 0;
+          this.pageParam.page = 1;
+          const currentUrl = new URL(location.href);
+          currentUrl.searchParams.set('sort_by', this.currentSort);
+          currentUrl.searchParams.delete('page');
+          history.replaceState({}, '', currentUrl);
+          this.getProducts()
+        },
+        showLoadingBar() {
+          this.triggerEvent(document.documentElement, 'theme:loading:start');
+        },
+        hideLoadingBar() {
+          this.triggerEvent(document.documentElement, 'theme:loading:end');
+        },
+        triggerEvent(element, eventName) {
+          const event = new CustomEvent(eventName);
+          element.dispatchEvent(event);
         },
         getBrandNames() {
           if (!this.queryParam?.productFilter?.brandId) {
@@ -400,13 +356,7 @@
           const page = +params.get('page') || 1;
           const keyword = params.get('q');
           const pageSize = this.queryParam.size;
-          const sortBy = params.get('sort_by');
-          let rank_type = 'Relevance';
-          if(sortBy == 'Asc') {
-            rank_type = 'PRICE_ASC';
-          } else if(sortBy == 'Desc') {
-            rank_type = 'PRICE_DESC';
-          }
+          const rank_type = this.currentSort == 'Relevance' ? 'Relevance' : 'PRICE_' + this.currentSort;
           const items = this.products.map((product, idx) => {
             const calculatedIndex = (page - 1) * pageSize + (idx + 1);
             return {
@@ -438,7 +388,7 @@
           if(ip) {
             dataLayer.push({
               'event': 'custom_search_performed',
-              'zip': '{{ customer_zip }}',   
+              'zip': window.zkh.customerZipCode,   
               'username': '{{customer.name }}',
               'email':'{{customer.email }}',
               'search_parameters': $('.main-search__results').attr('terms'),
@@ -463,9 +413,9 @@
             document.querySelector('.product-facet__meta-bar') ||
             document.querySelector('.product-facet__product-list') ||
             document.querySelector('.product-facet__main');
-          requestAnimationFrame(() => {
-            scrollTo.scrollIntoView({ block: 'start', behavior: 'smooth' });
-          });
+            requestAnimationFrame(() => {
+              scrollTo.scrollIntoView({ block: 'start', behavior: 'smooth' });
+            });
         },
         setCollapsibleStatus() {
           const urlParams = new URLSearchParams(window.location.search);
@@ -493,18 +443,6 @@
             }
           }
         },
-        setSortFilterStatus() {
-          const urlParams = new URLSearchParams(window.location.search);
-          let sortByText = 'Relevance';
-          const sort_by = urlParams.get('sort_by') || 'Relevance';
-          if(sort_by === 'Asc') {
-            sortByText = 'Price, low to high';
-          } else if(sort_by === 'Desc') {
-            sortByText = 'Price, high to low';
-          }
-          $('#sort-by-selected-value').text(sortByText);
-          $(`.popover__choice-item input[value='${sort_by}']`).prop('checked', true);
-        },
         buildBrandDom() {
           const $container = $(".search-brand-collapsible");
           const brandHtml = this.brandsData.reduce((html, brand) => {
@@ -530,39 +468,9 @@
             $(`.search-brand-collapsible input[value='${brand}']`).prop('checked', true);
           });
 
-          this.$nextTick(() => { 
+          {% comment %} this.$nextTick(() => { 
             this.setCollapsibleStatus();
-          })
-        },
-        async handleWishChange(product) {
-          if('{{ customer.id }}' == '') {
-            window.location.href = '/account/login';
-            return
-          }
-          const formData = {
-            customerId: '{{ customer.id }}',
-            productId: product.productId,
-            sku: product.sku,
-            productNum: 1,
-          };
-          const status = product.favorited ? 1 : 0;
-          try {
-            const response = await fetch(`${window.zkh.api}/wish/${status == 1 ? 'clear' : 'save'}`, {
-              method: 'POST',
-              body: JSON.stringify(formData),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            });
-            const res = await response.json();
-            if (res.code === 200) {
-              const isFavorited = res.data.wish ? 1 : 0;
-              this.$set(product, 'favorited', isFavorited);
-              document.dispatchEvent(new CustomEvent('wish-refreash'));
-            }
-          } catch (error) {
-            console.error('Error fetching favorite status:', error);
-          }
+          })  {% endcomment %}
         },
         async setProductsData() {
           try {
@@ -597,9 +505,10 @@
           const ga4Id = window.gaGlobal?.vid ? window.gaGlobal?.vid : 0;
           this.queryParam.userId = '{{ customer.id }}' ? '{{ customer.id }}' : ga4Id,
           this.queryParam.keyword = urlParams.get('q');
-          const sort_by = urlParams.get('sort_by');
-          this.queryParam.sortField = sort_by && sort_by != 'Relevance' ? 'PRICE' : undefined;
-          this.queryParam.sortOrder = sort_by && sort_by != 'Relevance' ? sort_by : undefined;
+          const sortBy = urlParams.get('sort_by');
+          this.currentSort = this.sortList.some(item => item.value == sortBy) ? sortBy : 'Relevance';
+          {% comment %} this.queryParam.sortField = sort_by && sort_by != 'Relevance' ? 'PRICE' : undefined;
+          this.queryParam.sortOrder = sort_by && sort_by != 'Relevance' ? sort_by : undefined; {% endcomment %}
           this.queryParam.productFilter.minPrice = +urlParams.get('filter.v.price.gte') || undefined;
           this.queryParam.productFilter.maxPrice = +urlParams.get('filter.v.price.lte') || undefined;
           const brandQuery = urlParams.getAll('filter.p.m.product.brand');
@@ -624,27 +533,25 @@
         },
         async getProducts() {
           this._abort();
-          this.loadingBar?.showLoadingBar();
+          {% comment %} this.loadingBar?.showLoadingBar(); {% endcomment %}
+          this.showLoadingBar();
           if(this.firstShowLoading) {
             this.pageLoading = true;
             this.firstShowLoading = false;
           }
           try {
-            this.abortController = new AbortController();
-            const response = await fetch(`${window.zkh.api}/openapi/search/v2`, {
-              signal: this.abortController.signal,
-              method: 'POST',
-              body: JSON.stringify(this.queryParam),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            });
-            const res = await response.json();
-            if (res.code === 200 && res.data.brand.length) {
+            this.queryParam.sortOrder = this.currentSort == 'Relevance' ? undefined : this.currentSort;
+            this.queryParam.sortField = this.currentSort != 'Relevance' ? 'PRICE' : undefined;
+            const res = await kkAjax.post('/openapi/search/v2',this.queryParam)
+             if (res.code === 200 && res.data.brand.length) {
               this.total = +res.data.totalNum;
               if(this.total == 1 && res.data.searchHitType == 'skuNo') {
                 window.location.href = res.data.skuInfos[0].productUrl;
                 return;
+              }
+              if(res.data.searchHitType == 'recommend') {
+                showEmtpy()
+                this.currentStyle = 'recommend'
               }
               this.brandsData = res.data.brand;
               this.setMaxPrice(res.data.maxPrice);
@@ -659,13 +566,13 @@
                 // $('.results-wrapper').hide();
               }
 
-              $('.result-num').text(`(${this.total} ${this.total > 1 ? 'products' : 'product'})`);
+              $('.js-result-num').text(`(${this.total} ${this.total > 1 ? 'products' : 'product'})`);
               this.products = res.data.skuInfos.map((product, idx) => {
                 product.calculatedIndex = this.queryParam.from + idx + 1;
-                product.priceFormat = formatMoney(+product.price * 100);
+                product.priceFormat = zkhFormatMoney(+product.price * 100);
                 product.favorited = false;
                 if(product.compareAtPrice && +product.compareAtPrice > +product.price) {
-                  product.compareAtPriceFormat = formatMoney(+(product.compareAtPrice || 0) * 100);
+                  product.compareAtPriceFormat = zkhFormatMoney(+(product.compareAtPrice || 0) * 100);
                   product.discountPercentage = Math.ceil(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100);
                 }
                 return product;
@@ -677,13 +584,16 @@
                 this.firstSearch = false;
               }
             } else {
+              this.products = [];
               showEmtpy();
             }
           } catch (error) {
+            this.products = [];
             console.error(error)
           } finally {
             this.pageLoading = false;
-            this.loadingBar?.hideLoadingBar();
+            {% comment %} this.loadingBar?.hideLoadingBar(); {% endcomment %}
+            this.hideLoadingBar();
             this.setEventTrackingFirst10(); 
             try {
               this.getDataLayerFormAndPush();
@@ -693,12 +603,19 @@
           }
         },
         async handlePageChange(page) {
+          if(this.otherLoading) return;
+          this.otherloading = true
           this.queryParam.from = (page - 1) * this.queryParam.size;
           const url = new URL(window.location.href);
           url.searchParams.set('page', page);
           window.history.replaceState(null, '', url.toString());
           this._abort();
-          await this.getProducts();
+          try {
+            await this.getProducts();
+          }catch(error) {
+          } finally {
+            this.otherloading = false;
+          }
         }
       }
     });

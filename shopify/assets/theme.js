@@ -4097,18 +4097,22 @@
             0: {
               spaceBetween: 12,
               slidesPerView: 2,
+              slidesPerGroup: 2
             },
             768: {
               spaceBetween: 24,
               slidesPerView: 3,
+              slidesPerGroup: 3
             },
             1024: {
               spaceBetween: 24,
               slidesPerView: 4,
+              slidesPerGroup: 4
             },
             1280: {
               spaceBetween: 24,
               slidesPerView: 5,
+              slidesPerGroup: 5
             },
           },
           navigation: {
@@ -6865,8 +6869,8 @@
   };
   window.customElements.define('product-media', ProductMedia);
 
- 
-  var ProductAttrs = class extends CustomHTMLElement {
+
+var ProductAttrs = class extends CustomHTMLElement {
     async connectedCallback() {
       this.initVue()
     }

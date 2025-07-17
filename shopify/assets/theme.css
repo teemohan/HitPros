@@ -6473,7 +6473,7 @@ input:checked+.popover__choice-label::after,
 
   .product-facet__aside {
     flex: none;
-    width: 336px;
+    width: 330px;
   }
 
   .product-facet__aside-inner {
