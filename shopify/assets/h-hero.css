@@ -1,6 +1,6 @@
 .h-hero-wrapper {
   overflow: hidden;
-  font-family: 'Barlow';
+      font-family: 'Inter', sans-serif, 'system-ui', '-apple-system';
 }
 .h-hero-wrapper .color-white {
   color: #fff;
