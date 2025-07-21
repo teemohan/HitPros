@@ -566,7 +566,7 @@
             {% if product.metafields.product.quantity_discount != blank
               and product.metafields.product.quantity_discount.value.size != 0
             %}
-              <div class="ladder-price-box-wrapper text-center bg-F3F8FC -mx-5 px-6 py-3 fb-sm:mx-0 fb-sm:py-5 mb-2.5">
+              <div class="ladder-price-box-wrapper text-center bg-F3F8FC -mx-5 px-6 py-3 fb-sm:mx-0 fb-sm:py-5 mb-2.5 rounded-sm">
                 <div class="ladder-price-box">
                   {% assign last_item_index = product.metafields.product.quantity_discount.value.size
                     | minus: 1
