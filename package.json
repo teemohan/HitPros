@@ -9,8 +9,6 @@
     "change-live": "bash ./change-live.sh",
     "pullcli": "bash ./pullcli.sh",
     "tw": "npx tailwindcss -i ./config.css -o ./shopify/assets/shopify-style.css --watch",
-    "purge-css": "bash ./purge-multiple.sh",
-    "purge-multiple": "bash ./purge-multiple.sh",
     "purge-advanced": "node purgecss-advanced.config.js",
     "minify": "bash ./minify.sh",
     "deploycli": "bash ./deploycli.sh",

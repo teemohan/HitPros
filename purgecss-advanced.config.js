@@ -4,10 +4,9 @@ const path = require('path');
 
 // 定义要处理的 CSS 文件映射
 const cssFiles = {
-  'theme.css': 'theme-purged.css',
-  'element.css': 'element-purged.css',
-  'shopify-style.css': 'shopify-style-purged.css',
-  'global.min.css': 'global.min-purged.css'
+  'theme.css': 'theme.css',
+  'theme-v3.css': 'theme-v3.css',
+  'global.min.css': 'global.min.css'
 };
 
 // 基础配置
@@ -53,7 +52,7 @@ async function purgeCSSFiles() {
   console.log('===开始批量处理 CSS 文件（高级模式）===');
   
   // 确保输出目录存在
-  const outputDir = './shopify/assets/purged';
+  const outputDir = './copy/purged';
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
