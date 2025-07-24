@@ -9,14 +9,19 @@
     "change-live": "bash ./change-live.sh",
     "pullcli": "bash ./pullcli.sh",
     "tw": "npx tailwindcss -i ./config.css -o ./shopify/assets/shopify-style.css --watch",
+    "purge-css": "bash ./purge-multiple.sh",
+    "purge-multiple": "bash ./purge-multiple.sh",
+    "purge-advanced": "node purgecss-advanced.config.js",
     "minify": "bash ./minify.sh",
-    "deploycli": "bash ./deploycli.sh"
+    "deploycli": "bash ./deploycli.sh",
+    "clear": "node ./remove-comments.js"
   },
   "devDependencies": {
     "@shopify/prettier-plugin-liquid": "^1.3.0",
     "del-cli": "^5.1.0",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
+    "purgecss": "^7.0.2",
     "tailwindcss": "^3.3.3",
     "uglify-js": "^3.17.4",
     "uglifycss": "^0.0.29"
