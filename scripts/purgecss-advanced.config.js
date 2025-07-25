@@ -11,7 +11,7 @@ const cssFiles = {
 
 // 基础配置
 const baseConfig = {
-  content: ['./shopify/**/*.{liquid,js}'],
+  content: [path.resolve(__dirname, '../shopify/**/*.liquid'), path.resolve(__dirname, '../shopify/**/*.js')],
   safelist: [
     // 保护 Swiper 相关类名
     /^swiper-/,
@@ -52,14 +52,14 @@ async function purgeCSSFiles() {
   console.log('===开始批量处理 CSS 文件（高级模式）===');
   
   // 确保输出目录存在
-  const outputDir = './copy/purged';
+  const outputDir = path.resolve(__dirname, '../shopify/assets');
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
   
   for (const [inputFile, outputFile] of Object.entries(cssFiles)) {
-    const inputPath = `./shopify/assets/${inputFile}`;
-    const outputPath = `${outputDir}/${outputFile}`;
+    const inputPath = path.resolve(__dirname, `../shopify/assets/${inputFile}`);
+    const outputPath = path.join(outputDir, outputFile);
     
     if (fs.existsSync(inputPath)) {
       console.log(`正在处理: ${inputFile}`);

@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 
 const TARGET_DIRS = [
-  './shopify/assets',
-  './shopify/sections',
-  './shopify/snippets'
+  '../shopify/assets',
+  '../shopify/sections',
+  '../shopify/snippets'
 ];
 
 const FILE_EXTENSIONS = ['.js', '.css', '.liquid'];
