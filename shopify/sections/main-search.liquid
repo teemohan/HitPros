@@ -379,7 +379,6 @@
             bottom_price: this.queryParam.productFilter.minPrice || '',
             brand_filter: this.getBrandNames()
           }
-          console.log("dataLayerForm", this.dataLayerForm)
           dataLayer.push(this.dataLayerForm);
         },
         setEventTrackingFirst10() { 
@@ -397,16 +396,6 @@
               'ip': ip,
               'number_of_results': this.currentStyle == 'recommend' ? 0 : this.total || 0,
             });
-            console.log("custom_search_performed", {
-              'event': 'custom_search_performed',
-              'zip': window.zkh.customerZipCode,   
-              'username': '{{customer.name }}',
-              'email':'{{customer.email }}',
-              'search_parameters': $('.main-search__results').attr('terms'),
-              'search_outcome': skuString,
-              'ip': ip,
-              'number_of_results': this.currentStyle == 'recommend' ? 0 : this.total || 0,
-            })
           }
         },
         _abort() {
