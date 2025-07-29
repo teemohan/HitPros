@@ -104,13 +104,18 @@ class Ajax {
 }
 // Create instance
 const kkAjax = new Ajax();
+const generateUUID = () => {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+  }
 // DataLayer Manager Factory
 const DataLayerManagerFactory = (function() {
   const instances = new Map();
   class DataLayerManager {
     constructor(scopeId = 'default') {
       this.scopeId = scopeId;
-      this.sessionId = this.generateUUID();
+      this.sessionId = generateUUID();
       this.viewedElements = new Set();
       this.dataLayer = [];
       this.observer = null;
@@ -118,8 +123,10 @@ const DataLayerManagerFactory = (function() {
       this.eventHandlers = new Map();
       this.recommend_module = '';
       this.datas = [];
+      this.currentData = [];
+      this.currentPage = 1;
+      this.listName = ''
     }
-
     init() {
       if (this.initialized) return this;
       this.initialized = true;
@@ -128,16 +135,13 @@ const DataLayerManagerFactory = (function() {
       this.setupImpressionObserver();
       return this;
     }
-    generateUUID() {
-      return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-      );
+    getUUid() {
+      return this.sessionId;
     }
     setupEventListeners(element) {
       const clickHandler = (event) => {
         let target = event.target;
         while (target && target !== element) {
-          console.log("target", target)
           if (target.tagName === 'A' ){
             this.handleProductLinkClick(target);
             break;
@@ -180,14 +184,13 @@ const DataLayerManagerFactory = (function() {
       this.observer = new IntersectionObserver(
         entries => entries.forEach(entry => {
           const element = entry.target;
-          if (entry.isIntersecting && 
-              !this.viewedElements.has(element) && 
-              this.hasValidDataLayerAttribute(element)) {
+          if (entry.isIntersecting && !this.viewedElements.has(element) && this.hasValidDataLayerAttribute(element)) {
             this.viewedElements.add(element);
             const eventType = element.getAttribute('data-event-type');
             if (eventType === 'view_item_list') {
               this.handleItemListImpression(element);
               this.setupEventListeners(element);
+              this.setPageListeners(element);
             }
           }
         }),
@@ -201,11 +204,31 @@ const DataLayerManagerFactory = (function() {
         console.error(`Error setting up impression observer for scope ${this.scopeId}:`, error);
       }
     }
+    handleNumber() {
+      const width = window.innerWidth;
+      if (width >= 1280) {
+        return 5;
+      } else if (width >= 1024) {
+        return 4;
+      } else if (width >= 768) {
+        return 3;
+      } else {
+        return 2;
+      }
+    }
     handleItemListImpression(listElement) {
       this.recommend_module = listElement.getAttribute('data-recommend-module') || 'default';
-      const listName = listElement.getAttribute('data-list-name') || 'default_list';
-      listElement.querySelectorAll('[data-datalayer-item="true"]')
-        .forEach((item, index) => this.datas.push(this.extractItemData(item, index)));
+      this.listName = listElement.getAttribute('data-list-name') || 'default_list';
+      const maxItems = this.handleNumber(); // maxmin
+      const items = listElement.querySelectorAll('[data-datalayer-item="true"]');
+      Array.from(items).forEach((item, index) => {
+        this.datas.push(this.extractItemData(item, index));
+      });
+      if(this.recommend_module.indexOf('pdp') > -1){
+        this.currentData = this.datas;
+      } else {
+        this.currentData = this.datas.slice(0, maxItems);
+      }
       if (this.datas.length > 0) {
         this.pushToDataLayer({
           event: 'view_item_list',
@@ -213,10 +236,72 @@ const DataLayerManagerFactory = (function() {
           rank_type: '',
           recommend_module: this.recommend_module,
           ecommerce: {
-            item_list_id: listName,
-            items: this.datas
+            item_list_id: this.listName,
+            items: this.currentData
           }
         });
+      }
+    }
+    setPageListeners(listElement) {
+      const swiperContainer = listElement.closest('.js-guesslike-gtm') || listElement.querySelector('.js-guesslike-gtm');
+      if (!swiperContainer) return;
+      const prevButton = swiperContainer.querySelector('.swiper-button-prev');
+      const nextButton = swiperContainer.querySelector('.swiper-button-next');
+      if (nextButton) {
+        const nextHandler = () => {
+          this.handleSwiperNext();
+        };
+        this.eventHandlers.set(nextButton, nextHandler);
+        nextButton.addEventListener('click', nextHandler);
+      }
+      if (prevButton) {
+        const prevHandler = () => {
+          this.handleSwiperPrev();
+        };
+        this.eventHandlers.set(prevButton, prevHandler);
+        prevButton.addEventListener('click', prevHandler);
+      }
+    }
+    handleSwiperNext() {
+      const maxItems = this.handleNumber();
+      const startIndex = this.currentPage * maxItems;
+      const endIndex = startIndex + maxItems;
+      if (startIndex < this.datas.length) {
+        this.currentPage++;
+        const newData = this.datas.slice(startIndex, endIndex);
+        if (newData.length > 0) {
+          this.pushToDataLayer({
+            event: 'view_item_list',
+            request_id: this.sessionId,
+            rank_type: '',
+            recommend_module: this.recommend_module,
+            ecommerce: {
+              item_list_id: this.listName,
+              items: newData
+            }
+          });
+        }
+      }
+    }
+    handleSwiperPrev() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        const maxItems = this.handleNumber();
+        const startIndex = (this.currentPage - 1) * maxItems;
+        const endIndex = startIndex + maxItems;
+        const prevData = this.datas.slice(startIndex, endIndex);
+        if (prevData.length > 0) {
+          this.pushToDataLayer({
+            event: 'view_item_list',
+            request_id: this.sessionId,
+            rank_type: '',
+            recommend_module: this.recommend_module,
+            ecommerce: {
+              item_list_id: this.listName,
+              items: prevData
+            }
+          });
+        }
       }
     }
     extractItemData(element, index) {
@@ -244,11 +329,9 @@ const DataLayerManagerFactory = (function() {
         console.error(`Error pushing to dataLayer for scope ${this.scopeId}:`, error);
       }
     }
-
     getDataLayer() {
       return this.dataLayer;
     }
-
     refresh() {
       this.setupImpressionObserver();
       return this;
@@ -289,7 +372,6 @@ const DataLayerManagerFactory = (function() {
         instance.destroy();
       }
     },
-    
     // Remove all instances
     removeAllInstances: function() {
       instances.forEach(instance => instance.destroy());

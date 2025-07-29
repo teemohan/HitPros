@@ -59,6 +59,10 @@
       dataLayerForm: {
         type: Object,
         required: true
+      },
+      currentStyle: {
+        type: String,
+        required: false
       }
     },
     data() {
@@ -73,7 +77,7 @@
           ...this.dataLayerForm,
           event: 'select_item',
           ecommerce: {
-            item_list_id: "search_result_click",
+            item_list_id: this.currentStyle == 'recommend' ? 'search_recommend_click' : 'search_result_click',
             items: [{
               index: this.product.calculatedIndex,
               item_id: this.product.sku,

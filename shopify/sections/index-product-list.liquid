@@ -1,6 +1,6 @@
 {% if section.settings.collection.products.size > 0 %}
   {{ 'index-product-item.css' | asset_url | stylesheet_tag }}
-  <product-index-list data-section-id="{{ section.id }}" class="{{ section.id }} product-x-hidde">
+  <product-index-list data-section-id="{{ section.id }}" class="{{ section.id }} product-x-hidde js-guesslike-gtm">
     <div class="container cl-container hover-cl-container">
       <div class="index-cus-header">
         <h2>{{ section.settings.title }}</h2>
