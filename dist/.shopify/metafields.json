@@ -1,7 +1,78 @@
 {
   "article": [],
   "blog": [],
-  "collection": [],
+  "collection": [
+    {
+      "key": "marketing_tips",
+      "namespace": "custom",
+      "name": "marketing_tips",
+      "description": "tips",
+      "type": {
+        "name": "multi_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "marketing_pc_desc",
+      "namespace": "custom",
+      "name": "marketing_pc_desc",
+      "description": "PC DESC",
+      "type": {
+        "name": "multi_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "marketing_mob_desc",
+      "namespace": "custom",
+      "name": "marketing_mob_desc",
+      "description": "MOB DESC",
+      "type": {
+        "name": "multi_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "marketing_mob_title",
+      "namespace": "custom",
+      "name": "marketing_mob_title",
+      "description": "",
+      "type": {
+        "name": "multi_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "marketing_pc_title",
+      "namespace": "custom",
+      "name": "marketing_pc_title",
+      "description": "",
+      "type": {
+        "name": "multi_line_text_field",
+        "category": "TEXT"
+      }
+    },
+    {
+      "key": "marketing_mob_img",
+      "namespace": "custom",
+      "name": "marketing_mob_img",
+      "description": "MOB IMAGE",
+      "type": {
+        "name": "file_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "marketing_pc_img",
+      "namespace": "custom",
+      "name": "marketing_pc_img",
+      "description": "PC Image",
+      "type": {
+        "name": "file_reference",
+        "category": "REFERENCE"
+      }
+    }
+  ],
   "company": [
     {
       "key": "credit_limit",

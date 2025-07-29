@@ -57,7 +57,7 @@ or change the format of some info
         {
           "@type": "Offer",
           "name": {{ variant.product.title | json }},
-          "availability": "{% if variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+          "availability": "{% if product.variants.first.inventory_quantity > 0 %}https://schema.org/InStock{% else %}BackOrder{% endif %}",
           "price": {{ variant.price | divided_by: 100.0 | json }},
           "priceCurrency": {{ cart.currency.iso_code | json }},
           "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d'}}",

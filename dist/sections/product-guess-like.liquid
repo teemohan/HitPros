@@ -5,7 +5,7 @@
     <div class="flex items-center justify-between mb-4 fb-sm:mb-6">
       <h2 class="text-20 fb-sm:text-32 font-semibold text-main">{{ section.settings.title }}</h2>
     </div>
-    <div class="relative w-full mx-auto fb-hover-list">
+    <div class="relative w-full mx-auto fb-hover-list js-pdpguesss-gtm">
       <div class="js-product-guess-content grid grid-cols-2 fb-sm:grid-cols-3 fb-md:grid-cols-5 gap-x-2.5 gap-y-4.5 fb-sm:gap-6"
         data-datalayer="true" 
         data-event-type="view_item_list" 
@@ -202,15 +202,39 @@ document.addEventListener('DOMContentLoaded', function() {
         viewLessBtn.addEventListener('click', () => this.loadLess());
       }
     }
-
+    customerViewMore(data) {
+      if(data && data.length > 0) {
+        const push_data = data.map((item, index)=> {
+          return {
+            item_id: item.skuCode,
+            item_name: item.title,
+            index: this.currentPage * this.itemsPerPage + index + 1,
+          }
+        })
+        const uuid = DataLayerManagerFactory.getInstance('{{ section.id }}').getUUid();
+        dataLayer.push({
+          event: 'view_item_list',
+          request_id: uuid,
+          rank_type: '',
+          recommend_module: "pdp/{{- section.settings.title -}}",
+          ecommerce: {
+            item_list_id: "recommended_product_exposure",
+            items: push_data
+          }
+        });
+      }
+    }
     async loadMore() {
       if (this.isLoading) return;
       this.isLoading = true;
-
       const startIndex = this.currentPage * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       const productsToShow = this.allProducts.slice(startIndex, endIndex);
-      
+      try {
+        this.customerViewMore(productsToShow);
+      } catch (error) {
+        console.log(error);
+      }
       const fragment = document.createDocumentFragment();
       const tempDiv = document.createElement('div');
       const swiperWrapper = this.sectionElement.querySelector('.js-product-guess-content');
@@ -232,6 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       this.isExpanded = true;
       this.isLoading = false;
+     
     }
 
     async loadLess() {

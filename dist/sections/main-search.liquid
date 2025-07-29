@@ -165,7 +165,7 @@
                          :class="currentStyle == 'recommend' ? 'grid-cols-2 fb-sm:grid-col-5 fb-md:grid-cols-5' : 'grid-cols-2 fb-sm:grid-cols-3'"
                         >
                           <template v-if="products.length && !pageLoading">
-                            <product-item-card v-for="(product, index) in products" :key="`grid-${product.productId}-${index}`" :data-layer-form="dataLayerForm" :product="product" />
+                            <product-item-card v-for="(product, index) in products" :key="`grid-${product.productId}-${index}`" :data-layer-form="dataLayerForm" :product="product"  :current-style="currentStyle"/>
                           </template>
                            <div class="w-full text-main text-16 fb-sm:text-18  pt-8 fb-sm:pt-2 h-10r fb-sm:h-20r text-left" v-if="!products.length && !pageLoading">
                               No results found.
@@ -366,14 +366,13 @@
               item_name: product.title
             }
           });
-
           this.dataLayerForm = {
             event: 'view_item_list',
             request_id: this.request_id,
             keyword,
             rank_type,
             ecommerce: {
-              item_list_id: "search_result_exposure",
+              item_list_id: this.currentStyle == 'recommend' ? 'search_recommend_exposure' : 'search_result_exposure',
               items
             },
             top_price: this.queryParam.productFilter.maxPrice || '',
@@ -386,6 +385,7 @@
           const skuString = this.products.slice(0, 10).map(item => item.sku).join('');
           const ip = Cookies.get('ip');
           if(ip) {
+            
             dataLayer.push({
               'event': 'custom_search_performed',
               'zip': window.zkh.customerZipCode,   
@@ -394,7 +394,7 @@
               'search_parameters': $('.main-search__results').attr('terms'),
               'search_outcome': skuString,
               'ip': ip,
-              'number_of_results': this.total || 0
+              'number_of_results': this.currentStyle == 'recommend' ? 0 : this.total || 0,
             });
           }
         },
