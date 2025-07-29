@@ -11,7 +11,7 @@
     "tw": "npx tailwindcss -i ./config.css -o ./shopify/assets/shopify-style.css --watch",
     "purge-advanced": "node ./scripts/purgecss-advanced.config.js",
     "minify": "node ./scripts/minify.js",
-    "deploycli": "node ./scripts/deploycli.js",
+    "deploycli": "bash ./deploycli.sh",
     "clear": "node ./scripts/remove-comments.js"
   },
   "devDependencies": {
