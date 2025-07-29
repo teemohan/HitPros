@@ -1,0 +1,29 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "marketing_banner_3h87NX": {
+      "type": "marketing-banner",
+      "name": "marketing-banner",
+      "settings": {}
+    },
+    "main_collection_landing_9HCtJm": {
+      "type": "main-collection-landing",
+      "settings": {
+        "title": "Premium Products, Exclusive Savings",
+        "show_view_all": false
+      }
+    }
+  },
+  "order": [
+    "marketing_banner_3h87NX",
+    "main_collection_landing_9HCtJm"
+  ]
+}
