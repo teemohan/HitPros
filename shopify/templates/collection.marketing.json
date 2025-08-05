@@ -9,7 +9,22 @@
  */
 {
   "sections": {
-    "marketing_banner_3h87NX": {
+    "collection_landing_banner_4X7xyK": {
+      "type": "collection-landing-banner",
+      "disabled": true,
+      "name": "Ladning Banner",
+      "settings": {
+        "free_tip": "",
+        "text_width": 40,
+        "title": "SAFETY FIRST",
+        "title_color": "#ffffff",
+        "text": "<p>Protect your team & your wallet</p>",
+        "text_color": "#ffffff",
+        "bg_img": "shopify://shop_images/SAFETY_FIRST.png",
+        "h5_bg_img": "shopify://shop_images/SAFETY_FIRST_H5.png"
+      }
+    },
+    "marketing_banner_XKNdgC": {
       "type": "marketing-banner",
       "name": "marketing-banner",
       "settings": {}
@@ -23,7 +38,8 @@
     }
   },
   "order": [
-    "marketing_banner_3h87NX",
+    "collection_landing_banner_4X7xyK",
+    "marketing_banner_XKNdgC",
     "main_collection_landing_9HCtJm"
   ]
 }
