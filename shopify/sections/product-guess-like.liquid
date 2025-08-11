@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
       try {    
         const url = `/openapi/recommend/pdp`;
         const result = await kkAjax.post(url, {
-          userId: window.zkh.customerId || '',
+          userId: window.northsky.customerId || '',
           anonymousId: window.gaGlobal?.vid || '',
           count: 20,
           skuCode: this.skuCode

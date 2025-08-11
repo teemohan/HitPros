@@ -1,0 +1,98 @@
+
+{% raw %}
+  <script type="text/x-template" id="account-other-login">
+    <div class="w-full grid grid-cols-2 gap-4">
+      <div class="h-9 fb-sm:h-10 flex items-center w-full border border-142A6B justify-center space-x-4 rounded-sm cursor-pointer" @click="handleGoogleLogin">
+        <img class="w-5 h-5 fb-sm:w-6 fb-sm:h-6" src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/google.png?v=1752570271" />
+        <span class="text-12 fb-sm:text-14 font-medium text-121212">Google</span>
+      </div>
+      <div class="h-9 fb-sm:h-10 flex items-center w-full border border-142A6B justify-center space-x-4 rounded-sm cursor-pointer" @click="handleFacebookLogin">
+        <img  class="w-5 h-5 fb-sm:w-6 fb-sm:h-6" src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/facebook.png?v=1752570271" />
+        <span class="text-12 fb-sm:text-14 font-medium text-121212">Facebook</span>
+      </div>
+    </div>
+  </script>
+{% endraw %}
+<script>
+  Vue.component('account-other-login', {
+    template: '#account-other-login',
+    props: {
+    },
+    computed: {
+    },
+    data(){
+        let returnTo = document.referrer;
+        if(returnTo.includes('/account/register')) {
+          returnTo = `${window.location.origin}/account?slug=account-info`;
+        }
+      return {
+        {%- if shop.name == 'TestHitpros' -%}
+        redirect_uri: 'https://testhitpros.myshopify.com/pages/auth-callback',
+        google: {
+          client_id: '838599206616-j0ebmno6fnbgic0jc3336blt4970tm8t.apps.googleusercontent.com',
+          auth_url: 'https://accounts.google.com/o/oauth2/v2/auth'
+        },
+        facebook: {
+          client_id: '658317203932179',
+          auth_url: 'https://www.facebook.com/v19.0/dialog/oauth'
+        },
+        {%- else -%}
+        redirect_uri: 'https://northskysupply.com/pages/auth-callback',
+        google: {
+          client_id: '534992916289-jp6n2quspp6c5tcg242s6e3voiiak0fj.apps.googleusercontent.com',
+          auth_url: 'https://accounts.google.com/o/oauth2/v2/auth'
+        },
+        facebook: {
+          client_id: '1484031379702309',
+          auth_url: 'https://www.facebook.com/v19.0/dialog/oauth'
+        },
+        {%- endif -%}
+        returnTo
+      }
+    },
+    mounted() {
+        
+    },
+    methods: {
+      getReturnUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const checkoutUrl = urlParams.get('checkout_url');
+        if(checkoutUrl) {
+          this.returnTo = checkoutUrl
+        } 
+        return this.returnTo
+      },
+      
+      handleGoogleLogin() {
+        const returnUrl = this.getReturnUrl();
+        const params = new URLSearchParams({
+          client_id: this.google.client_id,
+          redirect_uri: this.redirect_uri,
+          response_type: 'code',
+          scope: 'email profile',
+          access_type: 'offline',
+          state: JSON.stringify({
+             source: 'google',
+             returnTo: returnUrl
+          })
+        })
+        window.location.href = `${this.google.auth_url}?${params.toString()}`
+      },
+      
+      handleFacebookLogin() {
+        const returnUrl = this.getReturnUrl();
+        const params = new URLSearchParams({
+          client_id: this.facebook.client_id,
+          redirect_uri: this.redirect_uri,
+          response_type: 'code',
+          scope: 'public_profile,email',
+          state: JSON.stringify({
+            source: 'facebook',
+            returnTo: returnUrl
+          })
+        })
+        window.location.href = `${this.facebook.auth_url}?${params.toString()}`
+      }
+    }
+  });
+</script>

@@ -826,7 +826,7 @@
         $('#order_section').show();
         const orderId = Number(window.location.href.split('=')[1].split('&')[0]);
         $.ajax({
-          url: `${window.zkh.api}/order/${orderId}`,
+          url: `${window.northsky.api}/order/${orderId}`,
           method: 'GET',
           success: (data) => {
             this.orderMain = data.data.order;
@@ -929,7 +929,7 @@
           this.params = {
             orderRefundMain: {
               refundOrderId: this.orderMain.name,
-              channelCode: 'Website-US',
+              channelCode: window.northsky.channelCode,
               orderAmount: Number(this.orderMain.total_price),
               refundAmount: parseFloat(this.refundAmount.replace(/[^\d.]/g, '')),
               currencyType: this.orderMain.currency,
@@ -975,7 +975,7 @@
         async createRefund(params) {
           this.buttonIsDisableTemp = true;
           try {
-            const res = await fetch(`${window.zkh.api}/openapi/shopify/refund/create`, {
+            const res = await fetch(`${window.northsky.api}/openapi/shopify/refund/create`, {
               method: 'POST',
               body: JSON.stringify({
                 orderRefundMain: params.orderRefundMain,
@@ -1086,7 +1086,7 @@
     
         },
         handleAttachmentUpload() {
-          const uploadUrl = `${window.zkh.api}/openapi/shopify/refund/file`;
+          const uploadUrl = `${window.northsky.api}/openapi/shopify/refund/file`;
           const input = document.createElement('input');
           input.type = 'file';
           input.accept = 'image/*,video/*,.xlsx,.xls,.doc,.docx';

@@ -196,7 +196,7 @@
         const sku = $(this).data('sku');
         skus.push(sku);
       })
-      const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
+      const response = await fetch(`${window.northsky.api}/wish/batch-query`, {
         method: 'POST',
         body: JSON.stringify({
           customerId: '{{ customer.id}}',
@@ -217,9 +217,9 @@
     async function getSpuList() {
       try {
         {% if collection.handle == 'all' %}
-          const fetchUrl = `${window.zkh.api}/openapi/adlink/product/collection/spu`;
+          const fetchUrl = `${window.northsky.api}/openapi/adlink/product/collection/spu`;
         {% else %}
-          const fetchUrl = `${window.zkh.api}/openapi/adlink/product/collection/spu?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}`;
+          const fetchUrl = `${window.northsky.api}/openapi/adlink/product/collection/spu?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}`;
         {% endif %}
         const response = await fetch(fetchUrl, {
           method: 'GET',
@@ -758,7 +758,7 @@
       setWrapperLoading(false);
     }
     async function initCategoriesList() {
-      const baseURL = `${window.zkh.api}/openapi/adlink/product/collection/collection?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}&order=1`;
+      const baseURL = `${window.northsky.api}/openapi/adlink/product/collection/collection?c1=${encodeURIComponent("{{ collection.title | split: '~' | last }}")}&order=1`;
       try {
         const response = await fetch(baseURL, {
           method: 'GET',

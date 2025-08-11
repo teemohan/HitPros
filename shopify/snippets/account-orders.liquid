@@ -193,8 +193,8 @@
       template: '#accountOrders',
       data() {
         return {
-          pixiUrl: window.zkh.pixi_url,
-          pixiNetUrl: window.zkh.pixi_net_url,
+          pixiUrl: window.northsky.pixi_url,
+          pixiNetUrl: window.northsky.pixi_net_url,
           loading: false,
           dialogVisibleCancel: false,
           total: +'{{ customer.orders_count }}',
@@ -227,18 +227,67 @@
       methods: {
         handleOpenInvoice(order) {
           order.invoice_loading = true;
-          fetch(`${window.zkh.api}/order/${order.id}`)
+          
+          // 检测是否为移动设备
+          const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+          
+          fetch(`${window.northsky.api}/order/${order.id}`)
             .then(response => response.json())
-            .then(res =>{
+            .then(res => {
               if(res.code == 200) {
-                if(res.data.order.payment_terms?.payment_terms_type == 'net') {
-                  window.open(`${ this.pixiNetUrl }/${ order.id }`, '_blank');
+                const invoiceUrl = res.data.order.payment_terms?.payment_terms_type == 'net' 
+                  ? `${ this.pixiNetUrl }/${ order.id }` 
+                  : `${ this.pixiUrl }/${ order.id }`;
+                
+                if (isMobile && isSafari) {
+                  // Mobile Safari: Direct page navigation
+                  window.location.href = invoiceUrl;
+                } else if (isMobile) {
+                  // Other mobile browsers: Create download link
+                  const link = document.createElement('a');
+                  link.href = invoiceUrl;
+                  link.target = '_blank';
+                  link.download = `invoice-${order.id}.pdf`;
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
                 } else {
-                  window.open(`${ this.pixiUrl }/${ order.id }`, '_blank');
+                  // Desktop: Use window.open
+                  const newWindow = window.open(invoiceUrl, '_blank');
+                  if (!newWindow) {
+                    // If popup blocked, show message
+                    alert('Please allow popups or click the link to download invoice');
+                    window.location.href = invoiceUrl;
+                  }
+                }
+              } else {
+                // Show error message
+                if (this.$message) {
+                  this.$message({
+                    showClose: true,
+                    message: 'Failed to get invoice, please try again later',
+                    type: 'error',
+                  });
+                } else {
+                  alert('Failed to get invoice, please try again later');
                 }
               }
               order.invoice_loading = false;
             })
+            .catch(error => {
+              console.error('Invoice fetch error:', error);
+              if (this.$message) {
+                this.$message({
+                  showClose: true,
+                  message: 'Network error, please check your connection',
+                  type: 'error',
+                });
+              } else {
+                alert('Network error, please check your connection');
+              }
+              order.invoice_loading = false;
+            });
         },
         handleBeforeCancelOrder(order) {
           this.order = order;
@@ -248,7 +297,7 @@
         async handleCancelOrder() {
           this.cancelOrderLoading = true;
           try {
-            const response = await fetch(`${window.zkh.api}/order/cancel`, {
+            const response = await fetch(`${window.northsky.api}/order/cancel`, {
               method: 'PUT',
               body: JSON.stringify(this.orderRuleForm),
               headers: {

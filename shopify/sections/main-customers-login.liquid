@@ -19,7 +19,7 @@
       >
         <el-row>
           <el-form-item prop="email">
-            <el-input id="login_email" v-model="ruleForm.email" v-focus-input="ruleForm.email"></el-input>
+            <el-input id="login_email" v-model="ruleForm.email" placeholder="Email*" v-focus-input="ruleForm.email"></el-input>
             <label for="login_email" class="el-label">Email*</label>
           </el-form-item>
         </el-row>
@@ -29,6 +29,7 @@
               autocomplete="new-password"
               id="login_pass"
               v-model="ruleForm.password"
+              placeholder="Password*"
               v-focus-input="ruleForm.password"
               :type="!showPass? 'password': 'text'"
             ></el-input>
@@ -50,8 +51,13 @@
           >
         </div>
       </el-form>
+        <div class="w-full mt-10 mb-10 flex h-4.5 items-center fb-sm:mb-5 fb-sm:h-5">
+          <hr class="flex-grow border-E2E2E2" />
+          <span class="px-4 text-xs font-normal text-[#767676] fb-sm:text-sm">or</span>
+          <hr class="flex-grow border-E2E2E2" />
+        </div>
+        <account-other-login></account-other-login>
     </div>
-
     <div class="form-box recover-form-box" v-show="show_recover">
       <h3 class="block-title">Reset Password</h3>
       <template v-if="!sendEmail">
@@ -76,6 +82,7 @@
                 name="email"
                 v-model="recoverRuleForm.email"
                 v-focus-input="recoverRuleForm.email"
+                placeholder="Email*"
               ></el-input>
               <label for="recover_email" class="el-label">Email*</label>
             </el-form-item>
@@ -108,7 +115,9 @@
     </div>
   </div>
 </section>
-
+{% liquid
+  render 'account-other-login'
+%}
 <script>
   function checkIfLoggedIn() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -116,11 +125,11 @@
     return checkoutUrl || ''
   }
   const isCheckoutBack = checkIfLoggedIn();
-  if(window.zkh.customerId && isCheckoutBack) {
+  if(window.northsky.customerId && isCheckoutBack) {
       window.location.replace("/") 
   }
   (() => {
-    function startPolling() {
+     function startPolling() {
       setInterval(() => {
         const params = new URLSearchParams(window.location.search);
         const returnUrl = params.get('return_url');
@@ -134,6 +143,15 @@
       }, 600);
     }
     startPolling();
+    
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted || (window.performance && performance.getEntriesByType("navigation")[0].type === "back_forward")) {
+        if('{{ customer.id }}') { 
+            window.location.href = "/"
+        }
+      }
+    });
+
     Vue.directive('focus-input', {
       inserted(el, binding, vnode) {
         const inputEl = el.querySelector('input');
@@ -256,7 +274,7 @@
         async submit() {
           this.loading = true;
           try {
-            const res = await fetch(`${window.zkh.api}/login`, {
+            const res = await fetch(`${window.northsky.api}/login`, {
               method: 'POST',
               body: JSON.stringify(this.ruleForm),
               headers: {
@@ -265,7 +283,7 @@
             });
             const data = await res.json();
             if (data.code == 200) {
-              const cartRes = await fetch(`${window.zkh.api}/shopping/cart?email=${this.ruleForm.email}`);
+              const cartRes = await fetch(`${window.northsky.api}/shopping/cart?email=${this.ruleForm.email}`);
               const cartData = await cartRes.json();
               if(cartData.data.length > 0) {
                 Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 }); 
@@ -304,7 +322,7 @@
               this.recoverLoading = true;
               try {
                 const response = await fetch(
-                  `${window.zkh.api}/check/register?email=${this.recoverRuleForm.email}`
+                  `${window.northsky.api}/check/register?email=${this.recoverRuleForm.email}`
                 );
                 const res = await response.json();
                 if (!res.data.registered) {

@@ -253,8 +253,8 @@
             pageSize: 12,
           },
           queryParam: {
-            userId: window.zkh.customerId || ga4Id,
-            hasLogin: window.zkh.customerId ? true : false,
+            userId: window.northsky.customerId || ga4Id,
+            hasLogin: window.northsky.customerId ? true : false,
             from: 0,
             size: 12,
             productFilter: {
@@ -264,7 +264,7 @@
             },
             sortField: undefined,
             keyword: "",
-            channelCode: "NorthSky-US",
+            channelCode: window.northsky.channelCode,
             sortOrder: undefined
           },
           products: [],
@@ -287,13 +287,13 @@
         }
       },
       created() {
-        if(!window.zkh.customerZipCode) {
+        if(!window.northsky.customerZipCode) {
           try {
             getLocalZipCode((zip) => {
-              window.zkh.customerZipCode = zip;
+              window.northsky.customerZipCode = zip;
             })
           } catch (error) {
-              window.zkh.customerZipCode = '77380'
+              window.northsky.customerZipCode = '77380'
           }
         }
         this.initPageFrom();
@@ -388,7 +388,7 @@
             
             dataLayer.push({
               'event': 'custom_search_performed',
-              'zip': window.zkh.customerZipCode,   
+              'zip': window.northsky.customerZipCode,   
               'username': '{{customer.name }}',
               'email':'{{customer.email }}',
               'search_parameters': $('.main-search__results').attr('terms'),
@@ -476,7 +476,7 @@
           try {
             if(this.queryParam.hasLogin) {
               const skus = this.products.map(product => product.sku);
-              const response = await fetch(`${window.zkh.api}/wish/batch-query`, {
+              const response = await fetch(`${window.northsky.api}/wish/batch-query`, {
                 method: 'POST',
                 body: JSON.stringify({
                   customerId: this.queryParam.userId,

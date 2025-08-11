@@ -13,7 +13,7 @@
     dataLayer.push({ ...commonData, ...data });
   }
   const listenUserEvent = ({ eventName, skuCode}) => {
-    fetch(`${window.zkh.api}/openapi/listen/event`, {
+    fetch(`${window.northsky.api}/openapi/listen/event`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -34,7 +34,7 @@ new Vue({
       firstScreenSize: 2,
       remainingDataLoaded: false,
       config: {
-        apiBaseUrl: `${window.zkh?.api || ''}/openapi/adlink/product`,
+        apiBaseUrl: `${window.northsky?.api || ''}/openapi/adlink/product`,
         spuPageSize: 10,
         mobileThreshold: 741
       },

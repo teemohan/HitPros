@@ -6,12 +6,21 @@
     <div class="form-box">
       <h3 class="block-title">Create Account</h3>
       <div class="block-text">
-        Do you have an account?<a class="block-url" href="{{ routes.account_login_url }}">Sign In</a>
+       Already have an account? <a class="block-url" href="{{ routes.account_login_url }}">Sign In</a>
       </div>
-      <div class="register-type-option">
+      <div class="w-full mt-4">
+       <account-other-login></account-other-login>
+      </div>
+      <div class="w-full flex mt-7 mb-7 fb-sm:mb-0 h-4.5 items-center fb-sm:h-5">
+        <hr class="flex-grow border-E2E2E2" />
+        <span class="px-4 text-xs font-normal text-[#767676] fb-sm:text-sm">or register with email</span>
+        <hr class="flex-grow border-E2E2E2" />
+      </div>
+   
+      {% comment %} <div class="register-type-option">
         <div :class="{active: registerType == 1}" @click="registerType = '1'">Personal Account</div>
         <div :class="{active: registerType == 2}" @click="registerType = '2'">Business Account</div>
-      </div>
+      </div> {% endcomment %}
       <el-form
         autocomplete="off"
         label-width="0"
@@ -23,14 +32,14 @@
         class="form-wrapper"
         id="customer-register-form"
       >
-        <div v-show="registerType == '2'">
+        <div>
           <el-row>
             <el-form-item prop="tag">
               <el-select
                 v-focus-input="ruleForm.tag"
                 v-model="ruleForm.tag"
                 id="ruleForm[tag]"
-                placeholder=""
+                placeholder="Registration Type*"
               >
                 <el-option
                   v-for="item in registerOptions"
@@ -52,7 +61,7 @@
                   v-model="ruleForm.companyId"
                   filterable
                   remote
-                  placeholder=""
+                  placeholder="Company Authorization Code*"
                   @blur="removeReadOnly('register_company_code')"
                   @focus="removeReadOnlyFocus('register_company_code')"
                   :remote-method="companyRemoteSearch"
@@ -68,7 +77,7 @@
               </el-form-item>
             </el-row>
           </div>
-          <div v-show="ruleForm.tag != '1'">
+          <div v-show="ruleForm.tag == '0'">
             <el-row>
               <el-form-item prop="companyName">
                 <el-input
@@ -76,6 +85,7 @@
                   id="register_company_name"
                   v-model="ruleForm.companyName"
                   v-focus-input="ruleForm.companyName"
+                  placeholder="Company Name*"
                 ></el-input>
                 <label for="register_company_name" class="el-label">Company Name*</label>
               </el-form-item>
@@ -86,8 +96,9 @@
                   ref="selIndustryCompany"
                   id="register_industry"
                   v-model="ruleForm.industry"
-                  placeholder=""
+                  placeholder="Industry*"
                   v-focus-input="ruleForm.industry"
+                  @blur="otherValiate(ruleForm.industry, 'industry')"
                 >
                   <el-option
                     v-for="item in industryOptions"
@@ -105,6 +116,7 @@
                         ref="selIndustryCompanyInput"
                         v-if="showIndustryCompanyEdit && item.value == 'Other'"
                         v-model="ruleForm.industry"
+                        placeholder="Industry*"
                       ></el-input>
                     </div>
                   </el-option>
@@ -113,14 +125,15 @@
               </el-form-item>
             </el-row>
           </div>
-          <el-row>
+          <el-row v-show="ruleForm.tag != '2'">
             <el-form-item class="common-select" prop="jobCompany">
               <el-select
                 ref="selJobCompany"
                 id="register_job_company"
                 v-model="ruleForm.jobCompany"
-                placeholder=""
+                placeholder="Job Function*"
                 v-focus-input="ruleForm.jobCompany"
+                @blur="otherValiate(ruleForm.jobCompany, 'jobCompany')"
               >
                 <el-option
                   v-for="item in jobOptionsCompany"
@@ -138,6 +151,7 @@
                       maxlength="150"
                       v-if="showJobCompanyEdit && item.value == 'Other'"
                       v-model="ruleForm.jobCompany"
+                      placeholder="Job Function*"
                     ></el-input>
                   </div>
                 </el-option>
@@ -145,7 +159,7 @@
               <label for="register_job_company" class="el-label">Job Function*</label>
             </el-form-item>
           </el-row>
-          <div v-show="ruleForm.tag != '1'">
+          <div v-show="ruleForm.tag == '0'">
             <div class="form-sec-title">Company Address</div>
             <el-row>
               <el-form-item prop="address1">
@@ -153,6 +167,7 @@
                   id="ruleForm[address1]"
                   v-model="ruleForm.address1"
                   v-focus-input="ruleForm.address1"
+                  placeholder="Street Address*"
                 ></el-input>
                 <label for="ruleForm[address1]" class="el-label">Street Address*</label>
               </el-form-item>
@@ -163,6 +178,7 @@
                   id="ruleForm[address2]"
                   v-model="ruleForm.address2"
                   v-focus-input="ruleForm.address2"
+                  placeholder="Suite，Building，Department，etc."
                 ></el-input>
                 <label for="ruleForm[address2]" class="el-label">Suite，Building，Department，etc.</label>
               </el-form-item>
@@ -174,6 +190,7 @@
                     id="ruleForm[city]"
                     v-model="ruleForm.city"
                     v-focus-input="ruleForm.city"
+                    placeholder="City*"
                   ></el-input>
                   <label for="ruleForm[city]" class="el-label">City*</label>
                 </el-form-item>
@@ -185,7 +202,8 @@
                     v-model="ruleForm.state"
                     @change="handleCompanyStateChange"
                     id="ruleForm[state]"
-                    placeholder=""
+                    placeholder="State*"
+                    @blur="otherValiate(ruleForm.state, 'state')"
                   >
                     <el-option
                       v-for="item in stateOptions"
@@ -205,6 +223,7 @@
                     @blur="handleCompanyZipBlur"
                     v-model="ruleForm.zipCode"
                     v-focus-input="ruleForm.zipCode"
+                    placeholder="ZIP Code*"
                   ></el-input>
                   <label for="ruleForm[zipCode]" class="el-label">ZIP Code*</label>
                 </el-form-item>
@@ -221,6 +240,7 @@
                 maxlength="150"
                 v-model="ruleForm.firstname"
                 v-focus-input="ruleForm.firstname"
+                placeholder="First Name*"
               ></el-input>
               <label for="register_first_name" class="el-label">First Name*</label>
             </el-form-item>
@@ -232,6 +252,7 @@
                 maxlength="150"
                 v-model="ruleForm.lastname"
                 v-focus-input="ruleForm.lastname"
+                placeholder="Last Name*"
               ></el-input>
               <label for="register_last_name" class="el-label">Last Name*</label>
             </el-form-item>
@@ -239,83 +260,12 @@
         </el-row>
         <el-row>
           <el-form-item prop="email">
-            <el-input id="register_email" v-model="ruleForm.email" v-focus-input="ruleForm.email"></el-input>
+            <el-input id="register_email" v-model="ruleForm.email" v-focus-input="ruleForm.email"
+            placeholder="Email*"
+            ></el-input>
             <label for="register_email" class="el-label">Email*</label>
           </el-form-item>
         </el-row>
-        <div v-show="registerType == '1'">
-          <el-row>
-            <el-form-item prop="companyName">
-              <el-input
-                maxlength="150"
-                id="register_company_name_personal"
-                v-model="ruleForm.companyNamePersonal"
-                v-focus-input="ruleForm.companyNamePersonal"
-              ></el-input>
-              <label for="register_company_name_personal" class="el-label">Company Name</label>
-            </el-form-item>
-          </el-row>
-          <el-row>
-            <el-form-item class="common-select">
-              <el-select
-                ref="selIndustryPersonal"
-                id="register_industryPersonal"
-                v-model="ruleForm.industryPersonal"
-                placeholder=""
-                v-focus-input="ruleForm.industryPersonal"
-              >
-                <el-option
-                  v-for="item in industryOptionsPersonal"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                  <div class="common-dropdown-item" @click="handleButtonClickIndustryPersonal($event, item)">
-                    <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
-                    <div>${ item.value }</div>
-                    <el-input
-                      placeholder="Please enter your industry"
-                      maxlength="150"
-                      v-if="showIndustryPersonalEdit && item.value == 'Other'"
-                      v-model="ruleForm.industryPersonal"
-                    ></el-input>
-                  </div>
-                </el-option>
-              </el-select>
-              <label for="register_industryPersonal" class="el-label">Industry</label>
-            </el-form-item>
-          </el-row>
-          <el-row>
-            <el-form-item class="common-select">
-              <el-select
-                ref="selJobPersonal"
-                id="register_jobPersonal"
-                v-model="ruleForm.jobPersonal"
-                placeholder=""
-                v-focus-input="ruleForm.jobPersonal"
-              >
-                <el-option
-                  v-for="item in jobOptionsPersonal"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                  <div class="common-dropdown-item" @click="handleButtonClickJobPersonal($event, item)">
-                    <el-checkbox disabled v-model="item.isSelected"></el-checkbox>
-                    <div>${ item.value }</div>
-                    <el-input
-                      placeholder="Please enter your job"
-                      maxlength="150"
-                      v-if="showJobPersonalEdit && item.value == 'Other'"
-                      v-model="ruleForm.jobPersonal"
-                    ></el-input>
-                  </div>
-                </el-option>
-              </el-select>
-              <label for="register_jobPersonal" class="el-label">Job Function</label>
-            </el-form-item>
-          </el-row>
-        </div>
         <el-row>
           <el-form-item class="line-input" prop="password">
             <el-input
@@ -325,6 +275,7 @@
               v-model="ruleForm.password"
               :type="!showPass? 'password': 'text'"
               v-focus-input="ruleForm.password"
+              placeholder="Password*"
             ></el-input>
             <label for="register_password" class="el-label">Password*</label>
             <span class="text-show" @click="showPass = !showPass">
@@ -362,6 +313,7 @@
               v-model="ruleForm.confirmPassword"
               :type="!showPass1? 'password': 'text'"
               v-focus-input="ruleForm.confirmPassword"
+              placeholder="Confirm Password*"
             ></el-input>
             <label for="register_confirm_password" class="el-label">Confirm Password*</label>
             <span class="text-show" @click="showPass1 = !showPass1">
@@ -370,12 +322,14 @@
             </span>
           </el-form-item>
         </el-row>
-        <el-row v-show="registerType == 2" class="code-container">
+        <el-row v-show="ruleForm.tag != '2'" class="code-container">
           <el-form-item prop="code">
             <el-input 
               id="register_code" 
               v-model="ruleForm.code" 
-              v-focus-input="ruleForm.code">
+              v-focus-input="ruleForm.code"
+              placeholder="Verification Code*"
+            >
             </el-input>
             <label for="register_code" class="el-label">Verification Code*</label>
             <span :class="{
@@ -431,7 +385,9 @@
     </div>
   </div>
 </section>
-
+{% liquid
+  render 'account-other-login'
+%}
 <script>
   (() => {
     Vue.directive('focus-input', {
@@ -494,7 +450,7 @@
       data() {
         const validateCompanyName = async (rule, value, callback) => {
           try {
-            const response = await fetch(`${window.zkh.api}/companies?name=${value}`);
+            const response = await fetch(`${window.northsky.api}/companies?name=${value}`);
             const res = await response.json();
             if (res.code === 200) {
               callback(); 
@@ -517,7 +473,7 @@
         };
         const validateCompanyZipCode = async (rule, value, callback) => {
           if (!value) {
-            callback(new Error('ZIP Code is required'));
+            callback(new Error('ZIP Code is required.'));
           } else if (value.length !== 5) {
             callback(new Error('Zip code must be 5 digits'));
           } else {
@@ -541,7 +497,7 @@
 
         const validateCompanyState = async (rule, value, callback) => {
           if (!value) {
-            callback(new Error('Please select a state'));
+            callback(new Error('Please select a state.'));
           } else if (this.ruleForm.zipCode.length && this.ruleForm.zipCode.length !== 5) {
             callback(new Error('Does not match zip code.'));
           } else {
@@ -551,11 +507,11 @@
 
         const companyCodeValidator = async (rule, value, callback) => {
           if (!value || value.trim() === '') {
-            callback(new Error('Company Authentication Code is required'));
+            callback(new Error('Company Authentication Code is required.'));
             return;
           }
           try {
-            const response = await fetch(`${window.zkh.api}/companies/${value}/name`);
+            const response = await fetch(`${window.northsky.api}/companies/${value}/name`);
             const res = await response.json();
             if (res.code === 200) {
               this.validCompanyData = {
@@ -585,20 +541,24 @@
             hasNumber: false,
           },
           registerOptions: [
+            ['Register as a personal user', '2'],
             ['Join an existing company', '1'],
             ['Register a new company', '0'],
           ],
           stateOptions: [
             ["Alabama", "AL"],
             ["Alaska", "AK"],
+            ["American Samoa", "AS"],
             ["Arizona", "AZ"],
             ["Arkansas", "AR"],
             ["California", "CA"],
             ["Colorado", "CO"],
             ["Connecticut", "CT"],
             ["Delaware", "DE"],
+            ["Micronesia", "FM"],
             ["Florida", "FL"],
             ["Georgia", "GA"],
+            ["Guam", "GU"],
             ["Hawaii", "HI"],
             ["Idaho", "ID"],
             ["Illinois", "IL"],
@@ -608,6 +568,7 @@
             ["Kentucky", "KY"],
             ["Louisiana", "LA"],
             ["Maine", "ME"],
+            ["Marshall Islands", "MH"],
             ["Maryland", "MD"],
             ["Massachusetts", "MA"],
             ["Michigan", "MI"],
@@ -623,10 +584,13 @@
             ["New York", "NY"],
             ["North Carolina", "NC"],
             ["North Dakota", "ND"],
+            ["Northern Mariana Islands", "MP"],
             ["Ohio", "OH"],
             ["Oklahoma", "OK"],
             ["Oregon", "OR"],
+            ["Palau", "PW"],
             ["Pennsylvania", "PA"],
+            ["Puerto Rico", "PR"],
             ["Rhode Island", "RI"],
             ["South Carolina", "SC"],
             ["South Dakota", "SD"],
@@ -636,21 +600,14 @@
             ["Vermont", "VT"],
             ["Virginia", "VA"],
             ["Washington", "WA"],
+            ["Washington DC", "DC"],
             ["West Virginia", "WV"],
             ["Wisconsin", "WI"],
             ["Wyoming", "WY"],
-            ["American Samoa", "AS"],
+            ["U.S. Virgin Islands", "VI"],
             ["Armed Forces Americas", "AA"],
             ["Armed Forces Europe", "AE"],
-            ["Armed Forces Pacific", "AP"],
-            ["District of Columbia", "DC"],
-            ["Federated States of Micronesia", "FM"],
-            ["Guam", "GU"],
-            ["Marshall Islands", "MH"],
-            ["Northern Mariana Islands", "MP"],
-            ["Puerto Rico", "PR"],
-            ["Virgin Islands", "VI"],
-            ["Palau", "PW"]
+            ["Armed Forces Pacific", "AP"]
           ],
           ruleForm: {
             firstname: '',
@@ -662,12 +619,9 @@
             companyId: '',
             companyName: '',
             industry: '',
-            industryPersonal: '',
-            companyNamePersonal: '',
-            jobPersonal: '',
             jobCompany: '',
             state: '',
-            tag: '0',
+            tag: '2',
             city: '',
             zipCode: '',
             address1: '',
@@ -675,13 +629,9 @@
             code: ''
           },
           industry: '',
-          industryPersonal: '',
-          jobPersonal: '',
           jobCompany: '',
           validCompanyData: null,
           showIndustryCompanyEdit: false,
-          showIndustryPersonalEdit: false,
-          showJobPersonalEdit: false,
           showJobCompanyEdit: false,
           industryOptions: [
             { isSelected: false, value: 'Manufacturing', label: 'Manufacturing' },
@@ -702,36 +652,6 @@
             { isSelected: false, value: 'Personal Use', label: 'Personal Use' },
             { isSelected: false, value: 'Other', label: 'Other' },
           ],
-          industryOptionsPersonal: [
-            { isSelected: false, value: 'Manufacturing', label: 'Manufacturing' },
-            { isSelected: false, value: 'Warehousing', label: 'Warehousing' },
-            { isSelected: false, value: 'Transportation', label: 'Transportation' },
-            { isSelected: false, value: 'Government / Municipality', label: 'Government / Municipality' },
-            { isSelected: false, value: 'Hospitality', label: 'Hospitality' },
-            { isSelected: false, value: 'Healthcare', label: 'Healthcare' },
-            { isSelected: false, value: 'Retail/Commercial', label: 'Retail/Commercial' },
-            { isSelected: false, value: 'Property Management', label: 'Property Management' },
-            { isSelected: false, value: 'Professional Services', label: 'Professional Services' },
-            { isSelected: false, value: 'Construction', label: 'Construction' },
-            { isSelected: false, value: 'Mining', label: 'Mining' },
-            { isSelected: false, value: 'Agriculture', label: 'Agriculture' },
-            { isSelected: false, value: 'Education', label: 'Education' },
-            { isSelected: false, value: 'Energy / Oil & Gas', label: 'Energy / Oil & Gas' },
-            { isSelected: false, value: 'Food & Beverage', label: 'Food & Beverage' },
-            { isSelected: false, value: 'Personal Use', label: 'Personal Use' },
-            { isSelected: false, value: 'Other', label: 'Other' },
-          ],
-          jobOptionsPersonal: [
-            { isSelected: false, value: 'Maintenance & Engineering', label: 'Maintenance & Engineering ' },
-            { isSelected: false, value: 'Safety /EHS', label: 'Safety /EHS' },
-            { isSelected: false, value: 'Purchasing', label: 'Purchasing' },
-            { isSelected: false, value: 'Production', label: 'Production' },
-            { isSelected: false, value: 'Operations', label: 'Operations' },
-            { isSelected: false, value: 'Management', label: 'Management' },
-            { isSelected: false, value: 'Contractor', label: 'Contractor' },
-            { isSelected: false, value: 'Student', label: 'Student' },
-            { isSelected: false, value: 'Other', label: 'Other' },
-          ],
           jobOptionsCompany: [
             { isSelected: false, value: 'Maintenance & Engineering', label: 'Maintenance & Engineering ' },
             { isSelected: false, value: 'Safety /EHS', label: 'Safety /EHS' },
@@ -747,10 +667,10 @@
           showPass1: false,
           personalRules: {
             firstname: [
-              { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
+              { validator: noWhitespaceValidator, message: 'First Name is required.', trigger: 'blur' },
             ],
             lastname: [
-              { validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' },
+              { validator: noWhitespaceValidator, message: 'Last Name is required.', trigger: 'blur' },
             ],
             email: [{ validator: checkEmail, trigger: 'blur' }],
             password: [{ validator: this.checkPass, trigger: 'blur' }],
@@ -760,47 +680,50 @@
             companyId: [
               { validator: companyCodeValidator, trigger: 'change' },
             ],
+            jobCompany: [
+              { validator: noWhitespaceValidator, message: 'Job Function is required.', trigger: 'change' }
+            ],
             firstname: [
-              { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
+              { validator: noWhitespaceValidator, message: 'First Name is required.', trigger: 'blur' },
             ],
             lastname: [
-              { validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' },
+              { validator: noWhitespaceValidator, message: 'Last Name is required.', trigger: 'blur' },
             ],
             email: [{ validator: checkEmail, trigger: 'blur' }],
             password: [{ validator: this.checkPass, trigger: 'blur' }],
             confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'blur' }],
             code: [
-              { validator: noWhitespaceValidator, message: 'Code is required', trigger: 'blur' }
+              { validator: noWhitespaceValidator, message: 'Code is required.', trigger: 'blur' }
             ],
           },
           companyCreateRules: {
             companyName: [
-              { validator: noWhitespaceValidator, message: 'CompanyName is required', trigger: 'blur' },
+              { validator: noWhitespaceValidator, message: 'Company Name is required.', trigger: 'blur' },
               { validator: validateCompanyName, trigger: 'blur' },
             ],
             industry: [
-              { validator: noWhitespaceValidator, message: 'industryName is required', trigger: 'change' }
+              { validator: noWhitespaceValidator, message: 'Industry is required.', trigger: 'change' }
             ],
             jobCompany: [
-              { validator: noWhitespaceValidator, message: 'Job Fcuntion is required', trigger: 'change' }
+              { validator: noWhitespaceValidator, message: 'Job Function is required.', trigger: 'change' }
             ],
             address1: [
-              { validator: noWhitespaceValidator, message: 'Street Address is required', trigger: 'blur' }
+              { validator: noWhitespaceValidator, message: 'Street Address is required.', trigger: 'blur' }
             ],
-            city: [{ validator: noWhitespaceValidator, message: 'City is required', trigger: 'blur' }],
+            city: [{ validator: noWhitespaceValidator, message: 'City is required.', trigger: 'blur' }],
             state: [{ validator: validateCompanyState, trigger: 'change' }],
             zipCode: [{ validator: validateCompanyZipCode, trigger: 'blur' }],
             firstname: [
-              { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
+              { validator: noWhitespaceValidator, message: 'First Name is required.', trigger: 'blur' },
             ],
             lastname: [
-              { validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' },
+              { validator: noWhitespaceValidator, message: 'Last Name is required.', trigger: 'blur' },
             ],
             email: [{ validator: checkEmail, trigger: 'blur' }],
             password: [{ validator: this.checkPass, trigger: 'blur' }],
             confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'blur' }],
             code: [
-              { validator: noWhitespaceValidator, message: 'Code is required', trigger: 'blur' }
+              { validator: noWhitespaceValidator, message: 'Code is required.', trigger: 'blur' }
             ],
           },
           loading: false,
@@ -808,16 +731,13 @@
       },
       computed: {
         currentRules() {
-          if (this.registerType === '1') {
+          if (this.ruleForm.tag == '0') {
+            return this.companyCreateRules;
+          } else if (this.ruleForm.tag == '1') {
+            return this.companyJoinRules;
+          } else {
             return this.personalRules;
-          } else if (this.registerType === '2') {
-            if (this.ruleForm.tag === '0') {
-              return this.companyCreateRules;
-            } else if (this.ruleForm.tag === '1') {
-              return this.companyJoinRules;
-            }
           }
-          return {};
         },
       },
       mounted() {
@@ -834,18 +754,6 @@
           const industry = this.industryOptions.find((item) => item.value == 'Other');
           if(industry.isSelected) {
             this.industry = newVal;
-          }
-        },
-        "ruleForm.industryPersonal"(newVal, oldVal) {
-          const industryPersonal = this.industryOptionsPersonal.find((item) => item.value == 'Other');
-          if(industryPersonal.isSelected) {
-            this.industryPersonal = newVal;
-          }
-        },
-        "ruleForm.jobPersonal"(newVal, oldVal) {
-          const jobPersonal = this.jobOptionsPersonal.find((item) => item.value == 'Other');
-          if(jobPersonal.isSelected) {
-            this.jobPersonal = newVal;
           }
         },
         "ruleForm.jobCompany"(newVal, oldVal) {
@@ -877,6 +785,14 @@
           } else {
             this.elSelectFocus = false;
           }
+          if(id == "register_company_code" &&!this.ruleForm.companyId) {
+            this.$refs.ruleForm.validateField('companyId');
+          }
+        },
+        otherValiate(value, fieldName) {
+          if(!value) {
+            this.$refs.ruleForm.validateField(fieldName);
+          }
         },
         async handleSendVerifiyCode() {
           if(this.isSendCode) return
@@ -891,7 +807,7 @@
           }
           this.isShowCodeLoading = true;
           try {
-            const response = await fetch(`${window.zkh.api}/email/code?email=${email}`, {
+            const response = await fetch(`${window.northsky.api}/email/code?email=${email}`, {
               method: 'POST'
             })
             const res = await response.json();
@@ -931,7 +847,7 @@
           if (query !== '') {
             this.codeSearchLoading = true;
             try {
-              const response = await fetch(`${window.zkh.api}/companies/${query}/name`);
+              const response = await fetch(`${window.northsky.api}/companies/${query}/name`);
               const res = await response.json();
               if (res.code === 200) {
                 this.companyOptions = [{
@@ -990,26 +906,21 @@
         async submit() {
           let form = null;
           this.loading = true;
-          if(this.registerType == '1') {
+          if(this.ruleForm.tag == '2') {
             form = {
               firstname: this.ruleForm.firstname,
               lastname: this.ruleForm.lastname,
-              companyName: this.ruleForm.companyNamePersonal,
-              industry: this.ruleForm.industryPersonal,
-              jobFunction: this.ruleForm.jobPersonal,
               email: this.ruleForm.email,
               password: this.ruleForm.password, 
               checked: this.ruleForm.checked,
             };
             try {
-              const formData = new FormData();
-              for (const key in form) {
-                formData.append(key, form[key]);
-              }
-
-              const response = await fetch(`${window.zkh.api}/register`, {
+              const response = await fetch(`${window.northsky.api}/register`, {
                 method: 'POST',
-                body: formData,
+                body: JSON.stringify(form),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
               });
               const res = await response.json();
               if (res.code == '200') {
@@ -1076,7 +987,7 @@
               };
             }
             try {
-              const response = await fetch(`${window.zkh.api}/register/tob`, {
+              const response = await fetch(`${window.northsky.api}/register/tob`, {
                 method: 'POST',
                 body: JSON.stringify(form),
                 headers: {
@@ -1152,36 +1063,6 @@
             this.$refs.selIndustryCompany.blur();
           }
           industry.isSelected = true;
-        },
-        handleButtonClickIndustryPersonal(event, industryItem) {
-          event.stopPropagation();
-          if (industryItem.isSelected) return;
-          this.industryOptionsPersonal.map((item) => (item.isSelected = false));
-          const industryPersonal = this.industryOptionsPersonal.find((item) => item.value == industryItem.value);
-          if (industryItem.value == 'Other') {
-            this.showIndustryPersonalEdit = true;
-            this.ruleForm.industryPersonal = this.industryPersonal;
-          } else {
-            this.showIndustryPersonalEdit = false;
-            this.ruleForm.industryPersonal = industryPersonal.value;
-            this.$refs.selIndustryPersonal.blur();
-          }
-          industryPersonal.isSelected = true;
-        },
-        handleButtonClickJobPersonal(event, jobItem) {
-          event.stopPropagation();
-          if (jobItem.isSelected) return;
-          this.jobOptionsPersonal.map((item) => (item.isSelected = false));
-          const jobPersonal = this.jobOptionsPersonal.find((item) => item.value == jobItem.value);
-          if (jobItem.value == 'Other') {
-            this.showJobPersonalEdit = true;
-            this.ruleForm.jobPersonal = this.jobPersonal;
-          } else {
-            this.showJobPersonalEdit = false;
-            this.ruleForm.jobPersonal = jobPersonal.value;
-            this.$refs.selJobPersonal.blur();
-          }
-          jobPersonal.isSelected = true;
         },
         handleButtonClickJobCompany(event, jobItem) {
           event.stopPropagation();

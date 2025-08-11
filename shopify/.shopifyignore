@@ -1,0 +1,4 @@
+templates/*
+config/*
+locales/*
+.shopify/*

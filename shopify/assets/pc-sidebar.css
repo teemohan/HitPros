@@ -99,7 +99,7 @@ p {
   text-decoration: underline;
 }
 
-.pc-main-nav .pc-aside-bottom a:hover {
+.pc-main-nav .pc-aside-bottom a:hover, .pc-main-nav .pc-aside-bottom span:hover  {
   font-weight: 600;
   color: var(--my-red);
 }
@@ -112,7 +112,7 @@ p {
   font-weight: 400;
 }
 
-.pc-main-nav .pc-aside-bottom a {
+.pc-main-nav .pc-aside-bottom a, .pc-main-nav .pc-aside-bottom span {
   font-size: 16px;
   line-height: 1.2;
   color: var(--my-grey);

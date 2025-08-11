@@ -26,7 +26,6 @@
           {%- endif %}
         {%- endif -%}
       </title>
-      {%- assign is_test_shop = shop.name == 'TestHitpros' -%}
       {%- if shop.name != 'TestHitpros' -%}
         {%- assign is_online_shop = true -%}
         {%- assign gtm_id = 'GTM-M7M24J6J' -%}
@@ -57,14 +56,15 @@
         {% assign zip = customer.default_address.zip | default: '' %}
       {% endif %}
       <script type="text/javascript" async>
-        window.zkh = {
+        window.northsky = {
           api: {%- if shop.name == 'TestHitpros' -%}'https://doc-shop-uat.northskysupply.com/web'{%- else -%}'https://doc-sp.northskysupply.com/web'{%- endif -%},
           pixi_url: {%- if shop.name == 'TestHitpros' -%}'https://pixi-forge.astrl.link/pdf/view/cm06akk9w00t0umfav1ovty8a/cm06aleng004wgt6jefp60ntq'{%- else -%}'https://pixi.storetools.io/api/pdf/clrh58bin00qamc07qcfwpkvs/clrh59cmq00qemc07xzzvb1nt'{%- endif -%},
           pixi_net_url: {%- if shop.name == 'TestHitpros' -%}'https://pixi-forge.astrl.link/pdf/view/cm06akk9w00t0umfav1ovty8a/cm8r364zh006hwqnum5pwobnn'{%- else -%}'https://pixi-forge.astrl.link/pdf/view/clrh58bin00qamc07qcfwpkvs/cm8r6vfpd006lwqnuqowy0ymy'{%- endif -%},
           b2b_url: {%- if shop.name == 'TestHitpros' -%}'https://shopify.com/87140565299/account'{%- else -%}'https://shopify.com/62373298359/account'{%- endif -%},
           customerId: {%- if customer.id -%}'{{ customer.id }}'{%- else -%}null{%- endif -%},
           customerEmail: {%- if customer.email -%}'{{ customer.email }}'{%- else -%}null{%- endif -%},
-          customerZipCode: '{{ zip }}' || localStorage.getItem('customerZipCode')
+          customerZipCode: '{{ zip }}' || localStorage.getItem('customerZipCode'),
+          channelCode: 'Website-US'
         }
       </script>
       {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
@@ -240,8 +240,7 @@
       </svg>
       <a href="#main" class="visually-hidden skip-to-content">{{ 'general.accessibility.skip_to_content' | t }}</a>
       <loading-bar class="loading-bar"></loading-bar>
-  
-      {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
+      {%- if request.page_type != 'gift_card' and request.page_type != 'password' and template != 'page.auth-callback' -%}
         {%- section 'announcement-bar' -%}
         {%- section 'popup' -%}
         {%- section 'header' -%}
@@ -262,14 +261,17 @@
             here. Then, the collection section, based on the selected settings, will eventually hide those elements in CSS
         {%- endcomment -%}
         {{ content_for_layout }}
-        {%- unless request.page_type == 'index' or request.page_type == 'password' or request.page_type == 'gift_card' -%}
+        {%- unless request.page_type == 'index' or request.page_type == 'password' or request.page_type == 'gift_card' or template == 'page.auth-callback' -%}
           {%- section 'static-text-with-icons' -%}
           {%- section 'static-newsletter' -%}
         {%- endunless -%}
       </div>
-      {% sections 'footer-group' %}
-      {% render 'globo.form.custom' %}
-      {% section 'fb-public-dialog' %}
+      {% if template != 'page.auth-callback' %}
+        {% sections 'footer-group' %}
+        {% render 'globo.form.custom' %}
+        {% section 'fb-public-dialog' %}
+      {% endif %}
+     
     {% if template == 'product' %}
         <cart-notification
           global

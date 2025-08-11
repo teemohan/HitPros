@@ -4,8 +4,10 @@
   <div class="pc-main-nav">
     <div class="pc-aside">
       <div class="pc-aside-top">
-        <h3 title="{{ customer.name }}" class="ellipsis2">Hi ~ {{ customer.first_name }}</h3>
-        <h4>id # {{ customer.id }}</h4>
+        <a href="/account">
+          <h3 title="{{ customer.name }}" class="ellipsis2">Hi ~ {{ customer.first_name }}</h3>
+          <h4>id # {{ customer.id }}</h4>
+        </a>
       </div>
       <div class="pc-aside-main">
         <div class="aside-main-list" v-for="(item, idx) in menuList" :key="idx">
@@ -18,9 +20,7 @@
         </div>
       </div>
       <div class="pc-aside-bottom">
-        <div @click="logout">
-          <a href="javascript:void(0)" data-no-instant>Logout</a>
-        </div>
+        <span @click.stop="logout" class="hover:text-[#E72435]">Logout</span>
       </div>
     </div>
   </div>
@@ -58,15 +58,8 @@
         };
       },
       methods: {
-        logout(event) {
-          event.stopPropagation();
-          Cookies.remove('cart');
-          if(window.themeVariables.userCompany.isB2b == 'true') {
-            Cookies.set('logout', 1);
-            window.location.href = `${window.zkh.b2b_url}/logout`;
-          } else {
-            window.location.href = "/account/logout";
-          }
+        logout() {
+          skyLoginOut()
         },
       },
     };

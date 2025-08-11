@@ -1,6 +1,28 @@
+const currencySymbols = {
+  USD: '$', 
+  EUR: '€', 
+  GBP: '£', 
+  JPY: '¥',
+  CNY: '¥', 
+  AUD: '$',
+  CAD: '$', 
+  CHF: 'CHF', 
+  NZD: '$', 
+  INR: '₹', 
+  RUB: '₽', 
+  KRW: '₩', 
+  SGD: '$', 
+  HKD: '$', 
+  SEK: 'kr', 
+  NOK: 'kr', 
+  TRY: '₺', 
+  MXN: '$', 
+  BRL: 'R$', 
+  ZAR: 'R', 
+}
 class Ajax {
   constructor() {
-    this.baseURL = window.zkh.api;
+    this.baseURL = window.northsky.api;
     this.timeout = 100000;
     this.headers = {
       'Content-Type': 'application/json'
@@ -505,8 +527,8 @@ const zkhFormatMoney = (cents, format = '') =>{
   }
 }
 
-window.zkh.updateZipCode = function(newZipCode) {
-  window.zkh.customerZipCode = newZipCode;
+window.northsky.updateZipCode = function(newZipCode) {
+  window.northsky.customerZipCode = newZipCode;
   document.dispatchEvent(new CustomEvent('zipcode-updated', { detail: newZipCode }));
 };
 async function getDeliveryEstimate({
@@ -565,7 +587,7 @@ async function getDeliveryEstimate({
       result.stockDateEnd = +res.transitInventoryDeliveryTimeStampMax;
     }
     localStorage.setItem('customerZipCode', zipCode);
-    window.zkh.updateZipCode(zipCode);
+    window.northsky.updateZipCode(zipCode);
     if (onSuccess) onSuccess(result);
     return result;
   } catch (error) {
@@ -816,3 +838,16 @@ const cartFormModule = {
     return mainProductUtils.computePrice(discountJson, basePrice, quantity);
   }
 };
+
+const skyLoginOut = () => {
+  Cookies.remove('cart');
+  // localStorage.clear();
+  // sessionStorage.clear();
+  const timestamp = new Date().getTime();
+  if(window.themeVariables.userCompany.isB2b == 'true') {
+    Cookies.set('logout', 1);
+    window.location.replace(`${window.northsky.b2b_url}/logout?t=${timestamp}`);
+  } else {
+    window.location.replace(`/account/logout?t=${timestamp}`);
+  }
+}

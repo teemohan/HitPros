@@ -282,7 +282,7 @@
   }
   .form-box {
     background-color: #fff;
-    border: 1px solid #CCCCCC;
+    border: 1px solid rgba(204, 204, 204, 0.50);;
     border-radius: 2px;
     max-width: 408px;
     padding: 36px 24px;

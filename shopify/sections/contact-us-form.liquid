@@ -44,6 +44,7 @@
                 name="contact[first_name]"
                 v-model="ruleForm.first_name"
                 v-focus-input="ruleForm.first_name"
+                placeholder="First Name*"
               ></el-input>
               <label for="contact[first_name]" class="el-label">First Name*</label>
             </el-form-item>
@@ -55,6 +56,7 @@
                 name="contact[last_name]"
                 v-model="ruleForm.last_name"
                 v-focus-input="ruleForm.last_name"
+                placeholder="Last Name*"
               ></el-input>
               <label for="contact[last_name]" class="el-label">Last Name*</label>
             </el-form-item>
@@ -68,6 +70,7 @@
                 name="contact[phone]"
                 v-model="ruleForm.phone"
                 v-focus-input="ruleForm.phone"
+                placeholder="Phone*"
               ></el-input>
               <label for="contact[phone]" class="el-label">Phone*</label>
             </el-form-item>
@@ -79,6 +82,7 @@
                 name="contact[company]"
                 v-model="ruleForm.company"
                 v-focus-input="ruleForm.company"
+                placeholder="Company Name"
               ></el-input>
               <label for="contact[company]" class="el-label">Company Name</label>
             </el-form-item>
@@ -91,6 +95,7 @@
               name="contact[email]"
               v-model="ruleForm.email"
               v-focus-input="ruleForm.email"
+              placeholder="Email*"
             ></el-input>
             <label for="contact[email]" class="el-label">Email*</label>
           </el-form-item>
@@ -101,7 +106,7 @@
               id="contact[category]"
               name="contact[category]"
               v-model="ruleForm.category"
-              placeholder=""
+              placeholder="Category*"
               @blur="selectBlur"
               v-focus-input="ruleForm.category"
             >
@@ -133,6 +138,7 @@
               name="contact[message]"
               v-model="ruleForm.message"
               v-focus-input="ruleForm.message"
+              placeholder="Message*"
             ></el-input>
             <label for="contact[message]" class="el-label">Message*</label>
           </el-form-item>
@@ -211,10 +217,10 @@
         };
         const validatePhoneNumber = (rule, value, callback) => {
           if (!value) {
-            return callback(new Error('Phone is required'));
+            return callback(new Error('Phone is required.'));
           } else {
             const phone = libphonenumber.parsePhoneNumberFromString(value, 'US');
-            if(!phone || !phone.isValid()) return callback(new Error('Invalid phonenumber'));
+            if(!phone || !phone.isValid()) return callback(new Error('Invalid phonenumber.'));
             return callback();
           }
         };
@@ -248,12 +254,12 @@
             { isSelected: false, value: 'Other', label: 'Other' },
           ],
           rules: {
-            first_name: [{ validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' }],
-            last_name: [{ validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' }],
-            category: [{ validator: noWhitespaceValidator, message: 'Category is required', trigger: 'blur' }],
+            first_name: [{ validator: noWhitespaceValidator, message: 'FirstName is required.', trigger: 'blur' }],
+            last_name: [{ validator: noWhitespaceValidator, message: 'LastName is required.', trigger: 'blur' }],
+            category: [{ validator: noWhitespaceValidator, message: 'Category is required.', trigger: 'blur' }],
             email: [{ validator: checkEmail, trigger: 'blur' }],
             phone: [{ validator: validatePhoneNumber, trigger: 'blur' }],
-            message: [{ validator: noWhitespaceValidator, message: 'Message is required', trigger: 'blur' }],
+            message: [{ validator: noWhitespaceValidator, message: 'Message is required.', trigger: 'blur' }],
           },
           loading: false,
         };

@@ -232,7 +232,7 @@
           }
           this.clear_all_loading = true;
           try {
-            const res = await fetch(`${window.zkh.api}/wish/clear/all`, {
+            const res = await fetch(`${window.northsky.api}/wish/clear/all`, {
               method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json'
@@ -276,7 +276,7 @@
           }
         },
         async getProductData(id) {
-          const url = `${window.zkh.api}/graphQL/api`; 
+          const url = `${window.northsky.api}/graphQL/api`; 
           const headers = {
             'Content-Type': 'application/json',
           };
@@ -323,7 +323,7 @@
           }
         },
         initList(){
-          fetch(`${window.zkh.api}/wish/list`, {
+          fetch(`${window.northsky.api}/wish/list`, {
             method: 'POST',
             headers:{
               'Content-Type':'application/json',
@@ -360,7 +360,7 @@
         async handleAddToCart({type, productItem}) {
           let param
           if(type === 'all') {
-            const response = await fetch(`${window.zkh.api}/wish/list`, {
+            const response = await fetch(`${window.northsky.api}/wish/list`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -465,7 +465,7 @@
           }
           productItem.btn_remove_loading = true;
           try {
-            const res = await fetch(`${window.zkh.api}/wish/clear`, {
+            const res = await fetch(`${window.northsky.api}/wish/clear`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'

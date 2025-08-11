@@ -575,13 +575,13 @@
         ZQTY: {{ line_item.quantity }},
         Z004: '{{ province_code }}',
         Z002: 'US',
-        POST_CODE2: window.zkh.customerZipCode || '77380'
+        POST_CODE2: window.northsky.customerZipCode || '77380'
       });
     {% endfor %}
 
     async function getDeleveryDate(deliveryParams) {
       try {
-        const response = await fetch(`${window.zkh.api}/openapi/adlink/delivery-calculation/batch`, {
+        const response = await fetch(`${window.northsky.api}/openapi/adlink/delivery-calculation/batch`, {
           method: 'POST',
           body: JSON.stringify({
             checkoutToken: null,
@@ -762,7 +762,7 @@
           city: "Washington",
           province: "District of Columbia",
           street: "1600 Pennsylvania Avenue NW",
-          zipCode: window.zkh.customerZipCode || "77380"
+          zipCode: window.northsky.customerZipCode || "77380"
         };
       {% endif %}
       const sendAddress = {
@@ -777,7 +777,7 @@
         orderAmount,
         skus
       }
-      const response = await fetch(`${window.zkh.api}/openapi/costs`, {
+      const response = await fetch(`${window.northsky.api}/openapi/costs`, {
         method: 'POST',
         body: JSON.stringify(shippingParam),
         headers:{
@@ -821,7 +821,7 @@
           city: "Washington",
           region: "{{ province_code }}",
           country: "US",
-          postalCode: window.zkh.customerZipCode || "77380"
+          postalCode: window.northsky.customerZipCode || "77380"
         };
       {% endif %}
       const taxParam = {
@@ -836,7 +836,7 @@
         currencyCode: "USD"
       }
       try {
-        const response = await fetch(`${window.zkh.api}/tax`, {
+        const response = await fetch(`${window.northsky.api}/tax`, {
           method: 'POST',
           body: JSON.stringify(taxParam),
           headers:{
@@ -883,7 +883,7 @@
         window.location.href = '/checkout?discount=0';
         return
       }
-      fetch(`${window.zkh.api}/discount/save`, {
+      fetch(`${window.northsky.api}/discount/save`, {
         method: 'POST',
         body: JSON.stringify(formData),
         headers:{

@@ -10,7 +10,7 @@
     ) {
       const parsedUrl = new URL(window.location.href); 
       const returnTo = parsedUrl.pathname + parsedUrl.search;
-      window.location.href = `${window.zkh.b2b_url}/locations?return_to=${returnTo}`;
+      window.location.href = `${window.northsky.b2b_url}/locations?return_to=${returnTo}`;
     }
   })();
   var __defProp = Object.defineProperty;
@@ -3708,8 +3708,8 @@
             abortController: null,
             isloading: false,
             queryParam: {
-              channelCode: "NorthSky-US",
-              hasLogin: window.zkh.customerId ? true : false,
+              channelCode: window.northsky.channelCode,
+              hasLogin: window.northsky.customerId ? true : false,
               from: 0,
               size: 12,
               keyword: "",
@@ -3751,7 +3751,7 @@
                   keyword: searchStr,
                   size: 10
                 };
-                const response = await fetch(`${window.zkh.api}/openapi/suggest`, {
+                const response = await fetch(`${window.northsky.api}/openapi/suggest`, {
                   method: 'POST',
                   body: JSON.stringify(formData),
                   headers: {
@@ -3795,7 +3795,7 @@
             url.search = `?type=product&q=${encodeURIComponent(this.searchStr)}`;
             try{
               this.abortController = new AbortController();
-              const response = await fetch(`${window.zkh.api}/openapi/search/v2`, {
+              const response = await fetch(`${window.northsky.api}/openapi/search/v2`, {
                 signal: this.abortController.signal,
                 method: 'POST',
                 body: JSON.stringify(this.queryParam),
@@ -7802,7 +7802,7 @@ var ProductAttrs = class extends CustomHTMLElement {
       };
       const status = $(this).find('.favorite-button').hasClass('favorited') ? 1 : 0;
       try {
-        const response = await fetch(`${window.zkh.api}/wish/` + (status == 1 ? 'clear' : 'save'), {
+        const response = await fetch(`${window.northsky.api}/wish/` + (status == 1 ? 'clear' : 'save'), {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -7848,7 +7848,7 @@ var ProductAttrs = class extends CustomHTMLElement {
         sku: $(this).data('sku'),
       };
       try {
-        const response = await fetch(`${window.zkh.api}/wish/select`, {
+        const response = await fetch(`${window.northsky.api}/wish/select`, {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
@@ -8240,7 +8240,7 @@ var ProductAttrs = class extends CustomHTMLElement {
     async connectedCallback() {
       const email = $(this).data('email');
       if(email) {
-        const cartRes = await fetch(`${window.zkh.api}/shopping/cart?email=${email}`);
+        const cartRes = await fetch(`${window.northsky.api}/shopping/cart?email=${email}`);
         const cartData = await cartRes.json();
         if(cartData.data.length > 0) {
           Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 }); 
@@ -8260,7 +8260,7 @@ var ProductAttrs = class extends CustomHTMLElement {
         const email = $(this).data('email');
         if(email) {
           const cartCookie = Cookies.get('cart');
-          fetch(`${window.zkh.api}/shopping/cart/save`, {
+          fetch(`${window.northsky.api}/shopping/cart/save`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -9014,7 +9014,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   (async () => {
     try {
      
-      const response = await fetch(`${window.zkh.api}/openapi/adlink/product/collection/tree`, {
+      const response = await fetch(`${window.northsky.api}/openapi/adlink/product/collection/tree`, {
         method: 'GET',
       });
       const { data } = await response.json();

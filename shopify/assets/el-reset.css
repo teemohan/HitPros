@@ -1,4 +1,6 @@
-
+#login-wrapper .el-input__inner, #register-wrapper .el-input__inner{
+  border: 1px solid #D3DEF1;
+}
 .el-select-dropdown__item .el-checkbox {
   display: flex;
   white-space: unset;
@@ -18,13 +20,19 @@
 .el-form-item__error {
   color: var(--my-yellow);
 }
+.el-form-item.is-error .el-form-item__error {
+  top: 0px!important;
+  left: 16px;
+  transform: translateY(-50%);
+  background: #fff;
+  padding: 0px 4px;
+}
 .el-pager {
   display: flex;
 }
 .el-select-dropdown__item .el-popover__reference-wrapper {
   display: flex;
 }
-
 .el-dialog__headerbtn {
   display: flex;
   top: 44px;
@@ -125,10 +133,6 @@
   color: var(--my-blue);
   font-weight: 14px;
 }
-
-
-
-
 .el-reset-from .el-label {
   position: absolute;
   left: 16px;
@@ -142,14 +146,22 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;
+  display: none;
+}
+.el-reset-from input::placeholder {
+  color: #999999;
+  font-size: 12px;
+}
+.el-reset-from input:focus::placeholder, .el-reset-from .el-form-item.is-error input::placeholder, .el-form-item.is-error .el-label{
+  opacity: 0;
 }
 
 .el-reset-from .label--focus {
   font-size: 12px;
   transform: translateY(-175%);
+  display: block;
   background-color: #fff;
 }
-
 .el-reset-from .el-form-item__content {
   color: #1A1A1A;
   font-size: 12px;
@@ -162,6 +174,7 @@
   padding: 0 16px;
   border-radius: 2px;
   border: 1px solid #ccc;
+  color: #1A1A1A;
 }
 .el-select-dropdown__item.selected {
   color: var(--my-blue);
@@ -173,7 +186,7 @@
 
 .el-reset-from .el-form-item.is-error .el-textarea__inner,
 .el-reset-from .el-form-item.is-error .el-input__inner {
-  border: 1px solid #F1C142;
+  border: 1px solid #F1C142!important;
 }
 .el-dialog__footer {
   padding: 6px 20px 30px;
@@ -515,4 +528,17 @@
   .el-reset-from .el-dialog__title {
     font-size: 24px;
   }
+}
+
+
+@media screen and (min-width: 741px) {
+
+  #login-wrapper .form-container, #register-wrapper .form-container{
+    background: #EAEEF1;
+  }
+}
+#login-wrapper .el-select .el-input .el-select__caret, #register-wrapper .el-select .el-input .el-select__caret{
+  font-size: 16px;
+  font-weight: bold;
+  color: #0A2B6F;
 }

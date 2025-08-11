@@ -593,11 +593,11 @@
     async function getDeleveryDate(deliveryParams) { 
       {% comment %} xuteshuchuli {% endcomment %}
       const param = deliveryParams.map((param) => {
-        param.POST_CODE2 =  window.zkh.customerZipCode || '77380'
+        param.POST_CODE2 =  window.northsky.customerZipCode || '77380'
         return param
       })
       try {
-        const response = await fetch(`${window.zkh.api}/openapi/adlink/delivery-calculation/batch`, {
+        const response = await fetch(`${window.northsky.api}/openapi/adlink/delivery-calculation/batch`, {
           method: 'POST',
           body: JSON.stringify({
             checkoutToken: null,
@@ -707,7 +707,7 @@
         window.location.href = '/checkout?discount=0';
         return
       }
-      fetch(`${window.zkh.api}/discount/save`, {
+      fetch(`${window.northsky.api}/discount/save`, {
         method: 'POST',
         body: JSON.stringify(formData),
         headers:{
