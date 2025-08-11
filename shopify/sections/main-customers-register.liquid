@@ -915,12 +915,13 @@
               checked: this.ruleForm.checked,
             };
             try {
+              const formData = new FormData();
+              for (const key in form) {
+                formData.append(key, form[key]);
+              }
               const response = await fetch(`${window.northsky.api}/register`, {
                 method: 'POST',
-                body: JSON.stringify(form),
-                headers: {
-                  'Content-Type': 'application/json',
-                },
+                body: formData,
               });
               const res = await response.json();
               if (res.code == '200') {
