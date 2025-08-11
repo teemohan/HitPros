@@ -298,6 +298,7 @@
             v-model="reasonForm.reasonContent"
             maxlength="100"
             v-focus-input="reasonForm.reasonContent"
+            placeholder="Reject Reason*"
           ></el-input>
           <label for="reason-[content]" class="el-label">Reject Reason*</label>
         </el-form-item>
@@ -335,6 +336,7 @@
             id="userSearchForm[email]"
             v-model="userSearchForm.email"
             v-focus-input="userSearchForm.email"
+            placeholder="Email*"
           ></el-input>
           <label for="userSearchForm[email]" class="el-label">Email*</label>
         </el-form-item>
@@ -343,7 +345,7 @@
             ref="searchSel"
             id="userSearchForm[role]"
             v-model="userSearchForm.role"
-            placeholder=""
+            placeholder="role"
             v-focus-input="userSearchForm.role"
           >
             <el-option
@@ -590,7 +592,7 @@
           },
           reasonFormRules: {
             reasonContent: [
-              { required: true, message: 'Please enter the reject reason', trigger: 'blur' },
+              { required: true, message: 'Please enter the reject reason.', trigger: 'blur' },
             ],
           },
           userSearchForm: {
@@ -599,11 +601,11 @@
           },
           userSearchFormRules: {
             email: [
-              { required: true, message: 'Please enter the email', trigger: 'blur' },
-              { type: 'email', message: 'Please enter the correct email', trigger: 'blur' },
+              { required: true, message: 'Please enter the email.', trigger: 'blur' },
+              { type: 'email', message: 'Please enter the correct email.', trigger: 'blur' },
             ],
             role: [
-              { required: true, message: 'Please select the role', trigger: 'blur' },
+              { required: true, message: 'Please select the role.', trigger: 'blur' },
             ],
           },
           accountCompanyUsers: [],
@@ -627,7 +629,7 @@
         async handleAuthChange(){
           this.authLoading = true;
           try {
-            const response = await fetch(`${window.zkh.api}/companies/contacts/main-contact`, {
+            const response = await fetch(`${window.northsky.api}/companies/contacts/main-contact`, {
               method: 'PUT',
               body: JSON.stringify({
                 customerId: this.adminAuth.customerId,
@@ -672,7 +674,7 @@
           this.list_loading = true;
           try {
             const response = await fetch(
-              `${window.zkh.api}/company/validations?companyId=${this.queryParam.companyId}&customerId=${this.queryParam.customerId}&page=${this.queryParam.page}&pageSize=${this.queryParam.pageSize}&queryCondition=${this.queryParam.queryCondition}`
+              `${window.northsky.api}/company/validations?companyId=${this.queryParam.companyId}&customerId=${this.queryParam.customerId}&page=${this.queryParam.page}&pageSize=${this.queryParam.pageSize}&queryCondition=${this.queryParam.queryCondition}`
             );
             const res = await response.json();
             if(res.code == 200) {
@@ -700,7 +702,7 @@
         async handleRemoveUser() {
           this.removeingLoading = true;
           try {
-            const response = await fetch(`${window.zkh.api}/company/validations/remove`, {
+            const response = await fetch(`${window.northsky.api}/company/validations/remove`, {
               method: 'DELETE',
               body: JSON.stringify({
                 id: this.needRemoveItem.id,
@@ -745,7 +747,7 @@
             if (valid) {
               this.userSearchLoading = true;
               try {
-                const response = await fetch(`${window.zkh.api}/companies/contacts`, {
+                const response = await fetch(`${window.northsky.api}/companies/contacts`, {
                   method: 'POST',
                   body: JSON.stringify({
                     companyId: '{{ customer.current_company.id }}',
@@ -792,7 +794,7 @@
         async handleAuthUser(item) {
           item.approveLoading = true;
           try {
-            const response = await fetch(`${window.zkh.api}/company/validations/pass`, {
+            const response = await fetch(`${window.northsky.api}/company/validations/pass`, {
               method: 'PUT',
               body: JSON.stringify({
                 id: item.id,
@@ -837,7 +839,7 @@
             if (valid) {
               this.rejectLoading = true;
               try {
-                const response = await fetch(`${window.zkh.api}/company/validations/reject`, {
+                const response = await fetch(`${window.northsky.api}/company/validations/reject`, {
                   method: 'PUT',
                   body: JSON.stringify({
                     id: this.removeingItem.id,

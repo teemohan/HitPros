@@ -133,13 +133,7 @@
           });
         },
         logout() {
-          Cookies.remove('cart');
-          if(window.themeVariables.userCompany.isB2b == 'true') {
-            Cookies.set('logout', 1);
-            window.location.href = `${window.zkh.b2b_url}/logout`;
-          } else {
-            window.location.href = "/account/logout";
-          }
+          skyLoginOut()
         },
         handleClickLink(link, idx, idx1) {
           this.resetActive();

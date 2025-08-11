@@ -325,7 +325,7 @@
         $('#order_section').show();
         const orderId = Number(window.location.href.split('=')[1]);
         $.ajax({
-          url: `${window.zkh.api}/order/${orderId}`,
+          url: `${window.northsky.api}/order/${orderId}`,
           method: 'GET',
           success: (data) => {
             this.orderMain = data.data.order;

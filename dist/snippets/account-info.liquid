@@ -31,6 +31,7 @@
                 id="address-[first_name]"
                 v-model="addressRuleForm.first_name"
                 v-focus-input="addressRuleForm.first_name"
+                placeholder="{{- 'customer.addresses.first_name' | t -}}" 
               ></el-input>
               <label for="address-[first_name]" class="el-label">
                 {{- 'customer.addresses.first_name' | t -}}
@@ -45,6 +46,7 @@
                 id="address-[last_name]"
                 v-model="addressRuleForm.last_name"
                 v-focus-input="addressRuleForm.last_name"
+                placeholder="{{- 'customer.addresses.last_name' | t -}}" 
               ></el-input>
               <label for="address-[last_name]" class="el-label">
                 {{- 'customer.addresses.last_name' | t -}}
@@ -60,6 +62,7 @@
               id="address-[phone]"
               v-model="addressRuleForm.phone"
               v-focus-input="addressRuleForm.phone"
+              placeholder="{{- 'customer.addresses.phone' | t -}}" 
             ></el-input>
             <label for="address-[phone]" class="el-label">
               {{- 'customer.addresses.phone' | t -}}
@@ -74,6 +77,7 @@
               id="address-[address1]"
               v-model="addressRuleForm.address1"
               v-focus-input="addressRuleForm.address1"
+              placeholder="{{- 'customer.addresses.address1' | t -}}" 
             ></el-input>
             <label for="address-[address1]" class="el-label">
               {{- 'customer.addresses.address1' | t -}}
@@ -88,6 +92,7 @@
               id="address-[address2]"
               v-model="addressRuleForm.address2"
               v-focus-input="addressRuleForm.address2"
+              placeholder="{{- 'customer.addresses.address2' | t -}}" 
             ></el-input>
             <label for="address-[address2]" class="el-label">
               {{- 'customer.addresses.address2' | t -}}
@@ -102,6 +107,7 @@
                 id="address-[city]"
                 v-model="addressRuleForm.city"
                 v-focus-input="addressRuleForm.city"
+                placeholder="{{- 'customer.addresses.city' | t -}}" 
               ></el-input>
               <label for="address-[city]" class="el-label">
                 {{- 'customer.addresses.city' | t -}}
@@ -117,6 +123,7 @@
                 v-model="addressRuleForm.zip"
                 @blur="handleAddressZipBlur"
                 v-focus-input="addressRuleForm.zip"
+                placeholder="{{- 'customer.addresses.zip' | t -}}" 
               ></el-input>
               <label for="address-[zip]" class="el-label">
                 {{- 'customer.addresses.zip' | t -}}
@@ -133,7 +140,7 @@
                 v-model="addressRuleForm.province"
                 name="address[province]"
                 @change="handleAddressStateChange"
-                placeholder=""
+                placeholder="{{- 'customer.addresses.province' | t -}}" 
               >
                 <el-option
                   v-for="item in stateOptions"
@@ -157,6 +164,7 @@
                 id="address-[country]"
                 v-model="addressRuleForm.country"
                 v-focus-input="addressRuleForm.country"
+                placeholder="{{- 'customer.addresses.country' | t -}}" 
               ></el-input>
               <label for="address-[country]" class="el-label">
                 {{- 'customer.addresses.country' | t -}}
@@ -175,6 +183,7 @@
                 :checked="addressRuleForm.default? true: false"
                 name="address[default]"
                 id="address-[default]"
+                placeholder="Save as default shipping address" 
               >
               <label for="address-[default]" class="text--subdued"> Save as default shipping address </label>
             </div>
@@ -218,6 +227,7 @@
                 maxlength="150"
                 v-model="nameRuleForm.first_name"
                 v-focus-input="nameRuleForm.first_name"
+                placeholder="First Name *" 
               ></el-input>
               <label for="name-[first_name]" class="el-label"> First Name *</label>
             </el-form-item>
@@ -229,6 +239,7 @@
                 maxlength="150"
                 v-model="nameRuleForm.last_name"
                 v-focus-input="nameRuleForm.last_name"
+                placeholder="Last Name *" 
               ></el-input>
               <label for="name-[last_name]" class="el-label"> Last Name *</label>
             </el-form-item>
@@ -271,6 +282,7 @@
               maxlength="150"
               v-model="companyNameForm.name"
               v-focus-input="companyNameForm.name"
+              placeholder="Company Name *" 
             ></el-input>
             <label for="company-[name]" class="el-label">Company Name *</label>
           </el-form-item>
@@ -313,7 +325,7 @@
               id="industry[name]"
               ref="industrySelect"
               v-model="industryForm.industry"
-              placeholder=""
+              placeholder="Industry*"
               v-focus-input="industryForm.industry"
             >
               <el-option
@@ -483,7 +495,7 @@
                   v-model="searchCompanyCodeForm.searchCompanyCode"
                   filterable
                   remote
-                  placeholder=""
+                  placeholder="Company Authorization Code*"
                   :popper-append-to-body="false"
                   @hook:mounted="removeReadOnly"
                   @visible-change="removeReadOnlyVisible"
@@ -507,7 +519,7 @@
                   ref="selJobCompany"
                   id="account_job_company"
                   v-model="searchCompanyCodeForm.jobCompany"
-                  placeholder=""
+                  placeholder="Job Function*"
                   v-focus-input="searchCompanyCodeForm.jobCompany"
                 >
                   <el-option
@@ -554,6 +566,7 @@
                     id="addCompanyForm[companyName]"
                     v-model="addCompanyForm.companyName"
                     v-focus-input="addCompanyForm.companyName"
+                    placeholder="Company Name*"
                   ></el-input>
                   <label for="addCompanyForm[companyName]" class="el-label">Company Name*</label>
                 </el-form-item>
@@ -564,7 +577,7 @@
                     ref="addCompanyFormRef"
                     id="addCompanyForm[industry]"
                     v-model="addCompanyForm.industry"
-                    placeholder=""
+                    placeholder="Industry*"
                     @blur="selectBlur"
                     v-focus-input="addCompanyForm.industry"
                   >
@@ -596,7 +609,7 @@
                   ref="selJobCompany1"
                   id="account_job_company1"
                   v-model="addCompanyForm.jobFunction"
-                  placeholder=""
+                  placeholder="Job Function*"
                   v-focus-input="addCompanyForm.jobFunction"
                 >
                   <el-option
@@ -630,6 +643,7 @@
                 id="addCompanyForm[address1]"
                 v-model="addCompanyForm.address1"
                 v-focus-input="addCompanyForm.address1"
+                placeholder="Street Address*"
               ></el-input>
               <label for="addCompanyForm[address1]" class="el-label">Street Address*</label>
             </el-form-item>
@@ -638,6 +652,7 @@
                 id="addCompanyForm[address2]"
                 v-model="addCompanyForm.address2"
                 v-focus-input="addCompanyForm.address2"
+                placeholder="Suite，Building，Department，etc."
               ></el-input>
               <label for="addCompanyForm[address2]" class="el-label">Suite，Building，Department，etc.</label>
             </el-form-item>
@@ -648,6 +663,7 @@
                     id="addCompanyForm[city]"
                     v-model="addCompanyForm.city"
                     v-focus-input="addCompanyForm.city"
+                    placeholder="City*"
                   ></el-input>
                   <label for="addCompanyForm[city]" class="el-label">City*</label>
                 </el-form-item>
@@ -659,7 +675,7 @@
                     v-model="addCompanyForm.state"
                     @change="handleCompanyStateChange"
                     id="addCompanyForm[state]"
-                    placeholder=""
+                    placeholder="State*"
                   >
                     <el-option
                       v-for="item in stateOptions"
@@ -679,6 +695,7 @@
                     @blur="handleCompanyZipBlur"
                     v-model="addCompanyForm.zipCode"
                     v-focus-input="addCompanyForm.zipCode"
+                    placeholder="ZIP Code*"
                   ></el-input>
                   <label for="addCompanyForm[zipCode]" class="el-label">ZIP Code*</label>
                 </el-form-item>
@@ -764,6 +781,7 @@
             id="companyAddressForm[address1]"
             v-model="companyAddressForm.address1"
             v-focus-input="companyAddressForm.address1"
+            placeholder="Street Address*"
           ></el-input>
           <label for="companyAddressForm[address1]" class="el-label">Street Address*</label>
         </el-form-item>
@@ -772,6 +790,7 @@
             id="companyAddressForm[address2]"
             v-model="companyAddressForm.address2"
             v-focus-input="companyAddressForm.address2"
+            placeholder="Suite，Building，Department，etc."
           ></el-input>
           <label for="companyAddressForm[address2]" class="el-label">Suite，Building，Department，etc.</label>
         </el-form-item>
@@ -782,6 +801,7 @@
                 id="companyAddressForm[city]"
                 v-model="companyAddressForm.city"
                 v-focus-input="companyAddressForm.city"
+                placeholder="City*"
               ></el-input>
               <label for="companyAddressForm[city]" class="el-label">City*</label>
             </el-form-item>
@@ -793,7 +813,7 @@
                 v-model="companyAddressForm.zoneCode"
                 @change="handleCompanyAddressStateChange"
                 id="companyAddressForm[zoneCode]"
-                placeholder=""
+                placeholder="State*"
               >
                 <el-option
                   v-for="item in stateOptions"
@@ -813,6 +833,7 @@
                 @blur="handleCompanyAddressZipBlur"
                 v-model="companyAddressForm.zip"
                 v-focus-input="companyAddressForm.zip"
+                placeholder="ZIP Code*"
               ></el-input>
               <label for="companyAddressForm[zip]" class="el-label">ZIP Code*</label>
             </el-form-item>
@@ -1115,7 +1136,7 @@
       data() {
         const validateCompanyName = async (rule, value, callback) => {
           try {
-            const response = await fetch(`${window.zkh.api}/companies?name=${value}`);
+            const response = await fetch(`${window.northsky.api}/companies?name=${value}`);
             const res = await response.json();
             if (res.code === 200) {
               callback(); 
@@ -1128,19 +1149,19 @@
         };
         const validatePhoneNumber = (rule, value, callback) => {
           if (!value) {
-            return callback(new Error('Phone is required'));
+            return callback(new Error('Phone is required.'));
           } else {
             const phone = libphonenumber.parsePhoneNumberFromString(value, 'US');
-            if(!phone || !phone.isValid()) return callback(new Error('Invalid phonenumber'));
+            if(!phone || !phone.isValid()) return callback(new Error('Invalid phonenumber.'));
             return callback();
           }
         };
 
         const validateZipCode = (rule, value, callback) => {
           if (!value) {
-            return callback(new Error('ZIP Code is required'));
+            return callback(new Error('ZIP Code is required.'));
           } else if (value.length !== 5) {
-            return callback(new Error('Zip code must be 5 digits'));
+            return callback(new Error('Zip code must be 5 digits.'));
           } else {
             return new Promise((resolve, reject) => {
               getZipCode('US', value, function(result) {
@@ -1162,7 +1183,7 @@
 
         const validateState = (rule, value, callback) => {
           if (!value) {
-            callback(new Error('Please select a state'));
+            callback(new Error('Please select a state.'));
           } else if (this.addressRuleForm.zip.length && this.addressRuleForm.zip.length !== 5) {
             callback(new Error('Does not match zip code.'));
           } else {
@@ -1172,9 +1193,9 @@
 
         const validateCompanyZipCode = async (rule, value, callback) => {
           if (!value) {
-            callback(new Error('ZIP Code is required'));
+            callback(new Error('ZIP Code is required.'));
           } else if (value.length !== 5) {
-            callback(new Error('Zip code must be 5 digits'));
+            callback(new Error('Zip code must be 5 digits.'));
           } else {
             return new Promise((resolve, reject) => {
               getZipCode('US', value, function(result) {
@@ -1196,7 +1217,7 @@
 
         const validateCompanyState = async (rule, value, callback) => {
           if (!value) {
-            callback(new Error('Please select a state'));
+            callback(new Error('Please select a state.'));
           } else if (this.addCompanyForm.zipCode && this.addCompanyForm.zipCode.length !== 5) {
             callback(new Error('Does not match zip code.'));
           } else {
@@ -1206,9 +1227,9 @@
 
         const validateCompanyAddressZipCode = async (rule, value, callback) => {
           if (!value) {
-            callback(new Error('ZIP Code is required'));
+            callback(new Error('ZIP Code is required.'));
           } else if (value.length !== 5) {
-            callback(new Error('Zip code must be 5 digits'));
+            callback(new Error('Zip code must be 5 digits.'));
           } else {
             return new Promise((resolve, reject) => {
               getZipCode('US', value, function(result) {
@@ -1230,7 +1251,7 @@
 
         const validateCompanyAddressState = async (rule, value, callback) => {
           if (!value) {
-            callback(new Error('Please select a state'));
+            callback(new Error('Please select a state.'));
           } else if (this.companyAddressForm.zip.length !== 5) {
             callback(new Error('Does not match zip code.'));
           } else {
@@ -1249,24 +1270,24 @@
         const validateEnglishLettersOnly = (rule, value, callback) => {
           const englishLetterPattern = /^[a-zA-Z]+$/; 
           if (!englishLetterPattern.test(value)) {
-            return callback(new Error('Special characters are not allowed'));
+            return callback(new Error('Special characters are not allowed.'));
           }
           callback();
         };
 
         const validateCompanySearch = async (rule, value, callback) => {
           if (!value) {
-            return callback(new Error('Company Authentication Code is required'));
+            return callback(new Error('Company Authentication Code is required.'));
           }
         };
 
         const companyCodeValidator = async (rule, value, callback) => {
           if (!value || value.trim() === '') {
-            callback(new Error('Company Authentication Code is required'));
+            callback(new Error('Company Authentication Code is required.'));
             return;
           }
           try {
-            const response = await fetch(`${window.zkh.api}/companies/${value}/name`);
+            const response = await fetch(`${window.northsky.api}/companies/${value}/name`);
             const res = await response.json();
             if (res.code === 200) {
               this.validCompanyData = {
@@ -1462,7 +1483,7 @@
           showJobCompanyEdit1: false,
           searchCompanyRules: {
             jobCompany: [
-              { validator: noWhitespaceValidator, message: 'Job Fcuntion is required', trigger: 'change' }
+              { validator: noWhitespaceValidator, message: 'Job Fcuntion is required.', trigger: 'change' }
             ],
             searchCompanyCode: [ 
               { validator: companyCodeValidator, trigger: 'change' } 
@@ -1470,80 +1491,83 @@
           },
           addCompanyFormRules: {
             jobFunction: [
-              { validator: noWhitespaceValidator, message: 'Job Fcuntion is required', trigger: 'change' }
+              { validator: noWhitespaceValidator, message: 'Job Fcuntion is required.', trigger: 'change' }
             ],
             companyName: [
-              { validator: noWhitespaceValidator, message: 'Company Name is required', trigger: 'blur' },
+              { validator: noWhitespaceValidator, message: 'Company Name is required.', trigger: 'blur' },
               { validator: validateCompanyName, trigger: 'blur' },
             ],
             industry: [
-              { validator: noWhitespaceValidator, message: 'Industry is required', trigger: 'change' }
+              { validator: noWhitespaceValidator, message: 'Industry is required.', trigger: 'change' }
             ],
             address1: [
-              { validator: noWhitespaceValidator, message: 'Street Address is required', trigger: 'blur' }
+              { validator: noWhitespaceValidator, message: 'Street Address is required.', trigger: 'blur' }
             ],
-            city: [{ validator: noWhitespaceValidator, message: 'City is required', trigger: 'blur' }],
+            city: [{ validator: noWhitespaceValidator, message: 'City is required.', trigger: 'blur' }],
             state: [{ validator: validateCompanyState, trigger: 'change' }],
             zipCode: [{ validator: validateCompanyZipCode, trigger: 'blur' }],
           },
           companyAddressRules: {
             address1: [
-              { validator: noWhitespaceValidator, message: 'Street Address is required', trigger: 'blur' }
+              { validator: noWhitespaceValidator, message: 'Street Address is required.', trigger: 'blur' }
             ],
-            city: [{ validator: noWhitespaceValidator, message: 'City is required', trigger: 'blur' }],
+            city: [{ validator: noWhitespaceValidator, message: 'City is required.', trigger: 'blur' }],
             zoneCode: [{ validator: validateCompanyAddressState, trigger: 'change' }],
             zip: [{ validator: validateCompanyAddressZipCode, trigger: 'blur' }],
           },
           addressRules: {
             first_name: [
-              { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
+              { validator: noWhitespaceValidator, message: 'First Name is required.', trigger: 'blur' },
              
             ],
             last_name: [
-              { validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' },
+              { validator: noWhitespaceValidator, message: 'Last Name is required.', trigger: 'blur' },
              
             ],
             phone: [{ validator: validatePhoneNumber, trigger: 'blur' }],
             address1: [
-              { validator: noWhitespaceValidator, message: 'Address1 is required', trigger: 'blur' }
+              { validator: noWhitespaceValidator, message: 'Address1 is required.', trigger: 'blur' }
             ],
             city: [
-              { validator: noWhitespaceValidator, message: 'City is required', trigger: 'blur' }
+              { validator: noWhitespaceValidator, message: 'City is required.', trigger: 'blur' }
             ],
             province: [{ validator: validateState, trigger: 'change' }],
             zip: [{ validator: validateZipCode, trigger: 'blur' }],
           },
           companyNameRules: {
             name: [
-              { validator: noWhitespaceValidator, message: 'CompanyName is required', trigger: 'blur' }
+              { validator: noWhitespaceValidator, message: 'Company Name is required.', trigger: 'blur' }
             ],
           },
           industryRules: {
             industry: [
-              { validator: noWhitespaceValidator, message: 'Industry is required', trigger: 'change' }
+              { validator: noWhitespaceValidator, message: 'Industry is required.', trigger: 'change' }
             ],
           },
           nameRules: {
             first_name: [
-              { validator: noWhitespaceValidator, message: 'FirstName is required', trigger: 'blur' },
+              { validator: noWhitespaceValidator, message: 'First Name is required', trigger: 'blur' },
               
             ],
             last_name: [
-              { validator: noWhitespaceValidator, message: 'LastName is required', trigger: 'blur' },
+              { validator: noWhitespaceValidator, message: 'Last Name is required.', trigger: 'blur' },
              
             ],
           },
           stateOptions: [
             ["Alabama", "AL"],
             ["Alaska", "AK"],
+            ["American Samoa", "AS"],
             ["Arizona", "AZ"],
             ["Arkansas", "AR"],
             ["California", "CA"],
             ["Colorado", "CO"],
             ["Connecticut", "CT"],
             ["Delaware", "DE"],
+            ["Micronesia", "FM"],
             ["Florida", "FL"],
             ["Georgia", "GA"],
+            ["Guam", "GU"],
             ["Hawaii", "HI"],
             ["Idaho", "ID"],
             ["Illinois", "IL"],
@@ -1553,6 +1577,7 @@
             ["Kentucky", "KY"],
             ["Louisiana", "LA"],
             ["Maine", "ME"],
+            ["Marshall Islands", "MH"],
             ["Maryland", "MD"],
             ["Massachusetts", "MA"],
             ["Michigan", "MI"],
@@ -1568,10 +1593,13 @@
             ["New York", "NY"],
             ["North Carolina", "NC"],
             ["North Dakota", "ND"],
+            ["Northern Mariana Islands", "MP"],
             ["Ohio", "OH"],
             ["Oklahoma", "OK"],
             ["Oregon", "OR"],
+            ["Palau", "PW"],
             ["Pennsylvania", "PA"],
+            ["Puerto Rico", "PR"],
             ["Rhode Island", "RI"],
             ["South Carolina", "SC"],
             ["South Dakota", "SD"],
@@ -1581,21 +1609,14 @@
             ["Vermont", "VT"],
             ["Virginia", "VA"],
             ["Washington", "WA"],
+            ["Washington DC", "DC"],
             ["West Virginia", "WV"],
             ["Wisconsin", "WI"],
             ["Wyoming", "WY"],
-            ["American Samoa", "AS"],
+            ["U.S. Virgin Islands", "VI"],
             ["Armed Forces Americas", "AA"],
             ["Armed Forces Europe", "AE"],
-            ["Armed Forces Pacific", "AP"],
-            ["District of Columbia", "DC"],
-            ["Federated States of Micronesia", "FM"],
-            ["Guam", "GU"],
-            ["Marshall Islands", "MH"],
-            ["Northern Mariana Islands", "MP"],
-            ["Puerto Rico", "PR"],
-            ["Virgin Islands", "VI"],
-            ["Palau", "PW"]
+            ["Armed Forces Pacific", "AP"]
           ],
           showIndustryEdit: false, 
           industryForm: {
@@ -1708,13 +1729,16 @@
           } else {
             this.elSelectFocus = false;
           }
+          if(!this.searchCompanyCodeForm.searchCompanyCode) {
+            this.$refs.searchCompanyRuleForm.validateField("searchCompanyCode");
+          }
         },
         async handleUpdateCompanyAddress() {
           const valid = await this.$refs.companyAddressRuleForm.validate();
           if (valid) {
             this.dialogLoading.companyAddressUpdate = true;
             try {
-              const response = await fetch(`${window.zkh.api}/companies/locations`, {
+              const response = await fetch(`${window.northsky.api}/companies/locations`, {
                 method: 'PUT',
                 body: JSON.stringify({
                   locationId: +'{{ customer.current_location.id }}',
@@ -1753,7 +1777,7 @@
           if (query !== '') {
             this.codeSearchLoading = true;
             try {
-              const response = await fetch(`${window.zkh.api}/companies/${query}/name`);
+              const response = await fetch(`${window.northsky.api}/companies/${query}/name`);
               const res = await response.json();
               if (res.code === 200) {
                 this.companyOptions = [{
@@ -1773,7 +1797,7 @@
           const companyld = '{{ customer.current_company.id }}';
           if(companyld) {
             try {
-              const response = await fetch(`${window.zkh.api}/companies/${companyld}/payment-terms-template`);
+              const response = await fetch(`${window.northsky.api}/companies/${companyld}/payment-terms-template`);
               const res = await response.json();
               if(res.code == 200) {
                 this.companyTerms = res.data.paymentTermsTemplate ? res.data.paymentTermsTemplate : {};
@@ -1787,7 +1811,7 @@
           const customerId = '{{ customer.id }}';
           if(customerId) {
             try {
-              const response = await fetch(`${window.zkh.api}/tob/customers/${customerId}/is-main-contact`);
+              const response = await fetch(`${window.northsky.api}/tob/customers/${customerId}/is-main-contact`);
               const res = await response.json();
               if(res.code == 200) {
                 this.currentCompany = {
@@ -1804,12 +1828,12 @@
           const customerId = '{{ customer.id }}';
           if(customerId) {
             try {
-              const response = await fetch(`${window.zkh.api}/company/validations/state?customerId=${customerId}`);
+              const response = await fetch(`${window.northsky.api}/company/validations/state?customerId=${customerId}`);
               const res = await response.json();
               if(res.code == 200) {
                 this.companyAuthStatus = res.data?.validation ? res.data.validation : { state: 2 };
                 if(this.companyAuthStatus.state == 2) {
-                  const reasonShowResponse = await fetch(`${window.zkh.api}/tob/customers/${customerId}/tip`);
+                  const reasonShowResponse = await fetch(`${window.northsky.api}/tob/customers/${customerId}/tip`);
                   const reasonShowRes = await reasonShowResponse.json();
                   this.reasonShow = reasonShowRes.data;
                 }
@@ -1822,6 +1846,9 @@
         selectBlur() {
           if (this.showIndustryEdit1) {
             this.$refs.addCompanyRuleForm.clearValidate(["industry"]);
+          }
+          if(!this.addCompanyForm.industry) {
+            this.$refs.addCompanyRuleForm.validateField('industry');
           }
         },
         navToCompanyList() {
@@ -1889,7 +1916,7 @@
             if (valid) {
               this.dialogLoading.join = true;
               try {
-                const response = await fetch(`${window.zkh.api}/tob/customers/to-join-company`, {
+                const response = await fetch(`${window.northsky.api}/tob/customers/to-join-company`, {
                   method: 'POST',
                   body: JSON.stringify({
                     customerId: '{{ customer.id }}',
@@ -1932,7 +1959,7 @@
             if (valid) {
               this.dialogLoading.join = true;
               try {
-                const response = await fetch(`${window.zkh.api}/tob/customers/to-create-company`, {
+                const response = await fetch(`${window.northsky.api}/tob/customers/to-create-company`, {
                   method: 'POST',
                   body: JSON.stringify({
                     customerId: "{{ customer.id }}",
@@ -1988,19 +2015,26 @@
           this.joinProgress = this.joinProgress + 1;
         },
         handleBeforeCloseJoinDialog() {
-         
-          this.joinProgress = 1;
-          this.addCompanyForm = {
-            ...this.originalAddCompanyForm
-          }
-          this.searchCompanyCodeForm = {
-            searchCompanyCode: ''
-          };
-          this.companyOptions = [];
-          this.validCompanyData = {};
-          this.$refs.searchCompanyRuleForm?.clearValidate();
-          this.$refs.addCompanyRuleForm?.resetFields();
-          this.dialogVisible.join = false;
+            this.joinProgress = 1;
+            this.addCompanyForm = {
+              ...this.originalAddCompanyForm
+            }
+            this.searchCompanyCodeForm = {
+              searchCompanyCode: '',
+              jobCompany: ''
+            };
+            this.companyOptions = [];
+            this.validCompanyData = {};
+            
+            this.industryOptions1.map((item) => (item.isSelected = false));
+            this.showIndustryEdit1 = false;
+            
+            this.jobOptionsCompany.map((item) => (item.isSelected = false));
+            this.showJobCompanyEdit = false;
+            
+            this.$refs.searchCompanyRuleForm?.clearValidate();
+            this.$refs.addCompanyRuleForm?.resetFields();
+            this.dialogVisible.join = false;
         },
         handleAddAddress() {
           this.dialogVisible.defaultAddress = false;
@@ -2059,7 +2093,7 @@
         async handleCloseReason() {
           try {
             const customerId = '{{ customer.id }}';
-            const response = await fetch(`${window.zkh.api}/tob/customers/${customerId}/tip`, {
+            const response = await fetch(`${window.northsky.api}/tob/customers/${customerId}/tip`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -2082,7 +2116,7 @@
         async nameUpdate() {
           this.dialogLoading.name = true;
           try {
-            const res = await fetch(`${window.zkh.api}/customer`, {
+            const res = await fetch(`${window.northsky.api}/customer`, {
               method: 'PUT',
               body: JSON.stringify(
                 {
@@ -2129,7 +2163,7 @@
           this.dialogLoading.company = true;
           const companyId = '{{ customer.current_company.id }}';
           try {
-            const res = await fetch(`${window.zkh.api}/companies/${companyId}`, {
+            const res = await fetch(`${window.northsky.api}/companies/${companyId}`, {
               method: 'PUT',
               body: JSON.stringify(
                 {
@@ -2214,7 +2248,7 @@
           this.dialogLoading.industry = true;
           const companyId = '{{ customer.current_company.id }}';
           try {
-            const res = await fetch(`${window.zkh.api}/companies/${companyId}`, {
+            const res = await fetch(`${window.northsky.api}/companies/${companyId}`, {
               method: 'PUT',
               body: JSON.stringify(
                 {

@@ -29,6 +29,7 @@
                 id="address-[first_name]"
                 v-model="ruleForm.first_name"
                 v-focus-input="ruleForm.first_name"
+                placeholder="{{- 'customer.addresses.first_name' | t -}}"
               ></el-input>
               <label for="address-[first_name]" class="el-label">
                 {{- 'customer.addresses.first_name' | t -}}
@@ -43,6 +44,7 @@
                 id="address-[last_name]"
                 v-model="ruleForm.last_name"
                 v-focus-input="ruleForm.last_name"
+                placeholder="{{- 'customer.addresses.last_name' | t -}}" 
               ></el-input>
               <label for="address-[last_name]" class="el-label">
                 {{- 'customer.addresses.last_name' | t -}}
@@ -58,6 +60,7 @@
               id="address-[phone]"
               v-model="ruleForm.phone"
               v-focus-input="ruleForm.phone"
+              placeholder="{{- 'customer.addresses.phone' | t -}}"
             ></el-input>
             <label for="address-[phone]" class="el-label">
               {{- 'customer.addresses.phone' | t -}}
@@ -72,6 +75,7 @@
               id="address-[address1]"
               v-model="ruleForm.address1"
               v-focus-input="ruleForm.address1"
+              placeholder="{{- 'customer.addresses.address1' | t -}}" 
             ></el-input>
             <label for="address-[address1]" class="el-label">
               {{- 'customer.addresses.address1' | t -}}
@@ -86,6 +90,7 @@
               id="address-[address2]"
               v-model="ruleForm.address2"
               v-focus-input="ruleForm.address2"
+              placeholder="{{- 'customer.addresses.address2' | t -}}" 
             ></el-input>
             <label for="address-[address2]" class="el-label">
               {{- 'customer.addresses.address2' | t -}}
@@ -100,6 +105,7 @@
                 id="address-[city]"
                 v-model="ruleForm.city"
                 v-focus-input="ruleForm.city"
+                placeholder="{{- 'customer.addresses.city' | t -}}" 
               ></el-input>
               <label for="address-[city]" class="el-label">
                 {{- 'customer.addresses.city' | t -}}
@@ -115,6 +121,7 @@
                 v-model="ruleForm.zip"
                 @blur="handleAddressZipBlur"
                 v-focus-input="ruleForm.zip"
+                placeholder="{{- 'customer.addresses.zip' | t -}}" 
               ></el-input>
               <label for="address-[zip]" class="el-label">
                 {{- 'customer.addresses.zip' | t -}}
@@ -131,7 +138,7 @@
                 v-model="ruleForm.province"
                 name="address[province]"
                 @change="handleAddressStateChange"
-                placeholder=""
+                placeholder="{{- 'customer.addresses.province' | t -}}" 
               >
                 <el-option
                   v-for="item in stateOptions"
@@ -155,6 +162,7 @@
                 id="address-[country]"
                 v-model="ruleForm.country"
                 v-focus-input="ruleForm.country"
+                placeholder="{{- 'customer.addresses.country' | t -}}" 
               ></el-input>
               <label for="address-[country]" class="el-label">
                 {{- 'customer.addresses.country' | t -}}
@@ -173,6 +181,7 @@
                 :checked="ruleForm.default? true: false"
                 name="address[default]"
                 id="address-[default]"
+                placeholder="Save as default shipping address" 
               >
               <label for="address-[default]" class="text--subdued"> Save as default shipping address </label>
             </div>
@@ -461,15 +470,11 @@
             ["American Samoa", "American Samoa"],
             ["Arizona", "Arizona"],
             ["Arkansas", "Arkansas"],
-            ["Armed Forces Americas", "Armed Forces Americas"],
-            ["Armed Forces Europe", "Armed Forces Europe"],
-            ["Armed Forces Pacific", "Armed Forces Pacific"],
             ["California", "California"],
             ["Colorado", "Colorado"],
             ["Connecticut", "Connecticut"],
             ["Delaware", "Delaware"],
-            ["District of Columbia", "Washington DC"],
-            ["Federated States of Micronesia", "Micronesia"],
+            ["Micronesia", "Micronesia"],
             ["Florida", "Florida"],
             ["Georgia", "Georgia"],
             ["Guam", "Guam"],
@@ -512,12 +517,16 @@
             ["Texas", "Texas"],
             ["Utah", "Utah"],
             ["Vermont", "Vermont"],
-            ["Virgin Islands", "U.S. Virgin Islands"],
             ["Virginia", "Virginia"],
             ["Washington", "Washington"],
+            ["Washington DC", "Washington DC"],
             ["West Virginia", "West Virginia"],
             ["Wisconsin", "Wisconsin"],
-            ["Wyoming", "Wyoming"]
+            ["Wyoming", "Wyoming"],
+            ["U.S. Virgin Islands", "U.S. Virgin Islands"],
+            ["Armed Forces Americas", "Armed Forces Americas"],
+            ["Armed Forces Europe", "Armed Forces Europe"],
+            ["Armed Forces Pacific", "Armed Forces Pacific"]
           ],
           address_list: [
             {% for address in customer.addresses %}
