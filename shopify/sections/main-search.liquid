@@ -178,6 +178,7 @@
                           v-if="products.length && !pageLoading"
                           background
                           layout="prev, pager, next"
+                          :pager-count="5"
                           :current-page.sync="pageParam.page"
                           :page-size="pageParam.pageSize"
                           :total="total"
