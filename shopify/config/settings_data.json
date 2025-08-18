@@ -9,6 +9,7 @@
  */
 {
   "current": {
+    "open_convert": false,
     "button_border_radius": 0,
     "block_border_radius": "none",
     "heading_color": "#000000",
@@ -292,6 +293,10 @@
           "button_background": "#1e2d7d",
           "button_text_color": "#ffffff"
         }
+      },
+      "fb-public-dialog": {
+        "type": "fb-public-dialog",
+        "settings": {}
       }
     },
     "content_for_index": [],
