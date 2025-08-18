@@ -14,12 +14,12 @@
       "settings": {
         "free_tip": "FREE shipping on orders of $75+",
         "text_width": 45,
-        "title": "Beat the Heat",
-        "title_color": "#0a2b6f",
-        "text": "<p>Get Cooler Prices on Hot Products</p>",
-        "text_color": "#0a2b6f",
-        "bg_img": "shopify://shop_images/Banners_Fans_Desktop_bg_e4885490-6d1e-4042-b9f4-297b94d48043.png",
-        "h5_bg_img": "shopify://shop_images/Banners_Fans_H5_bg_8f28ee76-b9cb-4b1c-ab84-9519374b9499.png"
+        "title": "Pro Pallet Jacks",
+        "title_color": "#ffffff",
+        "text": "<p>Lower & Lift for LESS<br/></p>",
+        "text_color": "#ffffff",
+        "bg_img": "shopify://shop_images/Pallet_Jack_Featured_product_desktop.png",
+        "h5_bg_img": "shopify://shop_images/Pallet_Jack_Featured_product_H5.png"
       }
     },
     "main_collection_landing_9HCtJm": {
