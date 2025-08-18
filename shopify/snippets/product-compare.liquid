@@ -55,19 +55,15 @@
                       <span class="text-[#FABE00] whitespace-nowrap">Save</span>
                     </div>
                     <div class="hidden text-right fb-sm:block ml-1 fb-1000:hidden fb-md:block w-[68px]">
-                      <template v-if="comparisonType == 1">
-                        <span class="text-F9A000 text-left whitespace-nowrap">${item.percentage}%</span>
-                      </template>
-                      <template v-else>
-                        <span class="text-F9A000 text-left whitespace-nowrap">{%- render 'customer-global-format', type: 'currency_symbol' -%}${item.absoluteOff}</span>
-                      </template>
+                      <span class="text-F9A000 text-left whitespace-nowrap">{%- render 'customer-global-format', type: 'currency_symbol' -%}${item.absoluteOff}</span>
                     </div>
                   </div>
                   <div class="flex items-center justify-end w-[68px]">
                     <template v-if="comparisonType == 1">
-                      <span class="text-F9A000 text-right whitespace-nowrap">{%- render 'customer-global-format', type: 'currency_symbol' -%}${item.absoluteOff}</span>
+                        <span class="text-F9A000 text-right whitespace-nowrap fb-sm:hidden fb-1000:inline fb-md:hidden">{%- render 'customer-global-format', type: 'currency_symbol' -%}${item.absoluteOff}</span>
+                        <span class="text-F9A000 text-right whitespace-nowrap hidden fb-sm:inline fb-1000:hidden fb-md:inline">${item.percentage}%</span>
                     </template>
-                    <template v-else>
+                     <template v-else>
                       <span class="text-F9A000 text-right whitespace-nowrap">${item.percentage}%</span>
                     </template>
                   </div>
