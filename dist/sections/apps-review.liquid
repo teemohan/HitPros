@@ -1,70 +1,355 @@
-<div class="section-anchor-target js-review-rate w-full overflow-x-hidden" id="js-review-section">
-  <div class="js-review-container  bg-white invisible h-0 container b-sm:bg-transparent mb-4.5 fb-sm:mb-6">
-    <div class="w-full fb-sm:border fb-sm:border-D3DEF1 py-4.5 rounded-sm fb-sm:px-5 fb-sm:pt-10" >
-      <p class="text-main text-12 fb-sm:text-18 font-bold">See Reviews</p>
-      {%- for block in section.blocks -%}
-      {%- render block -%}
-      {%- endfor -%}
+<!-- Review Section Container -->
+<div class="section-anchor-target container bg-white js-review-rate w-full overflow-hidden relative mt-2.5" id="js-review-section" data-sku="{{ product.selected_or_first_available_variant.sku }}">
+  <div class="js-review-customer hidden w-full mt-6 fb-sm:mt-10 fb-review-el pb-7 fb-sm:pb-15">
+    <p class="text-121212 text-16 fb-sm:text-24 font-bold pb-4 fb-sm:mb-5">See Reviews</p>
+    <div class="w-full">
+      <div class="w-full flex flex-col fb-sm:flex-row fb-sm:justify-between fb-sm:h-27.5 fb-sm:mb-8" v-if="skuTotalReviews && skuTotalReviews > 0">
+        <div class="w-full flex  items-center justify-center space-x-6 fb-sm:w-29r fb-sm:h-full fb-sm:pr-6 fb-sm:border-r fb-sm:border-E6E6E6">
+          <div class="flex flex-col">
+              <span class="text-24 font-bold text-main mb-2 fb-sm:mb-1.5 text-center fb-sm:text-48">${skuTotalScore}</span>
+              <span class="text-12 text-121212 text-center fb-sm:text-14">out of 5</span>
+          </div>
+          <div id="product-review-section" class="text-center mb-2 flex items-center justify-center fb-review-rate2">
+            <el-rate v-model="skuTotalScore" disabled></el-rate>
+          </div>
+        </div>
+        <div class="mt-5 mb-6 w-full fb-sm:flex-1 fb-sm:mb-0 fb-sm:mt-0 fb-sm:px-12 fb-sm:h-full">
+          <div class="flex justify-between space-x-2.5" v-for="(item, index) in percentJson">
+            <div class="w-18 text-14 text-121212 fb-review-rate3">
+                <el-rate v-model="item.rating" disabled :max="percentJson.length - index"></el-rate>
+            </div>
+            <div class="flex-1 flex items-center justify-end">
+              <el-progress 
+                :percentage="item.percentage"
+                :stroke-width="8"
+                stroke-linecap="butt"
+                :format="formatPercent"
+                text-color="#121212"
+                define-back-color="#F0F0F0"
+                class="w-full"
+                color="#FABE00">
+              </el-progress>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Reviews Section -->
+      <div class="w-full text-14 text-darkmain" id="review-content-tab">
+        <!-- Tab Navigation for Product/Store Reviews -->
+        <div class="w-full mb-4 border-b border-E6E6E6 fb-sm:mb-5.5">
+          <el-tabs class="w-full h-10 fb-sm:w-[432px]" v-model="activeName" @tab-click="handleClick">
+            <el-tab-pane label="Reviews on this Product" name="first" v-if="skuTotalReviews > 0">
+            </el-tab-pane>
+            <el-tab-pane label="Reviews on NorthSky" name="second" v-if="shopTotalReviews > 0"></el-tab-pane>
+          </el-tabs>
+        </div>
+         <!-- Reviews Header -->
+        <div class="flex items-center fb-sm:flex-row-reverse h-9 justify-between" v-if="activeName == 'first'">
+          <div class="h-full overflow-hidden w-36 fb-sm:w-11r border border-CCCCCC rounded-sm">
+            <el-select v-model="value" class="h-full flex items-center">
+              <el-option
+                v-for="item in sortArr"
+                :key="item.value"
+                :label="item.name"
+                class="text-14 text-121212"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="text-14 font-bold text-121212">${afterFilterTotal} ${ afterFilterTotal == 1 ? 'review' : 'reviews'}</div>
+        </div>
+         <div class="flex items-center fb-sm:flex-row-reverse h-9 justify-between"  v-if="activeName == 'second'">
+            <div class="h-full overflow-hidden w-36 fb-sm:w-11r border border-CCCCCC rounded-sm">
+            <el-select v-model="storeValue" class="h-full flex items-center">
+              <el-option
+                v-for="item in sortArr"
+                :key="item.value"
+                :label="item.name"
+                class="text-14 text-121212"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="text-14 font-bold text-121212">${storeAfterFilterTotal} ${ storeAfterFilterTotal == 1 ? 'review' : 'reviews'}</div>
+        </div>
+        <!-- Individual Review Item -->
+        <div class="border-b border-E6E6E6 py-4" v-for="(review, index) in displayedReviews" :key="activeName + '-' + index + '-' + review.userName + '-' + review.reviewTime">
+          <!-- Review Header: User Info and Ratinåg -->
+          <div class="w-full flex flex-col">
+            <!-- User Name and Verification Badge -->
+            <div class="flex items-center space-x-2 mb-3 fb-sm:mb-2.5">
+              <div class="w-6 h-6 fb-flex-center fb-sm:w-7 fb-sm:h-7">
+                <img class="lazyload w-full h-auto" width="24" height="24" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/touxiang_1.png?v=1754467891">
+              </div>
+              <span class="text-121212 text-14 font-bold fb-sm:text-16">${review.userName}</span>
+              <div class="flex items-center border border-D3DEF1 bg-F3F8FC rounded-sm px-1 py-0.5 space-x-1" v-if="review.verifiedSource && review.verifiedSource.toLowerCase() == 'trustpilot'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M14 5.36986H8.65041L7.01138 0L5.34959 5.36986L0 5.34589L4.3252 8.65411L2.66341 14L6.98862 10.6918L11.3138 14L9.65203 8.65411L14 5.36986Z" fill="#04DA8D"/>
+                  <path d="M10.0621 9.87592L9.6979 8.65332L7.01172 10.691L10.0621 9.87592Z" fill="#005128"/>
+                </svg>
+                <span class="text-main text-12 font-medium">
+                  from Trustpilot
+                </span>
+              </div>
+              <div class="flex items-center border border-D3DEF1 bg-F3F8FC rounded-sm px-1 py-0.5 space-x-1" v-else-if="review.verifiedSource && review.verifiedSource.toLowerCase() == 'google'">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <g clip-path="url(#clip0_6310_9790)">
+                      <path d="M13.16 7.14551C13.16 6.69051 13.1192 6.25301 13.0433 5.83301H7V8.31801H10.4533C10.3017 9.11717 9.84667 9.79384 9.16417 10.2488V11.8647H11.2467C12.46 10.7447 13.16 9.09967 13.16 7.14551Z" fill="#4285F4"/>
+                      <path d="M6.99982 13.4163C8.73232 13.4163 10.1848 12.8446 11.2465 11.8646L9.16398 10.2488C8.59232 10.6338 7.86315 10.8671 6.99982 10.8671C5.33148 10.8671 3.91398 9.74128 3.40648 8.22461H1.27148V9.88128C2.32732 11.9754 4.49148 13.4163 6.99982 13.4163Z" fill="#34A853"/>
+                      <path d="M3.40634 8.21902C3.27801 7.83402 3.20217 7.42569 3.20217 6.99986C3.20217 6.57402 3.27801 6.16569 3.40634 5.78069V4.12402H1.27134C0.833841 4.98736 0.583008 5.96152 0.583008 6.99986C0.583008 8.03819 0.833841 9.01236 1.27134 9.87569L2.93384 8.58069L3.40634 8.21902Z" fill="#FBBC05"/>
+                      <path d="M6.99982 3.13801C7.94482 3.13801 8.78482 3.46467 9.45565 4.09468L11.2932 2.25717C10.179 1.21884 8.73232 0.583008 6.99982 0.583008C4.49148 0.583008 2.32732 2.02384 1.27148 4.12384L3.40648 5.78051C3.91398 4.26384 5.33148 3.13801 6.99982 3.13801Z" fill="#EA4335"/>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_6310_9790">
+                        <rect width="14" height="14" fill="white"/>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  <span class="text-main text-12 font-medium">
+                    from Google
+                  </span>
+              </div>
+              <div class="flex items-center border border-D3DEF1 bg-F3F8FC rounded-sm px-1 py-0.5 space-x-1" v-else>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <g clip-path="url(#clip0_6366_9360)">
+                    <path d="M7.99967 14.6663C9.84061 14.6663 11.5073 13.9201 12.7137 12.7137C13.9201 11.5073 14.6663 9.84061 14.6663 7.99967C14.6663 6.15874 13.9201 4.49207 12.7137 3.28563C11.5073 2.0792 9.84061 1.33301 7.99967 1.33301C6.15874 1.33301 4.49207 2.0792 3.28563 3.28563C2.0792 4.49207 1.33301 6.15874 1.33301 7.99967C1.33301 9.84061 2.0792 11.5073 3.28563 12.7137C4.49207 13.9201 6.15874 14.6663 7.99967 14.6663Z" stroke="#FABE00" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M5.33301 8L7.33301 10L11.333 6" stroke="#FABE00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_6366_9360">
+                      <rect width="16" height="16" fill="white"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+                <span class="text-main text-12 font-medium" v-if="review.verifiedSource && review.verifiedSource.toLowerCase() == 'shop'">
+                  Verified by Shop
+                </span>
+                <span class="text-main text-12 font-medium" v-else>
+                  Verified Buyer
+                </span>
+              </div>
+            </div>
+            <!-- Rating and Date -->
+              <div class="flex items-end justify-start mb-2 w-full text-left fb-sm:text-right fb-review-rate4">
+                  <el-rate :value="review.rating" disabled></el-rate>
+                  <div class="text-666666 text-12 fb-sm:text-right ml-4">${review.reviewTime}</div>
+              </div>
+          </div>
+
+          <!-- Review Title and Content -->
+          <div class="font-bold mb-1 text-121212 text-14" v-if="review.title">${review.title}</div>
+          <p class="mb-2.5 text-14 text-121212">${review.reviewText}</p>
+
+          <!-- Review Media: Videos and Images -->
+          <div class="flex space-x-5 snap-x hide-scrollbar"  v-if="(review.pics && review.pics.length > 0) || (review.videos && review.videos.length > 0)">
+            <!-- Video Thumbnails with Play Button -->
+            <div class="shrink-0 snap-center w-26 h-26 flex items-center justify-center" v-for="(video, index) in review.videos" :key="'video-' + index">
+                <div class="relative w-full h-full bg-black rounded-sm overflow-hidden cursor-pointer group"  @click="openMediaModal(video, 'video', index)">
+                  <!-- Video Thumbnail -->
+                  <video 
+                    class="lazyload w-full h-full object-cover" 
+                    :data-src="video"
+                    preload="metadata"
+                    muted>
+                  </video>
+                  <!-- Play Button Overlay -->
+                  <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-all duration-200">
+                    <div class="w-8 h-8 bg-white bg-opacity-90 rounded-full flex items-center justify-center">
+                      <svg class="w-4 h-4 text-gray-800 ml-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <!-- Review Images -->
+            <div class="shrink-0 snap-center w-22.5 h-22.5 flex items-center justify-center" v-for="pic in review.pics" :key="pic"  @click="openMediaModal(pic, 'image', index)">
+              <img 
+                :data-src="pic"
+                alt="Review image"
+                class="lazyload w-full h-auto object-contain"
+                width="22.5"
+                height="22.5"
+               />
+            </div>
+          </div>
+          <!-- Store Reply to Review -->
+          {% comment %} <div class="mt-4 p-3 bg-F9F9F9" v-if="review.replyMessage">
+            <div class="flex items-center mb-2">
+              <span class="text-14 font-semibold ">NorthSky Replied</span>
+            </div>
+            <p class="text-14 text-121212">${review.replyMessage}</p>
+          </div> {% endcomment %}
+        </div>
+        <!-- Loading State: Skeleton Placeholders -->
+        <div class="border-t border-D3DEF1 pt-4.5 pb-4 fb-sm:pt-6 fb-sm:pb-6" v-if="isLoading">
+          <div class="animate-pulse" v-for="n in 3" :key="'skeleton-' + n">
+            <!-- Skeleton Review Header -->
+            <div class="w-full flex flex-col fb-sm:flex-row fb-sm:justify-between mb-3 fb-sm:mb-4.5 fb-sm:items-start">
+              <div class="flex items-center space-x-4 mb-3 fb-sm:mb-0">
+                <div class="h-4 bg-gray-200 rounded w-20"></div>
+                <div class="flex items-center">
+                  <div class="h-4 bg-gray-200 rounded w-4 mr-1"></div>
+                  <div class="h-4 bg-gray-200 rounded w-24"></div>
+                </div>
+              </div>
+              <div class="w-full fb-sm:w-auto">
+                <div class="flex mb-2 w-full text-left fb-sm:text-right">
+                  <div class="h-4 bg-gray-200 rounded w-20"></div>
+                </div>
+                <div class="fb-sm:text-right">
+                  <div class="h-4 bg-gray-200 rounded w-16"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Skeleton Review Title -->
+            <div class="mb-2">
+              <div class="h-5 bg-gray-200 rounded w-3/4 mb-2"></div>
+            </div>
+            <!-- Skeleton Review Content -->
+            <div class="mb-3">
+              <div class="h-4 bg-gray-200 rounded w-full mb-2"></div>
+              <div class="h-4 bg-gray-200 rounded w-5/6 mb-2"></div>
+              <div class="h-4 bg-gray-200 rounded w-4/5"></div>
+            </div>
+            <!-- Skeleton Review Media -->
+            <div class="flex space-x-5 mb-4">
+              <div class="shrink-0 w-22.5 h-22.5 bg-gray-200 rounded"></div>
+              <div class="shrink-0 w-22.5 h-22.5 bg-gray-200 rounded"></div>
+              <div class="shrink-0 w-22.5 h-22.5 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State: No Reviews Available -->
+        <div class="border-t border-D3DEF1 pt-4.5 pb-4 fb-sm:pt-6 fb-sm:pb-6 text-center" v-if="!isLoading && displayedReviews.length === 0">
+          <div class="text-14 text-gray-500">No reviews available.</div>
+        </div>
+
+        <!-- Pagination Controls: View More/Less -->
+        <div class="w-full mt-4 fb-sm:mt-5" v-if="displayedReviews.length > 0 && activeName == 'first'">
+          <!-- View More Button -->
+          <div class="flex items-center justify-center space-x-2 cursor-pointer" v-show="hasMoreReviews && !isLoading" @click="handleViewMore">
+            <span class="text-main text-12 fb-sm:text-16 font-bold fb-max-sm:underline fb-sm:hover:underline">View More</span>
+            <svg class="w-4 h-auto fb-sm:w-5" width="21" height="12" viewBox="0 0 21 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.3648 6.23386L18.6311 -9.28771e-08L20.7559 2.13416L10.9115 12L0.802708 2.19074C0.725674 2.10413 0.756718 2.05101 0.802708 1.96208C1.06141 1.45742 2.39169 0.560099 2.76422 -7.8644e-07L9.37541 6.34934L10.7557 7.63622L12.3648 6.23386Z" fill="#FABE00"></path>
+            </svg>
+          </div>
+          <!-- View Less Button -->
+          <div class="cursor-pointer" v-show="!hasMoreReviews && displayedReviews.length > paramQuery.pageSize" @click="handleViewLess">
+            <div class="items-center justify-center flex space-x-2">
+              <span class="text-main text-12 fb-sm:text-14 font-bold fb-max-sm:underline fb-sm:hover:underline">View Less</span>
+              <svg class="w-4 h-auto fb-sm:w-5" width="20" height="13" viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.39104 5.79739L2.12478 12.0313L2.54496e-08 9.89709L9.84435 0.0312492L19.9532 9.84051C20.0302 9.92712 19.9991 9.98024 19.9532 10.0692C19.6945 10.5738 18.3642 11.4712 17.9916 12.0313L11.3804 5.68191L10.0001 4.39503L8.39104 5.79739Z" fill="#FABE00"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="w-full flex items-center justify-center mt-6 fb-sm:mt-5" v-if="activeName == 'second'">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="storeAfterFilterTotal"
+            :page-size="shopQuery.pageSize"
+            :current-page="currentStorePage"
+            :pager-count="5"
+            class="w-full"
+            @current-change="handleStorePageChange">
+          </el-pagination>
+        </div>
+      </div>
+    </div>
+    <!-- Header Rate View: Hidden element for header display -->
+    <div class="js-pdp-header-rateview invisible absolute -z-1 left-0">
+      <a class="w-full flex items-center h-6 justify-start fb-review-rate cursor-pointer" href="#product-review-section">
+        <el-rate v-model="skuTotalScore" disabled></el-rate>
+        <span class="text-14 text-121212 ml-2 fb-max-sm:underline hover:fb-sm:underline">${skuTotalReviews} ${ skuTotalReviews == 1 ? 'review' : 'reviews'}</span>
+      </a>
+    </div>
+    <!-- Video Modal: Full-screen video player -->
+    <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-7" v-if="showMediaModal">
+      <div class="relative w-full h-full max-w-4xl max-h-screen p-4 fb-flex-center">
+        <!-- Modal Close Button -->
+        <button class="absolute top-4 right-4 z-10 w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-all duration-200" @click="closeMediaModal">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+        <div class="w-[94%] h-[94%] fb-flex-center">
+        <!-- Video Player Element -->
+          <video 
+            class="w-full h-full object-contain" 
+            controls 
+            autoplay
+            v-if="currentMediaType === 'video'"
+            :src="currentMediaUrl"
+            ref="modalVideo"
+          >
+            Your browser does not support the video tag.
+          </video>
+            <img 
+            v-if="currentMediaType === 'image'"
+            class="w-full h-full object-contain" 
+            width="100%"
+            height="100%"
+            :src="currentMediaUrl"
+            alt="Review image preview">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Initial Loading Animation: Skeleton screen shown before Vue initialization -->
+<div class="js-review-animate container bg-white pt-10">
+  <div class="w-full mt-0 text-14 text-darkmain fb-sm:mt-6">
+    <!-- Skeleton Header: Tab and sort controls placeholder -->
+    <div class="flex items-center h-9 file:justify-between fb-sm:h-10">
+      <div class="h-4 bg-gray-200 rounded w-24 animate-pulse"></div>
+      <div class="flex items-center h-full">
+        <div class="h-4 bg-gray-200 rounded w-16 mr-1 animate-pulse"></div>
+        <div class="h-8 bg-gray-200 rounded w-36 animate-pulse"></div>
+      </div>
+    </div>
+    <!-- Skeleton Reviews: Placeholder review items -->
+    <div class="pt-4.5 pb-4 fb-sm:pt-6 fb-sm:pb-6">
+      <div class="animate-pulse mb-6" v-for="n in 3" :key="'skeleton-' + n">
+        <div class="w-full flex flex-col fb-sm:flex-row fb-sm:justify-between mb-3 fb-sm:mb-4.5 fb-sm:items-start">
+          <div class="flex items-center space-x-4 mb-3 fb-sm:mb-0">
+            <div class="h-4 bg-gray-200 rounded w-20"></div>
+            <div class="flex items-center">
+              <div class="h-4 bg-gray-200 rounded w-4 mr-1"></div>
+              <div class="h-4 bg-gray-200 rounded w-24"></div>
+            </div>
+          </div>
+          <div class="w-full fb-sm:w-auto">
+            <div class="flex mb-2 w-full text-left fb-sm:text-right">
+              <div class="h-4 bg-gray-200 rounded w-20"></div>
+            </div>
+            <div class="fb-sm:text-right">
+              <div class="h-4 bg-gray-200 rounded w-16"></div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-2">
+          <div class="h-5 bg-gray-200 rounded w-3/4 mb-2"></div>
+        </div>
+        <div class="mb-3">
+          <div class="h-4 bg-gray-200 rounded w-full mb-2"></div>
+          <div class="h-4 bg-gray-200 rounded w-5/6 mb-2"></div>
+          <div class="h-4 bg-gray-200 rounded w-4/5"></div>
+        </div>
+        <div class="flex space-x-5 mb-4">
+          <div class="shrink-0 w-22.5 h-22.5 bg-gray-200 rounded"></div>
+          <div class="shrink-0 w-22.5 h-22.5 bg-gray-200 rounded"></div>
+          <div class="shrink-0 w-22.5 h-22.5 bg-gray-200 rounded"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<style>
-.js-review-rate .jdgm-rev-widg__title{
-  display: none;
-}
-.jdgm-widget-actions-wrapper, .jdgm-rev__transparency-badge-wrapper,.jdgm-rev__custom-form{
-  display: none!important;
-}
-.js-review-rate .jdgm-rev-widg__header{
-  border-bottom: 1px solid #D3DEF1;
-}
-.js-review-rate *{
-  font-family: 'Inter', sans-serif;
-}
-.js-review-rate .jdgm-sort-dropdown-wrapper{
-  display: flex!important;
-  align-items: center;
-  justify-content: flex-end;
-}
-.js-review-rate .jdgm-rev-widg__summary-average{
-  font-weight: bold;
-}
-.js-review-rate .jdgm-rev-widg__summary-text{
-  color: black;
-  font-size: 14px;
-  text-align: center;
-}
-.js-review-rate .jdgm-histogram__bar-content{
-  background-color: #FABE00;
-}
-.js-review-rate .jdgm-rev-widg .jdgm-star, .js-review-rate .jdgm-revs-tab .jdgm-star,.js-review-rate .jdgm-all-reviews .jdgm-star, .js-review-rate .jdgm-gallery-popup .jdgm-star {
-  font-size: 18px;
-}
-.js-review-rate .jdgm-sort-dropdown-wrapper .jdgm-sort-dropdown{
-  font-size: 16px;
-  border: none;
-  outline: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: transparent;
-}
-.js-review-rate .jdgm-sort-dropdown-wrapper .jdgm-sort-dropdown:focus{
-  box-shadow: none!important;
-}
-.js-review-rate .jdgm-rev__title{
-  font-size: 16px;
-  font-weight: bold;
-}
-{% comment %} .js-review-rate .jdgm-rev__icon, .js-review-rate .jdgm-widget div:empty{
-  display: none;
-} {% endcomment %}
-.js-review-rate  .jdgm-rev__body  p{
-  font-size: 14px;
-}
 
-</style>
+<!-- Shopify Section Schema: Configuration for the review section -->
 {% schema %}
 {
   "name": "Apps-review",
@@ -76,7 +361,7 @@
       "default": true
     },
     {
-      "type": "checkbox",
+      "type": "checkbox", 
       "id": "include_vertical_margins",
       "label": "Include vertical margins",
       "default": true

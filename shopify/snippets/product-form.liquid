@@ -563,7 +563,7 @@
         <div class="product-form__buy-buttons w-full" {{ block.shopify_attributes }}>
           <div class="w-full pb-5">
             <div class="buy-btn-box w-full flex items-center justify-between space-x-4 h-11 fb-sm:justify-start fb-sm:space-x-3 fb-sm:h-12">
-              <div class="shopify-product-form w-full flex items-center justify-between space-x-4 h-11 fb-sm:space-x-5 fb-sm:justify-start fb-sm:h-12">
+              <div class="shopify-product-form w-full flex items-center justify-start space-x-4 h-11 fb-sm:space-x-5 fb-sm:justify-start fb-sm:h-12">
                 <div
                   class="border border-D3DEF1 min-w-26 fb-sm:min-w-9r fb-1000:min-w-26 fb-md:min-w-9r bg-white rounded-sm h-full flex justify-between items-center px-2 space-x-0.5"
                   data-max="{% if product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"

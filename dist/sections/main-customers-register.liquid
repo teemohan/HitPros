@@ -229,6 +229,17 @@
                 </el-form-item>
               </el-col>
             </el-row>
+            <el-row>
+              <el-form-item prop="phone">
+                <el-input
+                  id="ruleForm[phone]"
+                  v-model="ruleForm.phone"
+                  v-focus-input="ruleForm.phone"
+                  placeholder="Phone*"
+                ></el-input>
+                <label for="ruleForm[phone]" class="el-label">Phone*</label>
+              </el-form-item>
+            </el-row>
           </div>
         </div>
         <div class="form-sec-title">Account</div>
@@ -504,7 +515,15 @@
             callback();
           }
         };
-
+       const validatePhoneNumber = (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('Phone is required'));
+          } else {
+            const phone = libphonenumber.parsePhoneNumberFromString(value, 'US');
+            if(!phone || !phone.isValid()) return callback(new Error('Invalid phonenumber'));
+            return callback();
+          }
+        };
         const companyCodeValidator = async (rule, value, callback) => {
           if (!value || value.trim() === '') {
             callback(new Error('Company Authentication Code is required.'));
@@ -526,7 +545,16 @@
             callback(new Error('Validation failed due to a network error.'));
           }
         };
-
+        const formatUSPhone = (phone) => {
+          // Remove all non-digit characters
+          const digits = phone.replace(/\D/g, '');
+          if (digits.length === 10) {
+            return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+          } else if (digits.length === 11 && digits.startsWith('1')) {
+            return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
+          }
+          return phone; // If not matching 10 or +1 + 10 digits, return original
+        };
         return {
           elSelectFocus: false,
           isShowCodeLoading: false,
@@ -626,6 +654,7 @@
             zipCode: '',
             address1: '',
             address2: '',
+            phone: '',
             code: ''
           },
           industry: '',
@@ -713,6 +742,7 @@
             city: [{ validator: noWhitespaceValidator, message: 'City is required.', trigger: 'blur' }],
             state: [{ validator: validateCompanyState, trigger: 'change' }],
             zipCode: [{ validator: validateCompanyZipCode, trigger: 'blur' }],
+            phone: [{validator: validatePhoneNumber,trigger: 'blur'}],
             firstname: [
               { validator: noWhitespaceValidator, message: 'First Name is required.', trigger: 'blur' },
             ],
@@ -969,7 +999,8 @@
                   city: this.ruleForm.city,
                   zipCode: this.ruleForm.zipCode,
                   address1: this.ruleForm.address1,
-                  address2: this.ruleForm.address2
+                  address2: this.ruleForm.address2,
+                  phone: this.ruleForm.phone,
                 }
               };
             } else {

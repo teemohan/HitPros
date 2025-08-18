@@ -12,6 +12,6 @@ function throttle(fn,delay){let lastCall=0;return function(...args){const now=(n
             <input class="checkbox" class="w-4 h-4 border border-999999 rounded-sm fb-sm:w-5 fb-sm:h-5" type="checkbox" name="filter.p.m.product.brand" id="${checkboxId}" value="${item.brand}"
               ${item.disabled?"disabled":""} ${item.checked?"checked":""}
             >
-            <label class="text-xs text-black fb-sm:text-sm" for="${checkboxId}">${item.brand} (${item.count})&lrm;</label>
+            <label class="text-xs text-121212 fb-sm:text-sm" for="${checkboxId}">${item.brand} (${item.count})&lrm;</label>
           </div>
         `});filterDoms.forEach(filterDom=>{filterDom.innerHTML=filtertertml})},renderFacet(){const debouncedReload=debounce(async()=>{window.scrollTo({top:0,behavior:"smooth"});this.page=1;this.spuData=[];this.hasMore=true;try{await this.fetchSpuList();if(this.observer){this.observer.disconnect()}this.initIntersectionObserver()}catch(error){console.error("Failed to reload data after filter change:",error)}},300);document.addEventListener("facet-rerender",debouncedReload)}}});

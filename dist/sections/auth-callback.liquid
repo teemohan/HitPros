@@ -96,7 +96,6 @@
               'account_type': result.data.userInfo.companyName ? 'Business': 'Personal',
               'company': result.data.userInfo.companyName ? result.data.userInfo.companyName : null
             });
-            console.log("result.data.redirecturl", result.data.redirectUrl)
             window.location.replace(result.data.redirectUrl)
         } else {
           const errorMessage = result.message || 'Login failed, please try again';
@@ -104,23 +103,24 @@
         }
       } catch (error) {
         console.error('Third party login error:', error);
-        showError('Network error, please check your connection and try again');
+        showError(error || 'Network error, please check your connection and try again');
       }
     }
     
     // Main processing logic
     function processCallback() {
       const params = getUrlParams();
-      console.log("params", params)
       if (params.error) {
         const errorMsg = params.error_description || `Authorization failed: ${params.error}`;
         showError(errorMsg);
+         window.location.replace('/')
         return;
       }
       
       // Check required parameters
       if (!params.code || !params.state) {
         showError('Missing required authorization parameters');
+         window.location.replace('/')
         return;
       }
       
@@ -131,6 +131,7 @@
         const returnTo = stateData.returnTo;
         if (!platform) {
           showError('Invalid authorization source');
+          window.location.replace('/')
           return;
         }
         window.history.replaceState(null, "", "/pages/auth-callback");

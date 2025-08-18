@@ -13,12 +13,12 @@
       "type": "zkh-hero-banner-4",
       "settings": {
         "title": "",
-        "new_title": "<p> High-Quality Supplies,<br/>Industry-Best Prices.</p>",
-        "text": "<p>Save 30-70% on premium industrial supplies.</p>",
-        "bg_img": "shopify://shop_images/Group_421.png",
-        "h5_bg_img": "shopify://shop_images/Left_bunner_1.png",
-        "btn_text": "Explore",
-        "btn_url": "shopify://collections/featured-products"
+        "new_title": "<p><strong>Industrial Fans </strong></p><p><strong>BLOWOUT SALE!</strong></p>",
+        "text": "<p><strong>Get the COOLEST price in town</strong></p>",
+        "bg_img": "shopify://shop_images/Main_cover_Fans_Desktop_da8dd3cb-6e9c-4321-86d8-011073854aab.png",
+        "h5_bg_img": "shopify://shop_images/Main_cover_Fans_Desktop_H5_04b103e3-b35b-4396-9399-f66694a49900.png",
+        "btn_text": "Shop Now",
+        "btn_url": "shopify://collections/hvac"
       }
     },
     "zkh_category_4_D6yMN7": {
@@ -120,7 +120,7 @@
       "type": "guess-you-like",
       "name": "guess-you-like",
       "settings": {
-        "title": "Products You May Like"
+        "title": "You Might Like"
       }
     },
     "h_blogs_GHEBgy": {

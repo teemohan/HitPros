@@ -1,18 +1,18 @@
 <product-attrs class="w-full" data-sku="{{ product.selected_or_first_available_variant.sku }}" >
   <div class="w-full" id="product-attrs">
     <div class="js-attr-wrapper w-full hidden">
-      <div class="product-attrs-wrapper w-full pt-0 pb-4.5 fb-sm:pb-7" v-if="showAttrs && productAttrs.length > 0">
+      <div class="product-attrs-wrapper w-full pt-0 pb-6" v-if="showAttrs && productAttrs.length > 0">
         <div class="flex flex-col gap-3">
           <div v-for="(attr, index) in productAttrs" :key="attr.attrName" v-if="attr" class="attr-line">
-            <div class="text-14 fb-sm:font-bold text-12254D fb-sm:text-16">
-              <span class="attr-name">[[ attr.attrName ]]: </span>
-              <span class="attr-value">[[ attr.selectedValue ]]</span>
+            <div class="w-full">
+              <span class="attr-name text-14 text-808080">[[ attr.attrName ]]: </span>
+              <span class="attr-value text-16 text-main font-bold">[[ attr.selectedValue ]]</span>
             </div>
-            <div class="mt-3 flex flex-wrap gap-2.5 fb-sm:gap-3.5">
+            <div class="mt-2 flex flex-wrap gap-3 fb-sm:gap-x-5 fb-sm:gap-y-3">
               <button
                 v-for="value in attr.values"
                 :key="value"
-                class="min-w-20 border-solid fb-s:min-w-30 text-12 h-8 flex px-2.5 fb-sm:px-5 fb-sm:text-14 justify-center items-center rounded-sm border transition-all"
+                class="min-w-20 border-solid fb-sm:min-w-25 text-14 h-7.5 flex px-2.5 fb-sm:px-5 fb-sm:text-16 justify-center items-center rounded-sm border transition-all"
                 :class="getButtonClasses(index, value)"
                 :disabled="isButtonDisabled(index, value)"
                 @click="handleAttrSelect(attr.attrName, value)"

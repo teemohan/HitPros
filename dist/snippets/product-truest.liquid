@@ -1,56 +1,102 @@
-<div class="w-full pb-5">
-  <div class="text-center bg-F3F8FC -mx-5 px-6 py-3 fb-sm:mx-0 fb-sm:py-5 mb-2.5 rounded-sm">
-    <div class="text-12254D font-bold text-14 mb-3 text-center fb-sm:mb-4.5 fb-sm:text-20">
-      NorthSky: Quality and Service You Can Trust
-    </div>
-    
-    <div class="flex justify-between items-center space-x-6 px-4 w-full fb-sm:justify-center fb-md:space-x-25">
-      <!-- Google Rating -->
-      <div class="flex items-center space-x-4">
-        <div class="h-4 w-auto fb-sm:h-5">
-          <img class="lazyload w-auto h-full" width="100%" height="100%" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/google_icon_6a0e058d-ad8e-4c57-9114-6b372ad60312.png?v=1750830557" >
+{% capture trust_dom %}
+  <svg class="w-6 h-6 fb-sm:w-7.5 fb-sm:h-7.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M24 9.20548H14.8293L12.0195 0L9.17073 9.20548L0 9.16438L7.41463 14.8356L4.56585 24L11.9805 18.3288L19.3951 24L16.5463 14.8356L24 9.20548Z" fill="#04DA8D"/>
+    <path d="M17.2488 16.9309L16.6244 14.835L12.0195 18.3281L17.2488 16.9309Z" fill="#005128"/>
+  </svg>
+{% endcapture %}
+{% capture google_dom %}
+  <svg class="w-6 h-6 fb-sm:w-7.5 fb-sm:h-7.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M22.56 12.25C22.56 11.47 22.49 10.72 22.36 10H12V14.26H17.92C17.66 15.63 16.88 16.79 15.71 17.57V20.34H19.28C21.36 18.42 22.56 15.6 22.56 12.25Z" fill="#4285F4"/>
+    <path d="M11.9997 22.9996C14.9697 22.9996 17.4597 22.0196 19.2797 20.3396L15.7097 17.5696C14.7297 18.2296 13.4797 18.6296 11.9997 18.6296C9.13969 18.6296 6.70969 16.6996 5.83969 14.0996H2.17969V16.9396C3.98969 20.5296 7.69969 22.9996 11.9997 22.9996Z" fill="#34A853"/>
+    <path d="M5.84 14.0903C5.62 13.4303 5.49 12.7303 5.49 12.0003C5.49 11.2703 5.62 10.5703 5.84 9.91031V7.07031H2.18C1.43 8.55031 1 10.2203 1 12.0003C1 13.7803 1.43 15.4503 2.18 16.9303L5.03 14.7103L5.84 14.0903Z" fill="#FBBC05"/>
+    <path d="M11.9997 5.38C13.6197 5.38 15.0597 5.94 16.2097 7.02L19.3597 3.87C17.4497 2.09 14.9697 1 11.9997 1C7.69969 1 3.98969 3.47 2.17969 7.07L5.83969 9.91C6.70969 7.31 9.13969 5.38 11.9997 5.38Z" fill="#EA4335"/>
+  </svg>
+{% endcapture %}
+<div class="fb-sm:hidden h-2.5 bg-F0F1F5 -mx-5 mb-6">
+</div>
+<div class="w-full pb-5 fb-max-sm:border-b border-EAEEF1 fb-sm:mb-0 fb-sm:border-t fb-sm:pt-6">
+  <div class="grid grid-cols-2 mb-4 fb-sm:mb-5">
+    <!-- Google Rating -->
+    <div class="col-span-1 pr-6">
+      <div class="w-full fb-sm:hidden">
+        <div class="flex items-center justify-start space-x-2">
+          {{ trust_dom }}
+          <span class="text-14 text-121212 text-center">Trustpilot <br/> Rated Excellent</span>
         </div>
-        <div class="bg-0A2B6F text-white text-xs px-1.5 fb-sm:w-15 rounded-sm font-medium fb-sm:text-18">4.6/5</div>
+        <div class="js-trustpiolt-review w-full flex justify-between text-12 text-808080 mt-2.5">
+          <span>Score 4.5</span>
+          <span class="w-0.5 border-r border-EAEEF1"></span>
+          <span> 163 reviews</span>
+        </div>
       </div>
-      <!-- Trustpilot Rating -->
-      <div class="flex items-center space-x-4">
-        <div class="h-6 w-auto fb-sm:h-7.5">
-          <img class="lazyload w-auto h-full" width="100%" height="100%" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/Trustpilot.png?v=1750830557" >
+      <div class="w-full hidden fb-sm:flex flex-start items-center fb-sm:space-x-4">
+        {{ trust_dom }}
+        <div class="w-full flex flex-col">
+          <div class="text-14 text-121212 text-center fb-sm:text-16 fb-sm:text-left font-bold">Trustpilot Rated Excellent</div>
+          <div class="js-trustpiolt-review w-full flex justify-start space-x-4 text-12 text-808080 mt-2.5 fb-sm:text-14 fb-sm:mt-0.5">
+            <span>Score 4.5</span>
+            <span class="w-0.5 border-r border-EAEEF1"></span>
+            <span> 163 reviews</span>
+          </div>
         </div>
-        <div class="bg-0A2B6F text-white text-xs px-1.5 fb-sm:w-15 rounded-sm font-medium text-center fb-sm:text-18">4.5/5</div>
+      </div>
+    </div>
+    <div class="col-span-1 pl-6">
+       <div class="w-full fb-sm:hidden">
+        <div class="flex items-center justify-end space-x-2">
+          {{ google_dom }} 
+          <span class="text-14 text-121212 text-center">Google<br/>Top Quality Store</span>
+        </div>
+        <div class="js-google-review w-full flex justify-between text-12 text-808080 mt-2.5">
+          <span>Score 4.5</span>
+          <span class="w-0.5 border-r border-EAEEF1"></span>
+          <span> 145 reviews</span>
+        </div>
+      </div>
+      <div class="w-full hidden fb-sm:flex flex-start items-center fb-sm:space-x-4">
+         {{ google_dom }} 
+        <div class="w-full flex flex-col">
+          <div class="text-14 text-121212 text-center fb-sm:text-16 fb-sm:text-left font-bold">Google Top Quality Store</div>
+          <div class="js-google-review  w-full flex justify-start space-x-4 text-12 text-808080 mt-2.5 fb-sm:text-14 fb-sm:mt-0.5">
+            <span>Score 4.5</span>
+            <span class="w-0.5 border-r border-EAEEF1"></span>
+            <span> 145 reviews</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="grid grid-cols-2 gap-2 w-full fb-sm:gap-1">
-    {%- assign box_css = 'bg-F3F8FC px-1 py-1 h-10 rounded-sm flex items-center fb-sm:justify-start fb-sm:h-12 fb-md:space-x-4 fb-md:pl-9'-%}
-    {%- assign text_css = 'text-main font-medium text-xs fb-sm:text-14 fb-md:text-16 fb-sm:font-bold' -%}
-    <div class="{{ box_css }}">
-      <div class="w-8 h-8 fb-sm:w-10 fb-sm:h-10">
-        <img class="lazyload w-full h-full" width="100%" height="100%" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/Fastdelivery.png?v=1750829465" >
+  <div class="flex items-center justify-between w-full">
+    {%- assign box_css = 'flex flex-col items-center fb-sm:justify-start fb-sm:flex-row fb-1000:flex-col fb-md:flex-row'-%}
+    {%- assign text_css = 'text-121212 font-medium text-12 text-center fb-sm:text-14 fb-sm:font-medium mt-3 fb-sm:mt-0 fb-max-sm:underline hover:fb-sm:underline cursor-pointer' -%}
+    <div class="js-open-rule-dialog {{ box_css }} cursor-pointer border-r border-EAEEF1 pr-4 fb-sm:pr-4" data-type="1">
+      <div class="w-9 h-9 fb-flex-center shrink-0">
+        <img class="lazyload w-full h-auto" width="100%" height="100%" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/Fastdelivery.png?v=1750829465" >
       </div>
-      <span class="{{text_css}}">Speedy Delivery</span>
+      <p class="{{text_css}}">
+        Speedy Delivery
+      </p>
     </div>
-    <div class="{{ box_css }}">
-      <div class="w-8 h-8 fb-sm:w-10 fb-sm:h-10">
-        <img class="lazyload w-full h-full" width="100%" height="100%" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/Hassle-free_-returns.png?v=1750829466" >
+    <div class="js-open-rule-dialog {{ box_css }} cursor-pointer border-r border-EAEEF1 px-3 fb-sm:px-4" data-type="2">
+      <div class="w-9 h-9 fb-flex-center shrink-0">
+        <img class="lazyload w-full h-auto" width="100%" height="100%" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/Hassle-free_-returns.png?v=1750829466" >
       </div>
-      <span class="{{text_css}}">Hassle-Free Returns</span>
+      <p class="{{text_css}}">Hassle-Free Returns</p>
     </div>
-    
     <!-- Quality Guaranteed -->
-    <div class="{{ box_css }}">
-      <div class="w-8 h-8 fb-sm:w-10 fb-sm:h-10">
-        <img class="lazyload w-full h-full" width="100%" height="100%" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/Lifetime-warranty.png?v=1750829465" >
+    <div class="js-open-rule-dialog {{ box_css }} border-r border-EAEEF1 px-3 fb-sm:px-4" data-type="3">
+      <div class="w-9 h-9 fb-flex-center shrink-0">
+        <img class="lazyload w-full h-auto" width="100%" height="100%" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/Lifetime-warranty.png?v=1750829465" >
       </div>
-      <span class="{{text_css}}">Quality Guaranteed</span>
+      <p class="{{text_css}}">Quality Guaranteed</p>
     </div>
     
     <!-- Flexible Payment -->
-    <div class="{{ box_css }}">
-      <div class="w-8 h-8 fb-sm:w-10 fb-sm:h-10">
-        <img class="lazyload w-full h-full" width="100%" height="100%" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/zkh-qianbao.png?v=1750829465" >
+    <div class="js-open-rule-dialog {{ box_css }} pl-4 fb-sm:pl-4" data-type="4">
+      <div class="w-9 h-9 fb-flex-center shrink-0">
+        <img class="lazyload w-full h-auto" width="100%" height="100%" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/zkh-qianbao.png?v=1750829465" >
       </div>
-      <span class="{{text_css}}">Flexible Payment</span>
+      <p class="{{text_css}}">Flexible Payment</p>
     </div>
   </div>
 </div>

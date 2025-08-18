@@ -1,0 +1,25 @@
+{%- assign auto_currency_symbol = cart.currency.symbol | default: shop.currency -%}
+{%- if auto_currency_symbol == blank -%}
+  {%- case shop.currency -%}
+  {%- when 'USD' -%}
+    {%- assign auto_currency_symbol = '$' -%}
+  {%- when 'EUR' -%}
+    {%- assign auto_currency_symbol = '€' -%}
+  {%- when 'GBP' -%}
+    {%- assign auto_currency_symbol = '£' -%}
+  {%- when 'JPY' -%}
+    {%- assign auto_currency_symbol = '¥' -%}
+  {%- when 'CNY' -%}
+    {%- assign auto_currency_symbol = '¥' -%}
+  {%- when 'CAD' -%}
+   {%- assign auto_currency_symbol = 'C$' -%}
+  {%- when 'AUD' -%}
+   {%- assign auto_currency_symbol = 'A$' -%}
+  {%- else -%}
+    {%- assign auto_currency_symbol = shop.currency -%}
+  {%- endcase -%}
+{%- endif -%}
+{%- case type -%}
+  {%- when 'currency_symbol' -%}
+    {{- auto_currency_symbol -}}
+{%- endcase -%}

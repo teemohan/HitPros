@@ -1,0 +1,110 @@
+{% comment %}
+  Product price comparison component
+  Usage: {% render 'product-compare', product: product %}
+{% endcomment %}
+
+<div class="w-full" id="product-compare">
+  <div class="js-product-compare-content hidden w-full mb-5">
+    <div class="w-full h-10 bg-F3F8FC" v-if="compareData && compareData.length > 0">
+      <div class=" w-full h-full">
+        <div class="h-full grid grid-cols-5">
+          <div class="w-full text-button pl-2 fb-sm:pl-5 relative col-span-3 product-compare-box flex items-center">
+            <img class="w-7 h-7 absolute bottom-0 left-5 z-1 fb-sm:w-8.5 fb-sm:h-8.5" src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/Vector_38575a0e-a28e-4bec-ad86-5531d7255a90.png?v=1753085865" width="100%" height="100%">
+            <p class="text-14 fb-sm:text-18 font-bold relative z-2 flex items-center space-x-1 line-clamp-1">
+              <span class="shrink-0">Save Up to</span>
+              <span  class="shrink-0" class="text-18 fb-sm:text-24" v-if="comparisonType == 1">
+                {%- render 'customer-global-format', type: 'currency_symbol' -%} ${ maxDiscount }
+              </span>
+              <span class="shrink-0 text-18 fb-sm:text-24" v-else>
+                  ${ maxDiscount }%
+              </span>
+              <span class="shrink-0 hidden fb-1400:inline text-white" v-if="maxDiscount < 999"> at NorthSky</span>
+            </p>
+          </div>
+          <div class="flex items-center col-span-2 justify-between px-3 cursor-pointer fb-sm:px-6" @click="pullMore">
+            <span class="text-main text-14 font-medium fb-sm:text-16 fb-md:text-18">vs. others</span>
+            <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': openCompare }" width="17" height="10" viewBox="0 0 17 10" fill="none">
+              <path d="M9.86762 5.19488L15.1939 -7.89455e-08L17 1.77846L8.6323 10L0.0398216 1.82562C-0.0256596 1.75344 0.000728607 1.70917 0.0398216 1.63507C0.259714 1.21451 1.39046 0.466749 1.70711 -6.68474e-07L7.32662 5.29112L8.49988 6.36352L9.86762 5.19488Z" fill="#F9BE00"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full border border-F3F8FC overflow-hidden" :class="openCompare ? 'h-auto opacity-100' : 'h-0 opacity-0'">
+      <div class="w-full overflow-x-auto pt-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <table class="w-full border-collapse">
+          <tbody class="w-full">
+            <tr v-for="(item, index) in compareData" :key="index" class="text-14 fb-sm:text-16">
+              <td class="py-1 px-2 fb-sm:px-3 w-1/5">
+                <div class="font-medium text-121212 break-words text-left">${item.comparisonPlatform}</div>
+              </td>
+              <td class="py-1 px-2 fb-sm:px-3 max-w-[60px] fb-sm:max-w-[50px] w-1/5" v-if="hasModel">
+                <div class="font-medium text-121212 break-words text-left">${item.model || ''}</div>
+              </td>  
+              <td class="py-1 px-2 fb-sm:px-3 w-1/5">
+                <div class="font-bold text-main break-words text-left">
+                 {%- render 'customer-global-format', type: 'currency_symbol' -%}${item.comparisonPrice}
+                </div>
+              </td>
+              <td class="py-1 px-2 fb-sm:px-3 w-2/5">
+                <div class="flex items-center font-bold pr-1 justify-end" 
+                  style="background: linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, rgba(250, 190, 0, 0.15) 100%);">
+                  <div class="flex items-center justify-between mr-1 fb-sm:mr-3">
+                    <div class="flex items-center justify-start">
+                      <img class="w-3 h-auto hidden fb-sm:inline mr-1" src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/1_76281071-d7f3-4720-b52c-afdecbf74933.png?v=1755066141" />
+                      <span class="text-[#FABE00] whitespace-nowrap">Save</span>
+                    </div>
+                    <div class="hidden text-right fb-sm:block ml-1 fb-1000:hidden fb-md:block w-[68px]">
+                      <span class="text-F9A000 text-left whitespace-nowrap">{%- render 'customer-global-format', type: 'currency_symbol' -%}${item.absoluteOff}</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-end w-[68px]">
+                    <template v-if="comparisonType == 1">
+                        <span class="text-F9A000 text-right whitespace-nowrap fb-sm:hidden fb-1000:inline fb-md:hidden">{%- render 'customer-global-format', type: 'currency_symbol' -%}${item.absoluteOff}</span>
+                        <span class="text-F9A000 text-right whitespace-nowrap hidden fb-sm:inline fb-1000:hidden fb-md:inline">${item.percentage}%</span>
+                    </template>
+                     <template v-else>
+                      <span class="text-F9A000 text-right whitespace-nowrap">${item.percentage}%</span>
+                    </template>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+   </div>
+
+  <div class="js-product-compare-skenon w-full animate-pulse mb-5">
+    <div class="w-full h-10 bg-gray-200">
+    </div>
+    <!-- Skeleton screen content area -->
+    {% comment %} <div class="w-full border border-gray-200 flex flex-col space-y-2 transition-all duration-500 ease-in-out overflow-hidden" :class="openCompare ? 'max-h-96 p-3 opacity-100' : 'max-h-0 p-0 opacity-0'">
+      <!-- Repeat 3 rows of skeleton screen -->
+      <div class="grid items-center min-h-7" style="grid-template-columns: 1fr 1fr 1fr 2fr;" v-for="item in 3" :key="'skeleton-' + item">
+        <!-- Supplier name placeholder -->
+        <div class="h-full fb-flex-center">
+          <div class="h-4 bg-gray-300 rounded w-12"></div>
+        </div>
+        <!-- Model placeholder -->
+        <div class="fb-flex-center">
+          <div class="w-full border-gray-200 h-full border-l flex items-center justify-center">
+            <div class="h-3 bg-gray-300 rounded w-16"></div>
+          </div>
+        </div>
+        <!-- Price placeholder -->
+        <div class="h-full fb-flex-center">
+          <div class="h-4 bg-gray-300 rounded w-8"></div>
+        </div>
+        <!-- Savings info placeholder -->
+        <div class="text-center h-7 fb-flex-center">
+          <div class="flex items-center justify-between w-full px-1 bg-gray-100 rounded">
+            <div class="h-3 bg-gray-300 rounded w-12"></div>
+            <div class="h-3 bg-gray-300 rounded w-8"></div>
+          </div>
+        </div>
+      </div>
+    </div> {% endcomment %}
+  </div>
+</div>

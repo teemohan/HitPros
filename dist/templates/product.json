@@ -21,15 +21,10 @@
             "buy_now_button_background": "rgba(0,0,0,0)",
             "buy_now_button_text_color": "rgba(0,0,0,0)"
           }
-        },
-        "judge_me_reviews_preview_badge_PicCwT": {
-          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {}
         }
       },
       "block_order": [
-        "buy_buttons",
-        "judge_me_reviews_preview_badge_PicCwT"
+        "buy_buttons"
       ],
       "settings": {
         "ship_text": "<p>Ships in 1 business day |  Free Shipping on orders over $50 after you sign in Free 30-Day Returns</p>",
@@ -46,23 +41,6 @@
         "show_thumbnails_on_mobile": true,
         "desktop_thumbnails_position": "bottom",
         "transition_effect": "slide"
-      }
-    },
-    "1732102745d9c872b0": {
-      "type": "apps",
-      "blocks": {
-        "omnisend_email_marketing_sms_star_ratings_6wj38y": {
-          "type": "shopify://apps/omnisend-email-marketing-sms/blocks/star-ratings/44704aa2-794f-4c5d-8c8e-039c841158e9",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "omnisend_email_marketing_sms_star_ratings_6wj38y"
-      ],
-      "disabled": true,
-      "settings": {
-        "include_horizontal_margins": true,
-        "include_vertical_margins": true
       }
     },
     "product_anchor_sticky_BjfWjt": {
@@ -83,15 +61,6 @@
     },
     "apps_review_3qekf6": {
       "type": "apps-review",
-      "blocks": {
-        "judge_me_reviews_review_widget_jyqep9": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_jyqep9"
-      ],
       "name": "ReviewApps",
       "settings": {
         "include_horizontal_margins": true,
@@ -102,13 +71,12 @@
       "type": "product-guess-like",
       "name": "product-guess-like",
       "settings": {
-        "title": "Products You May Like"
+        "title": "You Might Like"
       }
     }
   },
   "order": [
     "main",
-    "1732102745d9c872b0",
     "product_anchor_sticky_BjfWjt",
     "product_feature_imgs_6DU7qH",
     "1a730dce-30b8-4406-853e-3755765e1836",
