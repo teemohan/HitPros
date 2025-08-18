@@ -36,31 +36,22 @@
     },
     "cart-recommendations": {
       "type": "cart-recommendations",
+      "disabled": true,
       "settings": {
         "title": "Products You May  Like"
       }
     },
-    "recently_viewed_products_ExUyFh": {
-      "type": "recently-viewed-products",
-      "disabled": true,
+    "guess_you_like_k8xjHH": {
+      "type": "guess-you-like",
+      "name": "guess-you-like",
       "settings": {
-        "title": "Recently Viewed & More",
-        "collection": "all"
-      }
-    },
-    "index_product_list_KNABU3": {
-      "type": "index-product-list",
-      "disabled": true,
-      "settings": {
-        "title": "Featured Brands",
-        "collection": "featured-products"
+        "title": "You Might Like"
       }
     }
   },
   "order": [
     "main",
     "cart-recommendations",
-    "recently_viewed_products_ExUyFh",
-    "index_product_list_KNABU3"
+    "guess_you_like_k8xjHH"
   ]
 }
