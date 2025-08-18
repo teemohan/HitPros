@@ -21,15 +21,10 @@
             "buy_now_button_background": "rgba(0,0,0,0)",
             "buy_now_button_text_color": "rgba(0,0,0,0)"
           }
-        },
-        "judge_me_reviews_preview_badge_PicCwT": {
-          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {}
         }
       },
       "block_order": [
-        "buy_buttons",
-        "judge_me_reviews_preview_badge_PicCwT"
+        "buy_buttons"
       ],
       "settings": {
         "ship_text": "<p>Ships in 1 business day |  Free Shipping on orders over $50 after you sign in Free 30-Day Returns</p>",
@@ -76,7 +71,7 @@
       "type": "product-guess-like",
       "name": "product-guess-like",
       "settings": {
-        "title": "Products You May Like"
+        "title": "You Might Like"
       }
     }
   },
