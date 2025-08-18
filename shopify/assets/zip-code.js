@@ -20,6 +20,48 @@ const currencySymbols = {
   BRL: 'R$', 
   ZAR: 'R', 
 }
+const formatDateZip = (timestamp, timezoneOffset = -5) =>{
+  const date = new Date(+timestamp);
+  const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
+  const year = localTime.getFullYear();
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  const month = monthNames[localTime.getMonth()];
+  const day = localTime.getDate();
+
+  let suffix = '';
+  if (day >= 11 && day <= 13) {
+    suffix = 'th';
+  } else {
+    switch (day % 10) {
+      case 1:
+        suffix = 'st';
+        break;
+      case 2:
+        suffix = 'nd';
+        break;
+      case 3:
+        suffix = 'rd';
+        break;
+      default:
+        suffix = 'th';
+        break;
+    }
+  }
+  return `${month} ${day}${suffix}, ${year}`;
+}
 class Ajax {
   constructor() {
     this.baseURL = window.northsky.api;
@@ -130,7 +172,45 @@ const generateUUID = () => {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
       (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     );
+}
+const MsgBox = {
+  timer1: null,
+  timer2: null,
+  _html: '',
+  ishow: false,
+  init: function(msg, time) {
+      if(this.ishow) {
+          return false
+      }
+      this.ishow = true
+      if($('#markt-hotal').length > 0) {
+          $('#markt-hotal').remove()
+      }
+      this.GenerateHtml(msg, time)
+  },
+  GenerateHtml: function(msg,time) {
+      this._html = `<div id="markt-hotal">
+          <div class="markt-toast_box">
+              <p id="market-toast">${msg}</p>
+          </div>
+      </div>`
+      $("body").append(this._html);
+      this.event(time)
+  },
+  event: function (time) {
+      let _this = this
+      $('.markt-toast_box').css({ display: 'inline-block'} )
+      _this.timer1 = setTimeout(function(){
+          // $('.markt-toast_box').css({animation: 'markethide 1.5s'} )
+          _this.timer2 = setTimeout(function(){
+              $('.markt-toast_box').css({ display: 'none'} )
+              _this.ishow = false
+              clearTimeout(_this.timer2)
+              _this.timer1 && clearTimeout(_this.timer1)
+          }, 1400)
+      }, time)  
   }
+}
 // DataLayer Manager Factory
 const DataLayerManagerFactory = (function() {
   const instances = new Map();
@@ -470,13 +550,12 @@ const FbIsInViewPort = (element) => {
     return false;
   }
 }
-
 const zkhFormatMoney = (cents, format = '') =>{
   if (typeof cents === 'string') {
     cents = cents.replace('.', '');
   }
   const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/,
-    formatString = format || window.themeVariables.settings.moneyFormat;
+  formatString = format || window.themeVariables.settings.moneyFormat;
   function defaultTo(value2, defaultValue) {
     return value2 == null || value2 !== value2 ? defaultValue : value2;
   }
@@ -489,8 +568,8 @@ const zkhFormatMoney = (cents, format = '') =>{
     }
     number = (number / 100).toFixed(precision);
     let parts = number.split('.'),
-      dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
-      centsAmount = parts[1] ? decimal + parts[1] : '';
+    dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+    centsAmount = parts[1] ? decimal + parts[1] : '';
     return dollarsAmount + centsAmount;
   }
   let value = '';
@@ -526,7 +605,44 @@ const zkhFormatMoney = (cents, format = '') =>{
     return formatString.replace(placeholderRegex, value);
   }
 }
-
+const skyFormatPriceDisplay = (price) => {
+  const numPrice = parseFloat(price);
+  if (isNaN(numPrice)) {
+    return '<div class="relative h-8 inline-flex items-center justify-center text-main"><span class="font-bold px-3">0</span></div>';
+  }
+  const priceStr = numPrice.toFixed(2);
+  const parts = priceStr.split('.');
+  const dollars = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+  const cents = parts[1];
+  return `<div class="relative h-5 inline-flex items-center justify-center text-main">
+    <span class="absolute top-0 left-0 text-12 font-bold">${window.northsky.currencySymbol}</span>
+    <span class="font-bold px-2.5">${dollars}</span>
+    <span class="absolute top-0 -right-2 text-12 font-bold">${cents}</span>
+  </div>`;
+}
+const northSkyformatDate = (timestamp, timezoneOffset = -5) => {
+  const date = new Date(+timestamp);
+  const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
+  const year = localTime.getFullYear();
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const month = monthNames[localTime.getMonth()];
+  const day = localTime.getDate();
+  let suffix = '';
+  if (day >= 11 && day <= 13) {
+    suffix = 'th'; 
+  } else {
+    switch (day % 10) {
+      case 1: suffix = 'st'; break; // 1, 21, 31
+      case 2: suffix = 'nd'; break; // 2, 22
+      case 3: suffix = 'rd'; break; // 3, 23
+      default: suffix = 'th'; break; 
+    }
+  }
+  return `${month} ${day}${suffix}, ${year}`;
+}
 window.northsky.updateZipCode = function(newZipCode) {
   window.northsky.customerZipCode = newZipCode;
   document.dispatchEvent(new CustomEvent('zipcode-updated', { detail: newZipCode }));
@@ -599,7 +715,7 @@ async function getDeliveryEstimate({
   }
 }
 const mainProductUtils = {
-  computePrice: function(discountJson, basePrice, quantity) {
+  computePrice: function(discountJson, basePrice, quantity, type) {
     let finalPrice;
     if (discountJson && discountJson.length > 0) {
       try {
@@ -622,7 +738,11 @@ const mainProductUtils = {
     } else {
       finalPrice = Math.round(quantity * basePrice * 100) / 100;
     }
-    return zkhFormatMoney(finalPrice * 100);
+    if(type == 'price1') {
+      return skyFormatPriceDisplay(finalPrice);
+    } else {
+      return zkhFormatMoney(finalPrice * 100);
+    }
   },
   validateQuantity: function(inputValue, moq, mpq, maxQuantity = 1000000) {
     let newQuantity = parseInt(inputValue);
@@ -833,9 +953,112 @@ const cartFormModule = {
     if (typeof callback === 'function') {
       callback(newQuantity);
     }
+  }
+};
+const QuantityUtils = {
+  /**
+   * Increase quantity
+   * @param {Object} config - Configuration object
+   * @param {jQuery} config.$input - Input element
+   * @param {jQuery} config.$plusBtn - Plus button element
+   * @param {jQuery} config.$minusBtn - Minus button element
+   * @param {Object} config.productInfo - Product information
+   * @param {Function} config.onQuantityChange - Quantity change callback
+   * @returns {number} New quantity value
+   */
+  increaseQuantity: function(config) {
+    const { $input, $plusBtn, $minusBtn, productInfo, onQuantityChange } = config;
+    if (!productInfo) return;
+    const currentValue = parseInt($input.val());
+    const moq = productInfo.moq || 1;
+    const mpq = productInfo.mpq || 1;
+    const maxQuantity = cartFormModule.maxQuantity;
+    let newValue;
+    if (currentValue < moq) {
+      newValue = moq;
+    } else {
+      newValue = currentValue + mpq;
+    }
+    if (newValue > maxQuantity) {
+      newValue = maxQuantity;
+      $plusBtn.prop('disabled', true);
+    } else {
+      $plusBtn.prop('disabled', false);
+    }
+    $input.val(newValue);
+    $minusBtn.prop('disabled', false);
+    if (onQuantityChange) {
+      onQuantityChange(newValue);
+    }
+    return newValue;
   },
-  computed_price: function(discountJson, basePrice, quantity) {
-    return mainProductUtils.computePrice(discountJson, basePrice, quantity);
+  
+  /**
+   * Decrease quantity
+   * @param {Object} config - Configuration object
+   * @param {jQuery} config.$input - Input element
+   * @param {jQuery} config.$plusBtn - Plus button element
+   * @param {jQuery} config.$minusBtn - Minus button element
+   * @param {Object} config.productInfo - Product information
+   * @param {Function} config.onQuantityChange - Quantity change callback
+   * @returns {number} New quantity value
+   */
+  decreaseQuantity: function(config) {
+    const { $input, $plusBtn, $minusBtn, productInfo, onQuantityChange } = config;
+    if (!productInfo) return;
+    const currentValue = parseInt($input.val());
+    const moq = productInfo.moq || 1;
+    const mpq = productInfo.mpq || 1;
+    let newValue;
+    if (currentValue <= moq) {
+      newValue = moq;
+      $minusBtn.prop('disabled', true);
+    } else {
+      newValue = currentValue - mpq;
+      if (newValue < moq) {
+        newValue = moq;
+        $minusBtn.prop('disabled', true);
+      } else {
+        $minusBtn.prop('disabled', false);
+      }
+    }
+    $input.val(newValue);
+    $plusBtn.prop('disabled', false);
+    if (onQuantityChange) {
+      onQuantityChange(newValue);
+    }
+    return newValue;
+  },
+  /**
+   * Calculate total price
+   * @param {Object} productInfo - Product information
+   * @param {number} quantity - Quantity
+   * @returns {string} Formatted price
+   */
+  calculateTotalPrice: function(productInfo, quantity, type = '') {
+    const discountJson = productInfo.discountJson || null;
+    return mainProductUtils.computePrice(discountJson, productInfo.price, quantity, type);
+  },
+  /**
+   * Bind quantity input change event
+   * @param {Object} config - Configuration object
+   * @param {jQuery} config.$input - Input element
+   * @param {jQuery} config.$plusBtn - Plus button element
+   * @param {jQuery} config.$minusBtn - Minus button element
+   * @param {Object} config.productInfo - Product information
+   * @param {Function} config.onQuantityChange - Quantity change callback
+   */
+  bindInputChangeEvent: function(config) {
+    const { $input, $plusBtn, $minusBtn, productInfo, onQuantityChange } = config;
+    $input.on('change', function() {
+      cartFormModule.validateQuantityInput($(this), productInfo, function(newQuantity) {
+        $minusBtn.prop('disabled', newQuantity <= productInfo.moq);
+        $plusBtn.prop('disabled', newQuantity >= cartFormModule.maxQuantity);
+        if (onQuantityChange) {
+          onQuantityChange(newQuantity);
+        }
+      });
+    });
   }
 };
 

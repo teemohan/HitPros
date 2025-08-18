@@ -1963,3 +1963,40 @@ a.breadcrumb__link:hover {
     font-size: 18px;
   }
 }
+
+
+.markt-toast_box {
+  /* width: 100%; */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 99999;
+  transform: translateX(-50%) translateY(-50%);
+  display: none;
+}
+.markt-toast_box p {
+  box-sizing: border-box;
+  padding: 12px 16px;
+  background: #FFFFFF;
+  box-shadow: 0px 8px 24px 0px rgba(18,18,18,0.15);
+  color: #121212;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 10px;
+} 
+@media (max-width: 640px) {
+ .markt-toast_box p {
+   width: 335px;
+ }
+}
+@media (min-width: 641px) {
+ .markt-toast_box p {
+    max-width: 480px;
+    width: auto;
+    padding: 16px 20px;
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 12px;
+ }
+}

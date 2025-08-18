@@ -40,7 +40,7 @@
   }
 </style>
 
-<div class="product-form w-full pt-0 pb-4.5 fb-sm:pt-0 fb-sm:pb-5">
+<div class="product-form w-full pt-0 pb-6 fb-sm:pt-0 fb-sm:pb-5">
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- when 'variant_picker' -%}
@@ -293,7 +293,6 @@
                 {%- endcase -%}
               </div>
             {%- endfor -%}
-
             <noscript>
               <label class="input__block-label" for="product-select-{{ section.id }}-{{ product.id }}">
                 {{- 'product.form.variant' | t -}}
@@ -561,181 +560,88 @@
           {% assign unit_sale = unit_sale | split: ':' %}
           {% assign unit_sale = unit_sale.first %}
         {% endif %}
-        {%- if request.page_type != 'password' -%}
-          <div class="product-form__buy-buttons" {{ block.shopify_attributes }}>
-            {% if product.metafields.product.quantity_discount != blank
-              and product.metafields.product.quantity_discount.value.size != 0
-            %}
-              <div class="ladder-price-box-wrapper text-center bg-F3F8FC -mx-5 px-6 py-3 fb-sm:mx-0 fb-sm:py-5 mb-2.5 rounded-sm">
-                <div class="ladder-price-box">
-                  {% assign last_item_index = product.metafields.product.quantity_discount.value.size
-                    | minus: 1
-                    | plus: 1
-                  %}
-                  {% for item in product.metafields.product.quantity_discount.value %}
-                    {% if forloop.index != last_item_index %}
-                      <div class="ladder-price-item">
-                        <div class="ladder-price">
-                          {{- product.selected_or_first_available_variant.price | times: item.discount | money -}}
-                          <span> / {{ unit_sale }}</span>
-                        </div>
-                        <div class="ladder-price-text">
-                          {{ item.moq }} -
-                          {% if forloop.index < product.metafields.product.quantity_discount.value.size %}
-                            {{ product.metafields.product.quantity_discount.value[forloop.index].moq | minus: 1 }}
-                          {% endif %}
-                        </div>
-                      </div>
+        <div class="product-form__buy-buttons w-full" {{ block.shopify_attributes }}>
+          <div class="w-full pb-5">
+            <div class="buy-btn-box w-full flex items-center justify-between space-x-4 h-11 fb-sm:justify-start fb-sm:space-x-3 fb-sm:h-12">
+              <div class="shopify-product-form w-full flex items-center justify-between space-x-4 h-11 fb-sm:space-x-5 fb-sm:justify-start fb-sm:h-12">
+                <div
+                  class="border border-D3DEF1 min-w-26 fb-sm:min-w-9r fb-1000:min-w-26 fb-md:min-w-9r bg-white rounded-sm h-full flex justify-between items-center px-2 space-x-0.5"
+                  data-max="{% if product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
+                  >
+                  <button disabled type="button" class="js-zkh-minus flex justify-center items-center w-4 ">
+                    <svg width="17" height="4" viewBox="0 0 17 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="0.5" y="0.5" width="16" height="3" fill="#0A2B6F"/>
+                    </svg>
+                  </button>
+                  <input
+                    type="number"
+                    max="1000000"
+                    inputmode="numeric"
+                    name="quantity4" 
+                    autocomplete="off"
+                    data-input-varid="{{ product.selected_or_first_available_variant.id }}"
+                    data-demand="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+                    data-price="{{ product.price | money_without_currency }}"
+                    class="js-zkh-input text-14 fb-sm:text-16 px-1 outline-none border-none text-center w-10 flex-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    name="quantity"
+                    {% if product.metafields.product.quantity_discount != blank %}
+                      data-discount="{{- product.metafields.product.quantity_discount | replace: '"', "'" -}}"
                     {% else %}
-                      {% if item.discount == '0.63' %}
-                        <div class="ladder-price-item">
-                          <div class="ladder-price">Please inquire</div>
-                          <div class="ladder-price-text">>= {{ item.moq }}</div>
-                        </div>
-                      {% else %}
-                        <div class="ladder-price-item">
-                          <div class="ladder-price">
-                            {{- product.selected_or_first_available_variant.price | times: item.discount | money -}}
-                            <span> / {{ unit_sale }}</span>
-                          </div>
-                          <div class="ladder-price-text">>= {{ item.moq }}</div>
-                        </div>
-                      {% endif %}
+                      data-discount="[]"
                     {% endif %}
-                  {%- endfor -%}
+                    value="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+                    data-moq="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
+                    data-mpq="{% if product.metafields.product.mpq != blank %}{{ product.metafields.product.mpq }}{% else %}1{% endif %}"
+                  >
+                  <button type="button" class="js-zkh-plus flex justify-center items-center w-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+                      <path d="M8.5 0V16M0.5 8H16.5" stroke="#0A2B6F" stroke-width="3"/>
+                    </svg>
+                  </button>
                 </div>
-              </div>
-            {% endif %}
-
-            <div class="w-full pb-4.5 fb-sm:pb-7">
-              <div class="product-stock-wrapper w-full flex items-center">
-                <div class="subtotal">
-                  <span class="computed_price">
-                    {% unless product.available %}
-                      {{ product.selected_or_first_available_variant.price | money }}
-                    {% endunless %}
-                  </span>
-                </div>
-                <div class="product-stock">
-                  {% assign stock_num = product.selected_or_first_available_variant.inventory_quantity %}
-                  {% assign varid = product.selected_or_first_available_variant.id %}
-                  {% render 'stock-label', stock_num: stock_num, varid: varid %}
-                </div>
-              </div>
-              <div class="buy-btn-box w-full flex items-center justify-between space-x-4 mt-4.5 h-10 fb-sm:mt-3 fb-sm:justify-start fb-sm:space-x-3 fb-sm:h-12">
-                {%- form 'product', product, is: 'product-form', id: product_form_id, class:'shopify-product-form flex-1 fb-sm:flex-none' -%}
-                  <input type="hidden" disabled name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                  <input type="hidden" disabled name="sku" value="{{ product.selected_or_first_available_variant.sku }}">
-                  <input type="hidden" disabled name="stateCode" value="{{ customer.default_address.province_code }}">
-                    <product-payment-container
-                      form-id="{{ product_form_id }}"
-                      {% if update_url %}
-                        id="MainPaymentContainer"
-                      {% endif %}
-                      class="product-form__payment-container"
-                      {{ block.shopify_attributes }}
-                      >
-                      <div class="w-full flex items-center justify-between space-x-4 h-10 fb-sm:space-x-3 fb-sm:justify-start fb-sm:h-12">
-                        {%- if request.page_type != 'password' and product.available -%}
-                          <div class="product-form__quantity min-w-8r h-full fb-sm:min-w-9r" {{ block.shopify_attributes }}>
-                            <quantity-selector
-                              class="border border-D3DEF1 bg-white rounded-sm h-full flex justify-between items-center px-1 space-x-0.5"
-                              data-max="{% if product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
-                            >
-                              <button disabled type="button" class="quantity-selector__button minus flex justify-center items-center w-4 flex-1">
-                                <span class="hidden">{{ 'cart.general.decrease_quantity' | t }}</span>
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.17585 6.8436H9.07417H1.20312V9.09247H9.07417H9.17585H14.6964V6.8436H9.17585Z" fill="#092A6F"></path></svg>
-                              </button>
-
-                              <input
-                                type="text"
-                                form="{{ product_form_id }}"
-                                is="input-number"
-                                max="1000000"
-                                class="js-quantity-input quantity-selector__input text-20 outline-none border-none"
-                                inputmode="numeric"
-                                name="quantity"
-                                autocomplete="off"
-                                data-input-varid="{{ product.selected_or_first_available_variant.id }}"
-                                data-price="{{ product.price | money_without_currency }}"
-                                data-demand="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
-                                data-moq="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
-                                data-mpq="{% if product.metafields.product.mpq != blank %}{{ product.metafields.product.mpq }}{% else %}1{% endif %}"
-                                {% if product.metafields.product.quantity_discount != blank %}
-                                  data-discount="{{- product.metafields.product.quantity_discount | replace: '"', "'" -}}"
-                                {% else %}
-                                  data-discount="[]"
-                                {% endif %}
-                                value="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
-                                size="2"
-                                aria-label="{{ 'product.form.quantity' | t | escape }}"
-                              >
-
-                              <button type="button" class="quantity-selector__button plus flex justify-center items-center w-4 flex-1">
-                                <span class="hidden">{{ 'cart.general.increase_quantity' | t }}</span>
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.07417 6.84361V1.22144H6.8253V6.84361H1.20312V9.09248H6.8253V14.7147H9.07417V9.09248H14.6964V6.84361H9.07417Z" fill="#08296F"></path></svg>
-                              </button>
-                            </quantity-selector>
-                            <div class="max-quantity-waning">exceeds maximum stock</div>
-                          </div>
-                        {%- endif -%}
-                        <button
-                          id="AddToCart"
-                          type="submit"
-                          is="loader-button"
-                          {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}
-                            data-use-primary
-                          {% endunless %}
-                          data-product-add-to-cart-button
-                          data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}"
-                          class="product-form__add-button relative bg-button flex items-center justify-center rounded-sm w-11r fb-sm:w-18r h-full text-14 fb-sm:text-16 font-bold space-x-2.5 {% unless product.selected_or_first_available_variant.available %}button--ternary{% else %}{% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %}"
-                          {% unless product.selected_or_first_available_variant.available %}
-                            disabled
-                          {% endunless %}
-                        >
-                          {%- if product.selected_or_first_available_variant.available -%}
-                            {%- if product.template_suffix == 'pre-order' -%}
-                              {{- 'product.form.pre_order' | t -}}
-                            {%- else -%}
-                              {{- 'product.form.add_to_cart' | t -}}
-                            {%- endif -%}
-                          {%- else -%}
-                            {{- 'product.form.sold_out' | t -}}
-                          {%- endif -%}
-                          {% render 'icon' with 'product-item-cart' %}
-                        </button>
-                      </div>
-
-                      {%- if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' -%}
-                        {{ form | payment_button }}
-
-                        {%- unless product.selected_or_first_available_variant.available -%}
-                          <style>
-                            #shopify-section-{{ section.id }} .shopify-payment-button {
-                              display: none;
-                            }
-                          </style>
-                        {%- endunless -%}
-                      {%- endif -%}
-                    </product-payment-container>
-                {%- endform -%}
+                <button class="js-zkh-addtocart w-12r fb-sm:w-18r fb-1000:w-12r fb-md:w-18r h-full flex items-center justify-center rounded-sm bg-button text-main font-bold text-16 relative"
+                  {% unless product.selected_or_first_available_variant.available %}
+                    disabled
+                  {% endunless %}
+                >
+                  <div class="flex items-center js-btn-text">
+                    Add to Cart
+                  </div>
+                  <div class="spinner hidden js-btn-loading">
+                    <svg focusable="false" class="w-4 h-4" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                      <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                    </svg>
+                  </div>
+                </button>
                 {% render 'wishlist-button', product: product %}
               </div>
             </div>
+            <div class="product-stock-wrapper w-full flex items-center mt-2.5">
+              <div class="subtotal text-18 text-main font-bold">
+                <span class="js-nav-current-price text-18 text-main">
+                {{ product.selected_or_first_available_variant.price | divided_by: 100.00 }}
+                </span>
+              </div>
+              <div class="product-stock">
+                {% assign stock_num = product.selected_or_first_available_variant.inventory_quantity %}
+                {% assign varid = product.selected_or_first_available_variant.id %}
+                {% render 'stock-label', stock_num: stock_num, varid: varid %}
+              </div>
+            </div>
           </div>
-        {%- endif -%}
+        </div>
         {% if product.metafields.product.shipping_charge_policy == '1' %}
           {%- assign shipping_text = "Free shipping on orders of $75+" -%}
         {%- elsif  product.metafields.product.shipping_charge_policy == '2' -%}
-          {%- assign shipping_text = "Requires special shipping, additional charges calculated at check-out." -%}
+          {%- assign shipping_text = "Requires special shipping, additional charges calculated at check-out" -%}
         {% endif %}
-        <div class="w-full pt-0 pb-3.5 fb-sm:pt-0 fb-sm:pb-4.5" >
+        <div class="w-full pt-0 pb-2" >
           <ul class="w-full">
-            <li class="w-full text-main font-bold text-14 fb-sm:text-16">{{ shipping_text }}</li>
+            <li class="w-full text-121212 font-medium text-14">{{ shipping_text }}</li>
           </ul>
         </div>
-        <div class="buy-bottom-box w-full mb-4" id="delevery-date">
-          <div class="w-full ">
+        <div class="buy-bottom-box w-full min-h-10" id="delevery-date">
+          <div class="js-shipping-form hidden w-full">
             <el-form
               ref="ruleForm"
               class="form my-shiipping-form w-full flex items-center justify-between fb-sm:justify-start space-x-2.5 h-9 fb-sm:h-12"
@@ -754,39 +660,37 @@
               </el-form-item>
               <el-button :loading="loading" @click="handleComputedDeleveryDate" class="w-1/2 fb-sm:w-12.5r !border-main text-main !rounded-sm flex items-center h-9 fb-sm:h-full justify-center font-bold">Submit</el-button>
             </el-form>
-            <div class="text-black text-14 flex flex-col items-start fb-sm:items-center fb-sm:flex-row justify-start fb-sm:space-x-10" v-if="isEstimateShow">
+            <div class="text-121212 text-14 flex flex-col items-start fb-sm:items-center fb-sm:flex-row justify-start fb-sm:space-x-10" v-if="isEstimateShow && deleveryRes">
               <div class="px-4 h-10 bg-F3F8FC flex items-center justify-start rounded-sm space-x-4 shrink-0 cursor-pointer" @click="gobackzip">
                 <span class="text-142A6B text-14 font-bold">Ship to ${ruleForm.zipCode}</span>
-                <svg width="11" height="17" viewBox="0 0 11 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5.81988 9.51959L0.625 14.5326L2.40346 16.2324L10.625 8.35694L2.45062 0.269899C2.37844 0.208271 2.33417 0.233107 2.26007 0.269899C1.83951 0.476858 1.09175 1.54109 0.624999 1.83911L5.91612 7.12806L6.98852 8.2323L5.81988 9.51959Z" fill="#0A2B6F"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="10" viewBox="0 0 17 10" fill="none">
+                  <path d="M9.86762 5.19488L15.1939 -7.89455e-08L17 1.77846L8.6323 10L0.0398216 1.82562C-0.0256596 1.75344 0.000728607 1.70917 0.0398216 1.63507C0.259714 1.21451 1.39046 0.466749 1.70711 -6.68474e-07L7.32662 5.29112L8.49988 6.36352L9.86762 5.19488Z" fill="#F9BE00"/>
                 </svg>
               </div>
               <div class="w-full fb-sm:flex-1 text-14 fb-sm:w-auto mt-4 fb-sm:mt-0">
-                <template v-if="deleveryRes">
-                  <template v-if="deleveryRes.availableInventoryCount == 0">
-                    <div>Expected to arrive between <span class="font-bold">${formatDate(stockDateStart)}</span> and <span class="font-bold">${formatDate(stockDateEnd)}</span>.</div>
-                  </template>
-                  <template v-else-if="deleveryRes.availableInventoryCount >= deleveryRes.demandQuantity">
-                    <div>Expected to arrive on <span class="font-bold">${formatDate(deleveryRes.availableInventoryDeliveryTimeStamp)}.</span></div>
-                  </template>
-                  <template v-else>
-                    <div>Partial expected to arrive on <span class="font-bold">${formatDate(deleveryRes.availableInventoryDeliveryTimeStamp)}</span>.</div>
-                    <div>The remaining balance is expected to arrive between <span class="font-bold">${formatDate(stockDateStart)}</span> and <span class="font-bold">${formatDate(stockDateEnd)}</span>.</div>
-                  </template>
+                <template v-if="deleveryRes.availableInventoryCount == 0">
+                  <div>Expected to arrive between <span class="font-bold">${formatDate(stockDateStart)}</span> and <span class="font-bold">${formatDate(stockDateEnd)}</span>.</div>
+                </template>
+                <template v-else-if="deleveryRes.availableInventoryCount >= deleveryRes.demandQuantity">
+                  <div>Expected to arrive on <span class="font-bold">${formatDate(deleveryRes.availableInventoryDeliveryTimeStamp)}.</span></div>
                 </template>
                 <template v-else>
-                  <div class="animate-pulse">
-                    <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div class="h-4 bg-gray-200 rounded w-1/2"></div>
-                  </div>
+                  <div>Partial expected to arrive on <span class="font-bold">${formatDate(deleveryRes.availableInventoryDeliveryTimeStamp)}</span>.</div>
+                  <div>The remaining balance is expected to arrive between <span class="font-bold">${formatDate(stockDateStart)}</span> and <span class="font-bold">${formatDate(stockDateEnd)}</span>.</div>
                 </template>
               </div>
             </div>
           </div>
+          <div class="js-shipping-form-skeleton w-full flex items-center justify-between fb-sm:justify-start space-x-2.5 h-9 fb-sm:h-12">
+            <div class="w-1/2 fb-sm:w-14r h-full">
+              <div class="h-9 fb-sm:h-12 bg-gray-200 rounded-sm animate-pulse"></div>
+            </div>
+            <div class="w-1/2 fb-sm:w-12.5r h-9 fb-sm:h-12 bg-gray-200 rounded-sm animate-pulse"></div>
+          </div>
         </div>
-        <div class="w-full text-12 fb-sm:text-14 text-12254D mb-0">
+        {% comment %} <div class="w-full text-12 fb-sm:text-14 text-12254D mb-0">
           <span class="js-open-rule-dialog underline cursor-pointer">Shipping & Returns</span>
-        </div>
+        </div> {% endcomment %}
         {%- if template.suffix != 'quick-buy-popover' -%}
           <store-pickup form-id="{{ product_form_id }}" class="product-form__store-availability-container">
             {%- render 'store-availability', product_variant: product.selected_or_first_available_variant -%}
@@ -873,163 +777,22 @@
 {%- endif -%}
 
 <script>
-  (() => {
-    new Vue({
-      el: '#delevery-date',
-      delimiters: ['${', '}'],
-      data() {
-        const validateZipCode = (rule, value, callback) => {
-          if (!value) {
-            return callback(new Error('ZIP Code is required'));
-          } else if (value.length !== 5 || isNaN(value)) {
-            return callback(new Error('ZIP Code must be 5 digits'));
-          } else {
-            callback()
-          }
-        };
-        return {
-          loading: false,
-          isEstimateShow: false,
-          stockDateStart: 0,
-          stockDateEnd: 0,
-          deleveryRes: null,
-          ruleForm: {
-            zipCode: window.northsky.customerZipCode || ''
-          },
-          rules: {
-            zipCode: [{ validator: validateZipCode, trigger: 'blur' }],
-          },
-          debounceTimer: null
-        };
-      },
-      created() {
-        if(this.ruleForm.zipCode) {
-          this.isEstimateShow = true
-          this.getInitData('', true);
-        } else {
-          try {
-            getLocalZipCode((value)=> {
-              this.ruleForm.zipCode = value;
-              this.isEstimateShow = true
-              this.getInitData('', true);
-            })
-          } catch (error) {
-          }
-        }
-      },
-      mounted () {
-        document.addEventListener('quantitySelectorUpdated', this.quantityChanged);
-      },
-      methods: {
-        quantityChanged(item) {
-          if (this.ruleForm.zipCode && this.isEstimateShow) {
-            this.deleveryRes = null;
-            if (this.debounceTimer) {
-              clearTimeout(this.debounceTimer);
-            }
-            this.debounceTimer = setTimeout(() => {
-              this.getInitData(item.detail, false);
-            }, 500);
-          }
-        },
-        formatDate(timestamp, timezoneOffset = -5) {
-          const date = new Date(+timestamp);
-          const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
-          const year = localTime.getFullYear();
-          const monthNames = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
-          ];
-          const month = monthNames[localTime.getMonth()];
-          const day = localTime.getDate();
-          let suffix = '';
-          if (day >= 11 && day <= 13) {
-            suffix = 'th'; 
-          } else {
-            switch (day % 10) {
-              case 1: suffix = 'st'; break; // 1, 21, 31
-              case 2: suffix = 'nd'; break; // 2, 22
-              case 3: suffix = 'rd'; break; // 3, 23
-              default: suffix = 'th'; break; 
-            }
-          }
-          return `${month} ${day}${suffix}, ${year}`;
-        },
-        gobackzip() {
-          this.isEstimateShow = false;
-        },
-        async getInitData(number, bol) {
-           let quantity = 1;
-          try {
-            if(!number) {
-              const quantitySelector = '.js-quantity-input';
-              quantity = +$('.js-quantity-input').attr('data-demand') || 1
-           } else {
-              quantity = +number
-            }
-            const result = await getDeliveryEstimate({
-              zipCode: this.ruleForm.zipCode,
-              sku: '{{ product.selected_or_first_available_variant.sku }}',
-              quantity: quantity,
-              onLoadingChange: (loading) => {
-                this.loading = loading;
-              },
-              onError: (error) => {
-                this.isEstimateShow = false
-                if(bol) {
-                  return false
-                }
-                this.$message({
-                  showClose: true,
-                  message: error.message || 'Failed to get delivery estimate. Please try again.',
-                  type: 'error',
-                });
-              },
-              onSuccess: (result) => {
-                this.deleveryRes = result.deliveryData;
-                this.stockDateStart = result.stockDateStart;
-                this.stockDateEnd = result.stockDateEnd;
-                this.isEstimateShow = true;
-              }
-            });
-            return result;
-          } catch (error) {
-            this.loading = loading;
-            console.error('Error fetching delivery data:', error);
-          }
-        },
-        handleComputedDeleveryDate() {
-          this.$refs.ruleForm.validate((valid) => {
-            if (valid) {
-              this.getInitData('', false);
-            }
-          });
-        },
-      },
-      beforeDestroy() {
-        document.removeEventListener('quantitySelectorUpdated', this.quantityChanged);
-        if (this.debounceTimer) {
-          clearTimeout(this.debounceTimer);
-        }
-      }
+  $(function () {
+    $('.samples-btn').click(function (event) {
+      event.stopPropagation();
+      $('.samples-popup_shadow').show();
+      $('.samples-popup-main').show();
+      $('body').addClass('no-scroll');
     });
-    $(function () {
-      $('.samples-btn').click(function (event) {
-        event.stopPropagation();
-        $('.samples-popup_shadow').show();
-        $('.samples-popup-main').show();
-        $('body').addClass('no-scroll');
-      });
-      $('.samples-popup-imgbox').click(function () {
-        $('.samples-popup_shadow').hide();
-        $('.samples-popup-main').hide();
-        $('body').removeClass('no-scroll');
-      });
-      $('.samples-popup_shadow').click(function () {
-        $('.samples-popup_shadow').hide();
-        $('.samples-popup-main').hide();
-        $('body').removeClass('no-scroll');
-      });
-    })
-  })();
+    $('.samples-popup-imgbox').click(function () {
+      $('.samples-popup_shadow').hide();
+      $('.samples-popup-main').hide();
+      $('body').removeClass('no-scroll');
+    });
+    $('.samples-popup_shadow').click(function () {
+      $('.samples-popup_shadow').hide();
+      $('.samples-popup-main').hide();
+      $('body').removeClass('no-scroll');
+    });
+  })
 </script>

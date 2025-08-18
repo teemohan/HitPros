@@ -12,11 +12,11 @@
   {% endcase %}
 {% endfor %}
 {% if imgs_html or media_html %}
-  <div class="container js-highlights-section bg-white section-anchor-target overflow-hidden mb-2.5 fb-sm:mb-6" id="js-highlights-section">
-    <div id="feature-imgs" class="feature-imgs bg-white fb-sm:border rounded-sm fb-sm:border-D3DEF1 py-4.5 fb-sm:px-5 fb-sm:py-5">
-      <p class="text-main text-12 fb-sm:text-18 font-bold mb-4.5 fb-sm:mb-0">
-        Product  Highlights
-      </p>
+  <div class="section-anchor-target container js-highlights-section bg-white overflow-hidden pt-6 fb-sm:pt-10" id="js-highlights-section">
+    <p class="text-121212 text-16 fb-sm:text-24 font-bold mb-3 fb-sm:mb-5">
+      Product  Highlights
+    </p>
+    <div id="feature-imgs" class="feature-imgs bg-white">
       {% for item in imgsArr %}
         {%- assign is_hase_media = ''  -%}
         {%- if item.imageData.imageOne.contentType contains 'image' or  item.imageData.imageOne.contentType contains 'video' -%}

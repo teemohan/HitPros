@@ -1,0 +1,22 @@
+{% comment %}
+  Price formatting snippet with currency symbol top-left, amount center, decimal top-right
+  Usage: {% render 'format-price', price: product.price %}
+  Automatically detects currency symbol from Shopify settings
+{% endcomment %}
+
+{% assign price_string = price | money_without_currency %}
+{% assign price_parts = price_string | split: '.' %}
+{% assign whole_part = price_parts[0] %}
+{% assign decimal_part = price_parts[1] | default: '00' %}
+
+<div class="relative h-8 inline-flex items-center justify-center text-main">
+  <span class="absolute top-0 left-0 text-12 fb-sm:text-14 font-bold ">
+     {%- render 'customer-global-format', type: 'currency_symbol' -%}
+  </span>
+  <span class="text-32 font-bold px-3">
+    {{ whole_part }}
+  </span>
+  <span class="absolute top-0 -right-2 text-12 fb-sm:text-14 font-bold ">
+    {{ decimal_part }}
+  </span>
+</div>

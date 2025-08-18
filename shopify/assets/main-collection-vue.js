@@ -559,7 +559,7 @@ new Vue({
             <input class="checkbox" class="w-4 h-4 border border-999999 rounded-sm fb-sm:w-5 fb-sm:h-5" type="checkbox" name="filter.p.m.product.brand" id="${checkboxId}" value="${item.brand}"
               ${item.disabled ? 'disabled' : ''} ${item.checked ? 'checked' : ''}
             >
-            <label class="text-xs text-black fb-sm:text-sm" for="${checkboxId}">${item.brand} (${item.count})&lrm;</label>
+            <label class="text-xs text-121212 fb-sm:text-sm" for="${checkboxId}">${item.brand} (${item.count})&lrm;</label>
           </div>
         `;
       });

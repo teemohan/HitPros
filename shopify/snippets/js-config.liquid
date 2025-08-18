@@ -8,8 +8,10 @@
   <script src="{{ 'main-collection-vue.js' | asset_url }}"  defer></script>
 {% endif %}
 {% if template == 'product' %}
+  <script src="{{ 'pdp-other-vue.js' | asset_url }}" defer></script>
   <script src="{{ 'gumshoe.polyfills.min.js' | asset_url }}"> </script>
   <script src="{{'main-product.js' | asset_url }}"  defer></script>
+    <script src="{{'quick-buy-vue.js' | asset_url }}"  defer></script>
 {% endif %}
 
 {% render 'js-page-customer'%}

@@ -1,25 +1,26 @@
 {{ 'product-information.css' | asset_url | stylesheet_tag }}
 {% assign brand = product.metafields.product.brand.value | strip %}
-<div class="section-anchor-target bg-white js-addition-detail container fb-sm:bg-transparent mb-2.5 fb-sm:mb-6 overflow-hidden" id="js-addition-section">
-  <div class="w-full fb-sm:border rounded-sm fb-sm:border-D3DEF1 py-4.5 fb-sm:px-5 fb-sm:py-5">
+<div class="section-anchor-target bg-white js-addition-detail container fb-sm:bg-transparent pt-6 fb-sm:pt-10 overflow-hidden pb-5 fb-sm:pb-5" id="js-addition-section"
+>
+  <p class="text-121212 text-16 fb-sm:text-24 font-bold mb-3 fb-sm:mb-5">
+    Additional Details
+  </p>
+  <div class="w-full">
     <product-information>
-      <p class="text-main text-12 fb-sm:text-18 font-bold">
-        Additional Details
-      </p>
-      <div class="product-information js-brand-section mt-4.5 flex flex-col fb-sm:flex-row fb-sm:space-x-9r fb-sm:justify-between fb-sm:mt-10">
+      <div class="product-information js-brand-section flex flex-col fb-sm:flex-row fb-sm:space-x-9r fb-sm:justify-between">
         <aside class="w-full fb-sm:w-20r">
           {% if product.metafields.product.brand_image != blank and product.metafields.product.brand_image != 'null' %}
             <div class="w-full h-21.5 fb-sm:h-22.5 mb-5 fb-sm:mb-6 flex justify-center items-center">
               <img src="{{ product.metafields.product.brand_image }}" width="100%" height="100%" class="h-full w-auto max-w-auto object-contain">
             </div>
          {% endif %}
-          {%- assign li_css_1 = 'w-full flex justify-start items-center text-12254D py-1.5 space-x-3 text-12 fb-sm:text-14' -%}
+          {%- assign li_css_1 = 'w-full flex justify-start items-center text-121212 py-1.5 space-x-3 text-14 fb-sm:text-16 border-b border-E6E6E6 fb-sm:border-none' -%}
           <div class="product-info-line general-information w-full relative">
             <ul class="info-table w-full flex flex-col">
               {% if product.metafields.product.brand.value != blank and product.metafields.product.brand.value != 'null' and product.metafields.product.brand.value != '-' %}
                 <li class="{{ li_css_1 }}">
                   <span class="key font-bold">Brand</span>
-                  <span class="value">{{ product.metafields.product.brand.value }}</span>
+                  <span class="value text-121212">{{ product.metafields.product.brand.value }}</span>
                 </li>
               {% endif %}
               {% if product.metafields.product.manufacturer_model_number != blank %}
@@ -51,12 +52,12 @@
           </div>
         </aside>
         <main class="w-full fb-sm:flex-1">
-          <div class="product-info-line-wrapper mt-6">
+          <div class="product-info-line-wrapper mt-4 fb-sm:mt-6">
             <product-overview>
-              <div class=" product-overview text-12254D text-xs fb-sm:text-14">
+              <div class=" product-overview text-121212 text-14 fb-sm:text-16">
                 <div class="product-meta">
                   <div class="product-desc w-full"></div>
-                  <div class="js-product-features w-full mt-6">
+                  <div class="js-product-features w-full mt-4 fb-sm:mt-6">
                     <div class="skeleton-loader animate-pulse">
                       <div class="flex flex-col gap-2">
                         <div class="h-4 bg-gray-200 rounded w-3/4"></div>
@@ -64,10 +65,10 @@
                         <div class="h-4 bg-gray-200 rounded w-2/3"></div>
                       </div>
                     </div>
-                    <ul class="product-list-desc w-full flex-col gap-0 pl-3.5 marker:text-12254D marker:text-xs fb-sm:marker:text-14 mb-6 [&_a]:text-main [&_a]:underline">
+                    <ul class="product-list-desc  fb-sm:text-16 w-full flex-col gap-0 pl-3.5 marker:text-121212 marker:text-xs fb-sm:marker:text-14 mb-6 [&_a]:text-main [&_a]:underline">
                     </ul>
                   </div>
-                  <div class="product-tags w-full mt-6 fb-sm:mb-10" data-applicable-scene='{{ product.metafields.product.applicable_scene.value }}'>
+                  <div class="product-tags w-full mt-4 fb-sm:mt-6 fb-sm:mb-8" data-applicable-scene='{{ product.metafields.product.applicable_scene.value }}'>
                     <span>Mainly used in the following industries:</span>
                     <span>{{ product.metafields.product.applicable_scene.value | replace: '[', '' | replace: ']', '' }}</span>
                   </div>
@@ -76,15 +77,15 @@
             </product-overview>
             {%- capture view_dom -%}
               <div class="w-full flex items-center justify-center">
-                <div class="js-overlay-wrapper mt-2 fb-sm:mt-4 cursor-pointer">
+                <div class="js-overlay-wrapper mt-4 fb-sm:mt-6 cursor-pointer">
                   <div class="overlay-action view-more flex items-center justify-center space-x-2">
-                    <span class="text-main text-12 fb-sm:text-14 font-bold underline">View More</span>
+                    <span class="text-main text-12 fb-sm:text-16 fb-max-sm:underline fb-sm:hover:underline font-bold">View More</span>
                     <svg class="w-4 h-auto fb-sm:w-5" width="21" height="12" viewBox="0 0 21 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12.3648 6.23386L18.6311 -9.28771e-08L20.7559 2.13416L10.9115 12L0.802708 2.19074C0.725674 2.10413 0.756718 2.05101 0.802708 1.96208C1.06141 1.45742 2.39169 0.560099 2.76422 -7.8644e-07L9.37541 6.34934L10.7557 7.63622L12.3648 6.23386Z" fill="#FABE00"/>
                     </svg>
                   </div>
                   <div class="overlay-action view-less flex items-center justify-center space-x-2">
-                    <span class="text-main text-12 fb-sm:text-14 font-bold underline">View Less</span>
+                    <span class="text-main text-12 fb-sm:text-16 fb-max-sm:underline fb-sm:hover:underline font-bold">View Less</span>
                     <svg class="w-4 h-auto fb-sm:w-5" width="21" height="12" viewBox="0 0 21 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12.3648 6.23386L18.6311 -9.28771e-08L20.7559 2.13416L10.9115 12L0.802708 2.19074C0.725674 2.10413 0.756718 2.05101 0.802708 1.96208C1.06141 1.45742 2.39169 0.560099 2.76422 -7.8644e-07L9.37541 6.34934L10.7557 7.63622L12.3648 6.23386Z" fill="#FABE00"/>
                     </svg>
@@ -92,24 +93,24 @@
                 </div>
               </div>
             {%- endcapture -%}
-            {%- assign ul_css = 'text-xs fb-sm:text-14 w-full [&_li]:flex text-12254D [&_li]:border-b [&_li]:border-D3DEF1 [&_li]:py-1.5 [&_li]:px-2.5 [&_li]:space-x-3 [&_li]:items-center [&_li_span]:break-words [&_li_span]:w-1/2 [&_li_span]:text-left' -%}
-            <div class="product-info-line weight-dimensions w-full relative mt-8">
-              <h3 class="w-full h-8 bg-D3DEF1 flex items-center justify-start px-5.5">
-                <span class="attr-header text-14 fb-sm:text-16 text-12254D font-bold">Weight & Dimensions</span>
+            {%- assign ul_css = 'text-12 fb-sm:text-14 w-full [&_li]:flex text-121212 [&_li]:border-b [&_li]:border-E6E6E6 [&_li]:py-1.5 [&_li]:px-4 fb-sm:[&_li]:px-6 [&_li]:space-x-3 [&_li]:items-center [&_li_span]:break-words [&_li_span]:w-1/2 [&_li_span]:text-left' -%}
+            <div class="product-info-line weight-dimensions w-full relative mt-6 fb-sm:mt-8">
+              <h3 class="w-full h-8 bg-F3F8FC flex items-center justify-start px-4 fb-sm:px-6">
+                <span class="attr-header text-14 fb-sm:text-14 text-121212 font-bold">Weight & Dimensions</span>
               </h3>
               <ul class="info-table {{ ul_css }}"></ul>
               {{ view_dom }}
             </div>
-            <div class="product-info-line specifications mt-8 w-full relative">
-              <h3 class="w-full h-8 bg-D3DEF1 flex items-center justify-start px-5.5">
-                <span class="attr-header text-14 fb-sm:text-16 text-12254D font-bold">Specifications</span>
+            <div class="product-info-line specifications mt-6 fb-sm:mt-8 w-full relative">
+              <h3 class="w-full h-8 bg-F3F8FC flex items-center justify-start px-4 fb-sm:px-6">
+                <span class="attr-header text-14 fb-sm:text-14 text-121212 font-bold">Specifications</span>
               </h3>
               <ul class="info-table {{ ul_css }}"></ul>
               {{ view_dom }}
             </div>
-            <div class="product-info-line compliance-certificates w-full mt-8 relative">
-              <h3 class="w-full h-8 bg-D3DEF1 flex items-center justify-start px-5.5">
-                <span class="attr-header text-14 fb-sm:text-16 text-12254D font-bold">Compliance & Certificates</span>
+            <div class="product-info-line compliance-certificates w-full mt-6 fb-sm:mt-8 relative">
+              <h3 class="w-full h-8 bg-F3F8FC flex items-center justify-start px-4 fb-sm:px-6">
+                <span class="attr-header text-14 fb-sm:text-14 text-121212 font-bold">Compliance & Certificates</span>
               </h3>
               <ul class="info-table {{ ul_css }}"></ul>
               {{ view_dom }}
@@ -121,23 +122,23 @@
   </div>
 </div>
 {% if product.metafields.product.pdf.value != blank %}
-  <div class="section-anchor-target bg-white container js-download-file fb-sm:bg-transparent mb-2.5 fb-sm:mb-10 overflow-hidden" id="js-download-section">
-    <div class="w-full bg-white fb-sm:border fb-sm:border-D3DEF1 py-4.5 rounded-sm fb-sm:px-5 fb-sm:py-10">
-      <p class="text-main text-12 fb-sm:text-18 font-bold">
+  <div class="section-anchor-target bg-white container js-download-file fb-sm:bg-transparent mt-2.5  fb-sm:pt-10 overflow-hidden" id="js-download-section">
+    <div class="w-full bg-white pb-6 fb-sm:pb-0">
+      <p class="text-121212 text-16 pt-6 fb-sm:pt-0 fb-sm:text-24 font-bold mb-3 fb-sm:mb-5">
         User Documents
       </p>
-      <div class="flex flex-col space-y-2.5 mt-4.5 fb-sm:mt-10">
+      <div class="flex flex-col fb-sm:flex-row fb-sm:flex-wrap justify-start items-start space-y-2.5 fb-sm:space-y-0 fb-sm:gap-4">
         {% for file in product.metafields.product.pdf.value  %}
-          <a href="{{ file.pdf }}" target="_blank" class="flex text-14 text-12254D justify-start w-full items-center space-x-2.5">
-            <span class=" w-6 h-6 flex-shrink-0">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 11V7H15V2H5C4.44771 2 4 2.44771 4 3V21C4 21.5523 4.44771 22 5 22H19C19.5523 22 20 21.5523 20 21V19" stroke="#0A2B6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M15 2L20 7" stroke="#0A2B6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="7" y="10" width="15" height="7" rx="0.5" fill="#DB0026"/>
-              <path d="M9.4794 16V11.6364H11.0348C11.3743 11.6364 11.6555 11.6982 11.8786 11.8217C12.1016 11.9453 12.2685 12.1143 12.3793 12.3288C12.4901 12.5419 12.5455 12.782 12.5455 13.049C12.5455 13.3175 12.4893 13.5589 12.3771 13.7734C12.2663 13.9865 12.0987 14.1555 11.8743 14.2805C11.6513 14.4041 11.3707 14.4659 11.0327 14.4659H9.96307V13.9077H10.973C11.1875 13.9077 11.3615 13.8707 11.495 13.7969C11.6286 13.7216 11.7266 13.6193 11.7891 13.4901C11.8516 13.3608 11.8828 13.2138 11.8828 13.049C11.8828 12.8842 11.8516 12.7379 11.7891 12.6101C11.7266 12.4822 11.6278 12.3821 11.4929 12.3097C11.3594 12.2372 11.1832 12.201 10.9645 12.201H10.1378V16H9.4794ZM14.7299 16H13.3173V11.6364H14.7747C15.2022 11.6364 15.5694 11.7237 15.8762 11.8984C16.1831 12.0717 16.4181 12.321 16.5815 12.6463C16.7463 12.9702 16.8287 13.3587 16.8287 13.8118C16.8287 14.2663 16.7456 14.657 16.5794 14.9837C16.4146 15.3104 16.176 15.5618 15.8635 15.7379C15.551 15.9126 15.1731 16 14.7299 16ZM13.9757 15.4247H14.6937C15.0261 15.4247 15.3024 15.3622 15.5225 15.2372C15.7427 15.1108 15.9075 14.9283 16.0169 14.6896C16.1262 14.4496 16.1809 14.157 16.1809 13.8118C16.1809 13.4695 16.1262 13.179 16.0169 12.9403C15.9089 12.7017 15.7477 12.5206 15.5332 12.397C15.3187 12.2734 15.0524 12.2116 14.7342 12.2116H13.9757V15.4247ZM17.6474 16V11.6364H20.3533V12.2031H18.3058V13.5327H20.1594V14.0973H18.3058V16H17.6474Z" fill="white"/>
-              </svg>
-            </span>
-            <span class="flex-1 break-words text-left underline">
+           <a href="{{ file.pdf }}" target="_blank" class="w-full fb-sm:w-auto flex items-center text-121212 bg-F3F8FC px-4 py-3 fb-sm:px-6 fb-sm:py-3 fb-sm:break-words">
+             <span class="w-6 h-6 flex-shrink-0 mr-3 fb-sm:mr-2">
+               <svg width="24" class="inline" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M20 11V7H15V2H5C4.44771 2 4 2.44771 4 3V21C4 21.5523 4.44771 22 5 22H19C19.5523 22 20 21.5523 20 21V19" stroke="#0A2B6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+               <path d="M15 2L20 7" stroke="#0A2B6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+               <rect x="7" y="10" width="15" height="7" rx="0.5" fill="#DB0026"/>
+               <path d="M9.4794 16V11.6364H11.0348C11.3743 11.6364 11.6555 11.6982 11.8786 11.8217C12.1016 11.9453 12.2685 12.1143 12.3793 12.3288C12.4901 12.5419 12.5455 12.782 12.5455 13.049C12.5455 13.3175 12.4893 13.5589 12.3771 13.7734C12.2663 13.9865 12.0987 14.1555 11.8743 14.2805C11.6513 14.4041 11.3707 14.4659 11.0327 14.4659H9.96307V13.9077H10.973C11.1875 13.9077 11.3615 13.8707 11.495 13.7969C11.6286 13.7216 11.7266 13.6193 11.7891 13.4901C11.8516 13.3608 11.8828 13.2138 11.8828 13.049C11.8828 12.8842 11.8516 12.7379 11.7891 12.6101C11.7266 12.4822 11.6278 12.3821 11.4929 12.3097C11.3594 12.2372 11.1832 12.201 10.9645 12.201H10.1378V16H9.4794ZM14.7299 16H13.3173V11.6364H14.7747C15.2022 11.6364 15.5694 11.7237 15.8762 11.8984C16.1831 12.0717 16.4181 12.321 16.5815 12.6463C16.7463 12.9702 16.8287 13.3587 16.8287 13.8118C16.8287 14.2663 16.7456 14.657 16.5794 14.9837C16.4146 15.3104 16.176 15.5618 15.8635 15.7379C15.551 15.9126 15.1731 16 14.7299 16ZM13.9757 15.4247H14.6937C15.0261 15.4247 15.3024 15.3622 15.5225 15.2372C15.7427 15.1108 15.9075 14.9283 16.0169 14.6896C16.1262 14.4496 16.1809 14.157 16.1809 13.8118C16.1809 13.4695 16.1262 13.179 16.0169 12.9403C15.9089 12.7017 15.7477 12.5206 15.5332 12.397C15.3187 12.2734 15.0524 12.2116 14.7342 12.2116H13.9757V15.4247ZM17.6474 16V11.6364H20.3533V12.2031H18.3058V13.5327H20.1594V14.0973H18.3058V16H17.6474Z" fill="white"/>
+               </svg>
+             </span>
+             <span class="text-left underline flex-1 break-words fb-sm:break-all text-12 fb-sm:text-14">
                 {{ file.title }}
             </span>
           </a>
@@ -163,7 +164,7 @@
       if(productCharacter && productCharacter instanceof Array && productCharacter.length > 0) {
         productCharacter.forEach(item => {
           const li = document.createElement('li');
-          li.className = 'list-disc text-xs text-12254D fb-sm:text-14';
+          li.className = 'list-disc text-121212';
           li.innerHTML = `<span class="key font-bold mr-1">${item.featureTitle} </span><span class="value">${item.featureContent}</span>`;
           productListDesc.appendChild(li);
         });

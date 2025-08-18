@@ -3122,6 +3122,7 @@
           basePrice = parseFloat(basePrice.replace(/,/g, ''));
           const finalPrice = computed_price(discountJson, basePrice, quantity);
           $('.cus-product .subtotal .computed_price').text(`${finalPrice}`);
+          // finalPrice
           $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
         }
         this.highlightPriceRange(this.inputElement.quantity);
@@ -4028,16 +4029,13 @@
         const targetInput = $(`input[data-input-varid='${this.inputVarid}']`)[0];
         this.setStcokText($(targetInput).val());
         const observer = new MutationObserver((mutationsList) => {
-         
           for (let mutation of mutationsList) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'data-demand') {
               this.setStcokText($(targetInput).val());
             }
           }
         });
-       
         const config = { attributes: true, attributeFilter: ['data-demand'] };
-       
         observer.observe(targetInput, config);
       } catch(e) {
         console.error(e)
@@ -6913,11 +6911,10 @@ var ProductAttrs = class extends CustomHTMLElement {
               testSelection[attrIndex] = value
               isDisabled = !this.isValidCombination(testSelection)
             }
-
             return {
-              'border-0E255D text-white font-medium bg-0E255D': isSelected,
-              'cursor-not-allowed bg-f0f7fb border-[#cbd9ee] text-[#cbd9ee]': isDisabled,
-              'text-1c406a border-0E255D bg-f0f7fb': !isSelected && !isDisabled
+              'border-6B84B3 text-white font-medium bg-main fb-sm:font-bold': isSelected,
+              'cursor-not-allowed bg-F3F8FC border-D3DEF1 text-D3DEF1': isDisabled,
+              'text-main border-6B84B3 bg-F3F8FC': !isSelected && !isDisabled
             }
           },
           isButtonDisabled(attrIndex, value) {
@@ -6959,14 +6956,14 @@ var ProductAttrs = class extends CustomHTMLElement {
             }
           },
           disableActions() { 
-            const addButton = document.querySelector('.cus-product .shopify-product-form .product-form__add-button') || '';
+            const addButton = document.querySelector('.cus-product .shopify-product-form .js-zkh-addtocart') || '';
             if (addButton) {
               addButton.classList.add('disabled');
               addButton.disabled = true;
             }
           },
           enableActions() {
-            const addButton = document.querySelector('.cus-product .shopify-product-form .product-form__add-button') || '';
+            const addButton = document.querySelector('.cus-product .shopify-product-form .js-zkh-addtocart') || '';
             if (addButton) {
               addButton.classList.remove('disabled');
               addButton.disabled = false;

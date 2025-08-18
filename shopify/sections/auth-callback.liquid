@@ -113,14 +113,14 @@
       if (params.error) {
         const errorMsg = params.error_description || `Authorization failed: ${params.error}`;
         showError(errorMsg);
-        window.location.replace('/')
+         window.location.replace('/')
         return;
       }
       
       // Check required parameters
       if (!params.code || !params.state) {
         showError('Missing required authorization parameters');
-        window.location.replace('/')
+         window.location.replace('/')
         return;
       }
       

@@ -701,6 +701,17 @@
                 </el-form-item>
               </el-col>
             </el-row>
+             <el-row>
+              <el-form-item prop="phone">
+                <el-input
+                  id="addCompanyForm[phone]"
+                  v-model="addCompanyForm.phone"
+                  v-focus-input="addCompanyForm.phone"
+                  placeholder="Phone*"
+                ></el-input>
+                <label for="addCompanyForm[phone]" class="el-label">Phone*</label>
+              </el-form-item>
+            </el-row>
           </el-form>
         </template>
       </div>
@@ -839,6 +850,17 @@
             </el-form-item>
           </el-col>
         </el-row>
+         <el-row>
+              <el-form-item prop="phone">
+                <el-input
+                  id="companyAddressForm[phone]"
+                  v-model="companyAddressForm.phone"
+                  v-focus-input="companyAddressForm.phone"
+                  placeholder="Phone*"
+                ></el-input>
+                <label for="companyAddressForm[phone]" class="el-label">Phone*</label>
+              </el-form-item>
+           </el-row>
       </el-form>
       <div slot="footer">
         <div class="el-form-btn dialog-form-btn">
@@ -900,6 +922,14 @@
           </div>
           <div class="account-info-line-2">
             ${ originalCompanyAddressForm.address2 }
+          </div>
+        </div>
+        <div class="account-info-line" v-if="originalCompanyAddressForm.phone">
+          <div class="account-info-line-1">
+            <p>PHONE</p>
+          </div>
+          <div class="account-info-line-2">
+            ${ originalCompanyAddressForm.phone }
           </div>
         </div>
         <div class="account-info-line">
@@ -1381,6 +1411,7 @@
             zipCode: '',
             city: '',
             state: '',
+            phone: '',
           },
           addCompanyForm: {
             companyName: '',
@@ -1390,6 +1421,7 @@
             zipCode: '',
             city: '',
             state: '',
+            phone: '',
           },
           currentCompany: {
             isMainContact: false,
@@ -1458,7 +1490,8 @@
             city: decodeHTMLEntities("{{ customer.current_location.shipping_address.city }}"),
             zip: decodeHTMLEntities("{{ customer.current_location.shipping_address.zip }}"),
             zoneCode: decodeHTMLEntities("{{ customer.current_location.shipping_address.province_code }}"),
-            countryCode: 'US'
+            countryCode: 'US',
+            phone: '',
           },
           companyAddressForm: {
             address1: decodeHTMLEntities("{{ customer.current_location.shipping_address.address1 }}"),
@@ -1466,7 +1499,8 @@
             city: decodeHTMLEntities("{{ customer.current_location.shipping_address.city }}"),
             zip: decodeHTMLEntities("{{ customer.current_location.shipping_address.zip }}"),
             zoneCode: decodeHTMLEntities("{{ customer.current_location.shipping_address.province_code }}"),
-            countryCode: 'US'
+            countryCode: 'US',
+            phone: '',
           },
           originalNameRuleForm: {
             first_name: decodeHTMLEntities("{{ customer.first_name }}"),
@@ -1506,6 +1540,7 @@
             city: [{ validator: noWhitespaceValidator, message: 'City is required.', trigger: 'blur' }],
             state: [{ validator: validateCompanyState, trigger: 'change' }],
             zipCode: [{ validator: validateCompanyZipCode, trigger: 'blur' }],
+            phone: [{ validator: validatePhoneNumber, trigger: 'blur' }],
           },
           companyAddressRules: {
             address1: [
@@ -1514,11 +1549,11 @@
             city: [{ validator: noWhitespaceValidator, message: 'City is required.', trigger: 'blur' }],
             zoneCode: [{ validator: validateCompanyAddressState, trigger: 'change' }],
             zip: [{ validator: validateCompanyAddressZipCode, trigger: 'blur' }],
+            phone: [{ validator: validatePhoneNumber, trigger: 'blur' }],
           },
           addressRules: {
             first_name: [
               { validator: noWhitespaceValidator, message: 'First Name is required.', trigger: 'blur' },
-             
             ],
             last_name: [
               { validator: noWhitespaceValidator, message: 'Last Name is required.', trigger: 'blur' },
@@ -1758,6 +1793,7 @@
                 this.originalCompanyAddressForm = {
                   ...this.companyAddressForm
                 };
+                this.dialogVisible.defaultCompanyAddress = false;
               } else {
                 this.$message({
                   showClose: true,
@@ -1768,7 +1804,7 @@
             } catch (error) {
               console.error(error); 
             } finally {
-              this.dialogLoading.companyAddressUpdate = this.dialogVisible.defaultCompanyAddress = false;
+               this.dialogLoading.companyAddressUpdate = false
             }
           }
         },
@@ -1801,6 +1837,16 @@
               const res = await response.json();
               if(res.code == 200) {
                 this.companyTerms = res.data.paymentTermsTemplate ? res.data.paymentTermsTemplate : {};
+                if(res.data.shippingAddress && res.data.shippingAddress.phone) {
+                  this.originalCompanyAddressForm = {
+                    ...this.originalCompanyAddressForm,
+                    phone: res.data.shippingAddress.phone
+                  }
+                  this.companyAddressForm = {
+                    ...this.companyAddressForm,
+                    phone: res.data.shippingAddress.phone
+                  }
+                }
               }
             } catch (error) {
               console.error(error);

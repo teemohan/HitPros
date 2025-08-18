@@ -64,7 +64,8 @@
           customerId: {%- if customer.id -%}'{{ customer.id }}'{%- else -%}null{%- endif -%},
           customerEmail: {%- if customer.email -%}'{{ customer.email }}'{%- else -%}null{%- endif -%},
           customerZipCode: '{{ zip }}' || localStorage.getItem('customerZipCode'),
-          channelCode: 'Website-US'
+          channelCode: 'Website-US',
+          currencySymbol:'{%- render 'customer-global-format', type: 'currency_symbol' -%}' 
         }
       </script>
       {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}

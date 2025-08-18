@@ -192,7 +192,6 @@ handleFilterButtonClick(event) {
   handleClearBtnClick() {
    
     const hasSelectedFilters = this.handelEmptyInput();
-    console.log("hasSelectedFilters", hasSelectedFilters);
    
     if (!hasSelectedFilters) {
       this.closeDrawer();
@@ -261,7 +260,6 @@ handleFilterButtonClick(event) {
       const currentUrl = new URL(window.location.href);
       const pathWithoutQuery = currentUrl.origin + currentUrl.pathname;
       const newUrl = filterParams ? `${pathWithoutQuery}?${filterParams}` : pathWithoutQuery;
-      console.log("newUrl", newUrl);
       history.replaceState({}, '', newUrl);
       this.showLoadingBar();
       document.dispatchEvent(new CustomEvent('facet-rerender'));

@@ -74,7 +74,103 @@
                   </ul>
                 </div>
               </div>
-              <product-item-delevery :product="product" :productDemand="productDemand"></product-item-delevery>
+              <!-- Delivery Section -->
+              <div class="w-full pb-2 fb-sm:pb-0">
+                <div class="bg-white hidden fb-sm:flex flex-col gap-1.5 mt-10 fb-sm:mt-2">
+                  <div class="ships">
+                    <div class="expect text-14 text-12254D">
+                      <span class="">Enter a ZIP Code.</span>
+                    </div>
+                    <el-form class="form reset-input-zip flex items-center justify-start space-x-5 mt-2" ref="ruleForm" :model="ruleForm">
+                      <el-form-item class="w-8.75r !mb-0 h-9" prop="zipCode">
+                        <el-input
+                          v-model="ruleForm.zipCode"
+                          placeholder="ZIP Code"
+                          class="[&_input]:h-9 [&_input]:w-8.75r [&_input]:text-darkmain text-center"
+                          @keydown.enter.native.prevent="handleComputedDeleveryDate"
+                        >
+                        </el-input>
+                      </el-form-item>
+                      <el-button
+                        :loading="batchDeliveryLoading"
+                        @click.stop="handleComputedDeleveryDate"
+                        class="border h-9 border-main text-main text-16 w-25 flex items-center justify-center rounded-[2px]  hover:text-main hover:border-main"
+                        >
+                        Submit
+                      </el-button>
+                    </el-form>
+                    <div class="text-14 mt-4 text-main" v-if="isEstimateShow">
+                      <template v-if="deleveryRes.availableInventoryCount === 0">
+                        <div>Expected to arrive between <span class="font-bold">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold">{{ formatDate(stockDateEnd) }}</span>.</div>
+                      </template>
+                      <template v-else-if="deleveryRes.availableInventoryCount >= deleveryRes.demandQuantity">
+                        <div>Expected to arrive on <span class="font-bold">{{ formatDate(deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
+                      </template>
+                      <template v-else>
+                        <div>Partial expected to arrive on <span class="font-bold">{{ formatDate(+deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
+                        <div>The remaining balance is expected to arrive between <span class="font-bold">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold">{{ formatDate(stockDateEnd) }}</span>.</div>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+                <div class="block w-full fb-sm:hidden mt-3.5 mb-2">
+                  <el-dropdown class="w-full" trigger="click"  ref="dropdownRef"  placement="bottom-end">
+                    <div class="el-dropdown-link text-darkmain text-14">
+                      <span v-if="isEstimateShow">Ship to {{ ruleForm.zipCode }}</span>
+                      <span v-else>Enter Zip Code</span>
+                      <i class="el-icon-arrow-down el-icon--right text-darkmain font-bold"></i>
+                    </div>
+                    <div class="text-808080 text-12 mt-2.5" v-if="isEstimateShow">
+                      <template v-if="deleveryRes.availableInventoryCount === 0">
+                        <div>Expected to arrive between {{ formatDate(stockDateStart) }} and {{ formatDate(stockDateEnd) }}.</div>
+                      </template>
+                      <template v-else-if="deleveryRes.availableInventoryCount >= deleveryRes.demandQuantity">
+                        <div>Expected to arrive on {{ formatDate(deleveryRes.availableInventoryDeliveryTimeStamp) }}.</div>
+                      </template>
+                      <template v-else>
+                        <div>Partial expected to arrive on {{ formatDate(+deleveryRes.availableInventoryDeliveryTimeStamp) }}.</div>
+                        <div>The remaining balance is expected to arrive between {{ formatDate(stockDateStart) }} and {{ formatDate(stockDateEnd) }}.</div>
+                      </template>
+                    </div>
+                    <el-dropdown-menu slot="dropdown" class="w-15r pb-5 pt-2 px-2.5">
+                      <div class="w-full h-5 flex items-end justify-end" @click="goCloseDrop">
+                        <i class="el-icon-close text-18 font-bold text-main cursor-pointer"></i>
+                      </div>
+                      <div class="dropdown-form mt-2" @click.stop>
+                        <el-form class="form flex items-center justify-between space-x-2" ref="mobileRuleForm" :model="ruleForm">
+                          <el-form-item prop="zipCode" class="h-full w-23 !mb-0 flex items-center justify-between">
+                            <el-input
+                              v-model="ruleForm.zipCode"
+                              class="[&_input]:text-14 [&_input]:border [&_input]:border-D3DEF1 [&_input]:h-8 [&_input]:rounded-sm"
+                              placeholder="ZIP Code"
+                              @keydown.enter.native.prevent="handleComputedDeleveryDate">
+                            </el-input>
+                          </el-form-item>
+                          <el-button
+                            :loading="batchDeliveryLoading"
+                            @click.stop="handleComputedDeleveryDate"
+                            class="h-8 flex-1 text-darkmain text-14 font-bold border border-0A2B6F rounded-sm flex items-center justify-center  hover:text-main hover:border-main focus:text-main"
+                          >
+                            Submit
+                          </el-button>
+                        </el-form>
+                        <div class="text-main text-12" v-if="isEstimateShow">
+                          <template v-if="deleveryRes.availableInventoryCount === 0">
+                            <div>Expected to arrive between <span class="font-bold">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold">{{ formatDate(stockDateEnd) }}</span>.</div>
+                          </template>
+                          <template v-else-if="deleveryRes.availableInventoryCount >= deleveryRes.demandQuantity">
+                            <div>Expected to arrive on <span class="font-bold">{{ formatDate(deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
+                          </template>
+                          <template v-else>
+                            <div>Partial expected to arrive on <span class="font-bold">{{ formatDate(+deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
+                            <div>The remaining balance is expected to arrive between <span class="font-bold">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold">{{ formatDate(stockDateEnd) }}</span>.</div>
+                          </template>
+                        </div>
+                      </div>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
+              </div>
             </div>
 
         </div>
@@ -118,7 +214,6 @@
              <el-button :loading="cartLoading" @click="handleAddToCart" class="flex fb-sm:mt-2 w-full h-full fb-sm:h-10 bg-button text-main rounded-sm items-center justify-center border-none text-14 font-bold hover:border-none hover:bg-button hover:text-main">
                 <span class="loader-button__text">
                   Add to Cart
-                  <icon-cart />
                 </span>
               </el-button>
           </div>
@@ -139,6 +234,18 @@
       dataLayerForm: {
         type: Object,
         required: true
+      },
+      deliveryDataMap: {
+        type: Object,
+        default: () => ({})
+      },
+      batchDeliveryLoading: {
+        type: Boolean,
+        default: false
+      },
+      initialZipCode: {
+        type: String,
+        default: ''
       }
     },
     computed: {
@@ -150,18 +257,69 @@
       },
       minQty() {
         return this.product.moq ? +this.product.moq : 1
+      },
+      initialDeliveryData() {
+        // Calculate initialDeliveryData from deliveryDataMap
+        return this.deliveryDataMap[this.product.sku] || null;
       }
     },
     data(){
       return {
         cartLoading: false,
-        productDemand: this.product.moq ? +this.product.moq : 1
+        productDemand: this.product.moq ? +this.product.moq : 1,
+        // Delivery related data
+        isEstimateShow: false,
+        stockDateStart: 0,
+        stockDateEnd: 0,
+        deleveryRes: null,
+        ruleForm: {
+          zipCode: this.initialZipCode || window.northsky.customerZipCode || '',
+        },
+        zipcodeUpdateHandler: null,
+        lastSubmittedZipCode: ''
       }
     },
     mounted() {
       this.initMediaSwiper();
+      this.processInitialDeliveryData();
+    },
+    watch: {
+       // Watch for changes in initial delivery data
+      initialDeliveryData: {
+        handler(newData) {
+          if (newData) {
+            this.processInitialDeliveryData();
+          }
+        },
+        immediate: true
+      },
+      initialZipCode: {
+        handler(newZipCode) {
+          if (newZipCode && newZipCode !== this.ruleForm.zipCode) {
+            this.ruleForm.zipCode = newZipCode;
+          }
+        },
+        immediate: true
+      }
     },
     methods: {
+      async getDeleveryDate(deliveryParams) {
+             try {
+             const response = await kkAjax.post('/openapi/adlink/delivery-calculation/batch', {
+             checkoutToken: null,
+             deliveryCalculationParam: deliveryParams
+             });
+             return response.data;
+             } catch(err) {
+             console.error(err)
+             }
+       },
+       handleBatchDeliveryUpdate(event) {
+         const { deliveryDataMap } = event.detail;
+         if (deliveryDataMap && deliveryDataMap[this.product.sku]) {
+           this.initialDeliveryData = deliveryDataMap[this.product.sku];
+         }
+       },
       handleClickLink(event) {
         event.preventDefault();
         dataLayer.push({
@@ -254,6 +412,77 @@
           this.cartLoading = false;
         }
       },
-    }
-  });
+      
+      // Delivery related methods
+      processInitialDeliveryData() {
+        if (!this.initialDeliveryData) {
+          return;
+        }
+        try {
+            const res = this.initialDeliveryData
+            this.deleveryRes = this.initialDeliveryData
+            if (res.transitInventoryDeliveryTimeStampMin) {
+                this.stockDateStart = +res.transitInventoryDeliveryTimeStampMin;
+            } else if (res.outOfStockDeliveryTimeStampMin) {
+               this.stockDateStart = +res.outOfStockDeliveryTimeStampMin;
+            }
+
+            if (res.outOfStockDeliveryTimeStampMax) {
+              this.stockDateEnd = +res.outOfStockDeliveryTimeStampMax;
+            } else if (res.transitInventoryDeliveryTimeStampMax) {
+             this.stockDateEnd = +res.transitInventoryDeliveryTimeStampMax;
+            }
+            this.isEstimateShow = true;
+        } catch (error) {
+          console.error('Error processing initial delivery data:', error);
+        }
+      },
+      
+      goCloseDrop () {
+        this.$refs.dropdownRef.hide();
+      },
+      formatDate(timestamp, timezoneOffset = -5) {
+        return formatDateZip(timestamp, timezoneOffset);
+      },
+      async handleComputedDeleveryDate() {
+        if (!this.ruleForm.zipCode) {
+          this.$message({
+            showClose: true,
+            message: 'Please enter a zip code',
+            type: 'error'
+          });
+          return;
+        }
+        if (!/^\d{5}$/.test(this.ruleForm.zipCode)) {
+          this.$message({
+            showClose: true,
+            message: 'Please enter a valid 5-digit zip code',
+            type: 'error'
+          });
+          return;
+        }
+        if (this.ruleForm.zipCode == this.lastSubmittedZipCode && this.isEstimateShow) {
+           return false
+        }
+        this.deliveryLoading = true;
+        try {
+          this.$emit('on-fetch-batch-delivery', {
+            zipCode: this.ruleForm.zipCode,
+            from: 'item'
+          });
+          this.lastSubmittedZipCode = this.ruleForm.zipCode;
+        } catch (error) {
+          this.$message({
+            showClose: true,
+            message: 'Failed to update delivery estimates',
+            type: 'error'
+          });
+          _this.deliveryLoading = false;
+         }
+      }
+     },
+     beforeDestroy() {
+       document.removeEventListener('zipcode-updated', this.zipcodeUpdateHandler);
+     }
+   });
 </script>

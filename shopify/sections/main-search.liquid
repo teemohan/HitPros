@@ -25,7 +25,7 @@
         </div>
         <div class="js-filter-show-noresult hidden mt-2 mb-4 fb-sm:mt-0 fb-sm:mb-4 w-full">
           <div class="text-24 text-main font-bold fb-sm:text-28 text-center">No results for {{ 'search.general.terms' | t: terms: search.terms }}</div>
-          <div class="text-12 fb-sm:text-18 mt-4 fb-sm:mt-4 text-black text-center">
+          <div class="text-12 fb-sm:text-18 mt-4 fb-sm:mt-4 text-121212 text-center">
             <p class="text-center">While we don't have that specific item right now, there's a lot more to discover! </p>
             <p class="text-center">Take a look at these items we think you'll love: </p>
           </div>
@@ -153,7 +153,16 @@
                       <div class="js-product-line w-full mx-auto max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full" v-if="currentStyle == 'list'">
                         <div class="flex flex-col space-y-6 justify-center">
                           <template v-if="products.length && !pageLoading">
-                            <product-item-search v-for="(product, index) in products" :key="`list-${product.productId}-${index}`" :data-layer-form="dataLayerForm" :product="product" />
+                            <product-item-search v-for="(product, index) in products" 
+                              :key="`list-${product.productId}-${index}`" 
+                              :data-layer-form="dataLayerForm" 
+                              :product="product" 
+                              :delivery-data-map="deliveryDataMap" 
+                              :batch-delivery-loading="batchDeliveryLoading"
+                              :initial-zip-code="customerZipCode"
+                              @on-fetch-batch-delivery="fetchBatchDeliveryData"
+                              @update:zip-code="updateCustomerZipCode"
+                            />
                           </template>
                           <div class="w-full text-main text-16 fb-sm:text-18 pt-8 fb-sm:pt-2 h-10r fb-sm:h-20r text-left" v-if="!products.length && !pageLoading">
                               No results found.
@@ -215,7 +224,6 @@
 {% liquid
   render 'product-item-search'
   render 'product-item-card'
-  render 'product-item-delevery'
   render 'my-icon'
 %}
 <script>
@@ -271,6 +279,9 @@
           products: [],
           otherLoading: false,
           currentStyle: Cookies.get('searchView') || 'grid',
+          // Batch delivery data management
+          deliveryDataMap: {}, // Map to store delivery data by SKU
+          batchDeliveryLoading: false,
           sortList: [
             {
               value: 'Relevance',
@@ -284,7 +295,8 @@
             }
           ],
           currentSort: 'Relevance',
-          facetSearchHandler: null
+          facetSearchHandler: null,
+          customerZipCode: window.northsky.customerZipCode
         }
       },
       created() {
@@ -579,6 +591,9 @@
                 return product;
               });
               this.setProductsData();
+              if(res.data.searchHitType != 'recommend') {
+                this.fetchBatchDeliveryData({zipCode: this.customerZipCode, from: ''})
+              }
               if(!this.firstSearch) {
                 this.scrollToTop();
               } else {
@@ -617,7 +632,59 @@
           } finally {
             this.otherloading = false;
           }
+        },
+        updateCustomerZipCode(newZipCode) {
+          this.customerZipCode = newZipCode;
+          window.northsky.customerZipCode = newZipCode;
+          localStorage.setItem('customerZipCode', newZipCode);
+        },
+        async fetchBatchDeliveryData(data) {
+          const { zipCode, from } = data
+          this.batchDeliveryLoading = true;
+          try {
+            const zipResult = await new Promise((resolve, reject) => {
+              getZipCode('US', zipCode, function(result) {
+                if (result?.valid) {
+                  resolve(result);
+                } else {
+                  reject(new Error('Invalid ZIP code'));
+                }
+              });
+            });
+            const deliveryParams = this.products.map(product => ({
+              MATNR: product.sku,
+              ZQTY: product.moq || 1,
+              Z002: "US",
+              Z004: zipResult.lookup.adminName1,
+              POST_CODE2: zipCode
+            }));
+            const response = await kkAjax.post('/openapi/adlink/delivery-calculation/batch', {checkoutToken: null,deliveryCalculationParam: deliveryParams});
+            if (response) {
+              this.deliveryDataMap = {};
+              response.forEach(item => {
+                if (item.sku) {
+                  this.deliveryDataMap[item.sku] = item;
+                }
+              })
+              if(from && from =='item') {
+                this.updateCustomerZipCode(zipCode)
+              }
+            } else {
+              this.deliveryDataMap = {}
+            }
+          } catch (error) {
+            console.log("err", error)
+            this.$message({
+              showClose: true,
+              message: error || 'Invalid ZIP code',
+              type: 'error'
+           });
+          } finally {
+            this.batchDeliveryLoading = false;
+          }
         }
+      },
+      beforeDestroy() {
       }
     });
   })()
