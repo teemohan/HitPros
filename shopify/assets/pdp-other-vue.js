@@ -563,6 +563,7 @@ $(function () {
                 const currentPrice = skypdp.price; // This should be the actual current product price
                 this.compareData = res.data.map((item)=> {
                   item.percentage = (item.percentage * 100).toFixed(0)
+                  item.absoluteOff = parseFloat(item.absoluteOff).toFixed(2)
                   if(item.model && !this.hasModel) {
                     this.hasModel = true
                   }
