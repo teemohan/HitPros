@@ -564,6 +564,7 @@ $(function () {
                 this.compareData = res.data.map((item)=> {
                   item.percentage = (item.percentage * 100).toFixed(0)
                   item.absoluteOff = parseFloat(item.absoluteOff).toFixed(2)
+                  item.comparisonPrice = parseFloat(item.comparisonPrice).toFixed(2)
                   if(item.model && !this.hasModel) {
                     this.hasModel = true
                   }
