@@ -895,7 +895,7 @@
               refundType: 0,
               userEmail: this.orderMain.contactEmail,
               userName: this.orderMain.firstName + '' + this.orderMain.lastName,
-              userCompany: "{{ customer.metafields.custom.overseascustomserviceid }}",
+              userCompany: "{{ customer.current_company.name }}",
               refundReasonDescription:this.refundReason,
               refundReason: this.refundOption,
               refundFileUrl: this.refundFileUrl,

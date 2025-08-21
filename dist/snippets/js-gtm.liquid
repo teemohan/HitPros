@@ -48,7 +48,7 @@
   const handleCreateAccount = () => {
     pushToDataLayer('custom_create_account_clicked', {
       'industry': '{{ customer.metafields.custom.domesticcustomserviceid }}',
-      'company': '{{ customer.metafields.custom.overseascustomserviceid }}'
+      'company': '{{ customer.current_company.name }}'
     });
   };
   const handlePageView = () => {
