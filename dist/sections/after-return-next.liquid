@@ -6,10 +6,43 @@
   #order_section {
     display: none;
   }
+  .refund-amount-box {
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
   .refund-qty-wrapper .el-input__inner:focus {
     border: unset!important;
     border-top: 1px solid #ccc!important;
     border-bottom: 1px solid #ccc!important;
+  }
+  .refund-qty-wrapper .el-input-number {
+    height: 30px;
+    width: 120px;
+    line-height: 30px;
+  }
+  .refund-qty-wrapper .el-input-number__decrease, .refund-qty-wrapper .el-input-number__increase{
+    width: 30px;
+    height: 30px;
+    line-height: 30px!important;
+    background: #fff;
+    border: 1px solid #666;
+    border-radius: 0px!important;
+    color: #1a1a1a;
+    font-weight: bold;
+  }
+  .refund-qty-wrapper .el-input-number__decrease i, .refund-qty-wrapper .el-input-number__increase i{
+    font-weight: 700;
+  }
+  .refund-qty-wrapper .el-input-number__decrease.is-disabled, .refund-qty-wrapper .el-input-number__increase.is-disabled{
+    color: #CCCCCC;
+    border: 1px solid #cccccc;
+  }
+  .refund-qty-wrapper .el-input__inner {
+    height: 30px;
+    line-height: 30px;
+    border: none;
   }
   .table-body .order-line-item-wrapper:last-child {
     border: none;
@@ -20,12 +53,6 @@
   }
   .order-line-item-wrapper .order-line-item {
     flex: 1;
-  }
-  .refund-amount-box {
-    line-height: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
   }
   .{{ section.id }} .order-action{
     height: 50px;
@@ -42,22 +69,22 @@
   }
   .total-rp{
     align-items: center;
-        width: 460px !important;
+    width: 460px !important;
   }
   .total-rp p{
-        display: flex;
+    display: flex;
     align-items: center;
   }
   .total-rp p span{
     width: 80px;
   }
-  
   .next-btn-wrapper{
     height: 100%;
   }
   .order-action .next-btn-wrapper button{
     height: 100%;
     border: none;
+    border-radius: 0;
     background:#fabe00;
     width: 120px;
     display: flex;
@@ -65,7 +92,6 @@
     align-items: center;
     font-weight: bold;
     font-size: 14px;
-    border-radius: 0;
     color: #142A6B;
     line-height: 21px;
   }
@@ -96,29 +122,23 @@
     color: #CCCCCC;
     border: 1px solid #ccc;
   }
-
-    .order-more-info {
+  .order-more-info {
     margin-top: 24px;
   }
-
   .order-more-info label {
     display: block;
     font-weight: bold;
   }
-
-
   .additional-details {
     position: relative;
     display: flex;
     gap: 20px;
   }
-
   .additional-details textarea {
     width: 100%;
     height: 80px;
     padding: 10px;
   }
-
   .char-count {
     position: absolute;
     right: 10px;
@@ -126,13 +146,12 @@
     font-size: 0.9em;
     color: #888;
   }
-
   .add-attachment {
     margin-bottom: 10px;
     border: 1px solid var(--my-blue);
     padding: 10px;
-    max-height: 80px;
     border-radius: 2px;
+    max-height: 80px;
     flex-shrink: 0;
     color: var(--my-blue);
   }
@@ -182,15 +201,6 @@
     font-size: 14px;
     color: #1a1a1a;
   }
-  .service-input {
-    width: 70px;
-  }
-  .service-input input {
-    height: 30px;
-    border-radius: 0;
-    text-align: center;
-    border: 0!important;
-  }
   .{{ section.id }} .copy-icon{
     cursor: pointer;
   }
@@ -238,9 +248,9 @@
   .order-more-info__reason select:focus{
     border: none;
     padding-left: 10px;
-    appearance: none;         
-    -webkit-appearance: none;
-    -moz-appearance: none;   
+    appearance: none;        
+    -webkit-appearance: none; 
+    -moz-appearance: none;  
   }
   .order-more-info__reason.is-filled select{
     color: #1a1a1a;
@@ -286,7 +296,7 @@
   .file-label {
     margin-top: 10px;
   }
-  @media screen and (max-width: 740px) {
+@media screen and (max-width: 740px) {
     .order-more-info label {
       font-size: 12px;
       font-weight: 400;
@@ -339,51 +349,68 @@
       line-height: 1.3;
       color: #142A6B;
     }
-       .{{ section.id }} .layout-container{
-     margin-top: 10px;
-     padding-bottom: 0;
-     display: flex;
-     flex-direction: column;
-   }
-   .order-line-item-wrapper .hidden-tablet-and-up .item-info{
-     flex-direction: row;
-     align-items: center;
-     justify-content: space-between;
-   }
-   .order-more-info__reason{
+    .{{ section.id }} .layout-container{
+      margin-top: 10px;
+      padding-bottom: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .order-line-item-wrapper .hidden-tablet-and-up .item-info{
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  .order-more-info__reason{
     gap:10px;
-   }
-   .additional-details{
+  }
+  .additional-details{
     gap:10px;
-   }
-   .attachment{
+  }
+  .attachment{
     flex-wrap: wrap;
     gap:10px;
-   }
-   .additional-details textarea{
+  }
+  .additional-details textarea{
     height: 100px;
     line-height: 1.2;
-   }
-   .order-total-estimate{
+  }
+  .order-total-estimate{
     padding: 10px 0;
-   }
-   .{{ section.id }} .order-total{
+  }
+  .{{ section.id }} .order-total{
     padding: 10px 0;
-   }
-   .{{ section.id }} .order-total>div{
-    width: 100%;
-   }
-   .order-total>div>p{
+  }
+  .{{ section.id }} .order-total>div{
+   width: 100%;
+  }
+  .order-total>div>p{
     font-size: 14px;
-   }
-     }
+  }
+  .refund-qty-wrapper {
+    height: 30px;
+  }
+  .refund-qty-wrapper .el-input-number {
+      height: 20px;
+      width: 110px;
+      line-height: 20px;
+  }
+  .refund-qty-wrapper .el-input-number__decrease, .refund-qty-wrapper .el-input-number__increase{
+    width: 20px;
+    height: 20px;
+    line-height: 20px!important;
+  }
+  .refund-qty-wrapper .el-input__inner {
+    height: 20px;
+    line-height: 20px;
+  }
+}
 </style>
 <div class="return-policy">
   <a href="{{ section.settings.policy_url }}">View Policy</a>
 </div>
 <section id="order_section" class="order-section el-reset-from {{ section.id }}">
   <div class="order-item" data-id="{{ order.id }}">
-    <div class="order-main">
+    <div class="order-main" v-if="orderMain">
       <div class="order-main-wrapper">
         <div class="order-main-table">
           <div class="order-status-wrapper">
@@ -408,7 +435,7 @@
               </div>
               <div class="status-item">
                 <span>Order Date:</span>
-                <p>${ formateDate(orderMain.created_at)}</p>
+                <p>${ formatDate(orderMain.createdAt)}</p>
               </div>
             </div>
           </div>
@@ -419,7 +446,7 @@
             <div
               v-for="(order, index) in filteredOrderItems"
               :key="order.id"
-              :data-variant="order.variant_id"
+              :data-variant="order.variantId"
               class="order-line-item-wrapper"
             >
               <div
@@ -432,6 +459,8 @@
                       <img
                         :src="order.imageUrl"
                         alt="Product Image"
+                        width="80"
+                        height="80"
                       >
                     </div>
                     <div class="product-detail">
@@ -446,97 +475,66 @@
                 <div class="hidden-tablet-and-up">
                   <div class="item-info">
                     <span class="title">PROPERTY</span>
-                     <span v-if="Object.keys(order.salesAndCommon || {}).length > 0">
-                      <div v-for="(value, key) in order.salesAndCommon" :key="key" >
-                        <span>${ key }: </span><span>${ value }</span>
+                    <span v-if="order.salesAndCommon.length >0">
+                      <div v-for="sale in order.salesAndCommon" :key="sale.attrValue" >
+                        <span>${sale.attrName }: </span><span>${ sale.attrValue }</span>
                       </div>
                     </span>
                     <span v-else>-</span>
                   </div>
                   <div class="item-info">
                     <span class="title">AVAILABLE</span>
-                    <span>${ order.current_quantity - order.fulfillable_quantity }</span>
+                    <span>${ order.returnRefundQuantity }</span>
                   </div>
                   <div class="item-info">
                     <span class="title">REFUND QTY</span>
                     <div class="refund-qty-wrapper">
-                      <button
-                        :disabled="order.refundQty == 1"
-                        class="refund-qty-btn minus-btn"
-                        @click="decrementQty(order, order.price)"
-                      >
-                        -
-                      </button>
-                      <el-input class="service-input" @change="handleChange(order)"  v-model="order.refundQty"></el-input>
-                      <button
-                       :disabled="order.refundQty == order.current_quantity - order.fulfillable_quantity"
-                        class="refund-qty-btn plus-btn"
-                        @click="incrementQty((order.current_quantity-order.fulfillable_quantity), order)"
-                      >
-                        +
-                      </button>
+                        <el-input-number v-model="order.curRefundQty" @change="handleChange(order)" :min="1" :max="order.returnRefundQuantity"></el-input-number>
                     </div>
                   </div>
                   <div class="item-info">
                     <span class="title">REFUND AMOUNT</span>
-                    <span>${ order.refundAmount }<span class="tip">(TAX included)</span></span>
+                    <span>${currencySymbol} ${order.lineRefundAmount.toFixed(2)}<span class="tip">(TAX included)</span></span>
                   </div>
                 </div>
                 <div class="hidden-phone item-info">
                   <span class="title">PROPERTY</span>
-
-                  <span v-if="Object.keys(order.salesAndCommon || {}).length > 0">
-                      <div v-for="(value, key) in order.salesAndCommon" :key="key" >
-                        <span>${ key }: </span><span>${ value }</span>
+                    <span v-if="order.salesAndCommon.length >0">
+                      <div v-for="sale in order.salesAndCommon" :key="sale.attrValue" >
+                        <span>${sale.attrName }: </span><span>${ sale.attrValue }</span>
                       </div>
                     </span>
                     <span v-else>-</span>
                 </div>
                 <div class="hidden-phone item-info">
                   <span class="title">AVAILABLE</span>
-                  <span>${ order.current_quantity - order.fulfillable_quantity }</span>
+                  <span>${ order.returnRefundQuantity }</span>
                 </div>
                 <div class="hidden-phone item-info">
                   <span class="title">REFUND QTY</span>
                   <div class="refund-qty-wrapper">
-                    <button
-                      :disabled="order.refundQty == 1"
-                      class="refund-qty-btn minus-btn"
-                      @click="decrementQty(order, order.price)"
-                    >
-                      -
-                    </button>
-                    <el-input class="service-input" @change="handleChange(order)" v-model="order.refundQty"></el-input>
-                    <button
-                     :disabled="order.refundQty == order.current_quantity - order.fulfillable_quantity"
-                      class="refund-qty-btn plus-btn"
-                      @click="incrementQty((order.current_quantity-order.fulfillable_quantity), order)"
-                    >
-                      +
-                    </button>
+                    <el-input-number v-model="order.curRefundQty" @change="handleChange(order)" :min="1" :max="order.returnRefundQuantity"></el-input-number>
                   </div>
                 </div>
                 <div class="hidden-phone item-info">
                   <span class="title">REFUND AMOUNT</span>
-                  <span class="refund-amount-box">${ order.refundAmount }<span class="tip">(TAX included)</span></span>
+                  <span class="refund-amount-box">${currencySymbol} ${order.lineRefundAmount.toFixed(2)}<span class="tip">(TAX included)</span></span>
                 </div>
               </div>
             </div>
             <div class="order-total-estimate">
               <div>
                 <span>Estimated Refund Amount:</span>
-                <p>${ estimatedAmount }</p>
+                <p>${currencySymbol} ${ estimatedAmount }</p>
               </div>
             </div>
             <div class="order-total">
               <div class="total-rp">
                 <span>Total Refund Amount:</span>
-                
                 <p>
-                    <span>USD $</span>
-                  <el-input v-model="refundAmount" :min="0" :max="refundAmountMax" @change="validateInput"></el-input>
+                  <span>USD $</span>
+                  <el-input v-model="writeAllRefundAmount" :min="0" :max="writeAllRefundAmountMax" @change="validateInput"></el-input>
                 </p>
-               
               </div>
             </div>
           </div>
@@ -556,7 +554,7 @@
                       ref="sel"
                       id="refund-reason"
                       v-model="refundOption"
-                      placeholder=""
+                      placeholder="Please Select*"
                       v-focus-input="refundOption"
                     >
                       <el-option
@@ -620,7 +618,7 @@
                       class="uploaded-image-container"
                     >
                       <template v-if="file.type.startsWith('image/')">
-                        <img :src="file.url" alt="Uploaded Image" class="uploaded-image">
+                        <img :src="file.url" alt="Uploaded Image" class="uploaded-image" width="100" height="100">
                       </template>
                       <template v-else-if="file.type.startsWith('video/')">
                         <video :src="file.url" controls class="uploaded-video"></video>
@@ -769,46 +767,24 @@
       delimiters: ['${', '}'],
       data() {
         return {
-          showBtn:true,
+          showBtn: true,
           isFetching: true,
           param: null,
           orderId: 0,
-          refundQty: 1, 
-          refundAmount: 0,
-          orderItems: [],
+          filteredOrderItems: [],
           orderMain: {},
           refundReason: '',
           ordersItemsIds: [],
-          refundAmountMax: 0, 
+          writeAllRefundAmount: 0,
+          writeAllRefundAmountMax: 0, 
           refundOption: '',
-          buttonIsDisableTemp: false,
+          buttonIsDisableTemp: false, 
           params: {},
           refundFileUrl: [],
           estimatedAmount: 0,
           attachmentPreviewUrls: [],
           showIndustryEdit: false,
-          currencySymbols: {
-            USD: '$', 
-            EUR: '€', 
-            GBP: '£',
-            JPY: '¥', 
-            CNY: '¥', 
-            AUD: '$', 
-            CAD: '$',
-            CHF: 'CHF',
-            NZD: '$',
-            INR: '₹', 
-            RUB: '₽',
-            KRW: '₩', 
-            SGD: '$', 
-            HKD: '$',
-            SEK: 'kr', 
-            NOK: 'kr',
-            TRY: '₺', 
-            MXN: '$',
-            BRL: 'R$',
-            ZAR: 'R', 
-          },
+          currencySymbol: '$',
           industryOptions: [
             { value: 'Bought by mistake', label: 'Bought by mistake', isSelected: false },
             { value: 'Received the wrong item', label: 'Received the wrong item', isSelected: false },
@@ -826,75 +802,57 @@
       mounted() {
         $('#order_section').show();
         const orderId = Number(window.location.href.split('=')[1].split('&')[0]);
-        $.ajax({
-          url: `${window.northsky.api}/order/${orderId}`,
-          method: 'GET',
-          success: (data) => {
-            this.orderMain = data.data.order;
-            const currencySymbol = this.currencySymbols[this.orderMain.currency] || '$';
-            this.orderItems = this.orderMain.line_items.map((item) => {
-              const taxTotal = item.tax_lines.reduce((sum, taxLine) => sum + parseFloat(taxLine.price), 0);
-              const priceOneTotal = parseFloat(item.pre_tax_price) / item.quantity;
-              const priceTotal = priceOneTotal * parseInt((item.current_quantity-item.fulfillable_quantity), 10);
-              const taxCurrentTotal = this.roundUpToSecondDecimal((parseFloat(taxTotal) / item.quantity) * item.current_quantity);
-              this.isFetching = false
-              return {
-                ...item,
-                refundQty: (item.current_quantity-item.fulfillable_quantity), // Default refund quantity
-                refundAmount: `${currencySymbol}${(parseFloat(priceTotal) + parseFloat(taxCurrentTotal)).toFixed(2)}`, 
-              };
-            });
-          },
+        
+        kkAjax.post('/order/detail', { orderId: orderId }).then(res => {
+          if (res && res.data) {
+            this.orderMain = res.data;
+            let orders = window.location.href.split('=').slice(2);
+            if (orders.length > 0) {
+              orders = orders.map((item) => item.split('&')[0]);
+              this.filteredOrderItems = this.orderMain.lineItemsList.filter((item) => orders.includes(item.variantId));
+            } 
+            this.currencySymbol =  currencySymbols[this.orderMain.currency] || '$'
+            this.filteredOrderItems = this.filteredOrderItems.map((item) => {
+              if (item.salesAndCommon && typeof item.salesAndCommon == 'string') {
+                try {
+                  item.salesAndCommon = JSON.parse(item.salesAndCommon);
+                } catch (e) {
+                  console.error('Failed to parse salesAndCommon JSON:', e);
+                  item.salesAndCommon = [];
+                }
+              }
+              item.curRefundQty = item.returnRefundQuantity
+              item.refundAmount = parseFloat(item.refundAmount);
+              item.lineRefundAmount = parseFloat((item.refundAmount * item.curRefundQty).toFixed(2));
+              return item;
+            })
+            this.calculateTotalRefundAmount();
+            this.isFetching = false;
+          }
+        }).catch(error => {
+          console.error('failed:', error);
+          this.isFetching = false;
         });
+        
         const _this = this;
       },
-      watch: {
-        orderItems(newVal) {
-          if (newVal.length > 0) {
-            this.$nextTick(() => {
-              let orders = window.location.href.split('=').slice(2);
-              if (orders.length > 0) {
-                orders = orders.map((item) => Number(item.split('&')[0]));
-                this.ordersItemsIds = orders;
-                $('.order-line-item-wrapper').each(function () {
-                  let variant = Number($(this).data('variant'));
-                  if (!orders.includes(variant)) {
-                    $(this).attr('data-visible', 'false'); 
-                    $(this).remove();
-                  } else {
-                    $(this).attr('data-visible', 'true');
-                  }
-                });
-                this.$nextTick(() => {
-                  this.calculateTotalRefundAmount(); 
-                });
-              }
-            });
-          }
-        },
-      },
       computed: {
-        filteredOrderItems() {
+        {% comment %} filteredOrderItems() {
           let orders = window.location.href.split('=').slice(2);
           if (orders.length > 0) {
             orders = orders.map((item) => Number(item.split('&')[0]));
-            return this.orderItems.filter((item) => orders.includes(item.variant_id));
+            console.log("orders", orders)
+            console.log("this.orderItems.filter((item) => item.variantId.includes(orders))", this.orderItems.filter((item) => item.variantId.includes(orders)))
+            return this.orderItems.filter((item) => item.variantId.includes(orders));
           }
           return [];
-        },
+        }, {% endcomment %}
         buttonIsDisable() {
           return this.refundOption === '' || this.buttonIsDisableTemp;
         },
       },
       methods: {
         handleChange(order) {
-          const maxValue = order.current_quantity - order.fulfillable_quantity;
-          const regex = new RegExp("^\\d+$");
-          if (!regex.test(order.refundQty) || order.refundQty > maxValue) {
-            order.refundQty = maxValue;
-          } else if (!order.refundQty || order.refundQty == 0) {
-            order.refundQty = 1;
-          }
           this.updateRefundAmount(order);
         },
         handleTrackLog({ name, email }) {
@@ -926,18 +884,17 @@
         },
         handleSubmit() {
           this.buttonIsDisableTemp = true;
-
           this.params = {
             orderRefundMain: {
               refundOrderId: this.orderMain.name,
               channelCode: window.northsky.channelCode,
-              orderAmount: Number(this.orderMain.total_price),
-              refundAmount: parseFloat(this.refundAmount.replace(/[^\d.]/g, '')),
+              orderAmount: Number(this.orderMain.totalPrice),
+              refundAmount: parseFloat(this.writeAllRefundAmount.replace(/[^\d.]/g, '')),
               currencyType: this.orderMain.currency,
-              refundSkuCount: this.filteredOrderItems.reduce((total, item) => total + item.refundQty, 0),
+              refundSkuCount: this.filteredOrderItems.reduce((total, item) => total + item.curRefundQty, 0),
               refundType: 0,
-              userEmail: this.orderMain.contact_email,
-              userName: this.orderMain.customer.first_name + '' + this.orderMain.customer.last_name,
+              userEmail: this.orderMain.contactEmail,
+              userName: this.orderMain.firstName + '' + this.orderMain.lastName,
               userCompany: "{{ customer.metafields.custom.overseascustomserviceid }}",
               refundReasonDescription:this.refundReason,
               refundReason: this.refundOption,
@@ -947,17 +904,17 @@
               skuCode: item.sku,
               skuModel: item.model,
               skuTitle: item.title,
-              skuCount: item.refundQty,
+              skuCount: item.curRefundQty,
               skuPrice: Number(item.price),
-              currencyType: item.price_set?.shop_money?.currency_code || 'USD',
+              currencyType: this.orderMain.currency,
               skuPicture: item.imageUrl,
-              skuInfoUrl:item.productUrl
+              skuInfoUrl: item.productUrl
             })),
           };
           const selectElement = document.getElementById('refund-reason');
           const selectElementPrev = document.querySelector('.alert-label');
           if (!selectElement.value) {
-            selectElement.style.borderColor = '#F0B429';
+            selectElement.style.borderColor = '#F0B429'; 
             selectElementPrev.style.color = '#F0B429'; 
             setTimeout(() => {
               this.$message({
@@ -993,21 +950,21 @@
             if (data.msg === 'success') {
               dataLayer.push({
                 'event': 'refund',
-                'return': 1,
+                'return': 0,
                 'ecommerce': {
-                  'currency': 'USD',
+                  'currency': this.orderMain.currency,
                   'value': this.params.orderRefundMain.refundAmount,
-                  'shipping': +this.orderMain.total_shipping_price_set?.shop_money?.amount || 0,
-                  'tax': +this.orderMain.current_total_tax,
-                  'coupon': this.orderMain.discount_codes[0] || '',
+                  'shipping': 0, // 新接口暂不包含运费信息
+                  'tax': 0, // 新接口暂不包含税费信息
+                  'coupon': '', // 新接口暂不包含优惠券信息
                   'transaction_id': this.orderMain.id,
                   'items': this.filteredOrderItems.map(item => ({
                     'item_id': item.sku,
-                    'item_name': item.name,
+                    'item_name': item.title, // 使用新接口的 title 字段
                     'price': +item.price,
-                    'discount': +item.total_discount,
-                    'currency': 'USD',
-                    'quantity': item.refundQty,
+                    'discount': 0, // 新接口暂不包含折扣信息
+                    'currency': this.orderMain.currency,
+                    'quantity': item.curRefundQty,
                   }))
                 }
               });
@@ -1026,31 +983,8 @@
             this.buttonIsDisableTemp = false;
           }
         },
-        incrementQty(maxQty, order) {
-          if (order.refundQty < maxQty) {
-            order.refundQty = Number(+order.refundQty + 1);
-            this.updateRefundAmount(order);
-          }
-        },
-        decrementQty(order, price) {
-          if (order.refundQty > 1) {
-            order.refundQty = Number(+order.refundQty - 1);
-            this.updateRefundAmount(order);
-          }
-        },
         updateRefundAmount(order) {
-          const taxTotal = order.tax_lines.reduce((sum, taxLine) => sum + parseFloat(taxLine.price), 0);
-
-          const taxCurrentTotal = this.roundUpToSecondDecimal((parseFloat(taxTotal) / order.quantity) * (order.current_quantity-order.fulfillable_quantity));
-         const priceOneTotal = parseFloat(order.pre_tax_price) / order.quantity;
-          const onePrice = parseFloat(priceOneTotal) +  parseFloat(taxCurrentTotal) / order.current_quantity;
-          
-
-          const currencySymbol = this.currencySymbols[this.orderMain.currency] || '$';
-          order.refundAmount = `${currencySymbol}${ (order.refundQty * (onePrice)).toFixed(2) }`;
-          // this.refundAmount = `${currencySymbol}${ (order.refundQty * (onePrice)).toFixed(2) }`;
-        
-          
+          order.lineRefundAmount = parseFloat((order.refundAmount * order.curRefundQty).toFixed(2));
           this.calculateTotalRefundAmount();
         },
         updateCharCount() {
@@ -1062,29 +996,22 @@
         },
         calculateTotalRefundAmount() {
           let totalRefundAmount = 0;
-          const currencySymbol = this.currencySymbols[this.orderMain.currency] || '$';
           this.filteredOrderItems.forEach((item) => {
-            const numericRefundAmount = parseFloat(
-              item.refundAmount.replace(currencySymbol, '').replace(/[^0-9.]/g, '')
-            );
-            if (!isNaN(numericRefundAmount)) {
-              totalRefundAmount += numericRefundAmount;
-            }
+            totalRefundAmount += parseFloat(item.lineRefundAmount)
           });
-          this.refundAmount = `${totalRefundAmount.toFixed(2)}`;
-          this.refundAmountMax = `${totalRefundAmount.toFixed(2)}`
-          this.estimatedAmount = `${currencySymbol}${totalRefundAmount.toFixed(2)}`;
-          if(this.refundAmountMax <= 0){
-            this.showBtn = false
+          this.writeAllRefundAmount = totalRefundAmount.toFixed(2)
+          this.writeAllRefundAmountMax = totalRefundAmount.toFixed(2)
+          this.estimatedAmount = totalRefundAmount.toFixed(2)
+          if(this.writeAllRefundAmountMax <= 0){
+            this.showBtn = false;
           }
         },
         validateInput() {
-          if ( Number(this.refundAmount) < 0) {
-            this.refundAmount = 0;
-          } else if ( Number(this.refundAmount) >  Number(this.refundAmountMax)) {
-            this.refundAmount = this.refundAmountMax;
+          if (Number(this.writeAllRefundAmount) < 0) {
+            this.writeAllRefundAmount = 0;
+          } else if ( Number(this.writeAllRefundAmount) >  Number(this.writeAllRefundAmountMax)) {
+            this.writeAllRefundAmount = this.writeAllRefundAmountMax;
           }
-    
         },
         handleAttachmentUpload() {
           const uploadUrl = `${window.northsky.api}/openapi/shopify/refund/file`;
@@ -1093,13 +1020,14 @@
           input.accept = 'image/*,video/*,.xlsx,.xls,.doc,.docx';
           input.multiple = true;
           input.style.display = 'none';
+
           if (this.refundFileUrl.length > 15) {
             this.$message({
               showClose: true,
               message: 'You can only upload up to 15 files.',
               type: 'error',
             });
-            return;
+            return; 
           }
 
           input.addEventListener('change', async (event) => {
@@ -1113,7 +1041,7 @@
                 message: 'You can only upload up to 15 files.',
                 type: 'error',
               });
-              return;
+              return; 
             }
 
             if (files) {
@@ -1172,10 +1100,10 @@
             type: 'success',
           });
         },
-        formateDate(dateString) {
+        formatDate(dateString) {
           if (dateString) {
             const date = new Date(dateString);
-            date.setMilliseconds(0); 
+            date.setMilliseconds(0);
             const offset = -5 * 60; 
             const localTime = new Date(date.getTime() + (date.getTimezoneOffset() + offset) * 60000);
             const monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
@@ -1194,7 +1122,7 @@
           window.history.back();
         },
         handleButtonClick(event, industryItem) {
-          event.stopPropagation();
+          event.stopPropagation(); 
           this.industryOptions.map((item) => (item.isSelected = false));
           const industry = this.industryOptions.find((item) => item.value == industryItem.value);
           industry.isSelected = true;
@@ -1203,7 +1131,7 @@
             this.refundOption = '';
             this.showIndustryEdit = true;
           } else {
-            this.$refs.sel.blur();
+            this.$refs.sel.blur(); 
             this.showIndustryEdit = false;
           }
         },

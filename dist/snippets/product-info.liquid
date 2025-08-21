@@ -114,7 +114,7 @@
           <span class="text-red-600 text-14 font-bold">{{ discount_percentage }}%OFF</span>
         </div>
       {%- endif -%}
-      <product-payment-terms form-id="{{ product_form_id }}">
+      {% comment %} <product-payment-terms form-id="{{ product_form_id }}">
       {%- assign product_installment_form_id = 'product-installment-form-'
         | append: section.id
         | append: '-'
@@ -125,7 +125,7 @@
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
         {{- form | payment_terms -}}
       {%- endform -%}
-      </product-payment-terms>
+      </product-payment-terms> {% endcomment %}
     </div>
     {% comment %} compare block {% endcomment %}
     {%- render 'product-compare' -%}
