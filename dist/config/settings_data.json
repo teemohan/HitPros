@@ -310,6 +310,18 @@
         "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
         "disabled": true,
         "settings": {}
+      },
+      "3576686563519644491": {
+        "type": "shopify://apps/vwo/blocks/vwo-smartcode/2ce905b2-3842-4d20-b6b0-8c51fc208426",
+        "disabled": false,
+        "settings": {
+          "vwoAccountId": "1133670",
+          "codeType": "ASYNC",
+          "settingsTolerance": 2000,
+          "libraryTolerance": 2500,
+          "existingJquery": "false",
+          "enableThemeTesting": true
+        }
       }
     }
   },
