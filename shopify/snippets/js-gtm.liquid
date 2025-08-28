@@ -1,4 +1,9 @@
 <script type="text/javascript">
+  {% if customer.id %}
+    Cookies.set('user_id', '{{ customer.id }}', { expires: 30 });
+  {%- else -%}
+    Cookies.set('user_id', '', { expires: -1 });
+  {% endif %}
   var cart_data_gtm = []
   function pushToDataLayer(eventName, data = {}) {
     const ip = Cookies.get('ip');
