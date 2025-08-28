@@ -304,9 +304,11 @@
           try {
             getLocalZipCode((zip) => {
               window.northsky.customerZipCode = zip;
+              this.customerZipCode = zip;
             })
           } catch (error) {
               window.northsky.customerZipCode = '77380'
+              this.customerZipCode = '77380'
           }
         }
         this.initPageFrom();
