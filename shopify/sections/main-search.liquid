@@ -596,7 +596,7 @@
                 return product;
               });
               this.setProductsData();
-              if(res.data.searchHitType != 'recommend') {
+              if(res.data.searchHitType != 'recommend' && this.customerZipCode) {
                 this.fetchBatchDeliveryData({zipCode: this.customerZipCode, from: ''})
               }
               if(!this.firstSearch) {
