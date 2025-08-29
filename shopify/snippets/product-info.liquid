@@ -128,7 +128,6 @@
       </product-payment-terms> {% endcomment %}
     </div>
     {% comment %} compare block {% endcomment %}
-    {%- render 'product-compare' -%}
 
     {% assign unit_sale = product.metafields.product.sale_unit.value %}
     {% if unit_sale != blank %}
