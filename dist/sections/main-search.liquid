@@ -304,13 +304,15 @@
           try {
             getLocalZipCode((zip) => {
               window.northsky.customerZipCode = zip;
+              this.customerZipCode = zip;
             })
           } catch (error) {
               window.northsky.customerZipCode = '77380'
-          }
+              this.customerZipCode = '77380'
+          } 
         }
-        this.initPageFrom();
         this.initPageView();
+        this.initPageFrom();
         document.addEventListener('facet-search-rerender', async ({ detail }) => {
            this.initPageView();
         });
@@ -591,7 +593,7 @@
                 return product;
               });
               this.setProductsData();
-              if(res.data.searchHitType != 'recommend') {
+              if(res.data.searchHitType != 'recommend' && this.customerZipCode) {
                 this.fetchBatchDeliveryData({zipCode: this.customerZipCode, from: ''})
               }
               if(!this.firstSearch) {
