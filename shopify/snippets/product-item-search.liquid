@@ -45,7 +45,7 @@
                   <span class="text-main text-22 font-bold fb-sm:text-26">
                     {{ product.priceFormat }}
                   </span>
-                  <template v-if="product.compareAtPrice && product.compareAtPrice > product.price">
+                  <template v-if="product.compareAtPriceFormat && product.discountPercentage">
                     <div class="flex flex-col">
                       <span class="line-through text-10 text-main">{{ product.compareAtPriceFormat }}</span>
                       <span class="text-10 text-red-600">{{ product.discountPercentage }}%OFF</span>
@@ -179,7 +179,7 @@
             <span class="text-main text-22 font-bold fb-sm:text-26">
               {{ product.priceFormat }}
             </span>
-            <template v-if="product.compareAtPrice && product.compareAtPrice > product.price">
+            <template v-if="product.compareAtPriceFormat && product.discountPercentage">
               <div class="flex items-center justify-start">
                 <span class="text-14 line-through text-main">{{ product.compareAtPriceFormat }}</span>
                 <span class="text-xs text-red-600 ml-1">{{ product.discountPercentage }}%OFF</span>

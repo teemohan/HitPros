@@ -29,7 +29,7 @@
           <span class="text-main font-medium text-22">
             {{ product.priceFormat }}
           </span>
-          <template v-if="product.compareAtPrice && product.compareAtPrice > product.price">
+          <template v-if="product.compareAtPriceFormat && product.discountPercentage">
             <div class="compare-price text-main text-12 ml-2 flex items-start flex-col justify-start">
               <s>{{ product.compareAtPriceFormat }}</s>
               <span class="text-red-600">{{ product.discountPercentage }}%OFF</span>
