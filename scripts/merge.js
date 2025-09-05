@@ -15,7 +15,6 @@ try {
   const ignoreContent = [
     'templates/*',
     'config/*',
-    'locales/*',
     '.shopify/*'
   ].join('\n');
   
