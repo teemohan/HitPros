@@ -3,6 +3,7 @@
 {%- else -%}
   {%- assign is_online_shop = false -%}
 {%- endif -%}
+<script src="{{ 'theme.js' | asset_url }}" defer></script>
 {% if template == 'collection' %}
   <script src="{{ 'facet-filters-newcol.js' | asset_url }}" defer></script>
   <script src="{{ 'main-collection-vue.js' | asset_url }}"  defer></script>
