@@ -10,8 +10,8 @@
       <div class="product-information js-brand-section flex flex-col fb-sm:flex-row fb-sm:space-x-9r fb-sm:justify-between">
         <aside class="w-full fb-sm:w-20r">
           {% if product.metafields.product.brand_image != blank and product.metafields.product.brand_image != 'null' %}
-            <div class="w-full h-21.5 fb-sm:h-22.5 mb-5 fb-sm:mb-6 flex justify-center items-center">
-              <img src="{{ product.metafields.product.brand_image }}" width="100%" height="100%" class="h-full w-auto max-w-auto object-contain">
+             <div class="w-full mb-5 fb-sm:mb-6 flex justify-center items-center">
+              <img src="{{ product.metafields.product.brand_image }}" width="100%" height="100%" class="w-full h-auto">
             </div>
          {% endif %}
           {%- assign li_css_1 = 'w-full flex justify-start items-center text-121212 py-1.5 space-x-3 text-14 fb-sm:text-16 border-b border-E6E6E6 fb-sm:border-none' -%}
