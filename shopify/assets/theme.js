@@ -7158,6 +7158,9 @@ var ProductAttrs = class extends CustomHTMLElement {
                   return `<a href="https://${match}" target="_blank" class="warning-href">${match}</a>`;
                 })
             }
+            if( key.replace(/\s/g, '').toLowerCase() == 'eniso374type') {
+              return false;
+            }
             const $li = $(`
               <li>
                   <span class="key">

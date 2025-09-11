@@ -538,7 +538,7 @@ $(function () {
     });
   }
   initReviewApp();
-    function initProductCompare () {
+  function initProductCompare () {
       const productCompare = new Vue({
         el: '#product-compare',
         delimiters: ['${', '}'],
@@ -584,6 +584,6 @@ $(function () {
           }
         }
       })
-    }
-    // initProductCompare()
+  }
+  // initProductCompare()
 })

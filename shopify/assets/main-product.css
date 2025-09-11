@@ -1,3 +1,7 @@
+.discount-price-selected {
+  background: #fef8e5;
+  border: 1px solid #FABE00;
+}
 .product {
     margin-left: 0;
     margin-right: 0

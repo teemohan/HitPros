@@ -152,12 +152,27 @@ $(function () {
       this.getTotalMoney();
       this.bindEvents();
     },
+    changeQuantityCss: function() {
+      const $discountSpaces = $('.js-discount-space');
+      $discountSpaces.removeClass('discount-price-selected');
+      const currentQuantity = this.quantity;
+      $discountSpaces.each(function() {
+        const $this = $(this);
+        const min = parseInt($this.data('min')) || 1;
+        const max = parseInt($this.data('max')) || Infinity;
+        if (currentQuantity >= min && (isNaN(max) || currentQuantity <= max)) {
+          $this.addClass('discount-price-selected');
+          return false; 
+        }
+      });
+    },
     getTotalMoney: function() {
       const finalPrice = QuantityUtils.calculateTotalPrice(this.productInfo, this.quantity);
       // const finalPrice2 = QuantityUtils.calculateTotalPrice(this.productInfo, this.quantity, 'price1');
       $('.js-nav-current-price').html(finalPrice);
       // $('.js-nav-current-price2').html(finalPrice2);
       document.dispatchEvent(new CustomEvent('quantitySelectorUpdated', { detail: this.quantity }));
+      this.changeQuantityCss()
     },
     decreaseQuantity: function() {
       const self = this;
@@ -224,256 +239,6 @@ $(function () {
   };
   productNavBar.init();
   pdpAddCart.init();
-
-  function newQuickBuy() {
-    if (document.getElementById('js-product-quikbuy')) {
-      new Vue({
-        el: '#js-product-quikbuy',
-        delimiters: ['${', '}'],
-        data() {
-           return {
-             sku: mainProductInfo.info.sku,
-             selectionAttrs: [],
-             availableAttrs: [],
-             selectedValues: [],
-             productInfo: {
-               model: '',
-               brand: '',
-               image: '',
-               price: 0,
-               salesUnit: '',
-               moq: 1,
-               mpq: 1,
-               sku: '',
-               variantId: '',
-               discountJson: []
-             },
-             productId: '',
-             quantity: 1,
-             loading: false
-           }
-         },
-        computed: {
-           shouldHideAttributeSelector() {
-             return (
-               this.selectionAttrs.find((item) => item.attrName === 'match') ||
-               this.selectionAttrs.length === 0 ||
-               (this.selectionAttrs.length === 1 && this.selectionAttrs[0].values.length <= 1)
-             );
-           },
-           formattedPrice() {
-             return this.productInfo?.price ? parseFloat(this.productInfo.price).toFixed(2) : '';
-           },
-           totalPrice() {
-              return QuantityUtils.calculateTotalPrice(this.productInfo, this.quantity, 'price1')
-           },
-           isDisabled() {
-             const requiredCount = this.selectionAttrs.length;
-             const validSelections = this.selectedValues.slice(0, requiredCount).filter(val => val && val !== '');
-             
-             if (validSelections.length < requiredCount) return true;
-             
-             return !this.availableAttrs.some(item => 
-               item.attrs?.slice(0, requiredCount).every((attr, i) => attr === this.selectedValues[i])
-             );
-           },
-           showViewDetails() {
-             return this.productInfo?.skuCode && this.productInfo.skuCode !== this.productId;
-           }
-         },
-        async created() {
-          await this.init();
-        },
-        methods: {
-          async init() {
-
-            if (this.sku) {
-              await this.getSelectionAttrs();
-            }
-          },
-          async getSelectionAttrs() {
-            try {
-              const res = await kkAjax.get(`/spu/selection-attrs/other?sku=${this.sku}`);
-              if (res.code === 200 && res.data) {
-                this.selectionAttrs = res.data.selectionAttrs || [];
-                this.availableAttrs = res.data.availableAttrs || [];
-                
-                if (this.shouldHideAttributeSelector) {
-                  return false;
-                }
-                const matchedProduct = this.availableAttrs.find(item => item.skuCode == this.sku);
-                this.selectedValues = new Array(this.selectionAttrs.length).fill('');
-                this.getProductData(matchedProduct)
-                this.calculateCurrentSkuAttrs();
-              }
-            } catch (err) {
-              console.error('Failed to fetch selection attributes:', err);
-            }
-          },
-          getProductData(info) {
-            this.productInfo = {
-              ...info,
-              moq: parseInt(info.moq) || 1,
-              mpq: parseInt(info.mpq) || 1,
-              sku: info.skuCode || '',
-              image: info.image || '',
-              brand: info.brand || '',
-              model: info.model || '',
-              price: info.price || 0,
-              salesUnit: info.salesUnit || '',
-              variantId: info.variantId || '',
-              discountJson: info.quantityDiscount || []
-            };
-            this.quantity = this.productInfo.moq;
-          },
-          calculateCurrentSkuAttrs() {
-            if (!this.productInfo?.sku || !this.availableAttrs?.length) return;
-            const currentSkuAttrs = this.availableAttrs.find(item => item.skuCode === this.productInfo.sku);
-            if (currentSkuAttrs?.attrs) {
-              this.selectedValues = [...currentSkuAttrs.attrs];
-            }
-          },
-          getOptionsHtml(attr, attrIndex) {
-            if (!attr?.values) return [];
-            if (attrIndex === 0) return attr.values;
-            if (attrIndex === 1 && this.selectedValues[0]) {
-              const availableValues = this.getAvailableValuesForSecondAttr();
-              return attr.values.filter(value => availableValues.includes(value));
-            }
-            return [];
-          },
-          getAvailableValuesForSecondAttr() {
-            if (!this.availableAttrs?.length || !this.selectedValues[0]) return [];
-            return this.availableAttrs
-              .filter(item => item.attrs?.[0] === this.selectedValues[0])
-              .map(item => item.attrs[1])
-              .filter(Boolean);
-          },
-          isOptionDisabled(value, attrIndex) {
-            if (!this.availableAttrs?.length) return false;
-            
-            if (attrIndex === 0) {
-              if (this.selectedValues[1]) {
-                return !this.availableAttrs.some(item => 
-                  item.attrs?.[0] === value && item.attrs?.[1] === this.selectedValues[1]
-                );
-              }
-              return !this.availableAttrs.some(item => item.attrs?.[0] === value);
-            }
-            
-            if (attrIndex === 1) {
-              if (this.selectedValues[0]) {
-                return !this.availableAttrs.some(item => 
-                  item.attrs?.[0] === this.selectedValues[0] && item.attrs?.[1] === value
-                );
-              }
-              return !this.availableAttrs.some(item => item.attrs?.[1] === value);
-            }
-            
-            return false;
-          },
-          onFirstSelectChange(value) {
-             this.selectedValues[0] = value;
-             
-             if (this.selectedValues[1] && value) {
-               const isCompatible = this.availableAttrs.some(item => 
-                 item.attrs?.[0] === value && item.attrs?.[1] === this.selectedValues[1]
-               );
-               if (!isCompatible) this.selectedValues[1] = '';
-             }
-             
-             if (value && this.selectedValues[1]) this.checkAndRedirectToSku();
-           },
-           onSecondSelectChange(value) {
-             this.selectedValues[1] = value;
-             
-             if (this.selectedValues[0] && value) {
-               const isCompatible = this.availableAttrs.some(item => 
-                 item.attrs?.[0] === this.selectedValues[0] && item.attrs?.[1] === value
-               );
-               if (!isCompatible) this.selectedValues[0] = '';
-             }
-             
-             if (value && this.selectedValues[0]) this.checkAndRedirectToSku();
-           },
-           checkAndRedirectToSku() {
-             const requiredCount = this.selectionAttrs.length;
-             const validSelections = this.selectedValues.slice(0, requiredCount).filter(val => val && val !== '');
-             
-             if (validSelections.length < requiredCount) return;
-             const matchedSku = this.availableAttrs.find(item => {
-               if (!item.attrs) return false;
-               return item.attrs.slice(0, requiredCount).every((attr, i) => attr === this.selectedValues[i]);
-             });
-             if (matchedSku?.skuCode) this.getProductData(matchedSku);
-           },
-          increaseQuantity() {
-            const moq = this.productInfo?.moq || 1;
-            const mpq = this.productInfo?.mpq || 1;
-            const maxQuantity = 1000000;
-            let newValue = this.quantity + mpq;
-            
-            if (newValue > maxQuantity) {
-              newValue = maxQuantity;
-            }
-            
-            this.quantity = newValue;
-          },
-          decreaseQuantity() {
-            const moq = this.productInfo?.moq || 1;
-            const mpq = this.productInfo?.mpq || 1;
-            let newValue = this.quantity - mpq;
-            
-            if (newValue < moq) {
-              newValue = moq;
-            }
-            
-            this.quantity = newValue;
-          },
-          onQuantityInputChange() {
-            const moq = this.productInfo?.moq || 1;
-            const mpq = this.productInfo?.mpq || 1;
-            const maxQuantity = 1000000;
-            let inputValue = parseInt(this.quantity) || moq;
-            
-            if (inputValue < moq) {
-              inputValue = moq;
-            }
-            
-            // 确保是MPQ的倍数
-            const remainder = (inputValue - moq) % mpq;
-            if (remainder !== 0) {
-              inputValue = inputValue - remainder;
-            }
-            
-            if (inputValue > maxQuantity) {
-              inputValue = maxQuantity;
-            }
-            
-            this.quantity = inputValue;
-          },
-          viewProductDetails() {
-            if (this.productInfo?.sku) {
-              window.location.href = `/products/${this.productInfo.sku}`;
-            }
-          },
-          async addToCart() {
-            this.loading = true;
-            try {
-              await cartFormModule.addToCart({
-                variantId: this.productInfo.variantId,
-                quantity: this.quantity
-              });
-            } catch (error) {
-              console.error('Add to cart failed:', error);
-            } finally {
-              this.loading = false;
-            }
-          }
-        }
-      });
-    }
-  }
 
   let isInitialized = false;
   function throttle(fn, delay) {

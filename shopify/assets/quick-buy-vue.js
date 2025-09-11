@@ -45,7 +45,8 @@ $(function(){
              );
            },
            formattedPrice() {
-             return this.productInfo?.price ? skyFormatPriceDisplay(parseFloat(this.productInfo.price).toFixed(2)) : '';
+            return QuantityUtils.calculateJietiPrice(this.productInfo, this.quantity, 'price1')
+            //  return this.productInfo?.price ? skyFormatPriceDisplay(parseFloat(this.productInfo.price).toFixed(2)) : '';
            },
            totalPrice() {
               return QuantityUtils.calculateTotalPrice(this.productInfo, this.quantity)

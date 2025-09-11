@@ -42,7 +42,7 @@
     {%- endif -%}
     {%- if cart.item_count > 0 -%}
       <div class="w-full mb-8 mx-auto">
-        <div class="w-full">
+      <div class="w-full">
           <form action="{{ routes.cart_url }}" method="post" novalidate class="flex-col-reverse flex space-y-5 fb-md:grid fb-md:gap-4 fb-md:grid-cols-[1fr_303px]">
             <input type="hidden" name="checkout">
             <div class="w-full">
@@ -50,38 +50,11 @@
               <div class="w-full">
                 <table class="w-full js-line-item-table">
                   <tbody class="w-full">
-                    {% liquid
-                      assign computed_subtotal = 0
-                      assign original_total_price = 0
-                    %}
                     {%- for line_item in cart.items -%}
-                      {% liquid
-                        assign quantity_discount_json = line_item.product.metafields.product.quantity_discount
-                        assign quantity_discounts = quantity_discount_json.value
-                        assign first_moq = quantity_discounts.first.moq | times: 1
-                        assign original_line_item_price = line_item.variant.price | times: line_item.quantity
-
-                        if quantity_discounts.size > 0 and line_item.quantity >= first_moq
-                          for discount in quantity_discounts
-                            assign moq = discount.moq | times: 1
-                            if line_item.quantity < moq
-                              break
-                            endif
-                            assign discount_value = discount.discount | times: 1
-                            assign computed_final_line_price = line_item.variant.price | times: discount_value
-                            assign computed_final_line_price_total = line_item.variant.price | times: discount_value | times: line_item.quantity
-                          endfor
-                        else
-                          assign computed_final_line_price = line_item.variant.price
-                          assign computed_final_line_price_total = line_item.variant.price | times: line_item.quantity
-                        endif
-                        assign computed_subtotal = computed_subtotal | plus: computed_final_line_price_total
-                        assign original_total_price = original_total_price | plus: original_line_item_price 
-                      %}
                       <tr
                         class="line-item w-full min-h-13r rounded-sm border border-F0F0F0 flex flex-col fb-sm:flex-row px-2.5 pt-4 pb-6 mb-4.5 fb-sm:space-x-15"
                         data-sku="{{ line_item.sku }}"
-                        data-price="{{ line_item.original_price }}"
+                        data-price="{{ line_item.final_price }}"
                         data-qty="{{ line_item.quantity }}"
                       >
                         <td class="p-0 fb-sm:flex-1">
@@ -175,12 +148,12 @@
                                         | ceil
                                       %}
                                       <span class="" data-quantity="{{ line_item.quantity }}" data-price="{{ line_item.variant.price }}">{{ line_item.variant.price | money }}</span>
-                                      <s class="text-xs text-999999 flex items-center">
+                                      <s class=" text-999999 flex items-center">
                                         {{- line_item.variant.compare_at_price | money -}}
                                       </s>
-                                      <span class="text-xs text-E62D35">{{ discount_percentage }}%OFF</span>
+                                      <span class="text-E62D35">{{ discount_percentage }}% OFF</span>
                                     {% else %}
-                                      <div class="" data-quantity="{{ line_item.quantity }}" data-price="{{ computed_final_line_price }}">{{ computed_final_line_price | money }} per item</div>
+                                      <div class="" data-quantity="{{ line_item.quantity }}" data-price="{{ line_item.final_price }}">{{ line_item.final_price | money }} per item</div>
                                     {% endif %}
                                   </div>
                                 </div>
@@ -259,7 +232,7 @@
                           </div>
                           <div class="w-full flex  space-x-4 flex-col items-end fb-sm:h-full fb-sm:space-x-0">
                             <div class="font-medium min-w-9r line-clamp-1 text-left fb-sm:min-w-auto fb-sm:font-bold text-22 fb-sm:text-32 text-main">
-                              {{ computed_final_line_price_total | money }}
+                              {{ line_item.final_line_price | money }}
                             </div>
                             <div class="mt-1 w-9r flex items-center justify-start space-x-1 text-left fb-sm:hidden">
                               {% if line_item.variant.compare_at_price > line_item.variant.price %}
@@ -279,13 +252,13 @@
                                   | times: 100
                                   | ceil
                                 %}
-                                <span class="text-10 text-main" line-item-data data-quantity="{{ line_item.quantity }}" data-price="{{ line_item.variant.price }}">{{ line_item.variant.price | money }}</span>
+                                <span class="text-10 text-main" line-item-data data-quantity="{{ line_item.quantity }}" data-price="{{ line_item.final_price}}">{{ line_item.variant.price | money }}</span>
                                 <s class="text-10 text-999999 flex items-center">
                                   {{- line_item.variant.compare_at_price | money -}}
                                 </s>
                                 <span class="text-10 text-E62D35">{{ discount_percentage }}%OFF</span>
                              {% else %}
-                                <div class="text-10 text-main" line-item-data data-quantity="{{ line_item.quantity }}" data-price="{{ computed_final_line_price }}">{{ computed_final_line_price | money }} per item</div>
+                                <div class="text-10 text-main" line-item-data data-quantity="{{ line_item.quantity }}" data-price="{{ line_item.final_price }}">{{ line_item.final_price | money }} per item</div>
                               {% endif %}
                             </div>
                             <div class="flex-1 shrink-0 mt-0.5 fb-sm:mt-3">
@@ -391,7 +364,7 @@
                         <div class="w-full flex flex-col space-y-2 mb-7 fb-sm:mb-4r" {{ block.shopify_attributes }}>
                           <div class="js-cart-total-container w-full flex justify-between items-center">
                             <div class="text-sm text-575757">Subtotal</div>
-                            <div class="js-computed-subtotal font-medium text-sm text-1E1E1E" data-price="{{ computed_subtotal }}">{{ computed_subtotal | money }}</div>
+                            <div class="js-computed-subtotal font-medium text-sm text-1E1E1E" data-price="{{ cart.original_total_price }}">{{ cart.original_total_price | money }}</div>
                           </div>
                           <div class="js-cart-total-container w-full flex  justify-between items-center">
                             <div class="text-sm text-575757">Estimated Tax</div>
@@ -402,7 +375,6 @@
                             <div class="js-computed-shipping-money font-medium text-sm text-1E1E1E"></div>
                           </div>
                         </div>
-
                       {%- when 'express_checkout_buttons' -%}
                         {%- if additional_checkout_buttons -%}
                           <div class="cart__recap-block" {{ block.shopify_attributes }}>
@@ -539,34 +511,30 @@
   </div>
 </section>
 <script>
-  (() => {
-    const ip = Cookies.get('ip');
-    if(ip) {
-      // Page Viewed
-      dataLayer.push({
-        'event': 'custom_cart_viewed',
-        'zip': '{{ customer.default_address.zip  }}',   
-        'username': '{{ customer.name }}',
-        'email':'{{ customer.email }}',
-        'ip': ip
-      });
-    }
-  })();
+$(function() {
+  const ip = Cookies.get('ip');
+  if(ip) {
+    // Page Viewed
+    dataLayer.push({
+      'event': 'custom_cart_viewed',
+      'zip': '{{ customer.default_address.zip  }}',   
+      'username': '{{ customer.name }}',
+      'email':'{{ customer.email }}',
+      'ip': ip
+    });
+  }
   {% if customer.b2b? %}
     {% assign province_code = customer.current_location.shipping_address.province_code %}
-    {% comment %} {% assign zip = customer.current_location.shipping_address.zip %} {% endcomment %}
+    {% assign zip = customer.current_location.shipping_address.zip %}
   {% else %}
     {% assign province_code = customer.default_address.province_code | default: 'DC'  %}
-    {% comment %} {% assign zip = customer.default_address.zip | default: 20500 %} {% endcomment %}
+    {% assign zip = customer.default_address.zip | default: 20500 %}
   {% endif %}
-  (() => {
-    $('.quantity-selector__input').on('keydown', function(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-      }
-    });
-  })();
-
+  $('.quantity-selector__input').on('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  });
   (() => {
     const line_item_delivery = [];
     {% for line_item in cart.items %}
@@ -813,7 +781,7 @@
           city: "{{ customer.default_address.city }}",
           region: "{{ province_code }}",
           country: "US",
-          postalCode: "{{ customer.default_address.zip }}",
+          postalCode: "{{ zip }}",
         };
       {% else %}
         const singleLocation = { 
@@ -821,7 +789,7 @@
           city: "Washington",
           region: "{{ province_code }}",
           country: "US",
-          postalCode: window.northsky.customerZipCode || "77380"
+          postalCode: "{{ zip }}"
         };
       {% endif %}
       const taxParam = {
@@ -869,15 +837,25 @@
         alert('Please wait for the shopping cart to refresh')
         return
       }
-      getDiscount();
+      {% comment %} getDiscount(); {% endcomment %}
+       window.location.href = '/checkout?discount=0';
     })
-    function getDiscount () { 
-      const amount_original = parseFloat('{{ original_total_price }}');
-      const amount_current = parseFloat('{{ computed_subtotal }}');
+    {% comment %} function getDiscount () { 
+      const amount_original = parseFloat('{{ cart.original_total_price }}');
+      const amount_current = parseFloat('{{ cart.total_price }}');
       const amount_difference = (amount_original - amount_current) / 100;
+      const skus = [];
+      {% for line_item in cart.items %}
+      skus.push({
+        count: +'{{ line_item.quantity }}',
+        skuCode: '{{ line_item.sku }}'
+      });
+      {% endfor %}
+      console.log("skus", skus)
       const formData = {
         customerId: Number({{ customer.id }}),
-        amount: amount_difference
+        amount: amount_difference,
+        skuInfos: skus
       };
       if(formData.amount == 0) {
         window.location.href = '/checkout?discount=0';
@@ -902,8 +880,9 @@
       .catch(error => {
         window.location.href = `/checkout?discount=0`; 
       });
-    }
+    } {% endcomment %}
   })();
+})
 </script>
 
 {% schema %}

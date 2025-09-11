@@ -589,6 +589,25 @@ video {
   /* Smooth scrolling on iOS */
 }
 
+.grary-scrollerbar {
+  scrollbar-width: thin;
+  scrollbar-color: #E2E2E2 transparent;
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #E2E2E2;
+    border-radius: 2px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #D0D0D0;
+  }
+}
+
 .visible {
   visibility: visible;
 }
@@ -1095,6 +1114,10 @@ video {
   height: 13rem;
 }
 
+.h-14 {
+  height: 3.5rem;
+}
+
 .h-16 {
   height: 4rem;
 }
@@ -1117,10 +1140,6 @@ video {
 
 .h-20r {
   height: 20rem;
-}
-
-.h-21\.5 {
-  height: 86px;
 }
 
 .h-22\.5 {
@@ -1489,6 +1508,10 @@ video {
 
 .min-w-26 {
   min-width: 6.5rem;
+}
+
+.min-w-27 {
+  min-width: 6.75rem;
 }
 
 .min-w-9r {
@@ -1869,6 +1892,10 @@ video {
   overflow-x: hidden;
 }
 
+.overflow-y-hidden {
+  overflow-y: hidden;
+}
+
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2227,6 +2254,11 @@ video {
   padding-right: 0px;
 }
 
+.px-0\.5 {
+  padding-left: 0.125rem;
+  padding-right: 0.125rem;
+}
+
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -2533,6 +2565,11 @@ video {
 
 .text-24 {
   font-size: 24px;
+  line-height: 32px;
+}
+
+.text-28 {
+  font-size: 28px;
   line-height: 32px;
 }
 
@@ -3039,22 +3076,8 @@ video {
 }
 
 @media (max-width: 740px) {
-  .fb-max-sm\:-mx-5 {
-    margin-left: -20px;
-    margin-right: -20px;
-  }
-
-  .fb-max-sm\:overflow-x-auto {
-    overflow-x: auto;
-  }
-
   .fb-max-sm\:border-b {
     border-bottom-width: 1px;
-  }
-
-  .fb-max-sm\:px-5 {
-    padding-left: 20px;
-    padding-right: 20px;
   }
 
   .fb-max-sm\:underline {
@@ -3268,10 +3291,6 @@ video {
 
   .fb-sm\:h-21r {
     height: 21rem;
-  }
-
-  .fb-sm\:h-22\.5 {
-    height: 90px;
   }
 
   .fb-sm\:h-25 {
@@ -4081,10 +4100,6 @@ video {
 }
 
 @media (min-width: 1000px) {
-  .fb-1000\:block {
-    display: block;
-  }
-
   .fb-1000\:inline {
     display: inline;
   }
@@ -4237,6 +4252,11 @@ video {
   .fb-md\:text-18 {
     font-size: 18px;
     line-height: 26px;
+  }
+
+  .fb-md\:text-24 {
+    font-size: 24px;
+    line-height: 32px;
   }
 
   .fb-md\:text-32 {

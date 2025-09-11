@@ -715,33 +715,75 @@ async function getDeliveryEstimate({
   }
 }
 const mainProductUtils = {
-  computePrice: function(discountJson, basePrice, quantity, type) {
+  calculateTieredPrice: function(discountTiers, basePrice, quantity, type) {
+    if (!Array.isArray(discountTiers) || discountTiers.length === 0) {
+      const finalPrice = basePrice * quantity;
+      return type === 'price1' ? skyFormatPriceDisplay(finalPrice) : zkhFormatMoney(finalPrice * 100);
+    }
+    const numericPrice = parseFloat(basePrice);
+    const numericQuantity = parseInt(quantity);
+    if (isNaN(numericPrice) || isNaN(numericQuantity) || numericQuantity <= 0) {
+      return type === 'price1' ? skyFormatPriceDisplay(numericPrice || 0) : zkhFormatMoney((numericPrice || 0) * 100);
+    }
+    // 预处理和缓存有效的阶梯配置
+    const validTiers = [];
+    for (const tier of discountTiers) {
+      const moq = parseInt(tier.moq);
+      const discount = parseFloat(tier.discount);
+      if (moq > 0 && discount > 0) {
+        validTiers.push({ moq, discount });
+      }
+    }
+    
+    if (validTiers.length === 0) {
+      const finalPrice = numericPrice * numericQuantity;
+      return type === 'price1' ? skyFormatPriceDisplay(finalPrice) : zkhFormatMoney(finalPrice * 100);
+    }
+    // 按照 moq 从大到小排序
+    validTiers.sort((a, b) => b.moq - a.moq);
+    // 找到适用的折扣级别
     let finalPrice;
-    if (discountJson && discountJson.length > 0) {
+    let foundTier = false;
+    for (const tier of validTiers) {
+      if (numericQuantity >= tier.moq) {
+        finalPrice = Math.round(tier.discount * numericQuantity * 100) / 100;
+        foundTier = true;
+        break;
+      }
+    }
+    if (!foundTier) {
+      finalPrice = numericPrice * numericQuantity;
+    }
+    return type === 'price1' ? skyFormatPriceDisplay(finalPrice) : zkhFormatMoney(finalPrice * 100);
+  },
+  
+  computePrice: function(discountJson, basePrice, quantity, type) {
+    return this.calculateTieredPrice(discountJson, basePrice, quantity, type);
+  },
+  computeJietiPrice: function(discountJson, basePrice, quantity, type) {
+    let unitPrice = basePrice;
+    if (discountJson && Array.isArray(discountJson) && discountJson.length > 0) {
       try {
+        const sortedTiers = [...discountJson].sort((a, b) => parseInt(a.moq) - parseInt(b.moq));
         let applicableDiscount = null;
-        for (let i = 0; i < discountJson.length; i++) {
-          if (quantity >= parseInt(discountJson[i].moq)) {
-            applicableDiscount = parseFloat(discountJson[i].discount);
+        for (const tier of sortedTiers) {
+          const moq = parseInt(tier.moq);
+          const discount = parseFloat(tier.discount);
+          if (!isNaN(moq) && !isNaN(discount) && quantity >= moq) {
+            applicableDiscount = discount;
           }
         }
-        if (applicableDiscount) {
-          let discountedUnitPrice = Math.round(basePrice * applicableDiscount * 100) / 100;
-          finalPrice = Math.round(discountedUnitPrice * quantity * 100) / 100;
-        } else {
-          finalPrice = Math.round(quantity * basePrice * 100) / 100;
+        if (applicableDiscount !== null) {
+          unitPrice = Math.round(applicableDiscount * 100) / 100;
         }
-      } catch (e) {
-        console.error('Parsing error:', e);
-        finalPrice = Math.round(quantity * basePrice * 100) / 100;
+      } catch (error) {
+        console.error('Error in computeJietiPrice:', error);
       }
-    } else {
-      finalPrice = Math.round(quantity * basePrice * 100) / 100;
     }
-    if(type == 'price1') {
-      return skyFormatPriceDisplay(finalPrice);
+    if (type === 'price1') {
+      return skyFormatPriceDisplay(unitPrice);
     } else {
-      return zkhFormatMoney(finalPrice * 100);
+      return zkhFormatMoney(unitPrice * 100);
     }
   },
   validateQuantity: function(inputValue, moq, mpq, maxQuantity = 1000000) {
@@ -1038,6 +1080,10 @@ const QuantityUtils = {
   calculateTotalPrice: function(productInfo, quantity, type = '') {
     const discountJson = productInfo.discountJson || null;
     return mainProductUtils.computePrice(discountJson, productInfo.price, quantity, type);
+  },
+  calculateJietiPrice: function (productInfo, quantity, type = '') {
+    const discountJson = productInfo.discountJson || null;
+    return mainProductUtils.computeJietiPrice(discountJson, productInfo.price, quantity, type);
   },
   /**
    * Bind quantity input change event
