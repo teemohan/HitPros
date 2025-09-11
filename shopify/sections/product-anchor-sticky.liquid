@@ -159,8 +159,8 @@
                  inputmode="numeric"
                  autocomplete="off"
                  class="text-0A2B6F text-20 outline-none border-none text-center w-12 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                 v-model="quantity"
-                 @input="onQuantityInputChange"
+                 :value="quantity"
+                 @change="onQuantityInputChange"
                  ref="quantityInput"
                >
                <button type="button" class="flex justify-center items-center w-6 h-full" @click="increaseQuantity" ref="plusBtn">

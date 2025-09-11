@@ -214,19 +214,21 @@ $(function(){
             
             this.quantity = newValue;
           },
-          onQuantityInputChange() {
+          onQuantityInputChange(event) {
             const moq = this.productInfo?.moq || 1;
             const mpq = this.productInfo?.mpq || 1;
             const maxQuantity = 1000000;
-            let inputValue = parseInt(this.quantity) || moq;
+            let inputValue = parseInt(event.target.value);
+            if (isNaN(inputValue) || inputValue === 0) {
+              return; // 当输入没有值时，保持this.quantity不变
+            }
             if (inputValue < moq) {
               inputValue = moq;
             }
             const remainder = (inputValue - moq) % mpq;
             if (remainder != 0) {
-              inputValue = inputValue - remainder;
+              inputValue = Math.ceil((inputValue - moq) / mpq) * mpq + moq;
             }
-            
             if (inputValue > maxQuantity) {
               inputValue = maxQuantity;
             }
