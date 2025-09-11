@@ -293,27 +293,6 @@
         <input type="hidden" name="checkout">
 
         {%- for line_item in cart.items -%}
-          {% liquid
-          assign quantity_discount_json = line_item.product.metafields.product.quantity_discount
-          assign quantity_discounts = quantity_discount_json.value
-          assign first_moq = quantity_discounts.first.moq | times: 1
-          
-          if quantity_discounts.size > 0 and line_item.quantity >= first_moq
-            for discount in quantity_discounts
-              assign moq = discount.moq | times: 1
-              if line_item.quantity < moq
-                break
-              endif
-              assign discount_value = discount.discount | times: 1
-              assign computed_final_line_price = line_item.original_price | times: discount_value
-              assign computed_final_line_price_total = line_item.original_price | times: discount_value | times: line_item.quantity
-            endfor
-          else
-            assign computed_final_line_price = line_item.original_price
-            assign computed_final_line_price_total = line_item.original_price | times: line_item.quantity
-          endif
-          assign computed_subtotal = computed_subtotal | plus: computed_final_line_price_total
-        %}
           <line-item class="line-item" data-sku="{{ line_item.sku }}">
             <div class="line-item__content-wrapper">
               <a href="{{ line_item.url }}" class="line-item__image-wrapper" tabindex="-1" aria-hidden="true">
@@ -384,9 +363,9 @@
                       </s>
                       <span class="line-discount-percentage">{{ discount_percentage }}%OFF</span>
                     </div>
-                    <span class="line-item-price">{{ computed_final_line_price_total | money }}</span>
+                    <span class="line-item-price">{{ line_item.final_line_price | money }}</span>
                   {% else %}
-                    <div class="line-item-price">{{ computed_final_line_price_total | money }}</div>
+                    <div class="line-item-price">{{ line_item.final_line_price | money }}</div>
                   {% endif %}
                 </div>
                 {%- assign mymoq = line_item.product.metafields.product.moq | default: 1 -%}
@@ -471,7 +450,7 @@
                     <span class="line-discount-percentage">{{ discount_percentage }}%OFF</span>
                     <s class="line-item-compare">{{- line_item.variant.compare_at_price | money -}}</s>
                   {% else %}
-                    <div class="line-item-price">{{ computed_final_line_price | money }}</div>
+                    <div class="line-item-price">{{ line_item.final_price | money }}</div>
                   {% endif %}
                 </div>
               </div>
@@ -480,7 +459,7 @@
         {%- endfor -%}
       </form>
 
-      <div class="hidden-mini-cart-price visually-hidden" data-original-price="{{ cart.original_total_price }}" data-computed-subtotal="{{ computed_subtotal }}"></div>
+      <div class="hidden-mini-cart-price visually-hidden" data-original-price="{{ cart.original_total_price }}" data-computed-subtotal="{{ cart.total_price }}"></div>
       {%- if section.settings.show_recommendations -%}
         <cart-drawer-recommendations section-id="{{ section.id }}" product-id="{{ cart.items.first.product_id }}" class="mini-cart__recommendations">
           {%- assign acceptable_recommendations_count = 0 -%}
@@ -589,7 +568,7 @@
   {%- endif -%}
 </cart-drawer>
 <script>
-  (() => {
+ $(function() {
     async function getDeleveryDate(deliveryParams) { 
       {% comment %} xuteshuchuli {% endcomment %}
       const param = deliveryParams.map((param) => {
@@ -695,13 +674,26 @@
         })
       }
     }
-    function getDiscount () { 
+    {% comment %} function getDiscount () { 
       const amount_original = parseFloat($('.hidden-mini-cart-price').data("original-price"));
       const amount_current = parseFloat($('.hidden-mini-cart-price').data("computed-subtotal"));
       const amount_difference = (amount_original - amount_current) / 100;
+      const skus = [];
+      $('.line-item').each(function() {
+        const $lineItem = $(this);
+        const quantity = parseInt($lineItem.find('.quantity-selector__input').val()) || 0;
+        const sku = $lineItem.data('sku');
+        if (quantity > 0 && sku) {
+          skus.push({
+            count: quantity,
+            skuCode: sku
+          });
+        }
+      }); 
       const formData = {
         customerId: Number({{ customer.id }}),
-        amount: amount_difference
+        amount: amount_difference,
+        skuInfos: skus
       };
       if(formData.amount == 0) {
         window.location.href = '/checkout?discount=0';
@@ -719,12 +711,14 @@
         if (data.code == 200) {
           const discountCode = data.data.title;
           window.location.href = `/checkout?discount=${discountCode}`; 
+        } else {
+          window.location.href = `/checkout?discount=0`; 
         }
       })
       .catch(error => {
-          
+        window.location.href = `/checkout?discount=0`; 
       });
-    }
+    } {% endcomment %}
 
     document.addEventListener('cart-rendered', function () {
       $('.quantity-selector__input').on('keydown', function(event) {
@@ -735,11 +729,12 @@
       $('.cart-checkout-button').click(function(event) { 
         event.preventDefault();
         Cookies.set('remove-property', 'true');
-        getDiscount();
+        window.location.href = '/checkout?discount=0';
+        {% comment %} getDiscount(); {% endcomment %}
       })
       initDeleveryDate(); 
     });
-  })();
+ })
 </script>
 {% schema %}
 {

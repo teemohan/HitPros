@@ -616,6 +616,13 @@
                 {% render 'wishlist-button', product: product %}
               </div>
             </div>
+            {% assign moq_value = product.metafields.product.moq | plus: 0 %}
+            {% if product.metafields.product.moq and moq_value > 1 %}
+              <div class="w-full mt-2.5 text-14 text-999999">
+                <span class="font-medium">Order minimum:</span> {{ product.metafields.product.moq }}. 
+                <span class="font-medium">Order in increments of</span> {{ product.metafields.product.mpq }}.
+              </div>
+            {% endif %}
             <div class="product-stock-wrapper w-full flex items-center mt-2.5">
               <div class="subtotal text-18 text-main font-bold">
                 <span class="js-nav-current-price text-18 text-main">
