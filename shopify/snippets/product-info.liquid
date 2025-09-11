@@ -53,20 +53,20 @@
                 <th class="text-center px-0.5 h-full min-w-27 border border-main sticky left-0 bg-main z-2">
                   QUANTITY
                 </th>
-                <th class="text-center px-0.5 h-full min-w-27 border border-main">
+                <th class="text-center px-0.5 h-full border border-main">
                   1 - {{ product.metafields.product.quantity_discount.value[0].moq | minus: 1 }}
                 </th>
                 {% assign last_item_index = product.metafields.product.quantity_discount.value.size | minus: 1 | plus: 1%}
                 {% for item in product.metafields.product.quantity_discount.value %}
                   {% if forloop.index != last_item_index %}
-                    <th class="text-center px-0.5 h-full min-w-27 border border-main">
+                    <th class="text-center px-0.5 h-full border border-main">
                       {{ item.moq }} -
                       {% if forloop.index < product.metafields.product.quantity_discount.value.size %}
                         {{ product.metafields.product.quantity_discount.value[forloop.index].moq | minus: 1 }}
                       {% endif %}
                     </th>
                   {% else %}
-                    <th class="text-center px-0.5 h-full min-w-27 border border-main">
+                    <th class="text-center px-0.5 h-full border border-main">
                       {{ item.moq }}+
                     </th>
                   {% endif %}
@@ -78,7 +78,7 @@
                 <td class="text-center px-0.5 text-12 fb-sm:text-14 font-normal text-121212 border-l border-E2E2E2 bg-F9F9F9 sticky left-0 z-2">
                   Price per<br>{{ product.metafields.product.sale_package.value }}
                 </td>
-                <td class="js-discount-space px-0.5 text-center border-l border-E2E2E2 discount-price-selected" data-min="1" data-max="{{ product.metafields.product.quantity_discount.value[0].moq | minus: 1 }}">
+                <td class="js-discount-space px-4 text-center border-l border-E2E2E2 discount-price-selected" data-min="1" data-max="{{ product.metafields.product.quantity_discount.value[0].moq | minus: 1 }}">
                   <div class="">
                     {%- assign dis_price = product.selected_or_first_available_variant.price -%}
                     {% render 'format-price', price: dis_price %}
@@ -86,14 +86,14 @@
                 </td>
                 {% for item in product.metafields.product.quantity_discount.value %}
                   {% if forloop.index != last_item_index %}
-                    <td class="js-discount-space px-0.5 text-center border-l border-E2E2E2" data-min="{{ item.moq }}" data-max="{{ product.metafields.product.quantity_discount.value[forloop.index].moq | minus: 1 }}">
+                    <td class="js-discount-space px-4 text-center border-l border-E2E2E2" data-min="{{ item.moq }}" data-max="{{ product.metafields.product.quantity_discount.value[forloop.index].moq | minus: 1 }}">
                       <div class="">
                         {%- assign discount_price = item.discount | times: 100 -%}
                         {% render 'format-price', price: discount_price %}
                       </div>
                     </td>
                   {% else %}
-                    <td class="js-discount-space px-0.5 text-center border-l border-E2E2E2" data-min="{{ item.moq }}">
+                    <td class="js-discount-space px-4 text-center border-l border-E2E2E2" data-min="{{ item.moq }}">
                         <div class="">
                           {%- assign discount_price_more = item.discount | times: 100 -%}
                           {% render 'format-price', price: discount_price_more %}

@@ -34,6 +34,8 @@ $(function(){
                discountJson: []
              },
              quantity: 1,
+             quantityReplace: 1,
+             minQuantity: 1,
              loading: false
            }
          },
@@ -102,6 +104,8 @@ $(function(){
               discountJson: info.quantityDiscount || []
             };
             this.quantity = this.productInfo.moq;
+            this.quantityReplace = this.productInfo.moq;
+            this.minQuantity = this.productInfo.moq;
           },
           calculateCurrentSkuAttrs() {
             if (!this.productInfo?.sku || !this.availableAttrs?.length) return;
@@ -200,8 +204,8 @@ $(function(){
             if (newValue > maxQuantity) {
               newValue = maxQuantity;
             }
-            
             this.quantity = newValue;
+            this.quantityReplace = newValue;
           },
           decreaseQuantity() {
             const moq = this.productInfo?.moq || 1;
@@ -213,14 +217,17 @@ $(function(){
             }
             
             this.quantity = newValue;
+            this.quantityReplace = newValue;
           },
           onQuantityInputChange(event) {
             const moq = this.productInfo?.moq || 1;
             const mpq = this.productInfo?.mpq || 1;
             const maxQuantity = 1000000;
             let inputValue = parseInt(event.target.value);
-            if (isNaN(inputValue) || inputValue === 0) {
-              return; // 当输入没有值时，保持this.quantity不变
+            if (isNaN(inputValue) || inputValue === 0 || inputValue < moq) {
+              this.quantity = this.minQuantity
+              this.quantityReplace = this.minQuantity
+              return false
             }
             if (inputValue < moq) {
               inputValue = moq;
@@ -233,6 +240,7 @@ $(function(){
               inputValue = maxQuantity;
             }
             this.quantity = inputValue;
+            this.quantityReplace = inputValue;
           },
           viewProductDetails() {
             if (this.productInfo?.sku) {

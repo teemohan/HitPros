@@ -1518,6 +1518,14 @@ video {
   min-width: 9rem;
 }
 
+.min-w-28 {
+  min-width: 7rem;
+}
+
+.min-w-30 {
+  min-width: 120px;
+}
+
 .max-w-4xl {
   max-width: 56rem;
 }
@@ -2606,6 +2614,11 @@ video {
 .text-xs {
   font-size: 12px;
   line-height: 16px;
+}
+
+.text-26 {
+  font-size: 26px;
+  line-height: 30px;
 }
 
 .font-bold {
@@ -4267,6 +4280,11 @@ video {
   .fb-md\:text-48 {
     font-size: 48px;
     line-height: 48px;
+  }
+
+  .fb-md\:text-30 {
+    font-size: 30px;
+    line-height: 36px;
   }
 }
 

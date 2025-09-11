@@ -159,10 +159,10 @@
                  inputmode="numeric"
                  autocomplete="off"
                  class="text-0A2B6F text-20 outline-none border-none text-center w-12 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                 :value="quantity"
+                 v-model="quantityReplace"
                  @change="onQuantityInputChange"
-                 ref="quantityInput"
                >
+              {% comment %} ref="quantityInput" {% endcomment %}
                <button type="button" class="flex justify-center items-center w-6 h-full" @click="increaseQuantity" ref="plusBtn">
                  <span class="hidden">{{ 'cart.general.increase_quantity' | t }}</span>
                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.07417 6.84361V1.22144H6.8253V6.84361H1.20312V9.09248H6.8253V14.7147H9.07417V9.09248H14.6964V6.84361H9.07417Z" fill="#08296F"></path></svg>

@@ -14,12 +14,12 @@
      {%- render 'customer-global-format', type: 'currency_symbol' -%}
   </span>
   {% assign whole_part_length = whole_part | size %}
-  {% if whole_part_length >= 4 %}
+  {% if whole_part_length >= 6 %}
     <span class="text-20 fb-md:text-24 font-bold px-3">
       {{ whole_part }}
     </span>
   {% else %}
-    <span class="text-28 fb-md:text-32 font-bold px-3">
+    <span class="text-26 fb-md:text-30 font-bold px-3">
       {{ whole_part }}
     </span>
   {% endif %}
