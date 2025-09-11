@@ -1883,16 +1883,6 @@
       }
     },
     {
-      "key": "CutSize",
-      "namespace": "product",
-      "name": "Cut Size",
-      "description": null,
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
       "key": "TarpSeamFinish",
       "namespace": "product",
       "name": "Tarp Seam Finish",
@@ -1976,16 +1966,6 @@
       "key": "WheelCircumference",
       "namespace": "product",
       "name": "Wheel Circumference",
-      "description": null,
-      "type": {
-        "name": "single_line_text_field",
-        "category": "TEXT"
-      }
-    },
-    {
-      "key": "TreadMaterial",
-      "namespace": "product",
-      "name": "Tread Material",
       "description": null,
       "type": {
         "name": "single_line_text_field",
@@ -2631,6 +2611,26 @@
         "name": "single_line_text_field",
         "category": "TEXT"
       }
+    },
+    {
+      "key": "rating",
+      "namespace": "reviews",
+      "name": "产品评分",
+      "description": "客户的平均评分",
+      "type": {
+        "name": "rating",
+        "category": "RATING"
+      }
+    },
+    {
+      "key": "rating_count",
+      "namespace": "reviews",
+      "name": "产品评分数量",
+      "description": "客户评分总数",
+      "type": {
+        "name": "number_integer",
+        "category": "NUMBER"
+      }
     }
   ],
   "variant": [
@@ -2755,5 +2755,26 @@
       }
     }
   ],
-  "shop": []
+  "shop": [
+    {
+      "key": "shop_rating",
+      "namespace": "custom",
+      "name": "shop_rating",
+      "description": "shop rating、totalReview",
+      "type": {
+        "name": "json",
+        "category": "JSON"
+      }
+    },
+    {
+      "key": "opne_cart_transformer",
+      "namespace": "custom",
+      "name": "opne_cart_transformer",
+      "description": "opne_cart_transformer",
+      "type": {
+        "name": "boolean",
+        "category": "TRUE_FALSE"
+      }
+    }
+  ]
 }
