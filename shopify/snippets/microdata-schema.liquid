@@ -85,27 +85,8 @@ or change the format of some info
                 "value": "{{ item.attrValue }}"
               }{% unless forloop.last %},{% endunless %}
             {%- endfor -%}
-         ],
+         ]
       {%- endif -%}
-      {%- if product.metafields.product.faq.value -%}
-        "mainEntity": [
-            {%- assign faq_data = product.metafields.product.faq.value -%}
-            {%- for item in faq_data -%}
-              {
-                "@type": "Question",
-                "name": "{{ item.question }}",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "{{ item.answer }}"
-                }
-              }{% unless forloop.last %},{% endunless %}
-            {%- endfor -%}
-         ],
-      {%- endif -%}
-      "applicationCountry": {
-        "@type": "Country",
-        "name": "United States"
-      }
     {%- endcapture -%}
     
 {%- elsif request.page_type == 'article' -%}
@@ -251,4 +232,25 @@ or change the format of some info
       }
     }
   </script>
+{%- endif -%}
+{%- if template == 'product' and product.metafields.product.faq.value -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- assign faq_data = product.metafields.product.faq.value -%}
+    {%- for item in faq_data -%}
+    {
+      "@type": "Question",
+      "name": "{{ item.question | escape }}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ item.answer | escape }}"
+      }
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
 {%- endif -%}
