@@ -1518,14 +1518,6 @@ video {
   min-width: 9rem;
 }
 
-.min-w-28 {
-  min-width: 7rem;
-}
-
-.min-w-30 {
-  min-width: 120px;
-}
-
 .max-w-4xl {
   max-width: 56rem;
 }
@@ -2576,9 +2568,9 @@ video {
   line-height: 32px;
 }
 
-.text-28 {
-  font-size: 28px;
-  line-height: 32px;
+.text-26 {
+  font-size: 26px;
+  line-height: 30px;
 }
 
 .text-32 {
@@ -2614,11 +2606,6 @@ video {
 .text-xs {
   font-size: 12px;
   line-height: 16px;
-}
-
-.text-26 {
-  font-size: 26px;
-  line-height: 30px;
 }
 
 .font-bold {
@@ -4272,6 +4259,11 @@ video {
     line-height: 32px;
   }
 
+  .fb-md\:text-30 {
+    font-size: 30px;
+    line-height: 36px;
+  }
+
   .fb-md\:text-32 {
     font-size: 32px;
     line-height: 40px;
@@ -4280,11 +4272,6 @@ video {
   .fb-md\:text-48 {
     font-size: 48px;
     line-height: 48px;
-  }
-
-  .fb-md\:text-30 {
-    font-size: 30px;
-    line-height: 36px;
   }
 }
 

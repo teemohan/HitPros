@@ -13,7 +13,7 @@
 </nav>
 
 <script>
-(() => {
+$(function() {
   const titles = '{{ collection.title | replace: "'", "\\'" }}'.split('~');
   let c_handle = '';
   const $titles = titles.map((c_title, idx) => {
@@ -35,7 +35,7 @@
     return $(listItem);
   });
   $('.collection_breadcrumb__list').append($titles);
-})();
+})
 </script>
 
 {% schema %}

@@ -17,7 +17,7 @@
 </div>
 
 <script type="text/javascript" defer>
-  (() => {
+  $(function() {
     function createCategoryList(categories) {
       if (!categories || !Array.isArray(categories) || categories.length === 0) {
         return;
@@ -79,7 +79,7 @@
     } else {
       getAllList();
     }
-  })();
+  })
 </script>
 
 {% schema %}

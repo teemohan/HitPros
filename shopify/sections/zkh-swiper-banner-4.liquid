@@ -166,7 +166,7 @@
   </div>
 </div>
 <script>
-  (() => {
+  $(function() {
     new Swiper(".{{ section.id }} .swiper", {
       touchStartPreventDefault: true,
       passiveListeners: false,
@@ -182,7 +182,7 @@
         el:".{{ section.id }} .swiper-scrollbar"
       },
     });
-  })();
+  })
 </script>
 {% schema %}
   {

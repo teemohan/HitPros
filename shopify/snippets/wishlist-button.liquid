@@ -1,7 +1,12 @@
 <div id="btn-wishlist">
   {% if customer %}
     <button class="flex items-center justify-center w-5 h-5 p-0 cursor-pointer" @click="toggleWish">
-      <span data-toggle="tooltip" class="flex items-center justify-center cursor-pointer" v-if="isDelete === 1">
+      <span data-toggle="tooltip" class="hidden items-center justify-center cursor-pointer"
+        :style="{
+          'display': isDelete == 1 ? 'flex' : ''
+        }"
+        v-if="isDelete == 1"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -49,7 +54,7 @@
 </div>
 
 <script>
-  (() => {
+$(function() {
     function decodeHTMLEntities(str) {
       let textarea = document.createElement('textarea');
       textarea.innerHTML = str;
@@ -149,5 +154,5 @@
         }
       }
     })
-  })();
+})
 </script>

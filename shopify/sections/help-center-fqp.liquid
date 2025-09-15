@@ -306,7 +306,7 @@
     </div>
 </div>
 <script>
-    (() => {
+    $(function() {
         $(".help-center-faq .left_navigation .menu-item").click(function(){
         $(this).addClass("active").siblings(".menu-item").removeClass("active");
         var pcIndex = $(this).index();
@@ -325,7 +325,7 @@
                 $(this).removeClass("active")
             }
         })
-    })();
+    })
 </script>
 {% schema %}
 {

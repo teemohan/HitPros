@@ -95,7 +95,7 @@
 
 
 <script>
-  (() => {
+ $(function() {
     new Swiper(".index-slide .swiper", {
       touchStartPreventDefault: true,
       passiveListeners: false,
@@ -122,7 +122,7 @@
         prevEl: ".index-slide .swiper-button-prev",
       },
     });
-  })();
+  })
 </script>
 {% schema %}
   {

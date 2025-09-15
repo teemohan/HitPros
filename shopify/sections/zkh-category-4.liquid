@@ -372,7 +372,7 @@
   </div>
 </div>
 <script>
-  (() => {
+$(function() {
   async function getAllList() {
     const setData = (data) => {
       if(data.length > 12) {
@@ -425,7 +425,7 @@
     });
   }
   getAllList();
-  })();
+})
 </script>
 {% schema %}
   {

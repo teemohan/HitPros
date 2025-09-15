@@ -40,7 +40,7 @@
 </section>
 
 <script>
-  (() => {
+ $(function() {
     function setScrollTop () {
       const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
       if (scrollTop > 600) {
@@ -64,5 +64,5 @@
       });
     })
     window.addEventListener('scroll', setScrollTop);
-  })();
+  })
 </script>

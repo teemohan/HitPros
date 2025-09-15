@@ -1116,7 +1116,7 @@
   </div>
 </template>
 <script>
-  (() => {
+$(function() {
     const ip = Cookies.get('ip');
     if(ip) {
       dataLayer.push({
@@ -2388,5 +2388,5 @@
         },
       },
     };
-  })();
+})
 </script>
