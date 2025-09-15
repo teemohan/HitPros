@@ -151,7 +151,7 @@
   {%- render 'product-brand-about', brand: brand -%}
 {% endif %}
 <script>
-  (() => {
+$(function() {
     let productCharacter = [];
     {% if product.metafields.product.product_character != blank %}
       productCharacter = {{ product.metafields.product.product_character }}
@@ -171,11 +171,10 @@
         skeletonLoader.classList.add('hidden');
         productListDesc.classList.remove('hidden');
       } else {
-        // 如果没有数据，隐藏骨架屏和列表
         skeletonLoader.classList.add('hidden');
       }
     });
-  })();
+})
 </script>
 {% schema %}
 {

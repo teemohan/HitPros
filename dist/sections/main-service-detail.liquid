@@ -163,7 +163,7 @@
   </div>
 </section>
 <script>
-  (() => {
+$(function() {
     const searchParams = new URLSearchParams(window.location.search);
     const idFromURL = searchParams.get('id');
 
@@ -210,7 +210,7 @@
         },
       },
     });
-  })();
+})
 </script>
 
 {% schema %}

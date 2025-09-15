@@ -162,7 +162,7 @@
 </section>
 
 <script>
-  (() => {
+$(function() {
     Vue.directive('focus-input', {
       inserted(el, binding, vnode) {
         const inputEl = el.querySelector('input') || el.querySelector('textarea');
@@ -316,7 +316,7 @@
         },
       },
     });
-  })();
+})
 </script>
 
 {% schema %}

@@ -176,7 +176,7 @@
     </div>
 </div>
 <script>
-    (() => {
+     $(function() {
         $(" #shopify-section-{{ section.id }} .question").click(function(){
             if ($(this).parent().find('.answer').css("display") == "none") {
                 $(this).parent().find('.answer').slideDown();
@@ -186,7 +186,7 @@
                 $(this).parent().removeClass("active")
             }
         })
-    })();
+    })
 </script>
 {% schema %}
 {

@@ -27,51 +27,51 @@
   </div>
 </div>
 <script>
-(() => {
-  async function getAllList() {
-    const setData = (data) => {
-      const categories = data.slice(0, 10).map(collection => {
-        const handle = collection.name
-          .toLowerCase()                 
-          .replace(/[^a-z0-9\s-]/g, '')   
-          .trim()                        
-          .replace(/\s+/g, '-')          
-          .replace(/-+/g, '-');           
-        
-        const anchor = document.createElement('a');
-        anchor.href = `/collections/${handle}`;
-        anchor.className = 'product-categories-item';
+  $(function() {
+      async function getAllList() {
+        const setData = (data) => {
+          const categories = data.slice(0, 10).map(collection => {
+            const handle = collection.name
+              .toLowerCase()                 
+              .replace(/[^a-z0-9\s-]/g, '')   
+              .trim()                        
+              .replace(/\s+/g, '-')          
+              .replace(/-+/g, '-');           
+            
+            const anchor = document.createElement('a');
+            anchor.href = `/collections/${handle}`;
+            anchor.className = 'product-categories-item';
 
-        const img = document.createElement('img');
-        img.loading = 'lazy';
-        img.src = collection?.img || '';
-        img.alt = collection.name;
-        img.width = 'auto';
-        img.height = 'auto';
+            const img = document.createElement('img');
+            img.loading = 'lazy';
+            img.src = collection?.img || '';
+            img.alt = collection.name;
+            img.width = 'auto';
+            img.height = 'auto';
 
-        const span = document.createElement('span');
-        span.textContent = collection.name;
+            const span = document.createElement('span');
+            span.textContent = collection.name;
 
-        anchor.appendChild(img);
-        anchor.appendChild(span);
+            anchor.appendChild(img);
+            anchor.appendChild(span);
 
-        return anchor;
-      });
+            return anchor;
+          });
 
-      const categoriesList = document.querySelector('.product-categories-list');
-      categoriesList.innerHTML = ''; 
-      categories.forEach(category => categoriesList.appendChild(category));
-    }
-    try {
-      const categories = JSON.parse(localStorage.getItem('all-category'));
-      if(categories) setData(categories);
-    } catch {}
-    document.addEventListener('tree-get', ({ detail }) => {
-      setData(detail.data);
-    });
-  }
-  getAllList();
-})();
+          const categoriesList = document.querySelector('.product-categories-list');
+          categoriesList.innerHTML = ''; 
+          categories.forEach(category => categoriesList.appendChild(category));
+        }
+        try {
+          const categories = JSON.parse(localStorage.getItem('all-category'));
+          if(categories) setData(categories);
+        } catch {}
+        document.addEventListener('tree-get', ({ detail }) => {
+          setData(detail.data);
+        });
+      }
+      getAllList();
+  })
 </script>
 {% schema %}
 {

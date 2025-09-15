@@ -313,8 +313,7 @@
   </cookie-bar>
 {%- endif -%}
 <script>
-  (() => {
-   
+  $(function() {
     var winWidth = $(window).innerWidth();
     if (winWidth <= 740) {
       $('.footer__item-title').click(function () {
@@ -322,7 +321,7 @@
         $(this).closest('.footer__item').find('.footer__item-content').slideToggle();
       });
     }
-  })();
+  })
 </script>
 {% schema %}
 {

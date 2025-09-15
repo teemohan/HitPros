@@ -209,6 +209,26 @@
       <script src="{{ 'jquery.min.js' | asset_url }}"></script>
       <script src="{{ 'vendor.js' | asset_url }}"></script>
       <script src="{{ 'vue.js' | asset_url }}"></script>
+      <script>
+        (function() {
+          function loadFallbackJquery() {
+            var script = document.createElement('script');
+            script.src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js";
+            script.onload = function() {
+              window.$ = window.jQuery;
+            };
+            script.onerror = function() {
+              console.error("jQuery fallback failed to load");
+            };
+            document.head.appendChild(script);
+          }
+          if (typeof window.jQuery === "undefined" || typeof window.$ === "undefined") {
+            loadFallbackJquery();
+          } else {
+            window.$ = window.jQuery;
+          }
+        })();
+      </script>
       {% if template == 'collection' %}
         <script src="{{ 'element-collection.js' | asset_url }}"></script>
       {% else %}

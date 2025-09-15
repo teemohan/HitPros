@@ -48,7 +48,7 @@
   </div>
 </div>
 <script>
-  (() => {
+$(function() {
     const button = document.querySelector('.newsleftter-btn');
       const emailInput = document.querySelector('.newsletter-input-row .input__field');
       button.addEventListener('click', function () {
@@ -78,7 +78,7 @@
         document.documentElement.scrollHeight
       );
     }
-  })();
+})
 </script>
 {% schema %}
 {

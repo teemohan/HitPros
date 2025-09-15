@@ -66,7 +66,7 @@
   </div>
 </section>
 <script>
-  (() => {
+  $(function() {
     const params = new URLSearchParams(window.location.href.split('?')[1]);
     const title = params.get('title')
     $('.main-collection2-page .heading, .main-collection2-page .title').text(title)
@@ -80,7 +80,7 @@
     ]
     const collection = all_collection.find(item => item.title == title);
     $('.main-collection2-page .page-content').text(collection.description);
-  })();
+  })
 </script>
 {% schema %}
 {

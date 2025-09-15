@@ -128,7 +128,7 @@
   if(window.northsky.customerId && isCheckoutBack) {
       window.location.replace("/") 
   }
-  (() => {
+ $(function() {
      function startPolling() {
       setInterval(() => {
         const params = new URLSearchParams(window.location.search);
@@ -346,7 +346,7 @@
         },
       },
     });
-  })();
+  })
 </script>
 
 {% schema %}

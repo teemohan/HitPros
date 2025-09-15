@@ -43,7 +43,7 @@
 </div>
 
 <script>
-  (() => {
+$(function() {
     const productRecommendationsSection = document.querySelector('.product-recommendations');
     const url = productRecommendationsSection.dataset.url;
     fetch(url)
@@ -92,7 +92,7 @@
       .catch((e) => {
         console.error(e);
       });
-  })();
+})
 </script>
 
 {% schema %}

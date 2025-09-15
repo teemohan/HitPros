@@ -216,7 +216,7 @@
   {%- endif -%}
 {%- endunless -%}
 <script>
-  (() => {
+$(function() {
     $('.cus-product .pswp__button--close').on('click', function (event) {
       $('.product--thumbnails-left .product__media').css('position', 'sticky');
       $('.cus-product .product__media-image-wrapper img').css('transform', 'scale(1)');
@@ -241,7 +241,7 @@
       <span class="breadcrumb__link" aria-current="page">{{ product.title }}</span>
     </li>`)
     $('.product-breadcrumb__list').append($titles).append($productTitle);
-  })();
+})
 </script>
 
 {% schema %}

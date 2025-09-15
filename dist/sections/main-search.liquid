@@ -227,7 +227,7 @@
   render 'my-icon'
 %}
 <script>
-  (() => {
+$(function() {
     function showEmtpy() {
       $('.js-filter-noresult').hide()
       $('.js-filter-show-noresult').show()
@@ -689,7 +689,7 @@
       beforeDestroy() {
       }
     });
-  })()
+})
 </script>
 {% schema %}
 {

@@ -611,7 +611,7 @@
 {%- render 'pc-sidebar' -%}
 {%- render 'mobile-sidebar' -%}
 <script>
-  (() => {
+  $(function() {
     if($('#pc-sidebar-section').length) {
       new Vue({
         el: '#pc-sidebar-section',
@@ -629,11 +629,11 @@
         mobileSidebar,
       },
     });
-  })();
+  })
 </script>
 
 <script>
-  (() => {
+  $(function() {
     $('.mobile-menu-action').click(function() {
       $('.mobile-menu-nav').addClass('nav-open');
       $('body').addClass('no-scroll');
@@ -643,11 +643,11 @@
       $('body').addClass('no-scroll');
       $('#mobile_main_nav1').addClass('nav-open');
     });
-  })();
+  })
 </script>
 
 <script>
-  (() => {
+  $(function() {
     function getWishCount() {
       {% if customer %}
         const customerId = +"{{ customer.id }}"
@@ -720,7 +720,7 @@
 
     document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
     document.documentElement.style.setProperty('--header-height-without-bottom-nav', headerHeightWithoutBottomNav + 'px');
-  })();
+  })
 </script>
 
 <script type="application/ld+json">

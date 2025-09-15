@@ -177,7 +177,7 @@
   </div>
 </template>
 <script> 
-  (() => {
+$(function() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('slug') === 'account-wish') {
       const ip = Cookies.get('ip');
@@ -509,5 +509,5 @@
         }
       }
     } 
-  })();
+})
 </script>

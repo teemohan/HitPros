@@ -21,7 +21,7 @@
 </div>
 
 <script>
-  (() => {
+$(function() {
     new Swiper(".{{ section.id }}-IndexBestswiper", {
       observer: true,
       observeParents: true,
@@ -51,7 +51,7 @@
         prevEl: ".{{ section.id }} .swiper-button-prev",
       },
     });
-  })();
+})
 </script>
 
 {% schema %}

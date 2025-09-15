@@ -266,7 +266,7 @@
   </div>
 </section>
 <script>
-  (() => {
+  $(function() {
     if('{{ customer.email }}' == '') {
       window.location.href = '/account/login';
       return;
@@ -657,7 +657,7 @@
         },
       },
     });
-  })();
+  })
 </script>
 {% schema %}
 {

@@ -37,7 +37,7 @@
 </div>
 
 <script>
-  (() => {
+  $(function() {
     const handleIntersection = () => {
       const productRecommendationsSection = document.querySelector('.product-recommendations');
       const url = productRecommendationsSection.dataset.url;
@@ -96,7 +96,7 @@
     {% comment %} const productRecommendationsSection = document.querySelector('.product-recommendations');
     const observer = new IntersectionObserver(handleIntersection, { rootMargin: '0px 0px 200px 0px' });
     observer.observe(productRecommendationsSection); {% endcomment %}
-  })();
+  })
 </script>
 
 {% schema %}
