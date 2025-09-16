@@ -1,4 +1,4 @@
-(() => {
+$(function() {
   (() => {
     if(Cookies.get('logout') == 1) {
       Cookies.remove('logout');
@@ -9027,7 +9027,7 @@ var ProductAttrs = class extends CustomHTMLElement {
       console.error(err);
     }
   })()
-})();
+})
 
 
 
