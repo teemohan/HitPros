@@ -12,7 +12,13 @@
     "purge-advanced": "node ./scripts/purgecss-advanced.config.js",
     "minify": "node ./scripts/minify.js",
     "deploycli": "bash ./deploycli.sh",
-    "clear": "node ./scripts/remove-comments.js"
+    "clear": "node ./scripts/remove-comments.js",
+    "dev:hitpros": "shopify theme dev --store hitpros.myshopify.com",
+    "dev:test": "shopify theme dev --store testhitpros.myshopify.com",
+    "dev:eu": "shopify theme dev --store eu-northsky-teststore.myshopify.com",
+    "push:hitpros": "shopify theme push --store hitpros.myshopify.com",
+    "push:test": "shopify theme push --store testhitpros.myshopify.com",
+    "push:eu": "shopify theme push --store eu-northsky-teststore.myshopify.com"
   },
   "devDependencies": {
     "@shopify/prettier-plugin-liquid": "^1.3.0",
