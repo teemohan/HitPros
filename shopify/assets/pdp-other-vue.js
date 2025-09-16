@@ -204,18 +204,12 @@ $(function () {
             }
           ],
           // Sort options for reviews
+          // { name: 'Highest Rating', value: "2" },
+          // { name: 'Lowest Rating',value: "3"},
           sortArr: [
             {
               name: 'Most Recent',
               value: "1"
-             },
-              {
-              name: 'Highest Rating',
-              value: "2"
-             },
-             {
-              name: 'Lowest Rating',
-              value: "3"
              },
              {
               name: 'Only Pictures',
