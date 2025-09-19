@@ -1,0 +1,295 @@
+<div class="js-reviews-{{ section.id }} w-full bg-EAEEF1 py-4 fb-sm:py-17">
+  <div class="container w-full overflow-hidden">
+    <div class="flex items-center justify-between mb-4 fb-sm:mb-6">
+      <h2 class="hidden fb-sm:block text-32 font-semibold text-main">
+        {{ section.settings.title }}
+        </h2>
+        <h2 class="block fb-sm:hidden text-24 font-semibold text-main">
+        {{ section.settings.title_mobile }}
+      </h2>
+      <div class="js-swiper-btns hidden items-center justify-end space-x-3">
+        <div class="swiper-button-prev !w-8 cursor-pointer fb-sm:!w-10 hidden fb-sm:block ">
+          <svg style="transform: scale(-1);" width="40" height="32" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30.7507 13.4255L20.7512 3.3996L24.1745 0L40 15.7507L24.2653 31.9246C24.1263 32.0478 24.0411 31.9982 23.8985 31.9246C23.089 31.5107 21.6496 29.3822 20.7512 28.7862L30.936 18.2085H0V13.7014L0.277868 13.4255H30.7507Z" fill="#0A2B6F"/>
+          </svg>
+        </div>
+        <div class="swiper-button-next !w-8 cursor-pointer fb-sm:!w-10 hidden fb-sm:block">
+          <svg width="40" height="32" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30.7507 13.4255L20.7512 3.3996L24.1745 0L40 15.7507L24.2653 31.9246C24.1263 32.0478 24.0411 31.9982 23.8985 31.9246C23.089 31.5107 21.6496 29.3822 20.7512 28.7862L30.936 18.2085H0V13.7014L0.277868 13.4255H30.7507Z" fill="#0A2B6F"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative w-full mx-auto fb-hover-list ">
+      <div class="swiper overflow-visible relative">
+        <div class="js-review-content swiper-wrapper">
+          <!-- Skeleton -->
+          <div class="transition duration-200 relative w-full rounded h-20r fb-sm:h-27r">
+            <div class="w-full h-full bg-gray-200 pulse"></div>
+          </div>
+        </div>
+      </div>
+      <div class="js-source-badges flex items-center justify-center mt-2 gap-2"></div>
+    </div>
+    <!-- Footer rating summary -->
+    <div class="flex flex-col items-center justify-center text-575757 text-sm">
+        <span class="js-summary-line hidden">
+            Rated <span class="js-avg font-semibold text-main">4.5</span> / 5 based on
+            <a href="https://www.google.com/search?sca_esv=191b7c8b3afd2e9f&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E6PJksNQbbpx1tBdOTp9i3TP-cbcR5ydpVJ0WP49tYOJNoHDe4JjLT-98zgTLb2eCNueDq2JvqWNCMY_7oY8NSDjEbnF&q=NorthSky+Supply+Reviews&sa=X&ved=2ahUKEwjly5SP7ryPAxUi5ckDHZgLCokQ0bkNegQIJRAE&biw=1912&bih=954&dpr=1" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="underline" >
+            <span class="js-count ">0</span> reviews.
+            </a>
+        </span>
+          {%- if section.settings.footer_image != blank -%}
+                <div class="mt-3 w-full flex justify-center">
+                {{ section.settings.footer_image 
+                    | image_url: width: 76 
+                    | image_tag: 
+                        loading: 'lazy', 
+                        alt: section.settings.footer_image_alt, 
+                        class: 'max-h-38 object-contain' }}
+                </div>
+          {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .review-title {
+    color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  .review-content {
+    color: var(--Deep-blue-Dark, #202427);
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%; /* 14.4px */
+  }
+  .h-\[186px\] { height: 186px; }
+  .line-clamp-4 {
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+  }
+  @media screen and (min-width: 954px) {
+    .fb-hover-list:before,.fb-hover-list:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 150px;
+      height: 100%;
+      background: #EAEEF1;
+      z-index: 2;
+    }
+    .fb-hover-list:before { left: -160px; }
+    .fb-hover-list:after  { right: -170px; }
+  }
+</style>
+
+<script>
+  $(function () {
+    class ReviewsSection {
+      constructor(sectionId) {
+        this.sectionId = sectionId;
+        this.root = document.querySelector('.js-reviews-' + sectionId);
+      }
+
+      formatDate(input) {
+        if (!input) return '';
+        const d = new Date(input);
+        if (isNaN(d.getTime())) return input;
+        return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' });
+      }
+
+      // 映射接口字段 -> 组件字段
+      mapApiItem(raw) {
+        return {
+          rating: Number(raw.rating || 0),
+          title: raw.title || 'Northsky new customer…',
+          content: raw.reviewText || '',
+          authorName: raw.userName || 'Anonymous',
+          reviewDate: this.formatDate(raw.reviewTime || raw.date || ''),
+          source: (raw.verifiedSource || '').toLowerCase()
+        };
+      }
+      starSvg(type = 'full') {
+        const cls = '';
+        const d = 'M6.20383 5.09497L8.82337 0L11.5302 5.09497L16.7693 5.98882L13.102 9.92179L13.7132 15.9106L8.82337 13.4078L3.84624 16L4.45747 9.92179L0.615479 5.98882L6.20383 5.09497Z';
+        if (type === 'empty') {
+            // 空心星
+            return `<svg class="${cls}" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"  width="17" height="16">
+            <path d="${d}" stroke="#FABE00" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>`;
+        }
+        // 实心星
+        return `<svg class="${cls}" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"  width="17" height="16">
+            <path d="${d}" fill="#FABE00"/>
+        </svg>`;
+      }
+
+      renderStars(rating) {
+        const full = Math.round(rating); // 显示为最接近的整数星
+        return this.starSvg().repeat(full) + this.starSvg('empty').repeat(5 - full);
+      }
+
+      sourceBadge(source){
+        if(source === 'google'){
+          return '<span class="px-2 py-0.5 text-[11px] rounded bg-[#E8F0FE] text-[#0A2B6F]">Google</span>';
+        }
+
+        return '';
+      }
+
+      createReviewHtml(item) {
+        return `
+          <div class="swiper-slide !w-[184px] fb-sm:!w-[163px] overflow-hidden">
+            <div class="relative flex flex-col bg-white rounded-sm shadow-sm p-3 fb-sm:p-4 h-[186px] fb-sm:!h-[186px] lg:!h-[186px] overflow-hidden">
+              <div class="mb-2 flex items-center gap-1">${this.renderStars(item.rating)}</div>
+              <div class="review-title line-clamp-2 mb-1 cursor-default">${item.title}</div>
+              <p class="review-content mb-3  line-clamp-4 ">${item.content}</p>
+              <div class="text-575757 text-xs mt-auto">
+                <div class="font-medium">— ${item.authorName}</div>
+                <div>${item.reviewDate}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      initSwiper() {
+        const swiperElement = this.root.querySelector('.swiper');
+        if (!swiperElement) return false;
+        return new Swiper(swiperElement, {
+          slidesPerView: 'auto',
+          spaceBetween: 20,
+          scrollbar: {
+            el: this.root.querySelector('.swiper-scrollbar'),
+            draggable: true,
+          },
+          navigation: {
+            nextEl: this.root.querySelector('.swiper-button-next'),
+            prevEl: this.root.querySelector('.swiper-button-prev'),
+          },
+          breakpoints: {
+            0:    { spaceBetween: 12, slidesPerView: 2, slidesPerGroup: 2 },
+            768:  { spaceBetween: 24, slidesPerView: 4, slidesPerGroup: 4 },
+            1024: { spaceBetween: 24, slidesPerView: 6, slidesPerGroup: 6 },
+          },
+        });
+      }
+
+      setSummaryFromBrief(briefArr) {
+        // 用 reviewBrief 计算加权平均
+        let total = 0, weighted = 0;
+        (briefArr || []).forEach(b => {
+          const count = Number(b.totalReview || 0);
+          const rating = Number(b.rating || 0);
+          total += count;
+          weighted += rating * count;
+        });
+        const avg = total ? (weighted / total) : 0;
+
+        const summary = this.root.querySelector('.js-summary-line');
+        const avgEl = this.root.querySelector('.js-avg');
+        const cntEl = this.root.querySelector('.js-count');
+        if (summary && avgEl && cntEl) {
+          avgEl.textContent = (Math.round(avg * 10) / 10).toFixed(1);
+          cntEl.textContent = total;
+          summary.classList.remove('hidden');
+        }
+      }
+
+      async fetchReviews() {
+        try {
+          const shopQuery = { pageNo: 1, pageSize: 18, orderAndFilter: 2 };
+          const res = await kkAjax.post('/openapi/adlink/store/review', shopQuery);
+
+          if (!res || res.code !== 200 || !res.data) {
+            this.root.classList.add('hidden');
+            return;
+          }
+
+          // 1) reviews
+          const list = Array.isArray(res.data.reviews) ? res.data.reviews : [];
+          list.sort((a, b) => Number(b.rating || 0) - Number(a.rating || 0));
+
+          // 2) 只保留 Google 的 brief
+          const brief = Array.isArray(res.data.reviewBrief) ? res.data.reviewBrief : [];
+          const googleBrief = brief.filter(b => (b.source || '').toLowerCase() === 'google');
+
+          if (!list.length) {
+            this.root.classList.add('hidden');
+            return;
+          }
+
+          // 显示左右切换按钮
+          const btns = this.root.querySelector('.js-swiper-btns');
+          if (btns) {
+            btns.classList.remove('hidden');
+            btns.classList.add('flex');
+          }
+
+          // 渲染卡片
+          const wrapper = this.root.querySelector('.js-review-content');
+          if (!wrapper) return;
+          wrapper.innerHTML = '';
+
+          const fragment = document.createDocumentFragment();
+          const tempDiv = document.createElement('div');
+
+          list.forEach(raw => {
+            const item = this.mapApiItem(raw);
+            tempDiv.innerHTML = this.createReviewHtml(item);
+            while (tempDiv.firstChild) fragment.appendChild(tempDiv.firstChild);
+          });
+
+          wrapper.appendChild(fragment);
+          this.initSwiper();
+
+          // 设置汇总（仅 Google）
+          this.setSummaryFromBrief(googleBrief);
+        } catch (e) {
+          console.log(e);
+          this.root.classList.add('hidden');
+        }
+      }
+
+      async init() { await this.fetchReviews(); }
+    }
+
+    const reviews = new ReviewsSection('{{ section.id }}');
+    reviews.init();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Reviews Carousel",
+  "presets": [{ "name": "reviews-carousel" }],
+  "class": "reviews-swiper-list",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Hear From Our Customers" },
+    {
+        "type": "image_picker",
+        "id": "footer_image",
+        "label": "Footer image under rating"
+        },
+        {
+        "type": "text",
+        "id": "title_mobile",
+        "label": "Heading (Mobile)",
+        "default": "Trusted by thousands of Customers, Pros & Businesses Like Yours"
+        }
+  ]
+}
+{% endschema %}

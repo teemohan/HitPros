@@ -1,0 +1,204 @@
+<style>
+    .wwa {
+        background: #D3DEF1; 
+        width: 100%;               
+        display: flex;
+        justify-content: center;
+    }
+    .wwa-photo { 
+                      
+    }
+    .wwa-container {
+        max-width: 1440px!important;
+        width: 100%;
+        padding-top: 68px;
+        padding-bottom: 68px;
+        display: flex;
+        justify-content: center;
+    }
+    .about-wwa__container {
+        display: flex;
+        width: 952px;
+    }
+    .wwa-img {
+        width: 426px;
+        height: 320px;                         
+        object-fit: none;
+    }
+
+    .wwa-copy {
+        flex: 1;                                
+        width: 466px;                       
+        margin-left: 60px;                      
+    }
+
+    .wwa-title {
+        color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+        font-family: Inter;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 120%; /* 38.4px */
+    }
+
+    .wwa-desc {
+        color: var(--Deep-blue-Dark, #202427);
+        font-family: Inter;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 140%; /* 28px */
+        margin-top: 24px;
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 954px) {
+        .wwa-container {
+            max-width: 768px!important;
+            width: 100%;
+            padding-top: 48px;
+            padding-bottom: 48px;
+        }
+        .about-wwa__container {
+            flex-direction: column; 
+            align-items: center;   
+        }
+        .wwa-photo {
+            width: 444px;
+            order: 2;
+            margin-top: 40px;
+        }
+        .wwa-img {
+            max-width: 100%;   
+            height: auto;     
+            object-fit: contain; 
+
+        }
+        .wwa-copy {
+            flex: 1;         
+            margin-top: 0px;   
+            width:444px;          
+            margin-left: 0px;        
+            order: 1;       
+
+        }
+        .wwa-title {
+            color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+            font-family: Inter;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 120%; /* 28.8px */
+
+        }
+        .wwa-desc {
+            color: var(--Deep-blue-Dark, #202427);
+            width:444px;
+            font-family: Inter;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 140%; /* 22.4px */
+            margin-top: 24px;
+        }
+    }
+    @media screen and (max-width: 768px) {
+        .wwa-container {
+            max-width: 768px!important;
+            width: 100%;
+            padding-top: 28px;
+            padding-bottom: 28px;
+        }
+        .about-wwa__container {
+            flex-direction: column; 
+            align-items: center; 
+        }
+        .wwa-photo {
+            width:335px;  
+            order: 2;
+            margin-top: 40px;
+        }
+         .wwa-img {
+            max-width: 100%; 
+            height: auto; 
+            object-fit: contain; 
+
+        }
+        .wwa-copy {
+            flex: 1;         
+            margin-top: 0px; 
+            width:335px;      
+            margin-left: 0px;        
+            order: 1;        
+
+        }
+        .wwa-title {
+            color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+            font-family: Inter;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 120%; /* 28.8px */
+
+        }
+        .wwa-desc {
+            color: var(--Deep-blue-Dark, #202427);
+            
+            font-family: Inter;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 140%; /* 22.4px */
+            margin-top: 24px;
+        }
+    }
+
+</style>
+<section class="wwa">
+<div class="wwa-container">
+<div class="about-wwa__container">
+  <div class="wwa-photo">
+    {% if section.settings.photo != blank %}
+      <img src="{{ section.settings.photo | image_url: width: 426 }}" alt="who we are photo" class="wwa-img" />
+    {% endif %}
+  </div>
+
+  <div class="wwa-copy">
+    <h2 class="wwa-title">{{ section.settings.title }}</h2>
+    <p class="wwa-desc">
+      {{ section.settings.description | replace: '100+ years', '<strong>100+ years</strong>' }}
+    </p>
+    </div>
+</div>
+</div>
+</section>
+
+{% schema %}
+{
+    "name": "About Us - WWA",
+    "settings": [
+        {
+            "type" : "image_picker",
+            "id" : "photo",
+            "label": "photo"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Who We Are"
+        },
+        {
+            "type": "text",
+            "id": "description",
+            "label": "Description",
+            "default": "With 100+ years of combined experience working for some of the most prominent industrial supply companies in the U.S., our product experts know the ins, outs and in-betweens of all things MRO. They understand our customers’ needs and wants, and their unique point of view. Ultimately, they share a passion for making supplies more affordable and sustainable for the businesses who depend on them every day."
+        }
+    ],
+    "presets":[
+        {
+            "name": "About Us - WWA"
+        }
+    ]
+}
+
+{% endschema %}

@@ -18,7 +18,10 @@
     "dev:eu": "shopify theme dev --store eu-northsky-teststore.myshopify.com",
     "push:hitpros": "shopify theme push --store hitpros.myshopify.com",
     "push:test": "shopify theme push --store testhitpros.myshopify.com",
-    "push:eu": "shopify theme push --store eu-northsky-teststore.myshopify.com"
+    "push:eu": "shopify theme push --store eu-northsky-teststore.myshopify.com",
+    "pull:hitpros": "shopify theme pull --store hitpros.myshopify.com",
+    "pull:test": "shopify theme pull --store testhitpros.myshopify.com",
+    "pull:eu": "shopify theme pull --store eu-northsky-teststore.myshopify.com"
   },
   "devDependencies": {
     "@shopify/prettier-plugin-liquid": "^1.3.0",

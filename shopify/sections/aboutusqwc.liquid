@@ -1,0 +1,198 @@
+
+<style>
+    .qwc {
+        background: #FFFFFF; 
+        width: 100%;               
+        display: flex;
+        justify-content: center; 
+    }
+    .qwc-photo { 
+        margin-left: 60px;                      
+    }
+    .qwc-container {
+        max-width: 1440px!important;
+        width: 100%;
+        padding-top: 68px;
+        padding-bottom: 68px;
+        display: flex;
+        justify-content: center;
+    }
+    .about-qwc__container {
+        display: flex;
+        width: 952px;
+    }
+    .qwc-img {
+        width: 426px;
+        height: 320px;                         
+        object-fit: none;
+    }
+    .qwc-copy {
+        flex: 1;                                
+        width: 466px;                       
+    }
+    .qwc-title {
+        color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+        font-family: Inter;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 120%; /* 38.4px */
+    }
+
+    .qwc-desc {
+        color: var(--Deep-blue-Dark, #202427);
+        font-family: Inter;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 140%; /* 28px */
+        margin-top: 24px;
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 954px) {
+        .qwc-container {
+            max-width: 768px!important;
+            width: 100%;
+            padding-top: 48px;
+            padding-bottom: 48px;
+        }
+        .about-qwc__container {
+            flex-direction: column; 
+            align-items: center;  
+        }
+        .qwc-photo {
+            width: 444px;
+            margin-left: 0px;
+            margin-top: 40px;
+        }
+        .qwc-img {
+            max-width: 100%; 
+            height: auto; 
+            object-fit: contain;
+        }
+        .qwc-copy {
+            flex: 1;         
+            margin-top: 0px;   
+            width:444px;          
+            margin-left: 0px;               
+
+        }
+        .qwc-title {
+            color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+            font-family: Inter;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 120%; /* 28.8px */
+
+        }
+        .qwc-desc {
+            color: var(--Deep-blue-Dark, #202427);
+            width:444px;
+            font-family: Inter;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 140%; /* 22.4px */
+            margin-top: 24px;
+        }
+    }
+    @media screen and (max-width: 768px) {
+        .qwc-container {
+            max-width: 768px!important;
+            width: 100%;
+            padding-top: 28px;
+            padding-bottom: 28px;
+        }
+        .about-qwc__container {
+            flex-direction: column; 
+            align-items: center; 
+        }
+        .qwc-photo {
+            width:335px;  
+            margin-left: 0px;
+            margin-top: 40px;
+        }
+         .qwc-img {
+            max-width: 100%;  
+            height: auto;  
+            object-fit: contain; 
+        }
+        .qwc-copy {
+            flex: 1;         
+            margin-top: 0px; 
+            width:335px;      
+            margin-left: 0px;                
+
+        }
+        .qwc-title {
+            color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+            font-family: Inter;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 120%; /* 28.8px */
+
+        }
+        .qwc-desc {
+            color: var(--Deep-blue-Dark, #202427);
+            font-family: Inter;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 140%; /* 22.4px */
+            margin-top: 24px;
+        }
+    }
+
+</style>
+
+
+<section class="qwc">
+<div class="qwc-container">
+<div class="about-qwc__container">
+    <div class="qwc-copy">
+        <h2 class="qwc-title">{{ section.settings.title }}</h2>
+        <p class="qwc-desc">
+        {{ section.settings.description | replace: 'our standards are high', '<strong>our standards are high</strong>' }}
+        </p>
+    </div>
+    <div class="qwc-photo">
+        {% if section.settings.photo != blank %}
+        <img src="{{ section.settings.photo | image_url: width: 426 }}" alt="Quality Without Compromise" class="qwc-img" />
+        {% endif %}
+    </div>
+</div>
+</div>
+</section>
+
+{% schema %}
+{
+    "name": "About Us - QWC",
+    "settings": [
+        {
+            "type" : "image_picker",
+            "id" : "photo",
+            "label": "photo"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Quality Without Compromise"
+        },
+        {
+            "type": "text",
+            "id": "description",
+            "label": "Description",
+            "default": "There’s no room for error, in your business or in ours. That’s why we’ve crafted an extensive network of global manufacturers as obsessed with excellence as we are. And our quality control measures are unmatched, with each and every one of our products undergoing detailed inspection and stringent testing. We've sent back truckloads of product that didn’t hit the mark. Why? Because our standards are high — and we’re not shy about it."
+        }
+    ],
+    "presets":[
+        {
+            "name": "About Us - QWC"
+        }
+    ]
+}
+
+{% endschema %}
