@@ -72,7 +72,7 @@
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
-    line-height: 120%; /* 14.4px */
+    line-height: 105%; /* 14.4px */
   }
   .h-\[186px\] { height: 186px; }
   .line-clamp-4 {
@@ -152,11 +152,11 @@
 
       createReviewHtml(item) {
         return `
-          <div class="swiper-slide !w-[184px] fb-sm:!w-[163px] overflow-hidden">
+          <div class="swiper-slide !w-[163px] fb-sm:!w-[184px] overflow-hidden">
             <div class="relative flex flex-col bg-white rounded-sm shadow-sm p-3 fb-sm:p-4 h-[186px] fb-sm:!h-[186px] lg:!h-[186px] overflow-hidden">
               <div class="mb-2 flex items-center gap-1">${this.renderStars(item.rating)}</div>
               <div class="review-title line-clamp-2 mb-1 cursor-default">${item.title}</div>
-              <p class="review-content mb-3  line-clamp-4 ">${item.content}</p>
+              <p class="review-content mb-1  line-clamp-4 ">${item.content}</p>
               <div class="text-575757 text-xs mt-auto">
                 <div class="font-medium">— ${item.authorName}</div>
                 <div>${item.reviewDate}</div>
@@ -181,9 +181,9 @@
             prevEl: this.root.querySelector('.swiper-button-prev'),
           },
           breakpoints: {
-            0:    { spaceBetween: 12, slidesPerView: 2, slidesPerGroup: 2 },
-            768:  { spaceBetween: 24, slidesPerView: 4, slidesPerGroup: 4 },
-            1024: { spaceBetween: 24, slidesPerView: 6, slidesPerGroup: 6 },
+            0:    { spaceBetween: 8, slidesPerView: 2, slidesPerGroup: 2 },
+            768:  { spaceBetween: 8, slidesPerView: 4, slidesPerGroup: 4 },
+            1440: { spaceBetween: 21, slidesPerView: 6, slidesPerGroup: 6 },
           },
         });
       }
