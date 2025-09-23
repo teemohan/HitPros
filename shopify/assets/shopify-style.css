@@ -1309,10 +1309,6 @@ video {
   width: 32px !important;
 }
 
-.\!w-\[163px\] {
-  width: 163px !important;
-}
-
 .w-0 {
   width: 0px;
 }
@@ -3426,10 +3422,6 @@ video {
 
   .fb-sm\:\!w-10 {
     width: 2.5rem !important;
-  }
-
-  .fb-sm\:\!w-\[184px\] {
-    width: 184px !important;
   }
 
   .fb-sm\:w-1\/3 {
