@@ -1,0 +1,239 @@
+<style>
+  .our-mission-section {
+    background: var(--Core-Primary-Deep-Blue, #0A2B6F);
+    width: 100%;               
+    display: flex;
+    justify-content: center; 
+  }
+
+  .omc-container {
+    max-width: 1440px!important;
+    width: 100%;
+    padding-top: 68px;
+    padding-bottom: 68px;
+    display: flex;
+    justify-content: center; 
+  }
+  .about-omc__container {
+    display: flex;
+    width: 952px;
+  }
+  .mission-icons {
+    width: 430px;
+    height: 88px;                         
+    object-fit: none;
+    display: flex;               
+    justify-content: center;     
+    align-items: center;         
+    gap: 22px;
+  }
+  .mission-icon {
+    width: 88px;
+    height: 88px;
+    object-fit: contain;
+  }
+  .mission-arrow-img {
+    width: 39px;
+    object-fit: contain;
+  }
+  .omc-copy {
+    flex: 1;                                
+    width: 466px;  
+    margin-left: 60px;                     
+  }
+  .omc-title {
+    color: var(--Core-Secondary-Yellow, #FABE00);
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%; /* 38.4px */
+  }
+  .omc-desc {
+    color: var(--Blue-2, #EAEEF1);
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 28px */
+    margin-top: 24px;
+  }
+  @media screen and (min-width: 768px) and (max-width: 954px) {
+      .omc-container {
+          max-width: 768px!important;
+          width: 100%;
+          padding-top: 48px;
+          padding-bottom: 48px;
+      }
+      .about-omc__container {
+          flex-direction: column; 
+          align-items: center;    
+      }
+      .mission-icons {
+          max-width: 100%;   
+          height: auto;      
+          object-fit: contain; 
+          gap: 12px;
+      }
+      .mission-icon {
+          width: 80px;
+          height: 80px;
+          object-fit: contain;
+          }
+      .omc-copy {
+          flex: 1;         
+          margin-top: 40px;   
+          width:444px;          
+          margin-left: 0px;               
+
+      }
+      .omc-title {
+        color: var(--Core-Secondary-Yellow, #FABE00);
+        font-family: Inter;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 120%; /* 28.8px */
+
+      }
+      .omc-desc {
+        color: var(--Blue-2, #EAEEF1);
+        font-family: Inter;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 140%; /* 22.4px */
+      }
+  }
+  @media screen and (max-width: 768px) {
+      .omc-container {
+          max-width: 768px!important;
+          width: 100%;
+          padding-top: 28px;
+          padding-bottom: 28px;
+      }
+      .about-omc__container {
+          flex-direction: column; 
+          align-items: center;
+      }
+        .mission-icons {
+          max-width: 100%;  
+          height: auto; 
+          object-fit: contain; 
+          gap: 12px;
+      }
+      .mission-icon {
+          width: 80px;
+          height: 80px;
+          object-fit: contain;
+          }
+      .omc-copy {
+          flex: 1;         
+          margin-top: 40px; 
+          width:335px;      
+          margin-left: 0px;                
+
+      }
+      .omc-title {
+        color: var(--Core-Secondary-Yellow, #FABE00);
+        font-family: Inter;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 120%; /* 28.8px */
+
+      }
+      .omc-desc {
+        color: var(--Blue-2, #EAEEF1);
+        font-family: Inter;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 140%; /* 22.4px */
+      }
+  }
+</style>
+
+<section class="our-mission-section">
+<div class="omc-container">
+  <div class="about-omc__container">
+  <div class="mission-icons">
+    {% if section.settings.icon1 != blank %}
+      <img src="{{ section.settings.icon1 | image_url: width: 88 }}" alt="icon1" class="mission-icon" />
+    {% endif %}
+    {% if section.settings.arrow1 != blank %}
+      <img src="{{ section.settings.arrow1 | image_url: width: 32 }}" alt="arrow1" class="mission-arrow-img" />
+    {% else %}
+      <span class="mission-arrow">→</span>
+    {% endif %}
+    {% if section.settings.icon2 != blank %}
+      <img src="{{ section.settings.icon2 | image_url: width: 88 }}" alt="icon2" class="mission-icon" />
+    {% endif %}
+    {% if section.settings.arrow2 != blank %}
+      <img src="{{ section.settings.arrow2 | image_url: width: 32 }}" alt="arrow2" class="mission-arrow-img" />
+    {% else %}
+      <span class="mission-arrow">→</span>
+    {% endif %}
+    {% if section.settings.icon3 != blank %}
+      <img src="{{ section.settings.icon3 | image_url: width: 88 }}" alt="icon3" class="mission-icon" />
+    {% endif %}
+  </div>
+  <div class="omc-copy">
+    <h2 class="omc-title">{{ section.settings.title }}</h2>
+    <p class="omc-desc">
+      {{ section.settings.description | replace: 'high-quality gear at the lowest price possible', '<strong>high-quality gear at the lowest price possible</strong>' }}
+    </p>
+  </div>
+  </div>
+</div>
+</section>
+
+{% schema %}
+{
+  "name": "About Us Mission",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "icon1",
+      "label": "icon1"
+    },
+    {
+      "type": "image_picker",
+      "id": "arrow1",
+      "label": "arrow1"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon2",
+      "label": "icon2"
+    },
+    {
+      "type": "image_picker",
+      "id": "arrow2",
+      "label": "arrow2"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon3",
+      "label": "icon3"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "Our Mission"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "description",
+      "default": "At NorthSky, we’re committed to saving you money on the industrial supplies you need most to run your business, day in and day out — without ever compromising on quality. It’s all in the name of delivering <strong>high-quality gear at the lowest price possible</strong>. Period."
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Us Mission"
+    }
+  ]
+}
+{% endschema %}
