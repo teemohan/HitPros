@@ -67,10 +67,33 @@ or change the format of some info
           "url": "{{ shop.url }}{{ product.url }}",
           "hasMerchantReturnPolicy": {
             "@type": "MerchantReturnPolicy",
+            "applicableCountry": "{{ localization.country.iso_code }}",
             "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
             "merchantReturnDays": 30,
             "returnMethod": "https://schema.org/ReturnByMail",
             "returnFees": "https://schema.org/FreeReturn"
+          },
+          "shippingDetails": {
+            "@type": "OfferShippingDetails",
+            "shippingDestination": {
+              "@type": "DefinedRegion",
+              "addressCountry": "US"
+            },
+            "deliveryTime": {
+              "@type": "ShippingDeliveryTime",
+              "handlingTime": {
+                "@type": "QuantitativeValue",
+                "minValue": 1,
+                "maxValue": 2,
+                "unitCode": "d"
+              },
+              "transitTime": {
+                "@type": "QuantitativeValue",
+                "minValue": 3,
+                "maxValue": 7,
+                "unitCode": "d"
+              }
+            }
           }
         }{% unless forloop.last %},{% endunless %}
         {% endfor %}
