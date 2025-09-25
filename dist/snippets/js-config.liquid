@@ -3,6 +3,7 @@
 {%- else -%}
   {%- assign is_online_shop = false -%}
 {%- endif -%}
+<script src="{{ 'vendor.js' | asset_url }}" defer></script>
 <script src="{{ 'theme.js' | asset_url }}" defer></script>
 {% if template == 'collection' %}
   <script src="{{ 'facet-filters-newcol.js' | asset_url }}" defer></script>
@@ -18,7 +19,6 @@
 {% render 'js-page-customer'%}
 
 <script src="//code.tidio.co/dzwcvyci274aolrpev5ilpboec1objxi.js" defer></script>
-{{ "//cdn.shopify.com/s/files/1/0773/5273/0914/files/footer.js?v=1718022933" | script_tag }}
 {%- if is_online_shop -%}
   <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47344356.js"></script>
 {% endif %}
