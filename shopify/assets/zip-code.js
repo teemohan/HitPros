@@ -1,26 +1,26 @@
 const currencySymbols = {
-  USD: '$', 
-  EUR: '€', 
-  GBP: '£', 
+  USD: '$',
+  EUR: '€',
+  GBP: '£',
   JPY: '¥',
-  CNY: '¥', 
+  CNY: '¥',
   AUD: '$',
-  CAD: '$', 
-  CHF: 'CHF', 
-  NZD: '$', 
-  INR: '₹', 
-  RUB: '₽', 
-  KRW: '₩', 
-  SGD: '$', 
-  HKD: '$', 
-  SEK: 'kr', 
-  NOK: 'kr', 
-  TRY: '₺', 
-  MXN: '$', 
-  BRL: 'R$', 
-  ZAR: 'R', 
+  CAD: '$',
+  CHF: 'CHF',
+  NZD: '$',
+  INR: '₹',
+  RUB: '₽',
+  KRW: '₩',
+  SGD: '$',
+  HKD: '$',
+  SEK: 'kr',
+  NOK: 'kr',
+  TRY: '₺',
+  MXN: '$',
+  BRL: 'R$',
+  ZAR: 'R',
 }
-const formatDateZip = (timestamp, timezoneOffset = -5) =>{
+const formatDateZip = (timestamp, timezoneOffset = -5) => {
   const date = new Date(+timestamp);
   const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
   const year = localTime.getFullYear();
@@ -98,30 +98,30 @@ class Ajax {
 
       // Get token from localStorage
       // const token = JSON.parse(localStorage.memberUserInfo || '{}').token || '';
-      
+
       // Create XMLHttpRequest instance
       const xhr = new XMLHttpRequest();
-      
+
       // Combine base URL with request URL
       const fullURL = this.baseURL + url;
-      
+
       // Open request
       xhr.open(method, fullURL, true);
-      
+
       // Set timeout
       xhr.timeout = timeout;
-      
+
       // Set headers
       const finalHeaders = {
         ...this.headers,
         ...headers
       };
-      
+
       // if (token) {
       //   finalHeaders.Authorization = token;
       //   finalHeaders.token = token;
       // }
-      
+
       Object.entries(finalHeaders).forEach(([key, value]) => {
         xhr.setRequestHeader(key, value);
       });
@@ -169,50 +169,50 @@ class Ajax {
 // Create instance
 const kkAjax = new Ajax();
 const generateUUID = () => {
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
 }
 const MsgBox = {
   timer1: null,
   timer2: null,
   _html: '',
   ishow: false,
-  init: function(msg, time) {
-      if(this.ishow) {
-          return false
-      }
-      this.ishow = true
-      if($('#markt-hotal').length > 0) {
-          $('#markt-hotal').remove()
-      }
-      this.GenerateHtml(msg, time)
+  init: function (msg, time) {
+    if (this.ishow) {
+      return false
+    }
+    this.ishow = true
+    if ($('#markt-hotal').length > 0) {
+      $('#markt-hotal').remove()
+    }
+    this.GenerateHtml(msg, time)
   },
-  GenerateHtml: function(msg,time) {
-      this._html = `<div id="markt-hotal">
+  GenerateHtml: function (msg, time) {
+    this._html = `<div id="markt-hotal">
           <div class="markt-toast_box">
               <p id="market-toast">${msg}</p>
           </div>
       </div>`
-      $("body").append(this._html);
-      this.event(time)
+    $("body").append(this._html);
+    this.event(time)
   },
   event: function (time) {
-      let _this = this
-      $('.markt-toast_box').css({ display: 'inline-block'} )
-      _this.timer1 = setTimeout(function(){
-          // $('.markt-toast_box').css({animation: 'markethide 1.5s'} )
-          _this.timer2 = setTimeout(function(){
-              $('.markt-toast_box').css({ display: 'none'} )
-              _this.ishow = false
-              clearTimeout(_this.timer2)
-              _this.timer1 && clearTimeout(_this.timer1)
-          }, 1400)
-      }, time)  
+    let _this = this
+    $('.markt-toast_box').css({ display: 'inline-block' })
+    _this.timer1 = setTimeout(function () {
+      // $('.markt-toast_box').css({animation: 'markethide 1.5s'} )
+      _this.timer2 = setTimeout(function () {
+        $('.markt-toast_box').css({ display: 'none' })
+        _this.ishow = false
+        clearTimeout(_this.timer2)
+        _this.timer1 && clearTimeout(_this.timer1)
+      }, 1400)
+    }, time)
   }
 }
 // DataLayer Manager Factory
-const DataLayerManagerFactory = (function() {
+const DataLayerManagerFactory = (function () {
   const instances = new Map();
   class DataLayerManager {
     constructor(scopeId = 'default') {
@@ -233,7 +233,7 @@ const DataLayerManagerFactory = (function() {
       if (this.initialized) return this;
       this.initialized = true;
       window.dataLayer = window.dataLayer || [];
-     
+
       this.setupImpressionObserver();
       return this;
     }
@@ -244,7 +244,7 @@ const DataLayerManagerFactory = (function() {
       const clickHandler = (event) => {
         let target = event.target;
         while (target && target !== element) {
-          if (target.tagName === 'A' ){
+          if (target.tagName === 'A') {
             this.handleProductLinkClick(target);
             break;
           }
@@ -255,27 +255,27 @@ const DataLayerManagerFactory = (function() {
       element.addEventListener('click', clickHandler);
     }
     hasValidDataLayerAttribute(element) {
-      return element?.getAttribute('data-datalayer') === 'true' && 
-             element?.getAttribute('data-scope-id') === this.scopeId;
+      return element?.getAttribute('data-datalayer') === 'true' &&
+        element?.getAttribute('data-scope-id') === this.scopeId;
     }
 
     handleProductLinkClick(linkElement) {
-      if(!linkElement) {
+      if (!linkElement) {
         return false
       }
       const sku_code = linkElement.getAttribute('data-sku')
-      const itemData = this.datas.find(item => 
+      const itemData = this.datas.find(item =>
         sku_code && sku_code == item.item_id
       );
-        this.pushToDataLayer({
-          event: 'select_item',
-          request_id: this.sessionId,
-          recommend_module: this.recommend_module,
-          ecommerce: { 
-            item_list_id: "recommended_product_click",
-            items: itemData
-          }
-        });
+      this.pushToDataLayer({
+        event: 'select_item',
+        request_id: this.sessionId,
+        recommend_module: this.recommend_module,
+        ecommerce: {
+          item_list_id: "recommended_product_click",
+          items: itemData
+        }
+      });
     }
 
     setupImpressionObserver() {
@@ -326,7 +326,7 @@ const DataLayerManagerFactory = (function() {
       Array.from(items).forEach((item, index) => {
         this.datas.push(this.extractItemData(item, index));
       });
-      if(this.recommend_module.indexOf('pdp') > -1){
+      if (this.recommend_module.indexOf('pdp') > -1) {
         this.currentData = this.datas;
       } else {
         this.currentData = this.datas.slice(0, maxItems);
@@ -419,9 +419,9 @@ const DataLayerManagerFactory = (function() {
     }
     pushToDataLayer(data) {
       try {
-        const scopedData = { 
-          ...data, 
-          scope_id: this.scopeId 
+        const scopedData = {
+          ...data,
+          scope_id: this.scopeId
         };
         this.dataLayer.push(scopedData);
         if (window.dataLayer) {
@@ -456,26 +456,26 @@ const DataLayerManagerFactory = (function() {
   }
   return {
     // Get instance by scope ID, create if not exists
-    getInstance: function(scopeId = 'default') {
+    getInstance: function (scopeId = 'default') {
       if (!instances.has(scopeId)) {
         instances.set(scopeId, new DataLayerManager(scopeId));
       }
       return instances.get(scopeId);
     },
     // Get all instances
-    getAllInstances: function() {
+    getAllInstances: function () {
       return Array.from(instances.values());
     },
-    
+
     // Remove instance by scope ID
-    removeInstance: function(scopeId) {
+    removeInstance: function (scopeId) {
       const instance = instances.get(scopeId);
       if (instance) {
         instance.destroy();
       }
     },
     // Remove all instances
-    removeAllInstances: function() {
+    removeAllInstances: function () {
       instances.forEach(instance => instance.destroy());
     }
   };
@@ -493,7 +493,7 @@ const getZipCode = (countryCode, value, callback) => {
     .catch(error => callback({ valid: false, message: error.message, input: { country: countryCode, zip: value } }));
 };
 const getLocalZipCode = (callback) => {
-    fetch(`https://ipinfo.io/json/?token=5eb142213a9cfb`)
+  fetch(`https://ipinfo.io/json/?token=5eb142213a9cfb`)
     .then(res => res.json())
     .then(data => {
       if (data && data.country && (data.country == 'US' || data.country == 'us') && data.postal) {
@@ -502,14 +502,14 @@ const getLocalZipCode = (callback) => {
         localStorage.setItem('customerZipCode', localzip)
       } else {
         callback('77380');
-         localStorage.setItem('customerZipCode', '77380')
-      }
-    }).catch( err => {
-       callback('77380');
         localStorage.setItem('customerZipCode', '77380')
+      }
+    }).catch(err => {
+      callback('77380');
+      localStorage.setItem('customerZipCode', '77380')
     })
 }
-const throttleNew = (action, delay, context, iselapsed)=> {
+const throttleNew = (action, delay, context, iselapsed) => {
   let timeout = null;
   let lastRun = 0;
   return function () {
@@ -544,18 +544,18 @@ const FbIsInViewPort = (element) => {
   const offsetBottom = offset.bottom;
   const offsetHeight = offset.height;
   const windowHeight = window.innerHeight;
-  if ((offsetTop <= windowHeight && offsetTop >= 0) || (offsetBottom >= 0 && offsetBottom <= windowHeight) || (offsetTop <= 0 && offsetBottom >= windowHeight)) { 
+  if ((offsetTop <= windowHeight && offsetTop >= 0) || (offsetBottom >= 0 && offsetBottom <= windowHeight) || (offsetTop <= 0 && offsetBottom >= windowHeight)) {
     return true;
   } else {
     return false;
   }
 }
-const zkhFormatMoney = (cents, format = '') =>{
+const zkhFormatMoney = (cents, format = '') => {
   if (typeof cents === 'string') {
     cents = cents.replace('.', '');
   }
   const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/,
-  formatString = format || window.themeVariables.settings.moneyFormat;
+    formatString = format || window.themeVariables.settings.moneyFormat;
   function defaultTo(value2, defaultValue) {
     return value2 == null || value2 !== value2 ? defaultValue : value2;
   }
@@ -568,8 +568,8 @@ const zkhFormatMoney = (cents, format = '') =>{
     }
     number = (number / 100).toFixed(precision);
     let parts = number.split('.'),
-    dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
-    centsAmount = parts[1] ? decimal + parts[1] : '';
+      dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+      centsAmount = parts[1] ? decimal + parts[1] : '';
     return dollarsAmount + centsAmount;
   }
   let value = '';
@@ -632,18 +632,18 @@ const northSkyformatDate = (timestamp, timezoneOffset = -5) => {
   const day = localTime.getDate();
   let suffix = '';
   if (day >= 11 && day <= 13) {
-    suffix = 'th'; 
+    suffix = 'th';
   } else {
     switch (day % 10) {
       case 1: suffix = 'st'; break; // 1, 21, 31
       case 2: suffix = 'nd'; break; // 2, 22
       case 3: suffix = 'rd'; break; // 3, 23
-      default: suffix = 'th'; break; 
+      default: suffix = 'th'; break;
     }
   }
   return `${month} ${day}${suffix}, ${year}`;
 }
-window.northsky.updateZipCode = function(newZipCode) {
+window.northsky.updateZipCode = function (newZipCode) {
   window.northsky.customerZipCode = newZipCode;
   document.dispatchEvent(new CustomEvent('zipcode-updated', { detail: newZipCode }));
 };
@@ -659,15 +659,15 @@ async function getDeliveryEstimate({
   try {
     if (!zipCode || !zipCode.trim()) {
       throw new Error('ZIP Code is required');
-    } 
+    }
     if (zipCode.length !== 5) {
       throw new Error('Zip code must be 5 digits');
     }
-    if(!sku || !sku.trim()) {
+    if (!sku || !sku.trim()) {
       throw new Error('SKU is required');
     }
     const zipResult = await new Promise((resolve, reject) => {
-      getZipCode('US', zipCode, function(result) {
+      getZipCode('US', zipCode, function (result) {
         if (result?.valid) {
           resolve(result);
         } else {
@@ -699,7 +699,7 @@ async function getDeliveryEstimate({
     } else if (res.outOfStockDeliveryTimeStampMin) {
       result.stockDateStart = +res.outOfStockDeliveryTimeStampMin;
     }
-    
+
     if (res.outOfStockDeliveryTimeStampMax) {
       result.stockDateEnd = +res.outOfStockDeliveryTimeStampMax;
     } else if (res.transitInventoryDeliveryTimeStampMax) {
@@ -718,7 +718,7 @@ async function getDeliveryEstimate({
   }
 }
 const mainProductUtils = {
-  calculateTieredPrice: function(discountTiers, basePrice, quantity, type) {
+  calculateTieredPrice: function (discountTiers, basePrice, quantity, type) {
     if (!Array.isArray(discountTiers) || discountTiers.length === 0) {
       const finalPrice = basePrice * quantity;
       return type === 'price1' ? skyFormatPriceDisplay(finalPrice) : zkhFormatMoney(finalPrice * 100);
@@ -737,7 +737,7 @@ const mainProductUtils = {
         validTiers.push({ moq, discount });
       }
     }
-    
+
     if (validTiers.length === 0) {
       const finalPrice = numericPrice * numericQuantity;
       return type === 'price1' ? skyFormatPriceDisplay(finalPrice) : zkhFormatMoney(finalPrice * 100);
@@ -759,11 +759,11 @@ const mainProductUtils = {
     }
     return type === 'price1' ? skyFormatPriceDisplay(finalPrice) : zkhFormatMoney(finalPrice * 100);
   },
-  
-  computePrice: function(discountJson, basePrice, quantity, type) {
+
+  computePrice: function (discountJson, basePrice, quantity, type) {
     return this.calculateTieredPrice(discountJson, basePrice, quantity, type);
   },
-  computeJietiPrice: function(discountJson, basePrice, quantity, type) {
+  computeJietiPrice: function (discountJson, basePrice, quantity, type) {
     let unitPrice = basePrice;
     if (discountJson && Array.isArray(discountJson) && discountJson.length > 0) {
       try {
@@ -789,7 +789,7 @@ const mainProductUtils = {
       return zkhFormatMoney(unitPrice * 100);
     }
   },
-  validateQuantity: function(inputValue, moq, mpq, maxQuantity = 1000000) {
+  validateQuantity: function (inputValue, moq, mpq, maxQuantity = 1000000) {
     let newQuantity = parseInt(inputValue);
     if (isNaN(newQuantity) || newQuantity <= 0 || inputValue === '') {
       return moq;
@@ -807,7 +807,7 @@ const mainProductUtils = {
     }
     return newQuantity;
   },
-  getCart: async function() {
+  getCart: async function () {
     try {
       const response = await fetch('/cart.js');
       return await response.json();
@@ -816,24 +816,24 @@ const mainProductUtils = {
       return { items: [] };
     }
   },
-  throttle: function(func, wait, context, immediate) {
+  throttle: function (func, wait, context, immediate) {
     let timeout;
     let args;
     let result;
     let previous = 0;
-    
-    const later = function() {
+
+    const later = function () {
       previous = immediate === false ? 0 : Date.now();
       timeout = null;
       result = func.apply(context, args);
       if (!timeout) args = null;
     };
-    
-    return function() {
+
+    return function () {
       const now = Date.now();
       const remaining = wait - (now - previous);
       args = arguments;
-      
+
       if (remaining <= 0 || remaining > wait) {
         if (timeout) {
           clearTimeout(timeout);
@@ -845,18 +845,18 @@ const mainProductUtils = {
       } else if (!timeout && immediate !== true) {
         timeout = setTimeout(later, remaining);
       }
-      
+
       return result;
     };
   },
-  formateDiscountJson: function(dom) {
+  formateDiscountJson: function (dom) {
     let discountJson = $(dom).data('discount') || null
     let newDiscountJson = []
     if (discountJson && discountJson.length > 0) {
       discountJson = discountJson.replace(/'/g, '"');
       try {
         newDiscountJson = JSON.parse(discountJson);
-        return newDiscountJson; 
+        return newDiscountJson;
       } catch (e) {
         console.error('Parsing error:', e);
       }
@@ -864,24 +864,24 @@ const mainProductUtils = {
     return newDiscountJson;
   },
   checkElementDisplay: function (selector, maxDuration = 10000, callback) {
-      const startTime = Date.now();
-      const intervalId = setInterval(() => {
-        const element = document.querySelector(selector);
-        if (element) {
-          const height = element.offsetHeight;
-          if (height > 120) {
-            clearInterval(intervalId);
-            callback && callback(true); 
-            return true;
-          }
-        }
-        if (Date.now() - startTime >= maxDuration) {
+    const startTime = Date.now();
+    const intervalId = setInterval(() => {
+      const element = document.querySelector(selector);
+      if (element) {
+        const height = element.offsetHeight;
+        if (height > 120) {
           clearInterval(intervalId);
-          callback && callback(false);
-          return false;
+          callback && callback(true);
+          return true;
         }
-      }, 200);
-      return intervalId;
+      }
+      if (Date.now() - startTime >= maxDuration) {
+        clearInterval(intervalId);
+        callback && callback(false);
+        return false;
+      }
+    }, 200);
+    return intervalId;
   }
 };
 const cartFormModule = {
@@ -987,7 +987,7 @@ const cartFormModule = {
       callback && callback();
     }
   },
-  validateQuantityInput: function($input, info, callback) {
+  validateQuantityInput: function ($input, info, callback) {
     if (!info) return;
     const inputValue = $input.val();
     const moq = info.moq || 1;
@@ -1011,7 +1011,7 @@ const QuantityUtils = {
    * @param {Function} config.onQuantityChange - Quantity change callback
    * @returns {number} New quantity value
    */
-  increaseQuantity: function(config) {
+  increaseQuantity: function (config) {
     const { $input, $plusBtn, $minusBtn, productInfo, onQuantityChange } = config;
     if (!productInfo) return;
     const currentValue = parseInt($input.val());
@@ -1037,7 +1037,7 @@ const QuantityUtils = {
     }
     return newValue;
   },
-  
+
   /**
    * Decrease quantity
    * @param {Object} config - Configuration object
@@ -1048,7 +1048,7 @@ const QuantityUtils = {
    * @param {Function} config.onQuantityChange - Quantity change callback
    * @returns {number} New quantity value
    */
-  decreaseQuantity: function(config) {
+  decreaseQuantity: function (config) {
     const { $input, $plusBtn, $minusBtn, productInfo, onQuantityChange } = config;
     if (!productInfo) return;
     const currentValue = parseInt($input.val());
@@ -1080,7 +1080,7 @@ const QuantityUtils = {
    * @param {number} quantity - Quantity
    * @returns {string} Formatted price
    */
-  calculateTotalPrice: function(productInfo, quantity, type = '') {
+  calculateTotalPrice: function (productInfo, quantity, type = '') {
     const discountJson = productInfo.discountJson || null;
     return mainProductUtils.computePrice(discountJson, productInfo.price, quantity, type);
   },
@@ -1097,10 +1097,10 @@ const QuantityUtils = {
    * @param {Object} config.productInfo - Product information
    * @param {Function} config.onQuantityChange - Quantity change callback
    */
-  bindInputChangeEvent: function(config) {
+  bindInputChangeEvent: function (config) {
     const { $input, $plusBtn, $minusBtn, productInfo, onQuantityChange } = config;
-    $input.on('change', function() {
-      cartFormModule.validateQuantityInput($(this), productInfo, function(newQuantity) {
+    $input.on('change', function () {
+      cartFormModule.validateQuantityInput($(this), productInfo, function (newQuantity) {
         $minusBtn.prop('disabled', newQuantity <= productInfo.moq);
         $plusBtn.prop('disabled', newQuantity >= cartFormModule.maxQuantity);
         if (onQuantityChange) {
@@ -1116,7 +1116,7 @@ const skyLoginOut = () => {
   // localStorage.clear();
   // sessionStorage.clear();
   const timestamp = new Date().getTime();
-  if(window.themeVariables.userCompany.isB2b == 'true') {
+  if (window.themeVariables.userCompany.isB2b == 'true') {
     Cookies.set('logout', 1);
     window.location.replace(`${window.northsky.b2b_url}/logout?t=${timestamp}`);
   } else {
