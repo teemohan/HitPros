@@ -1,1 +1,286 @@
-class FilterDrawer{constructor(options){const defaults={filterButtonsSelector:".ffn-filter-btn",drawerSelector:"#ffn-col-drawer",filterItemSelector:"#ffn-col-item",drawerContentSelector:".js-ffb-col-content",filterContentsSelector:".filter-content",clearBtnSelector:"#col-clearBtn",applyBtnSelector:"#col-applyBtn"};this.options={...defaults,...options};this.filterButtons=null;this.drawer=null;this.filterItem=null;this.drawerContent=null;this.filterContents=null;this.clearBtn=null;this.applyBtn=null;this.setDrawerPosition=this.setDrawerPosition.bind(this);this.resetButtonStyles=this.resetButtonStyles.bind(this);this.openDrawer=this.openDrawer.bind(this);this.closeDrawer=this.closeDrawer.bind(this);this.handleResize=this.handleResize.bind(this);this.handleScroll=this.handleScroll.bind(this);this.handleFilterButtonClick=this.handleFilterButtonClick.bind(this);this.handleDrawerBackgroundClick=this.handleDrawerBackgroundClick.bind(this);this.handleClearBtnClick=this.handleClearBtnClick.bind(this);this.handleApplyBtnClick=this.handleApplyBtnClick.bind(this);this.buildFilterUrl=this.buildFilterUrl.bind(this)}init(){this.filterButtons=document.querySelectorAll(this.options.filterButtonsSelector);this.drawer=document.querySelector(this.options.drawerSelector);this.filterItem=document.querySelector(this.options.filterItemSelector);this.drawerContent=document.querySelector(this.options.drawerContentSelector);this.filterContents=document.querySelectorAll(this.options.filterContentsSelector);this.clearBtn=document.querySelector(this.options.clearBtnSelector);this.applyBtn=document.querySelector(this.options.applyBtnSelector);if(!this.drawer||!this.filterItem||!this.drawerContent){return}this.addEventListeners()}addEventListeners(){window.addEventListener("resize",this.handleResize);window.addEventListener("scroll",this.handleScroll);this.filterButtons.forEach(button=>{button.addEventListener("click",this.handleFilterButtonClick)});this.drawer.addEventListener("click",this.handleDrawerBackgroundClick);if(this.clearBtn){this.clearBtn.addEventListener("click",this.handleClearBtnClick)}if(this.applyBtn){this.applyBtn.addEventListener("click",this.handleApplyBtnClick)}}removeEventListeners(){window.removeEventListener("resize",this.handleResize);window.removeEventListener("scroll",this.handleScroll);this.filterButtons.forEach(button=>{button.removeEventListener("click",this.handleFilterButtonClick)});this.drawer.removeEventListener("click",this.handleDrawerBackgroundClick);if(this.clearBtn){this.clearBtn.removeEventListener("click",this.handleClearBtnClick)}if(this.applyBtn){this.applyBtn.removeEventListener("click",this.handleApplyBtnClick)}}setDrawerPosition(){const filterItemRect=this.filterItem.getBoundingClientRect();const topPosition=filterItemRect.bottom;const windowHeight=window.innerHeight;const drawerHeight=windowHeight-topPosition;this.drawer.style.top=`${topPosition}px`;this.drawer.style.height=`${drawerHeight}px`}resetButtonStyles(){this.filterButtons.forEach(btn=>{btn.classList.remove("bg-darkmain","!text-white","!border-darkmain");const svg=btn.querySelector("svg");if(svg){svg.style.transform="rotate(0deg)";svg.style.transition="transform 0.3s ease"}})}showLoadingBar(){this.triggerEvent(document.documentElement,"theme:loading:start")}hideLoadingBar(){this.triggerEvent(document.documentElement,"theme:loading:end")}triggerEvent(element,eventName){const event=new CustomEvent(eventName);element.dispatchEvent(event)}openDrawer(filterType,button){this.setDrawerPosition();this.resetButtonStyles();button.classList.add("bg-darkmain","!text-white","!border-darkmain");const svg=button.querySelector("svg");if(svg){svg.style.transform="rotate(90deg)";svg.style.transition="transform 0.3s ease"}this.filterContents.forEach(content=>{content.classList.add("hidden")});const activeContent=document.getElementById(`${filterType}-filter-content`);if(activeContent){activeContent.classList.remove("hidden")}this.drawer.classList.remove("opacity-0","invisible");this.drawer.classList.add("opacity-100");this.drawerContent.classList.remove("translate-y-[-20px]");this.drawerContent.classList.add("translate-y-0");document.body.style.overflow="hidden"}closeDrawer(){this.drawerContent.classList.remove("translate-y-0");this.drawerContent.classList.add("translate-y-[-20px]");this.drawer.classList.remove("opacity-100");this.drawer.classList.add("opacity-0","invisible");document.body.style.overflow="";this.resetButtonStyles()}handleResize(){if(!this.drawer.classList.contains("invisible")){this.setDrawerPosition()}}handleScroll(){if(!this.drawer.classList.contains("invisible")){this.setDrawerPosition()}}handleFilterButtonClick(event){const button=event.currentTarget;const filterType=button.getAttribute("data-filter-type");const isDrawerOpen=!this.drawer.classList.contains("invisible");const isCurrentFilterActive=button.classList.contains("bg-darkmain");if(isDrawerOpen&&isCurrentFilterActive){this.closeDrawer()}else{this.openDrawer(filterType,button)}}handleDrawerBackgroundClick(event){if(!this.drawerContent.contains(event.target)){this.closeDrawer()}}handelEmptyInput(input){const inputs=this.drawer.querySelectorAll("input");let hasSelectedFilters=false;inputs.forEach(input=>{if(input.type==="checkbox"&&input.checked||input.type==="number"&&input.value!==""){hasSelectedFilters=true}});return hasSelectedFilters}handleClearBtnClick(){const hasSelectedFilters=this.handelEmptyInput();if(!hasSelectedFilters){this.closeDrawer();return}const inputs=this.drawer.querySelectorAll("input");inputs.forEach(input=>{if(input.type==="checkbox"){input.checked=false}else if(input.type==="number"){input.value=""}});try{const currentUrl=new URL(window.location.href);const pathWithoutQuery=currentUrl.origin+currentUrl.pathname;history.replaceState({},"",pathWithoutQuery);this.showLoadingBar();document.dispatchEvent(new CustomEvent("facet-rerender"));this.hideLoadingBar()}catch(e){if(e.name==="AbortError"){return}console.error("error:",e)}this.closeDrawer()}buildFilterUrl(){const currentUrl=new URL(window.location.href);const searchParams=new URLSearchParams;const priceMinInput=document.getElementById("price-min");const priceMaxInput=document.getElementById("price-max");const minPrice=priceMinInput?.value||"";const maxPrice=priceMaxInput?.value||"";if(minPrice){searchParams.append("filter.v.price.gte",minPrice)}if(maxPrice){searchParams.append("filter.v.price.lte",maxPrice)}const brandCheckboxes=document.querySelectorAll('#brand-filter-content input[type="checkbox"]:checked');brandCheckboxes.forEach(checkbox=>{const brandName=checkbox.value||checkbox.dataset.brand||checkbox.id.replace("brand-","");searchParams.append("filter.p.m.product.brand",brandName)});for(const[key,value]of currentUrl.searchParams.entries()){if(!key.startsWith("filter.")){searchParams.append(key,value)}}return searchParams.toString()}handleApplyBtnClick(event){try{const filterParams=this.buildFilterUrl();const currentUrl=new URL(window.location.href);const pathWithoutQuery=currentUrl.origin+currentUrl.pathname;const newUrl=filterParams?`${pathWithoutQuery}?${filterParams}`:pathWithoutQuery;history.replaceState({},"",newUrl);this.showLoadingBar();document.dispatchEvent(new CustomEvent("facet-rerender"));this.hideLoadingBar()}catch(e){if(e.name==="AbortError"){return}console.error("error:",e)}this.closeDrawer()}destroy(){this.removeEventListeners();this.filterButtons=null;this.drawer=null;this.filterItem=null;this.drawerContent=null;this.filterContents=null;this.clearBtn=null;this.applyBtn=null}}
+class FilterDrawer {
+  constructor(options) {
+   
+    const defaults = {
+      filterButtonsSelector: '.ffn-filter-btn',
+      drawerSelector: '#ffn-col-drawer',
+      filterItemSelector: '#ffn-col-item',
+      drawerContentSelector: '.js-ffb-col-content',
+      filterContentsSelector: '.filter-content',
+      clearBtnSelector: '#col-clearBtn',
+      applyBtnSelector: '#col-applyBtn'
+    };
+  
+   this.options = { ...defaults, ...options };
+  
+   this.filterButtons = null;
+   this.drawer = null;
+   this.filterItem = null;
+   this.drawerContent = null;
+   this.filterContents = null;
+   this.clearBtn = null;
+   this.applyBtn = null;
+    
+   
+    this.setDrawerPosition = this.setDrawerPosition.bind(this);
+    this.resetButtonStyles = this.resetButtonStyles.bind(this);
+    this.openDrawer = this.openDrawer.bind(this);
+    this.closeDrawer = this.closeDrawer.bind(this);
+    this.handleResize = this.handleResize.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
+    this.handleFilterButtonClick = this.handleFilterButtonClick.bind(this);
+    this.handleDrawerBackgroundClick = this.handleDrawerBackgroundClick.bind(this);
+    this.handleClearBtnClick = this.handleClearBtnClick.bind(this);
+    this.handleApplyBtnClick = this.handleApplyBtnClick.bind(this);
+    this.buildFilterUrl = this.buildFilterUrl.bind(this);
+  }
+  init() {
+   
+    this.filterButtons = document.querySelectorAll(this.options.filterButtonsSelector);
+    this.drawer = document.querySelector(this.options.drawerSelector);
+    this.filterItem = document.querySelector(this.options.filterItemSelector);
+    this.drawerContent = document.querySelector(this.options.drawerContentSelector);
+    this.filterContents = document.querySelectorAll(this.options.filterContentsSelector);
+    this.clearBtn = document.querySelector(this.options.clearBtnSelector);
+    this.applyBtn = document.querySelector(this.options.applyBtnSelector);
+    
+   
+    if (!this.drawer || !this.filterItem || !this.drawerContent) {
+      return;
+    }
+    this.addEventListeners();
+  }
+  addEventListeners() {
+    window.addEventListener('resize', this.handleResize);
+    window.addEventListener('scroll', this.handleScroll);
+    this.filterButtons.forEach(button => {
+      button.addEventListener('click', this.handleFilterButtonClick);
+    });
+    this.drawer.addEventListener('click', this.handleDrawerBackgroundClick);
+    if (this.clearBtn) {
+      this.clearBtn.addEventListener('click', this.handleClearBtnClick);
+    }
+    if (this.applyBtn) {
+      this.applyBtn.addEventListener('click', this.handleApplyBtnClick);
+    }
+  }
+  
+  removeEventListeners() {
+    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('scroll', this.handleScroll);
+    this.filterButtons.forEach(button => {
+      button.removeEventListener('click', this.handleFilterButtonClick);
+    });
+    this.drawer.removeEventListener('click', this.handleDrawerBackgroundClick);
+    if (this.clearBtn) {
+      this.clearBtn.removeEventListener('click', this.handleClearBtnClick);
+    }
+    if (this.applyBtn) {
+      this.applyBtn.removeEventListener('click', this.handleApplyBtnClick);
+    }
+  }
+  setDrawerPosition() {
+    const filterItemRect = this.filterItem.getBoundingClientRect();
+    const topPosition = filterItemRect.bottom;
+    const windowHeight = window.innerHeight;
+    const drawerHeight = windowHeight - topPosition;
+    
+    this.drawer.style.top = `${topPosition}px`;
+    this.drawer.style.height = `${drawerHeight}px`;
+  }
+  resetButtonStyles() {
+    this.filterButtons.forEach(btn => {
+      btn.classList.remove('bg-darkmain', '!text-white', '!border-darkmain');
+     
+      const svg = btn.querySelector('svg');
+      if (svg) {
+        svg.style.transform = 'rotate(0deg)';
+        svg.style.transition = 'transform 0.3s ease';
+      }
+    });
+  }
+  showLoadingBar() {
+    this.triggerEvent(document.documentElement, 'theme:loading:start');
+  }
+  hideLoadingBar() {
+    this.triggerEvent(document.documentElement, 'theme:loading:end');
+  }
+  triggerEvent(element, eventName) {
+    const event = new CustomEvent(eventName);
+    element.dispatchEvent(event);
+  }
+  openDrawer(filterType, button) {
+    this.setDrawerPosition();
+    this.resetButtonStyles();
+   
+    button.classList.add('bg-darkmain', '!text-white', '!border-darkmain');
+   
+    const svg = button.querySelector('svg');
+    if (svg) {
+      svg.style.transform = 'rotate(90deg)';
+      svg.style.transition = 'transform 0.3s ease';
+    }
+    this.filterContents.forEach(content => {
+      content.classList.add('hidden');
+    });
+    
+    const activeContent = document.getElementById(`${filterType}-filter-content`);
+    if (activeContent) {
+      activeContent.classList.remove('hidden');
+    }
+    
+   
+    this.drawer.classList.remove('opacity-0', 'invisible');
+    this.drawer.classList.add('opacity-100');
+    
+   
+    this.drawerContent.classList.remove('translate-y-[-20px]');
+    this.drawerContent.classList.add('translate-y-0');
+    
+   
+    document.body.style.overflow = 'hidden';
+  }
+  closeDrawer() {
+   
+    this.drawerContent.classList.remove('translate-y-0');
+    this.drawerContent.classList.add('translate-y-[-20px]');
+    this.drawer.classList.remove('opacity-100');
+    this.drawer.classList.add('opacity-0', 'invisible');
+    document.body.style.overflow = '';
+   
+    this.resetButtonStyles();
+  }
+  handleResize() {
+    if (!this.drawer.classList.contains('invisible')) {
+      this.setDrawerPosition();
+    }
+  }
+  handleScroll() {
+    if (!this.drawer.classList.contains('invisible')) {
+      this.setDrawerPosition();
+    }
+  }
+handleFilterButtonClick(event) {
+  const button = event.currentTarget;
+  const filterType = button.getAttribute('data-filter-type');
+  const isDrawerOpen = !this.drawer.classList.contains('invisible');
+  const isCurrentFilterActive = button.classList.contains('bg-darkmain');
+
+  if (isDrawerOpen && isCurrentFilterActive) {
+    this.closeDrawer();
+  } else {
+    this.openDrawer(filterType, button);
+  }
+}
+  handleDrawerBackgroundClick(event) {
+   
+    if (!this.drawerContent.contains(event.target)) {
+      this.closeDrawer();
+    }
+  }
+  handelEmptyInput(input) {
+    const inputs = this.drawer.querySelectorAll('input');
+    let hasSelectedFilters = false;
+    inputs.forEach(input => {
+      if ((input.type === 'checkbox' && input.checked) || 
+          (input.type === 'number' && input.value !== '')) {
+        hasSelectedFilters = true;
+      }
+    });
+    return hasSelectedFilters;
+  }
+  handleClearBtnClick() {
+   
+    const hasSelectedFilters = this.handelEmptyInput();
+   
+    if (!hasSelectedFilters) {
+      this.closeDrawer();
+      return;
+    }
+    const inputs = this.drawer.querySelectorAll('input');
+    inputs.forEach(input => {
+      if (input.type === 'checkbox') {
+        input.checked = false;
+      } else if (input.type === 'number') {
+        input.value = '';
+      }
+    });
+    try {
+      const currentUrl = new URL(window.location.href);
+      const pathWithoutQuery = currentUrl.origin + currentUrl.pathname;
+      history.replaceState({}, '', pathWithoutQuery);
+      this.showLoadingBar();
+      document.dispatchEvent(new CustomEvent('facet-rerender'));
+      this.hideLoadingBar();
+    } catch (e) {
+      if (e.name === 'AbortError') {
+        return;
+      }
+      console.error('error:', e);
+    }
+    this.closeDrawer();
+  }
+  buildFilterUrl() {
+   
+    const currentUrl = new URL(window.location.href);
+    const searchParams = new URLSearchParams();
+   
+    const priceMinInput = document.getElementById('price-min');
+    const priceMaxInput = document.getElementById('price-max');
+    const minPrice = priceMinInput?.value || '';
+    const maxPrice = priceMaxInput?.value || '';
+    
+   
+    if (minPrice) {
+      searchParams.append('filter.v.price.gte', minPrice);
+    }
+    if(maxPrice) {
+      searchParams.append('filter.v.price.lte', maxPrice);
+    }
+    
+   
+    const brandCheckboxes = document.querySelectorAll('#brand-filter-content input[type="checkbox"]:checked');
+    brandCheckboxes.forEach(checkbox => {
+      const brandName = checkbox.value || checkbox.dataset.brand || checkbox.id.replace('brand-', '');
+      searchParams.append('filter.p.m.product.brand', brandName);
+    });
+    
+   
+    for (const [key, value] of currentUrl.searchParams.entries()) {
+      if (!key.startsWith('filter.')) {
+        searchParams.append(key, value);
+      }
+    }
+    
+    return searchParams.toString();
+  }
+  handleApplyBtnClick(event) {
+    try {
+      const filterParams = this.buildFilterUrl();
+      const currentUrl = new URL(window.location.href);
+      const pathWithoutQuery = currentUrl.origin + currentUrl.pathname;
+      const newUrl = filterParams ? `${pathWithoutQuery}?${filterParams}` : pathWithoutQuery;
+      history.replaceState({}, '', newUrl);
+      this.showLoadingBar();
+      document.dispatchEvent(new CustomEvent('facet-rerender'));
+      this.hideLoadingBar();
+      } catch (e) {
+        if (e.name === 'AbortError') {
+          return;
+        }
+        console.error('error:', e);
+      }
+      this.closeDrawer();
+    }
+  destroy() {
+    this.removeEventListeners();
+   
+    this.filterButtons = null;
+    this.drawer = null;
+    this.filterItem = null;
+    this.drawerContent = null;
+    this.filterContents = null;
+    this.clearBtn = null;
+    this.applyBtn = null;
+  }
+}

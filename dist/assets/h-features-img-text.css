@@ -1,1 +1,75 @@
-.h-features{display:flex;background-color:var(--my-blue)}.h-features img{width:35%;aspect-ratio:413 / 232;object-fit:cover}.h-features .h-features-info{width:65%;display:flex;flex-direction:column;padding:20px 40px;padding-right:58px;gap:10px}.h-features .h-features-title{font-size:32px;font-weight:600;line-height:48px;margin:0;color:var(--my-yellow)}.h-features .h-features-text{color:#fff;font-size:20px;font-weight:500;line-height:30px}.h-features .h-features-btn-title{font-size:16px;font-weight:500;line-height:24px;align-self:flex-start;color:#fabe00;height:42px;padding:0 12px;display:flex;justify-content:center;align-items:center;border-radius:2px;border:1px solid #fabe00}@media screen and (max-width:740px){.h-features{margin:0 -16px;flex-direction:column}.h-features img{padding:16px 16px 0;width:100%;aspect-ratio:auto}.h-features .h-features-info{width:100%;padding:40px 16px}.h-features .h-features-title{font-size:20px;font-weight:600;line-height:30px}.h-features .h-features-text{font-size:16px;font-weight:500;line-height:24px}.h-features .h-features-btn-title{font-size:12px;font-weight:500;line-height:18px}}
+.h-features {
+  display: flex;
+  background-color: var(--my-blue);
+}
+.h-features img {
+  width: 35%;
+  aspect-ratio: 413 / 232;
+  object-fit: cover;
+}
+.h-features .h-features-info {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+  padding-right: 58px;
+  gap: 10px;
+}
+.h-features .h-features-title {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 48px;
+  margin: 0;
+  color: var(--my-yellow);
+}
+.h-features .h-features-text {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+}
+.h-features .h-features-btn-title {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px; 
+  align-self: flex-start;
+  color: #FABE00;
+  height: 42px;
+  padding: 0 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  border: 1px solid #FABE00;
+}
+
+@media screen and (max-width: 740px) {
+  .h-features {
+    margin: 0 -16px;
+    flex-direction: column;
+  }
+  .h-features img {
+    padding: 16px 16px 0;
+    width: 100%;
+    aspect-ratio: auto;
+  }
+  .h-features .h-features-info {
+    width: 100%;
+    padding: 40px 16px;
+  }
+  .h-features .h-features-title {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 30px;
+  }
+  .h-features .h-features-text {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+  }
+  .h-features .h-features-btn-title {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+  }
+}

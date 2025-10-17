@@ -1,1 +1,170 @@
-.h-newsletter-wrapper{background-color:var(--my-blue)}.h-newsletter{display:flex;justify-content:space-between;gap:18px;align-items:center;background-color:var(--my-blue);padding:60px 0}.h-newsletter .h-newsletter-text-wrapper{display:flex;flex:1;align-items:center;flex-wrap:wrap;row-gap:18px}.h-newsletter-text-inner{display:flex;align-items:center;gap:8px}.h-newsletter .h-newsletter-text-wrapper .footer__newsletter-form{display:flex;flex-direction:column;flex:1;min-width:400px}.h-newsletter .h-newsletter-text-wrapper .footer__newsletter-form .input__field::placeholder{color:#666;font-size:16px;font-weight:400;line-height:24px}.h-newsletter .h-newsletter-text{margin-right:60px;display:flex;flex-direction:column;gap:4px;align-self:stretch;justify-content:space-between}.h-newsletter .h-newsletter-title{font-size:24px;font-weight:500;line-height:36px;color:#fff}.h-newsletter .h-newsletter-tip{font-size:14px;font-weight:400;line-height:21px;color:#d3def1}.h-newsletter .h-newsletter-btn{height:52px;width:200px;cursor:pointer;border-radius:43px;font-size:16px;display:flex;align-items:center;justify-content:center;font-weight:600;line-height:20px;background-color:var(--my-yellow)}.h-newsletter .h-newsletter-social{display:none;flex-shrink:0}.h-newsletter .newsletter-input-row{display:grid;grid-template-columns:1fr auto;align-items:center;height:48px;overflow:hidden;background-color:#fff;border-radius:2px}.h-newsletter .newsletter-input-row input{border:0;padding-left:18px;font-size:16px;font-weight:400;line-height:24px}.h-newsletter .newsletter-input-row input:focus-visible{outline:0;color:#666;box-shadow:none}.h-newsletter .newsleftter-btn{position:relative;color:#fff;width:220px;right:0;text-transform:capitalize;height:100%;display:flex;justify-content:center;align-items:center;background-color:var(--my-yellow);transition:all .3s;font-size:16px;font-weight:700;color:var(--my-blue);line-height:20px;border:2px solid var(--my-yellow)}.h-newsletter .newsleftter-btn:hover{background-color:#fabe000d;color:var(--my-yellow);cursor:pointer}@media screen and (max-width:740px){.h-newsletter{padding:26px 0;align-items:flex-start}.h-newsletter .h-newsletter-text-wrapper .footer__newsletter-form{min-width:auto;align-self:stretch}.h-newsletter .newsletter-input-row input{font-size:14px;font-weight:400;line-height:21px}.h-newsletter .h-newsletter-text{justify-content:center}.h-newsletter .h-newsletter-text-wrapper{flex-direction:column;align-items:flex-start;gap:16px}.h-newsletter-text-inner svg{width:16px;height:16px}.h-newsletter .h-newsletter-title{font-size:20px;line-height:1.5}.h-newsletter .h-newsletter-tip{font-size:12px}.h-newsletter .h-newsletter-text{margin:0;font-size:16px;font-weight:500;line-height:24px}.h-newsletter .newsletter-input-row{height:42px}.h-newsletter .newsleftter-btn{width:112px;font-size:14px;font-weight:600;line-height:20px}}
+.h-newsletter-wrapper {
+  background-color: var(--my-blue);
+}
+.h-newsletter {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+  background-color: var(--my-blue);
+  padding: 60px 0;
+}
+.h-newsletter .h-newsletter-text-wrapper {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 18px;
+}
+.h-newsletter-text-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.h-newsletter .h-newsletter-text-wrapper .footer__newsletter-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 400px;
+}
+.h-newsletter .h-newsletter-text-wrapper .footer__newsletter-form .input__field::placeholder {
+  color: #666666;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+.h-newsletter .h-newsletter-text {
+  margin-right: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-self: stretch;
+  justify-content: space-between;
+}
+.h-newsletter .h-newsletter-title {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 36px;
+  color: #fff;
+}
+.h-newsletter .h-newsletter-tip {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  color: #D3DEF1;
+}
+.h-newsletter .h-newsletter-btn {
+  height: 52px;
+  width: 200px;
+  cursor: pointer;
+  border-radius: 43px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  line-height: 20px;
+  background-color: var(--my-yellow);
+}
+.h-newsletter .h-newsletter-social {
+  display: none;
+  flex-shrink: 0;
+}
+
+.h-newsletter .newsletter-input-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  height: 48px;
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 2px;
+}
+
+.h-newsletter .newsletter-input-row input {
+  border: none;
+  padding-left: 18px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.h-newsletter .newsletter-input-row input:focus-visible {
+  outline: none;
+  color: #666666;
+  box-shadow: none;
+}
+
+.h-newsletter .newsleftter-btn {
+  position: relative;
+  color: #fff;
+  width: 220px;
+  right: 0;
+  text-transform: capitalize;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--my-yellow);
+  transition: all .3s;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--my-blue);
+  line-height: 20px;
+  border: 2px solid var(--my-yellow);
+}
+.h-newsletter .newsleftter-btn:hover {
+  background-color: #fabe000d;
+  color: var(--my-yellow);
+  cursor: pointer;
+}
+
+@media screen and (max-width: 740px) {
+  .h-newsletter {
+    padding: 26px 0;
+    align-items: flex-start;
+  }
+  .h-newsletter .h-newsletter-text-wrapper .footer__newsletter-form {
+    min-width: auto;
+    align-self: stretch;
+  }
+  .h-newsletter .newsletter-input-row input {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;  
+  }
+  .h-newsletter .h-newsletter-text {
+    justify-content: center;
+  }
+  .h-newsletter .h-newsletter-text-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .h-newsletter-text-inner svg {
+    width: 16px;
+    height: 16px;
+  }
+  .h-newsletter .h-newsletter-title {
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .h-newsletter .h-newsletter-tip {
+    font-size: 12px;
+  }
+  .h-newsletter .h-newsletter-text {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+  }
+  .h-newsletter .newsletter-input-row {
+    height: 42px;
+  }
+  .h-newsletter .newsleftter-btn {
+    width: 112px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+  }
+}

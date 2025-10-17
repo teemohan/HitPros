@@ -1,1 +1,119 @@
-.pc-main-nav ul,li,h1,h2,p{padding:0;margin:0;list-style:none}.pc-main-nav{display:none;left:0;transform:translateX(-25%);position:absolute;padding-top:12px;width:200px}.account-box-unlogin,.account-box-login{font-size:16px}.account-box-login{max-width:100px}.pc-main-nav .pc-aside{background:#fff;box-shadow:0 4px 8px rgba(0,0,0,0.4)}.pc-main-nav .pc-aside-header{display:flex;justify-content:space-between;align-items:center;font-size:20px;font-weight:700;line-height:40px;padding:20px 14px;border-bottom:1px solid var(--my-border)}.pc-main-nav .pc-aside-header .close-btn svg{cursor:pointer;width:14px;height:14px}.pc-main-nav .pc-aside-top{padding:24px;border-bottom:1px solid var(--my-border)}.pc-main-nav .pc-aside-top h3{font-size:18px;font-weight:700;margin-bottom:8px;line-height:1;color:var(--my-blue)}.pc-main-nav .pc-aside-top h4{margin-top:8px;font-size:14px;line-height:1.2;font-weight:400;color:var(--my-grey)}.pc-main-nav .pc-aside-top button{color:var(--my-blue);text-decoration:underline}.pc-main-nav .aside-main-list{margin-top:16px}.pc-main-nav .aside-main-list h4{padding:0 24px 0;margin-bottom:12px;font-size:16px;line-height:1.2;color:var(--my-black)}.pc-main-nav .aside-main-list ul li{margin-top:16px;font-size:14px;padding-left:24px;font-weight:400;color:var(--my-grey);cursor:pointer}.pc-main-nav .aside-main-list ul li a:hover{color:var(--my-blue);font-weight:600;text-decoration:underline}.pc-main-nav .pc-aside-bottom a:hover,.pc-main-nav .pc-aside-bottom span:hover{font-weight:600;color:var(--my-red)}.pc-main-nav .pc-aside-bottom{padding:24px;display:flex;flex-direction:column;gap:16px;font-weight:400}.pc-main-nav .pc-aside-bottom a,.pc-main-nav .pc-aside-bottom span{font-size:16px;line-height:1.2;color:var(--my-grey)}
+.pc-main-nav ul,
+li,
+h1,
+h2,
+p {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.pc-main-nav {
+  display: none;
+  left: 0;
+  transform: translateX(-25%);
+  position: absolute;
+  padding-top: 12px;
+  width: 200px;
+}
+
+.account-box-unlogin,
+.account-box-login {
+  font-size: 16px;
+}
+.account-box-login {
+  max-width: 100px;
+}
+.pc-main-nav .pc-aside {
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.pc-main-nav .pc-aside-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 40px;
+  padding: 20px 14px;
+  border-bottom: 1px solid var(--my-border);
+}
+
+.pc-main-nav .pc-aside-header .close-btn svg {
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+}
+
+.pc-main-nav .pc-aside-top {
+  padding: 24px;
+  border-bottom: 1px solid var(--my-border);
+}
+
+.pc-main-nav .pc-aside-top h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  line-height: 1;
+  color: var(--my-blue);
+}
+
+.pc-main-nav .pc-aside-top h4 {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 400;
+  color: var(--my-grey);
+}
+
+.pc-main-nav .pc-aside-top button {
+  color: var(--my-blue);
+  text-decoration: underline;
+}
+
+.pc-main-nav .aside-main-list {
+  margin-top: 16px;
+}
+
+.pc-main-nav .aside-main-list h4 {
+  padding: 0 24px 0;
+  margin-bottom: 12px;
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--my-black);
+}
+
+.pc-main-nav .aside-main-list ul li {
+  margin-top: 16px;
+  font-size: 14px;
+  padding-left: 24px;
+  font-weight: 400;
+  color: var(--my-grey);
+  cursor: pointer;
+}
+
+.pc-main-nav .aside-main-list ul li a:hover {
+  color: var(--my-blue);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.pc-main-nav .pc-aside-bottom a:hover, .pc-main-nav .pc-aside-bottom span:hover  {
+  font-weight: 600;
+  color: var(--my-red);
+}
+
+.pc-main-nav .pc-aside-bottom {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-weight: 400;
+}
+
+.pc-main-nav .pc-aside-bottom a, .pc-main-nav .pc-aside-bottom span {
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--my-grey);
+}

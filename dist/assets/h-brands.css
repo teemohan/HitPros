@@ -1,1 +1,71 @@
-.h-brands-wrapper{overflow:hidden}.h-brands{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}.h-brands img{display:block;width:100%;height:100%;object-fit:cover}.brand-text{position:absolute;width:100%;height:100%;top:0;display:flex;justify-content:center;align-items:center;gap:40px;flex-direction:column}.brand-text .icon{height:80px}.h-brands a{position:relative;display:flex;justify-content:center;align-items:center}.h-brands-wrapper .btn{height:48px;padding:0 24px;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:700;line-height:48px;border-radius:4px;letter-spacing:.012em;background-color:var(--my-yellow)}.mobile-h-brands a{display:block;position:relative}.mobile-h-brands img{display:block;width:100%;aspect-ratio:1;object-fit:cover}@media screen and (max-width:740px){.brand-text .icon{height:80px}.brand-text{gap:28px}}
+.h-brands-wrapper {
+  overflow: hidden;
+}
+
+.h-brands {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.h-brands img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.brand-text {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-direction: column;
+}
+.brand-text .icon {
+  height: 80px;
+}
+.h-brands a {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.h-brands-wrapper .btn {
+  height: 48px;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 48px;
+  border-radius: 4px;
+  letter-spacing: 0.012em;
+  background-color: var(--my-yellow);
+}
+
+.mobile-h-brands a {
+  display: block;
+  position: relative;
+}
+
+.mobile-h-brands img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 740px) {
+  .brand-text .icon {
+    height: 80px;
+  }
+  .brand-text {
+    gap: 28px;
+  }
+}

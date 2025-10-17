@@ -1,1 +1,52 @@
-.form-box{min-width:408px}.hidden-mask-wrapper.show{position:fixed;top:106px;left:0;width:100%;height:calc(100vh - 106px);background-color:#fff;z-index:999999999999}.recover-form-box .block-text{color:#333}.emial-container{height:40px;margin-top:30px;padding:14px 16px;display:flex;gap:10px;align-items:center;background-color:#eaeef1;border-radius:2px;font-weight:600;font-size:14px}.block-text-wrapper{margin-bottom:30px}#login-wrapper{display:none}@media screen and (max-width:1000px){.form-container{min-height:500px}.emial-container{margin-top:20px;padding:10px 14px;font-size:12px}}
+.form-box {
+  min-width: 408px;
+}
+.hidden-mask-wrapper.show {
+  position: fixed;
+  top: 106px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 106px);
+  background-color: #fff;
+  z-index: 999999999999;
+}
+
+.recover-form-box .block-text {
+  color: #333333;
+}
+
+.emial-container {
+  height: 40px;
+  margin-top: 30px;
+  padding: 14px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background-color: #eaeef1;
+  border-radius: 2px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.block-text-wrapper {
+  margin-bottom: 30px;
+}
+
+#login-wrapper {
+  display: none;
+}
+
+
+
+@media screen and (max-width: 1000px) {
+  .form-container {
+    min-height: 500px;
+  }
+
+  .emial-container {
+    margin-top: 20px;
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+}
+

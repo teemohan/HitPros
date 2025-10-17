@@ -1,1 +1,627 @@
-.el-reset-from .common-dropdown-item .label--focus{transform:unset !important;background-color:transparent}.el-reset-from .common-dropdown-item .el-checkbox__inner::after{width:6px;height:12px;left:6px;top:2px}.dialog-tips{margin-bottom:30px;font-size:14px;color:#1a1a1a}.account-info-edit{cursor:pointer;transition:all .2s}.checkbox-row{display:flex;align-items:center;gap:16px}.form-default-address-title{padding:0 20px;height:36px;display:flex;align-items:center;font-weight:bold;background:#eaeef1;color:#1a1a1a}.el-dialog .checkbox-row .el-checkbox__inner{border-radius:100%}.el-dialog .checkbox-row .el-checkbox__inner:after{left:7px;top:2px}.form-select-wrapper ul{margin-bottom:24px !important}.form-select-wrapper.size-over2 ul{height:116px;overflow-y:auto}.form-select-wrapper ul li{border-bottom:1px solid #ccc}.form-select-wrapper{margin-top:4px}.form-select-wrapper ul::-webkit-scrollbar{width:8px}.form-select-wrapper ul::-webkit-scrollbar-track{border-radius:14px;background:#fff}.form-select-wrapper ul::-webkit-scrollbar-thumb{border-radius:19px;background:#ccc}.form-select-wrapper ul::-webkit-scrollbar-thumb:hover{background:#a8a8a8}.form-address-item{padding:12px 16px;gap:16px;margin-top:2px;font-size:14px;line-height:21px;color:#1a1a1a;display:flex;align-items:center}.form-address-item.default{font-weight:bold;color:#1a1a1a;background:#eaeef1}.text-btn-container{margin-bottom:20px}.account-info-edit:hover{color:var(--my-black)}.account-info-header{margin-bottom:28px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}.account-info-line{margin-bottom:28px}.account-info-line:last-child{margin-bottom:0}.account-info-line-1{font-weight:600;font-size:14px;color:var(--my-black);display:flex;align-items:center;justify-content:space-between}.account-info-line-1 p{font-size:14px;line-height:1;font-weight:600}.account-info-line-1 span{font-size:14px;color:var(--my-black);text-decoration-line:underline}.account-info-line-2{margin-top:6px;font-size:14px;color:var(--my-black)}.account_code{font-size:14px;margin-bottom:-6px}.account-info-line-3{margin-top:6px;font-size:14px;color:#999}.form-address-item-info{cursor:pointer}.setps{height:32px;display:flex;overflow:hidden}.setps .step{position:relative;flex:1;display:flex;background-color:#f5f8fc}.setps .step .text{display:flex;width:100%;justify-content:center;align-items:center;gap:12px;font-size:14px;line-height:1;color:#999;font-weight:600}.setps .step .line::after,.setps .step .line::before{content:'';position:absolute;right:12px;width:10px;height:16px;background-color:#fff;transform:skewX(-60deg)}.setps .step .line::before{top:0;transform:skewX(60deg)}.setps .step .line::after{top:50%;transform:skewX(-60deg)}.setps .step>.text span{width:16px;height:16px;border-radius:100%;color:#fff;line-height:1;font-size:12px;display:flex;justify-content:center;align-items:center;background-color:#d5def0}.setps .step:last-child{flex:0.8}.setps .step.active{background-color:#e4eef9}.step.active.next-active{cursor:pointer}.setps .step.active>.text{color:#142a6b}.setps .step:not(:last-child).active::before{content:'';position:absolute;right:-12px;top:-12px;width:0;height:0;transform:rotate(31deg);border-left:15px solid transparent;border-right:19px solid transparent;border-bottom:23px solid #f5f8fc}.setps .step:not(:last-child)::after{content:'';position:absolute;right:-12px;top:24px;width:0;height:0;transform:rotate(150deg);border-left:15px solid transparent;border-right:28px solid transparent;border-bottom:23px solid #f5f8fc}.setps .step.next-active:not(:last-child).active::before,.setps .step.next-active:not(:last-child).active::after{border-bottom:23px solid #e4eef9}.setps .step.active>.text span{background-color:#142a6b}.setps .step:not(:last-child) .text{margin-right:48px}.join-progress-1,.join-progress-2{padding:70px 16px;display:flex;flex-direction:column;gap:20px}.join-progress-1 .checkbox-row{height:60px;cursor:pointer;padding-left:16px;border-radius:2px;font-size:14px;user-select:none;color:#1a1a1a;line-height:21px}.join-progress-1 .checkbox-row.checkbox-row-checked{background-color:#eaeef1;font-weight:bold}.join-progress-2 .el-autocomplete{width:100%}.join-progress-3-box{display:flex;flex-direction:column;align-items:center;font-size:16px;color:#333;padding:0 60px;text-align:center}.join-progress-3-box img{width:48px;height:48px}.join-progress-3-box .join-progress-3-icon{margin-top:70px}.join-progress-3-box .join-progress-3-content{margin-top:30px;word-break:break-word}.join-progress-3-box .join-progress-3-back{margin-top:100px;cursor:pointer;text-decoration:underline}.join-progress-2-title{font-size:16px;color:#1a1a1a;line-height:21px;margin-bottom:15px;font-weight:700}.join-progress-2.progress2-form-wrapper{padding:0 16px;margin:30px 0}.join-progress-2.progress2-form-wrapper::-webkit-scrollbar{width:6px}.join-progress-2.progress2-form-wrapper::-webkit-scrollbar-thumb{background-color:#ccc;border-radius:3px}.join-progress-2.progress2-form-wrapper::-webkit-scrollbar-track{background:transparent}.account-company-line-list{user-select:none;margin-top:16px}.account-company-line-list>div{padding:8px;font-size:14px;color:#1a1a1a;line-height:16px;display:flex;align-items:center;justify-content:space-between}.account-company-line-list>div span{font-weight:bold;color:#142a6b}.account-company-line-list>div svg{display:none}.account-company-line-list>div:hover svg{display:block;width:16px;height:16px}.companyid-show{display:flex;align-items:center;gap:14px}.companyid-show-text{line-height:1;display:flex}.companyid-show-text svg{height:18px;width:120px}.companyid-show-icon{display:flex}.companyid-show .companyid-show-icon svg{width:18px;height:18px;cursor:pointer}.account-company-line-list>div:hover{background-color:#e3eef9;cursor:pointer}.account-company-line-list>div.user-auth{margin-top:8px}.company-apply-text{font-weight:500;font-size:14px;color:#e0a609;line-height:21px;padding:8px;background-color:#fef9ec}.company-reject-reason{display:flex;text-decoration:underline;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:2px;font-size:12px;font-weight:500;background-color:#fdefee;color:#e65f5a}.company-reject-reason>span{display:flex;cursor:pointer}.company-reject-reason>span svg{width:20px;height:20px}.company-reject-reason>div>span{font-weight:600}.join-progress-1 .checkbox-row svg{width:20px;height:20px}@media screen and (min-width:741px){.join-dialog.large-width .el-dialog{width:800px !important}.form-select-wrapper .el-checkbox .el-checkbox__inner:after{width:7px;height:14px;left:6px;top:0}.account-info-left{padding-right:24px;border-right:1px solid var(--my-border)}.account-info-center{padding:0 24px;border-right:1px solid var(--my-border)}.account-info-right{padding-left:24px}.account-info-block{display:grid;-webkit-display:grid;grid-template-columns:repeat(3,1fr);padding:36px 24px}}@media screen and (max-width:740px){.join-progress-2.progress2-form-wrapper{height:260px;overflow-x:hidden;overflow-y:scroll}.join-progress-2 .el-select-dropdown{position:absolute !important;top:30px !important;left:0 !important}.el-reset-from .common-dropdown-item .el-checkbox__inner:after{width:5px;height:9px;left:4px;top:1px}.setps .step .text{flex-shrink:0}.join-progress-1 .checkbox-row svg{width:15px;height:15px}.setps .step .line::before{transform:skew(40deg)}.setps .step .line::after{transform:skew(-40deg)}.setps .step .line:after,.setps .step .line:before{width:6px}.setps .step .text{font-size:12px;justify-content:flex-start}.el-dialog__body .setps .step:not(:last-child)::before{right:-12px;top:-10px;width:0;height:0;transform:rotate(41deg);border-left:20px solid transparent;border-right:19px solid transparent;border-bottom:23px solid #f5f8fc}.checkbox-row{gap:6px}.form-select-wrapper ul::-webkit-scrollbar{width:4px}.form-select-wrapper ul::-webkit-scrollbar-thumb{background:#d9d9d9}.setps .step.active>.text{color:var(--my-blue);font-weight:700}.el-dialog__body .setps .step:not(:last-child)::after{content:"";position:absolute;right:-16px;top:20px;width:0;height:0;transform:rotate(131deg);border-left:20px solid transparent;border-right:19px solid transparent;border-bottom:23px solid #f5f8fc}.join-progress-1 .checkbox-row{padding:12px 8px;height:auto;font-size:12px;font-weight:500;color:#000}.join-progress-1 .checkbox-row.checkbox-row-checked{background:#f3f8fc}.join-progress-1{gap:0;padding:12px 0}.join-progress-2:not(.progress2-form-wrapper){padding:16px 0 64px}.join-progress-2.progress2-form-wrapper{padding:0;margin:16px 0;padding-right:8px}.account_code{font-size:12px;margin-top:10px}.join-progress-2-title{font-size:12px;font-weight:500;line-height:12px;margin-bottom:10px}.account-info-block{display:flex;flex-direction:column}.join-progress-3-box{padding:0 30px;font-size:12px}.join-progress-3-box .join-progress-3-content{margin-top:10px}.join-progress-3-box .join-progress-3-icon svg{width:24px;height:24px}.join-progress-3-box .join-progress-3-icon,.join-progress-3-box .join-progress-3-back{margin-top:24px;font-size:14px}.account-info-line{margin-bottom:24px}.join-progress-3-box img{width:24px;height:24px}.account-info-left,.account-info-center,.account-info-right{padding:32px 0;border-top:1px solid var(--my-border)}.form-address-item,.form-default-address-title{padding:12px;font-size:12px;line-height:16px}.account-info-line-2,.account-info-line-3{margin-top:10px;font-size:12px;line-height:1}.form-select-wrapper ul{height:142px}.account-info-line-1{font-weight:400}.text-btn-container{margin-bottom:12px}.account-info-line-1 span{font-size:12px}.common-block-btn{font-size:12px}}
+.el-reset-from .common-dropdown-item .label--focus {
+  transform: unset!important;
+  background-color: transparent;
+}
+.el-reset-from .common-dropdown-item .el-checkbox__inner::after {
+  width: 6px;
+  height: 12px;
+  left: 6px;
+  top: 2px;
+}
+.dialog-tips {
+  margin-bottom: 30px;
+  font-size: 14px;
+  color: #1A1A1A;
+}
+
+.account-info-edit {
+  cursor: pointer;
+  transition: all .2s;
+}
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.form-default-address-title {
+  padding: 0 20px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  background: #EAEEF1;
+  color: #1A1A1A;
+}
+
+.el-dialog .checkbox-row .el-checkbox__inner {
+  border-radius: 100%;
+}
+.el-dialog .checkbox-row .el-checkbox__inner:after {
+  left: 7px;
+  top: 2px;
+}
+
+.form-select-wrapper ul {
+  margin-bottom: 24px!important;
+}
+.form-select-wrapper.size-over2 ul {
+  height: 116px;
+  overflow-y: auto;
+}
+
+
+.form-select-wrapper ul li {
+  border-bottom: 1px solid #ccc;
+}
+.form-select-wrapper {
+  margin-top: 4px;
+}
+
+.form-select-wrapper ul::-webkit-scrollbar {
+  width: 8px;
+}
+
+.form-select-wrapper ul::-webkit-scrollbar-track {
+  border-radius: 14px;
+  background: #fff;
+}
+
+.form-select-wrapper ul::-webkit-scrollbar-thumb {
+  border-radius: 19px;
+  background: #ccc;
+}
+.form-select-wrapper ul::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+.form-address-item {
+  padding: 12px 16px;
+  gap: 16px;
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 21px;
+  color: #1A1A1A;
+  display: flex;
+  align-items: center;
+}
+
+.form-address-item.default {
+  font-weight: bold;
+  color: #1A1A1A;
+  background: #EAEEF1;
+}
+
+.text-btn-container {
+  margin-bottom: 20px;
+}
+
+.account-info-edit:hover {
+  color: var(--my-black);
+}
+
+.account-info-header {
+  margin-bottom: 28px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.account-info-line {
+  margin-bottom: 28px;
+}
+
+.account-info-line:last-child {
+  margin-bottom: 0;
+}
+
+.account-info-line-1 {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--my-black);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.account-info-line-1 p {
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.account-info-line-1 span {
+  font-size: 14px;
+  color: var(--my-black);
+  text-decoration-line: underline;
+}
+
+.account-info-line-2 {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--my-black);
+}
+.account_code{
+  font-size: 14px;
+  margin-bottom: -6px;
+}
+
+.account-info-line-3 {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #999999;
+}
+
+.form-address-item-info {
+  cursor: pointer;
+}
+
+.setps {
+  height: 32px;
+  display: flex;
+  overflow: hidden;
+}
+.setps .step {
+  position: relative;
+  flex: 1;
+  display: flex;
+  background-color: #F5F8FC;
+}
+.setps .step .text {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 1;
+  color:#999999;
+  font-weight: 600;
+}
+.setps .step .line::after,
+.setps .step .line::before {
+  content: '';
+  position: absolute;
+  right: 12px;
+  width: 10px;
+  height: 16px;
+  background-color: #fff;
+  transform: skewX(-60deg);
+}
+.setps .step .line::before {
+  top: 0;
+  transform: skewX(60deg);
+}
+.setps .step .line::after {
+  top: 50%;
+  transform: skewX(-60deg);
+}
+.setps .step > .text span {
+  width: 16px;
+  height: 16px;
+  border-radius: 100%;
+  color: #fff;
+  line-height: 1;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #D5DEF0;
+}
+.setps .step:last-child {
+  flex: 0.8;
+}
+.setps .step.active {
+  background-color: #E4EEF9;
+}
+.step.active.next-active {
+  cursor: pointer;
+}
+.setps .step.active > .text {
+  color: #142A6B;
+}
+.setps .step:not(:last-child).active::before {
+  content: '';
+  position: absolute;
+  right: -12px;
+  top: -12px;
+  width: 0;
+  height: 0;
+  transform: rotate(31deg);
+  border-left: 15px solid transparent;
+  border-right: 19px solid transparent;
+  border-bottom: 23px solid #F5F8FC;
+}
+.setps .step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -12px;
+  top: 24px;
+  width: 0;
+  height: 0;
+  transform: rotate(150deg);
+  border-left: 15px solid transparent;
+  border-right: 28px solid transparent;
+  border-bottom: 23px solid #F5F8FC;
+}
+.setps .step.next-active:not(:last-child).active::before,
+.setps .step.next-active:not(:last-child).active::after {
+  border-bottom: 23px solid #E4EEF9;
+} 
+.setps .step.active > .text span {
+  background-color: #142A6B;
+}
+.setps .step:not(:last-child) .text {
+  margin-right: 48px;
+}
+
+.join-progress-1,
+.join-progress-2
+{
+  padding: 70px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.join-progress-1 .checkbox-row {
+  height: 60px;
+  cursor: pointer;
+  padding-left: 16px;
+  border-radius: 2px;
+  font-size: 14px;
+  user-select: none;
+  color: #1A1A1A;
+  line-height: 21px;
+}
+.join-progress-1 .checkbox-row.checkbox-row-checked {
+  background-color: #EAEEF1;
+  font-weight: bold;
+}
+.join-progress-2 .el-autocomplete {
+  width: 100%;
+}
+
+.join-progress-3-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+  color: #333333;
+  padding: 0 60px;
+  text-align: center;
+}
+.join-progress-3-box img {
+  width: 48px;
+  height: 48px;
+}
+.join-progress-3-box .join-progress-3-icon {
+  margin-top: 70px;
+}
+.join-progress-3-box .join-progress-3-content {
+  margin-top: 30px;
+  word-break: break-word;
+}
+.join-progress-3-box .join-progress-3-back {
+  margin-top: 100px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.join-progress-2-title {
+  font-size: 16px;
+  color: #1A1A1A;
+  line-height: 21px;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+.join-progress-2.progress2-form-wrapper {
+  padding: 0 16px;
+  margin: 30px 0;
+}
+.join-progress-2.progress2-form-wrapper::-webkit-scrollbar {
+  width: 6px; 
+}
+
+
+.join-progress-2.progress2-form-wrapper::-webkit-scrollbar-thumb {
+  background-color: #CCCCCC; 
+  border-radius: 3px; 
+}
+
+
+.join-progress-2.progress2-form-wrapper::-webkit-scrollbar-track {
+  background: transparent; 
+}
+.account-company-line-list {
+  user-select: none;
+  margin-top: 16px;
+}
+.account-company-line-list > div {
+  padding: 8px;
+  font-size: 14px;
+  color: #1A1A1A;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.account-company-line-list > div span {
+  font-weight: bold;
+  color: #142A6B;
+}
+
+.account-company-line-list>div svg {
+  display: none;
+}
+.account-company-line-list>div:hover svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+.companyid-show {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.companyid-show-text {
+  line-height: 1;
+  display: flex;
+}
+.companyid-show-text svg {
+  height: 18px;
+  width: 120px;
+}
+.companyid-show-icon {
+  display: flex;
+}
+.companyid-show .companyid-show-icon svg {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+.account-company-line-list>div:hover {
+  background-color: #E3EEF9;
+  cursor: pointer;
+}
+.account-company-line-list>div.user-auth {
+  margin-top: 8px;
+}
+.company-apply-text {
+  font-weight: 500;
+  font-size: 14px;
+  color: #E0A609;
+  line-height: 21px;
+  padding: 8px;
+  background-color: #FEF9EC;
+}
+.company-reject-reason {
+  display: flex;
+  text-decoration: underline;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #FDEFEE;
+  color: #E65F5A;
+}
+.company-reject-reason > span {
+  display: flex;
+  cursor: pointer;
+}
+.company-reject-reason > span svg {
+  width: 20px;
+  height: 20px;
+}
+.company-reject-reason > div > span {
+  font-weight: 600;
+}
+.join-progress-1 .checkbox-row svg {
+  width: 20px;
+  height: 20px;
+}
+@media screen and (min-width: 741px) {
+  .join-dialog.large-width .el-dialog {
+    width: 800px!important;
+  }
+  .form-select-wrapper .el-checkbox .el-checkbox__inner:after {
+    width: 7px;
+    height: 14px;
+    left: 6px;
+    top: 0px;
+  }
+  .account-info-left {
+    padding-right: 24px;
+    border-right: 1px solid var(--my-border);
+  }
+  .account-info-center {
+    padding: 0 24px;
+    border-right: 1px solid var(--my-border);
+  }
+  .account-info-right {
+    padding-left: 24px;
+  }
+
+  .account-info-block {
+    display: grid;
+    -webkit-display: grid;
+    grid-template-columns: repeat(3,1fr);
+    padding: 36px 24px;
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .join-progress-2.progress2-form-wrapper {
+    height: 260px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+  .join-progress-2 .el-select-dropdown {
+    position: absolute!important;
+    top: 30px!important;
+    left: 0px!important;
+  }
+  .el-reset-from .common-dropdown-item .el-checkbox__inner:after {
+    width: 5px;
+    height: 9px;
+    left: 4px;
+    top: 1px;
+  }
+  .setps .step .text {
+    flex-shrink: 0;
+  }
+  .join-progress-1 .checkbox-row svg {
+    width: 15px;
+    height: 15px;
+  }
+  .setps .step .line::before {
+    transform: skew(40deg);
+  }
+  .setps .step .line::after {
+    transform: skew(-40deg);
+  }
+  .setps .step .line:after, 
+  .setps .step .line:before {
+    width: 6px;
+  }
+  .setps .step .text {
+    font-size: 12px;
+    justify-content: flex-start;
+  }
+  .el-dialog__body .setps .step:not(:last-child)::before {
+    right: -12px;
+    top: -10px;
+    width: 0;
+    height: 0;
+    transform: rotate(41deg);
+    border-left: 20px solid transparent;
+    border-right: 19px solid transparent;
+    border-bottom: 23px solid #F5F8FC;
+  }
+  .checkbox-row {
+    gap: 6px;
+  }
+  .form-select-wrapper ul::-webkit-scrollbar {
+    width: 4px;
+  }
+  .form-select-wrapper ul::-webkit-scrollbar-thumb {
+    background: #D9D9D9;
+  }
+  .setps .step.active>.text {
+    color: var(--my-blue);
+    font-weight: 700;
+  }
+  .el-dialog__body .setps .step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -16px;
+    top: 20px;
+    width: 0;
+    height: 0;
+    transform: rotate(131deg);
+    border-left: 20px solid transparent;
+    border-right: 19px solid transparent;
+    border-bottom: 23px solid #F5F8FC;
+  }
+  .join-progress-1 .checkbox-row {
+    padding: 12px 8px;
+    height: auto;
+    font-size: 12px;
+    font-weight: 500;
+    color: #000;
+  }
+  .join-progress-1 .checkbox-row.checkbox-row-checked {
+    background: #F3F8FC;
+  }
+  .join-progress-1 {
+    gap: 0;
+    padding: 12px 0;
+  }
+  .join-progress-2:not(.progress2-form-wrapper) {
+    padding: 16px 0 64px;
+  }
+  .join-progress-2.progress2-form-wrapper {
+    padding: 0;
+    margin: 16px 0;
+    padding-right: 8px;
+  }
+  .account_code{
+    font-size: 12px;
+    margin-top: 10px;
+    
+  }
+  .join-progress-2-title {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 12px;
+    margin-bottom: 10px;
+  }
+  .account-info-block {
+    display: flex;
+    flex-direction: column;
+  }
+  .join-progress-3-box {
+    padding: 0 30px;
+    font-size: 12px;
+  }
+  .join-progress-3-box .join-progress-3-content {
+    margin-top: 10px;
+  }
+  .join-progress-3-box .join-progress-3-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  .join-progress-3-box .join-progress-3-icon,
+  .join-progress-3-box .join-progress-3-back {
+    margin-top: 24px;
+    font-size: 14px;
+  }
+  .account-info-line {
+    margin-bottom: 24px;
+  }
+  .join-progress-3-box img {
+    width: 24px;
+    height: 24px;
+  }
+  .account-info-left,
+  .account-info-center,
+  .account-info-right {
+    padding: 32px 0;
+    border-top: 1px solid var(--my-border);
+  }
+
+  .form-address-item,
+  .form-default-address-title {
+    padding: 12px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .account-info-line-2,
+  .account-info-line-3 {
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .form-select-wrapper ul {
+    height: 142px;
+  }
+
+  .account-info-line-1 {
+    font-weight: 400;
+  }
+
+  .text-btn-container {
+    margin-bottom: 12px;
+  }
+
+  .account-info-line-1 span {
+    font-size: 12px;
+  }
+
+  .common-block-btn {
+    font-size: 12px;
+  }
+}
