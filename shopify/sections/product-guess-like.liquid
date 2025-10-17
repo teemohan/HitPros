@@ -1,9 +1,9 @@
-<div class="w-full bg-F9F9F9 mt-2.5 fb-sm:mt-0 py-7 fb-sm:py-10 js-product-guess-{{ section.id }}"
+<div class="w-full bg-F9F9F9 mt-2.5 fb-md:mt-0 py-7 fb-md:py-10 js-product-guess-{{ section.id }}"
   data-sku="{{ product.selected_or_first_available_variant.sku }}"
 >
   <div class="container w-full">
-    <div class="flex items-center justify-between mb-4 fb-sm:mb-6">
-      <h2 class="text-20 fb-sm:text-32 font-semibold text-main">{{ section.settings.title }}</h2>
+    <div class="flex items-center justify-between mb-4 fb-md:mb-6">
+      <h2 class="text-20 fb-md:text-32 font-semibold text-main">{{ section.settings.title }}</h2>
     </div>
     <div class="relative w-full mx-auto fb-hover-list js-pdpguesss-gtm">
       <div class="js-product-guess-content grid grid-cols-2 fb-sm:grid-cols-3 fb-md:grid-cols-5 gap-x-2.5 gap-y-4.5 fb-sm:gap-6"
@@ -53,6 +53,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     createProductHtml(item) {
+      const fixedPrice = Number(item.price).toFixed(2);
+      const parts = fixedPrice.split('.');
+      item.priceWhole = parts[0];
+      item.priceDecimal = parts[1];
       return `
         <div class="w-full">
           <product-item 
@@ -90,25 +94,38 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
 
             <div class="p-2 fb-sm:-mt-3 fb-sm:px-4.5 fb-sm:pt-0 fb-sm:pb-4.5 flex flex-col flex-grow justify-start">
-              <span class="text-sm font-medium text-main mb-2">${item.brand || ''}</span>
+              <span class="text-sm font-medium text-main mb-2 hidden">${item.brand || ''}</span>
               <a 
                 href="/products/${item.skuCode}"
                 datalayer-link=""
                 data-sku="${item.skuCode || ''}"
                 title="${(item.title || '').replace(/"/g, '&quot;')}"
-                class="text-sm leading-6 text-575757 mb-3 line-clamp-2 hover:text-main h-12"
+                class="text-16  fb-max-sm:text-14  fb-max-sm:h-16 leading-6 text-575757 mb-3 line-clamp-3 hover:text-main h-18"
               >
-                ${item.title || ''}
+                ${item.title || ''} 
               </a>
-              <div class="flex justify-between mb-4.5 flex-1">
+              <div class="flex justify-between mb-4.5 flex-1 hidden">
                 <div class="flex items-center flex items-end">
                   <span class="text-lg fb-sm:text-xl font-medium text-main">$${item.price || '0.00'}</span>
                 </div>
               </div>
+              <div class="w-full flex items-center justify-start">
+                  <div class="flex item-center">
+                    <span class="text-main font-bold text-12 mt-1">
+                      $
+                    </span>
+                    <span class="text-main font-bold text-22 " style="margin:0 3px;" >
+                      ${item.priceWhole}
+                    </span>
+                    <span class="text-main font-bold text-12 mt-1">
+                      ${item.priceDecimal}
+                    </span>
+                  </div>
+                </div>
               <form 
                 method="post" 
                 action="/cart/add"
-                class="w-full"
+                class="w-full hidden"
                 enctype="multipart/form-data"
                 is="product-form"
                 data-recommend-module="homepage/{{- section.settings.title -}}"
@@ -145,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const url = `/openapi/recommend/pdp`;
         const result = await kkAjax.post(url, {
           userId: window.northsky.customerId || '',
-          anonymousId: window.gaGlobal?.vid || '',
+          anonymousId: window.gaGlobal?.vid || localStorage.getItem('ga4UserId') || '',
           count: 20,
           skuCode: this.skuCode
         });

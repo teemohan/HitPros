@@ -1,7 +1,24 @@
+<style>
+.line-one{
+  width:1px;
+  height:0.75rem;
+  background-color: #121212;
+}
+.ship-box{
+  width:160px;
+  cursor: pointer;
+}
+.width50{
+  width: 50% !important;
+}
 
+@media screen(max-width:740px) {
+
+}
+</style>
 {% raw %}
   <script type="text/x-template" id="product-item-search">
-    <div class="index-product-item js-list-type w-full bg-white rounded-sm px-2 pt-6 pb-3.5  fb-sm:px-5 fb-sm:pb-7 fb-sm:pt-6" :data-product-id="product.productId">
+    <div class="index-product-item js-list-type w-full bg-white rounded-sm px-2 pt-6 pb-3.5  fb-sm:px-5 fb-sm:pb-7 fb-sm:pt-6 fb-max-sm:py-8" :data-product-id="product.productId">
       <div class="w-full h-full flex flex-col fb-sm:grid fb-sm:grid-cols-[1fr_148px] fb-sm:gap-4 fb-md:gap-5 fb-1300:gap-6">
         <div class="w-full h-full flex justify-between space-x-5 fb-sm:space-x-12 fb-sm:flex-1">
             <div class="w-25 h-full relative fb-sm:w-50">
@@ -32,43 +49,84 @@
             </div>
             <div class="flex-1 flex flex-col fb-sm:justify-between">
               <div class="w-full flex flex-col fb-sm:hidden">
-                <div v-if="product.brand" class="text-main text-14 font-bold mb-3 hover:underline" @click="handleClickLink">
+                <div v-if="false" class="text-main text-14 font-bold mb-3 hover:underline" @click="handleClickLink">
                   {{ product.brand }}
                 </div>
-                <div :title="product.title" class="text-main text-14 mb-4.5 hover:underline"  @click="handleClickLink">
+                <div class="w-full mb-2  flex items-center space-x-2 flex-wrap">
+                  <span class="text-121212 text-12 hover:underline cursor-pointer " v-if="product.brand" @click="handleClickLink"> {{ product.brand }} </span>    
+                  <div class='line-one'> </div>
+                  <span class="text-121212 text-12  hover:underline cursor-pointer" v-if="product.manufacturerModelNumber" @click="handleClickLink">{{ product.manufacturerModelNumber }}</span>
+                 <div v-if="String(product.inventoryQuantity)" class="inventoryQuantity " style="margin-top:-2px;">
+                   <span v-if="product.inventoryQuantity <= 0" class="coming-stock stock-tag text-10">Restocking</span>
+                   <span v-else-if="product.inventoryQuantity >= productDemand" class="instock-ready stock-tag text-10">In Stock</span>
+                   <span v-else class="instock-partial stock-tag text-10">In Stock</span>
+                 </div>
+                 </div>
+                <div :title="product.title" class="text-121212 text-14 mb-2 hover:underline font-bold"  @click="handleClickLink">
                   {{ product.title }}
                 </div>
-                <div v-if="product.manufacturerModelNumber" class="text-575757 text-12 mb-2">
-                  Model: {{ product.manufacturerModelNumber }}
+                <div v-if="product.manufacturerModelNumber" class="text-575757 text-12 mb-2 hidden">
+                  {{ product.manufacturerModelNumber }}
                 </div>
                 <div class="w-full flex items-center justify-start space-x-3">
                   <span class="text-main text-22 font-bold fb-sm:text-26">
                     {{ product.priceFormat }}
                   </span>
                   <template v-if="product.compareAtPriceFormat && product.discountPercentage">
-                    <div class="flex flex-col">
-                      <span class="line-through text-10 text-main">{{ product.compareAtPriceFormat }}</span>
-                      <span class="text-10 text-red-600">{{ product.discountPercentage }}%OFF</span>
+                    <div class="flex flex-col justify-end">
+                      <span class="line-through text-10 text-999999 text-right">{{ product.compareAtPriceFormat }}</span>
+                      <span class="text-10 text-red-600 font-bold hidden">{{ product.discountPercentage }}% OFF</span>
                     </div>
                   </template>
-                  <div v-if="String(product.inventoryQuantity)" class="inventoryQuantity">
-                    <span v-if="product.inventoryQuantity <= 0" class="coming-stock stock-tag">Restocking</span>
-                    <span v-else-if="product.inventoryQuantity >= productDemand" class="instock-ready stock-tag">In Stock</span>
-                    <span v-else class="instock-partial stock-tag">In Stock</span>
+                  <div v-if="String(product.inventoryQuantity)" class="inventoryQuantity hidden">
+                    <span v-if="product.inventoryQuantity <= 0" class="coming-stock stock-tag fb-max-sm:text-12">Restocking</span>
+                    <span v-else-if="product.inventoryQuantity >= productDemand" class="instock-ready stock-tag fb-max-sm:text-12">In Stock</span>
+                    <span v-else class="instock-partial stock-tag fb-max-sm:text-12">In Stock</span>
                   </div>
+                </div>
+
+                <div class="w-full flex justify-between items-center  h-full  hidden fb-max-sm:flex space-x-3 mt-2">
+                  <div class="width50">
+                    <div class="border border-D3DEF1 bg-white h-10 fb-sm:h-10 fb-sm:px-3 rounded-sm flex justify-between items-center px-2 space-x-0.5">
+                      <button type="button" @click="handleQuantityMinus" class="w-4 h-full">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.17585 6.8436H9.07417H1.20312V9.09247H9.07417H9.17585H14.6964V6.8436H9.17585Z" fill="#092A6F"></path></svg>
+                      </button>
+                      <input
+                        type="text"
+                        size="2"
+                        v-model.number="productDemand" 
+                        @change="handleQuantityChange"
+                        class="flex-1 w-14 fb-sm:w-30  flex justify-center text-center items-center px-1 border-none text-20 text-main"
+                      >
+                      <button type="button" @click="handleQuantityPlus" class="w-4 h-full">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.07417 6.84361V1.22144H6.8253V6.84361H1.20312V9.09248H6.8253V14.7147H9.07417V9.09248H14.6964V6.84361H9.07417Z" fill="#08296F"></path></svg>
+                      </button>
+                    </div>
+                  </div>
+                   <el-button :loading="cartLoading" @click="handleAddToCart" class="width50 h-10  bg-button text-main rounded-sm items-center justify-center border-none text-14 font-bold hover:border-none hover:bg-button hover:text-main">
+                      <span class="loader-button__text" v-if="!cartLoading">
+                        Add to Cart
+                      </span>
+                    </el-button>
                 </div>
               </div>
               <div class="hidden fb-sm:flex flex-col">
-                <div class="w-full mb-2 space-x-3 line-clamp-1">
-                 <span class="text-12254D text-14 hover:underline cursor-pointer" v-if="product.brand" @click="handleClickLink"> {{ product.brand }} </span>          
-                 <span class="text-12254D text-14  hover:underline cursor-pointer" v-if="product.manufacturerModelNumber" @click="handleClickLink">Model: {{ product.manufacturerModelNumber }}</span>
+                <div class="w-full mb-2  flex items-center space-x-3 ">
+                 <span class="text-121212 text-14 hover:underline cursor-pointer " v-if="product.brand" @click="handleClickLink"> {{ product.brand }} </span>    
+                 <div class='line-one'> </div>
+                 <span class="text-121212 text-14  hover:underline cursor-pointer" v-if="product.manufacturerModelNumber" @click="handleClickLink">{{ product.manufacturerModelNumber }}</span>
+                <div v-if="String(product.inventoryQuantity)" class="inventoryQuantity ">
+                  <span v-if="product.inventoryQuantity <= 0" class="coming-stock stock-tag">Restocking</span>
+                  <span v-else-if="product.inventoryQuantity >= productDemand" class="instock-ready stock-tag">In Stock</span>
+                  <span v-else class="instock-partial stock-tag">In Stock</span>
+                </div>
                 </div>
                 <div class="w-full flex flex-col">
-                  <a @click="handleClickLink" :href="product.productUrl" :title="product.title" class="line-clamp-2 font-bold text-16 text-main cursor-pointer hover:underline">
+                  <a @click="handleClickLink" :href="product.productUrl" :title="product.title" class="line-clamp-2 font-bold text-16 text-121212 cursor-pointer hover:underline">
                     {{ product.title }}
                   </a>
                   <ul v-if="product.productCharacter" class="mt-4.5 pl-4">
-                    <li class="list-disc text-12254D text-14" v-for="(character, idx) in product.productCharacter.slice(0, 3)" :key="idx">
+                    <li class="list-disc text-121212 text-14" v-for="(character, idx) in product.productCharacter.slice(0, 3)" :key="idx">
                       <span class="cursor-pointer hover:underline" @click="handleClickLink">{{ character }} </span>
                     </li>
                   </ul>
@@ -76,17 +134,23 @@
               </div>
               <!-- Delivery Section -->
               <div class="w-full pb-2 fb-sm:pb-0">
-                <div class="bg-white hidden fb-sm:flex flex-col gap-1.5 mt-10 fb-sm:mt-2">
+                <div class="bg-white flex flex-col gap-1.5 mt-10 fb-max-sm:mt-2 fb-sm:mt-2">
                   <div class="ships">
-                    <div class="expect text-14 text-12254D">
+                    <div class="expect text-14 text-12254D hidden">
                       <span class="">Enter a ZIP Code.</span>
                     </div>
-                    <el-form class="form reset-input-zip flex items-center justify-start space-x-5 mt-2" ref="ruleForm" :model="ruleForm">
-                      <el-form-item class="w-8.75r !mb-0 h-9" prop="zipCode">
+                   
+                    <div  class="text-xs fb-md:text-sm text-121212 font-middle mt-2 text-left w-full" v-if="product.shippingChargePolicy!=0">
+                      Required special shipping at ${{product.shippingChargePolicy}} each.
+                    </div>
+                    
+                    <el-form v-if="!isEstimateShow" class="form reset-input-zip flex items-center justify-start space-x-5 fb-max-sm:space-x-3  mt-2" ref="ruleForm" :model="ruleForm">
+                      <el-form-item class=" !mb-0 h-9" :class="isMobile?'width50':'w-8.75r' "  prop="zipCode">
                         <el-input
                           v-model="ruleForm.zipCode"
                           placeholder="ZIP Code"
-                          class="[&_input]:h-9 [&_input]:w-8.75r [&_input]:text-darkmain text-center"
+                          class="[&_input]:h-9 [&_input]:text-darkmain text-center"
+                          :class="isMobile?'w-full':'[&_input]:w-8.75r' " 
                           @keydown.enter.native.prevent="handleComputedDeleveryDate"
                         >
                         </el-input>
@@ -94,26 +158,34 @@
                       <el-button
                         :loading="batchDeliveryLoading"
                         @click.stop="handleComputedDeleveryDate"
-                        class="border h-9 border-main text-main text-16 w-25 flex items-center justify-center rounded-[2px]  hover:text-main hover:border-main"
+                        class="border h-9 border-main text-main text-16 w-25 flex items-center justify-center rounded-[2px]  hover:text-main hover:border-main font-bold "
+                        :class="isMobile?'width50':'' "
                         >
                         Submit
                       </el-button>
                     </el-form>
-                    <div class="text-14 mt-4 text-main" v-if="isEstimateShow">
-                      <template v-if="deleveryRes.availableInventoryCount === 0">
-                        <div>Expected to arrive between <span class="font-bold">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold">{{ formatDate(stockDateEnd) }}</span>.</div>
-                      </template>
-                      <template v-else-if="deleveryRes.availableInventoryCount >= deleveryRes.demandQuantity">
-                        <div>Expected to arrive on <span class="font-bold">{{ formatDate(deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
-                      </template>
-                      <template v-else>
-                        <div>Partial expected to arrive on <span class="font-bold">{{ formatDate(+deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
-                        <div>The remaining balance is expected to arrive between <span class="font-bold">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold">{{ formatDate(stockDateEnd) }}</span>.</div>
-                      </template>
+                    
+                    <div class='flex mt-2 mb-2' v-else>
+                      <div class="ship-box bg-F3F8FC rounded-sm  flex items-center justify-center  mr-2 px-1 fb-max-sm:w-auto fb-max-sm:h-10" @click=changeIsEstimateShow>
+                        <span v-if="isEstimateShow" class='text-14 font-bold text-main'>Ship to {{ ruleForm.zipCode }}</span>
+                        <i class="el-icon-arrow-down el-icon--right text-button font-bold"></i>
+                      </div>
+                      <div class="text-14  text-666666 bg-F9F9F9 p-1 fb-max-sm:hidden" >
+                        <template v-if="deleveryRes.availableInventoryCount === 0">
+                          <div>Expected to arrive between <span class="font-bold text-121212">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold text-121212">{{ formatDate(stockDateEnd) }}</span>.</div>
+                        </template>
+                        <template v-else-if="deleveryRes.availableInventoryCount >= deleveryRes.demandQuantity">
+                          <div>Expected to arrive on <span class="font-bold text-121212">{{ formatDate(deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
+                        </template>
+                        <template v-else>
+                          <div>Partial expected to arrive on <span class="font-bold">{{ formatDate(+deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
+                          <div>The remaining balance is expected to arrive between <span class="font-bold text-121212">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold text-121212">{{ formatDate(stockDateEnd) }}</span>.</div>
+                        </template>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="block w-full fb-sm:hidden mt-3.5 mb-2">
+                <div class="block w-full hidden mt-3.5 mb-2">
                   <el-dropdown class="w-full" trigger="click"  ref="dropdownRef"  placement="bottom-end">
                     <div class="el-dropdown-link text-darkmain text-14">
                       <span v-if="isEstimateShow">Ship to {{ ruleForm.zipCode }}</span>
@@ -180,21 +252,20 @@
               {{ product.priceFormat }}
             </span>
             <template v-if="product.compareAtPriceFormat && product.discountPercentage">
-              <div class="flex items-center justify-start">
-                <span class="text-14 line-through text-main">{{ product.compareAtPriceFormat }}</span>
-                <span class="text-xs text-red-600 ml-1">{{ product.discountPercentage }}%OFF</span>
+              <div class="flex items-center justify-end">
+                <span class="text-14 line-through text-999999 text-right">{{ product.compareAtPriceFormat }}</span>
+                <span class="text-xs text-red-600 ml-1 font-bold hidden">{{ product.discountPercentage }}% OFF</span>
               </div>
             </template>
-            <div v-if="String(product.inventoryQuantity)" class="inventoryQuantity">
+            <div v-if="String(product.inventoryQuantity)" class="inventoryQuantity hidden">
               <span v-if="product.inventoryQuantity <= 0" class="coming-stock stock-tag">Restocking</span>
               <span v-else-if="product.inventoryQuantity >= productDemand" class="instock-ready stock-tag">In Stock</span>
               <span v-else class="instock-partial stock-tag">In Stock</span>
             </div>
           </div>
-          <div class="w-full flex justify-between space-x-5 items-center h-full fb-sm:space-x-0 fb-sm:h-auto fb-sm:block">
-
+          <div class="w-full flex justify-between space-x-5 items-center h-full fb-sm:space-x-0 fb-sm:h-auto fb-max-sm:hidden fb-sm:block">
             <div class="w-25 fb-sm:w-full">
-              <div class="w-full text-darkmain text-14 hidden fb-sm:mb-2 fb-sm:block">Quantity</div>
+              <div class="w-full text-darkmain text-14 hidden ">Quantity</div>
               <div class="w-25 fb-sm:w-full border border-D3DEF1 bg-white h-8.5 fb-sm:h-10 fb-sm:px-3 rounded-sm flex justify-between items-center px-2 space-x-0.5">
                 <button type="button" @click="handleQuantityMinus" class="w-4 h-full">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.17585 6.8436H9.07417H1.20312V9.09247H9.07417H9.17585H14.6964V6.8436H9.17585Z" fill="#092A6F"></path></svg>
@@ -204,7 +275,7 @@
                   size="2"
                   v-model.number="productDemand" 
                   @change="handleQuantityChange"
-                  class="flex-1 w-14 fb-sm:w-30 flex justify-center text-center items-center px-1 border-none text-20 text-main"
+                  class="flex-1 w-14 fb-sm:w-30  flex justify-center text-center items-center px-1 border-none text-20 text-main"
                 >
                 <button type="button" @click="handleQuantityPlus" class="w-4 h-full">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.07417 6.84361V1.22144H6.8253V6.84361H1.20312V9.09248H6.8253V14.7147H9.07417V9.09248H14.6964V6.84361H9.07417Z" fill="#08296F"></path></svg>
@@ -216,6 +287,21 @@
                   Add to Cart
                 </span>
               </el-button>
+          </div>
+          <div class="text-14  text-666666 bg-F9F9F9 p-1 hidden mb-1 fb-max-sm:block w-full mt-3" v-if="isEstimateShow" >
+            <template v-if="deleveryRes.availableInventoryCount === 0">
+              <div>Expected to arrive between <span class="font-bold text-121212">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold text-121212">{{ formatDate(stockDateEnd) }}</span>.</div>
+            </template>
+            <template v-else-if="deleveryRes.availableInventoryCount >= deleveryRes.demandQuantity">
+              <div>Expected to arrive on <span class="font-bold text-121212">{{ formatDate(deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
+            </template>
+            <template v-else>
+              <div>Partial expected to arrive on <span class="font-bold">{{ formatDate(+deleveryRes.availableInventoryDeliveryTimeStamp) }}</span>.</div>
+              <div>The remaining balance is expected to arrive between <span class="font-bold text-121212">{{ formatDate(stockDateStart) }}</span> and <span class="font-bold text-121212">{{ formatDate(stockDateEnd) }}</span>.</div>
+            </template>
+          </div>
+          <div class="text-14  text-666666 bg-F9F9F9 p-1 mb-1 hidden fb-max-sm:block w-full mt-3" v-else >
+            <span>Enter your ZIP Code to estimate delivery time.</span>
           </div>
         </div>
       </div>
@@ -261,10 +347,14 @@
       initialDeliveryData() {
         // Calculate initialDeliveryData from deliveryDataMap
         return this.deliveryDataMap[this.product.sku] || null;
+      },
+      isMobile(){
+        return this.windowWidth <= 740;
       }
     },
     data(){
       return {
+        windowWidth: window.innerWidth,
         cartLoading: false,
         productDemand: this.product.moq ? +this.product.moq : 1,
         // Delivery related data
@@ -282,6 +372,7 @@
     mounted() {
       this.initMediaSwiper();
       this.processInitialDeliveryData();
+      window.addEventListener('resize', this.handleResize)
     },
     watch: {
        // Watch for changes in initial delivery data
@@ -303,6 +394,12 @@
       }
     },
     methods: {
+      handleResize() {
+        this.windowWidth = window.innerWidth;
+      },
+      changeIsEstimateShow(){
+        this.isEstimateShow = !this.isEstimateShow; 
+      },
       async getDeleveryDate(deliveryParams) {
              try {
              const response = await kkAjax.post('/openapi/adlink/delivery-calculation/batch', {
@@ -483,6 +580,7 @@
      },
      beforeDestroy() {
        document.removeEventListener('zipcode-updated', this.zipcodeUpdateHandler);
+       window.removeEventListener('resize', this.handleResize);
      }
    });
 </script>

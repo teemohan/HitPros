@@ -9,15 +9,15 @@ $(function () {
     return basePrice
   }
   const skypdp = {
-      price: getInitPrice2(),
-      moq: $('.js-zkh-input').data('moq') || 1,
-      mpq: $('.js-zkh-input').data('mpq') || 1,
-      discountJson: mainProductUtils.formateDiscountJson('#js-nav-quick'),
-      variantId: $('#js-nav-quick').data('variant-id'),
-      quantity: $('.js-zkh-input').data('moq') || 1,
-      sku: $('#js-product-quikbuy').data('sku') || '',
+    price: getInitPrice2(),
+    moq: $('.js-zkh-input').data('moq') || 1,
+    mpq: $('.js-zkh-input').data('mpq') || 1,
+    discountJson: mainProductUtils.formateDiscountJson('#js-nav-quick'),
+    variantId: $('#js-nav-quick').data('variant-id'),
+    quantity: $('.js-zkh-input').data('moq') || 1,
+    sku: $('#js-product-quikbuy').data('sku') || '',
   };
-  function initDelivery () {
+  function initDelivery() {
     new Vue({
       el: '#delevery-date',
       delimiters: ['${', '}'],
@@ -47,12 +47,12 @@ $(function () {
         };
       },
       created() {
-        if(this.ruleForm.zipCode) {
+        if (this.ruleForm.zipCode) {
           this.isEstimateShow = true
           this.getInitData('', true);
         } else {
           try {
-            getLocalZipCode((value)=> {
+            getLocalZipCode((value) => {
               this.ruleForm.zipCode = value;
               this.isEstimateShow = true
               this.getInitData('', true);
@@ -61,7 +61,7 @@ $(function () {
           }
         }
       },
-      mounted () {
+      mounted() {
         document.addEventListener('quantitySelectorUpdated', this.quantityChanged);
       },
       methods: {
@@ -83,17 +83,17 @@ $(function () {
           return northSkyformatDate(timestamp, timezoneOffset = -5)
         },
         async getInitData(number, bol) {
-           let quantity = 1;
+          let quantity = 1;
           try {
             this.deleveryRes = null;
-            if(!number) {
+            if (!number) {
               const quantitySelector = '.js-quantity-input';
               quantity = +$('.js-quantity-input').attr('data-demand') || 1
-           } else {
+            } else {
               quantity = +number
             }
-            if(this.isEstimateShow) {
-             $('.js-shipping-form-skeleton').show()
+            if (this.isEstimateShow) {
+              $('.js-shipping-form-skeleton').show()
             }
             const result = await getDeliveryEstimate({
               zipCode: this.ruleForm.zipCode,
@@ -106,7 +106,7 @@ $(function () {
                 $('.js-shipping-form').removeClass('hidden')
                 $('.js-shipping-form-skeleton').hide()
                 this.isEstimateShow = false
-                if(bol) {
+                if (bol) {
                   return false
                 }
                 this.$message({
@@ -210,19 +210,19 @@ $(function () {
             {
               name: 'Most Recent',
               value: "1"
-             },
-             {
+            },
+            {
               name: 'Only Pictures',
               value: "4"
-             },
-             {
+            },
+            {
               name: 'Pictures First',
               value: "5"
-             },
-             {
+            },
+            {
               name: 'Videos First',
               value: "6"
-             }
+            }
           ]
         }
       },
@@ -283,7 +283,7 @@ $(function () {
         // Load product and store reviews by default
         this.getReviewCount();
         this.getStoreReviewCount();
-        
+
         // Add keyboard event listener
         document.addEventListener('keydown', this.handleKeydown);
       },
@@ -317,7 +317,7 @@ $(function () {
         // Reset pagination and reload reviews based on current tab
         async resetAndLoadReviews() {
           this.isLoading = true;
-          
+
           if (this.activeName === 'first') {
             // Product reviews
             this.paramQuery.pageNo = 1;
@@ -331,7 +331,7 @@ $(function () {
             this.shopQuery.orderAndFilter = parseInt(this.storeValue);
             await this.getStoreReviewCount();
           }
-          
+
           this.isViewLess = false;
         },
         // Render rate HTML by cloning content from header rate view
@@ -351,11 +351,11 @@ $(function () {
             if (res && res.data) {
               const data = res.data;
               this.afterFilterTotal = data.afterFilterTotal || 0;
-              if(this.isInitSku) {
+              if (this.isInitSku) {
                 this.skuTotalReviews = data.totalReviews || 0;
                 this.skuTotalScore = data.totalScore || 0;
-                if(data.starCounts) {
-                   this.percentJson = this.calculatePercentages(data.starCounts);
+                if (data.starCounts) {
+                  this.percentJson = this.calculatePercentages(data.starCounts);
                 }
                 this.isInitSku = false
                 this.$nextTick(() => {
@@ -371,7 +371,7 @@ $(function () {
                   this.allReviews = [...this.allReviews, ...data.reviews];
                 }
               }
-              
+
               this.updateViewMoreState();
             } else {
               this.activeName = 'second'
@@ -425,9 +425,9 @@ $(function () {
           $('.js-trustpiolt-skeleton, .js-google-skeleton').addClass('hidden');
           this.reviewBrief.forEach(item => {
             const str_html = ` <span>Score ${item.rating}</span> <span class="w-0.5 border-r border-EAEEF1"></span><span> ${item.totalReview > 1 ? item.totalReview + ' reviews' : 'review'}</span>`
-            if(item.source == 'trustpilot') {
+            if (item.source == 'trustpilot') {
               $('.js-trustpiolt-review').html(str_html).removeClass('hidden');
-            } else if(item.source == 'google') {
+            } else if (item.source == 'google') {
               $('.js-google-review').html(str_html).removeClass('hidden');
             }
           });
@@ -451,7 +451,7 @@ $(function () {
             if (res && res.data) {
               const data = res.data;
               this.storeAfterFilterTotal = data.afterFilterTotal || 0;
-              if(this.isInitStroe) {
+              if (this.isInitStroe) {
                 this.isInitStroe = false;
                 this.reviewBrief = data.reviewBrief
                 this.shopTotalReviews = data.reviewBrief.reduce((total, review) => total + review.totalReview, 0);
@@ -466,12 +466,12 @@ $(function () {
               }
               this.updateViewMoreState();
             } else {
-              if(this.isInitStroe) {
+              if (this.isInitStroe) {
                 $(`.js-nav-choose[data-desc='Reviews']`).closest('li').hide();
               }
             }
           } catch (error) {
-            if(this.isInitStroe) {
+            if (this.isInitStroe) {
               $(`.js-nav-choose[data-desc='Reviews']`).closest('li').hide();
             }
           } finally {
@@ -532,52 +532,52 @@ $(function () {
     });
   }
   initReviewApp();
-  function initProductCompare () {
-      const productCompare = new Vue({
-        el: '#product-compare',
-        delimiters: ['${', '}'],
-        data() {
-          return {
-            compareData: [],
-            openCompare: false,
-            maxDiscount: 50, // Default value, will be updated from API
-            comparisonType: 1,
-            hasModel: false,
-          }
-        },
-        async created() {
-          await this.initialData()
-        },
-        methods: {
-          async initialData() {
-            // Simulate data loading process
-            try{
-              const res = await kkAjax.get(`/openapi/adlink/product/compare?sku=${skypdp.sku}`);
-              if (res && res.data && res.data.length > 0) {
-                const currentPrice = skypdp.price; // This should be the actual current product price
-                this.compareData = res.data.map((item)=> {
-                  item.percentage = (item.percentage * 100).toFixed(0)
-                  item.absoluteOff = parseFloat(item.absoluteOff).toFixed(2)
-                  item.comparisonPrice = parseFloat(item.comparisonPrice).toFixed(2)
-                  if(item.model && !this.hasModel) {
-                    this.hasModel = true
-                  }
-                  return item
-                })
-                this.comparisonType = res.data[0].comparisonType
-                this.maxDiscount = res.data[0].comparisonType == 1 ? res.data[0].absoluteOff : res.data[0].percentage
-                document.querySelector('.js-product-compare-content').classList.remove('hidden')
-              }
-            } catch (error) {
-            } finally {
-              document.querySelector('.js-product-compare-skenon').classList.add('hidden')
-            }
-          },
-          pullMore() {
-            this.openCompare = !this.openCompare
-          }
+  function initProductCompare() {
+    const productCompare = new Vue({
+      el: '#product-compare',
+      delimiters: ['${', '}'],
+      data() {
+        return {
+          compareData: [],
+          openCompare: false,
+          maxDiscount: 50, // Default value, will be updated from API
+          comparisonType: 1,
+          hasModel: false,
         }
-      })
+      },
+      async created() {
+        await this.initialData()
+      },
+      methods: {
+        async initialData() {
+          // Simulate data loading process
+          try {
+            const res = await kkAjax.get(`/openapi/adlink/product/compare?sku=${skypdp.sku}`);
+            if (res && res.data && res.data.length > 0) {
+              const currentPrice = skypdp.price; // This should be the actual current product price
+              this.compareData = res.data.map((item) => {
+                item.percentage = (item.percentage * 100).toFixed(0)
+                item.absoluteOff = parseFloat(item.absoluteOff).toFixed(2)
+                item.comparisonPrice = parseFloat(item.comparisonPrice).toFixed(2)
+                if (item.model && !this.hasModel) {
+                  this.hasModel = true
+                }
+                return item
+              })
+              this.comparisonType = res.data[0].comparisonType
+              this.maxDiscount = res.data[0].comparisonType == 1 ? res.data[0].absoluteOff : res.data[0].percentage
+              document.querySelector('.js-product-compare-content').classList.remove('hidden')
+            }
+          } catch (error) {
+          } finally {
+            document.querySelector('.js-product-compare-skenon').classList.add('hidden')
+          }
+        },
+        pullMore() {
+          this.openCompare = !this.openCompare
+        }
+      }
+    })
   }
   // initProductCompare()
 })

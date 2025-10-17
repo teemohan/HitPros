@@ -63,13 +63,13 @@
               </div>
               <div class="stock-label-container">
                 <template v-if="item.totalInventory <= 0">
-                  <span class="coming-stock stock-tag">Restocking</span>
+                  <span class="coming-stock stock-tag fb-max-sm:text-12">Restocking</span>
                 </template>
                 <template v-else-if="item.totalInventory >= item.quantity">
-                  <span class="instock-ready stock-tag">In Stock</span>
+                  <span class="instock-ready stock-tag fb-max-sm:text-12">In Stock</span>
                 </template>
                 <template v-else>
-                  <span class="instock-partial stock-tag">In Stock</span>
+                  <span class="instock-partial stock-tag fb-max-sm:text-12">In Stock</span>
                 </template>
               </div>
             </header>

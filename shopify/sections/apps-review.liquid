@@ -1,19 +1,19 @@
 <!-- Review Section Container -->
 <div class="section-anchor-target container bg-white js-review-rate w-full overflow-hidden relative mt-2.5" id="js-review-section" data-sku="{{ product.selected_or_first_available_variant.sku }}">
-  <div class="js-review-customer hidden w-full mt-6 fb-sm:mt-10 fb-review-el pb-7 fb-sm:pb-15">
-    <p class="text-121212 text-16 fb-sm:text-24 font-bold pb-4 fb-sm:mb-5">See Reviews</p>
+  <div class="js-review-customer hidden w-full mt-6 fb-md:mt-10 fb-review-el pb-7 fb-md:pb-15">
+    <p class="text-121212 text-16 fb-md:text-24 font-bold pb-4 fb-md:mb-5">See Reviews</p>
     <div class="w-full">
-      <div class="w-full flex flex-col fb-sm:flex-row fb-sm:justify-between fb-sm:h-27.5 fb-sm:mb-8" v-if="skuTotalReviews && skuTotalReviews > 0">
-        <div class="w-full flex  items-center justify-center space-x-6 fb-sm:w-29r fb-sm:h-full fb-sm:pr-6 fb-sm:border-r fb-sm:border-E6E6E6">
+      <div class="w-full flex flex-col fb-md:flex-row fb-md:justify-between fb-md:h-27.5 fb-md:mb-8" v-if="skuTotalReviews && skuTotalReviews > 0">
+        <div class="w-full flex  items-center justify-center space-x-6 fb-md:w-29r fb-md:h-full fb-md:pr-6 fb-md:border-r fb-md:border-E6E6E6">
           <div class="flex flex-col">
-              <span class="text-24 font-bold text-main mb-2 fb-sm:mb-1.5 text-center fb-sm:text-48">${skuTotalScore}</span>
-              <span class="text-12 text-121212 text-center fb-sm:text-14">out of 5</span>
+              <span class="text-24 font-bold text-main mb-2 fb-md:mb-1.5 text-center fb-md:text-48">${skuTotalScore}</span>
+              <span class="text-12 text-121212 text-center fb-md:text-14">out of 5</span>
           </div>
           <div id="product-review-section" class="text-center mb-2 flex items-center justify-center fb-review-rate2">
             <el-rate v-model="skuTotalScore" disabled></el-rate>
           </div>
         </div>
-        <div class="mt-5 mb-6 w-full fb-sm:flex-1 fb-sm:mb-0 fb-sm:mt-0 fb-sm:px-12 fb-sm:h-full">
+        <div class="mt-5 mb-6 w-full fb-md:flex-1 fb-md:mb-0 fb-md:mt-0 fb-md:px-12 fb-md:h-full">
           <div class="flex justify-between space-x-2.5" v-for="(item, index) in percentJson">
             <div class="w-18 text-14 text-121212 fb-review-rate3">
                 <el-rate v-model="item.rating" disabled :max="percentJson.length - index"></el-rate>
@@ -36,16 +36,16 @@
       <!-- Reviews Section -->
       <div class="w-full text-14 text-darkmain" id="review-content-tab">
         <!-- Tab Navigation for Product/Store Reviews -->
-        <div class="w-full mb-4 border-b border-E6E6E6 fb-sm:mb-5.5">
-          <el-tabs class="w-full h-10 fb-sm:w-[432px]" v-model="activeName" @tab-click="handleClick">
+        <div class="w-full mb-4 border-b border-E6E6E6 fb-md:mb-5.5">
+          <el-tabs class="w-full h-10 fb-md:w-[432px]" v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="Reviews on this Product" name="first" v-if="skuTotalReviews > 0">
             </el-tab-pane>
             <el-tab-pane label="Reviews on NorthSky" name="second" v-if="shopTotalReviews > 0"></el-tab-pane>
           </el-tabs>
         </div>
          <!-- Reviews Header -->
-        <div class="flex items-center fb-sm:flex-row-reverse h-9 justify-between" v-if="activeName == 'first'">
-          <div class="h-full overflow-hidden w-36 fb-sm:w-11r border border-CCCCCC rounded-sm">
+        <div class="flex items-center fb-md:flex-row-reverse h-9 justify-between" v-if="activeName == 'first'">
+          <div class="h-full overflow-hidden w-36 fb-md:w-11r border border-CCCCCC rounded-sm">
             <el-select v-model="value" class="h-full flex items-center">
               <el-option
                 v-for="item in sortArr"
@@ -58,8 +58,8 @@
           </div>
           <div class="text-14 font-bold text-121212">${afterFilterTotal} ${ afterFilterTotal == 1 ? 'review' : 'reviews'}</div>
         </div>
-         <div class="flex items-center fb-sm:flex-row-reverse h-9 justify-between"  v-if="activeName == 'second'">
-            <div class="h-full overflow-hidden w-36 fb-sm:w-11r border border-CCCCCC rounded-sm">
+         <div class="flex items-center fb-md:flex-row-reverse h-9 justify-between"  v-if="activeName == 'second'">
+            <div class="h-full overflow-hidden w-36 fb-md:w-11r border border-CCCCCC rounded-sm">
             <el-select v-model="storeValue" class="h-full flex items-center">
               <el-option
                 v-for="item in sortArr"
@@ -77,11 +77,11 @@
           <!-- Review Header: User Info and Ratinåg -->
           <div class="w-full flex flex-col">
             <!-- User Name and Verification Badge -->
-            <div class="flex items-center space-x-2 mb-3 fb-sm:mb-2.5">
-              <div class="w-6 h-6 fb-flex-center fb-sm:w-7 fb-sm:h-7">
+            <div class="flex items-center space-x-2 mb-3 fb-md:mb-2.5">
+              <div class="w-6 h-6 fb-flex-center fb-md:w-7 fb-md:h-7">
                 <img class="lazyload w-full h-auto" width="24" height="24" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/touxiang_1.png?v=1754467891">
               </div>
-              <span class="text-121212 text-14 font-bold fb-sm:text-16">${review.userName}</span>
+              <span class="text-121212 text-14 font-bold fb-md:text-16">${review.userName}</span>
               <div class="flex items-center border border-D3DEF1 bg-F3F8FC rounded-sm px-1 py-0.5 space-x-1" v-if="review.verifiedSource && review.verifiedSource.toLowerCase() == 'trustpilot'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M14 5.36986H8.65041L7.01138 0L5.34959 5.36986L0 5.34589L4.3252 8.65411L2.66341 14L6.98862 10.6918L11.3138 14L9.65203 8.65411L14 5.36986Z" fill="#04DA8D"/>
@@ -130,9 +130,9 @@
               </div>
             </div>
             <!-- Rating and Date -->
-              <div class="flex items-end justify-start mb-2 w-full text-left fb-sm:text-right fb-review-rate4">
+              <div class="flex items-end justify-start mb-2 w-full text-left fb-md:text-right fb-review-rate4">
                   <el-rate :value="review.rating" disabled></el-rate>
-                  <div class="text-666666 text-12 fb-sm:text-right ml-4">${review.reviewTime}</div>
+                  <div class="text-666666 text-12 fb-md:text-right ml-4">${review.reviewTime}</div>
               </div>
           </div>
 
@@ -182,22 +182,22 @@
           </div> {% endcomment %}
         </div>
         <!-- Loading State: Skeleton Placeholders -->
-        <div class="border-t border-D3DEF1 pt-4.5 pb-4 fb-sm:pt-6 fb-sm:pb-6" v-if="isLoading">
+        <div class="border-t border-D3DEF1 pt-4.5 pb-4 fb-md:pt-6 fb-md:pb-6" v-if="isLoading">
           <div class="animate-pulse" v-for="n in 3" :key="'skeleton-' + n">
             <!-- Skeleton Review Header -->
-            <div class="w-full flex flex-col fb-sm:flex-row fb-sm:justify-between mb-3 fb-sm:mb-4.5 fb-sm:items-start">
-              <div class="flex items-center space-x-4 mb-3 fb-sm:mb-0">
+            <div class="w-full flex flex-col fb-md:flex-row fb-md:justify-between mb-3 fb-md:mb-4.5 fb-md:items-start">
+              <div class="flex items-center space-x-4 mb-3 fb-md:mb-0">
                 <div class="h-4 bg-gray-200 rounded w-20"></div>
                 <div class="flex items-center">
                   <div class="h-4 bg-gray-200 rounded w-4 mr-1"></div>
                   <div class="h-4 bg-gray-200 rounded w-24"></div>
                 </div>
               </div>
-              <div class="w-full fb-sm:w-auto">
-                <div class="flex mb-2 w-full text-left fb-sm:text-right">
+              <div class="w-full fb-md:w-auto">
+                <div class="flex mb-2 w-full text-left fb-md:text-right">
                   <div class="h-4 bg-gray-200 rounded w-20"></div>
                 </div>
-                <div class="fb-sm:text-right">
+                <div class="fb-md:text-right">
                   <div class="h-4 bg-gray-200 rounded w-16"></div>
                 </div>
               </div>
@@ -222,30 +222,30 @@
         </div>
 
         <!-- Empty State: No Reviews Available -->
-        <div class="border-t border-D3DEF1 pt-4.5 pb-4 fb-sm:pt-6 fb-sm:pb-6 text-center" v-if="!isLoading && displayedReviews.length === 0">
+        <div class="border-t border-D3DEF1 pt-4.5 pb-4 fb-md:pt-6 fb-md:pb-6 text-center" v-if="!isLoading && displayedReviews.length === 0">
           <div class="text-14 text-gray-500">No reviews available.</div>
         </div>
 
         <!-- Pagination Controls: View More/Less -->
-        <div class="w-full mt-4 fb-sm:mt-5" v-if="displayedReviews.length > 0 && activeName == 'first'">
+        <div class="w-full mt-4 fb-md:mt-5" v-if="displayedReviews.length > 0 && activeName == 'first'">
           <!-- View More Button -->
           <div class="flex items-center justify-center space-x-2 cursor-pointer" v-show="hasMoreReviews && !isLoading" @click="handleViewMore">
-            <span class="text-main text-12 fb-sm:text-16 font-bold fb-max-sm:underline fb-sm:hover:underline">View More</span>
-            <svg class="w-4 h-auto fb-sm:w-5" width="21" height="12" viewBox="0 0 21 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <span class="text-main text-12 fb-md:text-16 font-bold fb-max-sm:underline fb-md:hover:underline">View More</span>
+            <svg class="w-4 h-auto fb-md:w-5" width="21" height="12" viewBox="0 0 21 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12.3648 6.23386L18.6311 -9.28771e-08L20.7559 2.13416L10.9115 12L0.802708 2.19074C0.725674 2.10413 0.756718 2.05101 0.802708 1.96208C1.06141 1.45742 2.39169 0.560099 2.76422 -7.8644e-07L9.37541 6.34934L10.7557 7.63622L12.3648 6.23386Z" fill="#FABE00"></path>
             </svg>
           </div>
           <!-- View Less Button -->
           <div class="cursor-pointer" v-show="!hasMoreReviews && displayedReviews.length > paramQuery.pageSize" @click="handleViewLess">
             <div class="items-center justify-center flex space-x-2">
-              <span class="text-main text-12 fb-sm:text-14 font-bold fb-max-sm:underline fb-sm:hover:underline">View Less</span>
-              <svg class="w-4 h-auto fb-sm:w-5" width="20" height="13" viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <span class="text-main text-12 fb-md:text-14 font-bold fb-max-sm:underline fb-md:hover:underline">View Less</span>
+              <svg class="w-4 h-auto fb-md:w-5" width="20" height="13" viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8.39104 5.79739L2.12478 12.0313L2.54496e-08 9.89709L9.84435 0.0312492L19.9532 9.84051C20.0302 9.92712 19.9991 9.98024 19.9532 10.0692C19.6945 10.5738 18.3642 11.4712 17.9916 12.0313L11.3804 5.68191L10.0001 4.39503L8.39104 5.79739Z" fill="#FABE00"></path>
               </svg>
             </div>
           </div>
         </div>
-        <div class="w-full flex items-center justify-center mt-6 fb-sm:mt-5" v-if="activeName == 'second'">
+        <div class="w-full flex items-center justify-center mt-6 fb-md:mt-5" v-if="activeName == 'second'">
           <el-pagination
             background
             layout="prev, pager, next"
@@ -263,7 +263,7 @@
     <div class="js-pdp-header-rateview invisible absolute -z-1 left-0">
       <a class="w-full flex items-center h-6 justify-start fb-review-rate cursor-pointer" href="#product-review-section">
         <el-rate v-model="skuTotalScore" disabled></el-rate>
-        <span class="text-14 text-121212 ml-2 fb-max-sm:underline hover:fb-sm:underline">${skuTotalReviews} ${ skuTotalReviews == 1 ? 'review' : 'reviews'}</span>
+        <span class="text-16 fb-max-sm:text-14 text-121212 mt-1  ml-2 fb-max-sm:underline hover:fb-md:underline">${skuTotalReviews} ${ skuTotalReviews == 1 ? 'review' : 'reviews'}</span>
       </a>
     </div>
     <!-- Video Modal: Full-screen video player -->
@@ -301,9 +301,9 @@
 </div>
 <!-- Initial Loading Animation: Skeleton screen shown before Vue initialization -->
 <div class="js-review-animate container bg-white pt-10">
-  <div class="w-full mt-0 text-14 text-darkmain fb-sm:mt-6">
+  <div class="w-full mt-0 text-14 text-darkmain fb-md:mt-6">
     <!-- Skeleton Header: Tab and sort controls placeholder -->
-    <div class="flex items-center h-9 file:justify-between fb-sm:h-10">
+    <div class="flex items-center h-9 file:justify-between fb-md:h-10">
       <div class="h-4 bg-gray-200 rounded w-24 animate-pulse"></div>
       <div class="flex items-center h-full">
         <div class="h-4 bg-gray-200 rounded w-16 mr-1 animate-pulse"></div>
@@ -311,21 +311,21 @@
       </div>
     </div>
     <!-- Skeleton Reviews: Placeholder review items -->
-    <div class="pt-4.5 pb-4 fb-sm:pt-6 fb-sm:pb-6">
+    <div class="pt-4.5 pb-4 fb-md:pt-6 fb-md:pb-6">
       <div class="animate-pulse mb-6" v-for="n in 3" :key="'skeleton-' + n">
-        <div class="w-full flex flex-col fb-sm:flex-row fb-sm:justify-between mb-3 fb-sm:mb-4.5 fb-sm:items-start">
-          <div class="flex items-center space-x-4 mb-3 fb-sm:mb-0">
+        <div class="w-full flex flex-col fb-md:flex-row fb-md:justify-between mb-3 fb-md:mb-4.5 fb-md:items-start">
+          <div class="flex items-center space-x-4 mb-3 fb-md:mb-0">
             <div class="h-4 bg-gray-200 rounded w-20"></div>
             <div class="flex items-center">
               <div class="h-4 bg-gray-200 rounded w-4 mr-1"></div>
               <div class="h-4 bg-gray-200 rounded w-24"></div>
             </div>
           </div>
-          <div class="w-full fb-sm:w-auto">
-            <div class="flex mb-2 w-full text-left fb-sm:text-right">
+          <div class="w-full fb-md:w-auto">
+            <div class="flex mb-2 w-full text-left fb-md:text-right">
               <div class="h-4 bg-gray-200 rounded w-20"></div>
             </div>
-            <div class="fb-sm:text-right">
+            <div class="fb-md:text-right">
               <div class="h-4 bg-gray-200 rounded w-16"></div>
             </div>
           </div>

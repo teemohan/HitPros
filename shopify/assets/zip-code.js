@@ -663,9 +663,6 @@ async function getDeliveryEstimate({
     if (zipCode.length !== 5) {
       throw new Error('Zip code must be 5 digits');
     }
-    if (!sku || !sku.trim()) {
-      throw new Error('SKU is required');
-    }
     const zipResult = await new Promise((resolve, reject) => {
       getZipCode('US', zipCode, function (result) {
         if (result?.valid) {

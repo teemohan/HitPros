@@ -5,14 +5,14 @@
         <div class="flex flex-col gap-3">
           <div v-for="(attr, index) in productAttrs" :key="attr.attrName" v-if="attr" class="attr-line">
             <div class="w-full">
-              <span class="attr-name text-14 text-808080">[[ attr.attrName ]]: </span>
-              <span class="attr-value text-16 text-main font-bold">[[ attr.selectedValue ]]</span>
+              <span class="attr-name fb-max-sm:text-14 text-16 text-808080">[[ attr.attrName ]]: </span>
+              <span class="attr-value  fb-max-sm:text-14 text-16 text-main font-bold">[[ attr.selectedValue ]]</span>
             </div>
-            <div class="mt-2 flex flex-wrap gap-3 fb-sm:gap-x-5 fb-sm:gap-y-3">
+            <div class="mt-2 flex flex-wrap gap-3 fb-md:gap-x-5 fb-md:gap-y-3">
               <button
                 v-for="value in attr.values"
                 :key="value"
-                class="min-w-20 border-solid fb-sm:min-w-25 text-14 h-7.5 flex px-2.5 fb-sm:px-5 fb-sm:text-16 justify-center items-center rounded-sm border transition-all"
+                class="min-w-20 border-solid fb-md:min-w-25 fb-max-sm:text-14  text-16 h-7.5 flex px-2.5 fb-md:px-5 fb-md:text-16 justify-center items-center rounded-sm border transition-all"
                 :class="getButtonClasses(index, value)"
                 :disabled="isButtonDisabled(index, value)"
                 @click="handleAttrSelect(attr.attrName, value)"
@@ -24,14 +24,14 @@
         </div>
       </div>
     </div>
-    <div class="js-attr-loading w-full pt-0 pb-4.5 fb-sm:pb-7">
+    <div class="js-attr-loading w-full pt-0 pb-4.5 fb-md:pb-7">
       <div class="flex flex-col gap-3">
         <div class="attr-line animate-pulse">
-          <div class="text-14 fb-sm:font-bold flex items-center">
+          <div class=" fb-max-sm:text-14 text-16 fb-md:font-bold flex items-center">
             <span class="bg-gray-200 h-4 w-24 rounded"></span>
             <span class="bg-gray-200 h-4 w-16 rounded ml-2"></span>
           </div>
-          <div class="mt-3 flex flex-wrap gap-2.5 fb-sm:gap-3.5">
+          <div class="mt-3 flex flex-wrap gap-2.5 fb-md:gap-3.5">
             <div v-for="j in 4" :key="j" 
               class="min-w-20 fb-s:min-w-30 h-8 bg-gray-200 rounded">
             </div>

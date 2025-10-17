@@ -1,0 +1,176 @@
+<style>
+  .js-public-gtm-btn {
+    transition: none !important;
+  }
+  .js-public-gtm-btn.hidden {
+    display: none !important;
+  }
+</style>
+
+{%- capture banner_title_color -%}
+  {%- if block.settings.banner_title_color != blank -%}
+    color: {{ block.settings.banner_title_color }}
+  {%- else -%}
+    color: #fff;
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture banner_desc_color -%}
+  {%- if block.settings.banner_desc_color != blank -%}
+    color: {{ block.settings.banner_desc_color }}
+  {%- else -%}
+    color: #fff;
+  {%- endif -%}
+{%- endcapture -%}
+
+
+{%- capture banner_title_color_mob -%}
+  {%- if block.settings.banner_title_color_mob != blank -%}
+    color: {{ block.settings.banner_title_color_mob }}
+  {%- else -%}
+    color: #fff;
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture banner_desc_color_mob -%}
+  {%- if block.settings.banner_desc_color_mob != blank -%}
+    color: {{ block.settings.banner_desc_color_mob }}
+  {%- else -%}
+    color: #fff;
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture text_position_mobile -%}
+  {%- if block.settings.content_position_mobile == 'bottomLeft' -%}
+    text-left
+  {%- else -%}
+    mx-auto
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- if type == 'video' -%}
+  {%- assign title_oprichtext = block.settings.banner_title | strip_html -%}
+  {%- assign title_oprichmobtext = block.settings.banner_title_mob | strip_html -%}
+  {%- if title_oprichtext != blank or title_oprichmobtext != blank -%}
+    <div
+      class="text-40 font-bold"
+      style="{{ banner_title_color }}"
+    >
+      {{ block.settings.banner_title }}
+    </div>
+    <div
+      class="SectionHeader__Heading SectionHeader__Heading--emphasize Heading u-h1 content_position_mobile"
+      style="{{ banner_title_color_mob }}"
+    >
+      {{ block.settings.banner_title_mob }}
+    </div>
+  {%- endif -%}
+{%- else -%}
+
+  {%- if block.settings.banner_title != blank or block.settings.banner_title_mob != blank -%}
+    <div
+      class="{{ text_position_mobile }} mt-3 hidden max-w-2xl text-40 font-bold fb-md:block"
+      style="{{ banner_title_color }}"
+    >
+      {{ block.settings.banner_title }}
+    </div>
+    <div class="{{ text_position_mobile }} mt-2 max-w-xs text-24 font-bold fb-md:hidden" style="{{ banner_title_color_mob }}">
+      {{ block.settings.banner_title_mob }}
+    </div>
+  {%- endif -%}
+  {%- if block.settings.banner_desc != blank or block.settings.banner_desc_mob != blank -%}
+    <div
+      class="mx-auto mt-3 hidden max-w-2xl text-16 fb-md:block [&_strong]:text-button"
+      style="{{ banner_desc_color }}"
+    >
+      {{ block.settings.banner_desc }}
+    </div>
+    <div class="{{ text_position_mobile }} mt-1.5 text-10 font-normal fb-md:hidden [&_strong]:text-button" style="{{ banner_desc_color_mob }}">
+      {{ block.settings.banner_desc_mob }}
+    </div>
+  {%- endif -%}
+{%- endif -%}
+
+{%- if block.settings.button_1_text != blank and block.settings.button_2_text != blank -%}
+  {%- assign has_two_buttons = true -%}
+{%- else -%}
+  {%- assign has_two_buttons = false -%}
+{%- endif -%}
+
+{%- if block.settings.button_1_text != blank or block.settings.button_2_text != blank -%}
+  <div class="mt-8 hidden fb-md:flex {%  if block.settings.content_position_pc == 'boxCenter' %} items-center justify-center{% endif %}">
+    <div class="flex {% if has_two_buttons %}flex-row gap-4 {% endif %}">
+      {%- if block.settings.button_1_text != blank -%}
+        {% capture button_1_assets %}
+          style="{% if block.settings.button_1_text_bordercolor %}border-color:{{ block.settings.button_1_text_bordercolor }};{% endif %}{% if block.settings.button_1_text_color %}color: {{ block.settings.button_1_text_color }}; {% endif %}{% if block.settings.button_1_text_backgroundcolor %}background-color: {{ block.settings.button_1_text_backgroundcolor }};{% endif %}"
+          data-number="{{ forloop.index }}"
+          data-btntext="{{ block.settings.button_1_text }}"
+          id="gtm-homeSlideshow-xBikeButton-{{ forloop.index }}-{{ block.settings.button_1_text | escape }}"
+        {% endcapture %}
+          <a
+            href="{{ block.settings.button_1_link }}"
+            class="js-public-gtm-btn block rounded-sm px-10 py-2 text-16 font-bold "
+            {{ button_1_assets }}
+          >
+            {{ block.settings.button_1_text | escape }}
+          </a>
+      {%- endif -%}
+      {%- if block.settings.button_2_text != blank -%}
+        {% capture button_asstes2 %}
+          style="{% if block.settings.button_2_text_bordercolor %}border-color:{{ block.settings.button_2_text_bordercolor }};{% endif %}{% if block.settings.button_2_text_color %}color: {{ block.settings.button_2_text_color }}; {% endif %}{% if block.settings.button_2_backgroundcolor %}background-color: {{ block.settings.button_2_backgroundcolor }};{% endif %}"
+          data-number="{{ forloop.index }}"
+          data-btntext="{{ block.settings.button_2_text }}"
+          id="gtm-homeSlideshow-xBikeButton-{{ block.settings.button_2_text | escape }}"
+        {% endcapture %}
+        <a
+          href="{{ block.settings.button_2_link }}"
+          class="js-public-gtm-btn block rounded-sm px-10 py-2 text-16 font-bold"
+          {{ button_asstes2 }}
+        >
+          {{ block.settings.button_2_text | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{%- if block.settings.button_1_text_mob != blank and block.settings.button_2_text_mob != blank -%}
+  {%- assign has_two_buttons_mob = true -%}
+{%- else -%}
+  {%- assign has_two_buttons_mob = false -%}
+{%- endif -%}
+
+{%- if block.settings.button_1_text_mob != blank or block.settings.button_2_text_mob != blank -%}
+  <div class="mt-7 fb-md:mt-8 fb-md:hidden">
+    <div class="flex w-auto {%  if block.settings.content_position_mobile == 'topCenter' %} items-center justify-center{% endif %} {% if has_two_buttons_mob %}flex-row gap-4{% endif %}">
+      {%- if block.settings.button_1_text_mob != blank -%}
+        {% capture mob_button_1 %}
+          style="{% if block.settings.button_1_bordercolor_mob %}border-color:{{ block.settings.button_1_bordercolor_mob }};{% endif %}{% if block.settings.button_1_text_color_mob %}color: {{ block.settings.button_1_text_color_mob }}; {% endif %}{% if block.settings.button_1_backgroundcolor_mob %}background-color: {{ block.settings.button_1_backgroundcolor_mob }};{% endif %}"
+          data-number="{{ forloop.index }}"
+          data-btntext="{{ block.settings.button_1_text_mob }}"
+          id="gtm-homeSlideshow-xBikeButton-{{ block.settings.button_1_text_mob | escape }}"
+        {% endcapture %}
+        <a
+          href="{{ block.settings.button_1_link_mob }}"
+          class="js-public-gtm-btn block rounded-sm px-4 py-1 text-12 font-bold"
+          {{ mob_button_1 }}
+        >
+          {{ block.settings.button_1_text_mob | escape }}
+        </a>
+      {%- endif -%}
+      {%- if block.settings.button_2_text_mob != blank -%}
+        {% capture button_mob_2 %}
+          style="{% if block.settings.button_2_bordercolor_mob %}border-color:{{ block.settings.button_2_bordercolor_mob }};{% endif %}{% if block.settings.button_2_text_color_mob %}color: {{ block.settings.button_2_text_color_mob }}; {% endif %}{% if block.settings.button_2_backgroundcolor_mob %}background-color: {{ block.settings.button_2_backgroundcolor_mob }};{% endif %}"
+          data-number="{{ forloop.index }}"
+          data-btntext="{{ block.settings.button_2_text_mob }}"
+          id="gtm-homeSlideshow-xBikeButton-{{ block.settings.button_2_text_mob | escape }}"
+        {% endcapture %}
+          <a
+            href="{{ block.settings.button_2_link_mob }}"
+            class="js-public-gtm-btn block rounded-sm px-4 py-1 text-12 font-bold"
+            {{ button_mob_2 }}
+          >
+            {{ block.settings.button_2_text_mob | escape }}
+          </a>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+

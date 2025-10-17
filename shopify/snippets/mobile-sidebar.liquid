@@ -46,79 +46,79 @@
 </template>
 <script>
 $(function() {
-    window.mobileSidebar = {
-      template: '#mobileSidebar',
-      delimiters: ['${', '}'],
-      props: {
-        mobile_sidebar_show: Boolean,
-      },
-      data() {
-        const slugIdxMap = new Map();
-        slugIdxMap.set('account-orders', [0, 0]);
-        slugIdxMap.set('account-wish', [0, 1]);
-        slugIdxMap.set('account-service', [0, 2]);
-        slugIdxMap.set('account-info', [1, 0]);
-        slugIdxMap.set('account-address', [1, 1]);
-        return {
-          slugIdxMap,
-          linkActiveIdx: {
-            idx: 0,
-            idx1: 0,
+  window.mobileSidebar = {
+    template: '#mobileSidebar',
+    delimiters: ['${', '}'],
+    props: {
+      mobile_sidebar_show: Boolean,
+    },
+    data() {
+      const slugIdxMap = new Map();
+      slugIdxMap.set('account-orders', [0, 0]);
+      slugIdxMap.set('account-wish', [0, 1]);
+      slugIdxMap.set('account-service', [0, 2]);
+      slugIdxMap.set('account-info', [1, 0]);
+      slugIdxMap.set('account-address', [1, 1]);
+      return {
+        slugIdxMap,
+        linkActiveIdx: {
+          idx: 0,
+          idx1: 0,
+        },
+        menuList: [
+          {
+            linkTitle: 'Orders',
+            child: [
+              { linkName: 'My Orders', linkSlug: 'account-orders', isActive: false },
+              { linkName: 'My List', linkSlug: 'account-wish', isActive: false },
+              { linkName: 'Customer Service', linkSlug: 'account-service', isActive: false },
+            ],
           },
-          menuList: [
-            {
-              linkTitle: 'Orders',
-              child: [
-                { linkName: 'My Orders', linkSlug: 'account-orders', isActive: false },
-                { linkName: 'My List', linkSlug: 'account-wish', isActive: false },
-                { linkName: 'Customer Service', linkSlug: 'account-service', isActive: false },
-              ],
-            },
-            {
-              linkTitle: 'Account',
-              child: [
-                { linkName: 'My Account', linkSlug: 'account-info', isActive: true },
-                {% unless customer.b2b? %}
-                  { linkName: 'My Addresses', linkSlug: 'account-address', isActive: false },
-                {% endunless %}
-              ],
-            },
-          ],
-        };
-      },
-      mounted() {
-        const queryString = window.location.search;
-        const params = new URLSearchParams(queryString);
-        const linkSlug = params.get('slug');
-        if (linkSlug) {
-          try {
-            const [idx, idx1] = this.slugIdxMap.get(linkSlug);
-            this.resetActive();
-            this.menuList[idx].child[idx1].isActive = true;
-          } catch (error) {
-          }
+          {
+            linkTitle: 'Account',
+            child: [
+              { linkName: 'My Account', linkSlug: 'account-info', isActive: true },
+              {% unless customer.b2b? %}
+                { linkName: 'My Addresses', linkSlug: 'account-address', isActive: false },
+              {% endunless %}
+            ],
+          },
+        ],
+      };
+    },
+    mounted() {
+      const queryString = window.location.search;
+      const params = new URLSearchParams(queryString);
+      const linkSlug = params.get('slug');
+      if (linkSlug) {
+        try {
+          const [idx, idx1] = this.slugIdxMap.get(linkSlug);
+          this.resetActive();
+          this.menuList[idx].child[idx1].isActive = true;
+        } catch (error) {
         }
-      },
-      methods: {
-        resetActive() {
-          this.menuList.map((links) => {
-            links.child.map((item) => {
-              item.isActive = false;
-            });
+      }
+    },
+    methods: {
+      resetActive() {
+        this.menuList.map((links) => {
+          links.child.map((item) => {
+            item.isActive = false;
           });
-        },
-        handleCancellation() {
-          $('#cancellation-toast').addClass('open');
-          $('body').addClass('no-scroll');
-        },
-        handleNavClose() {
-          $('body').removeClass('no-scroll');
-          $('#mobile_main_nav').removeClass('nav-open');
-        },
-        logout() {
-          skyLoginOut()
-        },
+        });
       },
-    };
+      handleCancellation() {
+        $('#cancellation-toast').addClass('open');
+        $('body').addClass('no-scroll');
+      },
+      handleNavClose() {
+        $('body').removeClass('no-scroll');
+        $('#mobile_main_nav').removeClass('nav-open');
+      },
+      logout() {
+        skyLoginOut()
+      },
+    },
+  };
 })
 </script>

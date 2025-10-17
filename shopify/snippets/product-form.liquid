@@ -40,7 +40,7 @@
   }
 </style>
 
-<div class="product-form w-full pt-0 pb-6 fb-sm:pt-0 fb-sm:pb-5">
+<div class="product-form w-full pt-0 pb-6 fb-md:pt-0 fb-md:pb-5">
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- when 'variant_picker' -%}
@@ -562,10 +562,10 @@
         {% endif %}
         <div class="product-form__buy-buttons w-full" {{ block.shopify_attributes }}>
           <div class="w-full pb-5">
-            <div class="buy-btn-box w-full flex items-center justify-between space-x-4 h-11 fb-sm:justify-start fb-sm:space-x-3 fb-sm:h-12">
-              <div class="shopify-product-form w-full flex items-center justify-start space-x-4 h-11 fb-sm:space-x-5 fb-sm:justify-start fb-sm:h-12">
+            <div class="buy-btn-box w-full flex items-center justify-between space-x-4 h-11 fb-md:justify-start fb-md:space-x-3 fb-md:h-12">
+              <div class="shopify-product-form w-full flex items-center justify-between space-x-4 h-11 fb-md:space-x-5 fb-md:justify-start fb-md:h-12">
                 <div
-                  class="border border-D3DEF1 min-w-26 fb-sm:min-w-9r fb-1000:min-w-26 fb-md:min-w-9r bg-white rounded-sm h-full flex justify-between items-center px-2 space-x-0.5"
+                  class="border border-D3DEF1 min-w-26 fb-md:min-w-9r fb-1000:min-w-26 fb-md:min-w-9r bg-white rounded-sm h-full flex justify-between items-center px-2 space-x-0.5"
                   data-max="{% if product.selected_or_first_available_variant.inventory_policy == 'deny' %}{{ product.selected_or_first_available_variant.inventory_quantity }}{% endif %}"
                   >
                   <button disabled type="button" class="js-zkh-minus flex justify-center items-center w-4 ">
@@ -582,7 +582,7 @@
                     data-input-varid="{{ product.selected_or_first_available_variant.id }}"
                     data-demand="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}"
                     data-price="{{ product.price | money_without_currency }}"
-                    class="js-zkh-input text-14 fb-sm:text-16 px-1 outline-none border-none text-center w-10 flex-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    class="js-zkh-input fb-max-sm:text-14   fb-md:text-20  px-1 outline-none border-none text-center w-10 flex-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     name="quantity"
                     {% if product.metafields.product.quantity_discount != blank %}
                       data-discount="{{- product.metafields.product.quantity_discount | replace: '"', "'" -}}"
@@ -594,17 +594,17 @@
                     data-mpq="{% if product.metafields.product.mpq != blank %}{{ product.metafields.product.mpq }}{% else %}1{% endif %}"
                   >
                   <button type="button" class="js-zkh-plus flex justify-center items-center w-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 17 16" fill="none">
                       <path d="M8.5 0V16M0.5 8H16.5" stroke="#0A2B6F" stroke-width="3"/>
                     </svg>
                   </button>
                 </div>
-                <button class="js-zkh-addtocart w-12r fb-sm:w-18r fb-1000:w-12r fb-md:w-18r h-full flex items-center justify-center rounded-sm bg-button text-main font-bold text-16 relative"
+                <button class="js-zkh-addtocart w-12r fb-md:w-18r fb-1000:w-12r fb-md:w-18r h-full flex items-center justify-center rounded-sm bg-button text-main font-bold fb-max-sm:text-14  text-16 relative"
                   {% unless product.selected_or_first_available_variant.available %}
                     disabled
                   {% endunless %}
                 >
-                  <div class="flex items-center js-btn-text">
+                  <div class="flex items-center js-btn-text fb-max-sm:text-16 text-20">
                     Add to Cart
                   </div>
                   <div class="spinner hidden js-btn-loading">
@@ -637,44 +637,44 @@
             </div>
           </div>
         </div>
-        {% if product.metafields.product.shipping_charge_policy == '1' %}
+        {% if product.metafields.product.shipping_charge_policy == '0' %}
           {%- assign shipping_text = "Free shipping on orders of $75+" -%}
-        {%- elsif  product.metafields.product.shipping_charge_policy == '2' -%}
+        {%- else -%}
           {%- assign shipping_text = "Requires special shipping, additional charges calculated at check-out" -%}
         {% endif %}
         <div class="w-full pt-0 pb-2" >
           <ul class="w-full">
-            <li class="w-full text-121212 font-medium text-14">{{ shipping_text }}</li>
+            <li class="w-full text-121212 font-medium fb-max-sm:text-14  text-16">{{ shipping_text }}</li>
           </ul>
         </div>
         <div class="buy-bottom-box w-full min-h-10" id="delevery-date">
           <div class="js-shipping-form hidden w-full">
             <el-form
               ref="ruleForm"
-              class="form my-shiipping-form w-full flex items-center justify-between fb-sm:justify-start space-x-2.5 h-9 fb-sm:h-12"
+              class="form my-shiipping-form w-full flex items-center justify-between fb-md:justify-start space-x-2.5 h-9 fb-md:h-12"
               :model="ruleForm"
               :rules="rules"
               v-if="!isEstimateShow"
             >
-              <el-form-item prop="zipCode" class="!mb-0 w-1/2 fb-sm:w-14r h-full">
+              <el-form-item prop="zipCode" class="!mb-0 w-1/2 fb-md:w-14r h-full">
                 <el-input
                   id="form-zipCode"
                   v-model="ruleForm.zipCode"
                   @keydown.enter.native.prevent="handleComputedDeleveryDate"
-                  class="[&_input]:text-center [&_input]:rounded-sm [&_input]:h-9 fb-sm:[&_input]:h-12"
+                  class="[&_input]:text-center [&_input]:rounded-sm [&_input]:h-9 fb-md:[&_input]:h-12 fb-max-sm:text-14  fb-max-sm:text-14 text-16"
                   placeholder="ZIP Code"
                 ></el-input>
               </el-form-item>
-              <el-button :loading="loading" @click="handleComputedDeleveryDate" class="w-1/2 fb-sm:w-12.5r !border-main text-main !rounded-sm flex items-center h-9 fb-sm:h-full justify-center font-bold">Submit</el-button>
+              <el-button :loading="loading" @click="handleComputedDeleveryDate" class="w-1/2 fb-md:w-12.5r !border-main text-main !rounded-sm flex items-center h-9 fb-md:h-full justify-center font-bold fb-max-sm:text-14 fb-max-sm:text-14 text-16">Submit</el-button>
             </el-form>
-            <div class="text-121212 text-14 flex flex-col items-start fb-sm:items-center fb-sm:flex-row justify-start fb-sm:space-x-10" v-if="isEstimateShow && deleveryRes">
+            <div class="text-121212 text-14 flex flex-col items-start fb-md:items-center fb-md:flex-row justify-start fb-md:space-x-10" v-if="isEstimateShow && deleveryRes">
               <div class="px-4 h-10 bg-F3F8FC flex items-center justify-start rounded-sm space-x-4 shrink-0 cursor-pointer" @click="gobackzip">
-                <span class="text-142A6B text-14 font-bold">Ship to ${ruleForm.zipCode}</span>
+                <span class="text-142A6B fb-max-sm:text-14 fb-max-sm:text-14  text-16 font-bold">Ship to ${ruleForm.zipCode}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="10" viewBox="0 0 17 10" fill="none">
                   <path d="M9.86762 5.19488L15.1939 -7.89455e-08L17 1.77846L8.6323 10L0.0398216 1.82562C-0.0256596 1.75344 0.000728607 1.70917 0.0398216 1.63507C0.259714 1.21451 1.39046 0.466749 1.70711 -6.68474e-07L7.32662 5.29112L8.49988 6.36352L9.86762 5.19488Z" fill="#F9BE00"/>
                 </svg>
               </div>
-              <div class="w-full fb-sm:flex-1 text-14 fb-sm:w-auto mt-4 fb-sm:mt-0">
+              <div class="w-full fb-md:flex-1 fb-max-sm:text-14 fb-max-sm:text-14  text-16 fb-md:w-auto mt-4 fb-md:mt-0">
                 <template v-if="deleveryRes.availableInventoryCount == 0">
                   <div>Expected to arrive between <span class="font-bold">${formatDate(stockDateStart)}</span> and <span class="font-bold">${formatDate(stockDateEnd)}</span>.</div>
                 </template>
@@ -688,14 +688,14 @@
               </div>
             </div>
           </div>
-          <div class="js-shipping-form-skeleton w-full flex items-center justify-between fb-sm:justify-start space-x-2.5 h-9 fb-sm:h-12">
-            <div class="w-1/2 fb-sm:w-14r h-full">
-              <div class="h-9 fb-sm:h-12 bg-gray-200 rounded-sm animate-pulse"></div>
+          <div class="js-shipping-form-skeleton w-full flex items-center justify-between fb-md:justify-start space-x-2.5 h-9 fb-md:h-12">
+            <div class="w-1/2 fb-md:w-14r h-full">
+              <div class="h-9 fb-md:h-12 bg-gray-200 rounded-sm animate-pulse"></div>
             </div>
-            <div class="w-1/2 fb-sm:w-12.5r h-9 fb-sm:h-12 bg-gray-200 rounded-sm animate-pulse"></div>
+            <div class="w-1/2 fb-md:w-12.5r h-9 fb-md:h-12 bg-gray-200 rounded-sm animate-pulse"></div>
           </div>
         </div>
-        {% comment %} <div class="w-full text-12 fb-sm:text-14 text-12254D mb-0">
+        {% comment %} <div class="w-full text-12 fb-md:text-14 text-12254D mb-0">
           <span class="js-open-rule-dialog underline cursor-pointer">Shipping & Returns</span>
         </div> {% endcomment %}
         {%- if template.suffix != 'quick-buy-popover' -%}

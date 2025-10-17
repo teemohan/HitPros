@@ -95,10 +95,6 @@
   border:1px solid #f1c142;
   border-radius: 2px;
 }
-.el-input.is-active .el-input__inner, .el-input__inner:focus{
-  
-}
-
 @media screen and (min-width: 1000px) {
     .product__media {
         max-width: 580px;

@@ -1,9 +1,9 @@
-<section class="w-full py-8 fb-sm:py-10 container bg-white">
-  <div class="flex w-full justify-between fb-sm:space-x-3 ">
+<section class="w-full py-8 fb-md:py-10 container bg-white">
+  <div class="flex w-full justify-between fb-md:space-x-3 ">
     {% for block in section.blocks %}
-        <div class="w-full flex justify-start items-center flex-col fb-sm:border fb-sm:border-D3DEF1 fb-sm:px-11 fb-sm:pt-2 fb-sm:pb-4 fb-md:pt-2 fb-md:pb-2 fb-md:min-h-16r">
+        <div class="w-full flex justify-start items-center flex-col fb-md:border fb-md:border-D3DEF1 fb-md:px-11 fb-md:pt-2 fb-md:pb-4 fb-md:pt-2 fb-md:pb-2 fb-md:min-h-16r">
           {% if block.settings.icon != blank %}
-            <div class="icon-container flex-shrink-0 w-16 h-16 fb-sm:w-25 fb-sm:h-25 fb-sm:mb-1.5">
+            <div class="icon-container flex-shrink-0 w-16 h-16 fb-md:w-25 fb-md:h-25 fb-md:mb-1.5">
               <img 
                 src="{{ block.settings.icon | img_url: '' }}" 
                 alt="{{ block.settings.title }}"
@@ -15,16 +15,16 @@
             </div>
           {% endif %}
           
-          <div class="w-full hidden fb-sm:flex flex-col items-center justify-start space-y-1.5">
+          <div class="w-full hidden fb-md:flex flex-col items-center justify-start space-y-1.5">
             {% if block.settings.title != blank %}
               <h3 class="text-16 font-bold text-main text-center">{{ block.settings.title }}</h3>
             {% endif %}
             
             {% if block.settings.content != blank %}
-              <div class="text-xs text-main text-center [&_a]:font-bold fb-sm:hidden fb-md:block">{{ block.settings.content }}</div>
+              <div class="text-xs text-main text-center [&_a]:font-bold fb-md:hidden fb-md:block">{{ block.settings.content }}</div>
             {% endif %}
           </div>
-          <div class="w-full fb-sm:hidden mt-2">
+          <div class="w-full fb-md:hidden mt-2">
             {% if block.settings.mobile_content != blank %}
               <p class="text-xs text-main text-center font-bold">{{ block.settings.mobile_content }}</p>
             {% endif %}

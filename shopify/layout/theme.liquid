@@ -76,60 +76,6 @@
       {%- unless settings.heading_font.system? and settings.text_font.system? -%}
         <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
       {%- endunless -%}
-      {%- comment -%}Preload important resources{%- endcomment -%}
-      {% if template == 'collection' %}
-        <link rel="preload" as="script" href="{{ 'jquery.min.js' | asset_url }}">
-        <link rel="preload" as="script" href="{{ 'js-cookie.js' | asset_url }}">
-        <link rel="preload" as="script" href="{{ 'vue.js' | asset_url }}">
-        <link rel="preload" as="script" href="{{ 'element-collection.js' | asset_url }}">
-      {% else %}
-          <link rel="preload" as="style" href="{{ 'theme.css' | asset_url }}">
-          <link rel="preload" as="style" href="{{ 'global.min.css' | asset_url }}">
-          <link rel="preload" as="style" href="{{ 'theme-v3.css' | asset_url }}">
-          <link rel="preload" as="style" href="{{ 'el-reset.css' | asset_url }}">
-          <link rel="preload" as="script" href="{{ 'vendor.js' | asset_url }}">
-          <link rel="preload" as="script" href="{{ 'jquery.min.js' | asset_url }}">
-          <link rel="preload" as="script" href="{{ 'theme.js' | asset_url }}">
-          <link rel="preload" as="script" href="{{ 'js-cookie.js' | asset_url }}">
-          <link rel="preload" as="script" href="{{ 'swiper.min.js' | asset_url }}">
-          <link rel="preload" as="script" href="{{ 'vue.js' | asset_url }}">
-          <link rel="preload" as="script" href="{{ 'element.js' | asset_url }}">
-          <link rel="preload" as="script" href="{{ 'element-ui-locale.js' | asset_url }}">
-          <link rel="preload" as="script" href="{{ 'zip-code.js' | asset_url }}">
-          <link rel="preload" as="script" href="{{ 'lib-phone.js' | asset_url }}">
-      {% endif %}
-
-      {%- if request.page_type == 'product' -%}
-        {%- assign selected_media = product.selected_variant.featured_media | default: product.featured_media -%}
-  
-        <link rel="preload" as="fetch" href="{{ product.url }}.js" crossorigin>
-        <link
-          rel="preload"
-          as="image"
-          imagesizes="(max-width: 999px) calc(100vw - 48px), 640px"
-          imagesrcset="{% render 'image-attributes', image: selected_media, sizes: '400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800', sizes_only: true %}"
-        >
-  
-        {%- if product.media.size > 1 -%}
-          <link rel="preload" as="script" href="{{ 'flickity.js' | asset_url }}">
-        {%- endif -%}
-      {%- elsif request.page_type == 'collection' and collection.image -%}
-        <link
-          rel="preload"
-          as="image"
-          media="(max-width: 740px)"
-          imagesizes="100vw"
-          imagesrcset="{% render 'image-attributes', image: collection.image, sizes: '400,500,600,700,800,900,1000', height_constraint: 600, crop: 'center', sizes_only: true %}"
-        >
-        <link
-          rel="preload"
-          as="image"
-          media="(min-width: 741px)"
-          imagesizes="100vw"
-          imagesrcset="{% render 'image-attributes', image: collection.image, sizes: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600', sizes_only: true %}"
-        >
-      {%- endif -%}
-  
       {% render 'social-meta-tags' %}
       {% render 'microdata-schema' %}
       {% render 'css-variables', direction: direction %}
@@ -202,13 +148,10 @@
               })(window, document, "clarity", "script", "suv6yw0i0g");
           {% endif %}
       </script>
-      {% if template == 'collection' %}
-      {% else %}
-        <script src="{{ 'swiper.min.js' | asset_url }}"></script>
-      {% endif %}
       <script src="{{ 'jquery.min.js' | asset_url }}"></script>
+      <script src="{{ 'vue.js' | asset_url }}" ></script>
       <script src="{{ 'vendor.js' | asset_url }}"></script>
-      <script src="{{ 'vue.js' | asset_url }}"></script>
+      <script src="{{ 'lazysizes.min.js' | asset_url }}" async></script>
       <script>
         (function() {
           function loadFallbackJquery() {
@@ -239,8 +182,16 @@
         </script>
       {% endif %}
       <script src="{{ 'zip-code.js' | asset_url }}"></script>
-      <script src="{{ 'lazysizes.min.js' | asset_url }}"></script>
-      <script src="{{ 'lib-phone.js' | asset_url }}"></script>
+      {% if template == 'index' or template == 'product' or template == 'search' or template == 'collection' %}
+         <script src="{{ 'element-ui-components.js' | asset_url }}" defer></script>
+      {% else %}
+        <script src="{{ 'element.js' | asset_url }}" ></script>
+        <script src="{{ 'element-ui-locale.js' | asset_url  }}" ></script>
+        <script>ELEMENT.locale(ELEMENT.lang.en)</script>
+      {% endif %}
+      {%- if template != 'index' and template != 'collection' and template != 'product' and template != 'cart' and template != 'search' -%}
+        <script src="{{ 'lib-phone.js' | asset_url }}"></script>
+      {%- endif -%}
       {{ content_for_header }}
     </head>
     {%- assign feature_classes = '' -%}

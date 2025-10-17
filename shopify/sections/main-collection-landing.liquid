@@ -1,7 +1,8 @@
 {{ 'index-product-item.css' | asset_url | stylesheet_tag }}
 <style>
   .collection-landing-wrapper {
-    background: #EAEEF1;
+    /* background: #EAEEF1; */
+    background: linear-gradient(to bottom, #fff, #f9f9f9) !important;
   }
   .collection-product-list {
     display: grid;
@@ -9,12 +10,6 @@
     gap: 24px;
   }
 
-  .index-cus-header a {
-    font-size: 20px;
-    display: flex;
-    gap: 20px;
-    align-items: center;
-  }
 
   .pagination__nav-item {
     height: 40px;
@@ -55,10 +50,6 @@
     .pagination__nav {
       gap: 10px;
     }
-    .index-cus-header a {
-      gap: 10px;
-      font-size: 16px;
-    }
     .pagination__nav-item svg {
       width: 20px;
     }
@@ -66,9 +57,6 @@
       height: 28px;
       width: 28px;
       font-size: 12px;
-    }
-    .index-cus-header svg {
-      width: 20px;
     }
     .pagination {
       margin-top: 28px;
@@ -79,25 +67,103 @@
     }
   }
 </style>
+
+{%- liquid
+  assign all_products = blank
+  assign total_products = 0
+  for block in section.blocks
+    assign block_collection = collections[block.settings.collection]
+    if block_collection != blank
+      assign total_products = total_products | plus: block_collection.products.size
+      for product in block_collection.products
+        assign all_products = all_products | append: product.id | append: ','
+      endfor
+    endif
+  endfor
+  assign product_ids = all_products | split: ','
+-%}
+
 <div class="container">
-  <div class="index-cus-header">
-    <h2>{{ section.settings.title }}</h2>
-    {% if collection.products.size > 20 and section.settings.show_view_all %}
-      <a href="/collections/all">
+  <div class="index-cus-header  w-full flex items-center justify-between pb-6 gap-5">
+    <h2 class="text-20 fb-md:text-30 font-bold text-121212">{{ section.settings.title }}</h2>
+    {% if total_products > 20 and section.settings.show_view_all %}
+      <a href="/collections/all" class=" text-16 fb-md:text-20 flex gap-2.5 items-center fb-md:gap-5 text-main font-medium [&_svg]:w-5 fb-md:[&_svg]:w-auto hidden">
         See All
         {% render 'icon' with 'view-all' %}
       </a>
     {% endif %}
   </div>
-  {%- paginate collection.products by 20 -%}
-    <div class="collection-product-list hover-list">
-      {%- for product in collection.products -%}
-        {% render 'index-product-item', product: product %}
-      {%- endfor -%}
+
+
+
+  <div class="collection-product-list hover-list hidden">
+    {%- for block in section.blocks -%}
+      {%- assign block_collection = collections[block.settings.collection] -%}
+      {%- if block_collection != blank -%}
+        {%- for product in block_collection.products -%}
+          {% comment %} {% render 'index-product-item', product: product %} {% endcomment %}
+          {% render 'new-item-product', product: product %}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  
+  <div class="text-center mt-4 fb-sm:mt-6 js-view-more-container ">
+    <div class="flex flex-col items-center space-y-4">
+      <div class="flex items-center justify-center space-x-2 js-view-more-btn cursor-pointer feature-more-btn">
+        <span class="text-main text-12 fb-sm:text-16  font-bold fb-max-sm:underline fb-sm:hover:underline">View More</span>
+        <svg class="w-5 h-auto fb-sm:w-5" width="21" height="12" viewBox="0 0 21 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.3648 6.23386L18.6311 -9.28771e-08L20.7559 2.13416L10.9115 12L0.802708 2.19074C0.725674 2.10413 0.756718 2.05101 0.802708 1.96208C1.06141 1.45742 2.39169 0.560099 2.76422 -7.8644e-07L9.37541 6.34934L10.7557 7.63622L12.3648 6.23386Z" fill="#FABE00"></path>
+        </svg>
+      </div>
     </div>
-    {%- render 'pagination-landing', paginate: paginate -%}
-  {%- endpaginate -%}
+  </div>
+
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const productList = document.querySelector('.collection-product-list');
+    const viewMoreContainer = document.querySelector('.js-view-more-container');
+    const viewMoreBtn = document.querySelector('.feature-more-btn');
+    const products = Array.from(productList.children);
+    let displayedCount = 10; // 初始显示10个产品
+    const itemsPerPage = 10;
+
+    // 首先隐藏所有产品
+    products.forEach((product, index) => {
+      if (index < displayedCount) {
+        product.style.display = 'block';
+      } else {
+        product.style.display = 'none';
+      }
+    });
+
+    // 如果产品总数小于等于初始显示数量，隐藏"View More"按钮
+    if (products.length <= displayedCount) {
+      viewMoreContainer.style.display = 'none';
+    }
+
+    // 点击"View More"按钮事件
+    viewMoreBtn.addEventListener('click', function() {
+      const nextCount = displayedCount + itemsPerPage;
+      
+      // 显示下一批产品
+      for (let i = displayedCount; i < Math.min(nextCount, products.length); i++) {
+        products[i].style.display = 'block';
+      }
+      
+      displayedCount = nextCount;
+      
+      // 如果所有产品都已显示，则隐藏"View More"按钮
+      if (displayedCount >= products.length) {
+        viewMoreContainer.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+
 {% schema %}
 {
   "name": "Collection Landing",
@@ -113,6 +179,25 @@
       "id": "show_view_all",
       "label": "Show View All",
       "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Collection Name",
+          "info": "Custom name for this collection (optional)"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
     }
   ],
   "presets": [

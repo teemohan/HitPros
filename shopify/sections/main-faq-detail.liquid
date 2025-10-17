@@ -46,11 +46,24 @@
         <div class="contact_information">
             <div class="contact_information_icon">{{section.settings.icon}}</div>
             <div class="contact_information_title ol-my-18">{{section.settings.title}}</div>
-            <div class="contact_information_desc ol-my-14">{{section.settings.contact_information}}</div>
+            <div class="contact_information_desc ol-my-14">
+              <p>{{section.settings.contact_information_1}}<br>
+                <br>
+                  {%- assign phone = '1-800-805-6686' -%}
+                <a href="tel:{{ phone }}">{{ phone }}</a>
+                <br>
+                <span data-email="customerservice@northskysupply.com" class="js-copy-email cursor-pointer">customerservice@northskysupply.com</span><br>
+              </p><br>
+              {{section.settings.contact_information_3 }}<br>
+             <p>
+              <a href="/pages/contact-us" title="contact us">Contact Us</a>
+              </p>
+            </div>
         </div>
     </div>
 </div>
 <script>
+  $(function() {
     document.addEventListener("DOMContentLoaded", function() {
         var hashValue = window.location.hash.substring(1); 
         var faqBlocks = document.querySelectorAll('.faq_detail_info');
@@ -68,7 +81,7 @@
             }
         })
     });
-
+  })
 
 </script>
 {% schema %}
@@ -89,6 +102,18 @@
             "type": "richtext",
             "id": "contact_information",
             "label": "Contact information"
+        },
+        {
+          "type": "text",
+          "id": "contact_information_1",
+          "label": "Contact information 1",
+          "default": "NorthSky customer service team is here to help."
+        },
+        {
+          "type": "richtext",
+          "id": "contact_information_3",
+          "label": "Contact information 3",
+          "default": "<p>Monday - Friday: 7am - 7pm (CT)<br>Holiday hours may vary<br>Please check our holiday schedule.</p>"
         }
     ],
     "blocks": [

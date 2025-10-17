@@ -5,76 +5,29 @@
 {%- endif -%}
 <script src="{{ 'theme.js' | asset_url }}" defer></script>
 {% if template == 'collection' %}
+{% else %}
+  <script src="{{ 'swiper.min.js' | asset_url }}" defer></script>
+{% endif %}
+<script src="{{ 'sky-public-head.js' | asset_url }}" defer></script>
+{% if template == 'index' %}
+  <script src="{{ "fb-img-video-banner.js" | asset_url }}" defer></script>
+{% endif %}
+{% if template == 'collection' %}
   <script src="{{ 'facet-filters-newcol.js' | asset_url }}" defer></script>
   <script src="{{ 'main-collection-vue.js' | asset_url }}"  defer></script>
 {% endif %}
 {% if template == 'product' %}
   <script src="{{ 'pdp-other-vue.js' | asset_url }}" defer></script>
-  <script src="{{ 'gumshoe.polyfills.min.js' | asset_url }}"> </script>
+  <script src="{{ 'gumshoe.polyfills.min.js' | asset_url }}" defer></script>
   <script src="{{'main-product.js' | asset_url }}"  defer></script>
-    <script src="{{'quick-buy-vue.js' | asset_url }}"  defer></script>
+  <script src="{{'quick-buy-vue.js' | asset_url }}"  defer></script>
 {% endif %}
-
 {% render 'js-page-customer'%}
-
 <script src="//code.tidio.co/dzwcvyci274aolrpev5ilpboec1objxi.js" defer></script>
 {{ "//cdn.shopify.com/s/files/1/0773/5273/0914/files/footer.js?v=1718022933" | script_tag }}
 {%- if is_online_shop -%}
   <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47344356.js"></script>
 {% endif %}
-<script>
-  (()=>{
-    {% if settings.open_convert  == true %}
-      var convertCleanupFlag = 'convert_test_cleanup_done';
-      var hasBeenCleaned = localStorage.getItem(convertCleanupFlag);
-      if (!hasBeenCleaned) {
-        var hasConvertData = false;
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-          var cookie = cookies[i].trim();
-          if (cookie.indexOf('_conv_') === 0) {
-            hasConvertData = true;
-            break;
-          }
-        }
-        for (var i = 0; i < localStorage.length; i++) {
-          var key = localStorage.key(i);
-          if (key && key.startsWith('_conv_')) {
-            hasConvertData = true;
-            break;
-          }
-        }
-        console.log("hasConvertData", hasConvertData);
-        if (hasConvertData) {
-          var cookies = document.cookie.split(';');
-          for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            if (cookie.indexOf('_conv_') === 0) {
-              var cookieName = cookie.split('=')[0];
-              document.cookie = cookieName + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;';
-              document.cookie = cookieName + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;domain=' + window.location.hostname + ';';
-              document.cookie = cookieName + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;domain=.' + window.location.hostname + ';';
-            }
-          }
-          var keysToRemove = [];
-          for (var i = 0; i < localStorage.length; i++) {
-            var key = localStorage.key(i);
-            if (key && key.startsWith('_conv_')) {
-              keysToRemove.push(key);
-            }
-          }
-          keysToRemove.forEach(function(key) {
-            localStorage.removeItem(key);
-          });
-          localStorage.setItem(convertCleanupFlag, 'true');
-          window.location.reload(true);
-        }
-      }
-    {% else %}
-        localStorage.removeItem('convert_test_cleanup_done')
-    {%  endif %}
-  })()
-</script>
 <script>
   (function () { 
     const STORAGE_KEY = 'tidio_current_url'; 
@@ -93,6 +46,5 @@
     } else { 
     document.addEventListener('tidioChat-ready', onTidioChatApiReady); 
     } 
-  })();
+   })();
 </script>
-

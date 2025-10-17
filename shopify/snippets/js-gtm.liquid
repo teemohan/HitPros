@@ -17,6 +17,9 @@
     };
     dataLayer.push({ ...commonData, ...data });
   }
+  if(window.gaGlobal?.vid) {
+    localStorage.setItem('ga4UserId', window.gaGlobal.vid);
+  }
   const listenUserEvent = ({ eventName, skuCode}) => {
     fetch(`${window.northsky.api}/openapi/listen/event`, {
       method: 'POST',

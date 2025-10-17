@@ -1,6 +1,6 @@
 {{ 'index-product-item.css' | asset_url | stylesheet_tag }}
 <div
-  class="js-cart-recommendations product-recommendations {{ section.id }} product-x-hidde bg-EAEEF1 py-6 fb-sm:py-17 hidden"
+  class="js-cart-recommendations product-recommendations {{ section.id }} product-x-hidde bg-EAEEF1 py-6 fb-md:py-17 hidden"
   data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ cart.items.first.product_id }}&limit=12"
 >
   {%- assign acceptable_recommendations_count = 0 -%}
@@ -15,8 +15,8 @@
 
   {%- if recommendations.performed and acceptable_recommendations_count > 0 -%}
     <div class="container cl-container">
-      <div class="index-cus-header">
-        <h2>{{ section.settings.title }}</h2>
+      <div class="index-cus-header w-full flex items-center justify-between pb-6 gap-5">
+        <h2 class="text-20 fb-md:text-30 font-bold text-121212">{{ section.settings.title }}</h2>
         {% render 'swiper-buttons' %}
       </div>
       <div class="IndexBestswiper">
@@ -30,7 +30,7 @@
             {%- endfor -%}
           </div>
         </div>
-        <div class="swiper-scrollbar"></div>
+        <div class="swiper-scrollbar mt-4 fb-sm:mt-6"></div>
       </div>
     </div>
   {%- endif -%}

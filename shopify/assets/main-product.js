@@ -69,28 +69,66 @@ $(function () {
       // this.bindEvents();
       this.initGumshoe();
       // this.bindEvents()
+
+      // 绑定滚动事件
+      $(window).on('scroll', throttle(this.handleScroll.bind(this), 10));
+
+      // 初始调用一次
+      this.handleScroll();
+    },
+    handleScroll: function () {
+      const scrollTop = $(window).scrollTop();
+      const anchorSection = $('.js-anchor-section');
+      const headerHeight = $('.site-header').outerHeight() || 0; // 考虑网站头部高度
+
+      // 只有在宽度低于740px时才执行固定定位逻辑
+      if (window.innerWidth >= 740) {
+        return;
+      }
+
+      // 只在第一次调用时计算 anchorOffset
+      if (!this.anchorOffset) {
+        this.anchorOffset = anchorSection.offset().top;
+      }
+
+      // 当滚动超过锚点位置时，添加固定定位
+      if (scrollTop > this.anchorOffset - headerHeight) {
+        if (!anchorSection.hasClass('is-fixed')) {
+          anchorSection.addClass('is-fixed');
+          // 添加占位元素防止页面跳动
+          if (!$('.anchor-placeholder').length) {
+            $('<div class="anchor-placeholder" style="height:' + anchorSection.outerHeight() + 'px"></div>')
+              .insertAfter(anchorSection);
+          }
+        }
+      } else {
+        if (anchorSection.hasClass('is-fixed')) {
+          anchorSection.removeClass('is-fixed');
+          $('.anchor-placeholder').remove();
+        }
+      }
     },
     renderNavTitle: function () {
       let str = '';
       let getArr = [];
-      let str_css = 'text-white fb-sm:text-121212 text-14 fb-sm:text-16 fb-1700:text-18 cursor-pointer shrink-0 fb-1700:w-11r h-full items-center justify-center';
+      let str_css = 'text-white fb-md:text-121212 text-14 fb-md:text-16 fb-1700:text-18 cursor-pointer shrink-0 fb-1700:w-11r h-full items-center justify-center';
       this.showSection.forEach((item, index) => {
         const $dom = $(item.ele);
         if ($dom.length) {
           $dom.attr('id', item.id);
           getArr.push(item);
-          const visibilityClass = item.categorize ? (item.isShow ? 'flex' : 'hidden') : (item.isShow ? 'hidden fb-sm:flex' : 'hidden');
+          const visibilityClass = item.categorize ? (item.isShow ? 'flex' : 'hidden') : (item.isShow ? 'hidden fb-md:flex' : 'hidden');
           str += `<li class="js-nav-box ${str_css} ${visibilityClass}">
             <a href="#${item.id}" class="js-nav-choose h-full flex items-center justify-center" data-desc="${item.desc}">
-              <span class="hidden fb-sm:inline">${item.pcCategorize}</span>
-              <span class="fb-sm:hidden">${item.categorize}</span>
+              <span class="hidden fb-md:inline">${item.pcCategorize}</span>
+              <span class="fb-md:hidden">${item.categorize}</span>
             </a>
           </li>`;
         }
       });
       $('.js-product-anchor').html(str);
       if (getArr.length === 1 && (!getArr[0].categorize)) {
-        $('.js-anchor-section').addClass('hidden fb-sm:block');
+        $('.js-anchor-section').addClass('hidden fb-md:block');
       }
       if (getArr.length === 0) {
         $('.js-anchor-section').hide();
@@ -132,10 +170,10 @@ $(function () {
       this.gumshoeInstance = new Gumshoe('.js-nav-choose', {
         offset: 80,
         reflow: true,
-        nested: true, 
+        nested: true,
         throttle: 30,
-        callback: ((nav)=> {
-           if (!nav) return;
+        callback: ((nav) => {
+          if (!nav) return;
           $('.js-product-anchor li').removeClass('active');
           $(nav).parent().addClass('active');
           this.currentSelectedItem = $(nav).attr('href');
@@ -146,27 +184,27 @@ $(function () {
   const pdpAddCart = {
     quantity: 1,
     productInfo: null,
-    init: function() {
+    init: function () {
       this.productInfo = Object.assign({}, mainProductInfo.info);
       this.quantity = this.productInfo.moq;
       this.getTotalMoney();
       this.bindEvents();
     },
-    changeQuantityCss: function() {
+    changeQuantityCss: function () {
       const $discountSpaces = $('.js-discount-space');
       $discountSpaces.removeClass('discount-price-selected');
       const currentQuantity = this.quantity;
-      $discountSpaces.each(function() {
+      $discountSpaces.each(function () {
         const $this = $(this);
         const min = parseInt($this.data('min')) || 1;
         const max = parseInt($this.data('max')) || Infinity;
         if (currentQuantity >= min && (isNaN(max) || currentQuantity <= max)) {
           $this.addClass('discount-price-selected');
-          return false; 
+          return false;
         }
       });
     },
-    getTotalMoney: function() {
+    getTotalMoney: function () {
       const finalPrice = QuantityUtils.calculateTotalPrice(this.productInfo, this.quantity);
       // const finalPrice2 = QuantityUtils.calculateTotalPrice(this.productInfo, this.quantity, 'price1');
       $('.js-nav-current-price').html(finalPrice);
@@ -174,37 +212,37 @@ $(function () {
       document.dispatchEvent(new CustomEvent('quantitySelectorUpdated', { detail: this.quantity }));
       this.changeQuantityCss()
     },
-    decreaseQuantity: function() {
+    decreaseQuantity: function () {
       const self = this;
       this.quantity = QuantityUtils.decreaseQuantity({
         $input: $('.js-zkh-input'),
         $plusBtn: $('.js-zkh-plus'),
         $minusBtn: $('.js-zkh-minus'),
         productInfo: this.productInfo,
-        onQuantityChange: function(newQuantity) {
+        onQuantityChange: function (newQuantity) {
           self.quantity = newQuantity;
           self.getTotalMoney();
           $('.js-zkh-input').attr('data-demand', newQuantity)
         }
       });
     },
-    increaseQuantity: function() {
+    increaseQuantity: function () {
       const self = this;
       this.quantity = QuantityUtils.increaseQuantity({
         $input: $('.js-zkh-input'),
         $plusBtn: $('.js-zkh-plus'),
         $minusBtn: $('.js-zkh-minus'),
         productInfo: this.productInfo,
-        onQuantityChange: function(newQuantity) {
+        onQuantityChange: function (newQuantity) {
           self.quantity = newQuantity;
           self.getTotalMoney();
           $('.js-zkh-input').attr('data-demand', newQuantity)
         }
       });
     },
-    bindEvents: function() {
+    bindEvents: function () {
       const self = this;
-      $('.js-zkh-addtocart').click(function() {
+      $('.js-zkh-addtocart').click(function () {
         let $btn = $(this);
         const $input = $('.js-zkh-input')
         $btn.find('.js-btn-text').addClass('hidden');
@@ -212,15 +250,15 @@ $(function () {
         cartFormModule.addToCart({
           variantId: self.productInfo.variantId,
           quantity: $input.val() || self.quantity
-        }, function() {
+        }, function () {
           $btn.find('.js-btn-text').removeClass('hidden');
           $btn.find('.js-btn-loading').addClass('hidden');
         });
       });
-      $('.js-zkh-plus').click(function() {
+      $('.js-zkh-plus').click(function () {
         self.increaseQuantity();
       });
-      $('.js-zkh-minus').click(function() {
+      $('.js-zkh-minus').click(function () {
         self.decreaseQuantity();
       });
       QuantityUtils.bindInputChangeEvent({
@@ -228,7 +266,7 @@ $(function () {
         $plusBtn: $('.js-zkh-plus'),
         $minusBtn: $('.js-zkh-minus'),
         productInfo: self.productInfo,
-        onQuantityChange: function(newQuantity) {
+        onQuantityChange: function (newQuantity) {
           self.quantity = newQuantity;
           $('.js-zkh-input').val(newQuantity);
           $('.js-zkh-input').attr('data-demand', newQuantity)
@@ -244,7 +282,7 @@ $(function () {
   function throttle(fn, delay) {
     let timer = null;
     let lastTime = 0;
-    return function() {
+    return function () {
       const now = Date.now();
       if (now - lastTime >= delay) {
         fn.apply(this, arguments);
@@ -266,30 +304,32 @@ $(function () {
         isInitialized = true;
       }
     } else {
-      quickBuyElement.addClass('hidden'); 
+      quickBuyElement.addClass('hidden');
       tidioChat.fadeIn();
     }
     const $bottomAddCart = $(".js-bottom-addcart");
     const isBottomCartVisible = $bottomAddCart.is(':visible');
-    if(window.innerWidth < 740) {
-      if (!isMainPaymentVisible && !isBottomCartVisible) {
+    const ispayment = $('.product-form__buy-buttons')
+    const isButtonVisible = ispayment.length && FbIsInViewPort(ispayment[0]);
+    if (window.innerWidth < 740) {
+      if (!isButtonVisible) {
         $bottomAddCart.fadeIn();
-      } else if (isMainPaymentVisible && isBottomCartVisible) {
+      } else if (isButtonVisible && isBottomCartVisible) {
         $bottomAddCart.fadeOut();
       }
       // js-bottom-addcart 
-    } else if(window.innerWidth > 740) {
-      if(isBottomCartVisible) {
+    } else if (window.innerWidth > 740) {
+      if (isBottomCartVisible) {
         $bottomAddCart.fadeOut();
       }
     }
+
     const header = $('#shopify-section-header');
     const isHeaderVisible = header.is(':visible');
-    if(isMainPaymentVisible && !isHeaderVisible) {
+    if (isMainPaymentVisible && !isHeaderVisible) {
       header.show();
-    } else if(!isMainPaymentVisible && isHeaderVisible) {
-      header.hide(); 
-
+    } else if (!isMainPaymentVisible && isHeaderVisible) {
+      header.hide();
     }
   }
   handleVisibility();

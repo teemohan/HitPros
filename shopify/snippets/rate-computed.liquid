@@ -1,0 +1,59 @@
+{% if type == 'google' %}
+  {%- if rate_value != blank -%}
+      {%- assign rating_decimal = 0 -%}
+      {%- assign decimal = rate_value.rating | modulo: 1 -%}
+      {%- if decimal >= 0.3 and decimal <= 0.7 -%}
+        {%- assign rating_decimal = 0.5 -%}
+      {%- elsif decimal > 0.7 -%}
+        {%- assign rating_decimal = 1 -%}
+      {%- endif -%}
+      {%- assign rating_as_float = rate_value.rating | times: 1.0 -%}
+      {%- for i in (1.0..5.0) -%}
+        {%- if rating_as_float >= i -%}
+          {%- render 'icon' with 'rating-star', class: 'rating__star rating__star--full text-yellow-400', width: 16, height: 16 -%}
+        {%- else -%}
+          {%- if rating_decimal == 0.5 -%}
+            {%- render 'icon' with 'rating-star-half', class: 'rating__star rating__star--half text-yellow-400', width: 16, height: 16 -%}
+          {%- elsif rating_decimal == 1 -%}
+            {%- render 'icon' with 'rating-star', class: 'rating__star rating__star--full text-yellow-400', width: 16, height: 16 -%}
+          {%- else -%}
+            {%- render 'icon' with 'rating-star', class: 'rating__star rating__star--empty text-gray-300', width: 16, height: 16 -%}
+          {%- endif -%}
+          {%- assign rating_decimal = false -%}
+        {%- endif -%}
+      {%- endfor -%}
+  {%- endif -%}
+{% else %}
+  {% assign tp_full_stars = trustpilot_review.rating | floor %}
+  {% assign tp_has_partial = trustpilot_review.rating | modulo: 1 | times: 100 | floor %}
+  {% assign tp_next_star_index = tp_full_stars | plus: 1 %}
+  {% for i in (1..5) %}
+    {% if i <= tp_full_stars %}
+      <div class="bg-[#219653] w-5 h-5 fb-flex-center">
+        <svg class="w-4 h-4" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5.5 7.62579L7.67262 7.04402L8.58036 10L5.5 7.62579ZM10.5 3.80503H6.67559L5.5 0L4.32441 3.80503H0.5L3.59524 6.16352L2.41964 9.96855L5.51488 7.61006L7.41964 6.16352L10.5 3.80503Z" fill="white"></path>
+        </svg>
+      </div>
+    {% elsif i == tp_next_star_index %}
+      {% if tp_has_partial > 0 %}
+        <div class="relative w-5 h-5 fb-flex-center" style="background: linear-gradient(to right, #219653 {{ tp_has_partial }}%, #9CA3AF {{ tp_has_partial }}%)">
+          <svg class="w-4 h-4" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.5 7.62579L7.67262 7.04402L8.58036 10L5.5 7.62579ZM10.5 3.80503H6.67559L5.5 0L4.32441 3.80503H0.5L3.59524 6.16352L2.41964 9.96855L5.51488 7.61006L7.41964 6.16352L10.5 3.80503Z" fill="white"></path>
+          </svg>
+        </div>
+      {% else %}
+        <div class="bg-[#9CA3AF] w-5 h-5 fb-flex-center">
+          <svg class="w-4 h-4" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.5 7.62579L7.67262 7.04402L8.58036 10L5.5 7.62579ZM10.5 3.80503H6.67559L5.5 0L4.32441 3.80503H0.5L3.59524 6.16352L2.41964 9.96855L5.51488 7.61006L7.41964 6.16352L10.5 3.80503Z" fill="white"></path>
+          </svg>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="bg-[#9CA3AF] w-5 h-5 fb-flex-center">
+        <svg class="w-4 h-4" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5.5 7.62579L7.67262 7.04402L8.58036 10L5.5 7.62579ZM10.5 3.80503H6.67559L5.5 0L4.32441 3.80503H0.5L3.59524 6.16352L2.41964 9.96855L5.51488 7.61006L7.41964 6.16352L10.5 3.80503Z" fill="white"></path>
+        </svg>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}

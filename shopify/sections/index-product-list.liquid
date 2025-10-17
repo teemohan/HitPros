@@ -2,8 +2,8 @@
   {{ 'index-product-item.css' | asset_url | stylesheet_tag }}
   <product-index-list data-section-id="{{ section.id }}" class="{{ section.id }} product-x-hidde js-guesslike-gtm">
     <div class="container cl-container hover-cl-container">
-      <div class="index-cus-header">
-        <h2>{{ section.settings.title }}</h2>
+      <div class="index-cus-header w-full flex items-center justify-between pb-6 gap-5">
+        <h2 class="text-20 fb-md:text-30 font-bold text-121212">{{ section.settings.title }}</h2>
         {% render 'swiper-buttons' %}
       </div>
       <div class="IndexBestswiper hover-list">
@@ -24,7 +24,7 @@
             {% endfor %}
           </div>
         </div>
-        <div class="swiper-scrollbar"></div>
+        <div class="swiper-scrollbar mt-4 fb-sm:mt-6"></div>
       </div>
     </div>
   </product-index-list>

@@ -1,18 +1,18 @@
 <style>
-  .header-search-form {
-    border: 1px solid #808080;
-    border-radius: 2px;
-  }
   .header-search-form-wrapper {
     visibility: hidden;
   }
+  .header-search-form-wrapper .el-input {
+    height: 34px;
+    overflow: hidden;
+  }
   .header-search-form-wrapper .el-input__inner {
-    color: var(--my-black);
+    color: #0A2B6F;
     border: none;
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
-    height: 48px;
+    height: 34px;
   }
   .header-search-form-wrapper .el-input__inner::placeholder {
     color: #77878F;
@@ -26,32 +26,20 @@
     border: none;
     background-color: #fff;
   }
-  .search-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  }
   .highlight {
     font-weight: bold;
   }
-  @media (max-width: 990px) {
-    .header-search-form-wrapper .el-input__inner {
-      height: 38px;
+  @media screen and (min-width: 1200px) {
+    .header-search-form-wrapper .el-input {
+      height: 36px;
     }
-    .header-search-form {
-      border: none;
-    }
-  }
-  @media (max-width: 740px) {
     .header-search-form-wrapper .el-input__inner {
       height: 36px;
-      line-height: 36px;
     }
   }
 </style>
 <header-search-form class="header-search-form-wrapper">
-  <div id="header-search-form-{{ type }}" class="header-search-form">
+  <div id="header-search-form-{{ type }}" class="header-search-form border border-main h-9 fb-md:h-10 rounded-sm text-14">
     <el-autocomplete
       v-model="searchStr"
       :fetch-suggestions="querySearchAsync"
@@ -59,12 +47,13 @@
       @select="handleSelect"
       @keyup.enter.native="handleSearch"
       :popper-append-to-body="false"
+      class="h-full"
     >
       <el-button slot="append" @click="handleSearch">
         <span>{% render 'icon' with 'header-search' %}</span>
       </el-button>
       <template slot-scope="{ item }">
-        <div class="search-item">
+        <div class="search-item flex items-center justify-between gap-2.5">
           <template v-if="searchStr">
             <div  class="search-result" v-html="item.highlightedValue"></div>
           </template>

@@ -137,10 +137,6 @@
   transition: all .1s ease-out;
 }
 
-.el-form-error-common.fold-in {
-  transform: scaleY(1) translateY(0);
-}
-
 
 .common-header-title {
   font-weight: 700;
@@ -206,7 +202,7 @@
 }
 
 .stock-tag {
-  font-size: 12px;
+  font-size: 14px;
   border-radius: 2px;
   display: inline-flex;
   height: 16px;
@@ -254,13 +250,6 @@
 
 .cus-price-list .discount-price span:nth-child(2) {
   color: #E72435;
-}
-
-.cus-price-list .compare_price {
-  font-size: 28px;
-  line-height: 1;
-  font-weight: 900;
-  color: var(--my-blue);
 }
 @media screen and (min-width: 741px) {
   .overlay-wrapper .overlay-action {

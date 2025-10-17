@@ -1,11 +1,14 @@
+{% if template == 'index' or template == 'product' or template == 'search' or template == 'collection' %}
+   <link rel="stylesheet" href="{{ 'element-components.css' | asset_url }}">
+{% else %}
+    <link rel="stylesheet" href="{{ 'element.css' | asset_url }}">
+{% endif %}
 {% if template == 'collection' %}
-  <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
-  <link rel="stylesheet" href="{{ 'element-collection.css' | asset_url }}">
 {% else %}
   <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}">
-  <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
-  <link rel="stylesheet" href="{{ 'element.css' | asset_url }}">
 {% endif %}
+
+<link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
 <link rel="stylesheet" href="{{ 'global.min.css' | asset_url }}">
 <link rel="stylesheet" href="{{ 'theme-v3.css' | asset_url }}">
 <link rel="stylesheet" href="{{ 'el-reset.css' | asset_url }}">

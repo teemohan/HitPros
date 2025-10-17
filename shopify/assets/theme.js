@@ -1,14 +1,14 @@
-$(function() {
+$(function () {
   (() => {
-    if(Cookies.get('logout') == 1) {
+    if (Cookies.get('logout') == 1) {
       Cookies.remove('logout');
       window.location.href = '/account/logout';
     }
-    if(
+    if (
       (window.themeVariables.userCompany.isB2b == 'false' && window.themeVariables.userCompany.name) ||
       (window.themeVariables.userCompany.isB2b == 'true' && !window.themeVariables.userCompany.zip.trim())
     ) {
-      const parsedUrl = new URL(window.location.href); 
+      const parsedUrl = new URL(window.location.href);
       const returnTo = parsedUrl.pathname + parsedUrl.search;
       window.location.href = `${window.northsky.b2b_url}/locations?return_to=${returnTo}`;
     }
@@ -23,7 +23,6 @@ $(function() {
     return value;
   };
 
- 
   function Delegate(root) {
     this.listenerMap = [{}, {}];
     if (root) {
@@ -263,7 +262,6 @@ $(function() {
   };
   var main_default = Delegate;
 
- 
   var InputBindingManager = class {
     constructor() {
       this.delegateElement = new main_default(document.body);
@@ -280,7 +278,6 @@ $(function() {
     }
   };
 
- 
   function triggerEvent(element, name, data = {}) {
     element.dispatchEvent(
       new CustomEvent(name, {
@@ -298,7 +295,6 @@ $(function() {
     );
   }
 
- 
   var CustomHTMLElement = class extends HTMLElement {
     constructor() {
       super();
@@ -357,7 +353,6 @@ $(function() {
     }
   };
 
- 
   var candidateSelectors = [
     'input',
     'select',
@@ -374,7 +369,7 @@ $(function() {
   var candidateSelector = /* @__PURE__ */ candidateSelectors.join(',');
   var matches =
     typeof Element === 'undefined'
-      ? function () {}
+      ? function () { }
       : Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
   var getCandidates = function getCandidates2(el, includeContainer, filter) {
     var candidates = Array.prototype.slice.apply(el.querySelectorAll(candidateSelector));
@@ -558,7 +553,6 @@ $(function() {
     return isNodeMatchingSelectorFocusable(options, node);
   };
 
- 
   function ownKeys(object, enumerableOnly) {
     var keys = Object.keys(object);
     if (Object.getOwnPropertySymbols) {
@@ -899,8 +893,8 @@ $(function() {
       activeFocusTraps.activateTrap(trap);
       state.delayInitialFocusTimer = config.delayInitialFocus
         ? delay(function () {
-            tryFocus(getInitialFocusNode());
-          })
+          tryFocus(getInitialFocusNode());
+        })
         : tryFocus(getInitialFocusNode());
       doc.addEventListener('focusin', checkFocusIn, true);
       doc.addEventListener('mousedown', checkPointerDown, {
@@ -1034,7 +1028,6 @@ $(function() {
     return trap;
   };
 
- 
   function filterShopifyEvent(event, domElement, callback) {
     let executeCallback = false;
     if (event.type.includes('shopify:section')) {
@@ -1049,7 +1042,6 @@ $(function() {
     }
   }
 
- 
   var OpenableElement = class extends CustomHTMLElement {
     static get observedAttributes() {
       return ['open'];
@@ -1153,7 +1145,6 @@ $(function() {
   };
   window.customElements.define('openable-element', OpenableElement);
 
- 
   var CollapsibleContent = class extends OpenableElement {
     constructor() {
       super();
@@ -1204,19 +1195,6 @@ $(function() {
   };
   window.customElements.define('collapsible-content', CollapsibleContent);
 
- 
-  var ConfirmButton = class extends HTMLButtonElement {
-    connectedCallback() {
-      this.addEventListener('click', (event) => {
-        if (!window.confirm(this.getAttribute('data-message') || 'Are you sure you wish to do this?')) {
-          event.preventDefault();
-        }
-      });
-    }
-  };
-  window.customElements.define('confirm-button', ConfirmButton, { extends: 'button' });
-
- 
   var LoaderButtonMixin = {
     _prepareButton() {
       this.originalContent = this.innerHTML;
@@ -1298,7 +1276,6 @@ $(function() {
     },
   };
 
- 
   var LoaderButton = class extends HTMLButtonElement {
     static get observedAttributes() {
       return ['aria-busy'];
@@ -1336,7 +1313,6 @@ $(function() {
   Object.assign(LoaderButton.prototype, LoaderButtonMixin);
   window.customElements.define('loader-button', LoaderButton, { extends: 'button' });
 
- 
   var PagePagination = class extends CustomHTMLElement {
     connectedCallback() {
       if (this.hasAttribute('ajax')) {
@@ -1352,7 +1328,6 @@ $(function() {
   };
   window.customElements.define('page-pagination', PagePagination);
 
- 
   var ToggleButton = class extends HTMLButtonElement {
     static get observedAttributes() {
       return ['aria-expanded', 'aria-busy'];
@@ -1442,67 +1417,7 @@ $(function() {
   Object.assign(ToggleButton.prototype, LoaderButtonMixin);
   window.customElements.define('toggle-button', ToggleButton, { extends: 'button' });
 
- 
-  var ToggleLink = class extends HTMLAnchorElement {
-    static get observedAttributes() {
-      return ['aria-expanded'];
-    }
-    constructor() {
-      super();
-      this.addEventListener('click', (event) => {
-        event.preventDefault();
-        this.isExpanded = !this.isExpanded;
-      });
-      this.rootDelegate = new main_default(document.documentElement);
-    }
-    connectedCallback() {
-      this.rootDelegate.on(
-        'openable-element:close',
-        `#${this.getAttribute('aria-controls')}`,
-        (event) => {
-          if (this.controlledElement === event.target) {
-            this.isExpanded = false;
-          }
-        },
-        true
-      );
-      this.rootDelegate.on(
-        'openable-element:open',
-        `#${this.getAttribute('aria-controls')}`,
-        (event) => {
-          if (this.controlledElement === event.target) {
-            this.isExpanded = true;
-          }
-        },
-        true
-      );
-    }
-    disconnectedCallback() {
-      this.rootDelegate.destroy();
-    }
-    get isExpanded() {
-      return this.getAttribute('aria-expanded') === 'true';
-    }
-    set isExpanded(value) {
-      this.setAttribute('aria-expanded', value ? 'true' : 'false');
-    }
-    get controlledElement() {
-      return document.querySelector(`#${this.getAttribute('aria-controls')}`);
-    }
-    attributeChangedCallback(name, oldValue, newValue) {
-      switch (name) {
-        case 'aria-expanded':
-          if (oldValue === 'false' && newValue === 'true') {
-            this.controlledElement.open = true;
-          } else if (oldValue === 'true' && newValue === 'false') {
-            this.controlledElement.open = false;
-          }
-      }
-    }
-  };
-  window.customElements.define('toggle-link', ToggleLink, { extends: 'a' });
 
- 
   var PageDots = class extends CustomHTMLElement {
     connectedCallback() {
       this.buttons = Array.from(this.querySelectorAll('button'));
@@ -1561,7 +1476,6 @@ $(function() {
   };
   window.customElements.define('page-dots', PageDots);
 
- 
   var PrevNextButtons = class extends HTMLElement {
     connectedCallback() {
       this.prevButton = this.querySelector('button:first-of-type');
@@ -1594,18 +1508,16 @@ $(function() {
   window.customElements.define('prev-button', PrevButton, { extends: 'button' });
   window.customElements.define('next-button', NextButton, { extends: 'button' });
 
- 
   function getStickyHeaderOffset() {
     const documentStyles = getComputedStyle(document.documentElement);
     return (
       parseInt(documentStyles.getPropertyValue('--header-height') || 0) *
-        parseInt(documentStyles.getPropertyValue('--enable-sticky-header') || 0) +
+      parseInt(documentStyles.getPropertyValue('--enable-sticky-header') || 0) +
       parseInt(documentStyles.getPropertyValue('--announcement-bar-height') || 0) *
-        parseInt(documentStyles.getPropertyValue('--enable-sticky-announcement-bar') || 0)
+      parseInt(documentStyles.getPropertyValue('--enable-sticky-announcement-bar') || 0)
     );
   }
 
- 
   var SafeSticky = class extends HTMLElement {
     connectedCallback() {
       this.lastKnownY = window.scrollY;
@@ -1638,8 +1550,70 @@ $(function() {
     }
   };
   window.customElements.define('safe-sticky', SafeSticky);
+  var SafeStickyHeader = class extends HTMLElement {
+    connectedCallback() {
+      this.lastKnownY = window.scrollY;
+      this.currentTop = 0;
+      this.hasPendingRaf = false;
+      this.lastScrollY = window.scrollY;
+      this.scrollThreshold = 10;
+      this.isScrollHidden = false;
+      window.addEventListener('scroll', this._checkPosition.bind(this));
+    }
+    get initialTopOffset() {
+      return getStickyHeaderOffset() + (parseInt(this.getAttribute('offset')) || 0);
+    }
+    _checkPosition() {
+      if (this.hasPendingRaf) {
+        return;
+      }
+      this.hasPendingRaf = true;
+      requestAnimationFrame(() => {
+        this._handleScrollHide();
+        let bounds = this.getBoundingClientRect(),
+          maxTop = bounds.top + window.scrollY - this.offsetTop + this.initialTopOffset,
+          minTop = this.clientHeight - window.innerHeight;
+        if (window.scrollY < this.lastKnownY) {
+          this.currentTop -= window.scrollY - this.lastKnownY;
+        } else {
+          this.currentTop += this.lastKnownY - window.scrollY;
+        }
+        this.currentTop = Math.min(Math.max(this.currentTop, -minTop), maxTop, this.initialTopOffset);
 
- 
+        if (this.isScrollHidden) {
+          this.currentTop = 0;
+        } else {
+          this.currentTop = Math.min(Math.max(this.currentTop, -minTop), maxTop, this.initialTopOffset);
+        }
+
+        this.lastKnownY = window.scrollY;
+        this.style.top = `${this.currentTop}px`;
+        this.hasPendingRaf = false;
+      });
+    }
+    _handleScrollHide() {
+      const currentScrollY = window.scrollY;
+      const scrollDifference = currentScrollY - this.lastScrollY;
+
+      if (Math.abs(scrollDifference) < this.scrollThreshold) {
+        return;
+      }
+      const storeHeader = document.querySelector('store-header');
+      const headerHeight = storeHeader ? storeHeader.clientHeight : this.clientHeight;
+      if (scrollDifference > 0 && currentScrollY > headerHeight) {
+        if (!this.isScrollHidden) {
+          this.isScrollHidden = true;
+        }
+      } else if (scrollDifference < 0) {
+        if (this.isScrollHidden) {
+          this.isScrollHidden = false;
+        }
+      }
+
+      this.lastScrollY = currentScrollY;
+    }
+  };
+  window.customElements.define('safe-sticky-header', SafeStickyHeader);
   function throttle(callback, delay3 = 15) {
     let throttleTimeout = null,
       storedEvent = null;
@@ -1660,107 +1634,7 @@ $(function() {
     return throttledEventHandler;
   }
 
- 
-  var ScrollSpy = class extends HTMLElement {
-    connectedCallback() {
-      this._createSvg();
-      this.elementsToObserve = Array.from(this.querySelectorAll('a')).map((linkElement) =>
-        document.querySelector(linkElement.getAttribute('href'))
-      );
-      this.navListItems = Array.from(this.querySelectorAll('li'));
-      this.navItems = this.navListItems
-        .map((listItem) => {
-          const anchor = listItem.firstElementChild,
-            targetID = anchor && anchor.getAttribute('href').slice(1),
-            target = document.getElementById(targetID);
-          return { listItem, anchor, target };
-        })
-        .filter((item) => item.target);
-      this.drawPath();
-      window.addEventListener('scroll', throttle(this.markVisibleSection.bind(this), 25));
-      window.addEventListener('orientationchange', () => {
-        window.addEventListener(
-          'resize',
-          () => {
-            this.drawPath();
-            this.markVisibleSection();
-          },
-          { once: true }
-        );
-      });
-      this.markVisibleSection();
-    }
-    _createSvg() {
-      this.navPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svgElement.insertAdjacentElement('beforeend', this.navPath);
-      this.insertAdjacentElement('beforeend', svgElement);
-      this.lastPathStart = this.lastPathEnd = null;
-    }
-    drawPath() {
-      let path = [],
-        pathIndent;
-      this.navItems.forEach((item, i) => {
-        const x = item.anchor.offsetLeft - 5,
-          y = item.anchor.offsetTop,
-          height = item.anchor.offsetHeight;
-        if (i === 0) {
-          path.push('M', x, y, 'L', x, y + height);
-          item.pathStart = 0;
-        } else {
-          if (pathIndent !== x) {
-            path.push('L', pathIndent, y);
-          }
-          path.push('L', x, y);
-          this.navPath.setAttribute('d', path.join(' '));
-          item.pathStart = this.navPath.getTotalLength() || 0;
-          path.push('L', x, y + height);
-        }
-        pathIndent = x;
-        this.navPath.setAttribute('d', path.join(' '));
-        item.pathEnd = this.navPath.getTotalLength();
-      });
-    }
-    syncPath() {
-      const someElsAreVisible = () => this.querySelectorAll('.is-visible').length > 0,
-        thisElIsVisible = (el) => el.classList.contains('is-visible'),
-        pathLength = this.navPath.getTotalLength();
-      let pathStart = pathLength,
-        pathEnd = 0;
-      this.navItems.forEach((item) => {
-        if (thisElIsVisible(item.listItem)) {
-          pathStart = Math.min(item.pathStart, pathStart);
-          pathEnd = Math.max(item.pathEnd, pathEnd);
-        }
-      });
-      if (someElsAreVisible() && pathStart < pathEnd) {
-        if (pathStart !== this.lastPathStart || pathEnd !== this.lastPathEnd) {
-          const dashArray = `1 ${pathStart} ${pathEnd - pathStart} ${pathLength}`;
-          this.navPath.style.setProperty('stroke-dashoffset', '1');
-          this.navPath.style.setProperty('stroke-dasharray', dashArray);
-          this.navPath.style.setProperty('opacity', '1');
-        }
-      } else {
-        this.navPath.style.setProperty('opacity', '0');
-      }
-      this.lastPathStart = pathStart;
-      this.lastPathEnd = pathEnd;
-    }
-    markVisibleSection() {
-      this.navListItems.forEach((item) => item.classList.remove('is-visible'));
-      for (const [index, elementToObserve] of this.elementsToObserve.entries()) {
-        const boundingClientRect = elementToObserve.getBoundingClientRect();
-        if (boundingClientRect.top > getStickyHeaderOffset() || index === this.elementsToObserve.length - 1) {
-          this.querySelector(`a[href="#${elementToObserve.id}"]`).parentElement.classList.add('is-visible');
-          break;
-        }
-      }
-      this.syncPath();
-    }
-  };
-  window.customElements.define('scroll-spy', ScrollSpy);
 
- 
   var template = `
   <style>
     :host {
@@ -1855,7 +1729,6 @@ $(function() {
     window.customElements.define('scroll-shadow', ScrollShadow);
   }
 
- 
   var ShareToggleButton = class extends ToggleButton {
     _onButtonClick() {
       if (window.matchMedia(window.themeVariables.breakpoints.phone).matches && navigator.share) {
@@ -1870,7 +1743,6 @@ $(function() {
   };
   window.customElements.define('share-toggle-button', ShareToggleButton, { extends: 'button' });
 
- 
   var NativeCarousel = class extends CustomHTMLElement {
     connectedCallback() {
       this.items = Array.from(this.querySelectorAll('native-carousel-item'));
@@ -1956,41 +1828,6 @@ $(function() {
   window.customElements.define('native-carousel-item', NativeCarouselItem);
   window.customElements.define('native-carousel', NativeCarousel);
 
- 
-  var DragCursor = class extends HTMLElement {
-    connectedCallback() {
-      this.scrollableElement = this.parentElement;
-      this.scrollableElement.addEventListener('mouseenter', this._onMouseEnter.bind(this));
-      this.scrollableElement.addEventListener('mousemove', this._onMouseMove.bind(this));
-      this.scrollableElement.addEventListener('mouseleave', this._onMouseLeave.bind(this));
-      this.innerHTML = `
-      <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-        <path d="M0 60C0 26.863 26.863 0 60 0s60 26.863 60 60-26.863 60-60 60S0 93.137 0 60z" fill="rgb(var(--text-color))"/>
-        <path d="M46 50L36 60l10 10M74 50l10 10-10 10" stroke="rgb(var(--section-background))" stroke-width="4"/>
-      </svg>
-    `;
-    }
-    _onMouseEnter(event) {
-      this.removeAttribute('hidden');
-      this._positionCursor(event);
-    }
-    _onMouseLeave() {
-      this.setAttribute('hidden', '');
-    }
-    _onMouseMove(event) {
-      this.toggleAttribute('hidden', event.target.tagName === 'BUTTON' || event.target.tagName === 'A');
-      this._positionCursor(event);
-    }
-    _positionCursor(event) {
-      const elementBoundingRect = this.scrollableElement.getBoundingClientRect();
-      const x = event.clientX - elementBoundingRect.x;
-      const y = event.clientY - elementBoundingRect.y;
-      this.style.transform = `translate(${x - this.clientWidth / 2}px, ${y - this.clientHeight / 2}px)`;
-    }
-  };
-  window.customElements.define('drag-cursor', DragCursor);
-
- 
   var ScrollableContent = class extends CustomHTMLElement {
     connectedCallback() {
       if (this.draggable) {
@@ -2068,7 +1905,6 @@ $(function() {
   };
   window.customElements.define('scrollable-content', ScrollableContent);
 
- 
   var LoadingBar = class extends CustomHTMLElement {
     constructor() {
       super();
@@ -2094,7 +1930,6 @@ $(function() {
   };
   window.customElements.define('loading-bar', LoadingBar);
 
- 
   var SplitLines = class extends HTMLElement {
     connectedCallback() {
       this.originalContent = this.textContent;
@@ -2132,8 +1967,7 @@ $(function() {
           this.innerHTML = Object.values(bounds)
             .map(
               (item) =>
-                `<span ${this.hasAttribute('reveal') && !force ? 'reveal' : ''} ${
-                  this.hasAttribute('reveal-visibility') && !force ? 'reveal-visibility' : ''
+                `<span ${this.hasAttribute('reveal') && !force ? 'reveal' : ''} ${this.hasAttribute('reveal-visibility') && !force ? 'reveal-visibility' : ''
                 } style="display: block">${item.trim()}</span>`
             )
             .join('');
@@ -2153,8 +1987,6 @@ $(function() {
     }
   };
   window.customElements.define('split-lines', SplitLines);
-
- 
   var PopoverContent = class extends OpenableElement {
     connectedCallback() {
       super.connectedCallback();
@@ -2170,7 +2002,6 @@ $(function() {
   };
   window.customElements.define('popover-content', PopoverContent);
 
- 
   var TabsNav = class extends HTMLElement {
     connectedCallback() {
       this.buttons = Array.from(this.querySelectorAll('button[aria-controls]'));
@@ -2276,7 +2107,6 @@ $(function() {
   };
   window.customElements.define('tabs-nav', TabsNav);
 
- 
   var LibraryLoader = class {
     static load(libraryName) {
       const STATUS_REQUESTED = 'requested',
@@ -2347,7 +2177,6 @@ $(function() {
     },
   });
 
- 
   var QrCode = class extends HTMLElement {
     async connectedCallback() {
       await LibraryLoader.load('qrCode');
@@ -2360,7 +2189,6 @@ $(function() {
   };
   window.customElements.define('qr-code', QrCode);
 
- 
   var CountrySelector = class extends HTMLSelectElement {
     connectedCallback() {
       this.provinceElement = document.getElementById(this.getAttribute('aria-owns'));
@@ -2408,7 +2236,6 @@ $(function() {
   };
   window.customElements.define('country-selector', CountrySelector, { extends: 'select' });
 
- 
   var ModalContent = class extends OpenableElement {
     connectedCallback() {
       super.connectedCallback();
@@ -2442,7 +2269,6 @@ $(function() {
   };
   window.customElements.define('modal-content', ModalContent);
 
- 
   var PriceRange = class extends HTMLElement {
     connectedCallback() {
       this.rangeLowerBound = this.querySelector('.price-range__range-group input:first-child');
@@ -2509,7 +2335,6 @@ $(function() {
   };
   window.customElements.define('price-range', PriceRange);
 
- 
   var LinkBar = class extends HTMLElement {
     connectedCallback() {
       const selectedItem = this.querySelector('.link-bar__link-item--selected');
@@ -2522,7 +2347,6 @@ $(function() {
   };
   window.customElements.define('link-bar', LinkBar);
 
- 
   var MediaFeatures = class {
     static prefersReducedMotion() {
       return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2532,14 +2356,18 @@ $(function() {
     }
   };
 
- 
   var FlickityCarousel = class extends CustomHTMLElement {
     constructor() {
       super();
-      if (this.childElementCount === 1) {
+      // if (this.childElementCount === 1) {
+      //   return;
+      // }
+
+      // 修改条件判断，允许单个图片元素也能初始化
+      if (this.childElementCount === 1 && !this.querySelector('.product__media-item[data-media-type="image"]')) {
         return;
       }
-     
+
       this.productImageZoomDom = document.getElementById(this.dataset.productImageZoomId);
       this.addEventListener('flickity:ready', this._preloadNextImage.bind(this));
       this.listenerImageZoomDom();
@@ -2606,7 +2434,7 @@ $(function() {
       });
       observer.observe(this.productImageZoomDom, { attributes: true });
     }
-    
+
     openProductImageZoom() {
       $('.cus-product .product__media').removeClass('position-sticky');
       $(this).closest('.product__media-list-wrapper').find('.product__zoom-button').attr('aria-expanded', true);
@@ -2625,9 +2453,9 @@ $(function() {
               change: (event) => triggerEvent(this, 'flickity:slide-changed', event),
               settle: (event) => triggerEvent(this, 'flickity:slide-settled', event),
               staticClick: () => {
-                if($(this).attr('has-video') == 'true' && flickityInstance.selectedIndex != 0) {
+                if ($(this).attr('has-video') == 'true' && flickityInstance.selectedIndex != 0) {
                   this.openProductImageZoom();
-                } else if(!$(this).attr('has-video')){
+                } else if (!$(this).attr('has-video')) {
                   this.openProductImageZoom();
                 }
               }
@@ -2675,7 +2503,6 @@ $(function() {
   };
   window.customElements.define("flickity-carousel", FlickityCarousel);
 
- 
   function getSiblings(element, filter, includeSelf = false) {
     let siblings = [];
     let currentElement = element;
@@ -2712,7 +2539,6 @@ $(function() {
     return processedTarget;
   }
 
- 
   var FlickityControls = class extends CustomHTMLElement {
     async connectedCallback() {
       this.flickityCarousel.addEventListener('flickity:ready', this._onSlideChanged.bind(this, false));
@@ -2796,7 +2622,6 @@ $(function() {
   };
   window.customElements.define('flickity-controls', FlickityControls);
 
- 
   var ExternalVideo = class extends CustomHTMLElement {
     constructor() {
       super();
@@ -2864,7 +2689,6 @@ $(function() {
   };
   window.customElements.define('external-video', ExternalVideo);
 
- 
   var ProductLoader = class {
     static load(productHandle) {
       if (!productHandle) {
@@ -2885,7 +2709,6 @@ $(function() {
   };
   __publicField(ProductLoader, 'loadedProducts', {});
 
- 
   var ModelMedia = class extends HTMLElement {
     constructor() {
       super();
@@ -2939,7 +2762,6 @@ $(function() {
   };
   window.customElements.define('model-media', ModelMedia);
 
- 
   var NativeVideo = class extends HTMLElement {
     constructor() {
       super();
@@ -2979,7 +2801,6 @@ $(function() {
   };
   window.customElements.define('native-video', NativeVideo);
 
- 
   var ComboBox = class extends OpenableElement {
     connectedCallback() {
       super.connectedCallback();
@@ -3053,7 +2874,7 @@ $(function() {
       try {
         jsonArray = JSON.parse(discountJson);
         let applicableDiscount = null;
-       
+
         for (let i = 0; i < jsonArray.length; i++) {
           if (quantity >= parseInt(jsonArray[i].moq)) {
             applicableDiscount = parseFloat(jsonArray[i].discount);
@@ -3071,10 +2892,9 @@ $(function() {
     } else {
       finalPrice = Math.round(quantity * 1 * basePrice * 100) / 100;
     }
-    return formatMoney(finalPrice*100);
+    return formatMoney(finalPrice * 100);
   }
 
- 
   var QuantitySelector = class extends CustomHTMLElement {
     connectedCallback() {
       this.inputElement = this.querySelector('input');
@@ -3114,7 +2934,7 @@ $(function() {
         const mpqValue = +this.inputElement.getAttribute('data-mpq');
         this.inputElement.quantity = this.inputElement.quantity + mpqValue;
         this.maxQuantityWarning();
-        
+
         let discountJson = this.quantitySelector.getAttribute('data-discount');
         const quantity = this.inputElement.quantity;
         let basePrice = this.quantitySelector.getAttribute('data-price');
@@ -3123,14 +2943,14 @@ $(function() {
           const finalPrice = computed_price(discountJson, basePrice, quantity);
           $('.cus-product .subtotal .computed_price').text(`${finalPrice}`);
           // finalPrice
-          $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
+          // $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
         }
         this.highlightPriceRange(this.inputElement.quantity);
-        
+
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
         document.dispatchEvent(new CustomEvent('quantitySelectorUpdated', { detail: this.quantitySelector.quantity }));
       });
-      this.addEventListener('quantityChanged', ({detail: {quantity}}) => {
+      this.addEventListener('quantityChanged', ({ detail: { quantity } }) => {
         event.stopPropagation();
         $(this.quantitySelector).attr('data-demand', quantity);
         document.dispatchEvent(new CustomEvent('quantitySelectorUpdated', { detail: this.quantitySelector.quantity }));
@@ -3197,7 +3017,7 @@ $(function() {
         basePrice = parseFloat(basePrice.replace(/,/g, ''));
         const finalPrice = computed_price(discountJson, basePrice, moqValue);
         $('.cus-product .subtotal .computed_price').text(`${finalPrice}`);
-        $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
+        // $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
       }
     }
   };
@@ -3220,7 +3040,7 @@ $(function() {
         }
         this.$hiddenQuantity.val(this.quantitySelector.quantity);
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
-        
+
       });
       this.delegate.on('click', 'button:last-child', () => {
         this.quantitySelector.quantity = this.quantitySelector.quantity + mpqValue;
@@ -3229,7 +3049,7 @@ $(function() {
         this.$hiddenQuantity.val(this.quantitySelector.quantity);
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
       });
-      this.addEventListener('quantityChanged', ({detail: {quantity}}) => {
+      this.addEventListener('quantityChanged', ({ detail: { quantity } }) => {
         event.stopPropagation();
         $(this.quantitySelector).attr('data-demand', quantity);
         $(this).closest('.product-item__info').find("input[name='quantity']").val(quantity);
@@ -3282,7 +3102,6 @@ $(function() {
       });
   }, 3000);
 
-
   var LineInputNumber = class extends HTMLInputElement {
     connectedCallback() {
       this.addEventListener('change', this._onValueChanged.bind(this));
@@ -3306,14 +3125,14 @@ $(function() {
     _onValueChanged() {
       const moqValue = +this.getAttribute('data-moq');
       const mpqValue = +this.getAttribute('data-mpq');
-      if(this.quantity < moqValue) {
-        this.quantity = moqValue; 
+      if (this.quantity < moqValue) {
+        this.quantity = moqValue;
       }
       this.quantity = Math.ceil((this.quantity - moqValue) / mpqValue) * mpqValue + moqValue;
     }
   };
   window.customElements.define('line-input-number', LineInputNumber, { extends: 'input' });
- 
+
   var InputNumber = class extends HTMLInputElement {
     connectedCallback() {
       this.addEventListener('input', this._onValueInput.bind(this));
@@ -3338,22 +3157,21 @@ $(function() {
     _onValueInput() {
       this.highlightPriceRange(this.quantity);
     }
-    _onValueChanged() { 
+    _onValueChanged() {
       const moqValue = +this.getAttribute('data-moq');
       const mpqValue = +this.getAttribute('data-mpq');
-      
-      if(this.quantity < moqValue) {
-        this.quantity = moqValue; 
+
+      if (this.quantity < moqValue) {
+        this.quantity = moqValue;
       }
       this.quantity = Math.ceil((this.quantity - moqValue) / mpqValue) * mpqValue + moqValue;
-      
 
       this.dispatchEvent(new CustomEvent('quantityChanged', {
         bubbles: true,
         detail: {
           quantity: this.quantity,
         },
-       }));
+      }));
 
       if (this.quantity == moqValue) {
         $(this).prev().attr('disabled', true);
@@ -3369,13 +3187,13 @@ $(function() {
         cartInput(updates);
       }
 
-      let discountJson = this.getAttribute('data-discount'); 
+      let discountJson = this.getAttribute('data-discount');
       let basePrice = this.getAttribute('data-price');
       if (basePrice) {
         basePrice = parseFloat(basePrice.replace(/,/g, ''));
         const finalPrice = computed_price(discountJson, basePrice, this.quantity);
         $('.cus-product .subtotal .computed_price').text(`${finalPrice}`);
-        $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
+        // $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
       }
     }
     highlightPriceRange(quantity) {
@@ -3418,7 +3236,6 @@ $(function() {
   };
   window.customElements.define('input-number', InputNumber, { extends: 'input' });
 
- 
   var AnnouncementBar = class extends CustomHTMLElement {
     async connectedCallback() {
       await customElements.whenDefined('announcement-bar-item');
@@ -3489,7 +3306,6 @@ $(function() {
   };
   window.customElements.define('announcement-bar', AnnouncementBar);
 
- 
   var AnnouncementBarItem = class extends CustomHTMLElement {
     connectedCallback() {
       if (this.hasContent) {
@@ -3576,7 +3392,6 @@ $(function() {
   };
   window.customElements.define('announcement-bar-item', AnnouncementBarItem);
 
- 
   var SearchPage = class extends HTMLElement {
     connectedCallback() {
       this.facetToolbar = document.getElementById('mobile-facet-toolbar');
@@ -3595,10 +3410,8 @@ $(function() {
       this.completeFor.forEach((item) => {
         promisesList.push(
           fetch(
-            `${window.themeVariables.routes.searchUrl}?section_id=${this.getAttribute('section-id')}&q=${
-              this.terms
-            }&type=${item}&options[prefix]=last&options[unavailable_products]=${
-              window.themeVariables.settings.searchUnavailableProducts
+            `${window.themeVariables.routes.searchUrl}?section_id=${this.getAttribute('section-id')}&q=${this.terms
+            }&type=${item}&options[prefix]=last&options[unavailable_products]=${window.themeVariables.settings.searchUnavailableProducts
             }`
           )
         );
@@ -3625,7 +3438,6 @@ $(function() {
   };
   window.customElements.define('search-page', SearchPage);
 
- 
   var CookieBar = class extends CustomHTMLElement {
     connectedCallback() {
       if (window.Shopify && window.Shopify.designMode) {
@@ -3663,7 +3475,6 @@ $(function() {
   };
   window.customElements.define('cookie-bar', CookieBar);
 
- 
   var ProductRecommendations = class extends HTMLElement {
     async connectedCallback() {
       if (!this.hasAttribute('use-automatic-recommendations')) {
@@ -3723,12 +3534,12 @@ $(function() {
           $formWrapper.css('visibility', 'visible');
         },
         methods: {
-         
+
           highlightMatch(value) {
             if (!this.searchStr.trim()) {
               return value;
             }
-           
+
             const escapedSearchStr = this.searchStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             const regex = new RegExp(`(${escapedSearchStr})`, 'gi');
             return value.replace(regex, '<span class="highlight">$1</span>');
@@ -3770,8 +3581,7 @@ $(function() {
                 console.error(error);
               }
             }
-  
-           
+
             this.cb = cb;
             cb(results);
           },
@@ -3787,14 +3597,14 @@ $(function() {
             }
           },
           async getResult() {
-            if(this.isloading) return;
+            if (this.isloading) return;
             this.isloading = true;
             triggerEvent(document.documentElement, 'theme:loading:start');
             this.queryParam.keyword = this.searchStr;
             const url = new URL(window.location.href);
             url.pathname = '/search';
             url.search = `?type=product&q=${encodeURIComponent(this.searchStr)}`;
-            try{
+            try {
               this.abortController = new AbortController();
               const response = await fetch(`${window.northsky.api}/openapi/search/v2`, {
                 signal: this.abortController.signal,
@@ -3805,12 +3615,12 @@ $(function() {
                 },
               });
               const res = await response.json();
-              if(res.data && res.data.totalNum == 1 && res.data.searchHitType && res.data.searchHitType == 'skuNo') {
+              if (res.data && res.data.totalNum == 1 && res.data.searchHitType && res.data.searchHitType == 'skuNo') {
                 window.location.href = res.data.skuInfos[0].productUrl;
               } else {
                 window.location.href = url.toString();
               }
-            } catch(error) {
+            } catch (error) {
               window.location.href = url.toString();
               console.error(error);
             } finally {
@@ -3819,7 +3629,7 @@ $(function() {
             }
           },
           handleSearch() {
-            if(!this.searchStr?.trim()) {
+            if (!this.searchStr?.trim()) {
               window.location.href = "/collections/all";
               return
             }
@@ -3831,197 +3641,6 @@ $(function() {
     }
   };
   window.customElements.define('header-search-form', HeaderSearchForm);
-  
-
-  var pcMenuSidebar = class extends HTMLElement {
-    connectedCallback() {
-      this.initVue();
-    }
-    initVue() {
-      new Vue({
-        el: '#pc-menu-nav',
-        mounted() {
-          this.getAllList();
-        },
-        data() {
-          return {
-            menu1: [],
-            menu2: [],
-            menu3: [],
-            menu1Name: '',
-            menu2Name: '',
-            hoverMenu1: {},
-            hoverMenu2: {},
-            hoverMenu3: {},
-          }
-        },
-        methods: {
-          closeMenu() {
-            this.resetData();
-            $('body').removeClass('no-scroll');
-            $('.pc-menu-nav').removeClass('nav-open');
-          },
-          resetData() {
-            this.hoverMenu1.isSelected = this.hoverMenu2.isSelected = this.hoverMenu3.isSelected = false;
-            this.hoverMenu1 = this.hoverMenu2 = this.hoverMenu3 = {};
-            this.menu2 = this.menu3 = [];
-            this.menu1Name = this.menu2Name = '';
-          },
-          navToAllCollection(level) {
-            if(level == 1) {
-              window.location.href = `/collections/${this.hoverMenu1.handle}`;
-            } else if(level == 2) {
-              window.location.href = `/collections/${this.hoverMenu2.handle}`;
-            }
-          },
-          navToCollection(menu) {
-            window.location.href = `/collections/${menu.handle}`;
-          },
-          handleHideMenu(level) {
-            if(level == 2) {
-              this.hoverMenu2.isSelected = false;
-              this.hoverMenu2 = {};
-              this.menu3 = [];
-            } else if(level == 3) {
-              this.hoverMenu3.isSelected = false;
-              this.hoverMenu3 = {};
-            }
-          },
-          handleNextMenu(menu, level) {
-            menu.isSelected = true;
-            if(level == 1) {
-              this.menu1Name = menu.name;
-              this.menu2 =menu.children ? menu.children.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())) : [];
-              if(this.hoverMenu1.handle !== menu.handle) {
-                this.menu3 = [];
-                this.hoverMenu1.isSelected = false;
-                this.hoverMenu1 = menu;
-              }
-            } else if(level == 2) {
-              this.menu2Name = menu.name;
-              this.menu3 = menu.children ? menu.children.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())) : [];
-              if(this.hoverMenu2.handle !== menu.handle) {
-                this.hoverMenu2.isSelected = false;
-                this.hoverMenu2 = menu;
-              }
-            } else if(level == 3) {
-              if(this.hoverMenu3.handle !== menu.handle) {
-                this.hoverMenu3.isSelected = false;
-                this.hoverMenu3 = menu;
-              }
-            }
-          },
-          async getAllList() {
-            function generateHandles(data, parentHandle = '') {
-              return data.map(item => {
-               
-                const handle = item.name
-                  .toLowerCase()                 
-                  .replace(/[^a-z0-9\s-]/g, '')   
-                  .trim()                         
-                  .replace(/\s+/g, '-')           
-                  .replace(/-+/g, '-');           
-
-               
-                const fullHandle = parentHandle ? `${parentHandle}-${handle}` : handle;
-
-               
-                if (item.children && item.children.length > 0) {
-                  item.children = generateHandles(item.children, fullHandle);
-                }
-
-               
-                item.handle = fullHandle;
-                item.isSelected = false;
-                return item;
-              });
-            }
-            document.addEventListener('tree-get', ({ detail }) => {
-              this.menu1 = generateHandles(detail.data).sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-            });
-          }
-        }
-      })
-    }
-  }
-  window.customElements.define('pc-menu-sidebar', pcMenuSidebar);
-
-  var MobileMenuSidebar = class extends HTMLElement {
-    connectedCallback() {
-      this.initVue();
-    }
-    initVue() {
-      new Vue({
-        el: '#mobile-menu-nav',
-        delimiters: ['${', '}'],
-        mounted() {
-          this.getAllList();
-        },
-        data() {
-          return {
-            showMenu: [],
-            menuStack: [],
-          }
-        },
-        methods: {
-          closeMenu() {
-            this.resetData();
-            $('body').removeClass('no-scroll');
-            $('.mobile-menu-nav').removeClass('nav-open');
-          },
-          navToCollection(menu) {
-            window.location.href = `/collections/${menu.handle}`;
-          },
-          handleNextMenu(menu) {
-            if(menu.children.length > 0) {
-              menu.children =  menu.children.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-              this.menuStack.push(menu);
-              this.showMenu = menu;
-            }
-          },
-          resetData() {
-            this.showMenu = this.menuStack[0];
-            this.menuStack = this.menuStack.slice(0, 1);
-          },
-          menuNavToBack () {
-            this.menuStack.pop();
-            this.showMenu =  this.menuStack[this.menuStack.length - 1];
-          },
-          getAllList() {
-            function generateHandles(data, parentHandle = '') {
-              return data.map(item => {
-               
-                const handle = item.name
-                  .toLowerCase()                 
-                  .replace(/[^a-z0-9\s-]/g, '')   
-                  .trim()                         
-                  .replace(/\s+/g, '-')           
-                  .replace(/-+/g, '-');           
-
-               
-                const fullHandle = parentHandle ? `${parentHandle}-${handle}` : handle;
-
-               
-                if (item.children && item.children.length > 0) {
-                  item.children = generateHandles(item.children, fullHandle);
-                }
-               
-                item.handle = fullHandle;
-                return item;
-              });
-            }
-            document.addEventListener('tree-get', ({ detail }) => {
-              const sortMenu = generateHandles(detail.data).sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-              this.menuStack.push(sortMenu);
-              this.showMenu = sortMenu;
-              $('.mobile-menu-nav').show();
-            });
-          }
-        }
-      })
-    }
-  }
-  window.customElements.define('mobile-menu-sidebar', MobileMenuSidebar);
 
   var StockLabel = class extends HTMLElement {
     connectedCallback() {
@@ -4037,7 +3656,7 @@ $(function() {
         });
         const config = { attributes: true, attributeFilter: ['data-demand'] };
         observer.observe(targetInput, config);
-      } catch(e) {
+      } catch (e) {
         console.error(e)
       }
     }
@@ -4046,11 +3665,11 @@ $(function() {
       if (!positiveIntegerRegex.test(demandNum)) demandNum = 1;
       let $stockText;
       if (this.stockNum <= 0) {
-        $stockText = $('<span class="coming-stock stock-tag">Restocking</span>');
+        $stockText = $('<span class="coming-stock stock-tag fb-max-sm:text-12">Restocking</span>');
       } else if (this.stockNum >= +demandNum) {
-        $stockText = $('<span class="instock-ready stock-tag">In Stock</span>');
+        $stockText = $('<span class="instock-ready stock-tag fb-max-sm:text-12 ">In Stock</span>');
       } else {
-        $stockText = $('<span class="instock-partial stock-tag">In Stock</span>');
+        $stockText = $('<span class="instock-partial stock-tag fb-max-sm:text-12">In Stock</span>');
       }
       $(this).html($stockText);
     }
@@ -4062,8 +3681,6 @@ $(function() {
     }
   };
   window.customElements.define('stock-label', StockLabel);
-
- 
   var RecentlyViewedProducts = class extends HTMLElement {
     async connectedCallback() {
       if (this.searchQueryString === '') {
@@ -4089,7 +3706,7 @@ $(function() {
           observeParents: true,
           touchStartPreventDefault: true,
           passiveListeners: false,
-          touchAngle: 70,              
+          touchAngle: 70,
           threshold: 10,
           breakpoints: {
             0: {
@@ -4118,7 +3735,7 @@ $(function() {
             prevEl: '.recently-viewed .swiper-button-prev',
           },
           scrollbar: {
-            el:".recently-viewed .swiper-scrollbar"
+            el: ".recently-viewed .swiper-scrollbar"
           },
         });
       }
@@ -4144,8 +3761,6 @@ $(function() {
     }
   };
   window.customElements.define('recently-viewed-products', RecentlyViewedProducts);
-
- 
   function getSizedMediaUrl(media, size) {
     let src = typeof media === 'string' ? media : media['preview_image'] ? media['preview_image']['src'] : media['url'];
     if (size === null) {
@@ -4191,7 +3806,6 @@ $(function() {
     });
   }
 
- 
   var CustomAnimation = class {
     constructor(effect) {
       this._effect = effect;
@@ -4310,299 +3924,8 @@ $(function() {
     }
   };
 
- 
-  var SlideshowItem = class extends HTMLElement {
-    async connectedCallback() {
-      this._pendingAnimations = [];
-      this.addEventListener('split-lines:re-split', (event) => {
-        Array.from(event.target.children).forEach(
-          (line) => (line.style.visibility = this.selected ? 'visible' : 'hidden')
-        );
-      });
-      if (MediaFeatures.prefersReducedMotion()) {
-        this.setAttribute('reveal-visibility', '');
-        Array.from(this.querySelectorAll('[reveal], [reveal-visibility]')).forEach((item) => {
-          item.removeAttribute('reveal');
-          item.removeAttribute('reveal-visibility');
-        });
-      }
-    }
-    get index() {
-      return [...this.parentNode.children].indexOf(this);
-    }
-    get selected() {
-      return !this.hasAttribute('hidden');
-    }
-    async transitionToLeave(transitionType, shouldAnimate = true) {
-      if (transitionType !== 'reveal') {
-        this.setAttribute('hidden', '');
-      }
-      this._pendingAnimations.forEach((animation2) => animation2.cancel());
-      this._pendingAnimations = [];
-      let animation = null,
-        textElements = await resolveAsyncIterator(this.querySelectorAll('split-lines, .button-group, .button-wrapper')),
-        imageElements = Array.from(this.querySelectorAll('.slideshow__image-wrapper'));
-      switch (transitionType) {
-        case 'sweep':
-          animation = new CustomAnimation(
-            new SequenceEffect([
-              new CustomKeyframeEffect(this, { visibility: ['visible', 'hidden'] }, { duration: 500 }),
-              new ParallelEffect(
-                textElements.map((item) => {
-                  return new CustomKeyframeEffect(item, { opacity: [1, 0], visibility: ['visible', 'hidden'] });
-                })
-              ),
-            ])
-          );
-          break;
-        case 'fade':
-          animation = new CustomAnimation(
-            new CustomKeyframeEffect(
-              this,
-              { opacity: [1, 0], visibility: ['visible', 'hidden'] },
-              { duration: 250, easing: 'ease-in-out' }
-            )
-          );
-          break;
-        case 'reveal':
-          animation = new CustomAnimation(
-            new SequenceEffect([
-              new ParallelEffect(
-                textElements.reverse().map((item) => {
-                  return new CustomKeyframeEffect(
-                    item,
-                    { opacity: [1, 0], visibility: ['visible', 'hidden'] },
-                    { duration: 250, easing: 'ease-in-out' }
-                  );
-                })
-              ),
-              new ParallelEffect(
-                imageElements.map((item) => {
-                  if (!item.classList.contains('slideshow__image-wrapper--secondary')) {
-                    return new CustomKeyframeEffect(
-                      item,
-                      { visibility: ['visible', 'hidden'], clipPath: ['inset(0 0 0 0)', 'inset(0 0 100% 0)'] },
-                      { duration: 450, easing: 'cubic-bezier(0.99, 0.01, 0.50, 0.94)' }
-                    );
-                  } else {
-                    return new CustomKeyframeEffect(
-                      item,
-                      { visibility: ['visible', 'hidden'], clipPath: ['inset(0 0 0 0)', 'inset(100% 0 0 0)'] },
-                      { duration: 450, easing: 'cubic-bezier(0.99, 0.01, 0.50, 0.94)' }
-                    );
-                  }
-                })
-              ),
-            ])
-          );
-          break;
-      }
-      await this._executeAnimation(animation, shouldAnimate);
-      if (transitionType === 'reveal') {
-        this.setAttribute('hidden', '');
-      }
-    }
-    async transitionToEnter(transitionType, shouldAnimate = true, reverseDirection = false) {
-      this.removeAttribute('hidden');
-      await this._untilReady();
-      let animation = null,
-        textElements = await resolveAsyncIterator(this.querySelectorAll('split-lines, .button-group, .button-wrapper')),
-        imageElements = Array.from(this.querySelectorAll('.slideshow__image-wrapper'));
-      switch (transitionType) {
-        case 'sweep':
-          animation = new CustomAnimation(
-            new SequenceEffect([
-              new CustomKeyframeEffect(
-                this,
-                {
-                  visibility: ['hidden', 'visible'],
-                  clipPath: reverseDirection
-                    ? ['inset(0 100% 0 0)', 'inset(0 0 0 0)']
-                    : ['inset(0 0 0 100%)', 'inset(0 0 0 0)'],
-                },
-                { duration: 500, easing: 'cubic-bezier(1, 0, 0, 1)' }
-              ),
-              new ParallelEffect(
-                textElements.map((item, index) => {
-                  return new CustomKeyframeEffect(
-                    item,
-                    {
-                      opacity: [0, 1],
-                      visibility: ['hidden', 'visible'],
-                      clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0 0)'],
-                      transform: ['translateY(100%)', 'translateY(0)'],
-                    },
-                    { duration: 450, delay: 100 * index, easing: 'cubic-bezier(0.5, 0.06, 0.01, 0.99)' }
-                  );
-                })
-              ),
-            ])
-          );
-          break;
-        case 'fade':
-          animation = new CustomAnimation(
-            new CustomKeyframeEffect(
-              this,
-              { opacity: [0, 1], visibility: ['hidden', 'visible'] },
-              { duration: 250, easing: 'ease-in-out' }
-            )
-          );
-          break;
-        case 'reveal':
-          animation = new CustomAnimation(
-            new SequenceEffect([
-              new ParallelEffect(
-                imageElements.map((item) => {
-                  if (!item.classList.contains('slideshow__image-wrapper--secondary')) {
-                    return new CustomKeyframeEffect(
-                      item,
-                      { visibility: ['hidden', 'visible'], clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0 0)'] },
-                      { duration: 450, delay: 100, easing: 'cubic-bezier(0.5, 0.06, 0.01, 0.99)' }
-                    );
-                  } else {
-                    return new CustomKeyframeEffect(
-                      item,
-                      { visibility: ['hidden', 'visible'], clipPath: ['inset(100% 0 0 0)', 'inset(0 0 0 0)'] },
-                      { duration: 450, delay: 100, easing: 'cubic-bezier(0.5, 0.06, 0.01, 0.99)' }
-                    );
-                  }
-                })
-              ),
-              new ParallelEffect(
-                textElements.map((item, index) => {
-                  return new CustomKeyframeEffect(
-                    item,
-                    {
-                      opacity: [0, 1],
-                      visibility: ['hidden', 'visible'],
-                      clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0 0)'],
-                      transform: ['translateY(100%)', 'translateY(0)'],
-                    },
-                    { duration: 450, delay: 100 * index, easing: 'cubic-bezier(0.5, 0.06, 0.01, 0.99)' }
-                  );
-                })
-              ),
-            ])
-          );
-          break;
-      }
-      return this._executeAnimation(animation, shouldAnimate);
-    }
-    async _executeAnimation(animation, shouldAnimate) {
-      this._pendingAnimations.push(animation);
-      shouldAnimate ? animation.play() : animation.finish();
-      return animation.finished;
-    }
-    async _untilReady() {
-      return Promise.all(this._getVisibleImages().map((image) => imageLoaded(image)));
-    }
-    _preloadImages() {
-      this._getVisibleImages().forEach((image) => {
-        image.setAttribute('loading', 'eager');
-      });
-    }
-    _getVisibleImages() {
-      return Array.from(this.querySelectorAll('img')).filter((image) => {
-        return getComputedStyle(image.parentElement).display !== 'none';
-      });
-    }
-  };
-  window.customElements.define('slide-show-item', SlideshowItem);
 
- 
-  var VerticalScrollBlockerMixin = {
-    _blockVerticalScroll(threshold = 18) {
-      this.addEventListener('touchstart', (event) => {
-        this.firstTouchClientX = event.touches[0].clientX;
-      });
-      this.addEventListener(
-        'touchmove',
-        (event) => {
-          const touchClientX = event.touches[0].clientX - this.firstTouchClientX;
-          if (Math.abs(touchClientX) > threshold) {
-            event.preventDefault();
-          }
-        },
-        { passive: false }
-      );
-    },
-  };
 
- 
-  var Slideshow = class extends CustomHTMLElement {
-    connectedCallback() {
-      this.items = Array.from(this.querySelectorAll('slide-show-item'));
-      this.pageDots = this.querySelector('page-dots');
-      this.isTransitioning = false;
-      if (this.items.length > 1) {
-        if (Shopify.designMode) {
-          this.addEventListener('shopify:block:deselect', this.startPlayer.bind(this));
-          this.addEventListener('shopify:block:select', (event) => {
-            this.pausePlayer();
-            this.intersectionObserver.disconnect();
-            if (!(!event.detail.load && event.target.selected)) {
-              this.select(event.target.index, !event.detail.load);
-            }
-          });
-        }
-        this.addEventListener('swiperight', this.previous.bind(this));
-        this.addEventListener('swipeleft', this.next.bind(this));
-        this.addEventListener('page-dots:changed', (event) => this.select(event.detail.index));
-        this._blockVerticalScroll();
-      }
-      this._setupVisibility();
-    }
-    get selectedIndex() {
-      return this.items.findIndex((item) => item.selected);
-    }
-    get transitionType() {
-      return MediaFeatures.prefersReducedMotion() ? 'fade' : this.getAttribute('transition-type');
-    }
-    async _setupVisibility() {
-      await this.untilVisible();
-      await this.items[this.selectedIndex].transitionToEnter(this.transitionType).catch((error) => {});
-      this.startPlayer();
-    }
-    previous() {
-      this.select((this.selectedIndex - 1 + this.items.length) % this.items.length, true, true);
-    }
-    next() {
-      this.select((this.selectedIndex + 1 + this.items.length) % this.items.length, true, false);
-    }
-    async select(index, shouldTransition = true, reverseDirection = false) {
-      if (this.transitionType === 'reveal' && this.isTransitioning) {
-        return;
-      }
-      this.isTransitioning = true;
-      const previousItem = this.items[this.selectedIndex],
-        newItem = this.items[index];
-      this.items[(newItem.index + 1) % this.items.length]._preloadImages();
-      if (previousItem && previousItem !== newItem) {
-        if (this.transitionType !== 'reveal') {
-          previousItem.transitionToLeave(this.transitionType, shouldTransition);
-        } else {
-          await previousItem.transitionToLeave(this.transitionType, shouldTransition);
-        }
-      }
-      if (this.pageDots) {
-        this.pageDots.selectedIndex = newItem.index;
-      }
-      await newItem.transitionToEnter(this.transitionType, shouldTransition, reverseDirection).catch((error) => {});
-      this.isTransitioning = false;
-    }
-    pausePlayer() {
-      this.style.setProperty('--section-animation-play-state', 'paused');
-    }
-    startPlayer() {
-      if (this.hasAttribute('auto-play')) {
-        this.style.setProperty('--section-animation-play-state', 'running');
-      }
-    }
-  };
-  Object.assign(Slideshow.prototype, VerticalScrollBlockerMixin);
-  window.customElements.define('slide-show', Slideshow);
-
- 
   var ImageWithTextItem = class extends HTMLElement {
     get index() {
       return [...this.parentNode.children].indexOf(this);
@@ -4660,7 +3983,6 @@ $(function() {
   };
   window.customElements.define('image-with-text-item', ImageWithTextItem);
 
- 
   var ImageWithText = class extends CustomHTMLElement {
     connectedCallback() {
       this.items = Array.from(this.querySelectorAll('image-with-text-item'));
@@ -4739,366 +4061,6 @@ $(function() {
   };
   window.customElements.define('image-with-text', ImageWithText);
 
- 
-  var TestimonialItem = class extends CustomHTMLElement {
-    connectedCallback() {
-      this.addEventListener('split-lines:re-split', (event) => {
-        Array.from(event.target.children).forEach(
-          (line) => (line.style.visibility = this.selected ? 'visible' : 'hidden')
-        );
-      });
-    }
-    get index() {
-      return [...this.parentNode.children].indexOf(this);
-    }
-    get selected() {
-      return !this.hasAttribute('hidden');
-    }
-    async transitionToLeave(shouldAnimate = true) {
-      const textLines = await resolveAsyncIterator(this.querySelectorAll('split-lines, .testimonial__author')),
-        animation = new CustomAnimation(
-          new ParallelEffect(
-            textLines.reverse().map((item, index) => {
-              return new CustomKeyframeEffect(
-                item,
-                {
-                  visibility: ['visible', 'hidden'],
-                  clipPath: ['inset(0 0 0 0)', 'inset(0 0 100% 0)'],
-                  transform: ['translateY(0)', 'translateY(100%)'],
-                },
-                {
-                  duration: 350,
-                  delay: 60 * index,
-                  easing: 'cubic-bezier(0.68, 0.00, 0.77, 0.00)',
-                }
-              );
-            })
-          )
-        );
-      shouldAnimate ? animation.play() : animation.finish();
-      await animation.finished;
-      this.setAttribute('hidden', '');
-    }
-    async transitionToEnter(shouldAnimate = true) {
-      const textLines = await resolveAsyncIterator(this.querySelectorAll('split-lines, .testimonial__author')),
-        animation = new CustomAnimation(
-          new ParallelEffect(
-            textLines.map((item, index) => {
-              return new CustomKeyframeEffect(
-                item,
-                {
-                  visibility: ['hidden', 'visible'],
-                  clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0px 0)'],
-                  transform: ['translateY(100%)', 'translateY(0)'],
-                },
-                {
-                  duration: 550,
-                  delay: 120 * index,
-                  easing: 'cubic-bezier(0.23, 1, 0.32, 1)',
-                }
-              );
-            })
-          )
-        );
-      this.removeAttribute('hidden');
-      shouldAnimate ? animation.play() : animation.finish();
-      return animation.finished;
-    }
-  };
-  window.customElements.define('testimonial-item', TestimonialItem);
-
- 
-  var TestimonialList = class extends CustomHTMLElement {
-    connectedCallback() {
-      this.items = Array.from(this.querySelectorAll('testimonial-item'));
-      this.pageDots = this.querySelector('page-dots');
-      this.hasPendingTransition = false;
-      if (this.items.length > 1) {
-        this.addEventListener('swiperight', this.previous.bind(this));
-        this.addEventListener('swipeleft', this.next.bind(this));
-        this.addEventListener('prev-next:prev', this.previous.bind(this));
-        this.addEventListener('prev-next:next', this.next.bind(this));
-        this.addEventListener('page-dots:changed', (event) => this.select(event.detail.index));
-        if (Shopify.designMode) {
-          this.addEventListener('shopify:block:select', (event) => {
-            var _a;
-            (_a = this.intersectionObserver) == null ? void 0 : _a.disconnect();
-            if (event.detail.load || !event.target.selected) {
-              this.select(event.target.index, !event.detail.load);
-            }
-          });
-        }
-        this._blockVerticalScroll();
-      }
-      if (this.hasAttribute('reveal-on-scroll')) {
-        this._setupVisibility();
-      }
-    }
-    get selectedIndex() {
-      return this.items.findIndex((item) => item.selected);
-    }
-    async _setupVisibility() {
-      await this.untilVisible();
-      this.items[this.selectedIndex].transitionToEnter();
-    }
-    previous() {
-      this.select((this.selectedIndex - 1 + this.items.length) % this.items.length);
-    }
-    next() {
-      this.select((this.selectedIndex + 1 + this.items.length) % this.items.length);
-    }
-    async select(index, shouldAnimate = true) {
-      if (this.hasPendingTransition) {
-        return;
-      }
-      this.hasPendingTransition = true;
-      await this.items[this.selectedIndex].transitionToLeave(shouldAnimate);
-      if (this.pageDots) {
-        this.pageDots.selectedIndex = index;
-      }
-      await this.items[index].transitionToEnter(shouldAnimate);
-      this.hasPendingTransition = false;
-    }
-  };
-  Object.assign(TestimonialList.prototype, VerticalScrollBlockerMixin);
-  window.customElements.define('testimonial-list', TestimonialList);
-
- 
-  var ShopTheLookItem = class extends HTMLElement {
-    get index() {
-      return [...this.parentNode.children].indexOf(this);
-    }
-    get selected() {
-      return !this.hasAttribute('hidden');
-    }
-    async transitionToLeave(shouldAnimate = true) {
-      this.setAttribute('hidden', '');
-      const animation = new CustomAnimation(
-        new CustomKeyframeEffect(this, { visibility: ['visible', 'hidden'] }, { duration: 500 })
-      );
-      shouldAnimate ? animation.play() : animation.finish();
-      return animation.finished;
-    }
-    async transitionToEnter(shouldAnimate = true) {
-      this.removeAttribute('hidden');
-      const dots = Array.from(this.querySelectorAll('.shop-the-look__dot'));
-      dots.forEach((dot) => (dot.style.opacity = 0));
-      const animation = new CustomAnimation(
-        new SequenceEffect([
-          new ParallelEffect(
-            Array.from(this.querySelectorAll('.shop-the-look__image')).map((item) => {
-              return new CustomKeyframeEffect(item, { opacity: [1, 1] }, { duration: 0 });
-            })
-          ),
-          new CustomKeyframeEffect(
-            this,
-            { visibility: ['hidden', 'visible'], zIndex: [0, 1], clipPath: ['inset(0 0 0 100%)', 'inset(0 0 0 0)'] },
-            { duration: 500, easing: 'cubic-bezier(1, 0, 0, 1)' }
-          ),
-          new ParallelEffect(
-            dots.map((item, index) => {
-              return new CustomKeyframeEffect(
-                item,
-                { opacity: [0, 1], transform: ['scale(0)', 'scale(1)'] },
-                { duration: 120, delay: 75 * index, easing: 'ease-in-out' }
-              );
-            })
-          ),
-        ])
-      );
-      shouldAnimate ? animation.play() : animation.finish();
-      await animation.finished;
-      if (window.matchMedia(window.themeVariables.breakpoints.tabletAndUp).matches) {
-        const firstPopover = this.querySelector('.shop-the-look__product-wrapper .shop-the-look__dot');
-        firstPopover == null ? void 0 : firstPopover.setAttribute('aria-expanded', 'true');
-      }
-    }
-  };
-  window.customElements.define('shop-the-look-item', ShopTheLookItem);
-
- 
-  var ShopTheLookNav = class extends CustomHTMLElement {
-    connectedCallback() {
-      this.shopTheLook = this.closest('shop-the-look');
-      this.inTransition = false;
-      this.pendingTransition = false;
-      this.pendingTransitionTo = null;
-      this.delegate.on('click', '[data-action="prev"]', () => this.shopTheLook.previous());
-      this.delegate.on('click', '[data-action="next"]', () => this.shopTheLook.next());
-    }
-    transitionToIndex(selectedIndex, nextIndex, shouldAnimate = true) {
-      const indexElements = Array.from(this.querySelectorAll('.shop-the-look__counter-page-transition')),
-        currentElement = indexElements[selectedIndex],
-        nextElement = indexElements[nextIndex];
-      if (this.inTransition) {
-        this.pendingTransition = true;
-        this.pendingTransitionTo = nextIndex;
-        return;
-      }
-      this.inTransition = true;
-      currentElement.animate(
-        { transform: ['translateY(0)', 'translateY(-100%)'] },
-        { duration: shouldAnimate ? 1e3 : 0, easing: 'cubic-bezier(1, 0, 0, 1)' }
-      ).onfinish = () => {
-        currentElement.setAttribute('hidden', '');
-        this.inTransition = false;
-        if (this.pendingTransition && this.pendingTransitionTo !== nextIndex) {
-          this.pendingTransition = false;
-          this.transitionToIndex(nextIndex, this.pendingTransitionTo, shouldAnimate);
-          this.pendingTransitionTo = null;
-        }
-      };
-      nextElement.removeAttribute('hidden');
-      nextElement.animate(
-        { transform: ['translateY(100%)', 'translateY(0)'] },
-        { duration: shouldAnimate ? 1e3 : 0, easing: 'cubic-bezier(1, 0, 0, 1)' }
-      );
-    }
-  };
-  window.customElements.define('shop-the-look-nav', ShopTheLookNav);
-
- 
-  var ShopTheLook = class extends CustomHTMLElement {
-    connectedCallback() {
-      this.lookItems = Array.from(this.querySelectorAll('shop-the-look-item'));
-      this.nav = this.querySelector('shop-the-look-nav');
-      this.hasPendingTransition = false;
-      if (this.hasAttribute('reveal-on-scroll')) {
-        this._setupVisibility();
-      }
-      if (this.lookItems.length > 1 && Shopify.designMode) {
-        this.addEventListener('shopify:block:select', async (event) => {
-          this.intersectionObserver.disconnect();
-          await this.select(event.target.index, !event.detail.load);
-          this.nav.animate(
-            { opacity: [0, 1], transform: ['translateY(30px)', 'translateY(0)'] },
-            { duration: 0, fill: 'forwards', easing: 'ease-in-out' }
-          );
-        });
-      }
-    }
-    get selectedIndex() {
-      return this.lookItems.findIndex((item) => item.selected);
-    }
-    async _setupVisibility() {
-      await this.untilVisible();
-      const images = Array.from(this.lookItems[this.selectedIndex].querySelectorAll('.shop-the-look__image'));
-      for (let image of images) {
-        if (image.offsetParent !== null) {
-          await imageLoaded(image);
-        }
-      }
-      await this.lookItems[this.selectedIndex].transitionToEnter();
-      if (this.nav) {
-        this.nav.animate(
-          { opacity: [0, 1], transform: ['translateY(30px)', 'translateY(0)'] },
-          { duration: 150, fill: 'forwards', easing: 'ease-in-out' }
-        );
-      }
-    }
-    previous() {
-      this.select((this.selectedIndex - 1 + this.lookItems.length) % this.lookItems.length);
-    }
-    next() {
-      this.select((this.selectedIndex + 1 + this.lookItems.length) % this.lookItems.length);
-    }
-    async select(index, animate = true) {
-      const currentLook = this.lookItems[this.selectedIndex],
-        nextLook = this.lookItems[index];
-      if (this.hasPendingTransition) {
-        return;
-      }
-      this.hasPendingTransition = true;
-      if (currentLook !== nextLook) {
-        this.nav.transitionToIndex(this.selectedIndex, index, animate);
-        currentLook.transitionToLeave();
-      }
-      nextLook.transitionToEnter(animate);
-      this.hasPendingTransition = false;
-    }
-  };
-  window.customElements.define('shop-the-look', ShopTheLook);
-
- 
-  var CollectionList = class extends CustomHTMLElement {
-    async connectedCallback() {
-      this.items = Array.from(this.querySelectorAll('.list-collections__item'));
-      if (this.hasAttribute('scrollable')) {
-        this.scroller = this.querySelector('.list-collections__scroller');
-        this.addEventListener('prev-next:prev', this.previous.bind(this));
-        this.addEventListener('prev-next:next', this.next.bind(this));
-        this.addEventListener('shopify:block:select', (event) =>
-          event.target.scrollIntoView({
-            block: 'nearest',
-            inline: 'center',
-            behavior: event.detail.load ? 'auto' : 'smooth',
-          })
-        );
-      }
-      if (this.hasAttribute('reveal-on-scroll')) {
-        this._setupVisibility();
-      }
-    }
-    async _setupVisibility() {
-      await this.untilVisible();
-      const prefersReducedMotion = MediaFeatures.prefersReducedMotion();
-      const animation = new CustomAnimation(
-        new ParallelEffect(
-          this.items.map((item, index) => {
-            return new SequenceEffect([
-              new CustomKeyframeEffect(
-                item.querySelector('.list-collections__item-image'),
-                {
-                  opacity: [0, 1],
-                  transform: [`scale(${prefersReducedMotion ? 1 : 1.1})`, 'scale(1)'],
-                },
-                {
-                  duration: 250,
-                  delay: prefersReducedMotion ? 0 : 150 * index,
-                  easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
-                }
-              ),
-              new ParallelEffect(
-                Array.from(item.querySelectorAll('.list-collections__item-info [reveal]')).map((textItem, subIndex) => {
-                  return new CustomKeyframeEffect(
-                    textItem,
-                    {
-                      opacity: [0, 1],
-                      clipPath: [`inset(${prefersReducedMotion ? '0 0 0 0' : '0 0 100% 0'})`, 'inset(0 0 0 0)'],
-                      transform: [`translateY(${prefersReducedMotion ? 0 : '100%'})`, 'translateY(0)'],
-                    },
-                    {
-                      duration: 200,
-                      delay: prefersReducedMotion ? 0 : 150 * index + 150 * subIndex,
-                      easing: 'cubic-bezier(0.5, 0.06, 0.01, 0.99)',
-                    }
-                  );
-                })
-              ),
-            ]);
-          })
-        )
-      );
-      this._hasSectionReloaded ? animation.finish() : animation.play();
-    }
-    previous() {
-      const directionFlip = window.themeVariables.settings.direction === 'ltr' ? 1 : -1;
-      this.scroller.scrollBy({
-        left: -this.items[0].clientWidth * directionFlip,
-        behavior: 'smooth',
-      });
-    }
-    next() {
-      const directionFlip = window.themeVariables.settings.direction === 'ltr' ? 1 : -1;
-      this.scroller.scrollBy({
-        left: this.items[0].clientWidth * directionFlip,
-        behavior: 'smooth',
-      });
-    }
-  };
-  window.customElements.define('collection-list', CollectionList);
-
- 
   var ProductList = class extends CustomHTMLElement {
     constructor() {
       super();
@@ -5161,7 +4123,7 @@ $(function() {
       event.target.toggleAttribute(
         'disabled',
         this.productListInner.scrollLeft * directionFlip + (this.productListInner.clientWidth + columnGap) * 2 >=
-          this.productListInner.scrollWidth
+        this.productListInner.scrollWidth
       );
       this.productListInner.scrollBy({
         left: (this.productListInner.clientWidth + columnGap) * directionFlip,
@@ -5195,70 +4157,6 @@ $(function() {
   __publicField(ProductList, 'observedAttributes', ['hidden']);
   window.customElements.define('product-list', ProductList);
 
- 
-  var LogoList = class extends CustomHTMLElement {
-    async connectedCallback() {
-      this.items = Array.from(this.querySelectorAll('.logo-list__item'));
-      this.logoListScrollable = this.querySelector('.logo-list__list');
-      if (this.items.length > 1) {
-        this.addEventListener('prev-next:prev', this.previous.bind(this));
-        this.addEventListener('prev-next:next', this.next.bind(this));
-      }
-      if (this.hasAttribute('reveal-on-scroll')) {
-        this._setupVisibility();
-      }
-    }
-    async _setupVisibility() {
-      await this.untilVisible({ rootMargin: '50px 0px', threshold: 0 });
-      const animation = new CustomAnimation(
-        new ParallelEffect(
-          this.items.map((item, index) => {
-            return new CustomKeyframeEffect(
-              item,
-              {
-                opacity: [0, 1],
-                transform: [`translateY(${MediaFeatures.prefersReducedMotion() ? 0 : '30px'})`, 'translateY(0)'],
-              },
-              {
-                duration: 300,
-                delay: MediaFeatures.prefersReducedMotion() ? 0 : 100 * index,
-                easing: 'ease',
-              }
-            );
-          })
-        )
-      );
-      this._hasSectionReloaded ? animation.finish() : animation.play();
-    }
-    previous(event) {
-      const directionFlip = window.themeVariables.settings.direction === 'ltr' ? 1 : -1;
-      event.target.nextElementSibling.removeAttribute('disabled');
-      event.target.toggleAttribute(
-        'disabled',
-        this.logoListScrollable.scrollLeft * directionFlip - (this.logoListScrollable.clientWidth + 24) <= 0
-      );
-      this.logoListScrollable.scrollBy({
-        left: -(this.logoListScrollable.clientWidth + 24) * directionFlip,
-        behavior: 'smooth',
-      });
-    }
-    next(event) {
-      const directionFlip = window.themeVariables.settings.direction === 'ltr' ? 1 : -1;
-      event.target.previousElementSibling.removeAttribute('disabled');
-      event.target.toggleAttribute(
-        'disabled',
-        this.logoListScrollable.scrollLeft * directionFlip + (this.logoListScrollable.clientWidth + 24) * 2 >=
-          this.logoListScrollable.scrollWidth
-      );
-      this.logoListScrollable.scrollBy({
-        left: (this.logoListScrollable.clientWidth + 24) * directionFlip,
-        behavior: 'smooth',
-      });
-    }
-  };
-  window.customElements.define('logo-list', LogoList);
-
- 
   var BlogPostNavigation = class extends HTMLElement {
     connectedCallback() {
       window.addEventListener('scroll', throttle(this._updateProgressBar.bind(this), 15));
@@ -5267,16 +4165,27 @@ $(function() {
       return this.hasAttribute('has-next-article');
     }
     _updateProgressBar() {
-      const stickyHeaderOffset = getStickyHeaderOffset(),
-        marginCompensation = window.matchMedia(window.themeVariables.breakpoints.pocket).matches ? 40 : 80,
+      const storeHeader = document.querySelector('store-header');
+      const isHeaderHidden = storeHeader && storeHeader.classList.contains('header--scroll-hidden');
+      const stickyHeaderOffset = storeHeader ? storeHeader.offsetHeight : getStickyHeaderOffset();
+      const marginCompensation = window.matchMedia(window.themeVariables.breakpoints.pocket).matches ? 40 : 80,
         articleNavBoundingBox = this.getBoundingClientRect(),
         articleMainPartBoundingBox = this.parentElement.getBoundingClientRect(),
         difference = articleMainPartBoundingBox.bottom - (articleNavBoundingBox.bottom - marginCompensation),
         progress = Math.max(-1 * (difference / (articleMainPartBoundingBox.height + marginCompensation) - 1), 0);
+
+      if (isHeaderHidden) {
+        this.classList.add('nav--sticky');
+        this.style.top = '0px';
+      } else {
+        this.classList.remove('nav--sticky');
+        this.style.top = `${stickyHeaderOffset}px`;
+      }
+
       this.classList.toggle(
         'is-visible',
         articleMainPartBoundingBox.top < stickyHeaderOffset &&
-          articleMainPartBoundingBox.bottom > stickyHeaderOffset + this.clientHeight - marginCompensation
+        articleMainPartBoundingBox.bottom > stickyHeaderOffset + this.clientHeight - marginCompensation
       );
       if (this.hasNextArticle) {
         if (progress > 0.8) {
@@ -5290,230 +4199,6 @@ $(function() {
   };
   window.customElements.define('blog-post-navigation', BlogPostNavigation);
 
- 
-  var MultiColumn = class extends CustomHTMLElement {
-    connectedCallback() {
-      if (!this.hasAttribute('stack')) {
-        this.multiColumnInner = this.querySelector('.multi-column__inner');
-        this.addEventListener('prev-next:prev', this.previous.bind(this));
-        this.addEventListener('prev-next:next', this.next.bind(this));
-        if (Shopify.designMode) {
-          this.addEventListener('shopify:block:select', (event) => {
-            event.target.scrollIntoView({
-              inline: 'center',
-              block: 'nearest',
-              behavior: event.detail.load ? 'auto' : 'smooth',
-            });
-          });
-        }
-      }
-      if (this.hasAttribute('stagger-apparition')) {
-        this._setupVisibility();
-      }
-    }
-    async _setupVisibility() {
-      await this.untilVisible({ threshold: Math.min(50 / this.clientHeight, 1) });
-      const prefersReducedMotion = MediaFeatures.prefersReducedMotion();
-      const animation = new CustomAnimation(
-        new ParallelEffect(
-          Array.from(this.querySelectorAll('.multi-column__item')).map((item, index) => {
-            return new CustomKeyframeEffect(
-              item,
-              {
-                opacity: [0, 1],
-                transform: [
-                  `translateY(${MediaFeatures.prefersReducedMotion() ? 0 : window.innerWidth < 1e3 ? 35 : 60}px)`,
-                  'translateY(0)',
-                ],
-              },
-              {
-                duration: 600,
-                delay: prefersReducedMotion ? 0 : 100 * index,
-                easing: 'ease',
-              }
-            );
-          })
-        )
-      );
-      this._hasSectionReloaded ? animation.finish() : animation.play();
-    }
-    previous(event) {
-      const directionFlip = window.themeVariables.settings.direction === 'ltr' ? 1 : -1,
-        columnGap = parseInt(getComputedStyle(this).getPropertyValue('--multi-column-column-gap'));
-      event.target.nextElementSibling.removeAttribute('disabled');
-      event.target.toggleAttribute(
-        'disabled',
-        this.multiColumnInner.scrollLeft * directionFlip - (this.multiColumnInner.clientWidth + columnGap) <= 0
-      );
-      this.multiColumnInner.scrollBy({
-        left: -(this.multiColumnInner.clientWidth + columnGap) * directionFlip,
-        behavior: 'smooth',
-      });
-    }
-    next(event) {
-      const directionFlip = window.themeVariables.settings.direction === 'ltr' ? 1 : -1,
-        columnGap = parseInt(getComputedStyle(this).getPropertyValue('--multi-column-column-gap'));
-      event.target.previousElementSibling.removeAttribute('disabled');
-      event.target.toggleAttribute(
-        'disabled',
-        this.multiColumnInner.scrollLeft * directionFlip + (this.multiColumnInner.clientWidth + columnGap) * 2 >=
-          this.multiColumnInner.scrollWidth
-      );
-      this.multiColumnInner.scrollBy({
-        left: (this.multiColumnInner.clientWidth + columnGap) * directionFlip,
-        behavior: 'smooth',
-      });
-    }
-  };
-  window.customElements.define('multi-column', MultiColumn);
-
- 
-  var GalleryList = class extends HTMLElement {
-    connectedCallback() {
-      this.listItems = Array.from(this.querySelectorAll('gallery-item'));
-      this.scrollBarElement = this.querySelector('.gallery__progress-bar');
-      this.listWrapperElement = this.querySelector('.gallery__list-wrapper');
-      if (this.listItems.length > 1) {
-        this.addEventListener('scrollable-content:progress', this._updateProgressBar.bind(this));
-        this.addEventListener('prev-next:prev', this.previous.bind(this));
-        this.addEventListener('prev-next:next', this.next.bind(this));
-        if (Shopify.designMode) {
-          this.addEventListener('shopify:block:select', (event) => this.select(event.target.index, !event.detail.load));
-        }
-      }
-    }
-    previous() {
-      this.select([...this.listItems].reverse().find((item) => item.isOnLeftHalfPartOfScreen).index);
-    }
-    next() {
-      this.select(this.listItems.findIndex((item) => item.isOnRightHalfPartOfScreen));
-    }
-    select(index, animate = true) {
-      const boundingRect = this.listItems[index].getBoundingClientRect();
-      this.listWrapperElement.scrollBy({
-        behavior: animate ? 'smooth' : 'auto',
-        left: Math.floor(boundingRect.left - window.innerWidth / 2 + boundingRect.width / 2),
-      });
-    }
-    _updateProgressBar(event) {
-      var _a;
-      (_a = this.scrollBarElement) == null ? void 0 : _a.style.setProperty('--transform', `${event.detail.progress}%`);
-    }
-  };
-  window.customElements.define('gallery-list', GalleryList);
-
- 
-  var GalleryItem = class extends HTMLElement {
-    get index() {
-      return [...this.parentNode.children].indexOf(this);
-    }
-    get isOnRightHalfPartOfScreen() {
-      if (window.themeVariables.settings.direction === 'ltr') {
-        return this.getBoundingClientRect().left > window.innerWidth / 2;
-      } else {
-        return this.getBoundingClientRect().right < window.innerWidth / 2;
-      }
-    }
-    get isOnLeftHalfPartOfScreen() {
-      if (window.themeVariables.settings.direction === 'ltr') {
-        return this.getBoundingClientRect().right < window.innerWidth / 2;
-      } else {
-        return this.getBoundingClientRect().left > window.innerWidth / 2;
-      }
-    }
-  };
-  window.customElements.define('gallery-item', GalleryItem);
-
- 
-  var ImageWithTextOverlay = class extends CustomHTMLElement {
-    connectedCallback() {
-      if (this.hasAttribute('parallax') && !MediaFeatures.prefersReducedMotion()) {
-        this._hasPendingRaF = false;
-        this._onScrollListener = this._onScroll.bind(this);
-        window.addEventListener('scroll', this._onScrollListener);
-      }
-      if (this.hasAttribute('reveal-on-scroll')) {
-        this._setupVisibility();
-      }
-    }
-    disconnectedCallback() {
-      super.disconnectedCallback();
-      if (this._onScrollListener) {
-        window.removeEventListener('scroll', this._onScrollListener);
-      }
-    }
-    async _setupVisibility() {
-      await this.untilVisible();
-      const image = this.querySelector('.image-overlay__image'),
-        headings = await resolveAsyncIterator(this.querySelectorAll('split-lines')),
-        prefersReducedMotion = MediaFeatures.prefersReducedMotion();
-      await imageLoaded(image);
-      const innerEffect = [
-        new CustomKeyframeEffect(
-          image,
-          { opacity: [0, 1], transform: [`scale(${prefersReducedMotion ? 1 : 1.1})`, 'scale(1)'] },
-          { duration: 500, easing: 'cubic-bezier(0.65, 0, 0.35, 1)' }
-        ),
-        new ParallelEffect(
-          headings.map((item, index) => {
-            return new CustomKeyframeEffect(
-              item,
-              {
-                opacity: [0, 0.2, 1],
-                transform: [`translateY(${prefersReducedMotion ? 0 : '100%'})`, 'translateY(0)'],
-                clipPath: [`inset(${prefersReducedMotion ? '0 0 0 0' : '0 0 100% 0'})`, 'inset(0 0 0 0)'],
-              },
-              {
-                duration: 300,
-                delay: prefersReducedMotion ? 0 : 120 * index,
-                easing: 'cubic-bezier(0.5, 0.06, 0.01, 0.99)',
-              }
-            );
-          })
-        ),
-        new CustomKeyframeEffect(
-          this.querySelector('.image-overlay__text-container'),
-          { opacity: [0, 1] },
-          { duration: 300 }
-        ),
-      ];
-      const animation = prefersReducedMotion
-        ? new CustomAnimation(new ParallelEffect(innerEffect))
-        : new CustomAnimation(new SequenceEffect(innerEffect));
-      this._hasSectionReloaded ? animation.finish() : animation.play();
-    }
-    _onScroll() {
-      if (this._hasPendingRaF) {
-        return;
-      }
-      this._hasPendingRaF = true;
-      requestAnimationFrame(() => {
-        const boundingRect = this.getBoundingClientRect(),
-          speedFactor = 3,
-          contentElement = this.querySelector('.image-overlay__content-wrapper'),
-          imageElement = this.querySelector('.image-overlay__image'),
-          boundingRectBottom = boundingRect.bottom,
-          boundingRectHeight = boundingRect.height,
-          stickyHeaderOffset = getStickyHeaderOffset();
-        if (contentElement) {
-          contentElement.style.opacity = Math.max(
-            1 - speedFactor * (1 - Math.min(boundingRectBottom / boundingRectHeight, 1)),
-            0
-          ).toString();
-        }
-        if (imageElement) {
-          imageElement.style.transform = `translateY(${
-            100 -
-            Math.max(1 - (1 - Math.min(boundingRectBottom / (boundingRectHeight + stickyHeaderOffset), 1)), 0) * 100
-          }px)`;
-        }
-        this._hasPendingRaF = false;
-      });
-    }
-  };
-  window.customElements.define('image-with-text-overlay', ImageWithTextOverlay);
-
- 
   var ImageWithTextBlock = class extends CustomHTMLElement {
     async connectedCallback() {
       if (this.hasAttribute('reveal-on-scroll')) {
@@ -5576,7 +4261,6 @@ $(function() {
   };
   window.customElements.define('image-with-text-block', ImageWithTextBlock);
 
- 
   var ArticleList = class extends CustomHTMLElement {
     async connectedCallback() {
       this.articleItems = Array.from(this.querySelectorAll('.article-item'));
@@ -5614,7 +4298,6 @@ $(function() {
   };
   window.customElements.define('article-list', ArticleList);
 
- 
   var BlogPostHeader = class extends HTMLElement {
     async connectedCallback() {
       const image = this.querySelector('.article__image');
@@ -5631,15 +4314,7 @@ $(function() {
   };
   window.customElements.define('blog-post-header', BlogPostHeader);
 
- 
-  var PredictiveSearchInput = class extends HTMLInputElement {
-   
-   
-   
-  };
-  window.customElements.define('predictive-search-input', PredictiveSearchInput, { extends: 'input' });
 
- 
   var DrawerContent = class extends OpenableElement {
     connectedCallback() {
       super.connectedCallback();
@@ -5669,179 +4344,6 @@ $(function() {
     }
   };
   window.customElements.define('drawer-content', DrawerContent);
-
- 
-  var PredictiveSearchDrawer = class extends DrawerContent {
-    connectedCallback() {
-      super.connectedCallback();
-      this.inputElement = this.querySelector('[name="q"]');
-      this.drawerContentElement = this.querySelector('.drawer__content');
-      this.drawerFooterElement = this.querySelector('.drawer__footer');
-      this.loadingStateElement = this.querySelector('.predictive-search__loading-state');
-      this.resultsElement = this.querySelector('.predictive-search__results');
-      this.menuListElement = this.querySelector('.predictive-search__menu-list');
-      this.delegate.on('input', '[name="q"]', this._debounce(this._onSearch.bind(this), 200));
-      this.delegate.on('click', '[data-action="reset-search"]', this._startNewSearch.bind(this));
-    }
-    async _onSearch(event, target) {
-      if (event.key === 'Enter') {
-        return;
-      }
-      if (this.abortController) {
-        this.abortController.abort();
-      }
-      this.drawerContentElement.classList.remove('drawer__content--center');
-      this.drawerFooterElement.hidden = true;
-      if (target.value === '') {
-        this.loadingStateElement.hidden = true;
-        this.resultsElement.hidden = true;
-        this.menuListElement ? (this.menuListElement.hidden = false) : '';
-      } else {
-        this.drawerContentElement.classList.add('drawer__content--center');
-        this.loadingStateElement.hidden = false;
-        this.resultsElement.hidden = true;
-        this.menuListElement ? (this.menuListElement.hidden = true) : '';
-        let searchResults = {};
-        try {
-          this.abortController = new AbortController();
-          if (this._supportPredictiveApi()) {
-            searchResults = await this._doPredictiveSearch(target.value);
-          } else {
-            searchResults = await this._doLiquidSearch(target.value);
-          }
-        } catch (e) {
-          if (e.name === 'AbortError') {
-            return;
-          }
-        }
-        this.loadingStateElement.hidden = true;
-        this.resultsElement.hidden = false;
-        this.menuListElement ? (this.menuListElement.hidden = true) : '';
-        if (searchResults.hasResults) {
-          this.drawerFooterElement.hidden = false;
-          this.drawerContentElement.classList.remove('drawer__content--center');
-        }
-        this.resultsElement.innerHTML = searchResults.html;
-      }
-    }
-    async _doPredictiveSearch(term) {
-      const response = await fetch(
-        `${window.themeVariables.routes.predictiveSearchUrl}?q=${encodeURIComponent(
-          term
-        )}&resources[limit]=10&resources[type]=${
-          window.themeVariables.settings.searchMode
-        }&resources[options[unavailable_products]]=${
-          window.themeVariables.settings.searchUnavailableProducts
-        }&resources[options[fields]]=title,body,product_type,variants.title,variants.sku,vendor&section_id=predictive-search`,
-        {
-          signal: this.abortController.signal,
-        }
-      );
-      const div = document.createElement('div');
-      div.innerHTML = await response.text();
-      return {
-        hasResults: div.querySelector('.predictive-search__results-categories') !== null,
-        html: div.firstElementChild.innerHTML,
-      };
-    }
-    async _doLiquidSearch(term) {
-      let promises = [],
-        supportedTypes = window.themeVariables.settings.searchMode.split(',').filter((item) => item !== 'collection');
-      supportedTypes.forEach((searchType) => {
-        promises.push(
-          fetch(
-            `${window.themeVariables.routes.searchUrl}?section_id=predictive-search-compatibility&q=${term}&type=${searchType}&options[unavailable_products]=${window.themeVariables.settings.searchUnavailableProducts}&options[prefix]=last`,
-            {
-              signal: this.abortController.signal,
-            }
-          )
-        );
-      });
-      let results = await Promise.all(promises),
-        resultsByCategories = {};
-      for (const [index, value] of results.entries()) {
-        const resultAsText = await value.text();
-        const fakeDiv = document.createElement('div');
-        fakeDiv.innerHTML = resultAsText;
-        fakeDiv.innerHTML = fakeDiv.firstElementChild.innerHTML;
-        if (fakeDiv.childElementCount > 0) {
-          resultsByCategories[supportedTypes[index]] = fakeDiv.innerHTML;
-        }
-      }
-      if (Object.keys(resultsByCategories).length > 0) {
-        const entries = Object.entries(resultsByCategories),
-          keys = Object.keys(resultsByCategories);
-        let html = `
-        <tabs-nav class="tabs-nav tabs-nav--edge2edge tabs-nav--narrow tabs-nav--no-border">
-          <scrollable-content class="tabs-nav__scroller hide-scrollbar">
-            <div class="tabs-nav__scroller-inner">
-              <div class="tabs-nav__item-list">
-      `;
-        for (let [type, value] of entries) {
-          html += `
-          <button type="button" class="tabs-nav__item heading heading--small" aria-expanded="${
-            type === keys[0] ? 'true' : 'false'
-          }" aria-controls="predictive-search-${type}">
-            ${window.themeVariables.strings['search' + type.charAt(0).toUpperCase() + type.slice(1) + 's']}
-          </button>
-        `;
-        }
-        html += `
-              </div>
-            </div>
-          </scrollable-content>
-        </tabs-nav>
-      `;
-        html += '<div class="predictive-search__results-categories">';
-        for (let [type, value] of entries) {
-          html += `
-          <div class="predictive-search__results-categories-item" ${
-            type !== keys[0] ? 'hidden' : ''
-          } id="predictive-search-${type}">
-            ${value}
-          </div>
-        `;
-        }
-        html += '</div>';
-        return { hasResults: true, html };
-      } else {
-        return {
-          hasResults: false,
-          html: `
-        <p class="text--large">${window.themeVariables.strings.searchNoResults}</p>
-          <div class="button-wrapper">
-            <button type="button" data-action="reset-search" class="button button--primary">${window.themeVariables.strings.searchNewSearch}</button>
-          </div>
-        `,
-        };
-      }
-    }
-    _startNewSearch() {
-      this.inputElement.value = '';
-      this.inputElement.focus();
-      const event = new Event('input', {
-        bubbles: true,
-        cancelable: true,
-      });
-      this.inputElement.dispatchEvent(event);
-    }
-    _supportPredictiveApi() {
-      const shopifyFeatureRequests = JSON.parse(document.getElementById('shopify-features').innerHTML);
-      return shopifyFeatureRequests['predictiveSearch'];
-    }
-    _debounce(fn, delay3) {
-      let timer = null;
-      return (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          fn.apply(this, args);
-        }, delay3);
-      };
-    }
-  };
-  window.customElements.define('predictive-search-drawer', PredictiveSearchDrawer);
-
- 
   var Timeline = class extends HTMLElement {
     connectedCallback() {
       this.prevNextButtons = this.querySelector('prev-next-buttons');
@@ -5926,292 +4428,6 @@ $(function() {
   };
   window.customElements.define('time-line', Timeline);
 
- 
-  var PressList = class extends CustomHTMLElement {
-    connectedCallback() {
-      this.pressItemsWrapper = this.querySelector('.press-list__wrapper');
-      this.pressItems = Array.from(this.querySelectorAll('press-item'));
-      this.pageDots = this.querySelector('page-dots');
-      if (this.pressItems.length > 1) {
-        if (Shopify.designMode) {
-          this.addEventListener('shopify:block:select', (event) => {
-            var _a;
-            (_a = this.intersectionObserver) == null ? void 0 : _a.disconnect();
-            if (event.detail.load || !event.target.selected) {
-              this.select(event.target.index, !event.detail.load);
-            }
-          });
-        }
-        this.pressItemsWrapper.addEventListener('swiperight', this.previous.bind(this));
-        this.pressItemsWrapper.addEventListener('swipeleft', this.next.bind(this));
-        this.addEventListener('page-dots:changed', (event) => this.select(event.detail.index));
-        this._blockVerticalScroll();
-      }
-      if (this.hasAttribute('reveal-on-scroll')) {
-        this._setupVisibility();
-      }
-    }
-    async _setupVisibility() {
-      await this.untilVisible();
-      this.pressItems[this.selectedIndex].transitionToEnter();
-    }
-    get selectedIndex() {
-      return this.pressItems.findIndex((item) => item.selected);
-    }
-    previous() {
-      this.select((this.selectedIndex - 1 + this.pressItems.length) % this.pressItems.length);
-    }
-    next() {
-      this.select((this.selectedIndex + 1 + this.pressItems.length) % this.pressItems.length);
-    }
-    async select(index, shouldAnimate = true) {
-      const previousItem = this.pressItems[this.selectedIndex],
-        newItem = this.pressItems[index];
-      await previousItem.transitionToLeave(shouldAnimate);
-      this.pageDots.selectedIndex = index;
-      await newItem.transitionToEnter(shouldAnimate);
-    }
-  };
-  Object.assign(PressList.prototype, VerticalScrollBlockerMixin);
-  window.customElements.define('press-list', PressList);
-
- 
-  var PressItem = class extends HTMLElement {
-    connectedCallback() {
-      this.addEventListener('split-lines:re-split', (event) => {
-        Array.from(event.target.children).forEach(
-          (line) => (line.style.visibility = this.selected ? 'visible' : 'hidden')
-        );
-      });
-    }
-    get index() {
-      return [...this.parentNode.children].indexOf(this);
-    }
-    get selected() {
-      return !this.hasAttribute('hidden');
-    }
-    async transitionToLeave(shouldAnimate = true) {
-      const textLines = await resolveAsyncIterator(this.querySelectorAll('split-lines')),
-        animation = new CustomAnimation(
-          new ParallelEffect(
-            textLines.reverse().map((item, index) => {
-              return new CustomKeyframeEffect(
-                item,
-                {
-                  visibility: ['visible', 'hidden'],
-                  clipPath: ['inset(0 0 0 0)', 'inset(0 0 100% 0)'],
-                  transform: ['translateY(0)', 'translateY(100%)'],
-                },
-                {
-                  duration: 350,
-                  delay: 60 * index,
-                  easing: 'cubic-bezier(0.68, 0.00, 0.77, 0.00)',
-                }
-              );
-            })
-          )
-        );
-      shouldAnimate ? animation.play() : animation.finish();
-      await animation.finished;
-      this.setAttribute('hidden', '');
-    }
-    async transitionToEnter(shouldAnimate = true) {
-      this.removeAttribute('hidden');
-      const textLines = await resolveAsyncIterator(this.querySelectorAll('split-lines, .testimonial__author')),
-        animation = new CustomAnimation(
-          new ParallelEffect(
-            textLines.map((item, index) => {
-              return new CustomKeyframeEffect(
-                item,
-                {
-                  visibility: ['hidden', 'visible'],
-                  clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0px 0)'],
-                  transform: ['translateY(100%)', 'translateY(0)'],
-                },
-                {
-                  duration: 550,
-                  delay: 120 * index,
-                  easing: 'cubic-bezier(0.23, 1, 0.32, 1)',
-                }
-              );
-            })
-          )
-        );
-      shouldAnimate ? animation.play() : animation.finish();
-      return animation.finished;
-    }
-  };
-  window.customElements.define('press-item', PressItem);
-
- 
-  var DesktopNavigation = class extends CustomHTMLElement {
-    connectedCallback() {
-      this.openingTimeout = null;
-      this.currentMegaMenu = null;
-      this.delegate.on(
-        'mouseenter',
-        '.has-dropdown',
-        (event, target) => {
-          if (event.target === target && event.relatedTarget !== null) {
-            this.openDropdown(target);
-          }
-        },
-        true
-      );
-      this.delegate.on(
-        'click',
-        '.header__linklist-link[aria-expanded], .nav-dropdown__link[aria-expanded]',
-        (event, target) => {
-          if (window.matchMedia('(hover: hover)').matches || target.getAttribute('aria-expanded') === 'true') {
-            return;
-          }
-          event.preventDefault();
-          this.openDropdown(target.parentElement);
-        }
-      );
-      this.delegate.on('shopify:block:select', (event) => this.openDropdown(event.target.parentElement));
-      this.delegate.on('shopify:block:deselect', (event) => this.closeDropdown(event.target.parentElement));
-    }
-    openDropdown(parentElement) {
-      const menuItem = parentElement.querySelector('[aria-controls]'),
-        dropdown = parentElement.querySelector(`#${menuItem.getAttribute('aria-controls')}`);
-      this.currentMegaMenu = dropdown.classList.contains('mega-menu') ? dropdown : null;
-      let openingTimeout = setTimeout(() => {
-        if (menuItem.getAttribute('aria-expanded') === 'true') {
-          return;
-        }
-        menuItem.setAttribute('aria-expanded', 'true');
-        dropdown.removeAttribute('hidden');
-        if (dropdown.classList.contains('mega-menu') && !MediaFeatures.prefersReducedMotion()) {
-          const items = Array.from(dropdown.querySelectorAll('.mega-menu__column, .mega-menu__image-push'));
-          items.forEach((item) => {
-            item.getAnimations().forEach((animation2) => animation2.cancel());
-            item.style.opacity = 0;
-          });
-          const animation = new CustomAnimation(
-            new ParallelEffect(
-              items.map((item, index) => {
-                return new CustomKeyframeEffect(
-                  item,
-                  {
-                    opacity: [0, 1],
-                    transform: ['translateY(20px)', 'translateY(0)'],
-                  },
-                  {
-                    duration: 250,
-                    delay: 100 + 60 * index,
-                    easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
-                  }
-                );
-              })
-            )
-          );
-          animation.play();
-        }
-        const leaveListener = (event) => {
-          if (event.relatedTarget !== null) {
-            this.closeDropdown(parentElement);
-            parentElement.removeEventListener('mouseleave', leaveListener);
-          }
-        };
-        parentElement.addEventListener('mouseleave', leaveListener);
-        openingTimeout = null;
-        this.dispatchEvent(new CustomEvent('desktop-nav:dropdown:open', { bubbles: true }));
-      }, 100);
-      parentElement.addEventListener(
-        'mouseleave',
-        () => {
-          if (openingTimeout) {
-            clearTimeout(openingTimeout);
-          }
-        },
-        { once: true }
-      );
-    }
-    closeDropdown(parentElement) {
-      const menuItem = parentElement.querySelector('[aria-controls]'),
-        dropdown = parentElement.querySelector(`#${menuItem.getAttribute('aria-controls')}`);
-      requestAnimationFrame(() => {
-        dropdown.classList.add('is-closing');
-        menuItem.setAttribute('aria-expanded', 'false');
-        setTimeout(
-          () => {
-            dropdown.setAttribute('hidden', '');
-            clearTimeout(this.openingTimeout);
-            dropdown.classList.remove('is-closing');
-          },
-          dropdown.classList.contains('mega-menu') && this.currentMegaMenu !== dropdown ? 250 : 0
-        );
-        this.dispatchEvent(new CustomEvent('desktop-nav:dropdown:close', { bubbles: true }));
-      });
-    }
-  };
-  window.customElements.define('desktop-navigation', DesktopNavigation);
-
- 
-  var MobileNavigation = class extends DrawerContent {
-    get apparitionAnimation() {
-      if (this._apparitionAnimation) {
-        return this._apparitionAnimation;
-      }
-      if (!MediaFeatures.prefersReducedMotion()) {
-        const navItems = Array.from(this.querySelectorAll('.mobile-nav__item[data-level="1"]')),
-          effects = [];
-        effects.push(
-          new ParallelEffect(
-            navItems.map((item, index) => {
-              return new CustomKeyframeEffect(
-                item,
-                {
-                  opacity: [0, 1],
-                  transform: ['translateX(-40px)', 'translateX(0)'],
-                },
-                {
-                  duration: 300,
-                  delay: 300 + 120 * index - Math.min(2 * index * index, 120 * index),
-                  easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-                }
-              );
-            })
-          )
-        );
-        const bottomBar = this.querySelector('.drawer__footer');
-        if (bottomBar) {
-          effects.push(
-            new CustomKeyframeEffect(
-              bottomBar,
-              {
-                opacity: [0, 1],
-                transform: ['translateY(100%)', 'translateY(0)'],
-              },
-              {
-                duration: 300,
-                delay: 500 + Math.max(125 * navItems.length - 25 * navItems.length, 25),
-                easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-              }
-            )
-          );
-        }
-        return (this._apparitionAnimation = new CustomAnimation(new ParallelEffect(effects)));
-      }
-    }
-    attributeChangedCallback(name, oldValue, newValue) {
-      super.attributeChangedCallback(name, oldValue, newValue);
-      switch (name) {
-        case 'open':
-          if (this.open && this.apparitionAnimation) {
-            Array.from(this.querySelectorAll('.mobile-nav__item[data-level="1"], .drawer__footer')).forEach(
-              (item) => (item.style.opacity = 0)
-            );
-            this.apparitionAnimation.play();
-          }
-          triggerEvent(this, this.open ? 'mobile-nav:open' : 'mobile-nav:close');
-      }
-    }
-  };
-  window.customElements.define('mobile-navigation', MobileNavigation);
-
- 
   var StoreHeader = class extends CustomHTMLElement {
     connectedCallback() {
       if (window.ResizeObserver) {
@@ -6219,6 +4435,10 @@ $(function() {
         this.resizeObserver.observe(this);
         this.resizeObserver.observe(this.querySelector('.header__wrapper'));
       }
+      this.lastScrollY = window.scrollY;
+      this.scrollThreshold = 10;
+      this.isScrollHidden = false;
+
       if (this.isTransparent) {
         this.isTransparencyDetectionLocked = false;
         this.delegate.on('desktop-nav:dropdown:open', () => (this.lockTransparency = true));
@@ -6233,6 +4453,12 @@ $(function() {
           window.addEventListener('scroll', this._onWindowScrollListener);
         }
       }
+
+      // index add homepage
+      // if (this._isNoPage()) {
+      this._onScrollHideListener = throttle(this._handleScrollHide.bind(this), 16);
+      window.addEventListener('scroll', this._onScrollHideListener);
+      // }
     }
     disconnectedCallback() {
       super.disconnectedCallback();
@@ -6241,6 +4467,10 @@ $(function() {
       }
       if (this.isTransparent && this.isSticky) {
         window.removeEventListener('scroll', this._onWindowScrollListener);
+      }
+      // remove index scoll
+      if (this._onScrollHideListener) {
+        window.removeEventListener('scroll', this._onScrollHideListener);
       }
     }
     get isSticky() {
@@ -6255,6 +4485,46 @@ $(function() {
     set lockTransparency(value) {
       this.isTransparencyDetectionLocked = value;
       this._checkTransparentHeader();
+    }
+    //  index scroll
+    _isNoPage() {
+      const path = window.location.pathname;
+      // if (path === '/' || path === '/index' || path === '/index.html') {
+      //   return true;
+      // }
+      // if(path.indexOf('/products')  < 0) {
+      //   return true
+      // }
+      return false;
+    }
+    // index scroll function
+    _handleScrollHide() {
+      const currentScrollY = window.scrollY;
+      const scrollDifference = currentScrollY - this.lastScrollY;
+      if (Math.abs(scrollDifference) < this.scrollThreshold) {
+        return;
+      }
+      if (scrollDifference > 0 && currentScrollY > this.clientHeight) {
+        if (!this.isScrollHidden) {
+          this.isScrollHidden = true;
+          this.classList.add('header--scroll-hidden');
+          const sectionHeader = this.closest('#shopify-section-header');
+          if (sectionHeader) {
+            sectionHeader.classList.add('header--zindex');
+          }
+        }
+      }
+      else if (scrollDifference < 0) {
+        if (this.isScrollHidden) {
+          this.isScrollHidden = false;
+          this.classList.remove('header--scroll-hidden');
+          const sectionHeader = this.closest('#shopify-section-header');
+          if (sectionHeader) {
+            sectionHeader.classList.remove('header--zindex');
+          }
+        }
+      }
+      this.lastScrollY = currentScrollY;
     }
     _updateCustomProperties(entries) {
       entries.forEach((entry) => {
@@ -6289,8 +4559,6 @@ $(function() {
     }
   };
   window.customElements.define('store-header', StoreHeader);
-
- 
   var PhotoSwipeUi = class {
     constructor(pswp) {
       this.photoSwipeInstance = pswp;
@@ -6378,7 +4646,7 @@ $(function() {
     _onPswpParseVerticalMargin(item) {
       item.vGap.bottom =
         this.photoSwipeInstance.items.length <= 1 ||
-        window.matchMedia(window.themeVariables.breakpoints.lapAndUp).matches
+          window.matchMedia(window.themeVariables.breakpoints.lapAndUp).matches
           ? 0
           : 60;
     }
@@ -6447,14 +4715,14 @@ $(function() {
     }
     async _buildItems() {
       const activeImages = Array.from(
-          this.mediaElement.querySelectorAll('.product__media-item[data-media-type="image"]:not(.is-filtered)')
-        ),
+        this.mediaElement.querySelectorAll('.product__media-item[data-media-type="image"]:not(.is-filtered)')
+      ),
         product = await ProductLoader.load(this.getAttribute('product-handle'));
       return Promise.resolve(
         activeImages.map((item) => {
           const matchedMedia = product['media'].find(
-              (media) => media.id === parseInt(item.getAttribute('data-media-id'))
-            ),
+            (media) => media.id === parseInt(item.getAttribute('data-media-id'))
+          ),
             supportedSizes = getSupportedSizes(
               matchedMedia,
               [200, 300, 400, 500, 600, 700, 800, 1e3, 1200, 1400, 1600, 1800, 2e3, 2200, 2400, 2600, 2800, 3e3]
@@ -6477,7 +4745,6 @@ $(function() {
   };
   window.customElements.define('product-image-zoom', ProductImageZoom);
 
- 
   var ProductInventory = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -6503,7 +4770,6 @@ $(function() {
   };
   window.customElements.define('product-inventory', ProductInventory);
 
- 
   var PaymentContainer = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -6558,7 +4824,6 @@ $(function() {
   };
   window.customElements.define('product-payment-container', PaymentContainer);
 
- 
   var PaymentTerms = class extends CustomHTMLElement {
     connectedCallback() {
       var _a;
@@ -6577,7 +4842,6 @@ $(function() {
   };
   window.customElements.define('product-payment-terms', PaymentTerms);
 
- 
   var ProductForm = class extends HTMLFormElement {
     connectedCallback() {
       this.id.disabled = false;
@@ -6586,22 +4850,22 @@ $(function() {
       }
       this.addEventListener('submit', this._onSubmit.bind(this));
     }
-    disconnectedCallback () {
-      this._onSubmit = () => {};
+    disconnectedCallback() {
+      this._onSubmit = () => { };
     }
     async setLineAttr(cartItems) {
       const response = await fetch('/cart.js');
       const res = await response.json();
-      if(res.items.length == 0) return;
+      if (res.items.length == 0) return;
       cartItems.map(cartItem => {
         const line_item = res.items.find(item => item.id == cartItem.id);
-        if(line_item) cartItem.properties = line_item.properties;
+        if (line_item) cartItem.properties = line_item.properties;
       })
     }
     formDataToObject(formData) {
       let obj = {};
       formData.forEach((value, key) => {
-          obj[key] = value;
+        obj[key] = value;
       });
       return obj;
     }
@@ -6695,7 +4959,6 @@ $(function() {
   };
   window.customElements.define('product-form', ProductForm, { extends: 'form' });
 
- 
   var ProductMedia = class extends CustomHTMLElement {
     async connectedCallback() {
       var _a;
@@ -6703,9 +4966,9 @@ $(function() {
       if (this.hasAttribute('reveal-on-scroll')) {
         this._setupVisibility();
       }
-      if (this.mainCarousel.childElementCount === 1) {
-        return;
-      }
+      // if (this.mainCarousel.childElementCount === 1) {
+      //   return;
+      // }
       this.selectedVariantMediaId = null;
       this.viewInSpaceElement = this.querySelector('[data-shopify-model3d-id]');
       this.zoomButton = this.querySelector('.product__zoom-button');
@@ -6867,8 +5130,7 @@ $(function() {
   };
   window.customElements.define('product-media', ProductMedia);
 
-
-var ProductAttrs = class extends CustomHTMLElement {
+  var ProductAttrs = class extends CustomHTMLElement {
     async connectedCallback() {
       this.initVue()
     }
@@ -6912,7 +5174,7 @@ var ProductAttrs = class extends CustomHTMLElement {
               isDisabled = !this.isValidCombination(testSelection)
             }
             return {
-              'border-6B84B3 text-white font-medium bg-main fb-sm:font-bold': isSelected,
+              'border-6B84B3 text-white font-medium bg-main fb-md:font-bold': isSelected,
               'cursor-not-allowed bg-F3F8FC border-D3DEF1 text-D3DEF1': isDisabled,
               'text-main border-6B84B3 bg-F3F8FC': !isSelected && !isDisabled
             }
@@ -6935,7 +5197,7 @@ var ProductAttrs = class extends CustomHTMLElement {
               $('.js-attr-wrapper').removeClass('hidden')
               const { selectionAttrs, availableAttrs = [], sku } = productData
               this.currentAttrs = availableAttrs.find(item => item.skuCode == this.sku)?.attrs || []
-              this.processAvailableCombinations(selectionAttrs, availableAttrs) 
+              this.processAvailableCombinations(selectionAttrs, availableAttrs)
               this.productAttrs = selectionAttrs.filter(attr => attr.attrName != 'match').map((attr, index) => ({
                 attrName: attr.attrName,
                 values: attr.values,
@@ -6955,7 +5217,7 @@ var ProductAttrs = class extends CustomHTMLElement {
               $('.js-attr-loading').addClass('hidden')
             }
           },
-          disableActions() { 
+          disableActions() {
             const addButton = document.querySelector('.cus-product .shopify-product-form .js-zkh-addtocart') || '';
             if (addButton) {
               addButton.classList.add('disabled');
@@ -6971,9 +5233,9 @@ var ProductAttrs = class extends CustomHTMLElement {
           },
           processAvailableCombinations(selectionAttrs, availableAttrs) {
             const filteredAttrs = selectionAttrs.filter(attr => attr.attrName != 'match')
-             const attrNames = filteredAttrs.map(attr => attr.attrName)
+            const attrNames = filteredAttrs.map(attr => attr.attrName)
             const expectedLength = attrNames.length
-            const validVariants = availableAttrs.filter(variant => 
+            const validVariants = availableAttrs.filter(variant =>
               variant.attrs?.length == expectedLength
             )
             validVariants.forEach(variant => {
@@ -7027,7 +5289,7 @@ var ProductAttrs = class extends CustomHTMLElement {
           async getProductAttrs() {
             try {
               const res = await kkAjax.get(`/spu/selection-attrs?sku=${this.sku}`);
-              if (res.code == 200 && res.data) { 
+              if (res.code == 200 && res.data) {
                 return res.data
               } else {
                 throw new Error(res.msg)
@@ -7082,7 +5344,7 @@ var ProductAttrs = class extends CustomHTMLElement {
       if ($(this).find('.product-info-line-wrapper .product-info-line[hide]').length >= 4) {
         $(".product-anchor [data-target-id='product-information-wrapper']").hide().attr('data-hide', true);
         // if($(".product-anchor [data-hide='true']").length == 2) {
-          // $('.product-anchor-sticky-wrapper').hide();
+        // $('.product-anchor-sticky-wrapper').hide();
         // }
         $(this).find(".product-information").hide();
       } else {
@@ -7112,7 +5374,7 @@ var ProductAttrs = class extends CustomHTMLElement {
         });
     }
     renderInformation({ detail }) {
-      if(!detail) return;
+      if (!detail) return;
       Object.keys(detail).forEach((itemKey) => {
         const keys = detail[itemKey] ? Object.keys(detail[itemKey]) : null;
         if (!keys || keys.length === 0) {
@@ -7150,22 +5412,22 @@ var ProductAttrs = class extends CustomHTMLElement {
               const warningPattern = /(WARNING:\s+)/;
               wrappedValue = detail[itemKey][key]
                 .replace(warningPattern, (match) => {
-                 
+
                   return `<span class="warning-text">${match}</span><br/>`;
                 })
                 .replace(linkPattern, (match) => {
-                 
+
                   return `<a href="https://${match}" target="_blank" class="warning-href">${match}</a>`;
                 })
             }
-            if( key.replace(/\s/g, '').toLowerCase() == 'eniso374type') {
+            if (key.replace(/\s/g, '').toLowerCase() == 'eniso374type') {
               return false;
             }
             const $li = $(`
               <li>
                   <span class="key">
-                      ${ key === 'Prop65' ? 
-                        `${key} <?xml version="1.0" encoding="utf-8"?>
+                      ${key === 'Prop65' ?
+                `${key} <?xml version="1.0" encoding="utf-8"?>
                         
                         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
                         <svg version="1.1"
@@ -7184,15 +5446,15 @@ var ProductAttrs = class extends CustomHTMLElement {
                           c-11.99-6.754-26.853-5.705-37.775,2.668c-10.922,8.373-15.797,22.454-12.389,35.787l19.122,166.535
                           c0.615,5.355,4.044,9.977,8.993,12.116c4.949,2.14,10.665,1.473,14.989-1.749C301.429,355.222,303.703,349.935,303.068,344.582"/>
                         </svg>`
-                        : key }
+                : key}
                   </span>
-                  <span class="value">${ key === 'Prop65' ? wrappedValue: detail[itemKey][key] }</span>
+                  <span class="value">${key === 'Prop65' ? wrappedValue : detail[itemKey][key]}</span>
               </li>
           `);
             $productInfoLine.find('.info-table').append($li);
           });
           const infoTableDom = $productInfoLine.find('.info-table')[0];
-          if(infoTableDom.children.length > 4) {
+          if (infoTableDom.children.length > 4) {
             $(infoTableDom).closest('.product-info-line').find('.js-overlay-wrapper').css('display', 'flex');
           }
         }
@@ -7224,9 +5486,7 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
   };
   window.customElements.define('more-product-media', MoreProductMedia);
- 
 
- 
   function formatMoney(cents, format = '') {
     if (typeof cents === 'string') {
       cents = cents.replace('.', '');
@@ -7283,7 +5543,6 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
   }
 
- 
   var ProductMeta = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -7342,19 +5601,16 @@ var ProductAttrs = class extends CustomHTMLElement {
       } else {
         productPrices.innerHTML = '';
         if (variant['compare_at_price'] > variant['price']) {
-          productPrices.innerHTML += `<span class="price price--highlight ${
-            this.priceClass
-          }"><span class="visually-hidden">${window.themeVariables.strings.productSalePrice}</span>${formatMoney(
-            variant['price'],
-            currencyFormat
-          )}</span>`;
-          productPrices.innerHTML += `<span class="price price--compare"><span class="visually-hidden">${
-            window.themeVariables.strings.productRegularPrice
-          }</span>${formatMoney(variant['compare_at_price'], currencyFormat)}</span>`;
+          productPrices.innerHTML += `<span class="price price--highlight ${this.priceClass
+            }"><span class="visually-hidden">${window.themeVariables.strings.productSalePrice}</span>${formatMoney(
+              variant['price'],
+              currencyFormat
+            )}</span>`;
+          productPrices.innerHTML += `<span class="price price--compare"><span class="visually-hidden">${window.themeVariables.strings.productRegularPrice
+            }</span>${formatMoney(variant['compare_at_price'], currencyFormat)}</span>`;
         } else {
-          productPrices.innerHTML += `<span class="price ${this.priceClass}"><span class="visually-hidden">${
-            window.themeVariables.strings.productSalePrice
-          }</span>${formatMoney(variant['price'], currencyFormat)}</span>`;
+          productPrices.innerHTML += `<span class="price ${this.priceClass}"><span class="visually-hidden">${window.themeVariables.strings.productSalePrice
+            }</span>${formatMoney(variant['price'], currencyFormat)}</span>`;
         }
         if (variant['unit_price_measurement']) {
           let referenceValue = '';
@@ -7367,9 +5623,8 @@ var ProductAttrs = class extends CustomHTMLElement {
               <span class="unit-price-measurement__price">${formatMoney(variant['unit_price'])}</span>
               <span class="unit-price-measurement__separator">/</span>
               ${referenceValue}
-              <span class="unit-price-measurement__reference-unit">${
-                variant['unit_price_measurement']['reference_unit']
-              }</span>
+              <span class="unit-price-measurement__reference-unit">${variant['unit_price_measurement']['reference_unit']
+            }</span>
             </div>
           </div>
         `;
@@ -7393,7 +5648,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('product-meta', ProductMeta);
 
- 
   var QuickBuyDrawer = class extends DrawerContent {
     connectedCallback() {
       super.connectedCallback();
@@ -7430,7 +5684,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('quick-buy-drawer', QuickBuyDrawer);
 
- 
   var QuickBuyPopover = class extends PopoverContent {
     connectedCallback() {
       super.connectedCallback();
@@ -7465,7 +5718,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('quick-buy-popover', QuickBuyPopover);
 
- 
   var StorePickup = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -7482,8 +5734,8 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
     async _renderForVariant(id) {
       const response = await fetch(
-          `${window.themeVariables.routes.rootUrlWithoutSlash}/variants/${id}?section_id=store-availability`
-        ),
+        `${window.themeVariables.routes.rootUrlWithoutSlash}/variants/${id}?section_id=store-availability`
+      ),
         div = document.createElement('div');
       div.innerHTML = await response.text();
       this.innerHTML = div.firstElementChild.innerHTML.trim();
@@ -7491,7 +5743,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('store-pickup', StorePickup);
 
- 
   var ProductVariants = class extends CustomHTMLElement {
     async connectedCallback() {
       this.masterSelector = document.getElementById(this.getAttribute('form-id')).id;
@@ -7551,8 +5802,8 @@ var ProductAttrs = class extends CustomHTMLElement {
       const options = ((_a = this.selectedVariant) == null ? void 0 : _a.options) || [];
       options.forEach((value, index) => {
         let input = this.querySelector(
-            `input[name="option${index + 1}"][value="${CSS.escape(value)}"], select[name="option${index + 1}"]`
-          ),
+          `input[name="option${index + 1}"][value="${CSS.escape(value)}"], select[name="option${index + 1}"]`
+        ),
           triggerChangeEvent = false;
         if (input.tagName === 'SELECT') {
           triggerChangeEvent = input.value !== value;
@@ -7645,8 +5896,8 @@ var ProductAttrs = class extends CustomHTMLElement {
       if (this.optionSelectors && this.optionSelectors[0]) {
         this.product['options'][0]['values'].forEach((value, valueIndex) => {
           const hasAtLeastOneCombination = this.product['variants'].some(
-              (variant) => variant['option1'] === value && variant
-            ),
+            (variant) => variant['option1'] === value && variant
+          ),
             hasAvailableVariant = this.product['variants'].some(
               (variant) => variant['option1'] === value && variant['available']
             );
@@ -7654,9 +5905,9 @@ var ProductAttrs = class extends CustomHTMLElement {
           if (this.optionSelectors[1]) {
             this.product['options'][1]['values'].forEach((value2, valueIndex2) => {
               const hasAtLeastOneCombination2 = this.product['variants'].some(
-                  (variant) =>
-                    variant['option2'] === value2 && variant['option1'] === selectedVariant['option1'] && variant
-                ),
+                (variant) =>
+                  variant['option2'] === value2 && variant['option1'] === selectedVariant['option1'] && variant
+              ),
                 hasAvailableVariant2 = this.product['variants'].some(
                   (variant) =>
                     variant['option2'] === value2 &&
@@ -7672,12 +5923,12 @@ var ProductAttrs = class extends CustomHTMLElement {
               if (this.optionSelectors[2]) {
                 this.product['options'][2]['values'].forEach((value3, valueIndex3) => {
                   const hasAtLeastOneCombination3 = this.product['variants'].some(
-                      (variant) =>
-                        variant['option3'] === value3 &&
-                        variant['option1'] === selectedVariant['option1'] &&
-                        variant['option2'] === selectedVariant['option2'] &&
-                        variant
-                    ),
+                    (variant) =>
+                      variant['option3'] === value3 &&
+                      variant['option1'] === selectedVariant['option1'] &&
+                      variant['option2'] === selectedVariant['option2'] &&
+                      variant
+                  ),
                     hasAvailableVariant3 = this.product['variants'].some(
                       (variant) =>
                         variant['option3'] === value3 &&
@@ -7709,7 +5960,7 @@ var ProductAttrs = class extends CustomHTMLElement {
         observeParents: true,
         touchStartPreventDefault: true,
         passiveListeners: false,
-        touchAngle: 70,              
+        touchAngle: 70,
         threshold: 10,
         breakpoints: {
           0: {
@@ -7744,30 +5995,6 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
   };
   window.customElements.define('product-index-list', ProductIndexList);
-
-  var MobileHero = class extends HTMLElement {
-    connectedCallback() {
-      const sectionId = $(this).data('section-id');
-      if(window.innerWidth <= 740) {
-        new Swiper(`.section-${sectionId} .swiper`, {
-          spaceBetween: 8,
-          autoplay: {
-            delay: 8000,
-          },
-          pagination: {
-            el: `.section-${sectionId} .swiper-pagination`,
-            clickable: true,
-          },
-          loop: true,
-        });
-      }
-
-    }
-  };
-  window.customElements.define('mobile-hero', MobileHero);
-
-
- 
   var ProductItem = class extends CustomHTMLElement {
     connectedCallback() {
       this.primaryImageList = Array.from(this.querySelectorAll('.product-item__primary-image'));
@@ -7793,7 +6020,7 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
     async handleClickFavoritebutton(e) {
       e.preventDefault();
-     
+
       const formData = {
         customerId: $(this).data('customer-id'),
         productId: $(this).data('product-id'),
@@ -7812,7 +6039,7 @@ var ProductAttrs = class extends CustomHTMLElement {
         const res = await response.json();
         if (res.code === 200) {
           const isFavorited = res.data.wish ? 1 : 0;
-          if(isFavorited) {
+          if (isFavorited) {
             const sku = $(this).data('sku');
             const price = $(this).data('price');
             const productTitle = $(this).data('product-title');
@@ -7954,126 +6181,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('product-item', ProductItem);
 
- 
-  var ProductFacet = class extends CustomHTMLElement {
-    connectedCallback() {
-      this.delegate.on('pagination:page-changed', this._rerender.bind(this));
-      this.delegate.on('facet:criteria-changed', this._rerender.bind(this));
-      this.delegate.on('facet:abort-loading', this._abort.bind(this));
-      document.dispatchEvent(new CustomEvent('facet-rerender'));
-    }
-    async _rerender(event) {
-      history.replaceState({}, '', event.detail.url);
-      this._abort();
-      this.showLoadingBar();
-      const url = new URL(window.location);
-      url.searchParams.set('section_id', this.getAttribute('section-id'));
-      try {
-        this.abortController = new AbortController();
-        const response = await fetch(url.toString(), { signal: this.abortController.signal });
-        const responseAsText = await response.text();
-        const fakeDiv = document.createElement('div');
-        fakeDiv.innerHTML = responseAsText;
-        if(fakeDiv.querySelector('#facet-main')?.innerHTML) {
-          this.querySelector('#facet-main').innerHTML = fakeDiv.querySelector('#facet-main').innerHTML;
-          const activeFilterList = Array.from(fakeDiv.querySelectorAll('.product-facet__active-list')),
-            toolbarItem = document.querySelector('.mobile-toolbar__item--filters');
-          if (toolbarItem) {
-            toolbarItem.classList.toggle('has-filters', activeFilterList.length > 0);
-          }
-          const filtersTempDiv = fakeDiv.querySelector('#facet-filters');
-          if (filtersTempDiv) {
-            const previousScrollTop = this.querySelector('#facet-filters .drawer__content').scrollTop;
-            Array.from(this.querySelectorAll('#facet-filters-form .collapsible-toggle[aria-controls]')).forEach(
-              (filterToggle) => {
-                const filtersTempDivToggle = filtersTempDiv.querySelector(
-                    `[aria-controls="${filterToggle.getAttribute('aria-controls')}"]`
-                  ),
-                  isExpanded = filterToggle.getAttribute('aria-expanded') === 'true';
-                filtersTempDivToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-                filtersTempDivToggle.nextElementSibling.toggleAttribute('open', isExpanded);
-                filtersTempDivToggle.nextElementSibling.style.overflow = isExpanded ? 'visible' : '';
-              }
-            );
-            this.querySelector('#facet-filters').innerHTML = filtersTempDiv.innerHTML;
-            this.querySelector('#facet-filters .drawer__content').scrollTop = previousScrollTop;
-          }
-        }
-        const scrollTo =
-          this.querySelector('.product-facet__meta-bar') ||
-          this.querySelector('.product-facet__product-list') ||
-          this.querySelector('.product-facet__main');
-        requestAnimationFrame(() => {
-          scrollTo.scrollIntoView({ block: 'start', behavior: 'smooth' });
-        });
-        this.hideLoadingBar();
-
-        var searchInput = $('.collapsible-search .search__input');
-        var searchInputSpan = $('.collapsible-search .search__input-span');
-       
-        $(searchInput).keydown(function (event) {
-          var keyCode = event.keyCode || event.which;
-         
-          if (keyCode === 13) {
-           
-            search();
-          }
-        });
-        $(searchInputSpan).click(function () {
-          search();
-        });
-        function search(event) {
-          let searchval = $(searchInput).val();
-          searchval = searchval.toLowerCase();
-          var hasMatchingItem = false;
-
-          $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
-            var title = $(this).find('.checkbox').val();
-            title = title.toLowerCase();
-            if (title.indexOf(searchval) !== -1) {
-              $(this).show();
-              hasMatchingItem = true;
-            } else {
-              $(this).hide();
-              $('.no-results-message').show();
-            }
-          });
-
-          if (!hasMatchingItem) {
-            $('.no-results-message').show();
-          } else {
-            $('.no-results-message').hide();
-          }
-        }
-
-        function resetToInitialState() {
-          $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
-            $(this).show();
-            $('.no-results-message').hide();
-          });
-        }
-
-        searchInput.on('input', function () {
-          if (searchInput.val() === '') {
-            resetToInitialState();
-          }
-        });
-        document.dispatchEvent(new CustomEvent('facet-rerender'));
-      } catch (e) {
-        if (e.name === 'AbortError') {
-          return;
-        }
-      }
-    }
-    _abort() {
-      if (this.abortController) {
-        this.abortController.abort();
-      }
-    }
-  };
-  window.customElements.define('product-facet', ProductFacet);
-
- 
   var ProductSearchFacet = class extends CustomHTMLElement {
     connectedCallback() {
       this.delegate.on('pagination:page-changed', this._rerender.bind(this));
@@ -8082,10 +6189,12 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
     async _rerender(event) {
       history.replaceState({}, '', event.detail.url);
-      document.dispatchEvent(new CustomEvent('facet-search-rerender', { detail: { 
-        hideLoadingBar: this.hideLoadingBar,
-        showLoadingBar: this.showLoadingBar
-      }}));
+      document.dispatchEvent(new CustomEvent('facet-search-rerender', {
+        detail: {
+          hideLoadingBar: this.hideLoadingBar,
+          showLoadingBar: this.showLoadingBar
+        }
+      }));
     }
     _abort() {
       if (this.abortController) {
@@ -8097,23 +6206,23 @@ var ProductAttrs = class extends CustomHTMLElement {
 
   var ProductFacetSpu = class extends CustomHTMLElement {
     connectedCallback() {
-     
+
       this.delegate.on('facet:criteria-changed', this._rerender.bind(this));
       this.delegate.on('facet:abort-loading', this._abort.bind(this));
-     
+
     }
-    
+
     async _rerender(event) {
-     
+
       history.replaceState({}, '', event.detail.url);
       this._abort();
       this.showLoadingBar();
       try {
-       
+
         this.setupSearchFunctionality();
-       
+
         this.hideLoadingBar();
-       
+
         document.dispatchEvent(new CustomEvent('facet-rerender'));
       } catch (e) {
         if (e.name === 'AbortError') {
@@ -8125,10 +6234,10 @@ var ProductAttrs = class extends CustomHTMLElement {
     setupSearchFunctionality() {
       var searchInput = $('.collapsible-search .search__input');
       var searchInputSpan = $('.collapsible-search .search__input-span');
-     
+
       $(searchInput).off('keydown').on('keydown', function (event) {
         var keyCode = event.keyCode || event.which;
-       
+
         if (keyCode === 13) {
           search();
         }
@@ -8156,21 +6265,21 @@ var ProductAttrs = class extends CustomHTMLElement {
           $('.no-results-message').hide();
         }
       }
-     
+
       function resetToInitialState() {
         $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
           $(this).show();
           $('.no-results-message').hide();
         });
       }
-     
+
       searchInput.off('input').on('input', function () {
         if (searchInput.val() === '') {
           resetToInitialState();
         }
       });
     }
-    
+
     _abort() {
       if (this.abortController) {
         this.abortController.abort();
@@ -8179,7 +6288,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('product-facet-spu', ProductFacetSpu);
 
- 
   var FacetFilters = class extends DrawerContent {
     connectedCallback() {
       super.connectedCallback();
@@ -8203,7 +6311,7 @@ var ProductAttrs = class extends CustomHTMLElement {
       const formData = new FormData(this.querySelector('#facet-filters-form'));
       const searchParamsAsString = new URLSearchParams(formData).toString();
       triggerEvent(this, 'facet:criteria-changed', { url: `${window.location.pathname}?${searchParamsAsString}` });
-     
+
     }
     _adjustDrawer(match) {
       this.classList.toggle('drawer', match.matches);
@@ -8211,39 +6319,14 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
   };
   window.customElements.define('facet-filters', FacetFilters);
-
- 
-  var SortByPopover = class extends PopoverContent {
-    connectedCallback() {
-      super.connectedCallback();
-      this.delegate.on('change', '[name="sort_by"]', this._onSortChanged.bind(this));
-    }
-    _onSortChanged(event, target) {
-      const currentUrl = new URL(location.href);
-      currentUrl.searchParams.set('sort_by', target.value);
-      currentUrl.searchParams.delete('page');
-      this.open = false;
-      this.dispatchEvent(
-        new CustomEvent('facet:criteria-changed', {
-          bubbles: true,
-          detail: {
-            url: currentUrl.toString(),
-          },
-        })
-      );
-    }
-  };
-  window.customElements.define('sort-by-popover', SortByPopover);
-
- 
   var CartCount = class extends CustomHTMLElement {
     async connectedCallback() {
       const email = $(this).data('email');
-      if(email) {
+      if (email) {
         const cartRes = await fetch(`${window.northsky.api}/shopping/cart?email=${email}`);
         const cartData = await cartRes.json();
-        if(cartData.data.length > 0) {
-          Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 }); 
+        if (cartData.data.length > 0) {
+          Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 });
         }
       }
       this.rootDelegate.on('cart:updated', (event) => {
@@ -8258,29 +6341,29 @@ var ProductAttrs = class extends CustomHTMLElement {
         }
         this.innerText = cart_count;
         const email = $(this).data('email');
-        if(email) {
+        if (email) {
           const cartCookie = Cookies.get('cart');
           fetch(`${window.northsky.api}/shopping/cart/save`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
               email,
               cartValue: cartCookie
             })
           })
-          .then(response => {
-            return response.json();
-          }).catch((error) => {
-            console.error('Error:', error);
-          })
+            .then(response => {
+              return response.json();
+            }).catch((error) => {
+              console.error('Error:', error);
+            })
         }
       });
       this.rootDelegate.on('cart:refresh', (event) => {
         let cart_count;
         if (+event.detail.cart['item_count'] > 0) {
-          $(this).removeClass('visually-hidden');
+          $(this).removeClass('!hidden');
         }
         if (+event.detail.cart['item_count'] > 99) {
           cart_count = '99+';
@@ -8292,14 +6375,148 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
   };
   window.customElements.define('cart-count', CartCount);
-
- 
-  var CartDrawer = class extends DrawerContent {
+  var OpenableElementCart = class extends CustomHTMLElement {
+    static get observedAttributes() {
+      return ['open'];
+    }
+    constructor() {
+      super();
+      if (Shopify.designMode) {
+        this.rootDelegate.on('shopify:section:select', (event) =>
+          filterShopifyEvent(event, this, () => (this.open = true))
+        );
+        this.rootDelegate.on('shopify:section:deselect', (event) =>
+          filterShopifyEvent(event, this, () => (this.open = false))
+        );
+      }
+      if (this.hasAttribute('append-body')) {
+        const existingNode = document.getElementById(this.id);
+        this.removeAttribute('append-body');
+        if (existingNode && existingNode !== this) {
+          existingNode.replaceWith(this.cloneNode(true));
+          this.remove();
+        } else {
+          document.body.appendChild(this);
+        }
+      }
+    }
+    connectedCallback() {
+      if (window.matchMedia('(max-width: 1199px)').matches) {
+        this.delegate.on('click', '.openable__overlay', () => (this.open = false));
+      }
+      this.delegate.on('click', '[data-action="close"]', (event) => {
+        event.stopPropagation();
+        this.open = false;
+      });
+    }
+    get requiresLoading() {
+      return this.hasAttribute('href');
+    }
+    get open() {
+      return this.hasAttribute('open');
+    }
+    set open(value) {
+      if (value) {
+        (async () => {
+          await this._load();
+          this.clientWidth;
+          this.setAttribute('open', '');
+        })();
+      } else {
+        this.removeAttribute('open');
+      }
+    }
+    get shouldTrapFocus() {
+      return true;
+    }
+    get returnFocusOnDeactivate() {
+      return !this.hasAttribute('return-focus') || this.getAttribute('return-focus') === 'true';
+    }
+    get focusTrap() {
+      return (this._focusTrap =
+        this._focusTrap ||
+        createFocusTrap(this, {
+          fallbackFocus: this,
+          initialFocus: this.hasAttribute('initial-focus-selector')
+            ? this.getAttribute('initial-focus-selector')
+            : void 0,
+          clickOutsideDeactivates: window.matchMedia('(max-width: 1199px)').matches ? (event) =>
+            !(event.target.hasAttribute('aria-controls') && event.target.getAttribute('aria-controls') === this.id) : false,
+          allowOutsideClick: true,
+          returnFocusOnDeactivate: this.returnFocusOnDeactivate,
+          onDeactivate: () => (this.open = false),
+          preventScroll: true,
+        }));
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+      switch (name) {
+        case 'open':
+          if (oldValue === null && newValue === '') {
+            if (this.shouldTrapFocus) {
+              setTimeout(() => this.focusTrap.activate(), 150);
+            }
+            triggerEvent(this, 'openable-element:open');
+          } else if (newValue === null) {
+            if (this.shouldTrapFocus) {
+              this.focusTrap.deactivate();
+            }
+            triggerEvent(this, 'openable-element:close');
+          }
+      }
+    }
+    async _load() {
+      if (!this.requiresLoading) {
+        return;
+      }
+      triggerNonBubblingEvent(this, 'openable-element:load:start');
+      const response = await fetch(this.getAttribute('href'));
+      const element = document.createElement('div');
+      element.innerHTML = await response.text();
+      this.innerHTML = element.querySelector(this.tagName.toLowerCase()).innerHTML;
+      this.removeAttribute('href');
+      triggerNonBubblingEvent(this, 'openable-element:load:end');
+    }
+  };
+  window.customElements.define('openable-element-cart', OpenableElementCart);
+  var DrawerContentCart = class extends OpenableElementCart {
+    connectedCallback() {
+      super.connectedCallback();
+      if (this.hasAttribute('reverse-breakpoint')) {
+        this.originalDirection = this.classList.contains('drawer--from-left') ? 'left' : 'right';
+        const matchMedia2 = window.matchMedia(this.getAttribute('reverse-breakpoint'));
+        matchMedia2.addListener(this._checkReverseOpeningDirection.bind(this));
+        this._checkReverseOpeningDirection(matchMedia2);
+      }
+      if (window.matchMedia('(max-width: 1199px)').matches) {
+        this.delegate.on('click', '.drawer__overlay', () => (this.open = false));
+      }
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+      super.attributeChangedCallback(name, oldValue, newValue);
+      switch (name) {
+        case 'open':
+          if (window.matchMedia('(max-width: 1199px)').matches) {
+            document.documentElement.classList.toggle('lock-all', this.open);
+          }
+      }
+    }
+    _checkReverseOpeningDirection(match) {
+      this.classList.remove('drawer--from-left');
+      if (
+        (this.originalDirection === 'left' && !match.matches) ||
+        (this.originalDirection !== 'left' && match.matches)
+      ) {
+        this.classList.add('drawer--from-left');
+      }
+    }
+  };
+  window.customElements.define('drawer-content-cart', DrawerContentCart);
+  var CartDrawer = class extends DrawerContentCart {
     connectedCallback() {
       super.connectedCallback();
       this.nextReplacementDelay = 0;
       this.rootDelegate.on('cart:refresh', this._rerenderCart.bind(this));
-      this.addEventListener('variant:added', () => (this.nextReplacementDelay = 600));
+      // this.addEventListener('variant:added', () => (this.nextReplacementDelay = 600));
     }
     async _rerenderCart(event) {
       var _a;
@@ -8318,11 +6535,14 @@ var ProductAttrs = class extends CustomHTMLElement {
       fakeDiv.innerHTML = html;
       setTimeout(async () => {
         var _a2;
-        const previousPosition = this.querySelector('.drawer__content').scrollTop;
+        // 添加安全检查，避免 scrollTop 错误
+        const drawerContent = this.querySelector('.js-drawer__content');
+        const previousPosition = drawerContent ? drawerContent.scrollTop : 0;
+
         if (cartContent && cartContent['item_count'] === 0) {
           const animation = new CustomAnimation(
             new ParallelEffect(
-              Array.from(this.querySelectorAll('.drawer__content, .drawer__footer')).map((item) => {
+              Array.from(this.querySelectorAll('.js-drawer__content, .drawer__footer')).map((item) => {
                 return new CustomKeyframeEffect(item, { opacity: [1, 0] }, { duration: 250, easing: 'ease-in' });
               })
             )
@@ -8331,14 +6551,21 @@ var ProductAttrs = class extends CustomHTMLElement {
           await animation.finished;
         }
         this.innerHTML = fakeDiv.querySelector('cart-drawer').innerHTML;
-        if (cartContent && cartContent['item_count'] === 0) {
-          this.querySelector('.drawer__content').animate(
-            { opacity: [0, 1], transform: ['translateY(40px)', 'translateY(0)'] },
-            { duration: 450, easing: 'cubic-bezier(0.33, 1, 0.68, 1)' }
-          );
-        } else {
-          this.querySelector('.drawer__content').scrollTop = previousPosition;
+
+        // 重新获取更新后的元素并添加安全检查
+        const newDrawerContent = this.querySelector('.js-drawer__content');
+        if (newDrawerContent) {
+          if (cartContent && cartContent['item_count'] === 0) {
+            newDrawerContent.animate(
+              { opacity: [0, 1], transform: ['translateY(40px)', 'translateY(0)'] },
+              { duration: 450, easing: 'cubic-bezier(0.33, 1, 0.68, 1)' }
+            );
+          } else {
+            newDrawerContent.scrollTop = previousPosition;
+          }
         }
+
+        // PC端加购后保持弹窗打开
         if ((_a2 = event == null ? void 0 : event.detail) == null ? void 0 : _a2.openMiniCart) {
           this.clientWidth;
           this.open = true;
@@ -8352,7 +6579,11 @@ var ProductAttrs = class extends CustomHTMLElement {
       switch (name) {
         case 'open':
           if (this.open) {
-            this.querySelector('.drawer__content').scrollTop = 0;
+            // 添加安全检查
+            const drawerContent = this.querySelector('.js-drawer__content');
+            if (drawerContent) {
+              drawerContent.scrollTop = 0;
+            }
             if (!MediaFeatures.prefersReducedMotion()) {
               const lineItems = Array.from(this.querySelectorAll('.line-item')),
                 recommendationsInner = this.querySelector('.mini-cart__recommendations-inner'),
@@ -8423,36 +6654,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('cart-drawer', CartDrawer);
 
- 
-  var _CartDrawerRecommendations = class extends HTMLElement {
-    async connectedCallback() {
-      if (!_CartDrawerRecommendations.recommendationsCache[this.productId]) {
-        _CartDrawerRecommendations.recommendationsCache[this.productId] = fetch(
-          `${window.themeVariables.routes.productRecommendationsUrl}?product_id=${this.productId}&limit=10&section_id=${this.sectionId}`
-        );
-      }
-      const response = await _CartDrawerRecommendations.recommendationsCache[this.productId];
-      const div = document.createElement('div');
-      div.innerHTML = await response.clone().text();
-      const productRecommendationsElement = div.querySelector('cart-drawer-recommendations');
-      if (productRecommendationsElement && productRecommendationsElement.hasChildNodes()) {
-        this.innerHTML = productRecommendationsElement.innerHTML;
-      } else {
-        this.hidden = true;
-      }
-    }
-    get productId() {
-      return this.getAttribute('product-id');
-    }
-    get sectionId() {
-      return this.getAttribute('section-id');
-    }
-  };
-  var CartDrawerRecommendations = _CartDrawerRecommendations;
-  __publicField(CartDrawerRecommendations, 'recommendationsCache', {});
-  window.customElements.define('cart-drawer-recommendations', CartDrawerRecommendations);
-
- 
   var CartNote = class extends HTMLTextAreaElement {
     connectedCallback() {
       this.addEventListener('change', this._onNoteChanged.bind(this));
@@ -8488,7 +6689,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('cart-note', CartNote, { extends: 'textarea' });
 
- 
   var FreeShippingBar = class extends HTMLElement {
     connectedCallback() {
       document.documentElement.addEventListener('cart:updated', this._onCartUpdated.bind(this));
@@ -8505,7 +6705,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('free-shipping-bar', FreeShippingBar);
 
- 
   var LineItemQuantity = class extends CustomHTMLElement {
     connectedCallback() {
       this.delegate.on('click', 'a', this._onQuantityLinkClicked.bind(this));
@@ -8530,19 +6729,16 @@ var ProductAttrs = class extends CustomHTMLElement {
       );
     }
     async _updateFromLink(link, isRemove = false) {
-     
-     
-     
-     
+
       const changeUrl = new URL(link, `https://${window.themeVariables.routes.host}`),
-      searchParams = changeUrl.searchParams,
-      line = searchParams.get('line'),
-      id = searchParams.get('id'),
-      quantity = parseInt(searchParams.get('quantity'));
+        searchParams = changeUrl.searchParams,
+        line = searchParams.get('line'),
+        id = searchParams.get('id'),
+        quantity = parseInt(searchParams.get('quantity'));
       this.dispatchEvent(
         new CustomEvent('line-item-quantity:change:start', { bubbles: true, detail: { newLineQuantity: quantity } })
       );
-      if(window.themeVariables.settings.pageType == 'cart' && isRemove && this.querySelector('input') && quantity) {
+      if (window.themeVariables.settings.pageType == 'cart' && isRemove && this.querySelector('input') && quantity) {
         this.querySelector('input').value = quantity
       }
       const response = await fetch(`${window.themeVariables.routes.cartChangeUrl}.js`, {
@@ -8585,7 +6781,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('line-item-quantity', LineItemQuantity);
 
- 
   var LineItem = class extends HTMLElement {
     connectedCallback() {
       this.lineItemLoader = this.querySelector('.line-item__loader');
@@ -8629,7 +6824,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('line-item', LineItem);
 
- 
   var CartNotification = class extends CustomHTMLElement {
     connectedCallback() {
       this.rootDelegate.on('cart-notification:show', this._onShow.bind(this), !this.hasAttribute('global'));
@@ -8730,7 +6924,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('cart-notification', CartNotification);
 
- 
   var ShippingEstimator = class extends HTMLElement {
     connectedCallback() {
       this.submitButton = this.querySelector('[type="button"]');
@@ -8776,10 +6969,9 @@ var ProductAttrs = class extends CustomHTMLElement {
       });
       const html = `
       <div class="shipping-estimator__results">
-        <p>${
-          shippingRates.length === 0
-            ? window.themeVariables.strings.shippingEstimatorNoResults
-            : shippingRates.length === 1
+        <p>${shippingRates.length === 0
+          ? window.themeVariables.strings.shippingEstimatorNoResults
+          : shippingRates.length === 1
             ? window.themeVariables.strings.shippingEstimatorOneResult
             : window.themeVariables.strings.shippingEstimatorMultipleResults
         }</p>
@@ -8806,125 +6998,6 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('shipping-estimator', ShippingEstimator);
 
- 
-  var ReviewLink = class extends HTMLAnchorElement {
-    constructor() {
-      super();
-      this.addEventListener('click', this._onClick.bind(this));
-    }
-    _onClick() {
-      const shopifyReviewsElement = document.getElementById('shopify-product-reviews');
-      if (!shopifyReviewsElement) {
-        return;
-      }
-      if (window.matchMedia(window.themeVariables.breakpoints.pocket).matches) {
-        shopifyReviewsElement.closest('collapsible-content').open = true;
-      } else {
-        document
-          .querySelector(`[aria-controls="${shopifyReviewsElement.closest('.product-tabs__tab-item-wrapper').id}"]`)
-          .click();
-      }
-    }
-  };
-  window.customElements.define('review-link', ReviewLink, { extends: 'a' });
-
- 
-  var ProductStickyForm = class extends HTMLElement {
-    connectedCallback() {
-      var _a;
-      (_a = document.getElementById(this.getAttribute('form-id'))) == null
-        ? void 0
-        : _a.addEventListener('variant:changed', this._onVariantChanged.bind(this));
-      this.imageElement = this.querySelector('.product-sticky-form__image');
-      this.priceElement = this.querySelector('.product-sticky-form__price');
-      this.unitPriceElement = this.querySelector('.product-sticky-form__unit-price');
-      this._setupVisibilityObservers();
-    }
-    disconnectedCallback() {
-      this.intersectionObserver.disconnect();
-    }
-    set hidden(value) {
-      this.toggleAttribute('hidden', value);
-      if (value) {
-        document.documentElement.style.removeProperty('--cart-notification-offset');
-      } else {
-        document.documentElement.style.setProperty('--cart-notification-offset', `${this.clientHeight}px`);
-      }
-    }
-    _onVariantChanged(event) {
-      const variant = event.detail.variant,
-        currencyFormat = window.themeVariables.settings.currencyCodeEnabled
-          ? window.themeVariables.settings.moneyWithCurrencyFormat
-          : window.themeVariables.settings.moneyFormat;
-      if (!variant) {
-        return;
-      }
-      if (this.priceElement) {
-        this.priceElement.innerHTML = formatMoney(variant['price'], currencyFormat);
-      }
-      if (this.unitPriceElement) {
-        this.unitPriceElement.style.display = variant['unit_price_measurement'] ? 'block' : 'none';
-        if (variant['unit_price_measurement']) {
-          let referenceValue = '';
-          if (variant['unit_price_measurement']['reference_value'] !== 1) {
-            referenceValue = `<span class="unit-price-measurement__reference-value">${variant['unit_price_measurement']['reference_value']}</span>`;
-          }
-          this.unitPriceElement.innerHTML = `
-          <div class="unit-price-measurement">
-            <span class="unit-price-measurement__price">${formatMoney(variant['unit_price'])}</span>
-            <span class="unit-price-measurement__separator">/</span>
-            ${referenceValue}
-            <span class="unit-price-measurement__reference-unit">${
-              variant['unit_price_measurement']['reference_unit']
-            }</span>
-          </div>
-        `;
-        }
-      }
-      if (!this.imageElement || !variant || !variant['featured_media']) {
-        return;
-      }
-      const featuredMedia = variant['featured_media'];
-      if (featuredMedia['alt']) {
-        this.imageElement.setAttribute('alt', featuredMedia['alt']);
-      }
-      this.imageElement.setAttribute('width', featuredMedia['preview_image']['width']);
-      this.imageElement.setAttribute('height', featuredMedia['preview_image']['height']);
-      this.imageElement.setAttribute('src', getSizedMediaUrl(featuredMedia, '165x'));
-      this.imageElement.setAttribute('srcset', getMediaSrcset(featuredMedia, [55, 110, 165]));
-    }
-    _setupVisibilityObservers() {
-      const paymentContainerElement = document.getElementById('MainPaymentContainer'),
-        footerElement = document.querySelector('.shopify-section--footer'),
-        stickyHeaderOffset = getStickyHeaderOffset();
-      this._isFooterVisible = this._isPaymentContainerPassed = false;
-      this.intersectionObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.target === footerElement) {
-              this._isFooterVisible = entry.intersectionRatio > 0;
-            }
-            if (entry.target === paymentContainerElement) {
-              const boundingRect = paymentContainerElement.getBoundingClientRect();
-              this._isPaymentContainerPassed =
-                entry.intersectionRatio === 0 && boundingRect.top + boundingRect.height <= stickyHeaderOffset;
-            }
-          });
-          if (window.matchMedia(window.themeVariables.breakpoints.pocket).matches) {
-            this.hidden = !this._isPaymentContainerPassed || this._isFooterVisible;
-          } else {
-            this.hidden = !this._isPaymentContainerPassed;
-          }
-        },
-        { rootMargin: `-${stickyHeaderOffset}px 0px 0px 0px` }
-      );
-      this.intersectionObserver.observe(paymentContainerElement);
-      this.intersectionObserver.observe(footerElement);
-    }
-  };
-  window.customElements.define('product-sticky-form', ProductStickyForm);
-
- 
   (() => {
     new InputBindingManager();
   })();
@@ -9011,23 +7084,4 @@ var ProductAttrs = class extends CustomHTMLElement {
       input.value = input.value.replace(/[^0-9]/g, '');
     }
   })();
-  (async () => {
-    try {
-     
-      const response = await fetch(`${window.northsky.api}/openapi/adlink/product/collection/tree`, {
-        method: 'GET',
-      });
-      const { data } = await response.json();
-      localStorage.setItem('all-category', JSON.stringify(data));
-     
-      document.dispatchEvent(new CustomEvent('tree-get', { detail: {
-        data,
-      }}));
-    } catch (err) {
-      console.error(err);
-    }
-  })()
 })
-
-
-

@@ -17,10 +17,6 @@
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
     animation: shimmer 1.5s infinite;
   }
-.el-input.is-active .el-input__inner, .el-input__inner:focus {
-  border: 1px solid #D3DEF1;
-  outline: none;
-}
 .reset-input-zip .el-form-item__content{
  line-height: 36px;
 }

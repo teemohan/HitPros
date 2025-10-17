@@ -12,8 +12,8 @@
   {% endcase %}
 {% endfor %}
 {% if imgs_html or media_html %}
-  <div class="section-anchor-target container js-highlights-section bg-white overflow-hidden pt-6 fb-sm:pt-10" id="js-highlights-section">
-    <p class="text-121212 text-16 fb-sm:text-24 font-bold mb-3 fb-sm:mb-5">
+  <div class="section-anchor-target container js-highlights-section bg-white overflow-hidden pt-6 fb-md:pt-10" id="js-highlights-section">
+    <p class="text-121212 text-16 fb-md:text-24 font-bold mb-3 fb-md:mb-5">
       Product  Highlights
     </p>
     <div id="feature-imgs" class="feature-imgs bg-white">
@@ -260,7 +260,7 @@
                 <span class="text-base md:text-32 font-bold leading-normal text-[#0B2C66] inline-flex pb-2.5 border-b-4 border-[#F4BF18]">Video Showcase</span>
               </h2>
               <native-video
-                class="video-wrapper video-wrapper--native aspect-375/210  fb-sm:min-h-37r"
+                class="video-wrapper video-wrapper--native aspect-375/210  fb-md:min-h-37r"
               >
                 {%- unless section.settings.enable_video_autoplay -%}
                   <div class="video-wrapper__poster">
@@ -294,7 +294,7 @@
                       image_size: '1024x',
                       controls: true,
                       autoplay: true,
-                      class: 'fb-sm:max-h-37r',
+                      class: 'fb-md:max-h-37r',
                       muted: section.settings.enable_video_autoplay,
                       loop: section.settings.enable_video_looping
                   -}}

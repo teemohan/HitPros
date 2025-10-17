@@ -111,7 +111,8 @@
     <a href="{{ section.settings.all_link }}" class="View_All">View All</a>
 </div>
 <script>
-  $(function() {
+$(function() {
+  (() => {
     const setWish = async () => {
       const skus = [];
       $('.{{ section.id }} .index-product-item').each(function() {
@@ -139,17 +140,22 @@
     if('{{ customer.id }}') {
       setWish()
     }
-  })
-  $(function() {
+  })();
+  (() => {
     const pageTitle = '{{ page.title }}';
     if(pageTitle == 'Black Canyon') {
+
     } else if(pageTitle == 'Olympia') {
+
     } else if(pageTitle == 'NorthSky Select') {
+
     }
+
     $('.{{ section.id }} .index-product-item').each(function() {
         const sku = $(this).data('sku');
     })
-  })
+  })();
+})
 </script>
 {% schema %}
 {
