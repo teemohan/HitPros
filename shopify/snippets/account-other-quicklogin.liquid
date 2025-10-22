@@ -1,0 +1,24 @@
+{% comment %}
+  精简版第三方登录组件
+  参数:
+  - container_id: 容器ID (可选，默认: social-login)
+  - providers: 登录提供商，用逗号分隔 (可选，默认: facebook,google)
+  - button_class: 按钮样式类 (可选)
+{% endcomment %}
+
+{% assign container_id = container_id | default: 'social-login' %}
+{% assign providers = providers | default: 'facebook,google' | split: ',' %}
+{% assign button_class = button_class | default: 'h-12 flex items-center w-full border border-CCCCCC justify-center space-x-3 rounded-sm cursor-pointer hover:border-gray-400 transition-colors' %}
+
+<div class="w-full grid grid-cols-1 fb-md:grid-cols-2 gap-3" id="{{ container_id }}">
+  {% for provider in providers %}
+    {% assign provider_name = provider | strip %}
+    <div class="js-third-navlogin {{ button_class }}" data-provider="{{ provider_name }}">
+      <img class="w-5 h-5 fb-md:w-6 fb-md:h-6" 
+           src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/{{ provider_name }}.png?v=1752570271" 
+           alt="{{ provider_name | capitalize }}" />
+      <span class="text-14 text-121212">{{ provider_name | capitalize }}</span>
+    </div>
+  {% endfor %}
+</div>
+

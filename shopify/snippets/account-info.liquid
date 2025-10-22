@@ -1116,7 +1116,7 @@
   </div>
 </template>
 <script>
-$(function() {
+ $(function() {
     const ip = Cookies.get('ip');
     if(ip) {
       dataLayer.push({
@@ -2099,6 +2099,8 @@ $(function() {
                   return
                 }
                 this.dialogLoading.address = true;
+                console.log("111111")
+           return false
                 this.$refs.addressRuleForm.$el.submit();
               } else if (formName == 'nameRuleForm') {
                 this.nameUpdate();

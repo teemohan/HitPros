@@ -1,9 +1,9 @@
 
 <div id="ruledialog" class="hidden w-full h-screen bg-black/50 fixed top-0 left-0 z-[999]">
   <div class="w-full h-full flex items-center justify-center">
-    <div class="js-rule-dialogcontent w-[90%] max-h-[80%] bg-white relative py-4 px-4 rounded-sm fb-sm:px-6  fb-sm:py-6 fb-sm:w-36r fb-sm:max-h-[80%] flex flex-col">
+    <div class="js-rule-dialogcontent w-[90%] max-h-[80%] bg-white relative py-4 px-4 rounded-sm fb-md:px-6  fb-md:py-6 fb-md:w-36r fb-md:max-h-[80%] flex flex-col">
       <div class="w-full border-b border-D3DEF1 pb-4 flex items-center justify-between">
-         <p class="text-16 text-main  fb-sm:text-18 text-center font-bold">
+         <p class="text-16 text-main  fb-md:text-18 text-center font-bold">
             <span data-type="1">
               Speedy Delivery
             </span>
@@ -17,12 +17,12 @@
               Flexible Payment
             </span>
           </p>
-          <span  class="js-close-ruledialog w-5 h-5 cursor-pointer fb-sm:w-6 fb-sm:h-6 fb-sm:right-4 fb-sm:top-4">
+          <span  class="js-close-ruledialog w-5 h-5 cursor-pointer fb-md:w-6 fb-md:h-6 fb-md:right-4 fb-md:top-4">
             {%- render 'icon' with 'close' -%}
           </span>
       </div>
       <div class="pt-5  overflow-y-auto overflow-x-hidden flex-1 text-left">
-        <div class="flex flex-col space-y-4 w-full text-14 fb-sm:text-16 text-1E1E1E" data-type="1">
+        <div class="flex flex-col space-y-4 w-full text-14 fb-md:text-16 text-1E1E1E" data-type="1">
           <p>
               Enjoy free standard ground shipping on orders of $75+, with some exceptions for oversized items. Orders under $75 incur a flat $5 fee for shipping and handling. 
           </p>
@@ -30,7 +30,7 @@
             Orders placed by 2:30 PM local time typically ship the same day, with delivery expected in 1-2 days. Orders placed after 2:30 PM will ship the next day, with delivery expected in 2-3 days.
           </p>
         </div>
-        <div class="flex flex-col space-y-4 w-full text-14 fb-sm:text-16 text-1E1E1E" data-type="2">
+        <div class="flex flex-col space-y-4 w-full text-14 fb-md:text-16 text-1E1E1E" data-type="2">
           <p>
               Most items are eligible for return within 30 days, with NorthSky covering all return shipping costs. 
           </p>
@@ -44,12 +44,12 @@
             Refunds are issued to the original payment method upon receipt and approval of the returned items.  
           </p>
         </div>
-        <div class="flex flex-col space-y-4 w-full text-14 fb-sm:text-16 text-1E1E1E" data-type="3">
+        <div class="flex flex-col space-y-4 w-full text-14 fb-md:text-16 text-1E1E1E" data-type="3">
           <p>
             There’s no room for error, in your work or in ours. That’s why we’ve crafted an extensive network of global manufacturers as obsessed with excellence as we are. And our quality control measures are unmatched, with every one of our products undergoing detailed inspection and stringent testing.
           </p>
         </div>
-        <div class="flex flex-col space-y-4 w-full text-14 fb-sm:text-16 text-1E1E1E" data-type="4">
+        <div class="flex flex-col space-y-4 w-full text-14 fb-md:text-16 text-1E1E1E" data-type="4">
           <p>
             Interested in exploring alternate payment terms? We work with our customers to ensure purchasing and payment is as simple and as smooth as possible. Learn more and <a class="text-main" href="/pages/net-30-terms-application">apply here</a> today.
           </p>
@@ -63,7 +63,7 @@
           <ul class="w-full ml-1">
             <li class="list-disc text-1E1E1E mt-1.5">
                 <strong>Email:</strong> 
-                <span id="contact-email" class="js-copy-email mx-1">customerservice@northskysupply.com</span>
+                <span id="contact-email" data-email="customerservice@northskysupply.com" class="js-copy-email mx-1">customerservice@northskysupply.com</span>
                 <button  class="js-copy-email w-4 h-4 hover:opacity-80" title="Copy email">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#FABE00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -74,8 +74,8 @@
             {%- assign phone = '1-800-805-6686' -%}
             <li class="list-disc text-1E1E1E mt-0.5 "> 
               <strong>Phone:</strong> 
-              <a href="tel:{{ phone }}" class="hover:text-main fb-sm:hidden">{{ phone }}</a>
-              <span class="hidden fb-sm:inline">{{ phone }}</span>
+              <a href="tel:{{ phone }}" class="hover:text-main fb-md:hidden">{{ phone }}</a>
+              <span class="hidden fb-md:inline">{{ phone }}</span>
             </li>
             <li class="list-disc text-1E1E1E mt-0.5">
               <strong>Hours:</strong> Monday–Friday, 7 AM–7 PM CST
@@ -150,13 +150,5 @@
       $rule_dialog.show();
       lockScroll();
     });
-    $('.js-copy-email').click(function() {
-        const email = document.getElementById('contact-email').textContent;
-        navigator.clipboard.writeText(email).then(() => {
-          MsgBox && MsgBox.init('Email copied to clipboard!', 2000)
-        }).catch(err => {
-          MsgBox && MsgBox.init('Copy failed!', 2000)
-        });
-    })
   })
 </script>

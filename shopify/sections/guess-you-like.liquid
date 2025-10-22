@@ -1,23 +1,46 @@
+<style>
+  .new-bg-over-2{
+  background: #F9F9F9;
+}
+</style>
+
 {%- assign gtm_type = 'homepage' -%}
 {%- if template == 'cart' -%}
   {%- assign gtm_type = 'cart' -%}
 {%- endif -%}
-<div class="js-guesslike-gtm w-full bg-EAEEF1 py-4 fb-sm:py-17 js-guess-{{ section.id }}">
-  <div class="container w-full overflow-hidden">
-    <div class="flex items-center justify-between mb-4 fb-sm:mb-6">
-      <h2 class="text-22 fb-sm:text-32 font-semibold text-main">{{ section.settings.title }}</h2>
-      <div class="js-swiper-btns hidden  items-center justify-end space-x-3">
-        <div class="swiper-button-prev !w-8 cursor-pointer fb-sm:!w-10">
-          <svg style="transform: scale(-1);" width="40" height="32" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M30.7507 13.4255L20.7512 3.3996L24.1745 0L40 15.7507L24.2653 31.9246C24.1263 32.0478 24.0411 31.9982 23.8985 31.9246C23.089 31.5107 21.6496 29.3822 20.7512 28.7862L30.936 18.2085H0V13.7014L0.277868 13.4255H30.7507Z" fill="#0A2B6F"/>
-          </svg>
-        </div>
-        <div class="swiper-button-next !w-8 cursor-pointer fb-sm:!w-10">
-          <svg width="40" height="32" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M30.7507 13.4255L20.7512 3.3996L24.1745 0L40 15.7507L24.2653 31.9246C24.1263 32.0478 24.0411 31.9982 23.8985 31.9246C23.089 31.5107 21.6496 29.3822 20.7512 28.7862L30.936 18.2085H0V13.7014L0.277868 13.4255H30.7507Z" fill="#0A2B6F"/>
-          </svg>
-        </div>
+{% comment %} <form 
+  method="post" 
+  action="/cart/add"
+  class="w-full"
+  enctype="multipart/form-data"
+  is="product-form"
+  data-recommend-module="{{gtm_type}}/{{- section.settings.title -}}"
+  >
+  <input type="hidden" name="form_type" value="product">
+  <input type="hidden" name="utf8" value="✓">
+  <input type="hidden" name="quantity" value="${item.moq || 1}">
+  <input type="hidden" name="id" value="${item.variantId || ''}">
+  <input type="hidden" disabled name="sku" value="${item.skuCode || ''}">
+  <button is="loader-button" type="submit" class="w-full h-10 fb-md:h-12 flex items-center justify-center rounded-sm bg-button text-main font-bold text-sm fb-md:text-base transition-all duration-200 hover:bg-opacity-90 relative">
+    <span class="flex items-center gap-2">
+      Add to Cart
+    </span>
+    <span class="hidden" hidden>
+      <div class="inline-block">
+        <svg focusable="false" width="24" height="24" class="animate-spin" viewBox="25 25 50 50">
+          <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"/>
+        </svg>
       </div>
+    </span>
+  </button>
+  <input type="hidden" name="product-id" value="${item.id || ''}">
+  <input type="hidden" name="section-id" value="${item.sectionId || ''}">
+</form> {% endcomment %}
+        
+<div class="js-guesslike-gtm w-full py-7.5 fb-md:py-10 js-guess-{{ section.id }} {% if gtm_type == 'cart' %} new-bg-over-2 {% else %} new-bg-over  {% endif %}   ">
+  <div class="container w-full overflow-hidden">
+    <div class="flex items-center justify-between mb-5 fb-md:mb-6">
+      <h2 class="text-20 fb-md:text-30 font-semibold text-121212">{{ section.settings.title }}</h2>
     </div>
     <div class="relative w-full mx-auto fb-hover-list">
       <div class="swiper overflow-visible relative">
@@ -28,24 +51,29 @@
           data-scope-id= "{{ section.id }}"
           data-recommend-module="{{- gtm_type -}}/{{- section.settings.title -}}"
         >
-          <div class="transition duration-200 relative w-full rounded h-20r fb-sm:h-27r">
+          <div class="transition duration-200 relative w-full rounded h-20r fb-md:h-27r">
             <div class=" w-full h-full bg-gray-200 pulse"></div>
           </div>
         </div>
       </div>
-      <div class="swiper-scrollbar mt-4"></div>
+      <div class="mt-4 fb-sm:mt-6 flex items-center justify-between fb-md:space-x-10 relative z-1 ">
+        <div class="swiper-scrollbar !static flex w-full fb-md:flex-1"></div>
+        <div class="hidden js-swiper-btns items-center justify-end space-x-4 fb-md:w-20">
+           {%- render 'northsky-prev-next', type: 'button' -%}
+        </div>
+      </div>
     </div>
   </div>
 </div>
 <style>
- @media screen and (min-width: 1000px) {
+ @media screen and (min-width: 1200px) {
     .fb-hover-list:before,.fb-hover-list:after {
       content: "";
       position: absolute;
       top: 0;
       width: 150px;
       height: 100%;
-      background: #EAEEF1;
+      background: transparent;
       z-index: 2;
     }
     .fb-hover-list:before{
@@ -64,6 +92,8 @@
         this.sectionElement = document.querySelector('.js-guess-' + sectionId);
       }
       createProductHtml(item) {
+        const skyprice = skyFormatPriceDisplay(item.price || '0.00');
+        const smallsku = item.skuCode.toLowerCase()
         return `
           <div class="swiper-slide">
             <product-item 
@@ -74,13 +104,13 @@
               data-var-id="${item.variantId || ''}"
               data-price="${item.price || ''}"
               data-datalayer-item="true"
-              class="flex flex-col justify-between h-full bg-white rounded-sm shadow-sm hover-scale"
+              class="bg-white flex flex-col justify-between bg-white hover-scale group"
             >
-              <div class="relative overflow-hidden">
-                <a href="/products/${item.skuCode}" 
+              <div class="relative overflow-hidden h-10r fb-md:h-14r w-full">
+                <a href="/products/${smallsku}" 
                   data-sku="${item.skuCode || ''}" 
                   datalayer-link
-                  class="relative aspect-square min-h-[162px] fb-sm:min-h-[200px] flex items-center justify-center"
+                  class="relative h-full  flex items-center justify-center"
                 >
                   ${item.newTag ? `<div class="z-2 absolute left-0 top-0 fb-flex-center">
                     <span class="absolute font-bold text-sm leading-[150%] text-white left-1.5 top-3 -rotate-45">NEW</span>
@@ -89,7 +119,7 @@
                     </svg>
                   </div>` : ''}
                   <img 
-                    class="absolute inset-0 w-full h-full object-contain p-6.5 fb-sm:p-7.5 lazyload" 
+                    class="h-full w-auto fb-md:w-auto object-contain lazyload" 
                     loading="lazy"
                     data-media-id="${item.mediaId || ''}"
                     data-src="${item.mainPic || ''}"
@@ -99,52 +129,19 @@
                   >
                 </a>
               </div>
-
-              <div class="p-2 fb-sm:-mt-3 fb-sm:px-4.5 fb-sm:pt-0 fb-sm:pb-4.5 flex flex-col flex-grow justify-start">
-                <span class="text-sm font-medium text-main mb-2">${item.brand || ''}</span>
+              <div class="w-full mt-2.5 px-2 flex grow flex-col justify-between fb-md:px-5 pb-3 fb-md:pb-5">
                 <a 
-                  href="/products/${item.skuCode}"
+                  href="/products/${smallsku}"
                   datalayer-link=""
                   data-sku="${item.skuCode || ''}"
                   title="${(item.title || '').replace(/"/g, '&quot;')}"
-                  class="text-sm leading-6 text-575757 mb-3 line-clamp-2 hover:text-main h-12"
+                  class="w-full text-16  text-121212 mb-3 line-clamp-3  fb-md:min-h-18 fb-md:text-16 group-hover:underline fb-max-sm:text-14  min-h-18 fb-max-sm:min-h-16"
                 >
                   ${item.title || ''}
                 </a>
-                <div class="flex justify-between mb-4.5 flex-1">
-                  <div class="flex items-center flex items-end">
-                    <span class="text-lg fb-sm:text-xl font-medium text-main">$${item.price || '0.00'}</span>
-                  </div>
+                <div class="w-full text-left text-22 font-bold fb-md:text-28 fb-max-sm:text-24">
+                  ${skyprice}
                 </div>
-                <form 
-                  method="post" 
-                  action="/cart/add"
-                  class="w-full"
-                  enctype="multipart/form-data"
-                  is="product-form"
-                  data-recommend-module="{{gtm_type}}/{{- section.settings.title -}}"
-                  >
-                  <input type="hidden" name="form_type" value="product">
-                  <input type="hidden" name="utf8" value="✓">
-                  <input type="hidden" name="quantity" value="${item.moq || 1}">
-                  <input type="hidden" name="id" value="${item.variantId || ''}">
-                  <input type="hidden" disabled name="sku" value="${item.skuCode || ''}">
-                  <button is="loader-button" type="submit" class="w-full h-10 fb-sm:h-12 flex items-center justify-center rounded-sm bg-button text-main font-bold text-sm fb-sm:text-base transition-all duration-200 hover:bg-opacity-90 relative">
-                    <span class="flex items-center gap-2">
-                      Add to Cart
-                    </span>
-                    <span class="hidden" hidden>
-                      <div class="inline-block">
-                        <svg focusable="false" width="24" height="24" class="animate-spin" viewBox="25 25 50 50">
-                          <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"/>
-                        </svg>
-                      </div>
-                    </span>
-                  </button>
-                  <input type="hidden" name="product-id" value="${item.id || ''}">
-                  <input type="hidden" name="section-id" value="${item.sectionId || ''}">
-                </form>
-        
               </div>
             </product-item>
           </div>
@@ -163,8 +160,8 @@
             draggable: true,
           },
           navigation: {
-            nextEl: this.sectionElement.querySelector('.swiper-button-next'),
-            prevEl: this.sectionElement.querySelector('.swiper-button-prev'),
+            nextEl: this.sectionElement.querySelector('.northsky-button-next'),
+            prevEl: this.sectionElement.querySelector('.northsky-button-prev'),
           },
           breakpoints: {
             0: {
@@ -195,7 +192,7 @@
           let url = `/openapi/recommend`;
           let params = {
             userId: window.northsky.customerId || '',
-            anonymousId: window.gaGlobal?.vid || '',
+            anonymousId: window.gaGlobal?.vid || localStorage.getItem('ga4UserId') || '',
             count: 15,
           }
           {% if gtm_type == 'cart' %}
@@ -219,8 +216,7 @@
             this.sectionElement.classList.add('hidden');
             return false
           }
-          this.sectionElement.querySelector('.js-swiper-btns ').classList.remove('hidden');
-          this.sectionElement.querySelector('.js-swiper-btns ').classList.add('flex');
+          this.sectionElement.querySelector('.js-swiper-btns').classList.add('fb-md:flex');
 
           const fragment = document.createDocumentFragment();
           const tempDiv = document.createElement('div');

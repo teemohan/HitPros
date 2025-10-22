@@ -1,7 +1,7 @@
 
 function throttle(fn, delay) {
   let lastCall = 0;
-  return function(...args) {
+  return function (...args) {
     const now = new Date().getTime();
     if (now - lastCall < delay) return;
     lastCall = now;
@@ -10,7 +10,7 @@ function throttle(fn, delay) {
 }
 function debounce(fn, delay) {
   let timer = null;
-  return function(...args) {
+  return function (...args) {
     if (timer) clearTimeout(timer);
     timer = setTimeout(() => {
       fn.apply(this, args);
@@ -44,23 +44,24 @@ new Vue({
         productCount: 0
       },
       observer: null,
-      scrollObserver: null, 
+      scrollObserver: null,
       paginationInstances: [],
       skuPageSize: 6,
       currentSkuPages: {},
       brandExtra: [],
-     
+
       cache: {
         processedTitle: null,
         isMobile: null,
         fullData: null
-      }
+      },
+      cartLoading: false
     }
   },
   computed: {
-   
+
     isMobile() {
-     
+
       if (this.cache.isMobile === null) {
         const width = document.documentElement.clientWidth || document.body.clientWidth;
         this.cache.isMobile = width < this.config.mobileThreshold;
@@ -70,9 +71,9 @@ new Vue({
     sortedBrands() {
       return [...this.brands].sort((a, b) => b.count - a.count);
     },
-   
+
     processedTitle() {
-     
+
       if (this.cache.processedTitle === null && this.collectionData.title) {
         const parts = this.collectionData.title.split('~');
         this.cache.processedTitle = parts[parts.length - 1].trim();
@@ -132,27 +133,27 @@ new Vue({
     },
     async initData() {
       if (this.isMobile) {
-        try{
+        try {
           await this.fetchCategories()
         } catch (error) {
         }
-        if(this.categories.length <= 0) {
-          await this.fetchSpuList(); 
+        if (this.categories.length <= 0) {
+          await this.fetchSpuList();
           this.factMobFilter()
         } else {
           this.hideSketon()
         }
-       
+
       } else {
-        try{
-          await this.fetchSpuList(); 
+        try {
+          await this.fetchSpuList();
         } catch (error) { }
         this.fetchCategories();
       }
     },
     hideSketon() {
       const el = document.querySelector('.js-skeleton-screen');
-      if(el) {
+      if (el) {
         el.style.display = 'none';
       }
       const el2 = document.querySelector('.js-collection-main');
@@ -172,7 +173,7 @@ new Vue({
           productCount: parseInt(el.dataset.productCount) || 0
         };
       }
-      const query = this.getPriceFilterParams() 
+      const query = this.getPriceFilterParams()
       if (query.lowPrice || query.highPrice) {
         const inputs = document.querySelectorAll('.js-price-gte, .js-price-lte')
         inputs.forEach(input => {
@@ -208,7 +209,7 @@ new Vue({
         rootMargin: '200px 0px',
         threshold: 0.1
       });
-      
+
       this.observer.observe(target);
     },
     async fetchCategories() {
@@ -228,7 +229,7 @@ new Vue({
         const result = await response.json();
         if (result.code === 200 && result.data) {
           this.categories = result.data || [];
-          if(this.categories.length > 0) {
+          if (this.categories.length > 0) {
             this.creatCategoryList();
             const menudata = document.querySelector('.js-collecition-menu');
             if (menudata) {
@@ -236,7 +237,7 @@ new Vue({
             }
           } else {
             const menudata2 = document.querySelector('.js-topheader-mob');
-            if(menudata2 && this.isMobile) {
+            if (menudata2 && this.isMobile) {
               menudata2.style.display = 'none';
             }
           }
@@ -264,8 +265,8 @@ new Vue({
         this.$set(this.spuData[itemindex].skus[libindex], 'selected', bol);
       }
     },
-    showMobLoading (libindex, bol) {
-      if(this.mobSpuData[libindex]) {
+    showMobLoading(libindex, bol) {
+      if (this.mobSpuData[libindex]) {
         this.$set(this.mobSpuData[libindex], 'selected', bol);
       }
     },
@@ -286,18 +287,21 @@ new Vue({
     async mobAddToCart(variantId, quantity, libindex) {
       try {
         this.showMobLoading(libindex, true);
+        this.cartLoading = true
         await cartFormModule.addToCart({
           variantId,
           quantity
         }, () => {
+          this.cartLoading = false
           this.showMobLoading(libindex, false);
         });
       } catch (error) {
+        this.cartLoading = false
         // cartFormModule.handleAddToCart({ success: false, error });
         this.showMobLoading(libindex, false);
       }
     },
-    observeLCP() {    
+    observeLCP() {
       if ('PerformanceObserver' in window) {
         const lcpObserver = new PerformanceObserver((entryList) => {
           const entries = entryList.getEntries();
@@ -307,11 +311,11 @@ new Vue({
         lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
       }
     },
-    customerDataLayer (list) {
+    customerDataLayer(list) {
       const listData = [];
       let totalIndex = (this.page - 1) * this.config.spuPageSize;
-      for(const item of list) {
-        for(let i = 0; i < item.skus.length; i++) {
+      for (const item of list) {
+        for (let i = 0; i < item.skus.length; i++) {
           const sku = item.skus[i];
           listData.push({
             item_id: sku.skuCode,
@@ -336,7 +340,7 @@ new Vue({
       }
       window.dataLayer.push(eventData);
     },
-    async fetchData(pageNo, pageSize, isHighPriority = false) { 
+    async fetchData(pageNo, pageSize, isHighPriority = false) {
       try {
         const urlbrand = this.selectedBrands();
         const params = {
@@ -354,7 +358,7 @@ new Vue({
         const fetchOptions = {
           signal: controller.signal
         };
-       
+
         if (isHighPriority) {
           fetchOptions.headers = {
             'Priority': 'high',
@@ -388,7 +392,7 @@ new Vue({
           price: sku.price.toFixed(2),
           quantity: sku.moq || 1,
           selected: false,
-         
+
         }))
       }));
     },
@@ -402,12 +406,20 @@ new Vue({
           this.spuData = [...this.spuData, ...(newData || [])];
           this.mobSpuData = this.spuData.reduce((acc, item) => {
             return acc.concat(item.skus)
-          }, [])
+          }, []).map((item, index) => {
+            const fixedPrice = Number(item.price).toFixed(2);
+            const parts = fixedPrice.split('.');
+            return {
+              ...item,
+              priceWhole: parts[0],
+              priceDecimal: parts[1]
+            }
+          })
           if (result.data.extra && this.page == 1) {
             this.creatBrandList(result.data.extra);
           }
           this.hasMore = parseInt(result.data.total) > this.spuData.length;
-          if(this.hasMore && this.page == 1) {
+          if (this.hasMore && this.page == 1) {
             this.initIntersectionObserver();
           }
           try {
@@ -475,7 +487,7 @@ new Vue({
         const mpq = sku.mpq || 1;
         if (sku.quantity > moq) {
           const newQuantity = sku.quantity - mpq;
-          this.$set(this.spuData[itemindex].skus[libindex], 'quantity', 
+          this.$set(this.spuData[itemindex].skus[libindex], 'quantity',
             newQuantity >= moq ? newQuantity : moq
           );
         }
@@ -487,13 +499,13 @@ new Vue({
         let newQuantity = parseInt(sku.quantity);
         const moq = sku.moq || 1;
         const mpq = sku.mpq || 1;
-       
+
         if (isNaN(newQuantity) || newQuantity < moq) {
           newQuantity = moq;
         } else if (newQuantity > 1000000) {
           newQuantity = 1000000;
         } else {
-         
+
           const exceededMoq = newQuantity - moq;
           const remainder = exceededMoq % mpq;
           if (remainder !== 0) {
@@ -511,24 +523,24 @@ new Vue({
       const categoryElements = this.categories.map((collection, index) => {
         const nextHandle = collection.name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-');
         return `<a href="/collections/${this.collectionData.handle}-${nextHandle}"
-         class="flex flex-col items-center justify-center group py-2.5 transition duration-200 relative fb-sm:pt-6 fb-sm:pb-4 fb-sm:h-[244px] hover:bg-F3F8FC hover:border-none ${index > 5 ? 'fb-sm:border-b': 'fb-sm:border-t fb-sm:border-b'}  fb-sm:border-r  fb-sm:border-F0F0F0">
-          <div class="w-full px-9 h-25 mb-4 fb-flex-center fb-sm:w-8.75r fb-sm:h-8.75r fb-sm:px-0">
+         class="flex flex-col items-center justify-center group py-2.5 transition duration-200 relative fb-sm:pt-6 fb-sm:pb-4 fb-sm:h-[244px] hover:bg-F3F8FC hover:border-none ${index > 5 ? 'fb-sm:border-b' : 'fb-sm:border-t fb-sm:border-b'}  fb-sm:border-r  fb-sm:border-F0F0F0">
+          <div class="w-full px-9 h-25 mb-4 fb-flex-center fb-sm:w-8.75r fb-sm:h-8.75r fb-sm:px-0 ">
               <img src="${collection?.img || ''}" alt="${collection.name}" width="100px" height="100px" class="h-full w-auto">
           </div>  
-          <div class="px-4 text-13 text-main fb-sm:text-sm group-hover:underline font-bold text-center line-clamp-2 h-8 fb-sm:px-7 fb-sm:h-auto">
+          <div class="px-4 fb-max-sm:text-14 text-16 text-main  group-hover:underline font-bold text-center line-clamp-2 h-11 fb-sm:px-7 fb-sm:h-auto">
             ${collection.name}
           </div>
           <p class="w-full h-full border-[3px] absolute border-[#D3DEF1] hidden left-0 top-0 group-hover:block"></p>
         </a>`;
       });
-      
+
       const categoryList = document.querySelector('.js-categories-list');
       const categoriesBox = document.querySelector('.js-categories');
-      
+
       if (categoriesBox) {
         categoriesBox.style.display = 'block';
       }
-      
+
       if (categoryList) {
         categoryList.innerHTML = categoryElements.join('');
       }
@@ -550,7 +562,7 @@ new Vue({
         }));
       const filterDoms = document.querySelectorAll('.js-col-filter');
       if (!filterDoms.length) return;
-     
+
       let filtertertml = '';
       this.brandExtra.forEach((item, index) => {
         const checkboxId = `filter.p.m.product.brand-${index + 1}`;
@@ -559,11 +571,11 @@ new Vue({
             <input class="checkbox" class="w-4 h-4 border border-999999 rounded-sm fb-sm:w-5 fb-sm:h-5" type="checkbox" name="filter.p.m.product.brand" id="${checkboxId}" value="${item.brand}"
               ${item.disabled ? 'disabled' : ''} ${item.checked ? 'checked' : ''}
             >
-            <label class="text-xs text-121212 fb-sm:text-sm" for="${checkboxId}">${item.brand} (${item.count})&lrm;</label>
+            <label class="text-16 text-121212 fb-sm:text-16" for="${checkboxId}">${item.brand} (${item.count})&lrm;</label>
           </div>
         `;
       });
-     
+
       filterDoms.forEach(filterDom => {
         filterDom.innerHTML = filtertertml;
       });
@@ -574,7 +586,7 @@ new Vue({
           top: 0,
           behavior: 'smooth',
         });
-       
+
         this.page = 1;
         this.spuData = [];
         this.hasMore = true;
@@ -588,7 +600,7 @@ new Vue({
           console.error('Failed to reload data after filter change:', error);
         }
       }, 300);
-      
+
       document.addEventListener('facet-rerender', debouncedReload);
     },
   }

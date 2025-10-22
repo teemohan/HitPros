@@ -1,3 +1,20 @@
+<style>
+  .pswp__zoom-wrap{
+    transition: none !important;
+  }
+
+  .mobile-hidden{
+    display: none !important;
+  }
+
+  @media screen (min-width: 1200px) { 
+    .mobile-hidden{
+      display: flex !important;
+    }
+  }
+
+</style>
+
 {%- if product.media.size > 0 -%}
   {%- assign selected_media = product.selected_variant.featured_media | default: product.featured_media -%}
 
@@ -176,11 +193,16 @@
                 %}
               >
             </div>
+            <a 
+             class="hover:underline text-14 text-main text-center w-full  inline-block  hidden fb-md:inline" href="javascript:void(0)" >
+              Click to see full view
+            </a>
           </div>
+         
         {% endunless %}
       {%- endfor -%}
       </flickity-carousel>
-
+      
       {%- if section.settings.enable_image_zoom -%}
         <button
           {% if selected_media.media_type != 'image' %}
@@ -214,17 +236,27 @@
       </button>
     {%- endif -%}
 
+   
+
     {%- if product.media.size > 1 -%}
-      <flickity-controls controls="product-{{ section.id }}-{{ product.id }}-media-list" class="w-full !p-0">
+   
+      <flickity-controls controls="product-{{ section.id }}-{{ product.id }}-media-list" class="w-full product__media-nav "> 
         <button
-          class="hidden absolute top-10r left-2 fb-sm:left-2 w-8 h-6.5 fb-sm:w-11 fb-sm:h-9 fb-sm:top-15r"
+          class="product__media-prev-next !hidden fb-md:!flex"
+          aria-label="{{ 'general.accessibility.previous' | t }}"
+          data-action="prev"
+        >
+          {% render 'icon' with 'footer-arrow' %}
+        </button>
+        {% comment %} <button
+          class="hidden absolute top-10r left-2 fb-md:left-2 w-8 h-6.5 fb-md:w-11 fb-md:h-9 fb-md:top-15r"
           aria-label="{{ 'general.accessibility.previous' | t }}"
           data-action="prev"
         >
           <svg style="transform: scale(-1);" width="100%" height="100%" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M30.7507 13.4255L20.7512 3.3996L24.1745 0L40 15.7507L24.2653 31.9246C24.1263 32.0478 24.0411 31.9982 23.8985 31.9246C23.089 31.5107 21.6496 29.3822 20.7512 28.7862L30.936 18.2085H0V13.7014L0.277868 13.4255H30.7507Z" fill="#0A2B6F"/>
           </svg>
-        </button>
+        </button> {% endcomment %}
         {%- unless section.settings.show_thumbnails_on_mobile -%}
           <div class="dots-nav dots-nav--centered hidden-lap-and-up">
             {%- for media in product.media -%}
@@ -238,7 +270,7 @@
               <button
                 type="button"
                 tabindex="-1"
-                class="dots-nav__item {% if is_media_filtered %}is-filtered{% endif %} tap-area"
+                class="dots-nav__item {% if is_media_filtered %}is-filtered{% endif %} tap-area "
                 {% if selected_media.id == media.id %}
                   aria-current="true"
                 {% endif %}
@@ -251,8 +283,9 @@
             {%- endfor -%}
           </div>
         {%- endunless -%}
+        
 
-        <scroll-shadow class="product__thumbnail-scroll-shadow mt-3 {% unless section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endunless %}">
+        <scroll-shadow class="product__thumbnail-scroll-shadow hidden fb-md:inline  {% unless section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endunless %}">
           <div class="product__thumbnail-list hide-scrollbar">
             <div class="product__thumbnail-list-inner">
               {%- for media in product.media -%}
@@ -275,7 +308,7 @@
                     {% if settings.reveal_product_media and is_media_filtered == false %}
                       reveal
                     {% endif %}
-                    class="product__thumbnail-item {% if is_media_filtered %}is-filtered{% endif %} {% unless section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endunless %}"
+                    class="product__thumbnail-item  {% if is_media_filtered %}is-filtered{% endif %} {% unless section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endunless %}"
                     {% if selected_media.id == media.id %}
                       aria-current="true"
                     {% endif %}
@@ -327,8 +360,8 @@
                     tabindex="-1"
                     {% if settings.reveal_product_media and is_media_filtered == false %}
                       reveal
-                    {% endif %}
-                    class="product__thumbnail-item {% if is_media_filtered %}is-filtered{% endif %} {% unless section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endunless %}"
+                    {% endif %} 
+                    class="product__thumbnail-item   {% if is_media_filtered %}is-filtered{% endif %} {% unless section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endunless %}"
                     {% if selected_media.id == media.id %}
                       aria-current="true"
                     {% endif %}
@@ -363,12 +396,47 @@
             </div>
           </div>
         </scroll-shadow>
+       
 
-        <button class="hidden absolute top-10r right-2 fb-sm:right-2  w-8 h-6.5 fb-sm:w-11 fb-sm:h-9 fb-sm:top-15r" aria-label="{{ 'general.accessibility.next' | t }}" data-action="next">
+        <div class="w-full justify-center flex items-center fb-md:hidden">
+          <div class=" dots-nav dots-nav--centered">
+          {%- for media in product.media -%}
+            {%- assign is_media_filtered = false -%}
+            {%- assign media_id_as_string = media.id | append: '' -%}
+
+            {%- if filtered_media_ids contains media_id_as_string -%}
+              {%- assign is_media_filtered = true -%}
+            {%- endif -%}
+
+            <button
+              type="button"
+              tabindex="-1"
+              class="dots-nav__item {% if is_media_filtered %}is-filtered{% endif %} tap-area"
+              {% if selected_media.id == media.id %}
+                aria-current="true"
+              {% endif %}
+              aria-controls="product-{{ section.id }}-{{ media.id }}"
+              data-media-id="{{ media.id }}"
+              data-action="select"
+              style="border-radius:50%;width:8px;height:8px;"
+            >
+              <span  class="visually-hidden">{{ 'general.accessibility.go_to_slide' | t: num: forloop.index }}</span>
+            </button>
+          {%- endfor -%}
+        </div>
+        </div>
+
+        <button class="product__media-prev-next !hidden fb-md:!flex" aria-label="{{ 'general.accessibility.next' | t }}" data-action="next">
+          {% render 'icon' with 'footer-arrow' %}
+        </button>
+        
+
+        {% comment %} <button class="hidden absolute top-10r right-2 fb-md:right-2  w-8 h-6.5 fb-md:w-11 fb-md:h-9 fb-md:top-15r" aria-label="{{ 'general.accessibility.next' | t }}" data-action="next">
           <svg width="100%" height="100%" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M30.7507 13.4255L20.7512 3.3996L24.1745 0L40 15.7507L24.2653 31.9246C24.1263 32.0478 24.0411 31.9982 23.8985 31.9246C23.089 31.5107 21.6496 29.3822 20.7512 28.7862L30.936 18.2085H0V13.7014L0.277868 13.4255H30.7507Z" fill="#0A2B6F"/>
           </svg>
-        </button>
+        </button> {% endcomment %}
+       
       </flickity-controls>
     {%- endif -%}
 
@@ -397,7 +465,9 @@
                 data-action="pswp-close"
                 title="{{ 'general.accessibility.close' | t | escape }}"
               >
-                {% render 'icon' with 'close' %}
+                <span class="w-6 h-6 text-main">
+                  {% render 'icon' with 'close1' %}
+                </span>
               </button>
             </div>
 
@@ -407,32 +477,45 @@
                 data-action="pswp-prev"
                 title="{{ 'general.accessibility.previous' | t | escape }}"
               >
-                {% render 'icon' with 'nav-arrow-left', direction_aware: true %}
+                <span class="w-6 h-6 text-main">
+                {% render 'icon' with 'nav-arrow-left-2', direction_aware: true %}
+                </span>
               </button>
               <button
                 class="pswp__button prev-next-button prev-next-button--next"
                 data-action="pswp-next"
                 title="{{ 'general.accessibility.next' | t | escape }}"
               >
-                {% render 'icon' with 'nav-arrow-right', direction_aware: true %}
+
+                <span class="w-6 h-6 text-main">
+                  {% render 'icon' with 'nav-arrow-right-2', direction_aware: true %}
+                </span>
               </button>
             </div>
 
-            <div class="pswp__dots-nav-wrapper hidden-lap-and-up">
+            <div class="pswp__dots-nav-wrapper hidden-lap-and-up" style="display:flex;justify-content:center;">
+              <div class="dots-nav dots-nav--centered">
+              </div>
+            </div>
+
+            <div class="pswp__dots-nav-wrapper hidden-lap-and-up" style="bottom:50%;background-color:transparent;">
               <button class="tap-area tap-area--large" data-action="pswp-prev">
                 <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
-                {%- render 'icon' with 'nav-arrow-left', direction_aware: true -%}
+                <span class="w-6 h-6 text-main" style="display:inline-block;">
+                {% render 'icon' with 'nav-arrow-left-2', direction_aware: true %}
+                </span>
               </button>
 
-              <div class="dots-nav dots-nav--centered">
-                
-              </div>
-
+          
               <button class="tap-area tap-area--large" data-action="pswp-next">
                 <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
-                {%- render 'icon' with 'nav-arrow-right', direction_aware: true -%}
+                <span class="w-6 h-6 text-main" style="display:inline-block;">
+                  {% render 'icon' with 'nav-arrow-right-2', direction_aware: true %}
+                </span>
               </button>
             </div>
+
+            
           </div>
         </div>
       </product-image-zoom>

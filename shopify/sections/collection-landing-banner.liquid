@@ -78,6 +78,14 @@
       text-align: center;
     }
   }
+
+
+  .line-shu{
+    width:1px;
+    background: #FDE7A0;
+    height:1rem;
+    margin:0 30px;
+  }
 </style>
 <div class="hero-banner-link">
   <div class="hero-banner-content-wrapper container">
@@ -88,12 +96,23 @@
   </div>
 </div>
 {% if section.settings.free_tip != blank %}
-  <div class="free-tip">
+  <div class="free-tip hidden">
     <div class="container">
       {{ section.settings.free_tip }}
     </div>
   </div>
 {% endif %}
+<div class="w-full free-box flex justify-center items-center">
+  <div class="w-5 h-5 ">
+    <svg t="1760153276774" class="icon" viewBox="0 0 1280 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5868" width="100%" height="100%"><path d="M1248 704h-32V487.8c0-25.4-10.2-49.8-28.2-67.8L988 220.2c-18-18-42.4-28.2-67.8-28.2H832V96c0-53-43-96-96-96H224C171 0 128 43 128 96v96H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h544c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H80c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h416c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h416c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H128v256c0 106 86 192 192 192s192-86 192-192h256c0 106 86 192 192 192s192-86 192-192h96c17.6 0 32-14.4 32-32v-64c0-17.6-14.4-32-32-32zM320 928c-53 0-96-43-96-96s43-96 96-96 96 43 96 96-43 96-96 96z m640 0c-53 0-96-43-96-96s43-96 96-96 96 43 96 96-43 96-96 96z m160-416H832V288h88.2l199.8 199.8V512z" p-id="5869" fill="#219653" ></path></svg>
+  </div>
+  <span class="font-bold fb-max-sm:text-16 fb-md:text-18 text-121212 ml-2">FREE shipping on orders of $75+</span>
+  <div class="line-shu fb-max-sm:hidden"></div>
+  <div class="w-5 h-5 fb-max-sm:hidden">
+    <svg t="1760670836535" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11798" width="100%" height="100%"><path d="M0 273.63l387.88 222.85v448.53L0 722.16V273.63z m835 0v267.99h-8.47q-55 2.82-103.66 29.62t-81.11 72.64q-32.44 45.84-40.9 100.15-8.46 54.3 7.05 107.89l-160.79 93.09V496.48L835 273.63zM196.06 126.94l2.82 2.82L579.7 351.21 417.5 444.3 31.03 222.85l165.03-95.91zM417.5 0l385.06 221.44-162.21 94.5L255.29 93.09 417.5 0z m425.96 600.86q47.96 0 89.56 24.69 41.61 24.68 66.29 66.29 24.68 41.61 24.68 90.27t-24.68 90.27q-24.69 41.61-66.29 65.59-41.61 23.98-90.27 23.98t-90.27-23.98q-41.61-23.98-65.59-65.59-23.98-41.61-23.98-90.27t23.98-90.27q23.98-41.61 65.59-66.29 41.61-24.69 90.98-24.69z m29.62 78.99l-42.31 42.31 29.62 29.62H722.16v60.65h138.23l-29.62 29.62 42.31 42.31 102.96-101.55v-1.41L873.08 679.85z" fill="#219653" p-id="11799"></path></svg>
+  </div>
+  <span class="font-bold fb-max-sm:text-16 fb-md:text-18 text-121212 ml-2 fb-max-sm:hidden">Order by 2:30 PM for Same-Day shipping</span>
+</div>
 {% schema %}
   {
     "name": "Ladning Banner",

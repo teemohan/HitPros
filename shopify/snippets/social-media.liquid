@@ -1,12 +1,23 @@
 {%- assign active_accounts = 0 -%}
-
+{%- assign item_css = 'text-white flex w-6 h-6 items-center justify-center [&_svg]:hover:text-button' -%}
 {%- capture social_media -%}
   {%- if settings.social_facebook != blank -%}
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--facebook">
-      <a href="{{ settings.social_facebook | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Facebook' }}">
-        {%- render 'icon' with 'facebook' -%}
+      <a href="{{ settings.social_facebook | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener"
+         class="social-media__link {{ item_css }}"
+         aria-label="{{ 'general.social.follow_label' | t: social_media: 'Facebook' }}">
+          <svg xmlns="http://www.w3.org/2000/svg" color="currentColor" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <g clip-path="url(#clip0_6662_9983)">
+              <path d="M23.04 0H0.96C0.429 0 -2.625e-08 0.429 0 0.96V23.04C0 23.571 0.429 24 0.96 24H23.04C23.571 24 24 23.571 24 23.04V0.96C24 0.429 23.571 -2.625e-08 23.04 0ZM20.268 7.005H18.351C16.848 7.005 16.557 7.719 16.557 8.769V11.082H20.145L19.677 14.703H16.557V24H12.816V14.706H9.687V11.082H12.816V8.412C12.816 5.313 14.709 3.624 17.475 3.624C18.801 3.624 19.938 3.723 20.271 3.768V7.005H20.268Z" fill="#F3F8FC"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_6662_9983">
+                <rect width="24" height="24" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
       </a>
     </li>
   {%- endif -%}
@@ -15,7 +26,9 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--twitter">
-      <a href="{{ settings.social_twitter | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Twitter' }}">
+      <a href="{{ settings.social_twitter | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener"
+         class="social-media__link {{ item_css }}"
+         aria-label="{{ 'general.social.follow_label' | t: social_media: 'Twitter' }}">
         {%- render 'icon' with 'twitter' -%}
       </a>
     </li>
@@ -25,7 +38,9 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--pinterest">
-      <a href="{{ settings.social_pinterest | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Pinterest' }}">
+      <a href="{{ settings.social_pinterest | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" 
+         class="social-media__link {{ item_css }}"
+         aria-label="{{ 'general.social.follow_label' | t: social_media: 'Pinterest' }}">
         {%- render 'icon' with 'pinterest' -%}
       </a>
     </li>
@@ -35,7 +50,9 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--tiktok">
-      <a href="{{ settings.social_tiktok | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'TikTok' }}">
+      <a href="{{ settings.social_tiktok | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" 
+         class="social-media__link {{ item_css }}"
+         aria-label="{{ 'general.social.follow_label' | t: social_media: 'TikTok' }}">
         {%- render 'icon' with 'tiktok' -%}
       </a>
     </li>
@@ -45,7 +62,8 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--vimeo">
-      <a href="{{ settings.social_vimeo | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Vimeo' }}">
+      <a href="{{ settings.social_vimeo | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener"
+         class="social-media__link {{ item_css }}" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Vimeo' }}">
         {%- render 'icon' with 'vimeo' -%}
       </a>
     </li>
@@ -55,8 +73,11 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--linkedin">
-      <a href="{{ settings.social_linkedin | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'LinkedIn' }}">
-        {%- render 'icon' with 'linkedin' -%}
+      <a href="{{ settings.social_linkedin | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" 
+         class="social-media__link {{ item_css }}" aria-label="{{ 'general.social.follow_label' | t: social_media: 'LinkedIn' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M6.20062 20.9995H1.84688V6.97922H6.20062V20.9995ZM4.02141 5.06672C2.62922 5.06672 1.5 3.91359 1.5 2.52141C1.5 1.85269 1.76565 1.21136 2.2385 0.738503C2.71136 0.265647 3.35269 0 4.02141 0C4.69012 0 5.33145 0.265647 5.80431 0.738503C6.27716 1.21136 6.54281 1.85269 6.54281 2.52141C6.54281 3.91359 5.41313 5.06672 4.02141 5.06672ZM22.4953 20.9995H18.1509V14.1745C18.1509 12.548 18.1181 10.462 15.8873 10.462C13.6237 10.462 13.2769 12.2292 13.2769 14.0573V20.9995H8.92781V6.97922H13.1034V8.89172H13.1644C13.7456 7.79016 15.1655 6.62766 17.2838 6.62766C21.69 6.62766 22.5 9.52922 22.5 13.298V20.9995H22.4953Z" fill="#F3F8FC"/>
+        </svg>
       </a>
     </li>
   {%- endif -%}
@@ -65,7 +86,8 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--snapchat">
-      <a href="{{ settings.social_snapchat | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Snapchat' }}">
+      <a href="{{ settings.social_snapchat | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" 
+        class="social-media__link {{ item_css }}" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Snapchat' }}">
         {%- render 'icon' with 'snapchat' -%}
       </a>
     </li>
@@ -75,7 +97,8 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--tumblr">
-      <a href="{{ settings.social_tumblr | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Tumblr' }}">
+      <a href="{{ settings.social_tumblr | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" 
+        class="social-media__link {{ item_css }}" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Tumblr' }}">
         {%- render 'icon' with 'tumblr' -%}
       </a>
     </li>
@@ -85,7 +108,8 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--fancy">
-      <a href="{{ settings.social_fancy | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Fancy' }}">
+      <a href="{{ settings.social_fancy | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" 
+        class="social-media__link {{ item_css }}" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Fancy' }}">
         {%- render 'icon' with 'fancy' -%}
       </a>
     </li>
@@ -95,7 +119,9 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--wechat">
-      <a href="{{ settings.social_wechat | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'WeChat' }}">
+      <a href="{{ settings.social_wechat | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" 
+        class="social-media__link {{ item_css }}" 
+        aria-label="{{ 'general.social.follow_label' | t: social_media: 'WeChat' }}">
         {%- render 'icon' with 'wechat' -%}
       </a>
     </li>
@@ -105,7 +131,8 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--reddit">
-      <a href="{{ settings.social_reddit | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Reddit' }}">
+      <a href="{{ settings.social_reddit | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" 
+        class="social-media__link {{ item_css }}" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Reddit' }}">
         {%- render 'icon' with 'reddit' -%}
       </a>
     </li>
@@ -115,7 +142,8 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--line">
-      <a href="{{ settings.social_line | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'LINE' }}">
+      <a href="{{ settings.social_line | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener"
+         class="social-media__link {{ item_css }}" aria-label="{{ 'general.social.follow_label' | t: social_media: 'LINE' }}">
         {%- render 'icon' with 'line' -%}
       </a>
     </li>
@@ -125,7 +153,8 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--spotify">
-      <a href="{{ settings.social_spotify | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Spotify' }}">
+      <a href="{{ settings.social_spotify | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" 
+        class="social-media__link {{ item_css }}" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Spotify' }}">
         {%- render 'icon' with 'spotify' -%}
       </a>
     </li>
@@ -135,8 +164,18 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--instagram">
-      <a href="{{ settings.social_instagram | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Instagram' }}">
-        {%- render 'icon' with 'instagram' -%}
+      <a href="{{ settings.social_instagram | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" 
+        class="social-media__link text-white {{ item_css }}" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Instagram' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <g clip-path="url(#clip0_6662_9987)">
+            <path d="M12 0C8.74 0 8.333 0.015 7.053 0.072C5.775 0.132 4.905 0.333 4.14 0.63C3.351 0.936 2.681 1.347 2.014 2.014C1.347 2.681 0.935 3.35 0.63 4.14C0.333 4.905 0.131 5.775 0.072 7.053C0.012 8.333 0 8.74 0 12C0 15.26 0.015 15.667 0.072 16.947C0.132 18.224 0.333 19.095 0.63 19.86C0.931292 20.6609 1.4036 21.3864 2.014 21.986C2.61328 22.5968 3.3389 23.0692 4.14 23.37C4.906 23.666 5.776 23.869 7.053 23.928C8.333 23.988 8.74 24 12 24C15.26 24 15.667 23.985 16.947 23.928C18.224 23.868 19.095 23.666 19.86 23.37C20.6607 23.0683 21.3861 22.5961 21.986 21.986C22.597 21.3869 23.0694 20.6612 23.37 19.86C23.666 19.095 23.869 18.224 23.928 16.947C23.988 15.667 24 15.26 24 12C24 8.74 23.985 8.333 23.928 7.053C23.868 5.776 23.666 4.904 23.37 4.14C23.0686 3.33922 22.5963 2.61373 21.986 2.014C21.3872 1.40264 20.6614 0.93019 19.86 0.63C19.095 0.333 18.224 0.131 16.947 0.072C15.667 0.012 15.26 0 12 0ZM12 2.16C15.203 2.16 15.585 2.176 16.85 2.231C18.02 2.286 18.655 2.48 19.077 2.646C19.639 2.863 20.037 3.123 20.459 3.542C20.878 3.962 21.138 4.361 21.355 4.923C21.519 5.345 21.715 5.98 21.768 7.15C21.825 8.416 21.838 8.796 21.838 12C21.838 15.204 21.823 15.585 21.764 16.85C21.703 18.02 21.508 18.655 21.343 19.077C21.1478 19.5978 20.8409 20.0695 20.444 20.459C20.0561 20.8563 19.5847 21.1624 19.064 21.355C18.644 21.519 17.999 21.715 16.829 21.768C15.555 21.825 15.18 21.838 11.97 21.838C8.759 21.838 8.384 21.823 7.111 21.764C5.94 21.703 5.295 21.508 4.875 21.343C4.3539 21.1502 3.88268 20.843 3.496 20.444C3.09458 20.0587 2.78671 19.5867 2.596 19.064C2.431 18.644 2.237 17.999 2.176 16.829C2.131 15.569 2.115 15.18 2.115 11.985C2.115 8.789 2.131 8.399 2.176 7.124C2.237 5.954 2.431 5.31 2.596 4.89C2.806 4.32 3.075 3.93 3.496 3.509C3.915 3.09 4.306 2.82 4.875 2.611C5.295 2.445 5.926 2.25 7.096 2.19C8.371 2.145 8.746 2.13 11.955 2.13L12 2.16ZM12 5.838C10.3657 5.838 8.79841 6.48721 7.64281 7.64281C6.48721 8.79841 5.838 10.3657 5.838 12C5.838 13.6343 6.48721 15.2016 7.64281 16.3572C8.79841 17.5128 10.3657 18.162 12 18.162C13.6343 18.162 15.2016 17.5128 16.3572 16.3572C17.5128 15.2016 18.162 13.6343 18.162 12C18.162 10.3657 17.5128 8.79841 16.3572 7.64281C15.2016 6.48721 13.6343 5.838 12 5.838ZM12 16C9.79 16 8 14.21 8 12C8 9.79 9.79 8 12 8C14.21 8 16 9.79 16 12C16 14.21 14.21 16 12 16ZM19.846 5.595C19.8321 5.96762 19.6743 6.32036 19.4058 6.57907C19.1372 6.83778 18.7789 6.98233 18.406 6.98233C18.0331 6.98233 17.6748 6.83778 17.4062 6.57907C17.1377 6.32036 16.9799 5.96762 16.966 5.595C16.966 5.21309 17.1177 4.84682 17.3878 4.57677C17.6578 4.30671 18.0241 4.155 18.406 4.155C18.7879 4.155 19.1542 4.30671 19.4242 4.57677C19.6943 4.84682 19.846 5.21309 19.846 5.595Z" fill="#F3F8FC"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_6662_9987">
+              <rect width="24" height="24" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
       </a>
     </li>
   {%- endif -%}
@@ -145,8 +184,11 @@
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
     <li class="social-media__item social-media__item--youtube">
-      <a href="{{ settings.social_youtube | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'YouTube' }}">
-        {%- render 'icon' with 'youtube' -%}
+      <a href="{{ settings.social_youtube | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" 
+        class="social-media__link {{ item_css }}" aria-label="{{ 'general.social.follow_label' | t: social_media: 'YouTube' }}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M22.0617 6.93984C21.8203 6.03516 21.1078 5.32266 20.2055 5.08125C18.5672 4.64063 12 4.64062 12 4.64062C12 4.64062 5.43281 4.64062 3.79453 5.07891C2.88984 5.32031 2.17969 6.03281 1.93828 6.9375C1.5 8.57812 1.5 12 1.5 12C1.5 12 1.5 15.4219 1.93828 17.0602C2.17969 17.9648 2.89219 18.6773 3.79453 18.9188C5.43281 19.3594 12 19.3594 12 19.3594C12 19.3594 18.5672 19.3594 20.2055 18.9188C21.1102 18.6773 21.8203 17.9648 22.0617 17.0602C22.5 15.4219 22.5 12 22.5 12C22.5 12 22.5 8.57813 22.0617 6.93984ZM9.91406 15.1406V8.85938L15.3516 11.9766L9.91406 15.1406Z" fill="#F3F8FC"/>
+          </svg>
       </a>
     </li>
   {%- endif -%}

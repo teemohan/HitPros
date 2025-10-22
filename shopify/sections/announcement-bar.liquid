@@ -28,94 +28,51 @@
       {%- endif -%}
     }
   }
-
-  .announcement-bar-wrapper {
-    background-color: #F3F8FC;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 14px;
-    font-weight: 400;
-    color: #0A2B6F;
-    padding: 4px 0;
-  }
-  .announcement-bar-item {
-    display: flex;
-    justify-content: space-between;
-  }
-  .announcement-bar-wrapper .links {
-    display: flex;
-    align-items: center;
-    
-  }
-  .announcement-bar-wrapper .links a{
-    margin:0 10px
-  }
-  .announcement-bar-wrapper .links a:hover {
-    text-decoration: underline;
-  }
-  .announcement-bar-wrapper .contacts {
-    display: flex;
-    align-items: center;
-    
-  }
-  .announcement-bar-wrapper .contacts span{
-  margin:0 10px  
-  }
-  .announcement-bar-wrapper .contacts span,
-  .announcement-bar-wrapper .contacts a
-  {
-    display: flex;
-    align-items: center;
-    
-  }
-  .announcement-bar-wrapper .contacts a svg{
-    margin-right:4px;
-  }
-  
-  .announcement-bar-wrapper .line {
-    width: 1px;
-    height: 28px;
-    background-color: #0A2B6F;
-    opacity: .2;
-  }
 </style>
-
-<section>
-<announcement-bar class="announcement-bar-wrapper">
-  <div class="announcement-bar__list container">
-    <announcement-bar-item class="announcement-bar-item">
-      <div class="contacts">
-        <a href="tel:{{ section.settings.phone }}">
-          {% render 'icon' with 'top-bar-phone' %}
-          {{ section.settings.phone }}
-        </a>
-        <span class="line"></span>
-        <a href="mailto:{{ section.settings.email }}">
-          {% render 'icon' with 'top-bar-email' %}
-          {{ section.settings.email }}
-        </a>
-      </div>
-      <div class="links">
-        <a href="{{ section.settings.about_url }}">About Us</a>
-        <span class="line"></span>
-        <a href="{{ section.settings.help_url }}">Help</a>
-        <span class="line"></span>
-        <a href="{{ section.settings.blog_url }}">Blog</a>
-      </div>
-
-    </announcement-bar-item>
-  </div>
-
-  
-</announcement-bar>
+{%- assign code_show = '' -%}
+{%- assign code = section.settings.announcement_discount_code | strip_html -%}
+{% if code == blank %} 
+  {%- assign code_show = 'hidden fb-md:block' -%}
+{% endif %}
+<section class="w-full {{ code_show }}">
+  <announcement-bar class="announcement-bar-wrapper bg-button block w-full py-1 text-14">
+    <div class="announcement-bar__list container">
+      <announcement-bar-item class="announcement-bar-item flex items-center fb-md:justify-start fb-md:space-x-4">
+        <div class="items-center hidden fb-md:flex">
+          <a class="mx-2.5 flex items-center text-14" href="tel:{{ section.settings.phone }}">
+            <span class="w-4 h-4 fb-flex-center mr-1">{% render 'icon' with 'top-bar-phone' %}</span>
+            {{ section.settings.phone }}
+          </a>
+          <span  class="w-[1px] h-4 bg-main opacity-[0.16]"></span>
+          <a class="mx-2.5 flex items-center" href="mailto:{{ section.settings.email }}">
+            <span class="w-4 h-4 fb-flex-center mr-1">{% render 'icon' with 'top-bar-email' %}</span>
+            {{ section.settings.email }}
+          </a>
+        </div>
+        <div class="w-full text-12 fb-md:text-14 fb-md:flex-1 text-center fb-md:pl-4 fb-md:text-left text-main">
+          {{ section.settings.announcement_discount_code }}
+        </div>
+        <div class="items-center hidden fb-md:flex fb-md:justify-end self-stretch">
+          <a  class="mx-2.5" href="{{ section.settings.about_url }}">About Us</a>
+          <span  class="w-[1px] h-4 bg-main opacity-[0.16]"></span>
+          <a  class="mx-2.5" href="{{ section.settings.help_url }}">Help</a>
+          <span  class="w-[1px] h-4 bg-main opacity-[0.16]"></span>
+          <a class="mx-2.5"  href="{{ section.settings.blog_url }}">Blog</a>
+        </div>
+      </announcement-bar-item>
+    </div>
+  </announcement-bar>
 </section>
-
 {% schema %}
 {
   "name": "Announcement bar",
-  "class": "shopify-section--announcement-bar hidden-pocket",
+  "class": "shopify-section--announcement-bar",
   "settings": [
+    {
+      "type": "richtext",
+      "id": "announcement_discount_code",
+      "label": "Announcement discount code"
+    },
     {
       "type": "url",
       "id": "about_url",

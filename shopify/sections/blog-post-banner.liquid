@@ -19,18 +19,18 @@
   }
 </style>
 
-<nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="container breadcrumb text--xsmall text--subdued">
+<nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="container breadcrumb text-14 text--subdued">
   <ol class="breadcrumb__list" role="list">
     <li class="breadcrumb__item">
-      <a class="breadcrumb__link" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+      <a class="breadcrumb__link text-14" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
     </li>
 
     <li class="breadcrumb__item">
-      <a class="breadcrumb__link" href="{{ blog.url }}">{{- blog.title -}}</a>
+      <a class="breadcrumb__link text-14" href="{{ blog.url }}">{{- blog.title -}}</a>
     </li>
 
     <li class="breadcrumb__item">
-      <span class="breadcrumb__link" aria-current="page">{{ article.title }}</span>
+      <span class="breadcrumb__link text-14" aria-current="page">{{ article.title }}</span>
     </li>
   </ol>
 </nav>

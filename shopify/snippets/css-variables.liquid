@@ -270,4 +270,9 @@
       --vertical-breather-tight: {% if settings.vertical_spacing == 'small' %}48px{% elsif settings.vertical_spacing == 'medium' %}48px{% else %}60px{% endif %};
     }
   }
+  {%- if shop.name != 'TestHitpros' -%}
+    #preview-bar-iframe, #PBarNextFrameWrapper {
+      display: none;
+    }
+  {%- endif -%}
 </style>

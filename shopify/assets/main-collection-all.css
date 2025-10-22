@@ -84,10 +84,6 @@
 .collection-title-wrapper {
   margin-top: 12px;
 }
-.categories {
-  margin-bottom: 40px;
-  display: none;
-}
 
 .collection-num {
   flex-shrink: 0;
@@ -489,9 +485,6 @@
     line-height: 1;
   } 
 
-  .categories {
-     margin-top: 16px;
-  }
   .product-facet-spu .product-spu-header .product-spu-title {
     font-size: 14px;
     padding: 10px;

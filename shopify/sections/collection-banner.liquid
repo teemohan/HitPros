@@ -1,19 +1,19 @@
 <style>
 
 </style>
-<nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="container breadcrumb text--xsmall">
+<nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="container breadcrumb text-14">
   <ol class="collection_breadcrumb__list breadcrumb__list" role="list">
     <li class="breadcrumb__item">
-      <a class="breadcrumb__link" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+      <a class="breadcrumb__link text-14" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
     </li>
     <li class="breadcrumb__item">
-      <a class="breadcrumb__link" href="/pages/all-product-categories">All Product Categories</a>
+      <a class="breadcrumb__link text-14" href="/pages/all-product-categories">All Product Categories</a>
     </li>
   </ol>
 </nav>
-
 <script>
 $(function() {
+
   const titles = '{{ collection.title | replace: "'", "\\'" }}'.split('~');
   let c_handle = '';
   const $titles = titles.map((c_title, idx) => {

@@ -1,3 +1,40 @@
+<style>
+  .js-anchor-section.is-fixed {
+    position: fixed;
+    top: 0; /* 或者考虑网站头部高度 */
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: #0A2B6F;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+ /* 防止页面跳动 */
+ .anchor-placeholder {
+    height: 50px;
+    display: none;
+  }
+
+  .the-top {
+    background: #fff;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    text-align: center;
+    color: #0A2B6F;
+    transition: 200ms;
+    line-height: 2rem;
+    cursor: pointer;
+    box-shadow: 0px 1px 4px 0px #00000040;
+    position: absolute;
+    right:0;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+
+
+</style>
+
 {% capture btn_text %}
   <div class="flex items-center gap-2 js-btn-text">
     Add to Cart
@@ -23,6 +60,7 @@
             <li class="animate-pulse bg-gray-200 h-6 w-24 fb-sm:w-32 rounded shrink-0 mr-6 fb-sm:mr-10 fb-md:mr-40 last:mr-0"></li>
           {% endfor %}
         </ul>
+        <div id="theTop" class="the-top fb-sm:hidden">TOP</div>
         <div class="w-10 h-full shrink-0 hidden fb-sm:block fb-1700:hidden">
         </div>
       </div>
@@ -55,6 +93,7 @@
                 </div>
               {% endif %}
             </div> {% endcomment %}
+            
             <div class="text-main text-20 font-bold flex items-center justify-center text-right">
               <span class="js-nav-current-price text-20">
               </span>
@@ -107,11 +146,11 @@
          </div>
          <div class="flex-1 flex items-start justify-center flex-col">
             {% if product.metafields.product.brand.value != blank %}
-              <h2 class="text-12 text-121212">
+              <h2 class="text-14 text-121212">
                 {{- product.metafields.product.brand.value -}}
               </h2>
             {% endif %}
-           <div class="w-full flex items-center text-12 text-121212 mt-1.5" v-if="productInfo.model">
+           <div class="w-full flex items-center text-14 text-121212 mt-1.5" v-if="productInfo.model">
             <span>${ productInfo.model }</span>
            </div>
            <div class="flex items-center mt-2">
@@ -184,7 +223,8 @@
      </div>
   </div>
 </section>
-<div class="js-bottom-addcart w-full hidden bg-F3F8FC !fb-sm:hidden !fb-sm:h-0 fixed bottom-0 left-0 z-7" style="box-shadow: rgba(10, 43, 111, 0.25) 4px 4px 8px;">
+<div class="anchor-placeholder" style="height: 50px; display: none;"></div>
+<div class="js-bottom-addcart w-full hidden bg-F3F8FC !fb-sm:hidden !fb-sm:h-0 fixed bottom-0 left-0 z-4" style="box-shadow: rgba(10, 43, 111, 0.25) 4px 4px 8px;">
   <div class="max-w-[375px] pt-1.5 pb-4 px-5 mx-auto">
     {% comment %} <div class="grid grid-cols-2 gap-2">
       <div class="h-18 flex items-center justify-center">
@@ -245,6 +285,27 @@
     </div>
   </div>
 </div>
+
+
+<script>
+ $(function() {
+    let backTopTimer  = null;
+    $('#theTop').click(function() {
+      cancelAnimationFrame(backTopTimer);
+      backTopTimer = requestAnimationFrame(function fn() {
+        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
+        if(oTop > 0) {
+          document.body.scrollTop = document.documentElement.scrollTop = oTop - 100;
+          backTopTimer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(backTopTimer);
+        }    
+      });
+    })
+   
+  })
+</script>
+
 {% schema %}
 {
   "name": "Product Anchor Sticky",

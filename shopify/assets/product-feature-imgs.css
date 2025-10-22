@@ -16,7 +16,7 @@
 }
 .feature-imgs .feature-imgs-item.bgColorType2, 
 .feature-imgs .feature-imgs-item2.bgColorType2 {
-  background-color: #ffffff;
+  background-color: #FEFEFE;
 }
 .feature-imgs .img-wrapper,
 .feature-imgs .video-wrapper {
@@ -243,9 +243,9 @@
   border-bottom: 1px solid #d8d8d8;
 }
 .table-wrapper-common table th {
-  color: #ffffff;
+  color: #FEFEFE;
   font-size: 18px;
-  background-color: #0B2C66;
+  background-color:rgb(55, 55, 56);
   font-weight: bold;
 }
 .table-wrapper-common table td {
@@ -277,10 +277,10 @@
 }
 
 .table-wrapper-common table tr:nth-child(odd) td {
-  background-color: #ffffff;
+  background-color: #FEFEFE;
 }
 .table-wrapper-common table tr:nth-child(odd) td:first-child {
-  background-color: #ffffff;
+  background-color: #FEFEFE;
 }
 .table-wrapper-common table tr:nth-child(even) td {
   background-color: #F0F1F6;

@@ -1,5 +1,5 @@
-$(function(){
-    // Initialize Vue after DOM is fully loaded
+$(function () {
+  // Initialize Vue after DOM is fully loaded
   const getInitPrice2 = () => {
     let basePrice = $('#js-nav-quick').data('price') || 0
     if (basePrice) {
@@ -16,55 +16,55 @@ $(function(){
         el: '#js-product-quikbuy',
         delimiters: ['${', '}'],
         data() {
-           return {
-             sku: skypdp.sku,
-             selectionAttrs: [],
-             availableAttrs: [],
-             selectedValues: [],
-             productInfo: {
-               model: '',
-               brand: '',
-               image: '',
-               price: 0,
-               salesUnit: '',
-               moq: 1,
-               mpq: 1,
-               sku: '',
-               variantId: '',
-               discountJson: []
-             },
-             quantity: 1,
-             quantityReplace: 1,
-             minQuantity: 1,
-             loading: false
-           }
-         },
+          return {
+            sku: skypdp.sku,
+            selectionAttrs: [],
+            availableAttrs: [],
+            selectedValues: [],
+            productInfo: {
+              model: '',
+              brand: '',
+              image: '',
+              price: 0,
+              salesUnit: '',
+              moq: 1,
+              mpq: 1,
+              sku: '',
+              variantId: '',
+              discountJson: []
+            },
+            quantity: 1,
+            quantityReplace: 1,
+            minQuantity: 1,
+            loading: false
+          }
+        },
         computed: {
-           shouldHideAttributeSelector() {
-             return (
-               this.selectionAttrs.find((item) => item.attrName == 'match') ||
-               this.selectionAttrs.length == 0
-             );
-           },
-           formattedPrice() {
+          shouldHideAttributeSelector() {
+            return (
+              this.selectionAttrs.find((item) => item.attrName == 'match') ||
+              this.selectionAttrs.length == 0
+            );
+          },
+          formattedPrice() {
             return QuantityUtils.calculateJietiPrice(this.productInfo, this.quantity, 'price1')
             //  return this.productInfo?.price ? skyFormatPriceDisplay(parseFloat(this.productInfo.price).toFixed(2)) : '';
-           },
-           totalPrice() {
-              return QuantityUtils.calculateTotalPrice(this.productInfo, this.quantity)
-           },
-           isDisabled() {
-             const requiredCount = this.selectionAttrs.length;
-             const validSelections = this.selectedValues.slice(0, requiredCount).filter(val => val && val != '');
-             if (validSelections.length < requiredCount) return true;
-             return !this.availableAttrs.some(item => 
-               item.attrs?.slice(0, requiredCount).every((attr, i) => attr == this.selectedValues[i])
-             );
-           },
-           showViewDetails() {
-             return this.productInfo?.skuCode && this.productInfo.skuCode != skypdp.sku;
-           }
-         },
+          },
+          totalPrice() {
+            return QuantityUtils.calculateTotalPrice(this.productInfo, this.quantity)
+          },
+          isDisabled() {
+            const requiredCount = this.selectionAttrs.length;
+            const validSelections = this.selectedValues.slice(0, requiredCount).filter(val => val && val != '');
+            if (validSelections.length < requiredCount) return true;
+            return !this.availableAttrs.some(item =>
+              item.attrs?.slice(0, requiredCount).every((attr, i) => attr == this.selectedValues[i])
+            );
+          },
+          showViewDetails() {
+            return this.productInfo?.skuCode && this.productInfo.skuCode != skypdp.sku;
+          }
+        },
         async created() {
           await this.init();
         },
@@ -125,7 +125,7 @@ $(function(){
             if (!this.availableAttrs?.length) return [];
             const currentSelections = this.selectedValues.slice();
             const availableValues = new Set();
-            
+
             this.availableAttrs.forEach(item => {
               if (!item.attrs || item.attrs.length <= targetIndex) return;
               let isCompatible = true;
@@ -139,7 +139,7 @@ $(function(){
                 availableValues.add(item.attrs[targetIndex]);
               }
             });
-            
+
             return Array.from(availableValues);
           },
           onSelectChange(value, index) {
@@ -163,44 +163,44 @@ $(function(){
             }
             this.checkAndRedirectToSku();
           },
-           clearIncompatibleSelections(changedIndex) {
-             const requiredCount = this.selectionAttrs.length;
-             for (let i = 0; i < requiredCount; i++) {
-               if (i == changedIndex || !this.selectedValues[i]) continue;
-               const isCompatible = this.availableAttrs.some(item => {
-                 if (!item.attrs || item.attrs.length < requiredCount) return false;
-                 
-                 for (let j = 0; j < requiredCount; j++) {
-                   if (this.selectedValues[j] && item.attrs[j] != this.selectedValues[j]) {
-                     return false;
-                   }
-                 }
-                 return true;
-               });
-               if (!isCompatible) {
-                 this.selectedValues[i] = '';
-               }
-             }
-           },
-           checkAndRedirectToSku() {
-             const requiredCount = this.selectionAttrs.length;
-             const validSelections = this.selectedValues.slice(0, requiredCount).filter(val => val && val != '');
-             
-             if (validSelections.length < requiredCount) return;
-             
-             const matchedSku = this.availableAttrs.find(item => {
-               if (!item.attrs) return false;
-               return item.attrs.slice(0, requiredCount).every((attr, i) => attr == this.selectedValues[i]);
-             });
-             
-             if (matchedSku?.skuCode) this.getProductData(matchedSku);
-           },
+          clearIncompatibleSelections(changedIndex) {
+            const requiredCount = this.selectionAttrs.length;
+            for (let i = 0; i < requiredCount; i++) {
+              if (i == changedIndex || !this.selectedValues[i]) continue;
+              const isCompatible = this.availableAttrs.some(item => {
+                if (!item.attrs || item.attrs.length < requiredCount) return false;
+
+                for (let j = 0; j < requiredCount; j++) {
+                  if (this.selectedValues[j] && item.attrs[j] != this.selectedValues[j]) {
+                    return false;
+                  }
+                }
+                return true;
+              });
+              if (!isCompatible) {
+                this.selectedValues[i] = '';
+              }
+            }
+          },
+          checkAndRedirectToSku() {
+            const requiredCount = this.selectionAttrs.length;
+            const validSelections = this.selectedValues.slice(0, requiredCount).filter(val => val && val != '');
+
+            if (validSelections.length < requiredCount) return;
+
+            const matchedSku = this.availableAttrs.find(item => {
+              if (!item.attrs) return false;
+              return item.attrs.slice(0, requiredCount).every((attr, i) => attr == this.selectedValues[i]);
+            });
+
+            if (matchedSku?.skuCode) this.getProductData(matchedSku);
+          },
           increaseQuantity() {
             const moq = this.productInfo?.moq || 1;
             const mpq = this.productInfo?.mpq || 1;
             const maxQuantity = 1000000;
             let newValue = this.quantity + mpq;
-            
+
             if (newValue > maxQuantity) {
               newValue = maxQuantity;
             }
@@ -211,11 +211,11 @@ $(function(){
             const moq = this.productInfo?.moq || 1;
             const mpq = this.productInfo?.mpq || 1;
             let newValue = this.quantity - mpq;
-            
+
             if (newValue < moq) {
               newValue = moq;
             }
-            
+
             this.quantity = newValue;
             this.quantityReplace = newValue;
           },

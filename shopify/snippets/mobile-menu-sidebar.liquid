@@ -1,104 +1,175 @@
-{{ 'mobile-menu-sidebar.css' | asset_url | stylesheet_tag }}
+<style>
+  .mobile-menu-nav.nav-open {
+    pointer-events: auto;
+    visibility: visible;
+  }
+  .mobile-menu-nav.nav-open .menu-nav-wrapper {
+    transform: translateX(0);
+  }
+</style>
+
 <mobile-menu-sidebar>
-  <div id="mobile-menu-nav" class="mobile-menu-nav">
-    <div class="menu-nav-wrapper">
-      <div class="menu-nav" v-if="menuStack.length < 2">
-        <header>
-          <div class="title">
-            <span>Menu</span>
-            <span class="close" @click="closeMenu">
+  <div id="mobile-menu-nav" class="mobile-menu-nav fixed top-0 left-0 w-full h-screen z-100 pointer-events-none invisible">
+    <div class="menu-nav-wrapper bg-white flex w-full absolute transition-transform duration-[600ms] ease-[cubic-bezier(0.75,0,0.175,1)] transform -translate-x-full top-0 h-screen p-0 overflow-y-hidden">
+      <div class="menu-nav relative shadow-[5px_0px_12px_0px_rgba(0,0,0,0.06)] w-full overflow-y-auto pb-10">
+        <header class="block w-full bg-white fixed top-0 left-0 border border-b-[1px] border-E5E5E5">
+          <div class="title h-12.5 bg-main px-4 items-center text-14 flex justify-start text-white">
+            <span class="close w-5 h-5 flex justify-center items-center mr-4" @click="closeMenu">
               {%- render 'icon' with 'menu-close' -%}
             </span>
+            <img class="h-4.5 w-auto ml-2 lazyload" width="144" height="18" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/normal.png?v=1755592564">
+            <span class="h-6 w-0 border border-white mx-4"> </span>
+            <span class="text-10 text-D3DEF1 font-medium">BUILT STRONG, <br>PRICED RIGHT™</span>
           </div>
-          <div class="user-account">
-            {%- render 'icon' with 'menu-user' -%}
-            {% if customer %}
-              <a href="/account/">
-                {{ customer.name }}
-              </a>
-            {% else %}
-              <a href="/account/login">
-                Sign in
-              </a>
-            {% endif %}
+          <div class="w-full h-14 px-4 text-14 font-medium">
+            <div class="user-account h-full flex items-center space-x-4 break-words" v-if="!isLocalizationOpen && currentLevel == 1">
+              {%- render 'icon' with 'menu-user' -%}
+              {% if customer %}
+                <a href="/account/">{{ customer.name }}</a>
+              {% else %}
+                <a href="/account/login" class="text-14 text-121212">Sign in</a>
+              {% endif %}
             </div>
+            <div class="flex items-center h-full" v-else>
+              <span @click="goBack" class="cursor-pointer mr-2">
+                {%- render 'icon' with 'menu-arrow-left' -%}
+              </span>
+              <div class="main-title text-121212">${ getCurrentTitle() }</div>
+            </div>
+          </div>
         </header>
-        <main>
-          <div class="main-title">Product Categories</div>
-          <ul>
-            <li v-for="(menu, idx) in showMenu" :key="idx" @click.top="navToCollection(menu)">
-              <img :data-src="menu.img" :title="menu.name"  class="lazyload"  />
-              <span>${ menu.name }</span>
-              <span class="arrow" v-if="menu.children?.length > 0" @click.stop="navToCollection(menu)">
-                {%- render 'icon' with 'menu-arrow-right' -%}
-              </span>
-            </li>
-          </ul>
+
+        <div class="w-full h-2.5 bg-F5F5F5 mt-26"></div>
+        
+        <main class="flex flex-col px-4 py-4 bg-white">
+          <template v-if="!isLocalizationOpen">
+            <div class="main-title text-16 font-bold text-121212 text-left mb-5">${ getCurrentTitle() }</div>
+            <ul v-if="!isLastLevel()" class="flex flex-col space-y-4 break-words">
+              <li v-for="(menu, idx) in getCurrentMenuData()" 
+                  :key="idx" 
+                  @click="handleMenuClick(menu)" 
+                  class="text-121212 flex items-center space-x-4 cursor-pointer">
+                <img v-if="menu.img" :data-src="menu.img" :title="menu.name" width="24" height="24" class="lazyload w-9 h-9 object-contain" />
+                <span class="text-14 text-121212">${ menu.name }</span>
+                <span class="arrow ml-auto flex-1 flex self-stretch items-center justify-end" v-if="hasChildren(menu)">
+                  {%- render 'icon' with 'menu-arrow-right' -%}
+                </span>
+              </li>
+            </ul>
+            <div v-if="isLastLevel()" class="grid grid-cols-3 gap-x-2.5 gap-y-3">
+              <div v-for="(menu, idx) in getCurrentMenuData()" 
+                   :key="idx" 
+                   @click="handleMenuClick(menu)" 
+                   class="text-121212 flex flex-col items-center text-center cursor-pointer p-2">
+                <div class="w-27 h-27 relative">
+                  <div class="z-2 absolute left-0 top-0 fb-flex-center" v-if="menu.newTag">
+                    <span class="absolute font-bold text-10 text-white left-0.5 top-1 -rotate-45">NEW</span>
+                    <svg class="w-10 h-auto" width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="-26" y="48.9998" width="104.538" height="30" transform="rotate(-45 -26 48.9998)" fill="#ED0006"/>
+                    </svg>
+                  </div>
+                  <img :data-src="menu.img" :title="menu.name" width="108" height="108" class="lazyload w-27 h-27 object-contain" />
+                </div>
+                <div class="mt-1.5 w-full text-center text-12 font-medium text-121212 h-8 line-clamp-2">${ menu.name }</div>
+              </div>
+            </div>
+   
+          </template>
+          <template v-if="isLocalizationOpen">
+            <div class="main-title text-16 font-bold text-121212 text-left mb-5">${ getCurrentTitle() }</div>
+            <div v-for="item in localizationData.currentList" 
+                 :key="item.code"
+                 @click="handleLocalizationSelect(item)"
+                 class="h-14 flex items-center justify-between text-14 text-121212 cursor-pointer">
+              <div class="flex items-center space-x-4">
+                <span class="w-5 h-5 flex items-center justify-center">
+                  <template v-if="localizationData.mode === 'country'">
+                    {%- render 'eu-icon', icon: '${item.name}' -%}
+                  </template>
+                  <template v-if="localizationData.mode === 'language'">
+                    {%- render 'eu-icon', icon: 'global' -%}
+                  </template>
+                  <template v-if="localizationData.mode === 'currency'">
+                    ${ item.symbol }
+                  </template>
+                </span>
+                <span class="text-14 font-medium">
+                  <template v-if="localizationData.mode === 'country'">
+                    ${ item.name } (${ item.currency })
+                  </template>
+                  <template v-if="localizationData.mode === 'language'">
+                    ${ item.endonym }
+                  </template>
+                  <template v-if="localizationData.mode === 'currency'">
+                    ${ item.code } ${ item.symbol }
+                  </template>
+                </span>
+              </div>
+            </div>
+          </template>
         </main>
-        <footer>
-          <a href="/pages/about-us" class="link-item">About Us</a>
-          <a href="/pages/help" class="link-item">Help</a>
-          <a href="/blogs/industry-insights"  class="link-item">Blog</a>
-          <div class="social-media-link">
-            {%- if settings.social_facebook != blank -%}
-              <li class="social-media__item social-media__item--facebook">
-                <a href="{{ settings.social_facebook | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Facebook' }}">
-                  {%- render 'icon' with 'menu-facebook' -%}
-                </a>
-              </li>
-            {%- endif -%}
-            {%- if settings.social_instagram != blank -%}
-              <li class="social-media__item social-media__item--instagram">
-                <a href="{{ settings.social_instagram | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Instagram' }}">
-                  {%- render 'icon' with 'menu-instagram' -%}
-                </a>
-              </li>
-            {%- endif -%}
+        {% comment %} v-if="!isLocalizationOpen && currentLevel == 1" {% endcomment %}
+        <div class="w-full hidden" >
+          <div class="w-full h-2.5 bg-F5F5F5"></div>
+          <div class="w-full pt-6 px-4">
+            <div @click="openLocalization('country')" class="h-14 flex items-center justify-between text-14 text-121212 cursor-pointer">
+              <div class="flex items-center space-x-4">
+                {%- render 'eu-icon', icon: localization.country.name -%}
+                <span class="text-14 font-medium">{{ localization.country.name }}</span>
+              </div>
+              {%- render 'icon' with 'menu-arrow-right' -%}
+            </div>
+            <div @click="openLocalization('language')" class="h-14 flex items-center justify-between text-14 text-121212 cursor-pointer">
+              <div class="flex items-center space-x-4">
+                <span class="w-5 h-5 flex items-center justify-center">
+                  {%- render 'eu-icon', icon: 'global' -%}
+                </span>
+                <span class="text-14 font-medium">{{ localization.language.endonym_name }}</span>
+              </div>
+              {%- render 'icon' with 'menu-arrow-right' -%}
+            </div>
 
-            {%- if settings.social_youtube != blank -%}
-              {%- assign active_accounts = active_accounts | plus: 1 -%}
-          
-              <li class="social-media__item social-media__item--youtube">
-                <a href="{{ settings.social_youtube | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'YouTube' }}">
-                  {%- render 'icon' with 'menu-youtube' -%}
-                </a>
-              </li>
-            {%- endif -%}
-
-            {%- if settings.social_linkedin != blank -%}
-              {%- assign active_accounts = active_accounts | plus: 1 -%}
-          
-              <li class="social-media__item social-media__item--linkedin">
-                <a href="{{ settings.social_linkedin | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'LinkedIn' }}">
-                  {%- render 'icon' with 'menu-linkedin' -%}
-                </a>
-              </li>
-            {%- endif -%}
+            <div @click="openLocalization('currency')" class="h-14 flex items-center justify-between text-14 text-121212 cursor-pointer">
+              <div class="flex items-center space-x-4">
+                <span class="w-5 h-5 flex items-center justify-center">{{ shop.currency }}</span>
+                <span class="text-14 font-medium">
+                  {%- if settings.currency_code_enabled -%}
+                    {{ shop.currency }} {%- render 'customer-global-format', type: 'currency_symbol' -%}
+                  {%- else -%}
+                    {{ shop.currency_symbol }} {%- render 'customer-global-format', type: 'currency_symbol' -%}
+                  {%- endif -%}
+                </span>
+              </div>
+              {%- render 'icon' with 'menu-arrow-right' -%}
+            </div>
           </div>
-        </footer>
-      </div>
-      <div class="menu-nav-next" v-else>
-        <div class="menu-header" @click.top="menuNavToBack">
-          {%- render 'icon' with 'menu-arrow-left' -%}
-          <span>
-            Main Menu
-          </span>
         </div>
-        <main>
-          <div class="main-title">
-            <span>${ showMenu.name }</span>
-            <a :href="`/collections/${showMenu.handle}`">View All</a>
+        <div class="w-full" v-if="currentLevel == 1 && !isLocalizationOpen">
+          <div class="w-full h-2.5 bg-F5F5F5"></div>
+          <div class="flex flex-col px-4">
+            <a href="/pages/about-us" class="h-14 flex items-center justify-start text-14 text-121212 space-x-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M9.99884 0C4.47645 0 0 4.47993 0 10.0023C0 15.5247 4.47645 20 9.99884 20C15.5212 20 20 15.5235 20 10.0023C20 4.48108 15.5247 0 9.99884 0ZM14.3376 15.5583L9.9919 13.5474L5.64503 15.5583C5.18454 15.7723 4.70554 15.3014 4.91033 14.8374L9.9919 3.34143L15.0723 14.8374C15.2771 15.3014 14.7981 15.7723 14.3376 15.5583Z" fill="#FABE00"/>
+              </svg>
+              <span class="text-14 font-medium">About Us</span>
+            </a>
+            <a href="/pages/help" class="h-14 flex items-center justify-start text-14 text-121212 space-x-4">
+              {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="24" viewBox="0 0 20 24" fill="none">
+                <path d="M15.4552 2.27344H4.54485C2.03981 2.27344 0 4.31325 0 6.81828V14.0896C0 16.5946 2.03981 18.6344 4.54485 18.6344H7.32051L10 21.7277L12.6795 18.6344H15.4552C17.9602 18.6344 20 16.5946 20 14.0896V6.81828C20 4.31101 17.9602 2.27344 15.4552 2.27344ZM18.1816 14.0896C18.1816 15.5926 16.9582 16.816 15.4552 16.816H11.8475L10 18.952L8.15254 16.8183H4.54485C3.04183 16.8183 1.81839 15.5948 1.81839 14.0918V6.81828C1.81839 5.31526 3.04183 4.09182 4.54485 4.09182H15.4529C16.9559 4.09182 18.1794 5.31526 18.1794 6.81828V14.0896H18.1816Z" fill="#999999"/>
+                <path d="M10.3841 4.98141C8.29234 4.88475 7.05313 5.81911 6.6665 7.782L8.0668 8.11906C8.35677 6.83277 9.06312 6.18839 10.1908 6.18839C11.1251 6.25283 11.6382 6.73611 11.7348 7.63577C11.7671 8.28016 11.3333 8.92454 10.4312 9.56645C9.56128 10.1464 9.14243 10.9023 9.17465 11.8367V12.32H10.4783V11.9333C10.4461 11.2567 10.8005 10.6768 11.5415 10.196C12.7981 9.4227 13.3929 8.52304 13.3284 7.49203C13.1351 5.91576 12.1537 5.07806 10.3841 4.98141ZM9.0309 13.4798H10.6245V15.0239H9.0309V13.4798Z" fill="#999999"/>
+              </svg> {% endcomment %}
+              <svg t="1760665671526" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6565" width="24" height="24"><path d="M512 51.2a460.8 460.8 0 1 0 0 921.6 460.8 460.8 0 0 0 0-921.6z m0 855.7568a394.9568 394.9568 0 1 1 0-789.9136 394.9568 394.9568 0 0 1 0 789.9136zM512 281.6a120.4736 120.4736 0 0 0-131.6352 125.0816h59.904A65.8432 65.8432 0 0 1 512 336.896c35.5328 0 65.8432 17.7664 65.8432 59.2384 0 30.9248-18.432 45.4144-48.0768 65.8432a116.5312 116.5312 0 0 0-58.5728 98.0992v23.04h59.904v-17.8176c0-35.5328 13.1584-46.08 49.3568-73.728a119.1424 119.1424 0 0 0 63.1808-99.3792A115.2 115.2 0 0 0 512 281.6z m-50.0224 399.872a46.08 46.08 0 0 0 92.16-1.5872 45.4144 45.4144 0 0 0-48.7424-46.08 46.08 46.08 0 0 0-43.4176 47.7184z" p-id="6566" fill="#999999"></path></svg>
+              <span class="text-14 font-medium">Help</span>
+            </a>
+            <a href="/blogs/industry-insights" class="h-14 flex items-center justify-start text-14 text-121212 space-x-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="24" viewBox="0 0 20 24" fill="none">
+                <path d="M16.5219 0.521484H3.47845C3.00019 0.521484 2.60889 0.99105 2.60889 1.56496V22.4345C2.60889 23.0084 3.00019 23.478 3.47845 23.478H16.5219C17.0002 23.478 17.3915 23.0084 17.3915 22.4345V1.56496C17.3915 0.991049 17.0002 0.521484 16.5219 0.521484ZM15.6524 21.3911H4.34802V2.60844H15.6524V21.3911ZM6.19584 16.9563C6.19584 16.3824 6.58715 15.9128 7.06541 15.9128H12.935C13.4132 15.9128 13.8045 16.3824 13.8045 16.9563C13.8045 17.5302 13.4132 17.9997 12.935 17.9997H7.06541C6.58715 17.9997 6.19584 17.5302 6.19584 16.9563ZM6.32628 11.9997C6.32628 11.4258 6.71758 10.9563 7.19584 10.9563H12.9132C13.3915 10.9563 13.7828 11.4258 13.7828 11.9997C13.7828 12.5737 13.3915 13.0432 12.9132 13.0432H7.19584C6.71758 13.0432 6.32628 12.5737 6.32628 11.9997ZM6.32628 7.04322C6.32628 6.46931 6.71758 5.99975 7.19584 5.99975H12.9132C13.3915 5.99975 13.7828 6.46931 13.7828 7.04322C13.7828 7.61714 13.3915 8.0867 12.9132 8.0867H7.19584C6.71758 8.0867 6.32628 7.61714 6.32628 7.04322Z" fill="#999999"/>
+              </svg>
+              <span class="text-14 font-medium">Blog</span>
+            </a>
           </div>
-          <ul>
-            <li v-for="(menu, idx) in showMenu.children" :key="idx"  @click.top="navToCollection(menu)">
-              <img :data-src="menu.img" class="lazyload" :title="menu.name">
-              <span>${ menu.name }</span>
-              <span class="arrow"  v-if="menu.children?.length > 0" @click.stop="navToCollection(menu)">
-                {%- render 'icon' with 'menu-arrow-right' -%}
-              </span>
-            </li>
-          </ul>
-        </main>
+        </div>
+        <footer class="w-full h-6 bg-white"></footer>
       </div>
     </div>
   </div>
