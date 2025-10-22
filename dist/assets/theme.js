@@ -1,14 +1,14 @@
-$(function() {
+$(function () {
   (() => {
-    if(Cookies.get('logout') == 1) {
+    if (Cookies.get('logout') == 1) {
       Cookies.remove('logout');
       window.location.href = '/account/logout';
     }
-    if(
+    if (
       (window.themeVariables.userCompany.isB2b == 'false' && window.themeVariables.userCompany.name) ||
       (window.themeVariables.userCompany.isB2b == 'true' && !window.themeVariables.userCompany.zip.trim())
     ) {
-      const parsedUrl = new URL(window.location.href); 
+      const parsedUrl = new URL(window.location.href);
       const returnTo = parsedUrl.pathname + parsedUrl.search;
       window.location.href = `${window.northsky.b2b_url}/locations?return_to=${returnTo}`;
     }
@@ -23,7 +23,7 @@ $(function() {
     return value;
   };
 
- 
+
   function Delegate(root) {
     this.listenerMap = [{}, {}];
     if (root) {
@@ -263,7 +263,7 @@ $(function() {
   };
   var main_default = Delegate;
 
- 
+
   var InputBindingManager = class {
     constructor() {
       this.delegateElement = new main_default(document.body);
@@ -280,7 +280,7 @@ $(function() {
     }
   };
 
- 
+
   function triggerEvent(element, name, data = {}) {
     element.dispatchEvent(
       new CustomEvent(name, {
@@ -298,7 +298,7 @@ $(function() {
     );
   }
 
- 
+
   var CustomHTMLElement = class extends HTMLElement {
     constructor() {
       super();
@@ -357,7 +357,7 @@ $(function() {
     }
   };
 
- 
+
   var candidateSelectors = [
     'input',
     'select',
@@ -374,7 +374,7 @@ $(function() {
   var candidateSelector = /* @__PURE__ */ candidateSelectors.join(',');
   var matches =
     typeof Element === 'undefined'
-      ? function () {}
+      ? function () { }
       : Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
   var getCandidates = function getCandidates2(el, includeContainer, filter) {
     var candidates = Array.prototype.slice.apply(el.querySelectorAll(candidateSelector));
@@ -558,7 +558,7 @@ $(function() {
     return isNodeMatchingSelectorFocusable(options, node);
   };
 
- 
+
   function ownKeys(object, enumerableOnly) {
     var keys = Object.keys(object);
     if (Object.getOwnPropertySymbols) {
@@ -899,8 +899,8 @@ $(function() {
       activeFocusTraps.activateTrap(trap);
       state.delayInitialFocusTimer = config.delayInitialFocus
         ? delay(function () {
-            tryFocus(getInitialFocusNode());
-          })
+          tryFocus(getInitialFocusNode());
+        })
         : tryFocus(getInitialFocusNode());
       doc.addEventListener('focusin', checkFocusIn, true);
       doc.addEventListener('mousedown', checkPointerDown, {
@@ -1034,7 +1034,7 @@ $(function() {
     return trap;
   };
 
- 
+
   function filterShopifyEvent(event, domElement, callback) {
     let executeCallback = false;
     if (event.type.includes('shopify:section')) {
@@ -1049,7 +1049,7 @@ $(function() {
     }
   }
 
- 
+
   var OpenableElement = class extends CustomHTMLElement {
     static get observedAttributes() {
       return ['open'];
@@ -1153,7 +1153,7 @@ $(function() {
   };
   window.customElements.define('openable-element', OpenableElement);
 
- 
+
   var CollapsibleContent = class extends OpenableElement {
     constructor() {
       super();
@@ -1204,7 +1204,7 @@ $(function() {
   };
   window.customElements.define('collapsible-content', CollapsibleContent);
 
- 
+
   var ConfirmButton = class extends HTMLButtonElement {
     connectedCallback() {
       this.addEventListener('click', (event) => {
@@ -1216,7 +1216,7 @@ $(function() {
   };
   window.customElements.define('confirm-button', ConfirmButton, { extends: 'button' });
 
- 
+
   var LoaderButtonMixin = {
     _prepareButton() {
       this.originalContent = this.innerHTML;
@@ -1298,7 +1298,7 @@ $(function() {
     },
   };
 
- 
+
   var LoaderButton = class extends HTMLButtonElement {
     static get observedAttributes() {
       return ['aria-busy'];
@@ -1336,7 +1336,7 @@ $(function() {
   Object.assign(LoaderButton.prototype, LoaderButtonMixin);
   window.customElements.define('loader-button', LoaderButton, { extends: 'button' });
 
- 
+
   var PagePagination = class extends CustomHTMLElement {
     connectedCallback() {
       if (this.hasAttribute('ajax')) {
@@ -1352,7 +1352,7 @@ $(function() {
   };
   window.customElements.define('page-pagination', PagePagination);
 
- 
+
   var ToggleButton = class extends HTMLButtonElement {
     static get observedAttributes() {
       return ['aria-expanded', 'aria-busy'];
@@ -1442,7 +1442,7 @@ $(function() {
   Object.assign(ToggleButton.prototype, LoaderButtonMixin);
   window.customElements.define('toggle-button', ToggleButton, { extends: 'button' });
 
- 
+
   var ToggleLink = class extends HTMLAnchorElement {
     static get observedAttributes() {
       return ['aria-expanded'];
@@ -1502,7 +1502,7 @@ $(function() {
   };
   window.customElements.define('toggle-link', ToggleLink, { extends: 'a' });
 
- 
+
   var PageDots = class extends CustomHTMLElement {
     connectedCallback() {
       this.buttons = Array.from(this.querySelectorAll('button'));
@@ -1561,7 +1561,7 @@ $(function() {
   };
   window.customElements.define('page-dots', PageDots);
 
- 
+
   var PrevNextButtons = class extends HTMLElement {
     connectedCallback() {
       this.prevButton = this.querySelector('button:first-of-type');
@@ -1594,18 +1594,18 @@ $(function() {
   window.customElements.define('prev-button', PrevButton, { extends: 'button' });
   window.customElements.define('next-button', NextButton, { extends: 'button' });
 
- 
+
   function getStickyHeaderOffset() {
     const documentStyles = getComputedStyle(document.documentElement);
     return (
       parseInt(documentStyles.getPropertyValue('--header-height') || 0) *
-        parseInt(documentStyles.getPropertyValue('--enable-sticky-header') || 0) +
+      parseInt(documentStyles.getPropertyValue('--enable-sticky-header') || 0) +
       parseInt(documentStyles.getPropertyValue('--announcement-bar-height') || 0) *
-        parseInt(documentStyles.getPropertyValue('--enable-sticky-announcement-bar') || 0)
+      parseInt(documentStyles.getPropertyValue('--enable-sticky-announcement-bar') || 0)
     );
   }
 
- 
+
   var SafeSticky = class extends HTMLElement {
     connectedCallback() {
       this.lastKnownY = window.scrollY;
@@ -1639,7 +1639,7 @@ $(function() {
   };
   window.customElements.define('safe-sticky', SafeSticky);
 
- 
+
   function throttle(callback, delay3 = 15) {
     let throttleTimeout = null,
       storedEvent = null;
@@ -1660,7 +1660,7 @@ $(function() {
     return throttledEventHandler;
   }
 
- 
+
   var ScrollSpy = class extends HTMLElement {
     connectedCallback() {
       this._createSvg();
@@ -1760,7 +1760,7 @@ $(function() {
   };
   window.customElements.define('scroll-spy', ScrollSpy);
 
- 
+
   var template = `
   <style>
     :host {
@@ -1855,7 +1855,7 @@ $(function() {
     window.customElements.define('scroll-shadow', ScrollShadow);
   }
 
- 
+
   var ShareToggleButton = class extends ToggleButton {
     _onButtonClick() {
       if (window.matchMedia(window.themeVariables.breakpoints.phone).matches && navigator.share) {
@@ -1870,7 +1870,7 @@ $(function() {
   };
   window.customElements.define('share-toggle-button', ShareToggleButton, { extends: 'button' });
 
- 
+
   var NativeCarousel = class extends CustomHTMLElement {
     connectedCallback() {
       this.items = Array.from(this.querySelectorAll('native-carousel-item'));
@@ -1956,7 +1956,7 @@ $(function() {
   window.customElements.define('native-carousel-item', NativeCarouselItem);
   window.customElements.define('native-carousel', NativeCarousel);
 
- 
+
   var DragCursor = class extends HTMLElement {
     connectedCallback() {
       this.scrollableElement = this.parentElement;
@@ -1990,7 +1990,7 @@ $(function() {
   };
   window.customElements.define('drag-cursor', DragCursor);
 
- 
+
   var ScrollableContent = class extends CustomHTMLElement {
     connectedCallback() {
       if (this.draggable) {
@@ -2068,7 +2068,7 @@ $(function() {
   };
   window.customElements.define('scrollable-content', ScrollableContent);
 
- 
+
   var LoadingBar = class extends CustomHTMLElement {
     constructor() {
       super();
@@ -2094,7 +2094,7 @@ $(function() {
   };
   window.customElements.define('loading-bar', LoadingBar);
 
- 
+
   var SplitLines = class extends HTMLElement {
     connectedCallback() {
       this.originalContent = this.textContent;
@@ -2132,8 +2132,7 @@ $(function() {
           this.innerHTML = Object.values(bounds)
             .map(
               (item) =>
-                `<span ${this.hasAttribute('reveal') && !force ? 'reveal' : ''} ${
-                  this.hasAttribute('reveal-visibility') && !force ? 'reveal-visibility' : ''
+                `<span ${this.hasAttribute('reveal') && !force ? 'reveal' : ''} ${this.hasAttribute('reveal-visibility') && !force ? 'reveal-visibility' : ''
                 } style="display: block">${item.trim()}</span>`
             )
             .join('');
@@ -2154,7 +2153,7 @@ $(function() {
   };
   window.customElements.define('split-lines', SplitLines);
 
- 
+
   var PopoverContent = class extends OpenableElement {
     connectedCallback() {
       super.connectedCallback();
@@ -2170,7 +2169,7 @@ $(function() {
   };
   window.customElements.define('popover-content', PopoverContent);
 
- 
+
   var TabsNav = class extends HTMLElement {
     connectedCallback() {
       this.buttons = Array.from(this.querySelectorAll('button[aria-controls]'));
@@ -2276,7 +2275,7 @@ $(function() {
   };
   window.customElements.define('tabs-nav', TabsNav);
 
- 
+
   var LibraryLoader = class {
     static load(libraryName) {
       const STATUS_REQUESTED = 'requested',
@@ -2347,7 +2346,7 @@ $(function() {
     },
   });
 
- 
+
   var QrCode = class extends HTMLElement {
     async connectedCallback() {
       await LibraryLoader.load('qrCode');
@@ -2360,7 +2359,7 @@ $(function() {
   };
   window.customElements.define('qr-code', QrCode);
 
- 
+
   var CountrySelector = class extends HTMLSelectElement {
     connectedCallback() {
       this.provinceElement = document.getElementById(this.getAttribute('aria-owns'));
@@ -2408,7 +2407,7 @@ $(function() {
   };
   window.customElements.define('country-selector', CountrySelector, { extends: 'select' });
 
- 
+
   var ModalContent = class extends OpenableElement {
     connectedCallback() {
       super.connectedCallback();
@@ -2442,7 +2441,7 @@ $(function() {
   };
   window.customElements.define('modal-content', ModalContent);
 
- 
+
   var PriceRange = class extends HTMLElement {
     connectedCallback() {
       this.rangeLowerBound = this.querySelector('.price-range__range-group input:first-child');
@@ -2509,7 +2508,7 @@ $(function() {
   };
   window.customElements.define('price-range', PriceRange);
 
- 
+
   var LinkBar = class extends HTMLElement {
     connectedCallback() {
       const selectedItem = this.querySelector('.link-bar__link-item--selected');
@@ -2522,7 +2521,7 @@ $(function() {
   };
   window.customElements.define('link-bar', LinkBar);
 
- 
+
   var MediaFeatures = class {
     static prefersReducedMotion() {
       return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2532,14 +2531,14 @@ $(function() {
     }
   };
 
- 
+
   var FlickityCarousel = class extends CustomHTMLElement {
     constructor() {
       super();
       if (this.childElementCount === 1) {
         return;
       }
-     
+
       this.productImageZoomDom = document.getElementById(this.dataset.productImageZoomId);
       this.addEventListener('flickity:ready', this._preloadNextImage.bind(this));
       this.listenerImageZoomDom();
@@ -2606,7 +2605,7 @@ $(function() {
       });
       observer.observe(this.productImageZoomDom, { attributes: true });
     }
-    
+
     openProductImageZoom() {
       $('.cus-product .product__media').removeClass('position-sticky');
       $(this).closest('.product__media-list-wrapper').find('.product__zoom-button').attr('aria-expanded', true);
@@ -2625,9 +2624,9 @@ $(function() {
               change: (event) => triggerEvent(this, 'flickity:slide-changed', event),
               settle: (event) => triggerEvent(this, 'flickity:slide-settled', event),
               staticClick: () => {
-                if($(this).attr('has-video') == 'true' && flickityInstance.selectedIndex != 0) {
+                if ($(this).attr('has-video') == 'true' && flickityInstance.selectedIndex != 0) {
                   this.openProductImageZoom();
-                } else if(!$(this).attr('has-video')){
+                } else if (!$(this).attr('has-video')) {
                   this.openProductImageZoom();
                 }
               }
@@ -2675,7 +2674,7 @@ $(function() {
   };
   window.customElements.define("flickity-carousel", FlickityCarousel);
 
- 
+
   function getSiblings(element, filter, includeSelf = false) {
     let siblings = [];
     let currentElement = element;
@@ -2712,7 +2711,7 @@ $(function() {
     return processedTarget;
   }
 
- 
+
   var FlickityControls = class extends CustomHTMLElement {
     async connectedCallback() {
       this.flickityCarousel.addEventListener('flickity:ready', this._onSlideChanged.bind(this, false));
@@ -2796,7 +2795,7 @@ $(function() {
   };
   window.customElements.define('flickity-controls', FlickityControls);
 
- 
+
   var ExternalVideo = class extends CustomHTMLElement {
     constructor() {
       super();
@@ -2864,7 +2863,7 @@ $(function() {
   };
   window.customElements.define('external-video', ExternalVideo);
 
- 
+
   var ProductLoader = class {
     static load(productHandle) {
       if (!productHandle) {
@@ -2885,7 +2884,7 @@ $(function() {
   };
   __publicField(ProductLoader, 'loadedProducts', {});
 
- 
+
   var ModelMedia = class extends HTMLElement {
     constructor() {
       super();
@@ -2939,7 +2938,7 @@ $(function() {
   };
   window.customElements.define('model-media', ModelMedia);
 
- 
+
   var NativeVideo = class extends HTMLElement {
     constructor() {
       super();
@@ -2979,7 +2978,7 @@ $(function() {
   };
   window.customElements.define('native-video', NativeVideo);
 
- 
+
   var ComboBox = class extends OpenableElement {
     connectedCallback() {
       super.connectedCallback();
@@ -3053,7 +3052,7 @@ $(function() {
       try {
         jsonArray = JSON.parse(discountJson);
         let applicableDiscount = null;
-       
+
         for (let i = 0; i < jsonArray.length; i++) {
           if (quantity >= parseInt(jsonArray[i].moq)) {
             applicableDiscount = parseFloat(jsonArray[i].discount);
@@ -3071,10 +3070,10 @@ $(function() {
     } else {
       finalPrice = Math.round(quantity * 1 * basePrice * 100) / 100;
     }
-    return formatMoney(finalPrice*100);
+    return formatMoney(finalPrice * 100);
   }
 
- 
+
   var QuantitySelector = class extends CustomHTMLElement {
     connectedCallback() {
       this.inputElement = this.querySelector('input');
@@ -3114,7 +3113,7 @@ $(function() {
         const mpqValue = +this.inputElement.getAttribute('data-mpq');
         this.inputElement.quantity = this.inputElement.quantity + mpqValue;
         this.maxQuantityWarning();
-        
+
         let discountJson = this.quantitySelector.getAttribute('data-discount');
         const quantity = this.inputElement.quantity;
         let basePrice = this.quantitySelector.getAttribute('data-price');
@@ -3126,11 +3125,11 @@ $(function() {
           $('.cus-product .product-sticky-form__price').text(`${finalPrice}`);
         }
         this.highlightPriceRange(this.inputElement.quantity);
-        
+
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
         document.dispatchEvent(new CustomEvent('quantitySelectorUpdated', { detail: this.quantitySelector.quantity }));
       });
-      this.addEventListener('quantityChanged', ({detail: {quantity}}) => {
+      this.addEventListener('quantityChanged', ({ detail: { quantity } }) => {
         event.stopPropagation();
         $(this.quantitySelector).attr('data-demand', quantity);
         document.dispatchEvent(new CustomEvent('quantitySelectorUpdated', { detail: this.quantitySelector.quantity }));
@@ -3220,7 +3219,7 @@ $(function() {
         }
         this.$hiddenQuantity.val(this.quantitySelector.quantity);
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
-        
+
       });
       this.delegate.on('click', 'button:last-child', () => {
         this.quantitySelector.quantity = this.quantitySelector.quantity + mpqValue;
@@ -3229,7 +3228,7 @@ $(function() {
         this.$hiddenQuantity.val(this.quantitySelector.quantity);
         $(this.quantitySelector).attr('data-demand', this.quantitySelector.quantity);
       });
-      this.addEventListener('quantityChanged', ({detail: {quantity}}) => {
+      this.addEventListener('quantityChanged', ({ detail: { quantity } }) => {
         event.stopPropagation();
         $(this.quantitySelector).attr('data-demand', quantity);
         $(this).closest('.product-item__info').find("input[name='quantity']").val(quantity);
@@ -3306,14 +3305,14 @@ $(function() {
     _onValueChanged() {
       const moqValue = +this.getAttribute('data-moq');
       const mpqValue = +this.getAttribute('data-mpq');
-      if(this.quantity < moqValue) {
-        this.quantity = moqValue; 
+      if (this.quantity < moqValue) {
+        this.quantity = moqValue;
       }
       this.quantity = Math.ceil((this.quantity - moqValue) / mpqValue) * mpqValue + moqValue;
     }
   };
   window.customElements.define('line-input-number', LineInputNumber, { extends: 'input' });
- 
+
   var InputNumber = class extends HTMLInputElement {
     connectedCallback() {
       this.addEventListener('input', this._onValueInput.bind(this));
@@ -3338,22 +3337,22 @@ $(function() {
     _onValueInput() {
       this.highlightPriceRange(this.quantity);
     }
-    _onValueChanged() { 
+    _onValueChanged() {
       const moqValue = +this.getAttribute('data-moq');
       const mpqValue = +this.getAttribute('data-mpq');
-      
-      if(this.quantity < moqValue) {
-        this.quantity = moqValue; 
+
+      if (this.quantity < moqValue) {
+        this.quantity = moqValue;
       }
       this.quantity = Math.ceil((this.quantity - moqValue) / mpqValue) * mpqValue + moqValue;
-      
+
 
       this.dispatchEvent(new CustomEvent('quantityChanged', {
         bubbles: true,
         detail: {
           quantity: this.quantity,
         },
-       }));
+      }));
 
       if (this.quantity == moqValue) {
         $(this).prev().attr('disabled', true);
@@ -3369,7 +3368,7 @@ $(function() {
         cartInput(updates);
       }
 
-      let discountJson = this.getAttribute('data-discount'); 
+      let discountJson = this.getAttribute('data-discount');
       let basePrice = this.getAttribute('data-price');
       if (basePrice) {
         basePrice = parseFloat(basePrice.replace(/,/g, ''));
@@ -3418,7 +3417,7 @@ $(function() {
   };
   window.customElements.define('input-number', InputNumber, { extends: 'input' });
 
- 
+
   var AnnouncementBar = class extends CustomHTMLElement {
     async connectedCallback() {
       await customElements.whenDefined('announcement-bar-item');
@@ -3489,7 +3488,7 @@ $(function() {
   };
   window.customElements.define('announcement-bar', AnnouncementBar);
 
- 
+
   var AnnouncementBarItem = class extends CustomHTMLElement {
     connectedCallback() {
       if (this.hasContent) {
@@ -3576,7 +3575,7 @@ $(function() {
   };
   window.customElements.define('announcement-bar-item', AnnouncementBarItem);
 
- 
+
   var SearchPage = class extends HTMLElement {
     connectedCallback() {
       this.facetToolbar = document.getElementById('mobile-facet-toolbar');
@@ -3595,10 +3594,8 @@ $(function() {
       this.completeFor.forEach((item) => {
         promisesList.push(
           fetch(
-            `${window.themeVariables.routes.searchUrl}?section_id=${this.getAttribute('section-id')}&q=${
-              this.terms
-            }&type=${item}&options[prefix]=last&options[unavailable_products]=${
-              window.themeVariables.settings.searchUnavailableProducts
+            `${window.themeVariables.routes.searchUrl}?section_id=${this.getAttribute('section-id')}&q=${this.terms
+            }&type=${item}&options[prefix]=last&options[unavailable_products]=${window.themeVariables.settings.searchUnavailableProducts
             }`
           )
         );
@@ -3625,7 +3622,7 @@ $(function() {
   };
   window.customElements.define('search-page', SearchPage);
 
- 
+
   var CookieBar = class extends CustomHTMLElement {
     connectedCallback() {
       if (window.Shopify && window.Shopify.designMode) {
@@ -3663,7 +3660,7 @@ $(function() {
   };
   window.customElements.define('cookie-bar', CookieBar);
 
- 
+
   var ProductRecommendations = class extends HTMLElement {
     async connectedCallback() {
       if (!this.hasAttribute('use-automatic-recommendations')) {
@@ -3723,12 +3720,12 @@ $(function() {
           $formWrapper.css('visibility', 'visible');
         },
         methods: {
-         
+
           highlightMatch(value) {
             if (!this.searchStr.trim()) {
               return value;
             }
-           
+
             const escapedSearchStr = this.searchStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             const regex = new RegExp(`(${escapedSearchStr})`, 'gi');
             return value.replace(regex, '<span class="highlight">$1</span>');
@@ -3770,8 +3767,8 @@ $(function() {
                 console.error(error);
               }
             }
-  
-           
+
+
             this.cb = cb;
             cb(results);
           },
@@ -3787,14 +3784,14 @@ $(function() {
             }
           },
           async getResult() {
-            if(this.isloading) return;
+            if (this.isloading) return;
             this.isloading = true;
             triggerEvent(document.documentElement, 'theme:loading:start');
             this.queryParam.keyword = this.searchStr;
             const url = new URL(window.location.href);
             url.pathname = '/search';
             url.search = `?type=product&q=${encodeURIComponent(this.searchStr)}`;
-            try{
+            try {
               this.abortController = new AbortController();
               const response = await fetch(`${window.northsky.api}/openapi/search/v2`, {
                 signal: this.abortController.signal,
@@ -3805,12 +3802,12 @@ $(function() {
                 },
               });
               const res = await response.json();
-              if(res.data && res.data.totalNum == 1 && res.data.searchHitType && res.data.searchHitType == 'skuNo') {
+              if (res.data && res.data.totalNum == 1 && res.data.searchHitType && res.data.searchHitType == 'skuNo') {
                 window.location.href = res.data.skuInfos[0].productUrl;
               } else {
                 window.location.href = url.toString();
               }
-            } catch(error) {
+            } catch (error) {
               window.location.href = url.toString();
               console.error(error);
             } finally {
@@ -3819,7 +3816,7 @@ $(function() {
             }
           },
           handleSearch() {
-            if(!this.searchStr?.trim()) {
+            if (!this.searchStr?.trim()) {
               window.location.href = "/collections/all";
               return
             }
@@ -3831,7 +3828,7 @@ $(function() {
     }
   };
   window.customElements.define('header-search-form', HeaderSearchForm);
-  
+
 
   var pcMenuSidebar = class extends HTMLElement {
     connectedCallback() {
@@ -3868,9 +3865,9 @@ $(function() {
             this.menu1Name = this.menu2Name = '';
           },
           navToAllCollection(level) {
-            if(level == 1) {
+            if (level == 1) {
               window.location.href = `/collections/${this.hoverMenu1.handle}`;
-            } else if(level == 2) {
+            } else if (level == 2) {
               window.location.href = `/collections/${this.hoverMenu2.handle}`;
             }
           },
@@ -3878,34 +3875,34 @@ $(function() {
             window.location.href = `/collections/${menu.handle}`;
           },
           handleHideMenu(level) {
-            if(level == 2) {
+            if (level == 2) {
               this.hoverMenu2.isSelected = false;
               this.hoverMenu2 = {};
               this.menu3 = [];
-            } else if(level == 3) {
+            } else if (level == 3) {
               this.hoverMenu3.isSelected = false;
               this.hoverMenu3 = {};
             }
           },
           handleNextMenu(menu, level) {
             menu.isSelected = true;
-            if(level == 1) {
+            if (level == 1) {
               this.menu1Name = menu.name;
-              this.menu2 =menu.children ? menu.children.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())) : [];
-              if(this.hoverMenu1.handle !== menu.handle) {
+              this.menu2 = menu.children ? menu.children.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())) : [];
+              if (this.hoverMenu1.handle !== menu.handle) {
                 this.menu3 = [];
                 this.hoverMenu1.isSelected = false;
                 this.hoverMenu1 = menu;
               }
-            } else if(level == 2) {
+            } else if (level == 2) {
               this.menu2Name = menu.name;
               this.menu3 = menu.children ? menu.children.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())) : [];
-              if(this.hoverMenu2.handle !== menu.handle) {
+              if (this.hoverMenu2.handle !== menu.handle) {
                 this.hoverMenu2.isSelected = false;
                 this.hoverMenu2 = menu;
               }
-            } else if(level == 3) {
-              if(this.hoverMenu3.handle !== menu.handle) {
+            } else if (level == 3) {
+              if (this.hoverMenu3.handle !== menu.handle) {
                 this.hoverMenu3.isSelected = false;
                 this.hoverMenu3 = menu;
               }
@@ -3914,23 +3911,23 @@ $(function() {
           async getAllList() {
             function generateHandles(data, parentHandle = '') {
               return data.map(item => {
-               
-                const handle = item.name
-                  .toLowerCase()                 
-                  .replace(/[^a-z0-9\s-]/g, '')   
-                  .trim()                         
-                  .replace(/\s+/g, '-')           
-                  .replace(/-+/g, '-');           
 
-               
+                const handle = item.name
+                  .toLowerCase()
+                  .replace(/[^a-z0-9\s-]/g, '')
+                  .trim()
+                  .replace(/\s+/g, '-')
+                  .replace(/-+/g, '-');
+
+
                 const fullHandle = parentHandle ? `${parentHandle}-${handle}` : handle;
 
-               
+
                 if (item.children && item.children.length > 0) {
                   item.children = generateHandles(item.children, fullHandle);
                 }
 
-               
+
                 item.handle = fullHandle;
                 item.isSelected = false;
                 return item;
@@ -3973,8 +3970,8 @@ $(function() {
             window.location.href = `/collections/${menu.handle}`;
           },
           handleNextMenu(menu) {
-            if(menu.children.length > 0) {
-              menu.children =  menu.children.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+            if (menu.children.length > 0) {
+              menu.children = menu.children.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
               this.menuStack.push(menu);
               this.showMenu = menu;
             }
@@ -3983,29 +3980,29 @@ $(function() {
             this.showMenu = this.menuStack[0];
             this.menuStack = this.menuStack.slice(0, 1);
           },
-          menuNavToBack () {
+          menuNavToBack() {
             this.menuStack.pop();
-            this.showMenu =  this.menuStack[this.menuStack.length - 1];
+            this.showMenu = this.menuStack[this.menuStack.length - 1];
           },
           getAllList() {
             function generateHandles(data, parentHandle = '') {
               return data.map(item => {
-               
-                const handle = item.name
-                  .toLowerCase()                 
-                  .replace(/[^a-z0-9\s-]/g, '')   
-                  .trim()                         
-                  .replace(/\s+/g, '-')           
-                  .replace(/-+/g, '-');           
 
-               
+                const handle = item.name
+                  .toLowerCase()
+                  .replace(/[^a-z0-9\s-]/g, '')
+                  .trim()
+                  .replace(/\s+/g, '-')
+                  .replace(/-+/g, '-');
+
+
                 const fullHandle = parentHandle ? `${parentHandle}-${handle}` : handle;
 
-               
+
                 if (item.children && item.children.length > 0) {
                   item.children = generateHandles(item.children, fullHandle);
                 }
-               
+
                 item.handle = fullHandle;
                 return item;
               });
@@ -4037,7 +4034,7 @@ $(function() {
         });
         const config = { attributes: true, attributeFilter: ['data-demand'] };
         observer.observe(targetInput, config);
-      } catch(e) {
+      } catch (e) {
         console.error(e)
       }
     }
@@ -4063,7 +4060,7 @@ $(function() {
   };
   window.customElements.define('stock-label', StockLabel);
 
- 
+
   var RecentlyViewedProducts = class extends HTMLElement {
     async connectedCallback() {
       if (this.searchQueryString === '') {
@@ -4089,7 +4086,7 @@ $(function() {
           observeParents: true,
           touchStartPreventDefault: true,
           passiveListeners: false,
-          touchAngle: 70,              
+          touchAngle: 70,
           threshold: 10,
           breakpoints: {
             0: {
@@ -4118,7 +4115,7 @@ $(function() {
             prevEl: '.recently-viewed .swiper-button-prev',
           },
           scrollbar: {
-            el:".recently-viewed .swiper-scrollbar"
+            el: ".recently-viewed .swiper-scrollbar"
           },
         });
       }
@@ -4145,7 +4142,7 @@ $(function() {
   };
   window.customElements.define('recently-viewed-products', RecentlyViewedProducts);
 
- 
+
   function getSizedMediaUrl(media, size) {
     let src = typeof media === 'string' ? media : media['preview_image'] ? media['preview_image']['src'] : media['url'];
     if (size === null) {
@@ -4191,7 +4188,7 @@ $(function() {
     });
   }
 
- 
+
   var CustomAnimation = class {
     constructor(effect) {
       this._effect = effect;
@@ -4310,7 +4307,7 @@ $(function() {
     }
   };
 
- 
+
   var SlideshowItem = class extends HTMLElement {
     async connectedCallback() {
       this._pendingAnimations = [];
@@ -4509,7 +4506,7 @@ $(function() {
   };
   window.customElements.define('slide-show-item', SlideshowItem);
 
- 
+
   var VerticalScrollBlockerMixin = {
     _blockVerticalScroll(threshold = 18) {
       this.addEventListener('touchstart', (event) => {
@@ -4528,7 +4525,7 @@ $(function() {
     },
   };
 
- 
+
   var Slideshow = class extends CustomHTMLElement {
     connectedCallback() {
       this.items = Array.from(this.querySelectorAll('slide-show-item'));
@@ -4560,7 +4557,7 @@ $(function() {
     }
     async _setupVisibility() {
       await this.untilVisible();
-      await this.items[this.selectedIndex].transitionToEnter(this.transitionType).catch((error) => {});
+      await this.items[this.selectedIndex].transitionToEnter(this.transitionType).catch((error) => { });
       this.startPlayer();
     }
     previous() {
@@ -4587,7 +4584,7 @@ $(function() {
       if (this.pageDots) {
         this.pageDots.selectedIndex = newItem.index;
       }
-      await newItem.transitionToEnter(this.transitionType, shouldTransition, reverseDirection).catch((error) => {});
+      await newItem.transitionToEnter(this.transitionType, shouldTransition, reverseDirection).catch((error) => { });
       this.isTransitioning = false;
     }
     pausePlayer() {
@@ -4602,7 +4599,7 @@ $(function() {
   Object.assign(Slideshow.prototype, VerticalScrollBlockerMixin);
   window.customElements.define('slide-show', Slideshow);
 
- 
+
   var ImageWithTextItem = class extends HTMLElement {
     get index() {
       return [...this.parentNode.children].indexOf(this);
@@ -4660,7 +4657,7 @@ $(function() {
   };
   window.customElements.define('image-with-text-item', ImageWithTextItem);
 
- 
+
   var ImageWithText = class extends CustomHTMLElement {
     connectedCallback() {
       this.items = Array.from(this.querySelectorAll('image-with-text-item'));
@@ -4739,7 +4736,7 @@ $(function() {
   };
   window.customElements.define('image-with-text', ImageWithText);
 
- 
+
   var TestimonialItem = class extends CustomHTMLElement {
     connectedCallback() {
       this.addEventListener('split-lines:re-split', (event) => {
@@ -4807,7 +4804,7 @@ $(function() {
   };
   window.customElements.define('testimonial-item', TestimonialItem);
 
- 
+
   var TestimonialList = class extends CustomHTMLElement {
     connectedCallback() {
       this.items = Array.from(this.querySelectorAll('testimonial-item'));
@@ -4863,7 +4860,7 @@ $(function() {
   Object.assign(TestimonialList.prototype, VerticalScrollBlockerMixin);
   window.customElements.define('testimonial-list', TestimonialList);
 
- 
+
   var ShopTheLookItem = class extends HTMLElement {
     get index() {
       return [...this.parentNode.children].indexOf(this);
@@ -4916,7 +4913,7 @@ $(function() {
   };
   window.customElements.define('shop-the-look-item', ShopTheLookItem);
 
- 
+
   var ShopTheLookNav = class extends CustomHTMLElement {
     connectedCallback() {
       this.shopTheLook = this.closest('shop-the-look');
@@ -4957,7 +4954,7 @@ $(function() {
   };
   window.customElements.define('shop-the-look-nav', ShopTheLookNav);
 
- 
+
   var ShopTheLook = class extends CustomHTMLElement {
     connectedCallback() {
       this.lookItems = Array.from(this.querySelectorAll('shop-the-look-item'));
@@ -5019,7 +5016,7 @@ $(function() {
   };
   window.customElements.define('shop-the-look', ShopTheLook);
 
- 
+
   var CollectionList = class extends CustomHTMLElement {
     async connectedCallback() {
       this.items = Array.from(this.querySelectorAll('.list-collections__item'));
@@ -5098,7 +5095,7 @@ $(function() {
   };
   window.customElements.define('collection-list', CollectionList);
 
- 
+
   var ProductList = class extends CustomHTMLElement {
     constructor() {
       super();
@@ -5161,7 +5158,7 @@ $(function() {
       event.target.toggleAttribute(
         'disabled',
         this.productListInner.scrollLeft * directionFlip + (this.productListInner.clientWidth + columnGap) * 2 >=
-          this.productListInner.scrollWidth
+        this.productListInner.scrollWidth
       );
       this.productListInner.scrollBy({
         left: (this.productListInner.clientWidth + columnGap) * directionFlip,
@@ -5195,7 +5192,7 @@ $(function() {
   __publicField(ProductList, 'observedAttributes', ['hidden']);
   window.customElements.define('product-list', ProductList);
 
- 
+
   var LogoList = class extends CustomHTMLElement {
     async connectedCallback() {
       this.items = Array.from(this.querySelectorAll('.logo-list__item'));
@@ -5248,7 +5245,7 @@ $(function() {
       event.target.toggleAttribute(
         'disabled',
         this.logoListScrollable.scrollLeft * directionFlip + (this.logoListScrollable.clientWidth + 24) * 2 >=
-          this.logoListScrollable.scrollWidth
+        this.logoListScrollable.scrollWidth
       );
       this.logoListScrollable.scrollBy({
         left: (this.logoListScrollable.clientWidth + 24) * directionFlip,
@@ -5258,7 +5255,7 @@ $(function() {
   };
   window.customElements.define('logo-list', LogoList);
 
- 
+
   var BlogPostNavigation = class extends HTMLElement {
     connectedCallback() {
       window.addEventListener('scroll', throttle(this._updateProgressBar.bind(this), 15));
@@ -5276,7 +5273,7 @@ $(function() {
       this.classList.toggle(
         'is-visible',
         articleMainPartBoundingBox.top < stickyHeaderOffset &&
-          articleMainPartBoundingBox.bottom > stickyHeaderOffset + this.clientHeight - marginCompensation
+        articleMainPartBoundingBox.bottom > stickyHeaderOffset + this.clientHeight - marginCompensation
       );
       if (this.hasNextArticle) {
         if (progress > 0.8) {
@@ -5290,7 +5287,7 @@ $(function() {
   };
   window.customElements.define('blog-post-navigation', BlogPostNavigation);
 
- 
+
   var MultiColumn = class extends CustomHTMLElement {
     connectedCallback() {
       if (!this.hasAttribute('stack')) {
@@ -5357,7 +5354,7 @@ $(function() {
       event.target.toggleAttribute(
         'disabled',
         this.multiColumnInner.scrollLeft * directionFlip + (this.multiColumnInner.clientWidth + columnGap) * 2 >=
-          this.multiColumnInner.scrollWidth
+        this.multiColumnInner.scrollWidth
       );
       this.multiColumnInner.scrollBy({
         left: (this.multiColumnInner.clientWidth + columnGap) * directionFlip,
@@ -5367,7 +5364,7 @@ $(function() {
   };
   window.customElements.define('multi-column', MultiColumn);
 
- 
+
   var GalleryList = class extends HTMLElement {
     connectedCallback() {
       this.listItems = Array.from(this.querySelectorAll('gallery-item'));
@@ -5402,7 +5399,7 @@ $(function() {
   };
   window.customElements.define('gallery-list', GalleryList);
 
- 
+
   var GalleryItem = class extends HTMLElement {
     get index() {
       return [...this.parentNode.children].indexOf(this);
@@ -5424,7 +5421,7 @@ $(function() {
   };
   window.customElements.define('gallery-item', GalleryItem);
 
- 
+
   var ImageWithTextOverlay = class extends CustomHTMLElement {
     connectedCallback() {
       if (this.hasAttribute('parallax') && !MediaFeatures.prefersReducedMotion()) {
@@ -5502,10 +5499,9 @@ $(function() {
           ).toString();
         }
         if (imageElement) {
-          imageElement.style.transform = `translateY(${
-            100 -
+          imageElement.style.transform = `translateY(${100 -
             Math.max(1 - (1 - Math.min(boundingRectBottom / (boundingRectHeight + stickyHeaderOffset), 1)), 0) * 100
-          }px)`;
+            }px)`;
         }
         this._hasPendingRaF = false;
       });
@@ -5513,7 +5509,7 @@ $(function() {
   };
   window.customElements.define('image-with-text-overlay', ImageWithTextOverlay);
 
- 
+
   var ImageWithTextBlock = class extends CustomHTMLElement {
     async connectedCallback() {
       if (this.hasAttribute('reveal-on-scroll')) {
@@ -5576,7 +5572,7 @@ $(function() {
   };
   window.customElements.define('image-with-text-block', ImageWithTextBlock);
 
- 
+
   var ArticleList = class extends CustomHTMLElement {
     async connectedCallback() {
       this.articleItems = Array.from(this.querySelectorAll('.article-item'));
@@ -5614,7 +5610,7 @@ $(function() {
   };
   window.customElements.define('article-list', ArticleList);
 
- 
+
   var BlogPostHeader = class extends HTMLElement {
     async connectedCallback() {
       const image = this.querySelector('.article__image');
@@ -5631,15 +5627,15 @@ $(function() {
   };
   window.customElements.define('blog-post-header', BlogPostHeader);
 
- 
+
   var PredictiveSearchInput = class extends HTMLInputElement {
-   
-   
-   
+
+
+
   };
   window.customElements.define('predictive-search-input', PredictiveSearchInput, { extends: 'input' });
 
- 
+
   var DrawerContent = class extends OpenableElement {
     connectedCallback() {
       super.connectedCallback();
@@ -5670,7 +5666,7 @@ $(function() {
   };
   window.customElements.define('drawer-content', DrawerContent);
 
- 
+
   var PredictiveSearchDrawer = class extends DrawerContent {
     connectedCallback() {
       super.connectedCallback();
@@ -5728,10 +5724,8 @@ $(function() {
       const response = await fetch(
         `${window.themeVariables.routes.predictiveSearchUrl}?q=${encodeURIComponent(
           term
-        )}&resources[limit]=10&resources[type]=${
-          window.themeVariables.settings.searchMode
-        }&resources[options[unavailable_products]]=${
-          window.themeVariables.settings.searchUnavailableProducts
+        )}&resources[limit]=10&resources[type]=${window.themeVariables.settings.searchMode
+        }&resources[options[unavailable_products]]=${window.themeVariables.settings.searchUnavailableProducts
         }&resources[options[fields]]=title,body,product_type,variants.title,variants.sku,vendor&section_id=predictive-search`,
         {
           signal: this.abortController.signal,
@@ -5779,9 +5773,8 @@ $(function() {
       `;
         for (let [type, value] of entries) {
           html += `
-          <button type="button" class="tabs-nav__item heading heading--small" aria-expanded="${
-            type === keys[0] ? 'true' : 'false'
-          }" aria-controls="predictive-search-${type}">
+          <button type="button" class="tabs-nav__item heading heading--small" aria-expanded="${type === keys[0] ? 'true' : 'false'
+            }" aria-controls="predictive-search-${type}">
             ${window.themeVariables.strings['search' + type.charAt(0).toUpperCase() + type.slice(1) + 's']}
           </button>
         `;
@@ -5795,9 +5788,8 @@ $(function() {
         html += '<div class="predictive-search__results-categories">';
         for (let [type, value] of entries) {
           html += `
-          <div class="predictive-search__results-categories-item" ${
-            type !== keys[0] ? 'hidden' : ''
-          } id="predictive-search-${type}">
+          <div class="predictive-search__results-categories-item" ${type !== keys[0] ? 'hidden' : ''
+            } id="predictive-search-${type}">
             ${value}
           </div>
         `;
@@ -5841,7 +5833,7 @@ $(function() {
   };
   window.customElements.define('predictive-search-drawer', PredictiveSearchDrawer);
 
- 
+
   var Timeline = class extends HTMLElement {
     connectedCallback() {
       this.prevNextButtons = this.querySelector('prev-next-buttons');
@@ -5926,7 +5918,7 @@ $(function() {
   };
   window.customElements.define('time-line', Timeline);
 
- 
+
   var PressList = class extends CustomHTMLElement {
     connectedCallback() {
       this.pressItemsWrapper = this.querySelector('.press-list__wrapper');
@@ -5975,7 +5967,7 @@ $(function() {
   Object.assign(PressList.prototype, VerticalScrollBlockerMixin);
   window.customElements.define('press-list', PressList);
 
- 
+
   var PressItem = class extends HTMLElement {
     connectedCallback() {
       this.addEventListener('split-lines:re-split', (event) => {
@@ -6043,7 +6035,7 @@ $(function() {
   };
   window.customElements.define('press-item', PressItem);
 
- 
+
   var DesktopNavigation = class extends CustomHTMLElement {
     connectedCallback() {
       this.openingTimeout = null;
@@ -6148,7 +6140,7 @@ $(function() {
   };
   window.customElements.define('desktop-navigation', DesktopNavigation);
 
- 
+
   var MobileNavigation = class extends DrawerContent {
     get apparitionAnimation() {
       if (this._apparitionAnimation) {
@@ -6211,7 +6203,7 @@ $(function() {
   };
   window.customElements.define('mobile-navigation', MobileNavigation);
 
- 
+
   var StoreHeader = class extends CustomHTMLElement {
     connectedCallback() {
       if (window.ResizeObserver) {
@@ -6290,7 +6282,7 @@ $(function() {
   };
   window.customElements.define('store-header', StoreHeader);
 
- 
+
   var PhotoSwipeUi = class {
     constructor(pswp) {
       this.photoSwipeInstance = pswp;
@@ -6378,7 +6370,7 @@ $(function() {
     _onPswpParseVerticalMargin(item) {
       item.vGap.bottom =
         this.photoSwipeInstance.items.length <= 1 ||
-        window.matchMedia(window.themeVariables.breakpoints.lapAndUp).matches
+          window.matchMedia(window.themeVariables.breakpoints.lapAndUp).matches
           ? 0
           : 60;
     }
@@ -6447,14 +6439,14 @@ $(function() {
     }
     async _buildItems() {
       const activeImages = Array.from(
-          this.mediaElement.querySelectorAll('.product__media-item[data-media-type="image"]:not(.is-filtered)')
-        ),
+        this.mediaElement.querySelectorAll('.product__media-item[data-media-type="image"]:not(.is-filtered)')
+      ),
         product = await ProductLoader.load(this.getAttribute('product-handle'));
       return Promise.resolve(
         activeImages.map((item) => {
           const matchedMedia = product['media'].find(
-              (media) => media.id === parseInt(item.getAttribute('data-media-id'))
-            ),
+            (media) => media.id === parseInt(item.getAttribute('data-media-id'))
+          ),
             supportedSizes = getSupportedSizes(
               matchedMedia,
               [200, 300, 400, 500, 600, 700, 800, 1e3, 1200, 1400, 1600, 1800, 2e3, 2200, 2400, 2600, 2800, 3e3]
@@ -6477,7 +6469,7 @@ $(function() {
   };
   window.customElements.define('product-image-zoom', ProductImageZoom);
 
- 
+
   var ProductInventory = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -6503,7 +6495,7 @@ $(function() {
   };
   window.customElements.define('product-inventory', ProductInventory);
 
- 
+
   var PaymentContainer = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -6558,7 +6550,7 @@ $(function() {
   };
   window.customElements.define('product-payment-container', PaymentContainer);
 
- 
+
   var PaymentTerms = class extends CustomHTMLElement {
     connectedCallback() {
       var _a;
@@ -6577,7 +6569,7 @@ $(function() {
   };
   window.customElements.define('product-payment-terms', PaymentTerms);
 
- 
+
   var ProductForm = class extends HTMLFormElement {
     connectedCallback() {
       this.id.disabled = false;
@@ -6586,22 +6578,22 @@ $(function() {
       }
       this.addEventListener('submit', this._onSubmit.bind(this));
     }
-    disconnectedCallback () {
-      this._onSubmit = () => {};
+    disconnectedCallback() {
+      this._onSubmit = () => { };
     }
     async setLineAttr(cartItems) {
       const response = await fetch('/cart.js');
       const res = await response.json();
-      if(res.items.length == 0) return;
+      if (res.items.length == 0) return;
       cartItems.map(cartItem => {
         const line_item = res.items.find(item => item.id == cartItem.id);
-        if(line_item) cartItem.properties = line_item.properties;
+        if (line_item) cartItem.properties = line_item.properties;
       })
     }
     formDataToObject(formData) {
       let obj = {};
       formData.forEach((value, key) => {
-          obj[key] = value;
+        obj[key] = value;
       });
       return obj;
     }
@@ -6695,7 +6687,7 @@ $(function() {
   };
   window.customElements.define('product-form', ProductForm, { extends: 'form' });
 
- 
+
   var ProductMedia = class extends CustomHTMLElement {
     async connectedCallback() {
       var _a;
@@ -6868,7 +6860,7 @@ $(function() {
   window.customElements.define('product-media', ProductMedia);
 
 
-var ProductAttrs = class extends CustomHTMLElement {
+  var ProductAttrs = class extends CustomHTMLElement {
     async connectedCallback() {
       this.initVue()
     }
@@ -6935,7 +6927,7 @@ var ProductAttrs = class extends CustomHTMLElement {
               $('.js-attr-wrapper').removeClass('hidden')
               const { selectionAttrs, availableAttrs = [], sku } = productData
               this.currentAttrs = availableAttrs.find(item => item.skuCode == this.sku)?.attrs || []
-              this.processAvailableCombinations(selectionAttrs, availableAttrs) 
+              this.processAvailableCombinations(selectionAttrs, availableAttrs)
               this.productAttrs = selectionAttrs.filter(attr => attr.attrName != 'match').map((attr, index) => ({
                 attrName: attr.attrName,
                 values: attr.values,
@@ -6955,7 +6947,7 @@ var ProductAttrs = class extends CustomHTMLElement {
               $('.js-attr-loading').addClass('hidden')
             }
           },
-          disableActions() { 
+          disableActions() {
             const addButton = document.querySelector('.cus-product .shopify-product-form .js-zkh-addtocart') || '';
             if (addButton) {
               addButton.classList.add('disabled');
@@ -6971,9 +6963,9 @@ var ProductAttrs = class extends CustomHTMLElement {
           },
           processAvailableCombinations(selectionAttrs, availableAttrs) {
             const filteredAttrs = selectionAttrs.filter(attr => attr.attrName != 'match')
-             const attrNames = filteredAttrs.map(attr => attr.attrName)
+            const attrNames = filteredAttrs.map(attr => attr.attrName)
             const expectedLength = attrNames.length
-            const validVariants = availableAttrs.filter(variant => 
+            const validVariants = availableAttrs.filter(variant =>
               variant.attrs?.length == expectedLength
             )
             validVariants.forEach(variant => {
@@ -7027,7 +7019,7 @@ var ProductAttrs = class extends CustomHTMLElement {
           async getProductAttrs() {
             try {
               const res = await kkAjax.get(`/spu/selection-attrs?sku=${this.sku}`);
-              if (res.code == 200 && res.data) { 
+              if (res.code == 200 && res.data) {
                 return res.data
               } else {
                 throw new Error(res.msg)
@@ -7082,7 +7074,7 @@ var ProductAttrs = class extends CustomHTMLElement {
       if ($(this).find('.product-info-line-wrapper .product-info-line[hide]').length >= 4) {
         $(".product-anchor [data-target-id='product-information-wrapper']").hide().attr('data-hide', true);
         // if($(".product-anchor [data-hide='true']").length == 2) {
-          // $('.product-anchor-sticky-wrapper').hide();
+        // $('.product-anchor-sticky-wrapper').hide();
         // }
         $(this).find(".product-information").hide();
       } else {
@@ -7112,7 +7104,7 @@ var ProductAttrs = class extends CustomHTMLElement {
         });
     }
     renderInformation({ detail }) {
-      if(!detail) return;
+      if (!detail) return;
       Object.keys(detail).forEach((itemKey) => {
         const keys = detail[itemKey] ? Object.keys(detail[itemKey]) : null;
         if (!keys || keys.length === 0) {
@@ -7150,22 +7142,22 @@ var ProductAttrs = class extends CustomHTMLElement {
               const warningPattern = /(WARNING:\s+)/;
               wrappedValue = detail[itemKey][key]
                 .replace(warningPattern, (match) => {
-                 
+
                   return `<span class="warning-text">${match}</span><br/>`;
                 })
                 .replace(linkPattern, (match) => {
-                 
+
                   return `<a href="https://${match}" target="_blank" class="warning-href">${match}</a>`;
                 })
             }
-            if( key.replace(/\s/g, '').toLowerCase() == 'eniso374type') {
+            if (key.replace(/\s/g, '').toLowerCase() == 'eniso374type') {
               return false;
             }
             const $li = $(`
               <li>
                   <span class="key">
-                      ${ key === 'Prop65' ? 
-                        `${key} <?xml version="1.0" encoding="utf-8"?>
+                      ${key === 'Prop65' ?
+                `${key} <?xml version="1.0" encoding="utf-8"?>
                         
                         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
                         <svg version="1.1"
@@ -7184,15 +7176,15 @@ var ProductAttrs = class extends CustomHTMLElement {
                           c-11.99-6.754-26.853-5.705-37.775,2.668c-10.922,8.373-15.797,22.454-12.389,35.787l19.122,166.535
                           c0.615,5.355,4.044,9.977,8.993,12.116c4.949,2.14,10.665,1.473,14.989-1.749C301.429,355.222,303.703,349.935,303.068,344.582"/>
                         </svg>`
-                        : key }
+                : key}
                   </span>
-                  <span class="value">${ key === 'Prop65' ? wrappedValue: detail[itemKey][key] }</span>
+                  <span class="value">${key === 'Prop65' ? wrappedValue : detail[itemKey][key]}</span>
               </li>
           `);
             $productInfoLine.find('.info-table').append($li);
           });
           const infoTableDom = $productInfoLine.find('.info-table')[0];
-          if(infoTableDom.children.length > 4) {
+          if (infoTableDom.children.length > 4) {
             $(infoTableDom).closest('.product-info-line').find('.js-overlay-wrapper').css('display', 'flex');
           }
         }
@@ -7224,9 +7216,9 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
   };
   window.customElements.define('more-product-media', MoreProductMedia);
- 
 
- 
+
+
   function formatMoney(cents, format = '') {
     if (typeof cents === 'string') {
       cents = cents.replace('.', '');
@@ -7283,7 +7275,7 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
   }
 
- 
+
   var ProductMeta = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -7342,19 +7334,16 @@ var ProductAttrs = class extends CustomHTMLElement {
       } else {
         productPrices.innerHTML = '';
         if (variant['compare_at_price'] > variant['price']) {
-          productPrices.innerHTML += `<span class="price price--highlight ${
-            this.priceClass
-          }"><span class="visually-hidden">${window.themeVariables.strings.productSalePrice}</span>${formatMoney(
-            variant['price'],
-            currencyFormat
-          )}</span>`;
-          productPrices.innerHTML += `<span class="price price--compare"><span class="visually-hidden">${
-            window.themeVariables.strings.productRegularPrice
-          }</span>${formatMoney(variant['compare_at_price'], currencyFormat)}</span>`;
+          productPrices.innerHTML += `<span class="price price--highlight ${this.priceClass
+            }"><span class="visually-hidden">${window.themeVariables.strings.productSalePrice}</span>${formatMoney(
+              variant['price'],
+              currencyFormat
+            )}</span>`;
+          productPrices.innerHTML += `<span class="price price--compare"><span class="visually-hidden">${window.themeVariables.strings.productRegularPrice
+            }</span>${formatMoney(variant['compare_at_price'], currencyFormat)}</span>`;
         } else {
-          productPrices.innerHTML += `<span class="price ${this.priceClass}"><span class="visually-hidden">${
-            window.themeVariables.strings.productSalePrice
-          }</span>${formatMoney(variant['price'], currencyFormat)}</span>`;
+          productPrices.innerHTML += `<span class="price ${this.priceClass}"><span class="visually-hidden">${window.themeVariables.strings.productSalePrice
+            }</span>${formatMoney(variant['price'], currencyFormat)}</span>`;
         }
         if (variant['unit_price_measurement']) {
           let referenceValue = '';
@@ -7367,9 +7356,8 @@ var ProductAttrs = class extends CustomHTMLElement {
               <span class="unit-price-measurement__price">${formatMoney(variant['unit_price'])}</span>
               <span class="unit-price-measurement__separator">/</span>
               ${referenceValue}
-              <span class="unit-price-measurement__reference-unit">${
-                variant['unit_price_measurement']['reference_unit']
-              }</span>
+              <span class="unit-price-measurement__reference-unit">${variant['unit_price_measurement']['reference_unit']
+            }</span>
             </div>
           </div>
         `;
@@ -7393,7 +7381,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('product-meta', ProductMeta);
 
- 
+
   var QuickBuyDrawer = class extends DrawerContent {
     connectedCallback() {
       super.connectedCallback();
@@ -7430,7 +7418,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('quick-buy-drawer', QuickBuyDrawer);
 
- 
+
   var QuickBuyPopover = class extends PopoverContent {
     connectedCallback() {
       super.connectedCallback();
@@ -7465,7 +7453,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('quick-buy-popover', QuickBuyPopover);
 
- 
+
   var StorePickup = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -7482,8 +7470,8 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
     async _renderForVariant(id) {
       const response = await fetch(
-          `${window.themeVariables.routes.rootUrlWithoutSlash}/variants/${id}?section_id=store-availability`
-        ),
+        `${window.themeVariables.routes.rootUrlWithoutSlash}/variants/${id}?section_id=store-availability`
+      ),
         div = document.createElement('div');
       div.innerHTML = await response.text();
       this.innerHTML = div.firstElementChild.innerHTML.trim();
@@ -7491,7 +7479,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('store-pickup', StorePickup);
 
- 
+
   var ProductVariants = class extends CustomHTMLElement {
     async connectedCallback() {
       this.masterSelector = document.getElementById(this.getAttribute('form-id')).id;
@@ -7551,8 +7539,8 @@ var ProductAttrs = class extends CustomHTMLElement {
       const options = ((_a = this.selectedVariant) == null ? void 0 : _a.options) || [];
       options.forEach((value, index) => {
         let input = this.querySelector(
-            `input[name="option${index + 1}"][value="${CSS.escape(value)}"], select[name="option${index + 1}"]`
-          ),
+          `input[name="option${index + 1}"][value="${CSS.escape(value)}"], select[name="option${index + 1}"]`
+        ),
           triggerChangeEvent = false;
         if (input.tagName === 'SELECT') {
           triggerChangeEvent = input.value !== value;
@@ -7645,8 +7633,8 @@ var ProductAttrs = class extends CustomHTMLElement {
       if (this.optionSelectors && this.optionSelectors[0]) {
         this.product['options'][0]['values'].forEach((value, valueIndex) => {
           const hasAtLeastOneCombination = this.product['variants'].some(
-              (variant) => variant['option1'] === value && variant
-            ),
+            (variant) => variant['option1'] === value && variant
+          ),
             hasAvailableVariant = this.product['variants'].some(
               (variant) => variant['option1'] === value && variant['available']
             );
@@ -7654,9 +7642,9 @@ var ProductAttrs = class extends CustomHTMLElement {
           if (this.optionSelectors[1]) {
             this.product['options'][1]['values'].forEach((value2, valueIndex2) => {
               const hasAtLeastOneCombination2 = this.product['variants'].some(
-                  (variant) =>
-                    variant['option2'] === value2 && variant['option1'] === selectedVariant['option1'] && variant
-                ),
+                (variant) =>
+                  variant['option2'] === value2 && variant['option1'] === selectedVariant['option1'] && variant
+              ),
                 hasAvailableVariant2 = this.product['variants'].some(
                   (variant) =>
                     variant['option2'] === value2 &&
@@ -7672,12 +7660,12 @@ var ProductAttrs = class extends CustomHTMLElement {
               if (this.optionSelectors[2]) {
                 this.product['options'][2]['values'].forEach((value3, valueIndex3) => {
                   const hasAtLeastOneCombination3 = this.product['variants'].some(
-                      (variant) =>
-                        variant['option3'] === value3 &&
-                        variant['option1'] === selectedVariant['option1'] &&
-                        variant['option2'] === selectedVariant['option2'] &&
-                        variant
-                    ),
+                    (variant) =>
+                      variant['option3'] === value3 &&
+                      variant['option1'] === selectedVariant['option1'] &&
+                      variant['option2'] === selectedVariant['option2'] &&
+                      variant
+                  ),
                     hasAvailableVariant3 = this.product['variants'].some(
                       (variant) =>
                         variant['option3'] === value3 &&
@@ -7709,7 +7697,7 @@ var ProductAttrs = class extends CustomHTMLElement {
         observeParents: true,
         touchStartPreventDefault: true,
         passiveListeners: false,
-        touchAngle: 70,              
+        touchAngle: 70,
         threshold: 10,
         breakpoints: {
           0: {
@@ -7748,7 +7736,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   var MobileHero = class extends HTMLElement {
     connectedCallback() {
       const sectionId = $(this).data('section-id');
-      if(window.innerWidth <= 740) {
+      if (window.innerWidth <= 740) {
         new Swiper(`.section-${sectionId} .swiper`, {
           spaceBetween: 8,
           autoplay: {
@@ -7767,7 +7755,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   window.customElements.define('mobile-hero', MobileHero);
 
 
- 
+
   var ProductItem = class extends CustomHTMLElement {
     connectedCallback() {
       this.primaryImageList = Array.from(this.querySelectorAll('.product-item__primary-image'));
@@ -7793,7 +7781,7 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
     async handleClickFavoritebutton(e) {
       e.preventDefault();
-     
+
       const formData = {
         customerId: $(this).data('customer-id'),
         productId: $(this).data('product-id'),
@@ -7812,7 +7800,7 @@ var ProductAttrs = class extends CustomHTMLElement {
         const res = await response.json();
         if (res.code === 200) {
           const isFavorited = res.data.wish ? 1 : 0;
-          if(isFavorited) {
+          if (isFavorited) {
             const sku = $(this).data('sku');
             const price = $(this).data('price');
             const productTitle = $(this).data('product-title');
@@ -7954,7 +7942,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('product-item', ProductItem);
 
- 
+
   var ProductFacet = class extends CustomHTMLElement {
     connectedCallback() {
       this.delegate.on('pagination:page-changed', this._rerender.bind(this));
@@ -7974,7 +7962,7 @@ var ProductAttrs = class extends CustomHTMLElement {
         const responseAsText = await response.text();
         const fakeDiv = document.createElement('div');
         fakeDiv.innerHTML = responseAsText;
-        if(fakeDiv.querySelector('#facet-main')?.innerHTML) {
+        if (fakeDiv.querySelector('#facet-main')?.innerHTML) {
           this.querySelector('#facet-main').innerHTML = fakeDiv.querySelector('#facet-main').innerHTML;
           const activeFilterList = Array.from(fakeDiv.querySelectorAll('.product-facet__active-list')),
             toolbarItem = document.querySelector('.mobile-toolbar__item--filters');
@@ -7987,8 +7975,8 @@ var ProductAttrs = class extends CustomHTMLElement {
             Array.from(this.querySelectorAll('#facet-filters-form .collapsible-toggle[aria-controls]')).forEach(
               (filterToggle) => {
                 const filtersTempDivToggle = filtersTempDiv.querySelector(
-                    `[aria-controls="${filterToggle.getAttribute('aria-controls')}"]`
-                  ),
+                  `[aria-controls="${filterToggle.getAttribute('aria-controls')}"]`
+                ),
                   isExpanded = filterToggle.getAttribute('aria-expanded') === 'true';
                 filtersTempDivToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
                 filtersTempDivToggle.nextElementSibling.toggleAttribute('open', isExpanded);
@@ -8010,12 +7998,12 @@ var ProductAttrs = class extends CustomHTMLElement {
 
         var searchInput = $('.collapsible-search .search__input');
         var searchInputSpan = $('.collapsible-search .search__input-span');
-       
+
         $(searchInput).keydown(function (event) {
           var keyCode = event.keyCode || event.which;
-         
+
           if (keyCode === 13) {
-           
+
             search();
           }
         });
@@ -8073,7 +8061,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('product-facet', ProductFacet);
 
- 
+
   var ProductSearchFacet = class extends CustomHTMLElement {
     connectedCallback() {
       this.delegate.on('pagination:page-changed', this._rerender.bind(this));
@@ -8082,10 +8070,12 @@ var ProductAttrs = class extends CustomHTMLElement {
     }
     async _rerender(event) {
       history.replaceState({}, '', event.detail.url);
-      document.dispatchEvent(new CustomEvent('facet-search-rerender', { detail: { 
-        hideLoadingBar: this.hideLoadingBar,
-        showLoadingBar: this.showLoadingBar
-      }}));
+      document.dispatchEvent(new CustomEvent('facet-search-rerender', {
+        detail: {
+          hideLoadingBar: this.hideLoadingBar,
+          showLoadingBar: this.showLoadingBar
+        }
+      }));
     }
     _abort() {
       if (this.abortController) {
@@ -8097,23 +8087,23 @@ var ProductAttrs = class extends CustomHTMLElement {
 
   var ProductFacetSpu = class extends CustomHTMLElement {
     connectedCallback() {
-     
+
       this.delegate.on('facet:criteria-changed', this._rerender.bind(this));
       this.delegate.on('facet:abort-loading', this._abort.bind(this));
-     
+
     }
-    
+
     async _rerender(event) {
-     
+
       history.replaceState({}, '', event.detail.url);
       this._abort();
       this.showLoadingBar();
       try {
-       
+
         this.setupSearchFunctionality();
-       
+
         this.hideLoadingBar();
-       
+
         document.dispatchEvent(new CustomEvent('facet-rerender'));
       } catch (e) {
         if (e.name === 'AbortError') {
@@ -8125,10 +8115,10 @@ var ProductAttrs = class extends CustomHTMLElement {
     setupSearchFunctionality() {
       var searchInput = $('.collapsible-search .search__input');
       var searchInputSpan = $('.collapsible-search .search__input-span');
-     
+
       $(searchInput).off('keydown').on('keydown', function (event) {
         var keyCode = event.keyCode || event.which;
-       
+
         if (keyCode === 13) {
           search();
         }
@@ -8156,21 +8146,21 @@ var ProductAttrs = class extends CustomHTMLElement {
           $('.no-results-message').hide();
         }
       }
-     
+
       function resetToInitialState() {
         $('.filter-p-vendor .collapsible__content .checkbox-container').each(function () {
           $(this).show();
           $('.no-results-message').hide();
         });
       }
-     
+
       searchInput.off('input').on('input', function () {
         if (searchInput.val() === '') {
           resetToInitialState();
         }
       });
     }
-    
+
     _abort() {
       if (this.abortController) {
         this.abortController.abort();
@@ -8179,7 +8169,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('product-facet-spu', ProductFacetSpu);
 
- 
+
   var FacetFilters = class extends DrawerContent {
     connectedCallback() {
       super.connectedCallback();
@@ -8203,7 +8193,7 @@ var ProductAttrs = class extends CustomHTMLElement {
       const formData = new FormData(this.querySelector('#facet-filters-form'));
       const searchParamsAsString = new URLSearchParams(formData).toString();
       triggerEvent(this, 'facet:criteria-changed', { url: `${window.location.pathname}?${searchParamsAsString}` });
-     
+
     }
     _adjustDrawer(match) {
       this.classList.toggle('drawer', match.matches);
@@ -8212,7 +8202,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('facet-filters', FacetFilters);
 
- 
+
   var SortByPopover = class extends PopoverContent {
     connectedCallback() {
       super.connectedCallback();
@@ -8235,15 +8225,15 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('sort-by-popover', SortByPopover);
 
- 
+
   var CartCount = class extends CustomHTMLElement {
     async connectedCallback() {
       const email = $(this).data('email');
-      if(email) {
+      if (email) {
         const cartRes = await fetch(`${window.northsky.api}/shopping/cart?email=${email}`);
         const cartData = await cartRes.json();
-        if(cartData.data.length > 0) {
-          Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 }); 
+        if (cartData.data.length > 0) {
+          Cookies.set('cart', cartData.data[0].cartValue, { expires: 36500 });
         }
       }
       this.rootDelegate.on('cart:updated', (event) => {
@@ -8258,23 +8248,23 @@ var ProductAttrs = class extends CustomHTMLElement {
         }
         this.innerText = cart_count;
         const email = $(this).data('email');
-        if(email) {
+        if (email) {
           const cartCookie = Cookies.get('cart');
           fetch(`${window.northsky.api}/shopping/cart/save`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
               email,
               cartValue: cartCookie
             })
           })
-          .then(response => {
-            return response.json();
-          }).catch((error) => {
-            console.error('Error:', error);
-          })
+            .then(response => {
+              return response.json();
+            }).catch((error) => {
+              console.error('Error:', error);
+            })
         }
       });
       this.rootDelegate.on('cart:refresh', (event) => {
@@ -8293,7 +8283,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('cart-count', CartCount);
 
- 
+
   var CartDrawer = class extends DrawerContent {
     connectedCallback() {
       super.connectedCallback();
@@ -8423,7 +8413,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('cart-drawer', CartDrawer);
 
- 
+
   var _CartDrawerRecommendations = class extends HTMLElement {
     async connectedCallback() {
       if (!_CartDrawerRecommendations.recommendationsCache[this.productId]) {
@@ -8452,7 +8442,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   __publicField(CartDrawerRecommendations, 'recommendationsCache', {});
   window.customElements.define('cart-drawer-recommendations', CartDrawerRecommendations);
 
- 
+
   var CartNote = class extends HTMLTextAreaElement {
     connectedCallback() {
       this.addEventListener('change', this._onNoteChanged.bind(this));
@@ -8488,7 +8478,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('cart-note', CartNote, { extends: 'textarea' });
 
- 
+
   var FreeShippingBar = class extends HTMLElement {
     connectedCallback() {
       document.documentElement.addEventListener('cart:updated', this._onCartUpdated.bind(this));
@@ -8505,7 +8495,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('free-shipping-bar', FreeShippingBar);
 
- 
+
   var LineItemQuantity = class extends CustomHTMLElement {
     connectedCallback() {
       this.delegate.on('click', 'a', this._onQuantityLinkClicked.bind(this));
@@ -8530,19 +8520,19 @@ var ProductAttrs = class extends CustomHTMLElement {
       );
     }
     async _updateFromLink(link, isRemove = false) {
-     
-     
-     
-     
+
+
+
+
       const changeUrl = new URL(link, `https://${window.themeVariables.routes.host}`),
-      searchParams = changeUrl.searchParams,
-      line = searchParams.get('line'),
-      id = searchParams.get('id'),
-      quantity = parseInt(searchParams.get('quantity'));
+        searchParams = changeUrl.searchParams,
+        line = searchParams.get('line'),
+        id = searchParams.get('id'),
+        quantity = parseInt(searchParams.get('quantity'));
       this.dispatchEvent(
         new CustomEvent('line-item-quantity:change:start', { bubbles: true, detail: { newLineQuantity: quantity } })
       );
-      if(window.themeVariables.settings.pageType == 'cart' && isRemove && this.querySelector('input') && quantity) {
+      if (window.themeVariables.settings.pageType == 'cart' && isRemove && this.querySelector('input') && quantity) {
         this.querySelector('input').value = quantity
       }
       const response = await fetch(`${window.themeVariables.routes.cartChangeUrl}.js`, {
@@ -8585,7 +8575,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('line-item-quantity', LineItemQuantity);
 
- 
+
   var LineItem = class extends HTMLElement {
     connectedCallback() {
       this.lineItemLoader = this.querySelector('.line-item__loader');
@@ -8629,7 +8619,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('line-item', LineItem);
 
- 
+
   var CartNotification = class extends CustomHTMLElement {
     connectedCallback() {
       this.rootDelegate.on('cart-notification:show', this._onShow.bind(this), !this.hasAttribute('global'));
@@ -8730,7 +8720,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('cart-notification', CartNotification);
 
- 
+
   var ShippingEstimator = class extends HTMLElement {
     connectedCallback() {
       this.submitButton = this.querySelector('[type="button"]');
@@ -8776,10 +8766,9 @@ var ProductAttrs = class extends CustomHTMLElement {
       });
       const html = `
       <div class="shipping-estimator__results">
-        <p>${
-          shippingRates.length === 0
-            ? window.themeVariables.strings.shippingEstimatorNoResults
-            : shippingRates.length === 1
+        <p>${shippingRates.length === 0
+          ? window.themeVariables.strings.shippingEstimatorNoResults
+          : shippingRates.length === 1
             ? window.themeVariables.strings.shippingEstimatorOneResult
             : window.themeVariables.strings.shippingEstimatorMultipleResults
         }</p>
@@ -8806,7 +8795,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('shipping-estimator', ShippingEstimator);
 
- 
+
   var ReviewLink = class extends HTMLAnchorElement {
     constructor() {
       super();
@@ -8828,7 +8817,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('review-link', ReviewLink, { extends: 'a' });
 
- 
+
   var ProductStickyForm = class extends HTMLElement {
     connectedCallback() {
       var _a;
@@ -8874,8 +8863,7 @@ var ProductAttrs = class extends CustomHTMLElement {
             <span class="unit-price-measurement__price">${formatMoney(variant['unit_price'])}</span>
             <span class="unit-price-measurement__separator">/</span>
             ${referenceValue}
-            <span class="unit-price-measurement__reference-unit">${
-              variant['unit_price_measurement']['reference_unit']
+            <span class="unit-price-measurement__reference-unit">${variant['unit_price_measurement']['reference_unit']
             }</span>
           </div>
         `;
@@ -8924,7 +8912,7 @@ var ProductAttrs = class extends CustomHTMLElement {
   };
   window.customElements.define('product-sticky-form', ProductStickyForm);
 
- 
+
   (() => {
     new InputBindingManager();
   })();
@@ -9013,16 +9001,18 @@ var ProductAttrs = class extends CustomHTMLElement {
   })();
   (async () => {
     try {
-     
+
       const response = await fetch(`${window.northsky.api}/openapi/adlink/product/collection/tree`, {
         method: 'GET',
       });
       const { data } = await response.json();
       localStorage.setItem('all-category', JSON.stringify(data));
-     
-      document.dispatchEvent(new CustomEvent('tree-get', { detail: {
-        data,
-      }}));
+
+      document.dispatchEvent(new CustomEvent('tree-get', {
+        detail: {
+          data,
+        }
+      }));
     } catch (err) {
       console.error(err);
     }
