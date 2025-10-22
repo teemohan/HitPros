@@ -9,59 +9,105 @@
  */
 {
   "sections": {
-    "zkh_hero_banner_4_gz7YDr": {
-      "type": "zkh-hero-banner-4",
-      "settings": {
-        "title": "",
-        "new_title": "<p>LAST CALL </p><p>FOR HOT SAVINGS!</p>",
-        "text": "<p>Save big on industrial fans</p>",
-        "bg_img": "shopify://shop_images/Main_cover_FansCamel_Desktop_2e575bf3-6d2f-4ac4-97ea-f68272bf4449.png",
-        "h5_bg_img": "shopify://shop_images/Main_cover_FansCamel_Desktop_H5_aa051ae9-c3e3-461f-886b-fbbe82ec8265.png",
-        "btn_text": "Shop Now",
-        "btn_url": "shopify://collections/hvac"
-      }
-    },
-    "zkh_category_4_D6yMN7": {
-      "type": "zkh-category-4",
-      "settings": {
-        "title": "Product Categories"
-      }
-    },
-    "zkh_swiper_banner_4_FYm8JF": {
-      "type": "zkh-swiper-banner-4",
+    "fb_img_video_banner_Uy7weH": {
+      "type": "fb-img-video-banner",
       "blocks": {
-        "block_V3LUWt": {
-          "type": "block",
+        "image_banner_jk7jKr": {
+          "type": "image_banner",
           "settings": {
-            "bg_img": "shopify://shop_images/shutterstock_1744015958_2_1_1.png",
-            "h5_bg_img": "shopify://shop_images/shutterstock_1744015958_2_1_3.png",
-            "brand_img": "shopify://shop_images/Olympia_logo_a1ae6431-9cf5-4fa8-81a0-82f61d5868a3.svg",
-            "title": "Protect Your Hands + Your Budget",
-            "text": "Disposable Nitrile Gloves",
-            "tip": "<p>Starts at  <em>$</em><strong>8.95</strong> / box of 100</p>",
-            "btn_text": "Stock Up Today",
-            "btn_url": "/collections/safety-personal-protective-equipment-hand-arm-protection-disposable-gloves"
+            "product": "",
+            "banner_href": true,
+            "apply_overlay": true,
+            "content_position_pc": "middleLeft",
+            "content_position_mobile": "bottomLeft",
+            "banner_title": "",
+            "banner_title_color": "#0A2B6F",
+            "banner_title_mob": "",
+            "banner_title_color_mob": "#0A2B6F",
+            "banner_desc": "",
+            "banner_desc_color": "#0A2B6F",
+            "banner_desc_mob": "",
+            "banner_desc_color_mob": "#0A2B6F",
+            "button_1_text": "",
+            "button_1_text_color": "",
+            "button_1_text_backgroundcolor": "",
+            "button_1_text_bordercolor": "#FABE00",
+            "button_1_link": "",
+            "button_1_text_mob": "Shop Now",
+            "button_1_text_color_mob": "",
+            "button_1_backgroundcolor_mob": "#FABE00",
+            "button_1_bordercolor_mob": "#FABE00",
+            "button_1_link_mob": "",
+            "button_2_text": "Shop Now",
+            "button_2_text_color": "#0A2B6F",
+            "button_2_backgroundcolor": "#FABE00",
+            "button_2_text_bordercolor": "#FABE00",
+            "button_2_link": "",
+            "button_2_text_mob": "Shop Now",
+            "button_2_text_color_mob": "#0A2B6F",
+            "button_2_backgroundcolor_mob": "#FABE00",
+            "button_2_bordercolor_mob": "#FABE00",
+            "button_2_link_mob": ""
           }
         },
-        "block_fQAdBR": {
-          "type": "block",
+        "image_banner_x9bY43": {
+          "type": "image_banner",
           "settings": {
-            "bg_img": "shopify://shop_images/6_1.png",
-            "h5_bg_img": "shopify://shop_images/6_1_1.png",
-            "brand_img": "shopify://shop_images/BlackCanyon_Logo.png",
-            "title": "Pro-Grade Tools, Built to Last ",
-            "text": "Ball-Peen Hammers",
-            "tip": "<p>Starting at <em>$</em><strong>9.95</strong></p>",
-            "btn_text": "Stock Up Today",
-            "btn_url": "/products/ae8233676"
+            "product": "",
+            "banner_href": true,
+            "apply_overlay": true,
+            "content_position_pc": "middleLeft",
+            "content_position_mobile": "bottomLeft",
+            "banner_title": "",
+            "banner_title_color": "#0A2B6F",
+            "banner_title_mob": "",
+            "banner_title_color_mob": "#0A2B6F",
+            "banner_desc": "",
+            "banner_desc_color": "#0A2B6F",
+            "banner_desc_mob": "",
+            "banner_desc_color_mob": "#0A2B6F",
+            "button_1_text": "",
+            "button_1_text_color": "",
+            "button_1_text_backgroundcolor": "",
+            "button_1_text_bordercolor": "#FABE00",
+            "button_1_link": "",
+            "button_1_text_mob": "Shop Now",
+            "button_1_text_color_mob": "",
+            "button_1_backgroundcolor_mob": "#FABE00",
+            "button_1_bordercolor_mob": "#FABE00",
+            "button_1_link_mob": "",
+            "button_2_text": "Shop Now",
+            "button_2_text_color": "#0A2B6F",
+            "button_2_backgroundcolor": "#FABE00",
+            "button_2_text_bordercolor": "#FABE00",
+            "button_2_link": "",
+            "button_2_text_mob": "Shop Now",
+            "button_2_text_color_mob": "#0A2B6F",
+            "button_2_backgroundcolor_mob": "#FABE00",
+            "button_2_bordercolor_mob": "#FABE00",
+            "button_2_link_mob": ""
           }
         }
       },
       "block_order": [
-        "block_V3LUWt",
-        "block_fQAdBR"
+        "image_banner_jk7jKr",
+        "image_banner_x9bY43"
       ],
-      "settings": {}
+      "name": "fb-img-video-banner",
+      "settings": {
+        "show_fullscreen": false,
+        "show_arrow": false,
+        "autoplay": true
+      }
+    },
+    "sky_category_4_4nBKtt": {
+      "type": "sky-category-4",
+      "name": "sky-category-4",
+      "settings": {
+        "title": "Top Categories",
+        "view_more_text": "View More",
+        "view_more_url": ""
+      }
     },
     "6d3130cf-a40f-4b1d-8550-86b9ae2563e4": {
       "type": "index-product-list",
@@ -69,44 +115,6 @@
         "title": "Featured Products",
         "collection": "featured-products"
       }
-    },
-    "zkh_img_text_list_4_Ndiqhn": {
-      "type": "zkh-img-text-list-4",
-      "blocks": {
-        "block_Ua9H8E": {
-          "type": "block",
-          "settings": {
-            "title": "<p>Safety First</p>",
-            "text": "Your One-Stop PPE Shop",
-            "url": "shopify://collections/safety-first",
-            "img": "shopify://shop_images/NSS7451179337_3_2.png"
-          }
-        },
-        "block_eHHFcV": {
-          "type": "block",
-          "settings": {
-            "title": "<p>Trending Tools</p>",
-            "text": "Shop Must-Haves & More",
-            "url": "shopify://collections/trending-tools",
-            "img": "shopify://shop_images/shutterstock_2444877531_1.png"
-          }
-        },
-        "block_4zppph": {
-          "type": "block",
-          "settings": {
-            "title": "<p>We Cut Costs, <br/>Not Corners </p>",
-            "text": "See How We Do It",
-            "url": "shopify://pages/about-us",
-            "img": "shopify://shop_images/5_1.png"
-          }
-        }
-      },
-      "block_order": [
-        "block_Ua9H8E",
-        "block_eHHFcV",
-        "block_4zppph"
-      ],
-      "settings": {}
     },
     "recently_viewed_products_eBQU9V": {
       "type": "recently-viewed-products",
@@ -127,18 +135,29 @@
       "type": "h-blogs",
       "settings": {
         "title": "Industry Insights",
+        "view_more_url": "",
+        "view_more_text": "View More",
         "blog": "industry-insights"
+      }
+    },
+    "customer_spotlight_UEBRaH": {
+      "type": "customer-spotlight",
+      "name": "customer-spotlight",
+      "settings": {
+        "title": "Product Spotlights",
+        "view_more_text": "View More",
+        "view_more_url": "",
+        "collection": "product-spotlights"
       }
     }
   },
   "order": [
-    "zkh_hero_banner_4_gz7YDr",
-    "zkh_category_4_D6yMN7",
-    "zkh_swiper_banner_4_FYm8JF",
+    "fb_img_video_banner_Uy7weH",
+    "sky_category_4_4nBKtt",
     "6d3130cf-a40f-4b1d-8550-86b9ae2563e4",
-    "zkh_img_text_list_4_Ndiqhn",
     "recently_viewed_products_eBQU9V",
     "guess_you_like_Nmc4wp",
-    "h_blogs_GHEBgy"
+    "h_blogs_GHEBgy",
+    "customer_spotlight_UEBRaH"
   ]
 }
