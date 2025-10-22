@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -6,57 +15,6 @@
       "settings": {
         "show_title": true,
         "page_width": "medium"
-      }
-    },
-    "slideshow_d3VeD6": {
-      "type": "slideshow",
-      "blocks": {
-        "image_dh3DfP": {
-          "type": "image",
-          "settings": {
-            "image": "shopify:\/\/shop_images\/person-fishing-on-the-beach-is-silhouetted-at-sunset.jpg",
-            "text_position": "middle_center",
-            "subheading": "Tell your story",
-            "title": "Slide 1",
-            "button_1_text": "link",
-            "button_1_link": "shopify:\/\/products\/1-2-drive-metric-plus-socket-overall-length-77-6-point-deep-1pcs-13",
-            "button_2_text": "",
-            "button_2_link": "",
-            "text_color": "#ffffff",
-            "button_background": "#ffffff",
-            "button_text_color": "#ffffff",
-            "overlay_color": "#000000",
-            "overlay_opacity": 30
-          }
-        },
-        "image_pwQrXP": {
-          "type": "image",
-          "settings": {
-            "text_position": "middle_center",
-            "subheading": "Tell your story",
-            "title": "Slide 2",
-            "button_1_text": "",
-            "button_1_link": "",
-            "button_2_text": "",
-            "button_2_link": "",
-            "text_color": "#ffffff",
-            "button_background": "#ffffff",
-            "button_text_color": "#000000",
-            "overlay_color": "#000000",
-            "overlay_opacity": 30
-          }
-        }
-      },
-      "block_order": [
-        "image_dh3DfP",
-        "image_pwQrXP"
-      ],
-      "settings": {
-        "section_height": "auto",
-        "transition_type": "sweep",
-        "autoplay": true,
-        "cycle_speed": 5,
-        "background": "rgba(0,0,0,0)"
       }
     },
     "faq_RFmpKp": {
@@ -125,7 +83,6 @@
   },
   "order": [
     "main",
-    "slideshow_d3VeD6",
     "faq_RFmpKp",
     "video_Fy94UG",
     "featured_collections_e4jefi"
