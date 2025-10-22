@@ -95,7 +95,7 @@
 {%- endif -%}
 
 {%- if block.settings.button_1_text != blank or block.settings.button_2_text != blank -%}
-  <div class="mt-8 hidden fb-md:flex {%  if block.settings.content_position_pc == 'boxCenter' %} items-center justify-center{% endif %}">
+  <div class="mt-8  !hidden  hidden fb-md:flex {%  if block.settings.content_position_pc == 'boxCenter' %} items-center justify-center{% endif %}">
     <div class="flex {% if has_two_buttons %}flex-row gap-4 {% endif %}">
       {%- if block.settings.button_1_text != blank -%}
         {% capture button_1_assets %}
@@ -138,7 +138,7 @@
 {%- endif -%}
 
 {%- if block.settings.button_1_text_mob != blank or block.settings.button_2_text_mob != blank -%}
-  <div class="mt-7 fb-md:mt-8 fb-md:hidden">
+  <div class="mt-7  !hidden fb-md:mt-8 fb-md:hidden">
     <div class="flex w-auto {%  if block.settings.content_position_mobile == 'topCenter' %} items-center justify-center{% endif %} {% if has_two_buttons_mob %}flex-row gap-4{% endif %}">
       {%- if block.settings.button_1_text_mob != blank -%}
         {% capture mob_button_1 %}
