@@ -18,12 +18,64 @@
         "title_color": "#ffffff",
         "text": "<p>Lower & Lift for LESS<br/></p>",
         "text_color": "#ffffff",
-        "bg_img": "shopify://shop_images/Pallet_Jack_Featured_product_desktop.png",
-        "h5_bg_img": "shopify://shop_images/Pallet_Jack_Featured_product_H5.png"
+        "bg_img": "shopify://shop_images/Pallet_Jack_Featured_product_desktop_31f38e22-61b1-423d-8e82-72ed51b234bc.png",
+        "h5_bg_img": "shopify://shop_images/Pallet_Jack_Featured_product_H5_ae022654-e56a-4593-b8e4-9610174e6aee.png"
       }
     },
     "main_collection_landing_9HCtJm": {
       "type": "main-collection-landing",
+      "blocks": {
+        "collection_8MGimM": {
+          "type": "collection",
+          "settings": {
+            "name": "",
+            "collection": "safety-1"
+          }
+        },
+        "collection_Gbxew6": {
+          "type": "collection",
+          "settings": {
+            "name": "",
+            "collection": "hvac-1"
+          }
+        },
+        "collection_UpnyEY": {
+          "type": "collection",
+          "settings": {
+            "name": "",
+            "collection": "material-handling-1"
+          }
+        },
+        "collection_njqEPF": {
+          "type": "collection",
+          "settings": {
+            "name": "",
+            "collection": "hand-tools-1"
+          }
+        },
+        "collection_XHQzEz": {
+          "type": "collection",
+          "settings": {
+            "name": "",
+            "collection": "measuring-layout"
+          }
+        },
+        "collection_t34wYU": {
+          "type": "collection",
+          "settings": {
+            "name": "",
+            "collection": "packaging-shipping-1"
+          }
+        }
+      },
+      "block_order": [
+        "collection_8MGimM",
+        "collection_Gbxew6",
+        "collection_UpnyEY",
+        "collection_njqEPF",
+        "collection_XHQzEz",
+        "collection_t34wYU"
+      ],
       "settings": {
         "title": "Featured Products",
         "show_view_all": true

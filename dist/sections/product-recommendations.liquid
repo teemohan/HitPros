@@ -11,8 +11,8 @@
 >
   <div class="container cl-container">
     {%- if recommendations.performed and recommendations.products_count > 0 -%}
-      <div class="index-cus-header">
-        <h2>{{ section.settings.title }}</h2>
+      <div class="index-cus-header  w-full flex items-center justify-between pb-6 gap-5">
+        <h2 class="text-20 fb-md:text-30 font-bold text-121212">{{ section.settings.title }}</h2>
         {% render 'swiper-buttons' %}
       </div>
       <div class="IndexBestswiper">
@@ -36,7 +36,7 @@
           </div>
           <div class="swiper-pagination"></div>
         </div>
-        <div class="swiper-scrollbar"></div>
+        <div class="swiper-scrollbar mt-4 fb-sm:mt-6"></div>
       </div>
     {%- endif -%}
   </div>

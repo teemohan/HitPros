@@ -306,26 +306,26 @@
     </div>
 </div>
 <script>
-    $(function() {
-        $(".help-center-faq .left_navigation .menu-item").click(function(){
-        $(this).addClass("active").siblings(".menu-item").removeClass("active");
-        var pcIndex = $(this).index();
-            $(".help-center-faq .right_question_answer .faqs-paragraph:eq("+pcIndex+")").show().siblings(".help-center-faq .right_question_answer .faqs-paragraph").hide();
-        });
-        $(".help-center-faq .left_navigation .menu-select").change(function(){
-            var mIndex = $(this).val();
-            $(".help-center-faq .right_question_answer .faqs-paragraph:eq("+mIndex+")").show().siblings(".help-center-faq .right_question_answer .faqs-paragraph").hide();
-        });
-        $(".help-center-faq .faqs-item .card-header").click(function(){
-            if ($(this).parent().find('.faqs-item_answer').css("display") == "none") {
-                $(this).parent().find('.faqs-item_answer').slideDown();
-                $(this).addClass("active")
-            }else{
-                $(this).parent().find('.faqs-item_answer').slideUp();
-                $(this).removeClass("active")
-            }
-        })
-    })
+$(function() {
+  $(".help-center-faq .left_navigation .menu-item").click(function(){
+  $(this).addClass("active").siblings(".menu-item").removeClass("active");
+  var pcIndex = $(this).index();
+      $(".help-center-faq .right_question_answer .faqs-paragraph:eq("+pcIndex+")").show().siblings(".help-center-faq .right_question_answer .faqs-paragraph").hide();
+  });
+  $(".help-center-faq .left_navigation .menu-select").change(function(){
+      var mIndex = $(this).val();
+      $(".help-center-faq .right_question_answer .faqs-paragraph:eq("+mIndex+")").show().siblings(".help-center-faq .right_question_answer .faqs-paragraph").hide();
+  });
+  $(".help-center-faq .faqs-item .card-header").click(function(){
+      if ($(this).parent().find('.faqs-item_answer').css("display") == "none") {
+          $(this).parent().find('.faqs-item_answer').slideDown();
+          $(this).addClass("active")
+      }else{
+          $(this).parent().find('.faqs-item_answer').slideUp();
+          $(this).removeClass("active")
+      }
+  })
+})
 </script>
 {% schema %}
 {

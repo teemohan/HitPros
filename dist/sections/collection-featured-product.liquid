@@ -1,0 +1,227 @@
+<style>
+  .collection-tab.active {
+    color: #0A2B6F;
+    border-bottom-color: #0A2B6F;
+    background-color: #F3F8FC;
+    font-weight: 700;
+    border-bottom: 2px solid #0A2B6F;
+  }
+  
+  @media (max-width: 768px) {
+    .collection-tab {
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+  }
+</style>
+{%- liquid
+  assign section_title = section.settings.section_title
+  assign all_collections = ''
+  assign all_products = ''
+  for block in section.blocks
+    assign block_collection = collections[block.settings.collection]
+    if block_collection != blank
+      if all_collections == ''
+        assign all_collections = block_collection.handle
+      else
+        assign all_collections = all_collections | append: ',' | append: block_collection.handle
+      endif
+      for product in block_collection.products
+        if all_products == ''
+          assign all_products = product.id
+        else
+          assign all_products = all_products | append: ',' | append: product.id
+        endif
+      endfor
+    endif
+  endfor
+  assign collections_array = all_collections | split: ','
+  assign products_array = all_products | split: ','
+-%}
+
+<section class="collection-featured-product w-full new-bg-over">
+  <div class="h-2.5 w-full bg-F5F5F5 fb-md:hidden">
+  </div>
+  <div class="container py-7.5 fb-md:py-10">
+    {%- if section_title != blank -%}
+      <div class="flex justify-between items-center mb-5 fb-md:mb-6">
+        <h2 class="text-20 fb-md:text-30 font-bold text-121212">{{ section_title }}</h2>
+        <a href="{{ section.settings.view_more_url | default: '/pages/all-product-categories' }}" class="text-14 fb-md:text-18 text-main fb-max-sm:underline hover:underline hidden">
+          {{ section.settings.view_more_text | default: 'View More' }}
+        </a>
+      </div>
+    {%- endif -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="collection-nav-tabs mb-2.5 fb-md:mb-5 -mx-4 px-4 fb-md:mx-0 fb-md:px-0">
+        <div class="collection-nav-container relative  fb-md:flex fb-md:items-center fb-md:justify-between border-b border-D9D9D9">
+          <div class="collection-tabs-swiper  pb-0 swiper w-full fb-md:flex-1">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide hidden" style="width: auto">
+                <button 
+                  class="collection-tab hover:text-main hover:bg-F3F8FC text-121212 font-medium transition-all duration-200 active px-4 py-2.5 text-14 fb-md:text-16 fb-md:text-666666"
+                  data-collection-id="all"
+                  data-collection-handle="all"
+                >
+                  All
+                </button>
+              </div>
+              {%- for block in section.blocks -%}
+                {%- liquid
+                  assign block_name = block.settings.name
+                  assign block_collection = collections[block.settings.collection]
+                  assign display_name = block_name | default: block_collection.title | default: 'Collection'
+                -%}
+                <div class="swiper-slide" style="width: auto">
+                  <button 
+                    class="{% if forloop.first %}active{% endif %} collection-tab hover:text-main hover:bg-F3F8FC text-121212 font-medium transition-all duration-200 px-4 py-2.5 text-18 fb-md:text-18 fb-md:text-666666"
+                    data-collection-id="{{ block.id }}"
+                    data-collection-handle="{{ block_collection.handle }}"
+                  >
+                    {{ display_name }} 
+                  </button>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+          <div class="hidden items-center justify-end space-x-4 pl-4 fb-md:w-24 fb-md:flex">
+            {%- render 'northsky-prev-next', type: 'button' -%}
+          </div>
+        </div>
+      </div>
+      <div class="collection-content-area">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign block_collection = collections[block.settings.collection]
+          -%}
+          <div 
+            class="js-colletion-item collection-content  {% unless forloop.first %}hidden{% endunless %}"
+            data-collection-content="{{ block.id }}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block_collection != blank and block_collection.products.size > 0 -%}
+              <div class="grid gap-2.5 grid-cols-2 fb-sm:grid-cols-3 fb-md:grid-cols-5 fb-md:gap-5">
+                {%- assign single_collection_count = 0 -%}
+                {%- for product in block_collection.products -%}
+                  {%- assign single_collection_count = single_collection_count | plus: 1 -%}
+                  {%- assign mobile_limit = 10 -%}
+                  {%- assign desktop_limit = 15 -%}
+                  {%- if single_collection_count <= mobile_limit -%}
+                    {%- render 'new-item-product', product: product, type:'item', mobile_limit: mobile_limit, desktop_limit: desktop_limit -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- else -%}
+              <div class="text-center py-12">
+                <p class="text-gray-500">No products found in this collection</p>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="text-center py-12">
+        <p class="text-gray-500">Add collection blocks to display featured collections</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+<script>
+$(function() {
+  function initCollectionTabs() {
+    const $tabs = $('.collection-tab');
+    const $allItems = $('.js-colletion-item');
+    if ($tabs.length === 0) return;
+    const tabsSwiper = new Swiper('.collection-tabs-swiper', {
+      slidesPerView: "auto",
+      spaceBetween: 0,
+      grabCursor: true,
+      touchRatio: 1,
+      touchAngle: 45,
+      resistance: true,
+      resistanceRatio: 0.5,
+      watchOverflow: true,
+      loop: false,
+      centeredSlides: false,
+      navigation: {
+        nextEl: '.collection-featured-product .northsky-button-next',
+        prevEl: '.collection-featured-product .northsky-button-prev'
+      }
+    });
+    $tabs.on('click', function() {
+      const collectionId = $(this).data('collection-id');
+      const $currentSlide = $(this).closest('.swiper-slide');
+      $tabs.removeClass('active');
+      $(this).addClass('active');
+      $allItems.addClass('hidden');
+      $(`[data-collection-content="${collectionId}"]`).removeClass('hidden');
+    });
+  }
+  initCollectionTabs();
+});
+</script>
+
+{% schema %}
+{
+  "name": "Collection Product",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "url",
+      "id": "view_more_url",
+      "label": "View More URL",
+      "info": "The page URL to jump to when clicking View More"
+    },
+    {
+      "type": "text",
+      "id": "view_more_text",
+      "label": "View More Text",
+      "default": "View More",
+      "info": "Link text shown in the top right corner"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Collection Name",
+          "info": "Custom name for this collection (optional)"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Col Featured Product",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

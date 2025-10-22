@@ -1,67 +1,137 @@
-{{ 'pc-sidebar.css' | asset_url | stylesheet_tag }}
-
-<template id="pcSidebar">
-  <div class="pc-main-nav">
-    <div class="pc-aside">
-      <div class="pc-aside-top">
-        <a href="/account">
-          <h3 title="{{ customer.name }}" class="ellipsis2">Hi ~ {{ customer.first_name }}</h3>
-          <h4>id # {{ customer.id }}</h4>
+<div class="w-full">
+  {% if customer.id %}
+    <div class="bg-white fb-md:shadow-lg w-full">
+      <div class="bg-F9F9F9 w-full px-5">
+        <a href="/account" class="block py-5">
+          <p title="{{ customer.name }}" class="text-16 mb-1.5 font-bold text-main text-center">
+            Hi~ {{ customer.first_name }}
+          </p>
+          <p class="text-12 text-666666 text-center">id # {{ customer.id }}</p>
         </a>
       </div>
-      <div class="pc-aside-main">
-        <div class="aside-main-list" v-for="(item, idx) in menuList" :key="idx">
-          <h4>${ item.linkTitle }</h4>
-          <ul>
-            <li v-for="(link, idx1) in item.child" :key="idx1">
-              <a :href="`{{ routes.account_url }}?slug=${link.linkSlug}`">${ link.linkName }</a>
+      
+      <div class="w-full px-5">
+        <!-- Orders 部分 -->
+        <div class="w-full mt-4 pb-4 border-b border-E2E2E2">
+          <h4 class="pb-4 fb-md:pb-2.5 text-16 fb-md:text-14 text-121212 font-bold">Orders</h4>
+          <ul class="w-full">
+            <li class="w-full">
+              <a 
+                class="flex items-center px-4 py-3 text-14 text-121212 font-medium fb-md:font-normal hover:font-medium hover:bg-F3F8FC hover:text-main" 
+                href="{{ routes.account_url }}?slug=account-orders"
+              >
+                <span class="mr-3 fb-md:mr-2 text-999999 hover:text-main">
+                  <svg  class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M1.33398 0V16H14.6673V0H1.33398ZM13.6673 15H2.33398V1H13.6673V15Z" fill="currentColor"/>
+                    <path d="M3.66602 3.66602H10.666V4.66602H3.66602V3.66602Z" fill="currentColor"/>
+                    <path d="M3.66602 5H10.666V6H3.66602V5Z" fill="currentColor"/>
+                    <path d="M3.66602 6.33398H10.666V7.33398H3.66602V6.33398Z" fill="currentColor"/>
+                    <path d="M3.66602 7.66602H10.666V8.66602H3.66602V7.66602Z" fill="currentColor"/>
+                    <path d="M3.66602 9H10.666V10H3.66602V9Z" fill="currentColor"/>
+                    <path d="M3.66602 11.334H12.666V12.334H3.66602V11.334Z" fill="currentColor"/>
+                  </svg>
+                </span>
+                My Orders
+              </a>
+            </li>
+            <li class="w-full">
+              <a 
+                class="flex items-center px-4 py-3 text-14 text-121212 font-medium fb-md:font-normal hover:font-medium hover:bg-F3F8FC hover:text-main" 
+                href="{{ routes.account_url }}?slug=account-wish"
+              >
+                <span class="mr-3 fb-md:mr-2 text-999999 hover:text-main">
+                  <svg  class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
+                    <path d="M8 14L7.07053 13.1913C5.6746 11.9656 4.52021 10.9123 3.60737 10.0315C2.69453 9.15056 1.97116 8.36654 1.43726 7.67945C0.903369 6.99249 0.530386 6.36579 0.318316 5.79932C0.106105 5.23299 0 4.65831 0 4.07528C0 2.91858 0.402947 1.95016 1.20884 1.17001C2.01488 0.390004 3.01544 0 4.21053 0C4.94568 0 5.64042 0.166407 6.29474 0.499221C6.94905 0.832036 7.51747 1.30932 8 1.93107C8.48253 1.30932 9.05095 0.832036 9.70526 0.499221C10.3596 0.166407 11.0543 0 11.7895 0C12.9846 0 13.9851 0.390004 14.7912 1.17001C15.5971 1.95016 16 2.91858 16 4.07528C16 4.65831 15.8939 5.23299 15.6817 5.79932C15.4696 6.36579 15.0966 6.99249 14.5627 7.67945C14.0288 8.36654 13.3068 9.15056 12.3966 10.0315C11.4866 10.9123 10.3309 11.9656 8.92947 13.1913L8 14ZM8 12.3481C9.34737 11.1747 10.4561 10.1689 11.3263 9.33075C12.1965 8.49274 12.8842 7.76469 13.3895 7.14661C13.8947 6.52852 14.2456 5.97965 14.4421 5.49999C14.6386 5.02047 14.7368 4.54556 14.7368 4.07528C14.7368 3.26022 14.4561 2.58101 13.8947 2.03764C13.3333 1.49427 12.6316 1.22258 11.7895 1.22258C11.1245 1.22258 10.5099 1.40516 9.94568 1.7703C9.38161 2.13558 8.93495 2.6437 8.60568 3.29466H7.39432C7.05958 2.6384 6.61151 2.12899 6.05011 1.76643C5.4887 1.40386 4.87551 1.22258 4.21053 1.22258C3.37375 1.22258 2.67333 1.49427 2.10926 2.03764C1.54519 2.58101 1.26316 3.26022 1.26316 4.07528C1.26316 4.54556 1.3614 5.02047 1.55789 5.49999C1.75439 5.97965 2.10526 6.52852 2.61053 7.14661C3.11579 7.76469 3.80351 8.49145 4.67368 9.32688C5.54386 10.1623 6.65263 11.1694 8 12.3481Z" fill="currentColor"/>
+                  </svg>
+                </span>
+                My List
+              </a>
+            </li>
+            <li class="w-full">
+              <a 
+                class="flex items-center px-4 py-3 text-14 text-121212 font-medium fb-md:font-normal hover:font-medium hover:bg-F3F8FC hover:text-main" 
+                href="{{ routes.account_url }}?slug=account-service"
+              >
+                <span class="mr-3 fb-md:mr-2 text-999999 hover:text-main">
+                  <svg  class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M14.7833 5.2105L13.3969 1.8625C13.3256 1.68953 13.2045 1.54169 13.0489 1.43782C12.8933 1.33396 12.7103 1.27877 12.5233 1.2793H3.56327C3.18007 1.2793 2.83767 1.5081 2.69047 1.8625L1.30247 5.2105C1.25447 5.3257 1.23047 5.4473 1.23047 5.5729V13.9009C1.23047 14.4217 1.65447 14.8457 2.17527 14.8457H13.9105C14.4313 14.8457 14.8553 14.4217 14.8553 13.9009V5.5721C14.8553 5.4473 14.8313 5.3257 14.7833 5.2105ZM3.57447 2.2393H12.5145L13.6745 5.0393H2.41287L3.57447 2.2393ZM2.19047 13.8849L2.18887 5.9993H13.8953V13.8849H2.19047Z" fill="currentColor"/>
+                    <path d="M9.20912 12.3598H5.38672V11.3999H9.20912C9.76512 11.3999 10.2179 10.9471 10.2179 10.391C10.2179 9.83505 9.76512 9.38225 9.20912 9.38225H5.47872V8.53825L7.13312 6.90625L7.80752 7.58945L6.96352 8.42225H9.20912C10.2947 8.42225 11.1779 9.30545 11.1779 10.391C11.1779 11.4766 10.2947 12.3598 9.20912 12.3598Z" fill="currentColor"/>
+                  </svg>
+                </span>
+                Customer Service
+              </a>
             </li>
           </ul>
         </div>
+        
+        <!-- Account 部分 -->
+        <div class="w-full mt-4 pb-4 border-b border-E2E2E2">
+          <h4 class="pb-4 fb-md:pb-2.5 text-16 fb-md:text-14 text-121212 font-bold">Account</h4>
+          <ul class="w-full">
+            <li class="w-full">
+              <a 
+                class="flex items-center px-4 py-3 text-14 text-121212 font-medium fb-md:font-normal hover:font-medium hover:bg-F3F8FC hover:text-main" 
+                href="{{ routes.account_url }}?slug=account-info"
+              >
+                <span class="mr-3 fb-md:mr-2 text-999999 hover:text-main">
+                  <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2.96674 12.4566C3.68253 11.9255 4.46232 11.5061 5.30611 11.1983C6.14975 10.8907 7.04772 10.7368 8 10.7368C8.95228 10.7368 9.85025 10.8907 10.6939 11.1983C11.5377 11.5061 12.3175 11.9255 13.0333 12.4566C13.5568 11.8812 13.9716 11.2151 14.2777 10.4583C14.5838 9.70154 14.7368 8.8821 14.7368 8C14.7368 6.13333 14.0807 4.54386 12.7684 3.23158C11.4561 1.9193 9.86667 1.26316 8 1.26316C6.13333 1.26316 4.54386 1.9193 3.23158 3.23158C1.9193 4.54386 1.26316 6.13333 1.26316 8C1.26316 8.8821 1.41621 9.70154 1.72232 10.4583C2.02842 11.2151 2.44323 11.8812 2.96674 12.4566ZM8.00021 8.63158C7.23137 8.63158 6.58302 8.36772 6.05516 7.84C5.52716 7.31214 5.26316 6.66379 5.26316 5.89495C5.26316 5.12611 5.52702 4.47775 6.05474 3.94989C6.5826 3.42189 7.23095 3.15789 7.99979 3.15789C8.76863 3.15789 9.41698 3.42175 9.94484 3.94947C10.4728 4.47733 10.7368 5.12568 10.7368 5.89453C10.7368 6.66337 10.473 7.31172 9.94526 7.83958C9.4174 8.36758 8.76905 8.63158 8.00021 8.63158ZM8 16C6.88912 16 5.84702 15.7911 4.87368 15.3733C3.90035 14.9554 3.05368 14.3865 2.33368 13.6663C1.61354 12.9463 1.04456 12.0996 0.626737 11.1263C0.208912 10.153 0 9.11088 0 8C0 6.88912 0.208912 5.84702 0.626737 4.87368C1.04456 3.90035 1.61354 3.05368 2.33368 2.33368C3.05368 1.61354 3.90035 1.04456 4.87368 0.626737C5.84702 0.208913 6.88912 0 8 0C9.11088 0 10.153 0.208913 11.1263 0.626737C12.0996 1.04456 12.9463 1.61354 13.6663 2.33368C14.3865 3.05368 14.9554 3.90035 15.3733 4.87368C15.7911 5.84702 16 6.88912 16 8C16 9.11088 15.7911 10.153 15.3733 11.1263C14.9554 12.0996 14.3865 12.9463 13.6663 13.6663C12.9463 14.3865 12.0996 14.9554 11.1263 15.3733C10.153 15.7911 9.11088 16 8 16ZM8 14.7368C8.76 14.7368 9.49277 14.6146 10.1983 14.3701C10.9039 14.1255 11.5303 13.7835 12.0777 13.3442C11.5303 12.9209 10.912 12.5911 10.2227 12.3547C9.53333 12.1182 8.79242 12 8 12C7.20758 12 6.46533 12.1168 5.77326 12.3505C5.08119 12.5844 4.46421 12.9156 3.92232 13.3442C4.46968 13.7835 5.09614 14.1255 5.80168 14.3701C6.50723 14.6146 7.24 14.7368 8 14.7368ZM8 7.36842C8.41895 7.36842 8.76926 7.22751 9.05095 6.94568C9.33277 6.664 9.47368 6.31368 9.47368 5.89474C9.47368 5.47579 9.33277 5.12547 9.05095 4.84379C8.76926 4.56196 8.41895 4.42105 8 4.42105C7.58105 4.42105 7.23074 4.56196 6.94905 4.84379C6.66723 5.12547 6.52632 5.47579 6.52632 5.89474C6.52632 6.31368 6.66723 6.664 6.94905 6.94568C7.23074 7.22751 7.58105 7.36842 8 7.36842Z" fill="currentColor"/>
+                  </svg>
+                </span>
+                My Account
+              </a>
+            </li>
+            {% unless customer.b2b? %}
+            <li class="w-full">
+              <a 
+                class="flex items-center px-4 py-3 text-14 text-121212 font-medium fb-md:font-normal hover:font-medium hover:bg-F3F8FC hover:text-main" 
+                href="{{ routes.account_url }}?slug=account-address"
+              >
+                <span class="mr-3 fb-md:mr-2 text-999999 hover:text-main">
+                  <svg  class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M16.9056 16.6991H1.29883L2.42257 9.88315H4.27941V10.8568H3.24248L2.43701 15.7253H15.7673L14.9619 10.8568H13.925V9.88315H15.7819L16.9056 16.6991ZM9.10221 7.93577C8.03676 7.93577 7.17309 7.06393 7.17309 5.98839C7.17309 4.91285 8.03676 4.04102 9.10221 4.04102C10.1676 4.04102 11.0314 4.91285 11.0314 5.98839C11.0314 7.06393 10.1676 7.93577 9.10221 7.93577ZM9.10221 5.01461C8.56949 5.01461 8.13765 5.45062 8.13765 5.9883C8.13765 6.52598 8.56957 6.96199 9.10221 6.96199C9.63485 6.96199 10.0668 6.52598 10.0668 5.9883C10.0668 5.45062 9.63494 5.01461 9.10221 5.01461Z" fill="currentColor"/>
+                    <path d="M9.1021 14.6603L4.86283 8.18038C4.48324 7.51361 4.28213 6.75857 4.2793 5.98954C4.2793 3.30078 6.43855 1.12109 9.1021 1.12109C11.7656 1.12109 13.9249 3.30078 13.9249 5.98954C13.9276 6.7574 13.7314 7.51264 13.3558 8.18038C13.0713 8.62341 9.49757 14.047 9.49757 14.047L9.1021 14.6603ZM9.1021 2.09478C6.97119 2.09478 5.24377 3.83855 5.24377 5.98963C5.24453 6.58046 5.39745 7.16094 5.68754 7.6741L9.1021 12.898C10.0377 11.4375 12.3092 7.99549 12.5312 7.64981C12.8122 7.14243 12.9599 6.57092 12.9603 5.98963C12.9603 3.83855 11.2329 2.09478 9.1021 2.09478Z" fill="currentColor"/>
+                  </svg>
+                </span>
+                My Addresses
+              </a>
+            </li>
+            {% endunless %}
+          </ul>
+        </div>
       </div>
-      <div class="pc-aside-bottom">
-        <span @click.stop="logout" class="hover:text-[#E72435]">Logout</span>
+      
+      <div class="w-full px-5">
+        <button 
+          onclick="skyLoginOut()" 
+          class="w-full text-left text-14 text-666666 hover:text-red-600 hover:font-medium transition-colors duration-200 pt-4 pb-5"
+        >
+          Log out
+        </button>
       </div>
     </div>
-  </div>
-</template>
-<script>
-$(function() {
-    window.pcSidebar = {
-      template: '#pcSidebar',
-      delimiters: ['${', '}'],
-      data() {
-        return {
-          linkActiveIdx: {
-            idx: 0,
-            idx1: 0,
-          },
-          menuList: [
-            {
-              linkTitle: 'Orders',
-              child: [
-                { linkName: 'My Orders', linkSlug: 'account-orders', isActive: false },
-                { linkName: 'My List', linkSlug: 'account-wish', isActive: false },
-                { linkName: 'Customer Service', linkSlug: 'account-service', isActive: false },
-              ],
-            },
-            {
-              linkTitle: 'Account',
-              child: [
-                { linkName: 'My Account', linkSlug: 'account-info', isActive: true },
-                {% unless customer.b2b? %}
-                  { linkName: 'My Addresses', linkSlug: 'account-address', isActive: false },
-                {% endunless %}
-              ],
-            },
-          ],
-        };
-      },
-      methods: {
-        logout() {
-          skyLoginOut()
-        },
-      },
-    };
-})
-</script>
+    {% else %}
+    <div class="bg-white fb-md:shadow-lg w-full">
+      
+      <div class="w-full p-5">
+          <div class="w-full text-16 font-bold text-121212 mb-9 fb-md:hidden">
+            My Account
+        </div>
+        <a href="/account/login" class="bg-button w-full h-12 fb-flex-center rounded-sm text-main font-bold text-16">
+          Sign In
+        </a>
+        <a href="/account/register" class="mt-3 fb-md:mt-2.5 w-full border border-main h-12 fb-flex-center rounded-sm text-main font-bold text-16">
+          Create an Account
+        </a>
+        <div class="flex items-center mt-9 mb-4 fb-md:my-4">
+          <div class="flex-1 border-t border-E2E2E2"></div>
+          <span class="px-3 text-12 text-666666">or continue with</span>
+          <div class="flex-1 border-t border-E2E2E2"></div>
+        </div>
+        <div class="w-full">
+         {% render 'account-other-quicklogin', container_id: container_id %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>

@@ -50,15 +50,13 @@
     }
   </style>
 
-  <section class="js-cus-product cus-product bg-white fb-sm:pb-12">
-    {% comment %} {%- if section.settings.show_sticky_add_to_cart and product.available -%}
-      {% comment %} {%- render 'product-sticky-form', product: product -%} {% endcomment %}
-    {%- endif -%}  {% endcomment %}
+  <section class="js-cus-product cus-product bg-white fb-md:pb-12">
     <div class="container">
-      <nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="breadcrumb text--xsmall text--subdued">
+      <!-- text--xsmall -->
+      <nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="breadcrumb text-14 text--subdued">
         <ol class="breadcrumb__list product-breadcrumb__list" role="list">
           <li class="breadcrumb__item">
-            <a class="breadcrumb__link" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+            <a class="breadcrumb__link  text-14" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }} </a>
           </li>
         </ol>
       </nav>
@@ -216,7 +214,7 @@
   {%- endif -%}
 {%- endunless -%}
 <script>
-$(function() {
+  $(function() {
     $('.cus-product .pswp__button--close').on('click', function (event) {
       $('.product--thumbnails-left .product__media').css('position', 'sticky');
       $('.cus-product .product__media-image-wrapper img').css('transform', 'scale(1)');
@@ -233,15 +231,16 @@ $(function() {
         .replace(/-+/g, '-');
       const isLast = idx === titles.length - 1;
       const listItem = `<li class="breadcrumb__item">
-        <a class="breadcrumb__link" href="/collections/${c_handle}">${c_title}</a>
+        <a class="breadcrumb__link  text-14" href="/collections/${c_handle}">${c_title}</a>
       </li>`;
       return $(listItem);
     });
     const $productTitle = $(`<li class="breadcrumb__item">
-      <span class="breadcrumb__link" aria-current="page">{{ product.title }}</span>
+      <span class="breadcrumb__link text-14" aria-current="page">{{ product.title }}</span>
     </li>`)
-    $('.product-breadcrumb__list').append($titles).append($productTitle);
-})
+    // $('.product-breadcrumb__list').append($titles).append($productTitle);
+    $('.product-breadcrumb__list').append($titles)
+  })
 </script>
 
 {% schema %}

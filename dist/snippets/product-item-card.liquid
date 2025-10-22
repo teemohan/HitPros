@@ -1,11 +1,11 @@
 {% raw %}
   <script type="text/x-template" id="product-item-card">
-    <div class="w-full rounded-sm bg-white px-2.5 pt-1 pb-2 fb-sm:pb-2.5 fb-sm:pt-6">
+    <div class="w-full rounded-sm bg-white px-2.5 pt-1 pb-2 fb-max-sm:py-4 fb-md:pb-2.5 fb-md:pt-6 hover-scale group fb-md:hover:z-2">
       <div class="w-full">
         <a
           :href="product.productUrl"
           @click="handleClickLink"
-          class="w-full px-4 flex items-center justify-center h-27.5 fb-sm:px-5 fb-sm:h-10r fb-md:h-12r"
+          class="w-full px-4 flex items-center justify-center h-27.5 fb-md:px-5 fb-md:h-10r fb-md:h-12r"
         >
           <img
             class="lazyload w-auto max-w-auto h-full"
@@ -14,31 +14,75 @@
             height="200"
           >
         </a>
-        <div class="w-full mt-3.5 fb-sm:mt-6 fb-sm:px-3">
-          <div class="w-full text-main text-14 font-medium line-clamp-1 h-5">
+        <div class="w-full mt-3.5 fb-md:mt-6 fb-md:px-3">
+          <div class="w-full text-main text-14 font-medium line-clamp-1 h-5 hidden">
             {{ product.brand }}
           </div>
-          <a :href="product.productUrl" @click="handleClickLink" :title="product.title" class="w-full text-xs text-575757 mt-1.5 line-clamp-2 h-8 fb-sm:h-10 overflow-hidden fb-sm:text-14">
-            {{ product.title }}
+          <a :href="product.productUrl" @click="handleClickLink" :title="product.title" class="w-full text-14 text-575757 mt-1.5 line-clamp-3 h-15 fb-md:h-18 overflow-hidden fb-md:text-16">
+            {{ product.title }} 
            </a>
+        </div>
+
+        
+        <div class="w-full mt-2 fb-md:px-3 flex items-center hidden">
+          <div class='flex items-center'>
+            <span v-for="(item,index) in 5" :key='index' >
+              <svg t="1760496233582" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8042" width="16" height="16"><path d="M93.013333 420.693333A20.906667 20.906667 0 0 1 85.333333 397.653333l3.413334-10.666666a20.906667 20.906667 0 0 1 18.773333-14.933334l272.64-21.76 104.533333-251.306666a21.76 21.76 0 0 1 21.76-13.653334h11.093334a20.906667 20.906667 0 0 1 20.053333 13.653334l104.96 251.306666 272.64 21.76a20.906667 20.906667 0 0 1 18.773333 14.933334l3.413334 10.666666a20.906667 20.906667 0 0 1-6.4 23.04L725.333333 597.333333l63.146667 264.96a21.76 21.76 0 0 1-8.106667 22.613334l-12.373333 6.826666a21.333333 21.333333 0 0 1-23.893333 0L512 750.933333l-233.386667 142.08a21.333333 21.333333 0 0 1-23.893333 0l-9.386667-6.4a21.76 21.76 0 0 1-8.106666-22.613333L298.666667 597.333333z" p-id="8043" :fill="item > value1 ? '#999999': '#FABE00' "></path></svg>
+            </span>
+          </div>
+          <span class="rating__caption text-12 text-999999 ml-1">
+            (10)
+          </span>
         </div>
       </div>
 
-      <div class="w-full mt-1.5 fb-sm:mt-2">
-        <div class="w-full flex items-center justify-start fb-sm:px-3">
-          <span class="text-main font-medium text-22">
-            {{ product.priceFormat }}
-          </span>
+
+      <div class="w-full mt-2.5 fb-md:mt-3 flex items-center justify-between">
+        <div class="w-full flex items-center justify-start fb-md:px-3">
+          <div class="flex">
+            <span class="text-main font-bold text-14 fb-max-sm:text-10 fb-md:text-12">
+              $
+            </span>
+            <span class="text-main font-bold text-28 fb-max-sm:text-20 fb-md:text-24" style="margin:0 2px;">
+              {{formatPrice.whole}}
+            </span>
+            <span class="text-main font-bold text-14 fb-max-sm:text-10 fb-md:text-12">
+              {{formatPrice.decimal}}
+            </span>
+          </div>
           <template v-if="product.compareAtPriceFormat && product.discountPercentage">
             <div class="compare-price text-main text-12 ml-2 flex items-start flex-col justify-start">
               <s>{{ product.compareAtPriceFormat }}</s>
-              <span class="text-red-600">{{ product.discountPercentage }}%OFF</span>
+              <span class="text-red-600 font-bold">{{ product.discountPercentage }}% OFF</span>
             </div>
           </template> 
         </div>
-        <div class="w-full mt-2.5 fb-sm:mt-6">
-          <el-button :loading="cartLoading" @click="handleAddToCart" class="w-full h-8 rounded-sm px-0  text-main text-sm bg-button border-none flex items-center justify-center fb-sm:h-12 hover:bg-button hover:text-main">
-            <div class="loader-button__text font-bold text-14 flex items-center justify-center fb-sm:text-16 space-x-2.5">
+        <button class= "border-none w-7 h-7 fb-flex-center bg-button rounded-sm text-white fb-md:bg-white fb-md:text-main fb-md:group-hover:bg-button fb-md:group-hover:text-white mr-2"  v-if="!cartLoading"   @click="handleAddToCart" >
+          <span class="flex items-center justify-center px-0.5 fb-md:hidden">
+            <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6.14221 19.0864C6.52681 19.0865 6.89559 19.2393 7.1676 19.5112C7.4397 19.7833 7.59241 20.1528 7.59241 20.5376C7.59233 20.9223 7.43963 21.291 7.1676 21.563C6.89558 21.835 6.52691 21.9877 6.14221 21.9878C5.75741 21.9878 5.38794 21.8351 5.11584 21.563C4.84395 21.291 4.69111 20.9222 4.69104 20.5376C4.69104 20.1528 4.84375 19.7833 5.11584 19.5112C5.38794 19.2391 5.75741 19.0864 6.14221 19.0864Z" fill="currentColor" stroke="currentColor" stroke-width="0.0234375"/>
+              <path d="M18.4297 19.0864C18.8143 19.0865 19.1831 19.2393 19.4551 19.5112C19.7272 19.7833 19.8799 20.1528 19.8799 20.5376C19.8798 20.9223 19.7271 21.291 19.4551 21.563C19.1831 21.835 18.8144 21.9877 18.4297 21.9878C18.0449 21.9878 17.6754 21.8351 17.4033 21.563C17.1314 21.291 16.9786 20.9222 16.9785 20.5376C16.9785 20.1528 17.1312 19.7833 17.4033 19.5112C17.6754 19.2391 18.0449 19.0864 18.4297 19.0864Z" fill="currentColor" stroke="currentColor" stroke-width="0.0234375"/>
+              <path d="M3.39355 5.94629L4.50488 16.0615L4.55371 16.5068H19.3262L19.3906 16.083L20.9473 5.96777L21.0361 5.3916H3.33301L3.39355 5.94629ZM4.05664 16.8691L4.05371 16.8418L2.38672 1.61328L2.33789 1.16699H0.5V0.5H2.66895C2.67004 0.500135 2.6723 0.500369 2.6748 0.500977C2.67977 0.502179 2.68764 0.504736 2.69824 0.509766C2.72051 0.520415 2.75229 0.541355 2.78711 0.576172C2.85794 0.647163 2.92602 0.75975 2.96094 0.899414L2.98535 0.99707L3.04492 1.07715L5.62012 4.52344L5.77051 4.72363H21.3428C21.4565 4.72368 21.5128 4.74379 21.5352 4.75488C21.5495 4.76208 21.5553 4.76685 21.5625 4.78125L21.5986 4.85352L21.6553 4.91113C21.701 4.95685 21.7125 4.98756 21.7188 5.0127C21.7281 5.05034 21.73 5.0945 21.7305 5.19043L19.959 16.9326L19.9531 16.9697V17.0088C19.953 17.0098 19.9527 17.0116 19.9521 17.0137C19.9511 17.0179 19.9492 17.0242 19.9453 17.0322C19.937 17.0493 19.9211 17.0715 19.8965 17.0938C19.847 17.1383 19.7704 17.1738 19.6748 17.1738H4.33496C4.33138 17.1738 4.30827 17.1725 4.27051 17.1562C4.23341 17.1402 4.19326 17.1148 4.15723 17.082C4.08206 17.0137 4.05677 16.9454 4.05664 16.8965V16.8691Z" fill="currentColor" stroke="currentColor"/>
+              <rect x="8.50024" y="10.2307" width="7.84645" height="1.30775" fill="currentColor" stroke="currentColor" stroke-width="0.5"/>
+              <rect x="11.7692" y="6.96094" width="1.30774" height="7.84649" fill="currentColor" stroke="currentColor" stroke-width="0.5"/>
+            </svg>
+          </span>
+          <span class="hidden fb-md:flex items-center justify-center ">
+            <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6.14221 19.0864C6.52681 19.0865 6.89559 19.2393 7.1676 19.5112C7.4397 19.7833 7.59241 20.1528 7.59241 20.5376C7.59233 20.9223 7.43963 21.291 7.1676 21.563C6.89558 21.835 6.52691 21.9877 6.14221 21.9878C5.75741 21.9878 5.38794 21.8351 5.11584 21.563C4.84395 21.291 4.69111 20.9222 4.69104 20.5376C4.69104 20.1528 4.84375 19.7833 5.11584 19.5112C5.38794 19.2391 5.75741 19.0864 6.14221 19.0864Z" fill="currentColor" stroke="currentColor" stroke-width="0.0234375"/>
+              <path d="M18.4297 19.0864C18.8143 19.0865 19.1831 19.2393 19.4551 19.5112C19.7272 19.7833 19.8799 20.1528 19.8799 20.5376C19.8798 20.9223 19.7271 21.291 19.4551 21.563C19.1831 21.835 18.8144 21.9877 18.4297 21.9878C18.0449 21.9878 17.6754 21.8351 17.4033 21.563C17.1314 21.291 16.9786 20.9222 16.9785 20.5376C16.9785 20.1528 17.1312 19.7833 17.4033 19.5112C17.6754 19.2391 18.0449 19.0864 18.4297 19.0864Z" fill="currentColor" stroke="currentColor" stroke-width="0.0234375"/>
+              <path d="M3.39355 5.94629L4.50488 16.0615L4.55371 16.5068H19.3262L19.3906 16.083L20.9473 5.96777L21.0361 5.3916H3.33301L3.39355 5.94629ZM4.05664 16.8691L4.05371 16.8418L2.38672 1.61328L2.33789 1.16699H0.5V0.5H2.66895C2.67004 0.500135 2.6723 0.500369 2.6748 0.500977C2.67977 0.502179 2.68764 0.504736 2.69824 0.509766C2.72051 0.520415 2.75229 0.541355 2.78711 0.576172C2.85794 0.647163 2.92602 0.75975 2.96094 0.899414L2.98535 0.99707L3.04492 1.07715L5.62012 4.52344L5.77051 4.72363H21.3428C21.4565 4.72368 21.5128 4.74379 21.5352 4.75488C21.5495 4.76208 21.5553 4.76685 21.5625 4.78125L21.5986 4.85352L21.6553 4.91113C21.701 4.95685 21.7125 4.98756 21.7188 5.0127C21.7281 5.05034 21.73 5.0945 21.7305 5.19043L19.959 16.9326L19.9531 16.9697V17.0088C19.953 17.0098 19.9527 17.0116 19.9521 17.0137C19.9511 17.0179 19.9492 17.0242 19.9453 17.0322C19.937 17.0493 19.9211 17.0715 19.8965 17.0938C19.847 17.1383 19.7704 17.1738 19.6748 17.1738H4.33496C4.33138 17.1738 4.30827 17.1725 4.27051 17.1562C4.23341 17.1402 4.19326 17.1148 4.15723 17.082C4.08206 17.0137 4.05677 16.9454 4.05664 16.8965V16.8691Z" fill="currentColor" stroke="currentColor"/>
+              <rect x="8.50024" y="10.2307" width="7.84645" height="1.30775" fill="currentColor" stroke="currentColor" stroke-width="0.5"/>
+              <rect x="11.7692" y="6.96094" width="1.30774" height="7.84649" fill="currentColor" stroke="currentColor" stroke-width="0.5"/>
+            </svg>
+          </span>
+        </button>
+        <el-button  v-else :loading="cartLoading"  class="h-4 w-4 rounded-sm px-3  text-main text-sm bg-button border-none flex items-center justify-center mr-2">
+            
+        </el-button>
+        <div class="w-full mt-2.5 fb-md:mt-6 hidden" > 
+          <el-button :loading="cartLoading" @click="handleAddToCart" class="w-full h-8 rounded-sm px-0  text-main text-sm bg-button border-none flex items-center justify-center fb-md:h-12 hover:bg-button hover:text-main">
+            <div class="loader-button__text font-bold text-14 flex items-center justify-center fb-md:text-16 space-x-2.5">
                <span>Add to Cart</span>
             </div>
           </el-button>
@@ -64,9 +108,20 @@
         required: false
       }
     },
+    computed:{
+      formatPrice() {
+        const fixedPrice = Number(this.product.price).toFixed(2);
+        const parts = fixedPrice.split('.');
+        return {
+          whole: parts[0],
+          decimal: parts[1]
+        };
+      },
+    },
     data() {
       return {
-        cartLoading: false
+        cartLoading: false,
+        value1:4
       }
     },
     methods: {

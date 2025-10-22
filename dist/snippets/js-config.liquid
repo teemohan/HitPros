@@ -5,18 +5,24 @@
 {%- endif -%}
 <script src="{{ 'theme.js' | asset_url }}" defer></script>
 {% if template == 'collection' %}
+{% else %}
+  <script src="{{ 'swiper.min.js' | asset_url }}" defer></script>
+{% endif %}
+<script src="{{ 'sky-public-head.js' | asset_url }}" defer></script>
+{% if template == 'index' %}
+  <script src="{{ "fb-img-video-banner.js" | asset_url }}" defer></script>
+{% endif %}
+{% if template == 'collection' %}
   <script src="{{ 'facet-filters-newcol.js' | asset_url }}" defer></script>
   <script src="{{ 'main-collection-vue.js' | asset_url }}"  defer></script>
 {% endif %}
 {% if template == 'product' %}
   <script src="{{ 'pdp-other-vue.js' | asset_url }}" defer></script>
-  <script src="{{ 'gumshoe.polyfills.min.js' | asset_url }}"> </script>
+  <script src="{{ 'gumshoe.polyfills.min.js' | asset_url }}" defer></script>
   <script src="{{'main-product.js' | asset_url }}"  defer></script>
-    <script src="{{'quick-buy-vue.js' | asset_url }}"  defer></script>
+  <script src="{{'quick-buy-vue.js' | asset_url }}"  defer></script>
 {% endif %}
-
 {% render 'js-page-customer'%}
-
 <script src="//code.tidio.co/dzwcvyci274aolrpev5ilpboec1objxi.js" defer></script>
 {{ "//cdn.shopify.com/s/files/1/0773/5273/0914/files/footer.js?v=1718022933" | script_tag }}
 {%- if is_online_shop -%}

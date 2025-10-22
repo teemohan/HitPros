@@ -1,17 +1,21 @@
-{%- comment -%}
-# Caution! Please read https://help.shopify.com/en/manual/promoting-marketing/seo/editing-robots-txt before proceeding to make changes to this file.
-{% endcomment %}
-{% for group in robots.default_groups %}
-  {{- group.user_agent -}}
-
-  {% for rule in group.rules %}
-    {{- rule -}}
-  {% endfor %}
-  
-  Disallow: */doc-sp.northskysupply.com/*
-  Disallow: */products/*?variant=*
-  
-  {%- if group.sitemap != blank -%}
-    {{ group.sitemap }}
-  {%- endif -%}
-{% endfor %}
+User-agent: *
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /carts
+Disallow: /account
+Disallow: /collections/*+*
+Disallow: /policies/
+Disallow: /*/collections/*sort_by*
+Disallow: */collections/*filter*&*filter*
+Disallow: /search
+Disallow: /apple-app-site-association
+Disallow: /.well-known/shopify/monorail
+Disallow: /cdn/wpm/*.js
+Disallow: /recommendations/products
+Disallow: /*/recommendations/products
+Disallow: */doc-sp.northskysupply.com/*
+Disallow: /*/products/*?variant=*
+Sitemap: https://northskysupply.com/sitemap.xml

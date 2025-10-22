@@ -725,7 +725,8 @@
   </div>
 </section>
 <script>
-  $(function() {
+$(function() {
+
     Vue.directive('focus-input', {
       inserted(el, binding, vnode) {
         const inputEl = el.querySelector('input');
@@ -1137,7 +1138,7 @@
         },
       },
     });
-  })
+})
 </script>
 {% schema %}
 {

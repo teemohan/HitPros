@@ -1,0 +1,752 @@
+{%- style -%}
+  .fbhomebaner-swiper-pagination .swiper-pagination-bullet {
+    background: #979797;
+    border: 1px solid #979797;
+    opacity: 1;
+  }
+  .fbhomebaner-swiper-pagination .swiper-pagination-bullet-active {
+    background: #121212 !important;
+    border: 1px solid #121212 !important;
+  }
+  .fb-newhome-baner{
+     font-family: 'Barlow', sans-serif;
+  }
+  /* .fbhomebaner-swiper-pagination {
+    width: 100%;
+    bottom: 20px;
+    padding-left: 20px;
+    position: absolute;
+    z-index: 2;
+    text-align: left;
+  } */
+  @media screen and (max-width: 1200px) {
+    .fbhomebaner-swiper-pagination {
+      width: fit-content;
+      bottom: 10px!important;
+      left: 50%!important;
+      transform: translateX(-50%)!important;
+      text-align: center;
+      position: absolute;
+      z-index: 2;
+      width: auto!important;
+      border-radius: 10px;
+      min-width: 58px;
+      display: flex;
+      justify-content: center;
+      padding: 2px 1px;
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+  }
+  .fullscreen {
+    height: calc(var(--window-height) - var(--header-height) - var(--announcement-bar-height, 0px));
+    max-height: 100vh;
+  }
+
+  .line-shu{
+    width:1px;
+    background: #FDE7A0;
+    height:1rem;
+    margin:0 30px;
+  }
+
+{%- endstyle -%}
+<section
+  id="section-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  class="fb-newhome-baner min-h-12.5r"
+  data-type="swiper"
+>
+  <div class="fbHomeImgVideoBanner relative overflow-hidden {% if section.settings.show_fullscreen == false %}{% else %} fullscreen{% endif %}">
+    <div class="swiper-wrapper w-full overflow-hidden">
+      {%- assign loopIndex = 1 -%}
+      {%- for block in section.blocks -%}
+        {%- capture slide_image_content -%}
+            {%- assign mobile_image = block.settings.mobile_image | default: block.settings.image -%}
+            {%- assign mobile_image_new = mobile_image | img_url: '' -%}
+            {%- if mobile_image -%}
+              <div class="h-full w-full fb-sm:hidden" style="{% unless section.settings.show_fullscreen %}--aspect-ratio: {{ mobile_image.aspect_ratio }};{% endunless %} background-image: url({{ mobile_image | img_url: '1x1', format: 'jpg' }})">
+                <img
+                  {% if loopIndex == 1 %}
+                    class="h-full w-full object-cover"
+                    fetchpriority="high"
+                    src="{{ mobile_image_new }}"
+                  {% else %}
+                    class="h-full w-full object-cover lazyload"
+                    data-src="{{ mobile_image_new }}"
+                  {% endif %}
+                  alt="{{ block.settings.mobile_image.alt | escape }}"
+                  data-sizes="auto"
+                  width="100%"
+                  height="100%"
+                  data-optimumx="1.2"
+                  data-widths="[400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200]"
+                >
+              </div>
+            {%- endif -%}
+            <div class="hidden h-full w-full fb-sm:block" 
+              style="background-image: url({{ block.settings.image | img_url: '1x1', format: 'jpg' }}); background-size: cover;">
+              {% assign image_url = block.settings.image | img_url: '' %}
+              <img
+                {% if loopIndex == 1 %}
+                  class="h-full w-full object-cover"
+                  fetchpriority="high"
+                  src="{{ image_url }}"
+                {% else %}
+                  class="h-full w-full object-cover lazyload"
+                  data-src="{{ image_url }}"
+                {% endif %}
+                alt="{{ block.settings.image.alt | escape }}"
+                data-sizes="auto"
+                width="100%"
+                height="100%"
+                data-optimumx="1.2"
+                data-widths="[400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200]"
+              >
+            </div>
+          {%- endcapture -%}
+        {%- capture slide_video_content -%}
+          {%- assign mobile_vedio = block.settings.video_mobile_url | default: block.settings.video_url -%}
+            <div class="h-full w-full fb-sm:hidden">
+              <video
+                class="h-full w-full object-cover"
+                x-webkit-airplay="allow"
+                webkit-playsinline="true"
+                playsinline="true"
+                autoplay="autoplay"
+                muted="muted"
+                loop="loop"
+                src="{{ mobile_vedio }}"
+                alt="{{ mobile_vedio.alt | escape }}"></video>
+            </div>
+            <div class="hidden h-full w-full fb-sm:block">
+              <video
+                class="h-full w-full object-cover"
+                x-webkit-airplay="allow"
+                webkit-playsinline="true"
+                playsinline="true"
+                autoplay="autoplay"
+                muted="muted"
+                loop="loop"
+                src="{{ block.settings.video_url }}"></video>
+            </div>
+          {%- endcapture -%}
+        {%- capture slideshow_text_content -%}
+            {%- render 'fb-img-video-text3', block: block, type: 'img' -%}
+          {%- endcapture -%}
+        {%- capture slideshow_text_box -%}
+            {%- if slideshow_text_content != blank -%}
+              {%- if block.settings.content_position_pc == 'middleLeft' -%}
+                <div class="absolute top-0 hidden h-full w-full items-center px-20 text-start fb-sm:flex">
+                  <header class="SectionHeader">
+                    {{ slideshow_text_content }}
+                  </header>
+                </div>
+              {%- else -%}
+                  <div class="absolute flex flex-col items-center justify-center">
+                    <header class="SectionHeader">
+                      {{ slideshow_text_content }}
+                    </header>
+                  </div>
+              {%- endif -%}
+              {%- if block.settings.content_position_mobile == 'bottomLeft' -%}
+                <div class="absolute bottom-7 justify-start px-5 fb-sm:hidden">
+                  <header class="SectionHeader">
+                    {{ slideshow_text_content }}
+                  </header>
+                </div>
+              {%- else -%}
+                <div class="absolute top-10 mx-auto w-full px-3 text-center fb-sm:hidden">
+                  <header class="SectionHeader">
+                    {{ slideshow_text_content }}
+                  </header>
+                </div>
+              {%- endif -%}
+              
+            {%- endif -%}
+          {%- endcapture -%}
+        {%- capture slideshow_type_banner -%}
+          {%- if block.type == 'image_banner' -%}
+            {{- slide_image_content -}}
+          {%- else -%}
+            {{- slide_video_content -}}
+          {%- endif -%}
+          {{- slideshow_text_box -}}
+        {%- endcapture -%}
+
+        {%- capture country_banner -%}
+          {%- if block.settings.button_1_text == blank and block.settings.banner_href -%}
+            <a
+              href="{{ block.settings.button_1_link }}"
+              class="swiper-slide js-homebanner-slid js-banner-kinds relative h-full w-full"
+              data-number="{{ loopIndex }}"
+              data-type="{{ block.type }}"
+            >
+              {{- slideshow_type_banner -}}
+            </a>
+          {%- else -%}
+            <div
+              id="Slide{{ block.id }}"
+              class="swiper-slide js-homebanner-slid js-banner-kinds relative h-full w-full"
+              data-number="{{ loopIndex }}"
+              data-type="{{ block.type }}"
+            >
+              {{- slideshow_type_banner -}}
+            </div>
+          {%- endif -%}
+          {%- assign loopIndex = loopIndex | plus: 1 -%}
+        {%- endcapture -%}
+        {{- country_banner -}}
+      {%- endfor -%}
+    </div>
+    {%- assign circle_hidden_css = 'hidden fb-md:flex' -%}
+    {% if section.blocks.size <= 1 %}
+      {%- assign circle_hidden_css = '!hidden !fb-md:hidden' -%}
+    {% endif %}
+    <div class="absolute h-9  pl-5 pr-5 w-full items-center justify-between space-x-3 z-1 {{ circle_hidden_css }}" style="bottom:50%;transform: translateY(50%);">
+      <div class="banner-swiper-button-prev fb-flex-center w-9 h-9 rounded-full cursor-pointer bg-white/60 hover:bg-white border-999999 border">
+        <svg class="w-2.5 h-auto" style="transform: scale(-1);" width="11" height="17" viewBox="0 0 11 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.81988 9.51959L0.625 14.5326L2.40346 16.2324L10.625 8.35694L2.45062 0.269899C2.37844 0.208271 2.33417 0.233107 2.26007 0.269899C1.83951 0.476858 1.09175 1.54109 0.624999 1.83911L5.91612 7.12806L6.98852 8.2323L5.81988 9.51959Z" fill="#0A2B6F"></path></svg>
+      </div>
+      <div class="banner-swiper-button-next fb-flex-center w-9 h-9 rounded-full cursor-pointer bg-white/60 hover:bg-white border-999999 border">
+        <svg class="w-2.5 h-auto" width="11" height="17" viewBox="0 0 11 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.81988 9.51959L0.625 14.5326L2.40346 16.2324L10.625 8.35694L2.45062 0.269899C2.37844 0.208271 2.33417 0.233107 2.26007 0.269899C1.83951 0.476858 1.09175 1.54109 0.624999 1.83911L5.91612 7.12806L6.98852 8.2323L5.81988 9.51959Z" fill="#0A2B6F"></path></svg>
+      </div>
+    </div>
+    <div class="fbhomebaner-swiper-pagination fb-md:hidden"></div>
+  </div>
+
+  <div class="w-full free-box flex justify-center items-center">
+    <div class="w-5 h-5 ">
+      <svg t="1760153276774" class="icon" viewBox="0 0 1280 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5868" width="100%" height="100%"><path d="M1248 704h-32V487.8c0-25.4-10.2-49.8-28.2-67.8L988 220.2c-18-18-42.4-28.2-67.8-28.2H832V96c0-53-43-96-96-96H224C171 0 128 43 128 96v96H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h544c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H80c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h416c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h416c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H128v256c0 106 86 192 192 192s192-86 192-192h256c0 106 86 192 192 192s192-86 192-192h96c17.6 0 32-14.4 32-32v-64c0-17.6-14.4-32-32-32zM320 928c-53 0-96-43-96-96s43-96 96-96 96 43 96 96-43 96-96 96z m640 0c-53 0-96-43-96-96s43-96 96-96 96 43 96 96-43 96-96 96z m160-416H832V288h88.2l199.8 199.8V512z" p-id="5869" fill="#219653" ></path></svg>
+    </div>
+    <span class="font-bold fb-max-sm:text-16 fb-md:text-18 text-121212 ml-2">FREE shipping on orders of $75+</span>
+    <div class="line-shu fb-max-sm:hidden"></div>
+    <div class="w-5 h-5 fb-max-sm:hidden">
+      <svg t="1760670836535" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11798" width="100%" height="100%"><path d="M0 273.63l387.88 222.85v448.53L0 722.16V273.63z m835 0v267.99h-8.47q-55 2.82-103.66 29.62t-81.11 72.64q-32.44 45.84-40.9 100.15-8.46 54.3 7.05 107.89l-160.79 93.09V496.48L835 273.63zM196.06 126.94l2.82 2.82L579.7 351.21 417.5 444.3 31.03 222.85l165.03-95.91zM417.5 0l385.06 221.44-162.21 94.5L255.29 93.09 417.5 0z m425.96 600.86q47.96 0 89.56 24.69 41.61 24.68 66.29 66.29 24.68 41.61 24.68 90.27t-24.68 90.27q-24.69 41.61-66.29 65.59-41.61 23.98-90.27 23.98t-90.27-23.98q-41.61-23.98-65.59-65.59-23.98-41.61-23.98-90.27t23.98-90.27q23.98-41.61 65.59-66.29 41.61-24.69 90.98-24.69z m29.62 78.99l-42.31 42.31 29.62 29.62H722.16v60.65h138.23l-29.62 29.62 42.31 42.31 102.96-101.55v-1.41L873.08 679.85z" fill="#219653" p-id="11799"></path></svg>
+    </div>
+    <span class="font-bold fb-max-sm:text-16 fb-md:text-18 text-121212 ml-2 fb-max-sm:hidden">Order by 2:30 PM for Same-Day shipping</span>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "FbImgVideoBanner",
+  // max-w-94r fb-lg:max-w-94r fb-md:max-w-80r mx-auto fb-sm:px-10 fb-md:px-5
+  "class": "shopify-section--slideshow w-full ",
+  "presets": [
+    {
+      "name": "fb-img-video-banner",
+      "category": "Fb Sections",
+      "blocks": [
+        {
+          "type": "image_banner"
+        },
+        {
+          "type": "video_banner"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_fullscreen",
+      "label": "Show full-screen images",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show bottom arrow",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto rotate between slides",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image_banner",
+      "name": "Image Banner",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "checkbox",
+          "id": "banner_href",
+          "label": "Image Href",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
+        },
+        {
+          "type": "checkbox",
+          "id": "apply_overlay",
+          "label": "Apply overlay on image",
+          "info": "This can improve text visibility.",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "content_position_pc",
+          "label": "Content position Pc",
+          "options": [
+            {
+              "value": "middleLeft",
+              "label": "Middle left"
+            },
+            {
+              "value": "boxCenter",
+              "label": "Box Center"
+            }
+          ],
+          "default": "middleLeft"
+        },
+        {
+          "type": "select",
+          "id": "content_position_mobile",
+          "label": "Content position Mobile",
+          "options": [
+            {
+              "value": "topCenter",
+              "label": "Top Center"
+            },
+            {
+              "value": "bottomLeft",
+              "label": "Bottom left"
+            }
+          ],
+          "default": "bottomLeft"
+        },
+        {
+          "type": "richtext",
+          "id": "banner_title",
+          "label": "Banner Title"
+        },
+        {
+          "type": "color",
+          "id": "banner_title_color",
+          "label": "Banner Title Color",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "richtext",
+          "id": "banner_title_mob",
+          "label": "Banner Title Mob"
+        },
+        {
+          "type": "color",
+          "id": "banner_title_color_mob",
+          "label": "Banner Title Color Mob",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "richtext",
+          "id": "banner_desc",
+          "label": "Banner Desc"
+        },
+        {
+          "type": "color",
+          "id": "banner_desc_color",
+          "label": "Banner Desc Color",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "richtext",
+          "id": "banner_desc_mob",
+          "label": "Banner Desc Mob"
+        },
+        {
+          "type": "color",
+          "id": "banner_desc_color_mob",
+          "label": "Banner Desc Color Mob",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "header",
+          "content": "Button 1"
+        },
+        {
+          "type": "text",
+          "id": "button_1_text",
+          "label": "button 1 Text",
+          // "default": "Shop Now"
+        },
+        {
+          "type": "color",
+          "id": "button_1_text_color",
+          "label": "Button 1 Text Color",
+          // "default": "#0A2B6F"
+        },
+        {
+          "type": "color",
+          "id": "button_1_text_backgroundcolor",
+          "label": "Button 1 Text BackgroundColor",
+          // "default": "#FABE00"
+        },
+        {
+          "type": "color",
+          "id": "button_1_text_bordercolor",
+          "label": "Button 1 Text BorderColor",
+          "default": "#FABE00"
+        },
+        {
+          "type": "url",
+          "id": "button_1_link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Button 1 Mob"
+        },
+        {
+          "type": "text",
+          "id": "button_1_text_mob",
+          "label": "button 1 Text Mob",
+          "default": "Shop Now"
+        },
+        {
+          "type": "color",
+          "id": "button_1_text_color_mob",
+          "label": "Button 1 Text Color Mob"
+        },
+        {
+          "type": "color",
+          "id": "button_1_backgroundcolor_mob",
+          "label": "Button 1 Text BackgroundColor_mob",
+          "default": "#FABE00"
+        },
+        {
+          "type": "color",
+          "id": "button_1_bordercolor_mob",
+          "label": "Button 1 Text BorderColor Mob",
+          "default": "#FABE00"
+        },
+        {
+          "type": "url",
+          "id": "button_1_link_mob",
+          "label": "Link Mob"
+        },
+        {
+          "type": "header",
+          "content": "Button 2"
+        },
+        {
+          "type": "text",
+          "id": "button_2_text",
+          "label": "button 2 Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "color",
+          "id": "button_2_text_color",
+          "label": "Button 2 Text Color",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "color",
+          "id": "button_2_backgroundcolor",
+          "label": "Button 2 Text BackgroundColor",
+          "default": "#FABE00"
+        },
+        {
+          "type": "color",
+          "id": "button_2_text_bordercolor",
+          "label": "Button 2 Text BorderColor",
+          "default": "#FABE00"
+        },
+        {
+          "type": "url",
+          "id": "button_2_link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Button 2 Mob"
+        },
+        {
+          "type": "text",
+          "id": "button_2_text_mob",
+          "label": "button 2 Text Mob",
+          "default": "Shop Now"
+        },
+        {
+          "type": "color",
+          "id": "button_2_text_color_mob",
+          "label": "Button 2 Text Color Mob",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "color",
+          "id": "button_2_backgroundcolor_mob",
+          "label": "Button 2 Text BackgroundColor Mob",
+          "default": "#FABE00"
+        },
+        {
+          "type": "color",
+          "id": "button_2_bordercolor_mob",
+          "label": "Button 2 Text BorderColor Mob",
+          "default": "#FABE00"
+        },
+        {
+          "type": "url",
+          "id": "button_2_link_mob",
+          "label": "Link Mob"
+        }
+      ]
+    },
+    {
+      "type": "video_banner",
+      "name": "Video Banner",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "checkbox",
+          "id": "banner_href",
+          "label": "Video Banner Href",
+          "default": false
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "PC Video Url"
+        },
+        {
+          "type": "url",
+          "id": "video_mobile_url",
+          "label": "Mobile Video Url"
+        },
+              {
+          "type": "checkbox",
+          "id": "apply_overlay",
+          "label": "Apply overlay on image",
+          "info": "This can improve text visibility.",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "content_position_pc",
+          "label": "Content position Pc",
+          "options": [
+            {
+              "value": "middleLeft",
+              "label": "Middle left"
+            },
+            {
+              "value": "boxCenter",
+              "label": "Box Center"
+            }
+          ],
+          "default": "middleLeft"
+        },
+        {
+          "type": "select",
+          "id": "content_position_mobile",
+          "label": "Content position Mobile",
+          "options": [
+            {
+              "value": "topCenter",
+              "label": "Top Center"
+            },
+            {
+              "value": "bottomLeft",
+              "label": "Bottom left"
+            }
+          ],
+          "default": "bottomLeft"
+        },
+        {
+          "type": "richtext",
+          "id": "banner_title",
+          "label": "Banner Title"
+        },
+        {
+          "type": "color",
+          "id": "banner_title_color",
+          "label": "Banner Title Color",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "richtext",
+          "id": "banner_title_mob",
+          "label": "Banner Title Mob"
+        },
+        {
+          "type": "color",
+          "id": "banner_title_color_mob",
+          "label": "Banner Title Color Mob",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "richtext",
+          "id": "banner_desc",
+          "label": "Banner Desc"
+        },
+        {
+          "type": "color",
+          "id": "banner_desc_color",
+          "label": "Banner Desc Color",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "richtext",
+          "id": "banner_desc_mob",
+          "label": "Banner Desc Mob"
+        },
+        {
+          "type": "color",
+          "id": "banner_desc_color_mob",
+          "label": "Banner Desc Color Mob",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "header",
+          "content": "Button 1"
+        },
+        {
+          "type": "text",
+          "id": "button_1_text",
+          "label": "button 1 Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "color",
+          "id": "button_1_text_color",
+          "label": "Button 1 Text Color",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "color",
+          "id": "button_1_text_backgroundcolor",
+          "label": "Button 1 Text BackgroundColor",
+          "default": "#FABE00"
+        },
+        {
+          "type": "color",
+          "id": "button_1_text_bordercolor",
+          "label": "Button 1 Text BorderColor",
+          "default": "#FABE00"
+        },
+        {
+          "type": "url",
+          "id": "button_1_link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Button 1 Mob"
+        },
+        {
+          "type": "text",
+          "id": "button_1_text_mob",
+          "label": "button 1 Text Mob",
+          "default": "Shop Now"
+        },
+        {
+          "type": "color",
+          "id": "button_1_text_color_mob",
+          "label": "Button 1 Text Color Mob"
+        },
+        {
+          "type": "color",
+          "id": "button_1_backgroundcolor_mob",
+          "label": "Button 1 Text BackgroundColor_mob",
+          "default": "#FABE00"
+        },
+        {
+          "type": "color",
+          "id": "button_1_bordercolor_mob",
+          "label": "Button 1 Text BorderColor Mob",
+          "default": "#FABE00"
+        },
+        {
+          "type": "url",
+          "id": "button_1_link_mob",
+          "label": "Link Mob"
+        },
+        {
+          "type": "header",
+          "content": "Button 2"
+        },
+        {
+          "type": "text",
+          "id": "button_2_text",
+          "label": "button 2 Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "color",
+          "id": "button_2_text_color",
+          "label": "Button 2 Text Color",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "color",
+          "id": "button_2_backgroundcolor",
+          "label": "Button 2 Text BackgroundColor",
+          "default": "#FABE00"
+        },
+        {
+          "type": "color",
+          "id": "button_2_text_bordercolor",
+          "label": "Button 2 Text BorderColor",
+          "default": "#FABE00"
+        },
+        {
+          "type": "url",
+          "id": "button_2_link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Button 2 Mob"
+        },
+        {
+          "type": "text",
+          "id": "button_2_text_mob",
+          "label": "button 2 Text Mob",
+          "default": "Shop Now"
+        },
+        {
+          "type": "color",
+          "id": "button_2_text_color_mob",
+          "label": "Button 2 Text Color Mob",
+          "default": "#0A2B6F"
+        },
+        {
+          "type": "color",
+          "id": "button_2_backgroundcolor_mob",
+          "label": "Button 2 Text BackgroundColor Mob",
+          "default": "#FABE00"
+        },
+        {
+          "type": "color",
+          "id": "button_2_bordercolor_mob",
+          "label": "Button 2 Text BorderColor Mob",
+          "default": "#FABE00"
+        },
+        {
+          "type": "url",
+          "id": "button_2_link_mob",
+          "label": "Link Mob"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

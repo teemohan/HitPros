@@ -8,22 +8,48 @@
 {% assign price_parts = price_string | split: '.' %}
 {% assign whole_part = price_parts[0] %}
 {% assign decimal_part = price_parts[1] | default: '00' %}
-
-<div class="relative h-8 inline-flex items-center justify-center text-main">
-  <span class="absolute top-0 left-0 text-12 fb-sm:text-14 font-bold ">
-     {%- render 'customer-global-format', type: 'currency_symbol' -%}
-  </span>
+{% if decimal_part.size == 1 %}
+  {% assign decimal_part = decimal_part | append: '0' %}
+{% elsif decimal_part.size == 0 %}
+  {% assign decimal_part = '00' %}
+{% endif %}
+{%- if text_size -%}
   {% assign whole_part_length = whole_part | size %}
   {% if whole_part_length >= 6 %}
-    <span class="text-20 fb-md:text-24 font-bold px-3">
-      {{ whole_part }}
-    </span>
-  {% else %}
-    <span class="text-26 fb-md:text-30 font-bold px-3">
-      {{ whole_part }}
-    </span>
+    {%- assign text_size = 'text-18' -%}
+  {%- elsif whole_part_length >= 8 -%}
+    {%- assign text_size = 'text-12' -%}
   {% endif %}
-  <span class="absolute top-0 -right-2 text-12 fb-sm:text-14 font-bold ">
-    {{ decimal_part }}
-  </span>
-</div>
+  <div class="relative h-6 inline-flex items-center justify-center text-main">
+    <span class="absolute top-0 left-0 text-12 font-bold ">
+      {%- render 'customer-global-format', type: 'currency_symbol' -%}
+    </span>
+    <span class="{{ text_size }} font-bold px-2.5">
+      {{ whole_part }}
+    </span>
+    <span class="absolute top-0 -right-2 text-12 font-bold ">
+      {{ decimal_part }}
+    </span>
+  </div>
+{% else %}
+  <div class="relative h-8 inline-flex items-center justify-center text-main">
+    <span class="absolute top-0 left-0 text-12 fb-sm:text-14 font-bold ">
+      {%- render 'customer-global-format', type: 'currency_symbol' -%}
+    </span>
+    {% assign whole_part_length = whole_part | size %}
+    {% if whole_part_length >= 6 %}
+      <span class="text-20 fb-md:text-24 font-bold px-3">
+        {{ whole_part }}
+      </span>
+    {% else %}
+      <span class="text-26 fb-md:text-30 font-bold px-3">
+        {{ whole_part }}
+      </span>
+    {% endif %}
+    <span class="absolute top-0 -right-2 text-12 fb-sm:text-14 font-bold ">
+      {{ decimal_part }}
+    </span>
+  </div>
+{%- endif -%}
+
+

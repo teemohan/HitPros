@@ -1,0 +1,449 @@
+<div class="js-customer-spotlight w-full py-7.5 fb-md:py-9 js-spotlight-{{ section.id }} new-bg-over">
+  <div class="container w-full overflow-hidden">
+    <div class="flex items-center justify-between mb-5 fb-md:mb-6">
+      <h2 class="text-20 fb-md:text-30 font-semibold text-121212">{{ section.settings.title }}</h2>
+      <a href="{{ section.settings.view_more_url | default: '/pages/all-product-categories' }}" class="text-14 fb-md:text-18 text-main fb-max-sm:underline hover:underline hidden">
+        {{ section.settings.view_more_text }}
+      </a>
+    </div>
+    <div class="relative w-full mx-auto fb-hover-list">
+      <div class="swiper overflow-visible relative">
+        <div class="js-spotlight-content swiper-wrapper">
+          {%- if section.settings.collection != blank -%}
+            {%- for product in section.settings.collection.products -%}
+              {%- assign product_video = null -%}
+              {%- for media in product.media -%}
+                {%- if media.media_type == 'video' -%}
+                  {%- assign product_video = media -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if product_video -%}
+                <div class="swiper-slide slide-item">
+                  <div class="flex flex-col justify-between bg-white relative">
+                    <div class="relative overflow-hidden min-h-[481px] w-full group">
+                      <div class="video-container relative h-[378px] overflow-hidden">
+                        <video 
+                          class="product-video w-full h-full object-cover fb-md:max-w-[400px]" 
+                          data-product-id="{{ product.id }}"
+                          poster="{{ product_video.preview_image | default: product_video.cover_img | default: product.featured_image | image_url: width: 400 }}"
+                          data-video-src="{{ product_video.sources[1].url }}"
+                          muted
+                          playsinline
+                          loop
+                          preload="metadata"
+                        >
+                          <source src="{{ product_video.sources[1].url }}" type="video/mp4">
+                        </video>
+                        <div class="video-controls absolute inset-0 flex items-center justify-center cursor-pointer z-1">
+                          <button class="play-icon bg-black bg-opacity-50 fb-flex-center text-white w-10 h-10 fb-md:w-12 fb-md:h-12 rounded-full p-3 hover:bg-opacity-70 transition-all">
+                            <svg  class="play-icon w05 h-auto" xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20" fill="none">
+                              <path d="M4.10391 0.42638C2.25937 -0.496121 0.75 0.436692 0.75 2.49919V17.4992C0.75 19.5617 2.25937 20.4945 4.10391 19.572L19.8956 11.6759C21.7402 10.7534 21.7402 9.24404 19.8956 8.32201L4.10391 0.42638Z" fill="white"/>
+                            </svg>
+                          </button>
+                          <button class="pause-icon hidden absolute bottom-4 left-4 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-70 transition-all">
+                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                            </svg>
+                          </button>
+                          <!-- Volume control - Only shown when playing and hovering -->
+                          <button class="mute-btn absolute top-2 right-2 bg-black bg-opacity-50 text-white rounded-full p-0.5 hover:bg-opacity-70 transition-all hidden">
+                            <svg class="volume-on w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                            </svg>
+                            <svg class="volume-off w-5 h-5 hidden" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <div class="w-full py-2.5 min-h-[128px]">
+                        <a href="{{ product.url }}" class="flex items-center justify-start w-full space-x-2.5 pr-1">
+                          <div  class="w-20 h-20 fb-flex-center">
+                            <img 
+                              src="{{ product.featured_image | image_url: width: 200 }}" 
+                              alt="{{ product.title | escape }}"
+                              class="w-20 h-auto"
+                              loading="lazy"
+                              width="100"
+                              height="100"
+                            >
+                          </div>
+                          <div class="flex-1">
+                            {% comment %} fb-md:min-h-12 {% endcomment %}
+                             <h3 class="font-normal line-clamp-3  text-121212 text-14 min-h-11  hover:underline cursor-pointer hover:font-bold min-h-[60px]">
+                              {{ product.title }}
+                            </h3>
+                            <div class="w-full mt-3 text-main font-bold text-22 h-9 flex justify-start items-center">
+                              {%- if product.compare_at_price > product.price -%}
+                                {% assign price = product.price | money_without_currency | replace: ',', '' | times: 1 %}
+                                {% assign compare_at_price = product.compare_at_price | money_without_currency | replace: ',', '' | times: 1 %}
+                                {% assign discount_difference = compare_at_price | minus: price %}
+                                {% assign discount_percentage = discount_difference | divided_by: compare_at_price | times: 100 | ceil %}
+                                <div class="flex justify-start items-center gap-2">
+                                  <div class="mr-1">
+                                    {% render 'format-price', price: product.price, text_size:'text-24' %}
+                                  </div>
+                                  <div class="flex items-center flex-col">
+                                    <s class="text-12 font-medium text-999999 line-through">
+                                      {{- product.compare_at_price | money -}}
+                                    </s>
+                                    <span class="text-12 text-F74747 py-0.5 font-medium">{{ discount_percentage }}% OFF</span>
+                                  </div>
+                                </div>
+                              {%- else -%}
+                                {% render 'format-price', price: product.price, text_size:'text-24' %}
+                              {%- endif -%}
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            <div class="swiper-slide">
+              <div class="bg-gray-200 h-16r fb-md:h-20r flex items-center justify-center">
+                <p class="text-gray-500">Please select a collection to display product videos</p>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="mt-4 fb-sm:mt-6 flex items-center justify-between fb-md:space-x-10 relative z-1">
+        <div class="swiper-scrollbar !static flex w-full fb-md:flex-1"></div>
+        {%- render 'northsky-prev-next' -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+@media screen and (max-width: 740px) {
+  /* .slide-item{
+    width:200px !important;
+  } */
+
+  .min-h-\[481px\]{
+    min-height: 281px;
+  }
+
+  .h-\[378px\] {
+    height: 178px;
+  }
+}
+</style>
+
+<script type="text/javascript">
+$(function() {
+  var CustomerSpotlight = function(sectionId) {
+    var self = this;
+    this.sectionId = sectionId;
+    this.$section = $('.js-spotlight-' + sectionId);
+    this.currentPlayingVideo = null;
+    this.swiper = null;
+    this.observer = null;
+    
+    this.init = function() {
+      self.initSwiper();
+      self.initVideoControls();
+      self.initIntersectionObserver();
+      self.bindEvents();
+    };
+    
+    // Initialize Swiper
+    this.initSwiper = function() {
+      var $swiperElement = self.$section.find('.swiper');
+      if (!$swiperElement.length) {
+        return false;
+      }
+      self.swiper = new Swiper($swiperElement[0], {
+        observer: true,
+        observeParents: true,
+        touchStartPreventDefault: true,
+        passiveListeners: false,
+        touchAngle: 70,              
+        threshold: 10,
+        // breakpoints: {
+        //   0: {
+        //     spaceBetween: 12,
+        //     slidesPerView: 0.6,
+        //   },
+        //   768: {
+        //     spaceBetween: 24,
+        //     slidesPerView: 3.6,
+        //     slidesPerGroup: 3.6
+        //   },
+        //   1024: {
+        //     spaceBetween: 24,
+        //     slidesPerView: 4.6,
+        //     slidesPerGroup: 4.6
+        //   },
+        // },
+        scrollbar: {
+          el: self.$section.find('.swiper-scrollbar')[0],
+          draggable: true,
+        },
+        navigation: {
+          nextEl: self.$section.find('.northsky-button-next')[0],
+          prevEl: self.$section.find('.northsky-button-prev')[0],
+        },
+        breakpoints: {
+          0: {
+            spaceBetween: 10,
+            slidesPerView: 2,  // slides per view 2组 均分
+            slidesPerGroup: 2,
+          },
+          768: {
+            spaceBetween: 24,
+            slidesPerView: 3,
+            slidesPerGroup: 3
+          },
+          1024: {
+            spaceBetween: 24,
+            slidesPerView: 4,
+            slidesPerGroup: 4
+          },
+          1200: {
+            spaceBetween: 24,
+            slidesPerView: 5,
+            slidesPerGroup: 5
+          },
+        },
+        on: {
+          slideChange: function() {
+            self.pauseAllVideos();
+          }
+        }
+      });
+    };
+    
+    // Initialize video controls
+    this.initVideoControls = function() {
+      var $videos = self.$section.find('.product-video');
+      
+      $videos.each(function() {
+        var $video = $(this);
+        var video = this;
+        var $container = $video.closest('.video-container');
+        var $muteBtn = $container.find('.mute-btn');
+        var $playIcon = $container.find('.play-icon');
+        var $pauseIcon = $container.find('.pause-icon');
+        var $volumeOnIcon = $muteBtn.find('.volume-on');
+        var $volumeOffIcon = $muteBtn.find('.volume-off');
+        
+        // Set default video mute state
+        self.setVideoMuted(video, $volumeOnIcon, $volumeOffIcon, true);
+        
+        // Initial state: hide volume button
+        $muteBtn.addClass('hidden');
+        
+        // Video container click event - Optimize event handling
+        $container.off('click.videoControl').on('click.videoControl', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Check if mute button was clicked
+          if ($(e.target).closest('.mute-btn').length) {
+            if (!$muteBtn.hasClass('hidden')) {
+              self.toggleVideoMute(video, $volumeOnIcon, $volumeOffIcon);
+            }
+            return false;
+          }
+          
+          self.toggleVideoPlayback(video, $playIcon, $pauseIcon, $muteBtn);
+        });
+        
+        // Video ended event
+        $video.off('ended.videoControl').on('ended.videoControl', function() {
+          self.resetVideoState($playIcon, $pauseIcon, $muteBtn, $volumeOnIcon, $volumeOffIcon);
+        });
+      });
+    };
+    
+    // Add: Set video mute state unified method
+    this.setVideoMuted = function(video, $volumeOnIcon, $volumeOffIcon, muted) {
+      video.muted = muted;
+      if (muted) {
+        $volumeOnIcon.addClass('hidden');
+        $volumeOffIcon.removeClass('hidden');
+      } else {
+        $volumeOnIcon.removeClass('hidden');
+        $volumeOffIcon.addClass('hidden');
+      }
+    };
+    
+    // Toggle video play/pause - Optimize logic
+    this.toggleVideoPlayback = function(video, $playIcon, $pauseIcon, $muteBtn) {
+      if (video.paused) {
+        // Pause all other videos before playing
+        self.pauseAllVideos();
+        
+        video.play().then(function() {
+          self.currentPlayingVideo = video;
+          $playIcon.addClass('hidden');
+          $pauseIcon.removeClass('hidden');
+          $muteBtn.removeClass('hidden');
+        }).catch(function(error) {
+          console.warn('Video play failed:', error);
+        });
+      } else {
+        video.pause();
+        self.currentPlayingVideo = null;
+        $playIcon.removeClass('hidden');
+        $pauseIcon.addClass('hidden');
+        $muteBtn.addClass('hidden');
+      }
+    };
+    
+    // Toggle video mute - Simplify logic
+    this.toggleVideoMute = function(video, $volumeOnIcon, $volumeOffIcon) {
+      self.setVideoMuted(video, $volumeOnIcon, $volumeOffIcon, !video.muted);
+    };
+    
+    // Reset video state - Optimize and ensure mute state recovery
+    this.resetVideoState = function($playIcon, $pauseIcon, $muteBtn, $volumeOnIcon, $volumeOffIcon) {
+      $playIcon.removeClass('hidden');
+      $pauseIcon.addClass('hidden');
+      $muteBtn.addClass('hidden');
+      
+      // Ensure mute state recovery
+      if ($volumeOnIcon && $volumeOffIcon) {
+        $volumeOnIcon.addClass('hidden');
+        $volumeOffIcon.removeClass('hidden');
+      }
+      
+      self.currentPlayingVideo = null;
+    };
+    
+    // Pause all videos - Optimize and ensure mute state recovery
+    this.pauseAllVideos = function() {
+      var $videos = self.$section.find('.product-video');
+      
+      $videos.each(function() {
+        var video = this;
+        var $video = $(this);
+        
+        if (!video.paused) {
+          video.pause();
+          
+          // Restore mute state
+          video.muted = true;
+          
+          var $container = $video.closest('.video-container');
+          var $playIcon = $container.find('.play-icon');
+          var $pauseIcon = $container.find('.pause-icon');
+          var $muteBtn = $container.find('.mute-btn');
+          var $volumeOnIcon = $muteBtn.find('.volume-on');
+          var $volumeOffIcon = $muteBtn.find('.volume-off');
+          
+          self.resetVideoState($playIcon, $pauseIcon, $muteBtn, $volumeOnIcon, $volumeOffIcon);
+        }
+      });
+      
+      self.currentPlayingVideo = null;
+    };
+    
+    // Initialize intersection observer
+    this.initIntersectionObserver = function() {
+      if (typeof IntersectionObserver !== 'undefined') {
+        self.observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (!entry.isIntersecting) {
+              self.pauseAllVideos();
+            }
+          });
+        }, {
+          threshold: 0.1
+        });
+        
+        self.observer.observe(self.$section[0]);
+      }
+    };
+    
+    // Bind global events
+    this.bindEvents = function() {
+      // Use namespace to avoid event conflicts
+      $(document).off('visibilitychange.customerSpotlight').on('visibilitychange.customerSpotlight', function() {
+        if (document.hidden) {
+          self.pauseAllVideos();
+        }
+      });
+    };
+    
+    // Destroy method - Optimize cleanup logic
+    this.destroy = function() {
+      // Clean up Swiper
+      self.pauseAllVideos();
+      {% comment %} if (self.swiper) {
+        self.swiper.destroy(true, true);
+        self.swiper = null;
+      }
+      // Clean up Observer
+      if (self.observer) {
+        self.observer.disconnect();
+        self.observer = null;
+      }
+      // Remove event listeners
+      $(document).off('visibilitychange.customerSpotlight');
+      self.$section.find('.video-container').off('.videoControl');
+      self.$section.find('.product-video').off('.videoControl'); {% endcomment %}
+    };
+    
+    // Auto initialize
+    this.init();
+  };
+
+  // Create instance
+  var customerSpotlight = new CustomerSpotlight('{{ section.id }}');
+
+  // Clean up resources when page unloads
+  $(window).on('beforeunload', function() {
+    if (customerSpotlight) {
+      customerSpotlight.destroy();
+    }
+  });
+});
+</script>
+{% schema %}
+{
+  "name": "Customer Spotlight",
+  "presets": [
+    {
+      "name": "customer-spotlight"
+    }
+  ],
+  "class": "customer-spotlight-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Product Spotlights"
+    },
+     {
+      "type": "text",
+      "id": "view_more_text",
+      "label": "View More Text",
+      "default": "View More",
+      "info": "Link text shown in the top right corner"
+    },
+    {
+      "type": "url",
+      "id": "view_more_url",
+      "label": "View More URL",
+      "info": "The page URL to jump to when clicking View More"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection",
+      "info": "Select a collection to display product videos"
+    }
+  ]
+}
+{% endschema %}

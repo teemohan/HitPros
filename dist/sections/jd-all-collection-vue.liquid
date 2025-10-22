@@ -2,9 +2,11 @@
 <div class="container">
   {% render 'collection-top-public', collection: section.settings %}
   <div class="js-categories mb-10 fb-sm:mb-20 mt-4 fb-sm:mt-0">
-    <div class="js-categories-list grid grid-cols-2 fb-sm:grid-cols-6 fb-sm:border-l fb-sm:border-F0F0F0">
+    {% comment %} fb-sm:border-l  fb-sm:border-F0F0F0 {% endcomment %}
+    <div class="js-categories-list grid grid-cols-2 fb-lg:grid-cols-6  fb-md:grid-cols-4 fb-sm:grid-cols-3 ">
      {% for i in (1..8) %}
-      <div class="flex flex-col items-center justify-center group py-2.5 transition duration-200 relative fb-sm:pt-6 fb-sm:pb-10 fb-sm:h-[244px] fb-sm:border-t fb-sm:border-b fb-sm:border-r fb-sm:border-F0F0F0">
+      {% comment %} fb-sm:border-t fb-sm:border-b fb-sm:border-r fb-sm:border-F0F0F0 fb-sm:h-[244px] {% endcomment %}
+      <div class="flex flex-col items-center justify-center group py-2.5 transition duration-200 relative fb-sm:pt-6 fb-sm:pb-10  h-auto ">
         <div class="w-full px-9 h-25 mb-4 fb-flex-center fb-sm:w-8.75r fb-sm:h-8.75r fb-sm:px-0">
             <div class="w-full h-full bg-gray-200 animate-pulse rounded"></div>
         </div>  
@@ -22,6 +24,7 @@
       if (!categories || !Array.isArray(categories) || categories.length === 0) {
         return;
       }
+      const empty = 'https://testhitpros.myshopify.com/cdn/shop/files/NSS2366860443_NSS7362398568_SPU.jpg'
       const categoryElements = categories.map((collection, index) => {
         if (!collection || !collection.name) return '';
         
@@ -30,13 +33,13 @@
           .trim()
           .replace(/\s+/g, '-')
           .replace(/-+/g, '-');
-          
+          // ${index > 5 ? 'fb-sm:border-b': 'fb-sm:border-t fb-sm:border-b'}  fb-sm:border-r  fb-sm:border-F0F0F0
         return `<a href="/collections/${handle}" 
-         class="flex flex-col items-center justify-center group py-2.5 transition duration-200 relative fb-sm:pt-6 fb-sm:pb-4 fb-sm:h-[244px] hover:bg-F3F8FC hover:border-none ${index > 5 ? 'fb-sm:border-b': 'fb-sm:border-t fb-sm:border-b'}  fb-sm:border-r  fb-sm:border-F0F0F0">
-          <div class="w-full px-9 h-25 mb-4 fb-flex-center fb-sm:w-8.75r fb-sm:h-8.75r fb-sm:px-0">
-              <img src="${collection?.img || ''}" alt="${collection.name}" width="100px" height="100px" class="h-full w-auto">
+         class="flex flex-col items-center justify-center group py-2.5 transition duration-200 relative fb-sm:pt-6 fb-sm:pb-4 h-auto hover:bg-F3F8FC hover:border-none px-2.5 ">
+          <div class="ratio-box w-full px-9 h-25 mb-4 fb-flex-center fb-sm:w-8.75r fb-sm:h-8.75r fb-sm:px-0">
+              <img src="${collection?.img || empty}" alt="${collection.name}"  class="ratio-img ">
           </div>  
-         <div class="px-4 text-13 text-main fb-sm:text-sm group-hover:underline font-bold text-center line-clamp-2 h-8 fb-sm:px-7 fb-sm:h-auto">
+         <div class="px-4 fb-max-sm:text-14 text-16 text-main  group-hover:underline font-bold text-center line-clamp-2 fb-sm:px-7 h-12 fb-max-sm:h-10">
             ${collection.name}
           </div>
           <p class="w-full h-full border-[3px] absolute border-[#D3DEF1] hidden left-0 top-0 group-hover:block"></p>

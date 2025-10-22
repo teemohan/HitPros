@@ -1,9 +1,12 @@
-<div class="{{ section.id }} product-x-hidde">
-  <div class="container cl-container">
-    <div class="index-cus-header">
-      <h2>{{ section.settings.title }}</h2>
-      {% render 'swiper-buttons' %}
-    </div>
+<div class="{{ section.id }} product-x-hidde w-full new-bg-over">
+  <div class="h-2.5 w-full bg-F5F5F5 fb-md:hidden"></div>
+  <div class="container cl-container py-7.5 fb-md:py-10">
+     <div class="flex justify-between items-center mb-5 fb-md:mb-6">
+        <h2 class="text-20 fb-md:text-30 font-bold text-121212">{{ section.settings.section_title | default: 'Industry Insights' }}</h2>
+        <a href="{{ section.settings.view_more_url | default: '/blogs/industry-insights' }}" class="text-14 fb-md:text-18 text-main fb-max-sm:underline hover:underline">
+          {{ section.settings.view_more_text }}
+        </a>
+      </div>
     <div class="IndexBestswiper">
       <div class="swiper {{ section.id }}-IndexBestswiper">
         <div class="swiper-wrapper">
@@ -15,13 +18,16 @@
         </div>
         <div class="swiper-pagination"></div>
       </div>
-      <div class="swiper-scrollbar"></div>
+     <div class="mt-4 fb-sm:mt-6 flex items-center justify-between fb-md:space-x-10 relative z-1">
+        <div class="swiper-scrollbar !static flex w-full fb-md:flex-1"></div>
+        {%- render 'northsky-prev-next' -%}
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-$(function() {
+ $(function() {
     new Swiper(".{{ section.id }}-IndexBestswiper", {
       observer: true,
       observeParents: true,
@@ -32,38 +38,52 @@ $(function() {
       breakpoints: {
         0: {
           spaceBetween: 12,
-          slidesPerView: 1,
+          slidesPerView: 1.2
         },
         768: {
-          spaceBetween: 20,
-          slidesPerView: 2.2,
+          spaceBetween: 24,
+          slidesPerView: 2.6,
+          slidesPerGroup: 2
         },
-        1280: {
-          spaceBetween: 20,
-          slidesPerView: 3.2,
+        1024: {
+          spaceBetween: 24,
+          slidesPerView: 3.6,
+          slidesPerGroup: 3
         },
       },
       scrollbar: {
           el: ".{{ section.id }} .swiper-scrollbar"
         },
       navigation: {
-        nextEl: ".{{ section.id }} .swiper-button-next",
-        prevEl: ".{{ section.id }} .swiper-button-prev",
+        nextEl: ".{{ section.id }} .northsky-button-next",
+        prevEl: ".{{ section.id }} .northsky-button-prev",
       },
     });
-})
+ })
 </script>
 
 {% schema %}
 {
   "name": "h-blogs",
-  "class": "section-gap h-blogs",
   "settings": [
     {
       "type": "text",
       "id": "title",
       "label": "title",
       "default": "Blogs"
+    },
+      {
+      "type": "url",
+      "id": "view_more_url",
+      "label": "View More URL",
+      "info": "The page URL to jump to when clicking View More"
+    },
+     {
+      "type": "text",
+      "id": "view_more_text",
+      "label": "View More Text",
+      "default": "View More",
+      "info": "Link text shown in the top right corner"
     },
     {
       "type": "blog",

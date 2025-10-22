@@ -1,0 +1,71 @@
+<section class="marketing-banner w-full max-w-94r fb-lg:max-w-94r fb-md:max-w-80r mx-auto  fb-sm:px-10 fb-md:px-5 min-h-8r fb-md:min-h-9.5r">
+  <a class="w-full {% if section.settings.banner_link == blank %}cursor-default{% endif %}" href="{% if section.settings.banner_link %}{{ section.settings.banner_link }}{% else %}javascript:void(0){% endif %}">
+    {%- if section.settings.banner_image or section.settings.mobile_banner_image -%}
+      {%- if section.settings.banner_image -%}
+        <img 
+          src="{{ section.settings.banner_image | image_url: width: 1920 }}"
+          srcset="{{ section.settings.banner_image | image_url: width: 768 }} 768w,
+                  {{ section.settings.banner_image | image_url: width: 1024 }} 1024w,
+                  {{ section.settings.banner_image | image_url: width: 1440 }} 1440w,
+                  {{ section.settings.banner_image | image_url: width: 1920 }} 1920w"
+          sizes="100vw"
+          alt="{{ section.settings.banner_image.alt | default: 'Banner Image' }}"
+          class="w-full h-auto object-cover hidden fb-md:block"
+          loading="lazy"
+        >
+      {%- endif -%}
+      {%- if section.settings.mobile_banner_image -%}
+        <img 
+          src="{{ section.settings.mobile_banner_image | image_url: width: 768 }}"
+          srcset="{{ section.settings.mobile_banner_image | image_url: width: 375 }} 375w,
+                  {{ section.settings.mobile_banner_image | image_url: width: 414 }} 414w,
+                  {{ section.settings.mobile_banner_image | image_url: width: 768 }} 768w"
+          sizes="100vw"
+          alt="{{ section.settings.mobile_banner_image.alt | default: 'Mobile Banner Image' }}"
+          class="w-full h-auto object-cover block fb-md:hidden"
+          loading="lazy"
+        >
+      {%- elsif section.settings.banner_image -%}
+        <img 
+          src="{{ section.settings.banner_image | image_url: width: 768 }}"
+          srcset="{{ section.settings.banner_image | image_url: width: 375 }} 375w,
+                  {{ section.settings.banner_image | image_url: width: 414 }} 414w,
+                  {{ section.settings.banner_image | image_url: width: 768 }} 768w"
+          sizes="100vw"
+          alt="{{ section.settings.banner_image.alt | default: 'Banner Image' }}"
+          class="w-full h-auto object-cover block fb-md:hidden"
+          loading="lazy"
+        >
+      {%- endif -%}
+    {%- endif -%}
+  </a>
+</section>
+
+{% schema %}
+{
+  "name": "Marketing Commom Banner",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "pc Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_banner_image",
+      "label": "mob Banner"
+    },
+    {
+      "type": "url",
+      "id": "banner_link",
+      "label": "banner link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marketing Commom Banner"
+    }
+  ]
+}
+{% endschema %}

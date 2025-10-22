@@ -1,5 +1,26 @@
-{%- assign active_filters_count = 0 -%}
+<style>
+  .zkh-pagination, .el-pagination{
+    margin-top:0 !important;
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+  }
 
+  .border-all{
+    border: 1px solid #0A2B6F;
+  }
+
+  /* .bg-linear{
+    background: linear-gradient(to bottom, #fff, #f9f9f9);
+  } */
+
+  @media (max-width: 740px) {
+    .bg-linear{
+      background: linear-gradient(to bottom, #fff, #f9f9f9) !important;
+    }
+  }
+</style>
+
+{%- assign active_filters_count = 0 -%}
 {%- for filter in search.filters -%}
   {%- if filter.type == 'list' -%}
     {%- assign active_filters_count = active_filters_count | plus: filter.active_values.size -%}
@@ -10,23 +31,25 @@
 {{ 'index-product-item-swiper.css' | asset_url | stylesheet_tag }}
 {{ 'main-search.css' | asset_url | stylesheet_tag }}
 
-<section class="bg-EAEEF1 w-full pt-3 fb-sm:pt-4">
-  {%- if search.performed -%}
-    <div class="container bg-transparent">
+<section class=" w-full pt-3 fb-sm:pt-4">
+    <div class="container bg-transparent fb-max-sm:px-0">
       <search-page
         complete-for="[]"
         section-id="{{ section.id }}"
         terms="{{ search.terms | escape }}"
         class="main-search__results"
       >
-        <div class="js-filter-noresult w-full fb-sm:mb-4">
-          <span class="text-24 text-main font-bold fb-sm:text-28">Results for {{ 'search.general.terms' | t: terms: search.terms }}</span>
-          <span class="js-result-num text-666666 text-12 fb-sm:text-14 hidden">(0 products)</span>
+        <div class="js-filter-noresult w-full fb-sm:mb-4 py-4 fb-max-sm:px-4">
+          <span class="text-24 text-121212 font-bold fb-sm:text-28">Results for {{ 'search.general.terms' | t: terms: search.terms }}</span>
+          <span class="js-result-num text-121212 text-14 fb-sm:text-14 ">({{ products.length }} items)</span>
         </div>
-        <div class="js-filter-show-noresult hidden mt-2 mb-4 fb-sm:mt-0 fb-sm:mb-4 w-full">
-          <div class="text-24 text-main font-bold fb-sm:text-28 text-center">No results for {{ 'search.general.terms' | t: terms: search.terms }}</div>
-          <div class="text-12 fb-sm:text-18 mt-4 fb-sm:mt-4 text-121212 text-center">
-            <p class="text-center">While we don't have that specific item right now, there's a lot more to discover! </p>
+        <div class="js-filter-show-noresult hidden mt-2 mb-4 fb-sm:mt-0 fb-sm:mb-4 w-full fb-max-sm:px-4">
+          <div class="flex justify-center items-center text-E2E2E2 text-20 py-4">
+           <svg t="1760509427095"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5898" width="60" height="60"><path d="M998.13376 928.4448711l-197.99153778-197.99153778-2.29376 0q103.54688-121.75132445 103.54688-281.04021333 0-50.06222222-11.39598222-98.41322667t-32.44032-91.02222222-50.64476444-80.20878223-67.13799111-67.1379911-80.20878223-51.19089778-91.60476444-32.44032-98.99576889-10.81344q-117.20021333 0-216.74211555 57.45322667t-157.57767112 157.03153778-58.03576888 216.74211555q0 54.61333333 14.78200888 110.35534222 36.40888889-55.74200889 58.0357689-64.84423111-2.29376-11.39598222-2.83989334-22.75555556t-0.58254222-22.75555555q0-97.86709333 48.35100444-181.46190222t131.98222222-132.56476445 182.62698667-48.93354666q150.18666667 0 256.57344 106.38677333t106.38677333 256.57344q0 117.20021333-67.1379911 210.47978667t-172.94222223 131.98222221q-3.42243555 13.65333333-8.51968 27.30666667t-10.81344 27.30666667-13.65333333 26.17799111q108.09799111-23.88423111 191.14666666-94.44465778l199.12021334 199.12021333q10.23089778 10.23089778 24.46677333 10.23089779t24.46677333-10.23089779 10.23089778-24.46677333-10.23089778-24.46677333l0 0zM487.24423112 535.8842311q-76.24021333-76.24021333-185.46688-76.24021333t-186.59555556 76.24021333q-37.53756445 37.53756445-57.45322667 85.88856889t-19.91566222 100.70698667q0 109.22666667 77.36888889 186.59555555t186.59555556 77.36888889 185.46688-77.36888889q37.53756445-37.53756445 57.45322666-85.34243555t19.91566222-101.25312q0-109.22666667-77.36888888-186.59555556zM439.47576889 860.17820444q-28.43534222 27.30666667-63.71555555 42.08867555t-73.94645334 14.78200888q-80.79132445 0-137.66200888-56.90709333t-56.90709334-137.11587555 56.90709334-137.66200889 137.11587555-57.45322666 137.66200889 56.90709333 57.45322666 137.66200889-56.90709333 137.66200888zM422.4 601.89354666q-4.55111111-5.67978667-11.39598222-7.97354667t-13.07079111-2.29376-12.52465778 2.29376-11.94211555 7.97354667l-71.68910222 71.68910221-72.81777778-71.68910221q-10.23089778-10.23089778-24.46677334-10.23089779t-24.46677333 10.23089779-10.23089778 24.46677333 10.23089778 24.46677333l72.81777778 71.68910222-72.81777778 72.81777778q-10.23089778 10.23089778-10.23089778 24.46677334t10.23089778 24.46677333 25.04931555 10.23089778q5.67978667 0 12.52465778-2.83989333t11.39598222-7.39100445l72.81777778-72.81777778 71.68910222 72.81777778q10.23089778 10.23089778 24.46677334 10.23089778t24.46677333-10.23089778q4.55111111-4.55111111 6.84487111-9.10222222t2.83989334-10.23089778 0-10.81344-2.83989334-10.23089778-6.84487111-8.51968l-71.68910222-72.81777777 71.68910222-71.68910223q6.84487111-6.84487111 9.10222223-15.94709334t0-17.62190221-9.10222223-15.36455112l0 0z" p-id="5899" fill="currentColor"></path></svg>
+          </div>
+          <div class="text-24 text-121212 font-bold fb-sm:text-28 text-center">No results for {{ 'search.general.terms' | t: terms: search.terms }}</div>
+          <div class="text-14 fb-sm:text-18 mt-4 fb-sm:mt-4 text-main text-center pb-4 pt-2">
+            <p class="text-center">While we don't have that specific item right now,<br> there's a lot more to discover! </p>
             <p class="text-center">Take a look at these items we think you'll love: </p>
           </div>
         </div>
@@ -34,7 +57,7 @@
           id="search-{{ section.id }}-product" class="js-main-search-list w-full">
           <product-search-facet section-id="{{ section.id }}" class="product-facet">
             <div class="js-filter-noresult product-facet__aside">
-              <safe-sticky offset="30" class="product-facet__aside-inner">
+              <safe-sticky-header offset="30" class="product-facet__aside-inner">
                 <div class="product-facet__filters-header hidden-pocket">
                   <p class="heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}">
                     {{ 'collection.general.filters' | t }}
@@ -44,7 +67,7 @@
                   filters: search.filters,
                   filters_position: section.settings.filter_position
                 -%}
-              </safe-sticky>
+              </safe-sticky-header>
             </div>
 
             <div id="facet-main" class="product-facet__main w-full mt-5 pb-8 fb-sm:pb-10 fb-sm:mt-0" role="region" aria-live="polite">
@@ -79,9 +102,9 @@
                 <div class="product-facet__product-list-wrapper product-search-wrapper">
                   <div
                     id="search-result"
-                    class="product-facet__product-list product-list anchor"
+                    class="product-facet__product-list product-list anchor "
                     >
-                    <div class="js-filter-noresult w-full mx-auto max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full flex justify-between items-center my-5 fb-sm:mt-0 fb-sm:mb-10">
+                    <div class="js-filter-noresult w-full mx-auto max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full flex justify-between items-center my-5 fb-sm:mt-0 fb-sm:mb-10 fb-max-sm:px-4">
                       <div class="fb-sort-box flex items-center justify-start space-x-1.5 fb-sm:space-x-4.5">
                         <span class="text-14 text-main fb-sm:text-16">
                           Sort By
@@ -97,26 +120,39 @@
                       </div>
                       <div class="viewTab_text gap-2 fb-sm:gap-1.5 flex justify-end items-center">
                         <span 
-                          class="cursor-pointer w-15 fb-sm:w-20 h-8  fb-sm:h-9  rounded-sm flex items-center justify-center gap-1 text-14 fb-sm:text-16  text-darkmain" 
-                          :class="{'font-bold bg-white': currentStyle == 'list'}"
+                          class="cursor-pointer w-15 fb-sm:w-20 h-8  fb-sm:h-9  rounded-sm flex items-center justify-center gap-1 text-14 fb-sm:text-16  " 
+                          :class="currentStyle == 'list'?'text-main border-all':'text-999999'"
                           @click="changeStyle('list')"
                         >
-                          {% render 'icon' with 'v3-list' %}
-                          List
+                          <span class="mr-1">
+                            <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M4.5 11.5V10H14V11.5H4.5ZM4.5 7.25V5.75H14V7.25H4.5ZM4.5 3V1.5H14V3H4.5ZM1.49562 12.25C1.08187 12.25 0.729167 12.1027 0.4375 11.8081C0.145833 11.5135 0 11.1594 0 10.7456C0 10.3319 0.147292 9.97917 0.441875 9.6875C0.736459 9.39583 1.09063 9.25 1.50438 9.25C1.91813 9.25 2.27083 9.39729 2.5625 9.69188C2.85417 9.98646 3 10.3406 3 10.7544C3 11.1681 2.85271 11.5208 2.55813 11.8125C2.26354 12.1042 1.90937 12.25 1.49562 12.25ZM1.49562 8C1.08187 8 0.729167 7.85271 0.4375 7.55813C0.145833 7.26354 0 6.90938 0 6.49563C0 6.08188 0.147292 5.72917 0.441875 5.4375C0.736459 5.14583 1.09063 5 1.50438 5C1.91813 5 2.27083 5.14729 2.5625 5.44188C2.85417 5.73646 3 6.09062 3 6.50437C3 6.91813 2.85271 7.27083 2.55813 7.5625C2.26354 7.85417 1.90937 8 1.49562 8ZM1.49562 3.75C1.08187 3.75 0.729167 3.60271 0.4375 3.30812C0.145833 3.01354 0 2.65937 0 2.24562C0 1.83187 0.147292 1.47917 0.441875 1.1875C0.736459 0.895833 1.09063 0.75 1.50438 0.75C1.91813 0.75 2.27083 0.897292 2.5625 1.19188C2.85417 1.48646 3 1.84063 3 2.25438C3 2.66813 2.85271 3.02083 2.55813 3.3125C2.26354 3.60417 1.90937 3.75 1.49562 3.75Z" fill="currentColor"/>
+                            </svg>
+                          </span>
+                          <span class="fb-max-sm:hidden">List</span>
                         </span>
                         <span 
-                          class="cursor-pointer w-15 fb-sm:w-20 h-8 fb-sm:gap-1 fb-sm:h-9 rounded-sm flex items-center justify-center text-14 fb-sm:text-16  text-darkmain" 
-                          :class="{'font-bold bg-white': currentStyle == 'grid'}"
+                          class="cursor-pointer w-15 fb-sm:w-20 h-8 fb-sm:gap-1 fb-sm:h-9 rounded-sm flex items-center justify-center text-14 fb-sm:text-16 " 
+                          :class="currentStyle == 'grid'?'text-main border-all':'text-999999'"
                           @click="changeStyle('grid')"
                         >
-                          {% render 'icon' with 'v3-grid' %}
-                          Grid
+                          <span>
+                            <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <mask id="mask0_1086_6115" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="21">
+                              <rect y="0.5" width="20" height="20" fill="#D9D9D9"/>
+                              </mask>
+                              <g mask="url(#mask0_1086_6115)">
+                              <path d="M3 9.5V3.5H9V9.5H3ZM3 17.5V11.5H9V17.5H3ZM11 9.5V3.5H17V9.5H11ZM11 17.5V11.5H17V17.5H11ZM4.5 8H7.5V5H4.5V8ZM12.5 8H15.5V5H12.5V8ZM12.5 16H15.5V13H12.5V16ZM4.5 16H7.5V13H4.5V16Z" fill="currentColor"/>
+                              </g>
+                            </svg>
+                          </span>
+                          <span class="fb-max-sm:hidden">Grid</span>
                         </span>
                       </div>
                     </div>
                     <template>
                       {% comment %} <skeleton-search v-if="pageLoading"></skeleton-search> {% endcomment %}
-                      <div class="w-full mx-auto max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full"  v-if="pageLoading">
+                      <div class="w-full mx-auto    max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full"  v-if="pageLoading">
                         <div class="w-full" v-if="currentStyle == 'list'" >
                           <div v-for="n in 2" :key="n" class="w-full flex flex-col fb-sm:flex-row gap-5 fb-sm:gap-12 bg-white rounded-sm p-6 mb-5">
                             <div class="w-full fb-sm:w-1/3 max-w-[260px] h-20 fb-sm:h-50 relative bg-gray-200 rounded-sm skeleton-shimmer overflow-hidden"></div>
@@ -137,7 +173,7 @@
                           </div>
                         </div>
                         <div class="w-full" v-else>
-                          <div  class="grid grid-cols-2 fb-sm:grid-cols-3  fb-md:grid-cols-3 gap-4 fb-sm:gap-6">
+                          <div  class="grid grid-cols-2 fb-sm:grid-cols-4  fb-md:grid-cols-4 gap-4 fb-sm:gap-6">
                             <div v-for="n in 8" :key="n" class="w-full bg-white rounded-sm p-4 fb-sm:p-6">
                               <div class="w-full pb-[100%] relative bg-gray-200 rounded-sm skeleton-shimmer overflow-hidden"></div>
                               <div class="flex flex-col gap-2 mt-4">
@@ -150,7 +186,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="js-product-line w-full mx-auto max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full" v-if="currentStyle == 'list'">
+                      <div class="js-product-line bg-F9F9F9 bg-linear p-6 fb-max-sm:px-4 fb-max-sm:p-0 w-full mx-auto max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full" v-if="currentStyle == 'list'">
                         <div class="flex flex-col space-y-6 justify-center">
                           <template v-if="products.length && !pageLoading">
                             <product-item-search v-for="(product, index) in products" 
@@ -168,10 +204,24 @@
                               No results found.
                           </div>
                         </div>
+
+                        <div class="zkh-pagination w-full bg-F9F9F9" v-if="currentStyle != 'recommend'"  v-loading="otherLoading">
+                          <el-pagination
+                            v-if="products.length && !pageLoading"
+                            background
+                            layout="prev, pager, next"
+                            :pager-count="5"
+                            :current-page.sync="pageParam.page"
+                            :page-size="pageParam.pageSize"
+                            :total="total"
+                            @current-change="handlePageChange"
+                          >
+                          </el-pagination>
+                        </div>
                       </div>
-                      <div class="js-product-grid w-full mx-auto max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full" v-if="currentStyle == 'grid' || currentStyle == 'recommend'">
+                      <div class="js-product-grid bg-F9F9F9 bg-linear p-6 fb-max-sm:px-4 fb-max-sm:p-0 w-full mx-auto max-w-[1000px] fb-sm:max-w-[750px] fb-md:max-w-full" v-if="currentStyle == 'grid' || currentStyle == 'recommend'">
                         <div class="grid gap-x-3 gap-y-[18px] p-0 fb-sm:gap-x-4.5 fb-sm:gap-y-6"
-                         :class="currentStyle == 'recommend' ? 'grid-cols-2 fb-sm:grid-col-5 fb-md:grid-cols-5' : 'grid-cols-2 fb-sm:grid-cols-3'"
+                         :class="currentStyle == 'recommend' ? 'grid-cols-2 fb-sm:grid-col-5 fb-md:grid-cols-5 pb-4' : 'grid-cols-2 fb-sm:grid-cols-3 fb-md:grid-cols-4'"
                         >
                           <template v-if="products.length && !pageLoading">
                             <product-item-card v-for="(product, index) in products" :key="`grid-${product.productId}-${index}`" :data-layer-form="dataLayerForm" :product="product"  :current-style="currentStyle"/>
@@ -180,21 +230,22 @@
                               No results found.
                           </div>
                         </div>
+                        <div class="zkh-pagination w-full bg-F9F9F9" v-if="currentStyle != 'recommend'"  v-loading="otherLoading">
+                          <el-pagination
+                            v-if="products.length && !pageLoading"
+                            background
+                            layout="prev, pager, next"
+                            :pager-count="5"
+                            :current-page.sync="pageParam.page"
+                            :page-size="pageParam.pageSize"
+                            :total="total"
+                            @current-change="handlePageChange"
+                          >
+                          </el-pagination>
+                        </div>
                       </div>
                      
-                      <div class="zkh-pagination w-full bg-transparent" v-if="currentStyle != 'recommend'"  v-loading="otherLoading">
-                        <el-pagination
-                          v-if="products.length && !pageLoading"
-                          background
-                          layout="prev, pager, next"
-                          :pager-count="5"
-                          :current-page.sync="pageParam.page"
-                          :page-size="pageParam.pageSize"
-                          :total="total"
-                          @current-change="handlePageChange"
-                        >
-                        </el-pagination>
-                      </div>
+                     
                     </template>
                   </div>
                 </div>
@@ -218,8 +269,6 @@
         </div>
       </search-page>
     </div>
-  {%- else -%}
-  {% endif %}
 </section>
 {% liquid
   render 'product-item-search'
@@ -232,7 +281,6 @@ $(function() {
       $('.js-filter-noresult').hide()
       $('.js-filter-show-noresult').show()
     }
-
     function generateUUID() {
       return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
@@ -243,7 +291,7 @@ $(function() {
       mounted() {
       },
       data() {
-        const ga4Id = window.gaGlobal?.vid ? window.gaGlobal?.vid : 0;
+        const ga4Id = window.gaGlobal?.vid || localStorage.getItem('ga4UserId') || 0;
         const request_id = generateUUID();
         return {
           firstSearch: true,
@@ -259,7 +307,7 @@ $(function() {
           pageLoading: true,
           pageParam: {
             page: 1,
-            pageSize: 12,
+            pageSize:12
           },
           queryParam: {
             userId: window.northsky.customerId || ga4Id,
@@ -300,7 +348,8 @@ $(function() {
         }
       },
       created() {
-        if(!window.northsky.customerZipCode) {
+        // this.$set(this.pageParam,'pageSize',type === 'list' ? 10 : 16)
+        {% comment %} if(!window.northsky.customerZipCode) {
           try {
             getLocalZipCode((zip) => {
               window.northsky.customerZipCode = zip;
@@ -309,10 +358,10 @@ $(function() {
           } catch (error) {
               window.northsky.customerZipCode = '77380'
               this.customerZipCode = '77380'
-          } 
-        }
-        this.initPageView();
+          }
+        } {% endcomment %}
         this.initPageFrom();
+        this.initPageView();
         document.addEventListener('facet-search-rerender', async ({ detail }) => {
            this.initPageView();
         });
@@ -320,10 +369,28 @@ $(function() {
       beforeDestroy() {
         document.removeEventListener('facet-search-rerender', this.facetSearchHandler);
       },
+      // computed:{
+      //   pageParam(){
+      //     return {
+      //       ...this.pageParam,
+      //       pageSize:this.currentStyle.type === 'list' ? 10 : 16
+      //     }
+      //   }
+      // },
       methods: {
         changeStyle (type) {
           this.currentStyle = type
           Cookies.set('searchView', type, { expires: 36500 });
+          // 更新 pageSize
+          // this.pageParam.pageSize = type === 'list' ? 10 : 16;
+
+          // this.$set(this.pageParam,'pageSize',type === 'list' ? 10 : 16)
+          // // 重置分页
+          // this.queryParam.from = 0;
+          // this.pageParam.page = 1;
+
+          // // 重新加载数据
+          // this.getProducts();
         },
         initPageView () {
           this.handleUrlChange();
@@ -517,7 +584,7 @@ $(function() {
             this.queryParam.from = 0;
             this.pageParam.page = 1;
           }
-          const ga4Id = window.gaGlobal?.vid ? window.gaGlobal?.vid : 0;
+          const ga4Id = window.gaGlobal?.vid || localStorage.getItem('ga4UserId') || 0;
           this.queryParam.userId = '{{ customer.id }}' ? '{{ customer.id }}' : ga4Id,
           this.queryParam.keyword = urlParams.get('q');
           const sortBy = urlParams.get('sort_by');
@@ -581,7 +648,7 @@ $(function() {
                 // $('.results-wrapper').hide();
               }
 
-              $('.js-result-num').text(`(${this.total} ${this.total > 1 ? 'products' : 'product'})`);
+              $('.js-result-num').text(`(${this.total} ${this.total > 1 ? 'items' : 'items'})`);
               this.products = res.data.skuInfos.map((product, idx) => {
                 product.calculatedIndex = this.queryParam.from + idx + 1;
                 product.priceFormat = zkhFormatMoney(+product.price * 100);
@@ -593,7 +660,7 @@ $(function() {
                 return product;
               });
               this.setProductsData();
-              if(res.data.searchHitType != 'recommend' && this.customerZipCode) {
+              if(res.data.searchHitType != 'recommend') {
                 this.fetchBatchDeliveryData({zipCode: this.customerZipCode, from: ''})
               }
               if(!this.firstSearch) {
@@ -642,10 +709,26 @@ $(function() {
         },
         async fetchBatchDeliveryData(data) {
           const { zipCode, from } = data
+          let post_code = zipCode
+          if(!post_code && !from) { //init start no psot_code
+            try {
+              post_code = await new Promise((resolve) => {
+                getLocalZipCode((zip) => {
+                  this.updateCustomerZipCode(zip);
+                  resolve(zip);
+                });
+              });
+            } catch (error) {
+              post_code = '77380'
+              this.updateCustomerZipCode('77380')
+            }
+          }
+          if(!post_code) return;
+          if(this.batchDeliveryLoading) return;
           this.batchDeliveryLoading = true;
           try {
             const zipResult = await new Promise((resolve, reject) => {
-              getZipCode('US', zipCode, function(result) {
+              getZipCode('US', post_code, function(result) {
                 if (result?.valid) {
                   resolve(result);
                 } else {
@@ -658,7 +741,7 @@ $(function() {
               ZQTY: product.moq || 1,
               Z002: "US",
               Z004: zipResult.lookup.adminName1,
-              POST_CODE2: zipCode
+              POST_CODE2: post_code
             }));
             const response = await kkAjax.post('/openapi/adlink/delivery-calculation/batch', {checkoutToken: null,deliveryCalculationParam: deliveryParams});
             if (response) {
@@ -669,13 +752,13 @@ $(function() {
                 }
               })
               if(from && from =='item') {
-                this.updateCustomerZipCode(zipCode)
+                this.updateCustomerZipCode(post_code)
               }
             } else {
               this.deliveryDataMap = {}
             }
           } catch (error) {
-            console.log("err", error)
+            console.log("error", error)
             this.$message({
               showClose: true,
               message: error || 'Invalid ZIP code',
@@ -689,7 +772,7 @@ $(function() {
       beforeDestroy() {
       }
     });
-})
+  })
 </script>
 {% schema %}
 {

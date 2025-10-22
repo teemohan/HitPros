@@ -1,15 +1,27 @@
-{{ 'h-newsletter.css' | asset_url | stylesheet_tag }}
-
-<div class="container">
-  <div class="h-newsletter">
-    <div class="h-newsletter-text-wrapper">
-      <div class="h-newsletter-text-inner">
-        <div class="h-newsletter-text">
-          <div class="h-newsletter-title">{{ section.settings.title }}</div>
-          <div class="h-newsletter-tip">{{ section.settings.tip }}</div>
-        </div>
-      </div>
-      {%- form 'customer', id: 'form-newsletter', class: 'footer__newsletter-form form' -%}
+<div class="w-full h-5 bg-F9F9F9 hidden fb-md:h-14">
+</div>
+<div class="w-full bg-main">
+  <div class="container pt-8 pb-9 px-4 fb-md:pt-12 fb-md:pb-10 fb-md:flex fb-md:justify-between fb-md:items-center">
+    <div class="h-6.5 items-center flex justify-start text-white fb-md:hidden">
+      <img  class="h-full w-auto lazyload" width="144" height="18" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/normal.png?v=1755592564" alt="logo"> 
+      <span class="h-full w-0 border border-D3DEF1 mx-4"> </span>
+      <span class="text-12 text-D3DEF1 font-medium"> 
+        {{ section.settings.banner_desc_mob }}
+      </span>
+    </div>
+    <div class="hidden fb-md:flex flex-col">
+      <img  class="h-7 w-auto lazyload" width="144" height="18" data-src="https://cdn.shopify.com/s/files/1/0623/7329/8359/files/normal.png?v=1755592564" alt="logo"> 
+      <span class="text-12 text-D3DEF1 font-medium mt-2.5 fb-md:text-14">
+        {{ section.settings.banner_desc }}  
+      </span>
+    </div>
+    <div class="h-12.5 w-0 border border-D3DEF1 ml-9 mr-13 hidden fb-md:block"> </div>
+    <div class="mt-6 text-D3DEF1 text-left w-full fb-md:mt-0 fb-md:w-auto">
+      <p class="text-16 font-bold fb-md:text-24">{{ section.settings.title }}</p>
+      <p class="mt-2.5 fb-md:mt-3.5 text-12 text-white">{{ section.settings.tip }}</p>
+    </div>
+    <div class="mt-3 w-full fb-md:mt-0 fb-md:flex-1 fb-md:pl-8">
+      {%- form 'customer', id: 'form-newsletter', class: 'flex flex-col flex-1 min-w-0 fb-md:min-w-[400px]' -%}
         {%- if form.posted_successfully? -%}
           <div class="form__banner banner banner--success">
             <span class="banner__ribbon">{% render 'icon' with 'form-success' %}</span>
@@ -17,20 +29,20 @@
           </div>
         {%- else -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
-          <div class="newsletter-input-row">
+          <div class="grid grid-cols-[1fr_auto] items-center h-12.5 fb-md:h-12.5 overflow-hidden bg-white rounded-sm">
             <input
               placeholder="Your email address"
               type="email"
               id="footer[contact][email]"
               name="contact[email]"
-              class="input__field input__field--text"
+              class="border-none pl-4.5 h-full pr-2 text-14 fb-md:text-16 font-normal text-121212 placeholder:text-666666 placeholder:text-14 placeholder:font-normal focus:outline-none focus:shadow-none"
             >
             <button
               type="submit"
-              class="newsleftter-btn input__submit-icon tap-area"
+              class="relative w-25 fb-md:w-36 h-full text-center px-4 fb-flex-center bg-button transition-all duration-300 text-14 font-bold text-main hover:cursor-pointer capitalize"
               title="{{ 'footer.newsletter.submit' | t }}"
             >
-              Stay Updated
+              <span>{{ section.settings.btn_title }}</span>
             </button>
           </div>
           {%- if form.errors -%}
@@ -47,44 +59,10 @@
     </div>
   </div>
 </div>
-<script>
-$(function() {
-    const button = document.querySelector('.newsleftter-btn');
-      const emailInput = document.querySelector('.newsletter-input-row .input__field');
-      button.addEventListener('click', function () {
-        const email = emailInput.value;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (emailRegex.test(email)) {
-          dataLayer.push({
-            'event': 'custom_subscribe_submitted',
-            'email_submitted': email,
-          });
-        }
-      });
-
-    const inputEl = document.querySelector('.newsletter-input-row .input__field');
-    inputEl.addEventListener('focus', () => {
-      if ($('.h-newsletter .banner--error').length) {
-        $('.h-newsletter .banner--error').hide();
-      }
-    });
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('customer_posted') === 'true' || urlParams.get('contact[tags]') === 'newsletter') {
-      const url = window.location.href;
-      const newUrl = url.split('?')[0];
-      window.history.replaceState(null, null, newUrl);
-      document.documentElement.scrollTop = document.body.scrollTop = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight
-      );
-    }
-})
-</script>
 {% schema %}
 {
   "tag": "section",
   "name": "h-newsletter",
-  "class": "h-newsletter-wrapper",
   "settings": [
     {
       "type": "text",
@@ -96,13 +74,25 @@ $(function() {
       "type": "text",
       "id": "tip",
       "label": "Tip",
-      "default": "Pellentesque eu nibh eget mauris congue mattis matti."
+      "default": "Sign up to receive product updates, exclusive deals, and news."
     },
     {
       "type": "text",
       "id": "btn_title",
       "label": "Btn Title",
-      "default": "Subscribe"
+      "default": "Stay Updated"
+    },
+    {
+      "type": "richtext",
+      "id": "banner_desc",
+      "label": "Banner Desc",
+      "default": "<p>BUILT STRONG, PRICED RIGHT™<\/p>"
+    },
+    {
+      "type": "richtext",
+      "id": "banner_desc_mob",
+      "label": "Banner Desc mob",
+      "default": "<p>BUILT STRONG, <\/br> PRICED RIGHT™<\/p>"
     }
   ],
   "presets": [

@@ -1,21 +1,21 @@
 {%- capture product_form_id -%}product-form-{{ section.id }}-{{ product.id }}{%- endcapture -%}
 
-<div class="product__info position-sticky mt-4 fb-sm:mt-6 fb-md:min-h-[680px] fb-md:flex fb-md:flex-col fb-md:justify-center">
+<div class="product__info position-sticky mt-4 fb-md:mt-6 fb-md:min-h-[680px] fb-md:flex fb-md:flex-col fb-md:justify-center">
   <!-- PRODUCT META -->
   <product-meta form-id="{{ product_form_id }}" price-class="" class="product-meta">
-    <div class="w-full flex items-center justify-start space-x-3 mb-1.5 fb-sm:mb-2.5">
+    <div class="w-full flex items-center justify-start space-x-3 mb-1.5 fb-md:mb-2.5">
       {%- if product.metafields.product.brand.value != blank
         and product.metafields.product.brand.value != 'null'
         and product.metafields.product.brand.value != '-'
       -%}
-        <div class="text-12254D text-14 line-clamp-1">
+        <div class="text-121212  fb-max-sm:text-14 text-16 line-clamp-1">
           {{ product.metafields.product.brand }}
         </div>
         <div class="h-3.5 w-0 border-l border-142A6B">
         </div>
       {% endif %}
         <div
-          class="text-12254D text-14 line-clamp-1"
+          class="text-121212  fb-max-sm:text-14 text-16 line-clamp-1"
           {% if product.metafields.product.manufacturer_model_number == blank %}
             style="display: none"
           {% endif %}
@@ -27,15 +27,15 @@
           </span>
         </div>
     </div>
-    <div class="mb-5 fb-sm:mb-6.5">
+    <div class="mb-5 fb-md:mb-6.5">
       {% unless featured %}
-        <h1 class="text-18 font-bold text-121212 fb-sm:text-26">{{ product.title }}</h1>
+        <h1 class=" text-20  font-bold text-121212 fb-md:text-26">{{ product.title }}</h1>
       {% else %}
-        <h2 class="text-18 font-bold text-121212 fb-sm:text-26">
+        <h2 class=" text-20 font-bold text-121212 fb-md:text-26">
           <a href="{{ product.url }}">{{ product.title }}</a>
         </h2>
       {% endunless %}
-      <div class="sky-single-reviews hidden cursor-pointer mt-1.5 fb-sm:mt-2.5"></div>
+      <div class="sky-single-reviews hidden cursor-pointer mt-1.5 fb-md:mt-2.5"></div>
      </div>
     {%- for block in section.blocks -%}
       {%- case block.type -%}
@@ -51,7 +51,7 @@
         {% if product.metafields.product.quantity_discount != blank and product.metafields.product.quantity_discount.value.size != 0 %}
           <table class="w-full border-collapse rounded-sm relative z-1">
             <thead class="border border-main">
-              <tr class="bg-main h-10 font-bold text-12 fb-sm:text-14 text-white">
+              <tr class="bg-main h-10 font-bold text-14 fb-md:text-14 text-white">
                 <th class="text-center px-0.5 h-full min-w-27 border border-main sticky left-0 bg-main z-2">
                   QUANTITY 
                 </th>
@@ -97,7 +97,7 @@
             </thead>
             <tbody class="border border-E2E2E2">
               <tr class="text-32 text-main py-3 h-14">
-                <td class="text-center px-0.5 text-12 fb-sm:text-14 font-normal text-121212 border-l border-E2E2E2 bg-F9F9F9 sticky left-0 z-2">
+                <td class="text-center px-0.5 text-14 fb-md:text-14 font-normal text-121212 border-l border-E2E2E2 bg-F9F9F9 sticky left-0 z-2">
                   Price per<br>{{ product.metafields.product.sale_package.value }}
                 </td>
                 <td class="js-discount-space px-4 text-center border-l border-E2E2E2  {% if moq > first_discount_moq_minus_one  %} hidden {% endif} %} discount-price-selected" data-min="1" data-max="{{ product.metafields.product.quantity_discount.value[0].moq | minus: 1 }}">
@@ -153,7 +153,7 @@
           %}
           {% assign discount_difference = compare_at_price | minus: price %}
           {% assign discount_percentage = discount_difference | divided_by: compare_at_price | times: 100 | ceil %}
-          <span class="text-red-600 text-14 font-bold">{{ discount_percentage }}%OFF</span>
+          <span class="text-red-600 text-14 font-bold">{{ discount_percentage }}% OFF</span>
         </div>
       {%- endif -%}
       {% comment %} <product-payment-terms form-id="{{ product_form_id }}">

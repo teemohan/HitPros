@@ -121,12 +121,8 @@
           "catalog": "https://assets.northskysupply.com/assets/pdf/catalog.pdf",
           "enable_sticky_header": true,
           "logo": "shopify://shop_images/Northsky_Blue_Icon_1.png",
-          "logo_max_width": 210,
-          "mobile_logo_max_width": 165,
           "bulk_text": "",
           "bulk_link": "shopify://collections/frontpage",
-          "navigation_menu": "main-menu",
-          "sidebar_navigation_menu": "",
           "header_layout": "logo_left_navigation_center",
           "show_icons": true,
           "reduce_desktop_padding": false,
@@ -165,11 +161,6 @@
           "d9666123-bc80-413d-b5e3-47c0e682074a"
         ],
         "settings": {
-          "image": "shopify://shop_images/Northsky_Blue_Icon_1_2.png",
-          "image_width": 230,
-          "m_image_width": 150,
-          "copyright_content": "<p>NORTHSKY © 2024. All Rights Reserved</p>",
-          "policy_content": "",
           "show_payment_icons": true,
           "show_country_selector": true,
           "show_locale_selector": true,
@@ -310,18 +301,6 @@
         "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
         "disabled": true,
         "settings": {}
-      },
-      "3576686563519644491": {
-        "type": "shopify://apps/vwo/blocks/vwo-smartcode/2ce905b2-3842-4d20-b6b0-8c51fc208426",
-        "disabled": false,
-        "settings": {
-          "vwoAccountId": "1133670",
-          "codeType": "ASYNC",
-          "settingsTolerance": 2000,
-          "libraryTolerance": 2500,
-          "existingJquery": "false",
-          "enableThemeTesting": true
-        }
       }
     }
   },
@@ -370,7 +349,6 @@
           "type": "header",
           "settings": {
             "enable_sticky_header": true,
-            "navigation_menu": "main-menu",
             "header_layout": "logo_left_navigation_center",
             "show_icons": false,
             "reduce_desktop_padding": false,
@@ -453,7 +431,6 @@
           "type": "header",
           "settings": {
             "enable_sticky_header": true,
-            "navigation_menu": "main-menu",
             "header_layout": "logo_center_navigation_inline",
             "show_icons": false,
             "reduce_desktop_padding": false,
@@ -541,7 +518,6 @@
           "type": "header",
           "settings": {
             "enable_sticky_header": true,
-            "navigation_menu": "main-menu",
             "header_layout": "logo_center_navigation_inline",
             "show_icons": true,
             "reduce_desktop_padding": false,
@@ -626,7 +602,6 @@
           "type": "header",
           "settings": {
             "enable_sticky_header": true,
-            "navigation_menu": "main-menu",
             "header_layout": "logo_center_navigation_inline",
             "show_icons": true,
             "reduce_desktop_padding": false,

@@ -4,9 +4,9 @@
     overflow: unset;
   }
 </style>
-<div class="container">
-  <div class="index-cus-header">
-    <h2>{{ section.settings.title }}</h2>
+<div class="container ">
+  <div class="index-cus-header  w-full flex items-center justify-between pb-6 gap-5">
+    <h2 class="text-20 fb-md:text-30 font-bold text-121212">{{ section.settings.title }}</h2>
   </div>
   <div class="h-brands hidden-phone">
     {% for block in section.blocks %}
@@ -64,7 +64,7 @@
 {
   "tag": "section",
   "name": "h-brands",
-  "class": "h-brands-wrapper section-gap",
+  "class": "h-brands-wrapper section-gap-brand",
   "settings": [
     {
       "type": "text",

@@ -74,8 +74,8 @@
     </a>
   </div>
 
-  <div class="product-item__info {% if show_cta %}product-item__info--with-button{% endif %} {% if reduced_font_size %}text--small{% endif %}">
-    <span class="product-vendor">
+  <div class="product-item__info {% if show_cta %}product-item__info--with-button{% endif %} {% if reduced_font_size %}text--small{% endif %} ">
+    <span class="product-vendor hidden">
       {%- if product.metafields.product.brand.value != blank
         and product.metafields.product.brand.value != 'null'
         and product.metafields.product.brand.value != '-'
@@ -88,7 +88,7 @@
       datalayer-link data-sku="{{ product.selected_or_first_available_variant.sku }}"
     {% endif %}
     data-scope-id="{{ section.id  }}"
-    title="{{ product.title }}" class="product-item-meta__title ellipsis2">
+    title="{{ product.title }}" class="product-item-meta__title ellipsis3 min-h-18 text-16 fb-max-sm:text-14">
       {{- product.title -}}
     </a>
     <div class="product-item-meta">
@@ -103,22 +103,26 @@
           {% assign discount_difference = compare_at_price | minus: price %}
           {% assign discount_percentage = discount_difference | divided_by: compare_at_price | times: 100 | ceil %}
         {% endif %}
-        <div class="price-list price-list--centered">
-          {% if product.price < product.compare_at_price -%}
-            <span class="price">
-              <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
-              {{- product.price | money -}}
-            </span>
-            <span class="compare-price">
-              <s>{{ product.compare_at_price | money }}</s>
-              <span>{{ discount_percentage }}%OFF</span>
-            </span>
-          {%- else -%}
-            <span class="price">
-              <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
-              {{- product.price | money -}}
-            </span>
-          {%- endif -%}
+        <div class="flex justify-between">
+          <div class="price-list price-list--centered">
+            {% if product.price < product.compare_at_price -%}
+              <span class="price">
+                <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
+                {{- product.price | money -}}
+              </span>
+              <span class="compare-price">
+                <s>{{ product.compare_at_price | money }}</s>
+                <span class="font-bold">{{ discount_percentage }}%OFF</span>
+              </span>
+            {%- else -%}
+              <span class="price">
+                <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
+                {{- product.price | money -}}
+              </span>
+            {%- endif -%}
+          </div>
+
+          
         </div>
       </div>
     </div>
@@ -151,7 +155,6 @@
         {%- else -%}
           {{- 'product.form.sold_out' | t -}}
         {%- endif -%}
-        {% render 'icon' with 'product-item-cart' %}
       </button>
     {%- endform -%}
   </div>

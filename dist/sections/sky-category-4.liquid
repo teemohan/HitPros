@@ -1,0 +1,218 @@
+
+<div class="container pt-7.5 pb-7.5 fb-md:py-10 bg-white categories4">
+  <div class="flex justify-between items-center mb-5 fb-md:mb-6">
+    {% comment %} <h2 class="text-20 fb-md:text-30 font-bold text-121212">{{ section.settings.title | default: 'Top Categories' }}</h2> {% endcomment %}
+    <h2 class="text-20 fb-md:text-30 font-bold text-121212">{{ 'Top Categories' }}</h2>
+
+      <a href="{{ section.settings.view_more_url | default: '/pages/all-product-categories' }}" class="text-main text-14 fb-md:text-18  fb-max-sm:underline hover:underline hidden">
+        {{ section.settings.view_more_text }}
+      </a>
+  </div>
+
+ 
+  
+  
+  <div class="fb-max-sm:inline hidden">
+    <div class="home-category ">
+      <div class="swiper {{ section.id }}-home-category home-category-box">
+        <div class="swiper-wrapper">
+          {% for item in (1..2)  %}
+            <div class="swiper-slide">
+              <div class="grid grid-cols-3 fb-sm:grid-cols-4 gap-2.5 fb-md:gap-6 product-categories-list-sm">
+                {% for item in (1..6) %}
+                  <div class="bg-white rounded-sm overflow-hidden transition-all duration-300 animate-pulse">
+                    <div class="aspect-square bg-gray-200 flex items-center justify-center">
+                  </div>
+                  <div class="px-1 mt-1.5  fb-md:mt-2 min-h-8 overflow-hidden fb-md:min-h-5 bg-gray-200">
+                  </div>
+                  </div>
+                {% endfor %} 
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <div class="grid grid-cols-3 fb-sm:grid-cols-4 gap-2.5 fb-md:gap-6 product-categories-list fb-max-sm:hidden">
+    {% for item in (1..12) %}
+      <div class="bg-white rounded-sm overflow-hidden transition-all duration-300 animate-pulse">
+        <div class="aspect-square bg-gray-200 flex items-center justify-center">
+      </div>
+      <div class="px-1 mt-1.5  fb-md:mt-2 min-h-8 overflow-hidden fb-md:min-h-5 bg-gray-200">
+      </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+   .home-category-box{
+    padding-bottom:16px;
+   }
+  .home-category .swiper-pagination {
+    bottom:-4px !important;
+    /* left: 50%!important;
+    transform: translateX(-50%)!important;
+    width: fit-content;
+    text-align: center;
+    position: absolute;
+    z-index: 2;
+    width: auto!important;
+    border-radius: 10px;
+    width: 58px;
+    display: flex;
+    justify-content: center;
+    padding: 2px 1px;
+    background-color: rgba(255, 255, 255, 0.6); */
+  }
+
+  .home-category .swiper-pagination-bullet {
+    background: #979797;
+    border: 1px solid #979797;
+    opacity: 1;
+  }
+  .home-category .swiper-pagination-bullet-active {
+    background: #121212 !important;
+    border: 1px solid #121212 !important;
+  }
+
+
+</style>
+
+
+<script>
+$(function() {
+
+  const swiperInit = ()=>{
+    new Swiper(".{{ section.id }}-home-category", {
+      observer: true,
+      observeParents: true,
+      touchStartPreventDefault: true,
+      passiveListeners: false,
+      touchAngle: 70,              
+      threshold: 10,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+        
+      },
+
+    });
+  }
+
+  const createHandle = (name) => name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+  const createCategoryItem = (collection) => {
+    const handle = createHandle(collection.name);
+    return `
+      <a href="/collections/${handle}" class="product-categories-item bg-white rounded-sm flex flex-col hover-scale group">
+        <div class="ratio-box flex items-center justify-center w-full">
+          <img 
+               data-src="${collection?.img || ''}" 
+               alt="${collection.name}" 
+               class="lazyload w-full h-full  ratio-img rounded-sm"   >
+        </div>
+        <div class="px-1 min-h-8 overflow-hidden fb-md:min-h-5 mt-1.5  pb-2 fb-md:mt-2">
+          <span class="text-18 fb-md:text-18  fb-max-sm:text-14  text-121212 font-medium text-center line-clamp-2 fb-md:line-clamp-1 group-hover:underline group-hover:text-main"  title="${collection.name}">
+            ${collection.name}
+          </span>
+        </div>
+      </a>
+    `;
+  };
+  const renderCategories = (data) => {
+    if(window.innerWidth>740){
+      const categoriesList = document.querySelector('.product-categories-list');
+      if (!categoriesList) return;
+      const viewMoreLink = document.querySelector('.categories4 .index-cus-header');
+      if (viewMoreLink) {
+        viewMoreLink.classList.toggle('hidden', data.length <= 12);
+        viewMoreLink.classList.toggle('flex', data.length > 12);
+      }
+      const html = data.slice(0, 12).map(createCategoryItem).join('');
+      categoriesList.innerHTML = html;
+    }else{
+      // mobile 
+      const categoriesList = document.querySelectorAll('.product-categories-list-sm');
+      console.log(categoriesList)
+      if (!categoriesList) return;
+      const viewMoreLink = document.querySelector('.categories4 .index-cus-header');
+      if (viewMoreLink) {
+        viewMoreLink.classList.toggle('hidden', data.length <= 12);
+        viewMoreLink.classList.toggle('flex', data.length > 12);
+      }
+      categoriesList.forEach(function(item, index) {
+        const html = data.slice(index * 6, (index + 1) * 6).map(createCategoryItem).join('');
+        item.innerHTML = html;
+      });
+      // const html = data.slice(0, 12).map(createCategoryItem).join('');
+      // categoriesList.innerHTML = html;
+      swiperInit()
+    }
+    
+    
+  };
+  const init = () => {
+    try {
+      const cachedCategories = localStorage.getItem('all-category');
+      if (cachedCategories) {
+        renderCategories(JSON.parse(cachedCategories));
+      } else {
+        document.addEventListener('tree-get', ({ detail }) => {
+          renderCategories(detail.data);
+        });
+      }
+    } catch (error) {
+      console.warn('Failed to load cached categories:', error);
+    }
+  
+  };
+  init();
+
+  // 监听窗口大小变化，如果从桌面切换到移动端，重新初始化
+  $(window).on('resize', function() {
+     init()
+  });
+})
+</script>
+
+{% schema %}
+  {
+    "name": "Sky Category 4",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Top Categories"
+      },
+      {
+        "type": "text",
+        "id": "view_more_text",
+        "label": "View More Text",
+        "default": "View More",
+        "info": "Link text shown in the top right corner"
+      },
+      {
+        "type": "url",
+        "id": "view_more_url",
+        "label": "View More URL",
+        "info": "The page URL to jump to when clicking View More"
+      }
+    ],
+    "presets": [
+      {
+        "name": "sky-category-4"
+      }
+    ]
+  }
+{% endschema %}

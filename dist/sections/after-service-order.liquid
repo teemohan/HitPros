@@ -286,187 +286,187 @@
   </div>
 </section>
 <script>
- $(function() {
-    new Vue({
-      el: '#order_section',
-      delimiters: ['${', '}'],
-      data() {
-        return {
-          param: null,
-          orderId: 0,
-          isFetching: true,
-          loading: false,
-          orderMain: {},
-          currencySymbols: {
-            USD: '$',
-            EUR: '€',
-            GBP: '£',
-            JPY: '¥',
-            CNY: '¥',
-            AUD: '$',
-            CAD: '$',
-            CHF: 'CHF',
-            NZD: '$',
-            INR: '₹',
-            RUB: '₽',
-            KRW: '₩',
-            SGD: '$',
-            HKD: '$',
-            SEK: 'kr',
-            NOK: 'kr',
-            TRY: '₺',
-            MXN: '$',
-            BRL: 'R$',
-            ZAR: 'R',
-          },
-        };
+$(function() {
+  new Vue({
+    el: '#order_section',
+    delimiters: ['${', '}'],
+    data() {
+      return {
+        param: null,
+        orderId: 0,
+        isFetching: true,
+        loading: false,
+        orderMain: {},
+        currencySymbols: {
+          USD: '$',
+          EUR: '€',
+          GBP: '£',
+          JPY: '¥',
+          CNY: '¥',
+          AUD: '$',
+          CAD: '$',
+          CHF: 'CHF',
+          NZD: '$',
+          INR: '₹',
+          RUB: '₽',
+          KRW: '₩',
+          SGD: '$',
+          HKD: '$',
+          SEK: 'kr',
+          NOK: 'kr',
+          TRY: '₺',
+          MXN: '$',
+          BRL: 'R$',
+          ZAR: 'R',
+        },
+      };
+    },
+    mounted() {
+      $('#order_section').show();
+      const orderId = Number(window.location.href.split('=')[1]);
+      $.ajax({
+        url: `${window.northsky.api}/order/${orderId}`,
+        method: 'GET',
+        success: (data) => {
+          this.orderMain = data.data.order;
+          this.orderMain.line_items = this.orderMain.line_items.map((item) => ({
+            ...item,
+            totalPrice: Number(item.price) * Number(item.current_quantity),
+          }));
+          this.isFetching = false;
+        },
+      });
+      this.orderId = orderId;
+    },
+    methods: {
+      toggleSelection(event, index) {
+        const lineItemWrapper = document.querySelectorAll('.order-line-item-wrapper')[index];
+        if (event.target.checked) {
+          lineItemWrapper.classList.add('selected');
+          lineItemWrapper.setAttribute('selected', true);
+        } else {
+          lineItemWrapper.classList.remove('selected');
+          lineItemWrapper.removeAttribute('selected');
+        }
+        this.checkIsAllSelected();
+        this.checkIsButtonAvailable();
       },
-      mounted() {
-        $('#order_section').show();
-        const orderId = Number(window.location.href.split('=')[1]);
-        $.ajax({
-          url: `${window.northsky.api}/order/${orderId}`,
-          method: 'GET',
-          success: (data) => {
-            this.orderMain = data.data.order;
-            this.orderMain.line_items = this.orderMain.line_items.map((item) => ({
-              ...item,
-              totalPrice: Number(item.price) * Number(item.current_quantity),
-            }));
-            this.isFetching = false;
-          },
-        });
-        this.orderId = orderId;
-      },
-      methods: {
-        toggleSelection(event, index) {
-          const lineItemWrapper = document.querySelectorAll('.order-line-item-wrapper')[index];
+      toggleSelectAll(event) {
+        const checkboxes = document.querySelectorAll('.order-line-item-wrapper.active .line-item-checkbox');
+        const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper.active');
+        checkboxes.forEach((checkbox, index) => {
+          checkbox.checked = event.target.checked;
           if (event.target.checked) {
-            lineItemWrapper.classList.add('selected');
-            lineItemWrapper.setAttribute('selected', true);
+            lineItemWrappers[index].classList.add('selected');
+            lineItemWrappers[index].setAttribute('selected', true);
           } else {
-            lineItemWrapper.classList.remove('selected');
-            lineItemWrapper.removeAttribute('selected');
+            lineItemWrappers[index].classList.remove('selected');
+            lineItemWrappers[index].removeAttribute('selected');
           }
-          this.checkIsAllSelected();
-          this.checkIsButtonAvailable();
-        },
-        toggleSelectAll(event) {
-          const checkboxes = document.querySelectorAll('.order-line-item-wrapper.active .line-item-checkbox');
-          const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper.active');
-          checkboxes.forEach((checkbox, index) => {
-            checkbox.checked = event.target.checked;
-            if (event.target.checked) {
-              lineItemWrappers[index].classList.add('selected');
-              lineItemWrappers[index].setAttribute('selected', true);
-            } else {
-              lineItemWrappers[index].classList.remove('selected');
-              lineItemWrappers[index].removeAttribute('selected');
-            }
-          });
-          this.checkIsButtonAvailable();
-        },
-        handleTrackLog({ name, email }) {
-          let nameId;
-          const base64Email = btoa(email);
-          if (name.startsWith('#')) {
-            nameId = name.split('#')[1];
-            window.location.href = `/apps/track123?order=%23${nameId}&id=${base64Email}`;
-          } else {
-            nameId = name;
-            window.location.href = `/apps/track123?order=${nameId}&id=${base64Email}`;
-          }
-        },
-        checkIsAllSelected() {
-          const checkboxes = document.querySelectorAll('.order-line-item-wrapper.active .line-item-checkbox');
-          const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper.active');
-          let isAllSelected = true;
-          checkboxes.forEach((checkbox, index) => {
-            if (!checkbox.checked) {
-              isAllSelected = false;
-              return false;
-            }
-          });
-          if (isAllSelected) {
-            document.getElementById('select-all').checked = true;
-          } else {
-            document.getElementById('select-all').checked = false;
-          }
-        },
-        checkIsButtonAvailable() {
-          const checkboxes = document.querySelectorAll('.order-line-item-wrapper.active .line-item-checkbox');
-          let isAnySelected = false;
-          checkboxes.forEach((checkbox) => {
-            if (checkbox.checked) {
-              isAnySelected = true;
-            }
-          });
-          if (isAnySelected) {
-            document.querySelector('.next-btn').removeAttribute('disabled');
-          } else {
-            document.querySelector('.next-btn').setAttribute('disabled', 'disabeld');
-          }
-        },
-        goToNextPage() {
-          window.location.href = `/pages/after-sales-request-details?id=${this.orderId}${this.collectSelectedItems()}`;
-          this.clearChecked();
-        },
-        collectSelectedItems() {
-          let selectedItems = '';
-          const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper');
-          lineItemWrappers.forEach((lineItemWrapper, index) => {
-            if (lineItemWrapper.hasAttribute('selected')) {
-              const variantId = lineItemWrapper.getAttribute('data-variant');
-              selectedItems += `&product${index}=${variantId}`;
-            }
-          });
-          return selectedItems;
-        },
-        clearChecked() {
-          const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper');
-          lineItemWrappers.forEach((lineItemWrapper) => {
-            lineItemWrapper.querySelector('.line-item-checkbox').checked = false;
-          });
-          document.getElementById('select-all').checked = false;
-        },
-        formateDate(dateString) {
-          if (dateString) {
-            const date = new Date(dateString);
-            date.setMilliseconds(0);
-            const offset = -5 * 60;
-            const localTime = new Date(date.getTime() + (date.getTimezoneOffset() + offset) * 60000);
-            const monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
-            const month = monthNames[localTime.getMonth()];
-            const day = localTime.getDate();
-            const year = localTime.getFullYear();
-            let hours = localTime.getHours();
-            const period = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12 || 12;
-            const minutes = String(localTime.getMinutes()).padStart(2, '0');
-            const seconds = String(localTime.getSeconds()).padStart(2, '0');
-            return `${month} ${day}, ${year} at ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${period}`;
-          }
-        },
-        formatCurrency(price) {
-          const currency = this.orderMain.currency;
-          const symbol = this.currencySymbols[currency];
-          return `${symbol}${Number(price).toFixed(2)}`;
-        },
-        copyToClipboard(name) {
-          const el = document.createElement('textarea');
-          el.value = name;
-          document.body.appendChild(el);
-          el.select();
-          document.execCommand('copy');
-          document.body.removeChild(el);
-          this.$message({
-            message: 'Copied to clipboard',
-            type: 'success',
-          });
-        },
+        });
+        this.checkIsButtonAvailable();
       },
-    });
-  })
+      handleTrackLog({ name, email }) {
+        let nameId;
+        const base64Email = btoa(email);
+        if (name.startsWith('#')) {
+          nameId = name.split('#')[1];
+          window.location.href = `/apps/track123?order=%23${nameId}&id=${base64Email}`;
+        } else {
+          nameId = name;
+          window.location.href = `/apps/track123?order=${nameId}&id=${base64Email}`;
+        }
+      },
+      checkIsAllSelected() {
+        const checkboxes = document.querySelectorAll('.order-line-item-wrapper.active .line-item-checkbox');
+        const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper.active');
+        let isAllSelected = true;
+        checkboxes.forEach((checkbox, index) => {
+          if (!checkbox.checked) {
+            isAllSelected = false;
+            return false;
+          }
+        });
+        if (isAllSelected) {
+          document.getElementById('select-all').checked = true;
+        } else {
+          document.getElementById('select-all').checked = false;
+        }
+      },
+      checkIsButtonAvailable() {
+        const checkboxes = document.querySelectorAll('.order-line-item-wrapper.active .line-item-checkbox');
+        let isAnySelected = false;
+        checkboxes.forEach((checkbox) => {
+          if (checkbox.checked) {
+            isAnySelected = true;
+          }
+        });
+        if (isAnySelected) {
+          document.querySelector('.next-btn').removeAttribute('disabled');
+        } else {
+          document.querySelector('.next-btn').setAttribute('disabled', 'disabeld');
+        }
+      },
+      goToNextPage() {
+        window.location.href = `/pages/after-sales-request-details?id=${this.orderId}${this.collectSelectedItems()}`;
+        this.clearChecked();
+      },
+      collectSelectedItems() {
+        let selectedItems = '';
+        const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper');
+        lineItemWrappers.forEach((lineItemWrapper, index) => {
+          if (lineItemWrapper.hasAttribute('selected')) {
+            const variantId = lineItemWrapper.getAttribute('data-variant');
+            selectedItems += `&product${index}=${variantId}`;
+          }
+        });
+        return selectedItems;
+      },
+      clearChecked() {
+        const lineItemWrappers = document.querySelectorAll('.order-line-item-wrapper');
+        lineItemWrappers.forEach((lineItemWrapper) => {
+          lineItemWrapper.querySelector('.line-item-checkbox').checked = false;
+        });
+        document.getElementById('select-all').checked = false;
+      },
+      formateDate(dateString) {
+        if (dateString) {
+          const date = new Date(dateString);
+          date.setMilliseconds(0);
+          const offset = -5 * 60;
+          const localTime = new Date(date.getTime() + (date.getTimezoneOffset() + offset) * 60000);
+          const monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
+          const month = monthNames[localTime.getMonth()];
+          const day = localTime.getDate();
+          const year = localTime.getFullYear();
+          let hours = localTime.getHours();
+          const period = hours >= 12 ? 'PM' : 'AM';
+          hours = hours % 12 || 12;
+          const minutes = String(localTime.getMinutes()).padStart(2, '0');
+          const seconds = String(localTime.getSeconds()).padStart(2, '0');
+          return `${month} ${day}, ${year} at ${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${period}`;
+        }
+      },
+      formatCurrency(price) {
+        const currency = this.orderMain.currency;
+        const symbol = this.currencySymbols[currency];
+        return `${symbol}${Number(price).toFixed(2)}`;
+      },
+      copyToClipboard(name) {
+        const el = document.createElement('textarea');
+        el.value = name;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        this.$message({
+          message: 'Copied to clipboard',
+          type: 'success',
+        });
+      },
+    },
+  });
+})
 </script>
 {% schema %}
 {
