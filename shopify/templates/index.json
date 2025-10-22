@@ -17,36 +17,38 @@
           "settings": {
             "product": "",
             "banner_href": true,
+            "image": "shopify://shop_images/1p.png",
+            "mobile_image": "shopify://shop_images/1m.png",
             "apply_overlay": true,
             "content_position_pc": "middleLeft",
             "content_position_mobile": "bottomLeft",
             "banner_title": "",
-            "banner_title_color": "#0A2B6F",
+            "banner_title_color": "#0a2b6f",
             "banner_title_mob": "",
-            "banner_title_color_mob": "#0A2B6F",
+            "banner_title_color_mob": "#0a2b6f",
             "banner_desc": "",
-            "banner_desc_color": "#0A2B6F",
+            "banner_desc_color": "#0a2b6f",
             "banner_desc_mob": "",
-            "banner_desc_color_mob": "#0A2B6F",
+            "banner_desc_color_mob": "#0a2b6f",
             "button_1_text": "",
             "button_1_text_color": "",
             "button_1_text_backgroundcolor": "",
-            "button_1_text_bordercolor": "#FABE00",
+            "button_1_text_bordercolor": "#fabe00",
             "button_1_link": "",
             "button_1_text_mob": "Shop Now",
             "button_1_text_color_mob": "",
-            "button_1_backgroundcolor_mob": "#FABE00",
-            "button_1_bordercolor_mob": "#FABE00",
+            "button_1_backgroundcolor_mob": "#fabe00",
+            "button_1_bordercolor_mob": "#fabe00",
             "button_1_link_mob": "",
             "button_2_text": "Shop Now",
-            "button_2_text_color": "#0A2B6F",
-            "button_2_backgroundcolor": "#FABE00",
-            "button_2_text_bordercolor": "#FABE00",
+            "button_2_text_color": "#0a2b6f",
+            "button_2_backgroundcolor": "#fabe00",
+            "button_2_text_bordercolor": "#fabe00",
             "button_2_link": "",
             "button_2_text_mob": "Shop Now",
-            "button_2_text_color_mob": "#0A2B6F",
-            "button_2_backgroundcolor_mob": "#FABE00",
-            "button_2_bordercolor_mob": "#FABE00",
+            "button_2_text_color_mob": "#0a2b6f",
+            "button_2_backgroundcolor_mob": "#fabe00",
+            "button_2_bordercolor_mob": "#fabe00",
             "button_2_link_mob": ""
           }
         },
@@ -55,43 +57,86 @@
           "settings": {
             "product": "",
             "banner_href": true,
+            "image": "shopify://shop_images/2p.png",
+            "mobile_image": "shopify://shop_images/2m.png",
             "apply_overlay": true,
             "content_position_pc": "middleLeft",
             "content_position_mobile": "bottomLeft",
             "banner_title": "",
-            "banner_title_color": "#0A2B6F",
+            "banner_title_color": "#0a2b6f",
             "banner_title_mob": "",
-            "banner_title_color_mob": "#0A2B6F",
+            "banner_title_color_mob": "#0a2b6f",
             "banner_desc": "",
-            "banner_desc_color": "#0A2B6F",
+            "banner_desc_color": "#0a2b6f",
             "banner_desc_mob": "",
-            "banner_desc_color_mob": "#0A2B6F",
+            "banner_desc_color_mob": "#0a2b6f",
             "button_1_text": "",
             "button_1_text_color": "",
             "button_1_text_backgroundcolor": "",
-            "button_1_text_bordercolor": "#FABE00",
+            "button_1_text_bordercolor": "#fabe00",
             "button_1_link": "",
             "button_1_text_mob": "Shop Now",
             "button_1_text_color_mob": "",
-            "button_1_backgroundcolor_mob": "#FABE00",
-            "button_1_bordercolor_mob": "#FABE00",
+            "button_1_backgroundcolor_mob": "#fabe00",
+            "button_1_bordercolor_mob": "#fabe00",
             "button_1_link_mob": "",
             "button_2_text": "Shop Now",
-            "button_2_text_color": "#0A2B6F",
-            "button_2_backgroundcolor": "#FABE00",
-            "button_2_text_bordercolor": "#FABE00",
+            "button_2_text_color": "#0a2b6f",
+            "button_2_backgroundcolor": "#fabe00",
+            "button_2_text_bordercolor": "#fabe00",
             "button_2_link": "",
             "button_2_text_mob": "Shop Now",
-            "button_2_text_color_mob": "#0A2B6F",
-            "button_2_backgroundcolor_mob": "#FABE00",
-            "button_2_bordercolor_mob": "#FABE00",
+            "button_2_text_color_mob": "#0a2b6f",
+            "button_2_backgroundcolor_mob": "#fabe00",
+            "button_2_bordercolor_mob": "#fabe00",
+            "button_2_link_mob": ""
+          }
+        },
+        "image_banner_P9LUty": {
+          "type": "image_banner",
+          "settings": {
+            "product": "",
+            "banner_href": true,
+            "image": "shopify://shop_images/3p.jpg",
+            "mobile_image": "shopify://shop_images/3m.png",
+            "apply_overlay": true,
+            "content_position_pc": "middleLeft",
+            "content_position_mobile": "bottomLeft",
+            "banner_title": "",
+            "banner_title_color": "#0a2b6f",
+            "banner_title_mob": "",
+            "banner_title_color_mob": "#0a2b6f",
+            "banner_desc": "",
+            "banner_desc_color": "#0a2b6f",
+            "banner_desc_mob": "",
+            "banner_desc_color_mob": "#0a2b6f",
+            "button_1_text": "",
+            "button_1_text_color": "",
+            "button_1_text_backgroundcolor": "",
+            "button_1_text_bordercolor": "#fabe00",
+            "button_1_link": "",
+            "button_1_text_mob": "Shop Now",
+            "button_1_text_color_mob": "",
+            "button_1_backgroundcolor_mob": "#fabe00",
+            "button_1_bordercolor_mob": "#fabe00",
+            "button_1_link_mob": "",
+            "button_2_text": "Shop Now",
+            "button_2_text_color": "#0a2b6f",
+            "button_2_backgroundcolor": "#fabe00",
+            "button_2_text_bordercolor": "#fabe00",
+            "button_2_link": "",
+            "button_2_text_mob": "Shop Now",
+            "button_2_text_color_mob": "#0a2b6f",
+            "button_2_backgroundcolor_mob": "#fabe00",
+            "button_2_bordercolor_mob": "#fabe00",
             "button_2_link_mob": ""
           }
         }
       },
       "block_order": [
         "image_banner_jk7jKr",
-        "image_banner_x9bY43"
+        "image_banner_x9bY43",
+        "image_banner_P9LUty"
       ],
       "name": "fb-img-video-banner",
       "settings": {
@@ -109,8 +154,18 @@
         "view_more_url": ""
       }
     },
+    "markting_commom_banner_NJqYe4": {
+      "type": "markting-commom-banner",
+      "name": "Marketing Commom Banner",
+      "settings": {
+        "banner_image": "shopify://shop_images/Frame_970.webp",
+        "mobile_banner_image": "shopify://shop_images/image_149.webp",
+        "banner_link": ""
+      }
+    },
     "6d3130cf-a40f-4b1d-8550-86b9ae2563e4": {
       "type": "index-product-list",
+      "disabled": true,
       "settings": {
         "title": "Featured Products",
         "collection": "featured-products"
@@ -131,13 +186,65 @@
         "title": "You Might Like"
       }
     },
-    "h_blogs_GHEBgy": {
-      "type": "h-blogs",
+    "collection_featured_product_iNBpjq": {
+      "type": "collection-featured-product",
+      "blocks": {
+        "collection_BBNJye": {
+          "type": "collection",
+          "settings": {
+            "name": "Safety",
+            "collection": "safety-1"
+          }
+        },
+        "collection_KfNRPm": {
+          "type": "collection",
+          "settings": {
+            "name": "HVAC",
+            "collection": "hvac-1"
+          }
+        },
+        "collection_UHnqiF": {
+          "type": "collection",
+          "settings": {
+            "name": "Material Handling",
+            "collection": "material-handling-1"
+          }
+        },
+        "collection_L36E3z": {
+          "type": "collection",
+          "settings": {
+            "name": "Hand Tools",
+            "collection": "hand-tools-1"
+          }
+        },
+        "collection_cxbtcF": {
+          "type": "collection",
+          "settings": {
+            "name": "Measuring & Layout",
+            "collection": "measuring-layout"
+          }
+        },
+        "collection_QViXap": {
+          "type": "collection",
+          "settings": {
+            "name": "Packaging & Shipping",
+            "collection": "packaging-shipping-1"
+          }
+        }
+      },
+      "block_order": [
+        "collection_BBNJye",
+        "collection_KfNRPm",
+        "collection_UHnqiF",
+        "collection_L36E3z",
+        "collection_cxbtcF",
+        "collection_QViXap"
+      ],
+      "name": "Col Featured Product",
       "settings": {
-        "title": "Industry Insights",
+        "section_title": "Featured Products",
         "view_more_url": "",
-        "view_more_text": "View More",
-        "blog": "industry-insights"
+        "view_more_text": "View More"
       }
     },
     "customer_spotlight_UEBRaH": {
@@ -149,15 +256,26 @@
         "view_more_url": "",
         "collection": "product-spotlights"
       }
+    },
+    "h_blogs_GHEBgy": {
+      "type": "h-blogs",
+      "settings": {
+        "title": "Industry Insights",
+        "view_more_url": "",
+        "view_more_text": "View More",
+        "blog": "industry-insights"
+      }
     }
   },
   "order": [
     "fb_img_video_banner_Uy7weH",
     "sky_category_4_4nBKtt",
+    "markting_commom_banner_NJqYe4",
     "6d3130cf-a40f-4b1d-8550-86b9ae2563e4",
     "recently_viewed_products_eBQU9V",
     "guess_you_like_Nmc4wp",
-    "h_blogs_GHEBgy",
-    "customer_spotlight_UEBRaH"
+    "collection_featured_product_iNBpjq",
+    "customer_spotlight_UEBRaH",
+    "h_blogs_GHEBgy"
   ]
 }
