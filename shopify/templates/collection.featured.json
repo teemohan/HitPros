@@ -23,7 +23,7 @@
       }
     },
     "main_collection_landing_9HCtJm": {
-      "type": "main-collection-landing",
+      "type": "collection-featured-landing",
       "blocks": {
         "collection_8MGimM": {
           "type": "collection",
