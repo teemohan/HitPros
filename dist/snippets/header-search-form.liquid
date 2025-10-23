@@ -59,11 +59,8 @@
       placeholder="Enter keyword, model #"
       @select="handleSelect"
       @keyup.enter.native="handleSearch"
-      :popper-append-to-body="false"
+      :popper-append-to-body="true"
       class="h-full"
-      auto-complete="off" 
-      focus-delay="0"
-      focus 
     >
       <el-button slot="append" @click="handleSearch">
         <span>{% render 'icon' with 'header-search' %}</span>

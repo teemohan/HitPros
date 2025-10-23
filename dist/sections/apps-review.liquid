@@ -262,7 +262,9 @@
     <!-- Header Rate View: Hidden element for header display -->
     <div class="js-pdp-header-rateview invisible absolute -z-1 left-0">
       <a class="w-full flex items-center h-6 justify-start fb-review-rate cursor-pointer" href="#product-review-section">
-        <el-rate v-model="skuTotalScore" read-only></el-rate>
+        <div style="cursor: pointer; pointer-events: none;"> 
+          <el-rate v-model="skuTotalScore" disabled ></el-rate>
+        </div>
         <span class="text-16 fb-max-sm:text-14 text-121212 mt-1  ml-2 fb-max-sm:underline hover:fb-md:underline">${skuTotalReviews} ${ skuTotalReviews == 1 ? 'review' : 'reviews'}</span>
       </a>
     </div>
