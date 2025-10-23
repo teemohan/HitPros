@@ -118,11 +118,11 @@
     {% if section.blocks.size <= 1 %}
       {%- assign circle_hidden_css = '!hidden !fb-md:hidden' -%}
     {% endif %}
-    <div class="absolute h-9  pl-5 pr-5 w-full items-center justify-between space-x-3 z-1 {{ circle_hidden_css }}" style="bottom:50%;transform: translateY(50%);">
-      <div class="banner-swiper-button-prev fb-flex-center w-9 h-9 rounded-full cursor-pointer bg-white/60 hover:bg-white border-999999 border">
+    <div class="absolute h-9  pl-5 pr-5 w-full items-center justify-between space-x-3 z-1 {{ circle_hidden_css }}" style="bottom:50%;transform: translateY(50%); pointer-events: none;">
+      <div style="pointer-events: auto;" class="banner-swiper-button-prev fb-flex-center w-9 h-9 rounded-full cursor-pointer bg-white/60 hover:bg-white border-999999 border">
         <svg class="w-2.5 h-auto" style="transform: scale(-1);" width="11" height="17" viewBox="0 0 11 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.81988 9.51959L0.625 14.5326L2.40346 16.2324L10.625 8.35694L2.45062 0.269899C2.37844 0.208271 2.33417 0.233107 2.26007 0.269899C1.83951 0.476858 1.09175 1.54109 0.624999 1.83911L5.91612 7.12806L6.98852 8.2323L5.81988 9.51959Z" fill="#0A2B6F"></path></svg>
       </div>
-      <div class="banner-swiper-button-next fb-flex-center w-9 h-9 rounded-full cursor-pointer bg-white/60 hover:bg-white border-999999 border">
+      <div style="pointer-events: auto;"  class="banner-swiper-button-next fb-flex-center w-9 h-9 rounded-full cursor-pointer bg-white/60 hover:bg-white border-999999 border">
         <svg class="w-2.5 h-auto" width="11" height="17" viewBox="0 0 11 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.81988 9.51959L0.625 14.5326L2.40346 16.2324L10.625 8.35694L2.45062 0.269899C2.37844 0.208271 2.33417 0.233107 2.26007 0.269899C1.83951 0.476858 1.09175 1.54109 0.624999 1.83911L5.91612 7.12806L6.98852 8.2323L5.81988 9.51959Z" fill="#0A2B6F"></path></svg>
       </div>
     </div>

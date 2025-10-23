@@ -400,7 +400,9 @@
 
         <div class="w-full justify-center flex items-center fb-md:hidden">
           <div class=" dots-nav dots-nav--centered">
+            
           {%- for media in product.media -%}
+            {% unless media.media_type == 'video' %}
             {%- assign is_media_filtered = false -%}
             {%- assign media_id_as_string = media.id | append: '' -%}
 
@@ -422,6 +424,7 @@
             >
               <span  class="visually-hidden">{{ 'general.accessibility.go_to_slide' | t: num: forloop.index }}</span>
             </button>
+          {% endunless %}
           {%- endfor -%}
         </div>
         </div>
