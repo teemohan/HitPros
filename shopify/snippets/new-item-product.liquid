@@ -19,7 +19,7 @@
       datalayer-link
       class="relative h-full flex items-center justify-center"
       >
-      {%- if product.tags contains 'new' -%}
+      {%- if product.tags contains '000-newTag' -%}
         <div class="z-2 absolute left-0 top-0 fb-flex-center">
           <span class="absolute font-bold text-sm leading-[150%] text-white left-1.5 top-3 -rotate-45">NEW</span>
           <svg class="w-auto h-auto" width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -76,7 +76,7 @@
   {%- else  -%}
   <div class="star w-full h-4 min-h-4 items-center justify-start mb-4 fb-md:mb-5"></div>
     {%- endif -%} {% endcomment %}
-    <div class="star w-full h-4 min-h-4 items-center justify-start mb-4 fb-md:mb-5"></div>
+    {% comment %} <div class="star w-full h-4 min-h-4 items-center justify-start mb-4 fb-md:mb-5"></div> {% endcomment %}
     <div class="flex items-center justify-between">
       <div class="text-left font-bold  text-22 fb-md:text-28">
         {%- if product.compare_at_price > product.price -%}

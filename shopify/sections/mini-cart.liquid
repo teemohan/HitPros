@@ -33,9 +33,19 @@
     display: inline-block;
   }
 
-  /* .shopify-section--mini-cart{
-    pointer-events: auto !important;
-  } */
+  .shopify-section--mini-cart{
+    z-index: 888 !important;
+    position: relative;
+  }
+
+  .cart-drawer {
+    pointer-events: auto;
+  }
+
+  .cart-overlay {
+    pointer-events: auto;
+  }
+
 </style>
 
 <cart-drawer 
