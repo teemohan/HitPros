@@ -1,5 +1,4 @@
-img[src=""],
-img:not([src]) {
+img[src=""],img:not([src]) {
   opacity: 0;
 }
  .none-copy {
