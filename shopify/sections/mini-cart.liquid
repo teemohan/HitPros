@@ -36,6 +36,7 @@
   .shopify-section--mini-cart{
     z-index: 888 !important;
     position: relative;
+    /* pointer-events: none !important; */
   }
 
   .cart-drawer {
@@ -46,11 +47,20 @@
     pointer-events: auto;
   }
 
+  .mini-cart ~ * {
+    pointer-events: auto !important;
+  }
+  .drawer__overlay{
+    pointer-events: none;
+  }
+
 </style>
 
 <cart-drawer 
   section="{{ section.id }}" 
   id="mini-cart" 
+  data-trap-focus="false"
+  tabindex="-1"
   class="mini-cart drawer  h-full fb-md:w-30r bg-white fb-md:max-h-[75vh]  fb-md:shadow-lg fb-md:top-20">
   {% comment %} <span class="drawer__overlay fb-md:hidden"></span> {% endcomment %}
   <header class="w-full px-4 py-5 fb-md:py-4 mb-2 flex items-center justify-between ">
@@ -87,7 +97,7 @@
     </button>
     </div>
   </header>
-  <div class="w-full flex-1 overflow-y-auto grary-scrollerbar fb-md:max-h-full flex flex-col justify-start px-5 pb-5"
+  <div data-trap-focus="false"  class="w-full flex-1 overflow-y-auto grary-scrollerbar fb-md:max-h-full flex flex-col justify-start px-5 pb-5"
    style="overscroll-behavior: contain;"
   >
     {%- if cart.item_count == 0 -%}
