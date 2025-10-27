@@ -381,20 +381,16 @@ $(function() {
         changeStyle (type) {
           this.currentStyle = type
           Cookies.set('searchView', type, { expires: 36500 });
-          
-          // 根据视图类型设置 pageSize
-          const newPageSize = type !== 'list' ? 16 : 10;
-          this.pageParam.pageSize = newPageSize;
-          this.queryParam.size = newPageSize;
+          // 更新 pageSize
+          // this.pageParam.pageSize = type === 'list' ? 10 : 16;
 
-          // 重置分页
-          this.queryParam.from = 0;
-          this.pageParam.page = 1;
+          // this.$set(this.pageParam,'pageSize',type === 'list' ? 10 : 16)
+          // // 重置分页
+          // this.queryParam.from = 0;
+          // this.pageParam.page = 1;
 
-          // 重新加载数据
-          this.getProducts();
-
-
+          // // 重新加载数据
+          // this.getProducts();
         },
         initPageView () {
           this.handleUrlChange();
@@ -493,13 +489,6 @@ $(function() {
           const urlParams = new URLSearchParams(window.location.search);
           this.pageParam.page = +urlParams.get('page') || 1;
           this.queryParam.from = (this.pageParam.page - 1) * this.queryParam.size;
-
-          // 如果 URL 中没有 size 参数，则根据 currentStyle 设置
-          if (!urlParams.has('size')) {
-            const newPageSize = this.currentStyle !== 'list' ? 16 : 10;
-            this.queryParam.size = newPageSize;
-            this.pageParam.pageSize = newPageSize;
-          }
         },
         scrollToTop() {
           const scrollTo =

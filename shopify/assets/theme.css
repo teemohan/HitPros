@@ -1,8 +1,4 @@
 
-img[src=""],
-img:not([src]) {
-  opacity: 0;
-}
  .none-copy {
   -webkit-user-select: none;
   

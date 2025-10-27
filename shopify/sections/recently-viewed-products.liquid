@@ -1,13 +1,4 @@
 {{ 'index-product-item.css' | asset_url | stylesheet_tag }}
-
-<style>
-  .swiper-button-prev,
-  .swiper-button-next {
-    pointer-events: auto !important; /* 确保可以点击 */
-    user-select: none !important;    /* 防止文本选中 */
-    cursor: pointer !important;
-  }
-</style>
 <recently-viewed-products
   section-id="{{ section.id }}"
   data-customer="{{ customer.id }}"
@@ -46,12 +37,12 @@
           <div class="mt-4 fb-sm:mt-6 flex items-center justify-between fb-md:space-x-10 relative z-1 ">
             <div class="swiper-scrollbar !static flex w-full fb-md:flex-1"></div>
             <div class="swiper-btns items-center justify-end  flex">
-              <div tabIndex="-1" role="button"   aria-label="Previous" class="swiper-button-prev !w-8 !h-8 hover:bg-EEEEEE cursor-pointer fb-sm:!w-10 swiper-button-disabled fb-max-sm:!w-5 fb-max-sm:!h-5">
+              <div class="swiper-button-prev !w-8 !h-8 hover:bg-EEEEEE cursor-pointer fb-sm:!w-10 swiper-button-disabled fb-max-sm:!w-5 fb-max-sm:!h-5">
                 <svg style="transform: scale(-1);" xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
                   <path d="M5.19488 7.13238L0 1.80606L1.77846 0L10 8.3677L1.82562 16.9602C1.75344 17.0257 1.70917 16.9993 1.63507 16.9602C1.21451 16.7403 0.46675 15.6095 0 15.2929L5.29112 9.67338L6.36352 8.50012L5.19488 7.13238Z" fill="#0A2B6F"></path>
                 </svg>
               </div>
-              <div tabIndex="-1" role="button"  aria-label="Next"  class="swiper-button-next !w-8 !h-8 hover:bg-EEEEEE cursor-pointer fb-sm:!w-10 fb-max-sm:!w-5 fb-max-sm:!h-5" >
+              <div class="swiper-button-next !w-8 !h-8 hover:bg-EEEEEE cursor-pointer fb-sm:!w-10 fb-max-sm:!w-5 fb-max-sm:!h-5" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
                   <path d="M5.19488 7.13238L0 1.80606L1.77846 0L10 8.3677L1.82562 16.9602C1.75344 17.0257 1.70917 16.9993 1.63507 16.9602C1.21451 16.7403 0.46675 15.6095 0 15.2929L5.29112 9.67338L6.36352 8.50012L5.19488 7.13238Z" fill="#0A2B6F"></path>
                 </svg>

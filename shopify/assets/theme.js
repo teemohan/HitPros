@@ -3589,12 +3589,6 @@ $(function () {
             this.searchStr = item.value;
             this.handleSearch();
           },
-          handleFocus() {
-            const drawer = document.querySelector('.mini-cart.drawer');
-            if (drawer && drawer.open) {
-              drawer.open = false; // 直接设置属性即可
-            }
-          },
           storageHistory(confirmStr) {
             const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
             if (confirmStr && !searchHistory.find(item => item.value === confirmStr)) {
