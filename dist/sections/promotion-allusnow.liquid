@@ -1,0 +1,252 @@
+<section class="promotion-callusnow">
+  <div class="promotion-banner-allusnow">
+    <div class="promotion-banner-allusnow-content">
+      <h2 class="promotion-allusnow-banner-title">{{ section.settings.title }}</h2>
+      <p class="promotion-allusnow-banner-subtitle">{{ section.settings.subtitle }}</p>
+      <a href="{{ section.settings.button_link }}" class="promotion-allusnow-banner-button">
+        <span class="promotion-allusnow-banner-button-text">{{ section.settings.button_text }}</span>
+        <span class="promotion-allusnow-banner-monbile-button-text">{{ section.settings.mobile_button_text }}</span>
+      </a>
+    </div>
+  </div>
+</section>
+<style>
+  .promotion-callusnow {
+    width: 100%;
+    height: 318px;
+    background: #EAEEF1;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  }
+  .promotion-banner-allusnow {
+    background-color: {{ section.settings.background_color }};
+
+    width: 1196px;
+    height: 240px;
+
+  }
+
+  .promotion-banner-allusnow-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 43px;
+  }
+
+  .promotion-allusnow-banner-title {
+    width: 588.508px;
+    height: 38px;
+    color: #000;
+    text-align: center;
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .promotion-allusnow-banner-subtitle {
+    margin-top: 9px;
+    width: 588.508px;
+    height: 38px;
+    color: #000;
+    text-align: center;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .promotion-allusnow-banner-button {
+    display: flex;
+    width: 279.766px;
+    padding: 16px 40px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    background: var(--Core-Primary-Deep-Blue, #0A2B6F);
+    transition: opacity 0.3s ease;
+  }
+
+  .promotion-allusnow-banner-button:hover {
+    opacity: 0.9;
+  }
+  .promotion-allusnow-banner-button-text {
+    color: #FABE00;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.288px;
+  }
+
+  .promotion-allusnow-banner-monbile-button-text {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+
+  .promotion-callusnow {
+    width: 100%;
+    height: 160px;
+    background: #EAEEF1;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  }
+  .promotion-banner-allusnow {
+    background-color: {{ section.settings.background_color }};
+
+    width: 100%;
+    height: 160px;
+
+  }
+
+  .promotion-banner-allusnow-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
+  }
+
+  .promotion-allusnow-banner-title {
+    width: 343px;
+    height: 23px;
+    flex-shrink: 0;
+    color: #000;
+    text-align: center;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .promotion-allusnow-banner-subtitle {
+    margin-top: 8px;
+    width: 343px;
+    height: 10px;
+    color: #000;
+    text-align: center;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .promotion-allusnow-banner-button {
+    margin-top: 33px;
+    display: flex;
+    width: 154px;
+    height: 36px;
+    padding: 16px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--Core-Primary-Deep-Blue, #0A2B6F);
+    transition: opacity 0.3s ease;
+  }
+
+  .promotion-allusnow-banner-button:hover {
+    opacity: 0.9;
+  }
+
+  .promotion-allusnow-banner-button-text{
+    display: none;
+  }
+  .promotion-allusnow-banner-monbile-button-text {
+    display: inline-block;
+    color: #FABE00;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.168px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Promotion Call Us Now",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Bulk Gift Orders for Your Team"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Make Gifting Easy, Thoughtful, and Hassle-Free"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Call us now"
+    },
+    {
+      "type": "text",
+      "id": "mobile_button_text",
+      "label": "Button Text",
+      "default": "Submit now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFC107"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#003D82"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFC107"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotion Banner - Call Us Now"
+    }
+  ]
+}
+{% endschema %}
