@@ -1,46 +1,22 @@
-
-<style>
-
-.js-guesslike-gtm {
-  position: relative;
-  z-index: 10;
-}
-
-.js-guesslike-gtm .swiper {
-  position: relative;
-  z-index: 11;
-}
-
-
-  .northsky-button-prev,
-.northsky-button-next {
-  pointer-events: auto; /* 确保可以点击 */
-  user-select: none;    /* 防止文本选中 */
-  cursor: pointer;
-}
-
-
-</style>
-
 {%- if type == 'button' -%}
-  <div tabIndex="-1" role="button" aria-label="Previous" class="northsky-button-prev !w-8 !h-8 fb-flex-center hover:bg-EEEEEE cursor-pointer">
+  <div class="northsky-button-prev !w-8 !h-8 fb-flex-center hover:bg-EEEEEE cursor-pointer">
     <svg style="transform: scale(-1);" xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
       <path d="M5.19488 7.13238L0 1.80606L1.77846 0L10 8.3677L1.82562 16.9602C1.75344 17.0257 1.70917 16.9993 1.63507 16.9602C1.21451 16.7403 0.46675 15.6095 0 15.2929L5.29112 9.67338L6.36352 8.50012L5.19488 7.13238Z" fill="#0A2B6F"></path>
     </svg>
   </div>
-  <div tabIndex="-1" role="button" aria-label="Next" class="northsky-button-next !w-8 !h-8 fb-flex-center hover:bg-EEEEEE  cursor-pointer">
+  <div class="northsky-button-next !w-8 !h-8 fb-flex-center hover:bg-EEEEEE  cursor-pointer">
     <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
       <path d="M5.19488 7.13238L0 1.80606L1.77846 0L10 8.3677L1.82562 16.9602C1.75344 17.0257 1.70917 16.9993 1.63507 16.9602C1.21451 16.7403 0.46675 15.6095 0 15.2929L5.29112 9.67338L6.36352 8.50012L5.19488 7.13238Z" fill="#0A2B6F"></path>
     </svg>
   </div>
 {%- else -%}
-  <div tabIndex="-1" role="button"  aria-label="Previous" class="hidden fb-md:flex items-center justify-end space-x-4 fb-md:w-20">
+  <div class="hidden fb-md:flex items-center justify-end space-x-4 fb-md:w-20">
     <div class="northsky-button-prev !w-8 !h-8 fb-flex-center hover:bg-EEEEEE cursor-pointer">
       <svg style="transform: scale(-1);" xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
         <path d="M5.19488 7.13238L0 1.80606L1.77846 0L10 8.3677L1.82562 16.9602C1.75344 17.0257 1.70917 16.9993 1.63507 16.9602C1.21451 16.7403 0.46675 15.6095 0 15.2929L5.29112 9.67338L6.36352 8.50012L5.19488 7.13238Z" fill="#0A2B6F"></path>
       </svg>
     </div>
-    <div  tabIndex="-1" role="button" aria-label="Next" class="northsky-button-next !w-8 !h-8 fb-flex-center hover:bg-EEEEEE  cursor-pointer">
+    <div class="northsky-button-next !w-8 !h-8 fb-flex-center hover:bg-EEEEEE  cursor-pointer">
       <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
         <path d="M5.19488 7.13238L0 1.80606L1.77846 0L10 8.3677L1.82562 16.9602C1.75344 17.0257 1.70917 16.9993 1.63507 16.9602C1.21451 16.7403 0.46675 15.6095 0 15.2929L5.29112 9.67338L6.36352 8.50012L5.19488 7.13238Z" fill="#0A2B6F"></path>
       </svg>
