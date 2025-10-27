@@ -15,25 +15,25 @@
         "image_banner_jk7jKr": {
           "type": "image_banner",
           "settings": {
-            "link_url": "/collections/tape-adhesives",
-            "image": "shopify://shop_images/1p.png",
-            "mobile_image": "shopify://shop_images/1m.png"
+            "link_url": "shopify://collections/electrical",
+            "image": "shopify://shop_images/Batteries_HP_0d596b93-f81e-4d34-984c-27727da32884.png",
+            "mobile_image": "shopify://shop_images/Batteries_H5.png"
           }
         },
         "image_banner_x9bY43": {
           "type": "image_banner",
           "settings": {
-            "link_url": "/collections/packaging-shipping-stretch-wrap-films",
-            "image": "shopify://shop_images/2p.png",
-            "mobile_image": "shopify://shop_images/2m.png"
+            "link_url": "shopify://collections/tool-storage",
+            "image": "shopify://shop_images/Stock_Up_Get_Organized_HP_1b8ba345-487b-43ab-97e4-6ee077451846.png",
+            "mobile_image": "shopify://shop_images/Stock_Up_Get_Organized_H5_3f49f897-e2d8-4818-bf1d-69215adaed90.png"
           }
         },
         "image_banner_P9LUty": {
           "type": "image_banner",
           "settings": {
-            "link_url": "/products/AE8068672",
-            "image": "shopify://shop_images/3p.jpg",
-            "mobile_image": "shopify://shop_images/3m.png"
+            "link_url": "https://northskysupply.com/collections/hand-tools",
+            "image": "shopify://shop_images/Gift_sets_promo_HP_0462cfce-b704-4c35-8120-a6a766509289.png",
+            "mobile_image": "shopify://shop_images/Gift_sets_promo_H5.png"
           }
         }
       },
