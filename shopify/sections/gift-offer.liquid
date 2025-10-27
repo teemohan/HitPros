@@ -1,0 +1,1465 @@
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+
+<style>
+    .gift-offers-section {
+      background: #EAEEF1;
+      padding: 40px 0 60px;
+    }
+
+    .gift-offers-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding: 0 0px;
+    }
+
+    .gift-offers-title {
+      color: var(--Deep-blue-Dark, #202427);
+      font-family: Inter;
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 120%; /* 38.4px */
+    }
+
+    .gift-offers-see-all {
+      color: var(--Color, #0A2B6F);
+      text-align: right;
+      font-family: Inter;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 120%; /* 24px */
+      text-decoration-line: underline;
+      text-decoration-style: solid;
+      text-decoration-skip-ink: none;
+      text-decoration-thickness: auto;
+      text-underline-offset: auto;
+      text-underline-position: from-font;
+    }
+
+    .gift-offers-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      row-gap: 24px;
+      column-gap: auto;
+      max-width: 1196px;
+      align-items: end;
+
+    }
+
+    /* 常规产品卡片 */
+    .gift-offer-item {
+      width: 224px;
+      height: 380px;
+      background: white;
+      {% comment %} border-radius: 8px; {% endcomment %}
+      {% comment %} padding: 16px; {% endcomment %}
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .gift-offer-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+
+    .gift-offer-item .gift-offer-content{
+      width: 184px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    /* 广告卡片样式 */
+    .gift-offer-promo {
+      width: 222px;
+      height: 340px;
+      color: white;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      {% comment %} padding-top: 176px; {% endcomment %}
+      padding-bottom: 20px;
+
+      background: linear-gradient(180deg, rgba(32, 36, 39, 0.00) 20%, rgba(32, 36, 39, 0.50) 60%);
+    }
+
+    .gift-offer-promo .gift-offer-content {
+      position: relative;
+      z-index: 2;
+      color: white;
+      width: 184px;
+      height: auto;
+      {% comment %} height: 100%; {% endcomment %}
+
+    }
+
+    .gift-offer-promo .promo-title {
+      color: #FFF;
+      font-family: Inter;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 120%; /* 24px */
+      padding-bottom: 12px;
+
+
+    }
+
+    .gift-offer-promo .promo-subtitle {
+      color: #FFF;
+      font-family: Inter;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px; /* 142.857% */
+    }
+
+    .gift-offer-promo .promo-description {
+      color: #FFF;
+      font-family: Inter;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px; /* 142.857% */
+    }
+
+    .gift-offer-promo .promo-cta {
+      background: none;       
+      border: none;          
+      padding: 0;             
+      border-radius: 0;       
+      color: #FFF;         
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: underline; 
+      display: inline;        
+      cursor: pointer;        
+    }
+
+    .gift-offer-promo .promo-cta:hover {
+      color: #FFF;         
+      text-decoration: underline;
+    }
+  {% comment %} 广告卡样式结束 {% endcomment %}
+
+
+
+
+
+    .gift-offer-image {
+      width: 224px;
+      height: 224px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+
+    .gift-offer-title {
+      width: 184px;
+      height: 60px;
+      color: #121212;
+      font-family: Inter;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px; /* 142.857% */
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .gift-offer-price {
+      color: #0A2B6F;
+      font-family: Inter;
+      font-size: 28px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 100%; /* 28px */
+
+    }
+
+
+
+    .gift-offer-price sup {
+      color: #0A2B6F;
+      font-family: Inter;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 100%; /* 14px */
+      top: -.8em;
+    }
+
+
+
+
+
+    .gift-offer-cart-icon {
+    position: static; 
+    width: 23px;
+    height: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    }
+
+
+    .gift-offer-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #ED0006;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* 分页样式 - 支持动态宽度 */
+  .gift-offers-pagination-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 32px 0 0 0;
+    gap: 24px;
+    position: relative;
+  }
+
+  .gift-offers-pagination-dots {
+    cursor: pointer;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+    .pagination-svg {
+      height: 20px;
+      min-width: 60px;
+      max-width: 200px;
+      transition: width 0.3s ease;
+    }
+
+    .gift-offers-pagination-dots .dot {
+      cursor: pointer;
+      transition: fill 0.3s ease;
+    }
+
+    .gift-offers-pagination-dots .dot:hover {
+      fill: #0A2B6F;
+    }
+
+    .gift-offers-pagination-dots .dot.active {
+      fill: #0A2B6F;
+    }
+
+  .gift-offers-pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+    .gift-offers-arrow {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: opacity 0.3s ease, transform 0.2s ease;
+    }
+
+    .gift-offers-arrow:hover {
+      transform: scale(1.05);
+    }
+
+    .gift-offers-arrow:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .gift-offers-arrow:disabled:hover {
+      transform: none;
+    }
+
+
+
+  /* review 横向排列样式 —— 放到 theme.css 或 sections/gift-offer.liquid 的 style*/
+  .promotional-reviews,
+  .sky-single-reviews {
+    display: inline-flex;          
+    align-items: center;          
+    gap: 6px;                      
+    font-size: 13px;               
+    color: #0A2B6F;               
+    line-height: 1;
+  }
+
+  /* 如果星星 SVG 比较紧凑，可以控制它们的容器尺寸 */
+  .promotional-reviews .stars,
+  .sky-single-reviews .stars {
+    display: inline-flex;
+    gap: 2px;                      
+    vertical-align: middle;
+  }
+
+  /* 确保 SVG 大小一致（覆盖内联宽高如果需要） */
+  .promotional-reviews .stars svg,
+  .sky-single-reviews .stars svg {
+    width: 18px;
+    height: 16px;
+    display: block;
+  }
+
+  /* 评论数量的小样式 */
+  .promotional-reviews .review-count,
+  .sky-single-reviews .review-count {
+    color: #999;
+
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%; /* 12px */
+  }
+
+  .cart-icon-desktop {
+    display: inline-block;
+  }
+
+  .cart-icon-mobile {
+    display: none;
+  }
+
+
+
+
+
+
+
+
+    /* 响应式设计 */
+    @media screen and (min-width: 769px) and (max-width: 1196px){
+      .container{
+        width: 768px;
+      }
+        .gift-offers-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      row-gap: 24px;
+      column-gap: auto;
+      max-width: 768px;
+      align-items: end;
+
+    }
+      .gift-offer-item {
+      width: 168px;
+      height: 300px;
+      background: white;
+      {% comment %} border-radius: 8px; {% endcomment %}
+      {% comment %} padding: 16px; {% endcomment %}
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+      .gift-offer-item .gift-offer-content{
+      width: 148px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+     /* 广告卡片样式 */
+    .gift-offer-promo {
+      width: 168px;
+      height: 300px;
+      color: white;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      {% comment %} padding-top: 176px; {% endcomment %}
+      padding-bottom: 20px;
+
+      background: linear-gradient(180deg, rgba(32, 36, 39, 0.00) 20%, rgba(32, 36, 39, 0.50) 60%);
+    }
+    .gift-offer-promo .gift-offer-content {
+      position: relative;
+      z-index: 2;
+      color: white;
+      width: 148px;
+      height: auto;
+      {% comment %} height: 100%; {% endcomment %}
+
+    }
+      .gift-offer-promo .promo-title {
+      color: #FFF;
+      font-family: Inter;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 120%; /* 24px */
+      padding-bottom: 12px;
+
+
+    }
+      .gift-offer-promo .promo-subtitle {
+      color: #FFF;
+      font-family: Inter;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px; /* 142.857% */
+
+    }
+      .gift-offer-promo .promo-description {
+      color: #FFF;
+      font-family: Inter;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px; /* 142.857% */
+    }
+      .gift-offer-image {
+      width: 168px;
+      height: 168px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+      .gift-offer-title {
+      width: 148px;
+      height: 48px;
+      color: #121212;
+      font-family: Inter;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px; /* 142.857% */
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+     .gift-offer-price {
+      color: #0A2B6F;
+      font-family: Inter;
+      font-size: 22px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 100%; /* 28px */
+
+    }
+      .gift-offer-price sup {
+      color: #0A2B6F;
+      font-family: Inter;
+      font-size: 11px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 100%; /* 14px */
+      top: -.8em;
+    }
+      .gift-offer-cart-icon {
+    position: static; 
+    width: 11px;
+    height: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    }
+  }
+
+    @media screen and (max-width: 768px) {
+
+      .gift-offers-section{
+        width: 100%;
+      }
+      .container{
+        width: 342px;
+      }
+
+    .gift-offers-title {
+  color: #121212;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 120%; /* 24px */
+    }
+    .gift-offers-see-all {
+  color: #0A2B6F;
+  text-align: right;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 14px */
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+    }
+      .gift-offers-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 10px;
+        column-gap: 10px;
+        max-width: 342px;
+        align-items: end;
+        width: 100%;
+        {% comment %} justify-content: space-between; {% endcomment %}
+
+      }
+
+    /* 常规产品卡片 */
+    .gift-offer-item {
+      width: 166px;
+      height: 280px;
+      background: white;
+      {% comment %} border-radius: 8px; {% endcomment %}
+      {% comment %} padding: 16px; {% endcomment %}
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .gift-offer-item:hover {
+      transform: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+
+    .gift-offer-item .gift-offer-content{
+      width: 146px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .gift-offer-image {
+      width: 166px;
+      height: 166px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+    .gift-offer-title {
+      width: 146px;
+      height: 48px;
+      color: #121212;
+      font-family: Inter;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px; /* 133.333% */
+
+
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .gift-offer-price {
+      color: #0A2B6F;
+      font-family: Inter;
+      font-size: 22px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 100%; /* 28px */
+
+    }
+
+
+
+    .gift-offer-price sup {
+      color: #0A2B6F;
+      font-family: Inter;
+      font-size: 11px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 100%; /* 14px */
+      top: -.8em;
+    }
+
+
+
+
+
+    .gift-offer-cart-icon {
+    position: static; 
+    width: 23px;
+    height: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    }
+
+      .cart-icon-desktop {
+      display: none;
+    }
+
+    .cart-icon-mobile {
+      display: block;
+    }
+
+    .promotional-reviews .stars svg,
+    .sky-single-reviews .stars svg {
+      width: 12px;
+      height: 12px;
+    }
+
+
+    .gift-offer-add-button {
+  display: flex;
+  width: 28px;
+  height: 28px;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  aspect-ratio: 1/1;
+  border-radius: 2px;
+  border: 1px solid #FABE00;
+  background: #FABE00;
+    }
+
+
+
+    }
+</style>
+
+<section class="gift-offers-section">
+  <div class="container">
+    <div class="gift-offers-header">
+      <h2 class="gift-offers-title">{{ section.settings.title | default: 'All Sets' }}</h2>
+      {% if section.settings.show_see_all and section.settings.see_all_url != blank %}
+        <a href="{{ section.settings.see_all_url }}" class="gift-offers-see-all">
+          {{ section.settings.see_all_text | default: 'See All' }}
+          {% render 'icon' with 'arrow-right' %}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="gift-offers-grid">
+      {% assign total_items = 0 %}
+      {% assign product_index = 0 %}
+      {% assign promo_blocks = section.blocks | where: 'type', 'promo' %}
+
+      {% comment %} 创建不同屏幕尺寸的广告位置数组 {% endcomment %}
+      {% assign desktop_promo_positions = '' %}
+      {% assign tablet_promo_positions = '' %}
+      {% assign mobile_promo_positions = '' %}
+
+      {% for block in promo_blocks %}
+        {% if forloop.first %}
+          {% assign desktop_promo_positions = block.settings.desktop_position | append: '' %}
+          {% assign tablet_promo_positions = block.settings.tablet_position | append: '' %}
+          {% assign mobile_promo_positions = block.settings.mobile_position | append: '' %}
+        {% else %}
+          {% assign desktop_promo_positions = desktop_promo_positions
+            | append: ','
+            | append: block.settings.desktop_position
+          %}
+          {% assign tablet_promo_positions = tablet_promo_positions
+            | append: ','
+            | append: block.settings.tablet_position
+          %}
+          {% assign mobile_promo_positions = mobile_promo_positions
+            | append: ','
+            | append: block.settings.mobile_position
+          %}
+        {% endif %}
+      {% endfor %}
+
+      {% assign desktop_positions_array = desktop_promo_positions | split: ',' %}
+      {% assign tablet_positions_array = tablet_promo_positions | split: ',' %}
+      {% assign mobile_positions_array = mobile_promo_positions | split: ',' %}
+
+      {% comment %} 生成混合内容 {% endcomment %}
+      {% for i in (1..section.settings.products_limit) %}
+        {% assign current_position = total_items | plus: 1 %}
+        {% assign show_promo = false %}
+        {% assign promo_block_to_show = null %}
+
+        {% comment %} 检查当前位置是否需要显示广告 - 默认使用桌面端位置 {% endcomment %}
+        {% for position in desktop_positions_array %}
+          {% assign pos_num = position | plus: 0 %}
+          {% if pos_num == current_position %}
+            {% assign show_promo = true %}
+            {% assign promo_block_to_show = promo_blocks[forloop.index0] %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+
+        {% if show_promo and promo_block_to_show %}
+          {% comment %} 显示广告 - 包含响应式位置信息 {% endcomment %}
+          {% assign desktop_pos = promo_block_to_show.settings.desktop_position %}
+          {% assign tablet_pos = promo_block_to_show.settings.tablet_position %}
+          {% assign mobile_pos = promo_block_to_show.settings.mobile_position %}
+
+          <a
+            class="gift-offer-item gift-offer-promo"
+            href="{{ promo_block_to_show.settings.link_url | default: '#' }}"
+            {% if promo_block_to_show.settings.background_image %}
+              style="
+                background:
+                linear-gradient(180deg, rgba(32, 36, 39, 0.00) 20%, rgba(32, 36, 39, 0.50) 60%),
+                url('{{ promo_block_to_show.settings.background_image | image_url: width: 222 }}');
+              "
+            {% endif %}
+            data-desktop-pos="{{ desktop_pos }}"
+            data-tablet-pos="{{ tablet_pos }}"
+            data-mobile-pos="{{ mobile_pos }}"
+            {{ promo_block_to_show.shopify_attributes }}
+          >
+            <div class="gift-offer-content">
+              <h3 class="promo-title">{{ promo_block_to_show.settings.title | default: 'Special Offer' }}</h3>
+              <p class="promo-description">
+                {{ promo_block_to_show.settings.description | default: 'Do not miss out!' }}
+                <span class="promo-cta">
+                  {{ promo_block_to_show.settings.button_text | default: 'Shop Now' }}
+                </span>
+              </p>
+            </div>
+          </a>
+          {% assign total_items = total_items | plus: 1 %}
+
+        {% else %}
+          {% comment %} 显示产品 {% endcomment %}
+          {% if section.settings.collection != blank %}
+            {% assign products_array = section.settings.collection.products %}
+            {% if product_index < products_array.size and product_index < section.settings.products_limit %}
+              {% assign product = products_array[product_index] %}
+              {% comment %}
+                <a href="{{ product.url }}" class="gift-offer-item">
+                  {% if product.compare_at_price > product.price %}
+                    <div class="gift-offer-badge">
+                      {% assign discount_percentage = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round %}
+                      -{{ discount_percentage }}%
+                    </div>
+                  {% endif %}
+
+                  {% if product.featured_media %}
+                    {% assign image_width = 300 %}
+                    {% assign image_height = image_width | divided_by: product.featured_media.aspect_ratio | round %}
+                    <img
+                      src="{{ product.featured_media | image_url: width: image_width }}"
+                      alt="{{ product.featured_media.alt | escape }}"
+                      class="gift-offer-image"
+                      width="{{ image_width }}"
+                      height="{{ image_height }}"
+                      loading="lazy"
+                    >
+                  {% else %}
+                    <div class="gift-offer-image" style="background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                      <span style="color: #999;">No Image</span>
+                    </div>
+                  {% endif %}
+
+                  <div class="gift-offer-content">
+                    {% if product.vendor != blank %}
+                      <span class="gift-offer-brand">{{ product.vendor }}</span>
+                    {% endif %}
+
+                    <h3 class="gift-offer-title">{{ product.title }}</h3>
+
+                    <div class="promotional-reviews hidden cursor-pointer mt-1.5 fb-sm:mt-2.5" data-sku="{{ product.variants.first.sku }}" ></div>
+                    <pre>{{ product.variants.first.sku  }}</pre>
+
+                    <div class="gift-offer-price">
+                      {% if product.compare_at_price > product.price %}
+                        <span class="gift-offer-compare-price">{{ product.compare_at_price | money }}</span>
+                      {% endif %}
+                      {{ product.price | money }}
+                      <!-- 购物车 -->
+                      <div class="gift-offer-cart-icon" onclick="addToCart('{{ product.id }}'); event.preventDefault(); event.stopPropagation();">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="22" viewBox="0 0 23 22" fill="none">
+                          <path d="M6.64258 19.0869C7.02718 19.087 7.39596 19.2398 7.66797 19.5117C7.94006 19.7838 8.09277 20.1533 8.09277 20.5381C8.0927 20.9228 7.93999 21.2914 7.66797 21.5635C7.39594 21.8355 7.02727 21.9882 6.64258 21.9883C6.25778 21.9883 5.88831 21.8356 5.61621 21.5635C5.34431 21.2915 5.19148 20.9227 5.19141 20.5381C5.19141 20.1533 5.34412 19.7838 5.61621 19.5117C5.88831 19.2396 6.25778 19.0869 6.64258 19.0869Z" fill="#0A2B6F" stroke="#0A2B6F" stroke-width="0.0234375"/>
+                          <path d="M18.9277 19.0869C19.3123 19.087 19.6811 19.2398 19.9531 19.5117C20.2252 19.7838 20.3779 20.1533 20.3779 20.5381C20.3779 20.9228 20.2252 21.2914 19.9531 21.5635C19.6811 21.8355 19.3124 21.9882 18.9277 21.9883C18.5429 21.9883 18.1735 21.8356 17.9014 21.5635C17.6295 21.2915 17.4766 20.9227 17.4766 20.5381C17.4766 20.1533 17.6293 19.7838 17.9014 19.5117C18.1735 19.2396 18.5429 19.0869 18.9277 19.0869Z" fill="#0A2B6F" stroke="#0A2B6F" stroke-width="0.0234375"/>
+                          <path d="M3.89355 5.94629L5.00488 16.0615L5.05371 16.5068H19.8262L19.8906 16.083L21.4473 5.96777L21.5361 5.3916H3.83301L3.89355 5.94629ZM4.55664 16.8691L4.55371 16.8418L2.88672 1.61328L2.83789 1.16699H1V0.5H3.16895C3.17004 0.500135 3.1723 0.500369 3.1748 0.500977C3.17977 0.502179 3.18764 0.504736 3.19824 0.509766C3.22051 0.520415 3.25229 0.541355 3.28711 0.576172C3.35794 0.647163 3.42602 0.75975 3.46094 0.899414L3.48535 0.99707L3.54492 1.07715L6.12012 4.52344L6.27051 4.72363H21.8428C21.9565 4.72368 22.0128 4.74379 22.0352 4.75488C22.0495 4.76208 22.0553 4.76685 22.0625 4.78125L22.0986 4.85352L22.1553 4.91113C22.201 4.95685 22.2125 4.98756 22.2188 5.0127C22.2281 5.05034 22.23 5.0945 22.2305 5.19043L20.459 16.9326L20.4531 16.9697V17.0088C20.453 17.0098 20.4527 17.0116 20.4521 17.0137C20.4511 17.0179 20.4492 17.0242 20.4453 17.0322C20.437 17.0493 20.4211 17.0715 20.3965 17.0938C20.347 17.1383 20.2704 17.1738 20.1748 17.1738H4.83496C4.83138 17.1738 4.80827 17.1725 4.77051 17.1562C4.73341 17.1402 4.69326 17.1148 4.65723 17.082C4.58206 17.0137 4.55677 16.9454 4.55664 16.8965V16.8691Z" fill="#0A2B6F" stroke="#0A2B6F"/>
+                          <rect x="9" y="10.3242" width="7.84645" height="1.12092" fill="#0A2B6F" stroke="#0A2B6F" stroke-width="0.5"/>
+                          <rect x="12.2695" y="6.30664" width="1.30774" height="9.15419" fill="#0A2B6F" stroke="#0A2B6F" stroke-width="0.5"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              {% endcomment %}
+
+              <div class="gift-offer-item">
+                {% if product.compare_at_price > product.price %}
+                  <div class="gift-offer-badge">
+                    {% assign discount_percentage = product.compare_at_price
+                      | minus: product.price
+                      | times: 100.0
+                      | divided_by: product.compare_at_price
+                      | round
+                    %}
+                    -{{ discount_percentage }}%
+                  </div>
+                {% endif %}
+
+                <!-- 商品图片 - 可点击跳转到商品页 -->
+                <a href="{{ product.url }}">
+                  {% if product.featured_media %}
+                    {% assign image_width = 300 %}
+                    {% assign image_height = image_width | divided_by: product.featured_media.aspect_ratio | round %}
+                    <img
+                      src="{{ product.featured_media | image_url: width: image_width }}"
+                      alt="{{ product.featured_media.alt | escape }}"
+                      class="gift-offer-image"
+                      width="{{ image_width }}"
+                      height="{{ image_height }}"
+                      loading="lazy"
+                    >
+                  {% endif %}
+                </a>
+
+                <div class="gift-offer-content">
+                  <a href="{{ product.url }}">
+                    <h3 class="gift-offer-title">{{ product.title }}</h3>
+                  </a>
+
+                  <div
+                    class="promotional-reviews hidden cursor-pointer mt-1.5 fb-sm:mt-2.5"
+                    data-sku="{{ product.variants.first.sku }}"
+                  ></div>
+                  {% comment %} <pre>{{ product.variants.first.sku  }}</pre> {% endcomment %}
+                  <div
+                    class="price-cart-container"
+                    style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 14px; margin-top: auto;"
+                  >
+                    <div class="gift-offer-price">
+                      {%- assign cents = product.price | modulo: 100 -%}
+                      {%- assign dollars = product.price | divided_by: 100 | floor -%}
+                      {%- if cents < 10 -%}
+                        {%- assign cents = '0' | append: cents -%}
+                      {%- endif -%}
+
+                      <p class="price">
+                        <sup>$</sup>{{ dollars -}}
+                        <sup>{{ cents }}</sup>
+                      </p>
+                    </div>
+
+                    <!-- 使用 product-form 系统 -->
+                    {%- capture form_id -%}gift-offer-form-{{ section.id }}-{{ product.id }}-{{ forloop.index }}{%- endcapture -%}
+                    {%- form 'product', product, is: 'product-form', id: form_id, class: 'gift-offer-form' -%}
+                      <input type="hidden" name="quantity" value="1">
+                      <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+
+                      <button
+                        is="loader-button"
+                        type="submit"
+                        class="gift-offer-add-button"
+                        {% unless product.selected_or_first_available_variant.available %}
+                          disabled
+                        {% endunless %}
+                      >
+                        <!-- Desktop SVG -->
+                        <svg
+                          class="cart-icon-desktop"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="23"
+                          height="22"
+                          viewBox="0 0 23 22"
+                          fill="none"
+                        >
+                          <path d="M6.64258 19.0869C7.02718 19.087 7.39596 19.2398 7.66797 19.5117C7.94006 19.7838 8.09277 20.1533 8.09277 20.5381C8.0927 20.9228 7.93999 21.2914 7.66797 21.5635C7.39594 21.8355 7.02727 21.9882 6.64258 21.9883C6.25778 21.9883 5.88831 21.8356 5.61621 21.5635C5.34431 21.2915 5.19148 20.9227 5.19141 20.5381C5.19141 20.1533 5.34412 19.7838 5.61621 19.5117C5.88831 19.2396 6.25778 19.0869 6.64258 19.0869Z" fill="#0A2B6F" stroke="#0A2B6F" stroke-width="0.0234375"/>
+                          <path d="M18.9277 19.0869C19.3123 19.087 19.6811 19.2398 19.9531 19.5117C20.2252 19.7838 20.3779 20.1533 20.3779 20.5381C20.3779 20.9228 20.2252 21.2914 19.9531 21.5635C19.6811 21.8355 19.3124 21.9882 18.9277 21.9883C18.5429 21.9883 18.1735 21.8356 17.9014 21.5635C17.6295 21.2915 17.4766 20.9227 17.4766 20.5381C17.4766 20.1533 17.6293 19.7838 17.9014 19.5117C18.1735 19.2396 18.5429 19.0869 18.9277 19.0869Z" fill="#0A2B6F" stroke="#0A2B6F" stroke-width="0.0234375"/>
+                          <path d="M3.89355 5.94629L5.00488 16.0615L5.05371 16.5068H19.8262L19.8906 16.083L21.4473 5.96777L21.5361 5.3916H3.83301L3.89355 5.94629ZM4.55664 16.8691L4.55371 16.8418L2.88672 1.61328L2.83789 1.16699H1V0.5H3.16895C3.17004 0.500135 3.1723 0.500369 3.1748 0.500977C3.17977 0.502179 3.18764 0.504736 3.19824 0.509766C3.22051 0.520415 3.25229 0.541355 3.28711 0.576172C3.35794 0.647163 3.42602 0.75975 3.46094 0.899414L3.48535 0.99707L3.54492 1.07715L6.12012 4.52344L6.27051 4.72363H21.8428C21.9565 4.72368 22.0128 4.74379 22.0352 4.75488C22.0495 4.76208 22.0553 4.76685 22.0625 4.78125L22.0986 4.85352L22.1553 4.91113C22.201 4.95685 22.2125 4.98756 22.2188 5.0127C22.2281 5.05034 22.23 5.0945 22.2305 5.19043L20.459 16.9326L20.4531 16.9697V17.0088C20.453 17.0098 20.4527 17.0116 20.4521 17.0137C20.4511 17.0179 20.4492 17.0242 20.4453 17.0322C20.437 17.0493 20.4211 17.0715 20.3965 17.0938C20.347 17.1383 20.2704 17.1738 20.1748 17.1738H4.83496C4.83138 17.1738 4.80827 17.1725 4.77051 17.1562C4.73341 17.1402 4.69326 17.1148 4.65723 17.082C4.58206 17.0137 4.55677 16.9454 4.55664 16.8965V16.8691Z" fill="#0A2B6F" stroke="#0A2B6F"/>
+                          <rect x="9" y="10.3242" width="7.84645" height="1.12092" fill="#0A2B6F" stroke="#0A2B6F" stroke-width="0.5"/>
+                          <rect x="12.2695" y="6.30664" width="1.30774" height="9.15419" fill="#0A2B6F" stroke="#0A2B6F" stroke-width="0.5"/>
+                        </svg>
+
+                        <!-- Mobile SVG (New) -->
+                        <svg
+                          class="cart-icon-mobile"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path d="M4.91016 20.9455C4.91016 21.3217 5.05957 21.6824 5.32553 21.9483C5.59149 22.2143 5.95221 22.3637 6.32834 22.3637C6.70446 22.3637 7.06518 22.2143 7.33114 21.9483C7.5971 21.6824 7.74652 21.3217 7.74652 20.9455C7.74652 20.5694 7.5971 20.2087 7.33114 19.9427C7.06518 19.6768 6.70446 19.5273 6.32834 19.5273C5.95221 19.5273 5.59149 19.6768 5.32553 19.9427C5.05957 20.2087 4.91016 20.5694 4.91016 20.9455Z" fill="white"/>
+                          <path d="M17.4531 20.9455C17.4531 21.3217 17.6025 21.6824 17.8685 21.9483C18.1345 22.2143 18.4952 22.3637 18.8713 22.3637C19.2474 22.3637 19.6082 22.2143 19.8741 21.9483C20.1401 21.6824 20.2895 21.3217 20.2895 20.9455C20.2895 20.5694 20.1401 20.2087 19.8741 19.9427C19.6082 19.6768 19.2474 19.5273 18.8713 19.5273C18.4952 19.5273 18.1345 19.6768 17.8685 19.9427C17.6025 20.2087 17.4531 20.5694 17.4531 20.9455Z" fill="white"/>
+                          <path d="M4.41113 6.92773L5.50195 16.8545L5.55078 17.2998H20.0645L20.1299 16.876L21.6572 6.94824L21.7451 6.37305H4.34961L4.41113 6.92773ZM5.08105 17.6455L5.07812 17.6182L3.44141 2.67285L3.39258 2.22754H1.58984V1.59082H3.70801C3.70312 1.59082 3.74691 1.5907 3.81836 1.66211C3.88671 1.73046 3.95237 1.8399 3.98633 1.97559L4.01074 2.07324L4.07129 2.15332L6.59863 5.53516L6.74805 5.73633H22.0352C22.1465 5.73633 22.2006 5.75557 22.2207 5.76562C22.2296 5.77006 22.2334 5.77247 22.2344 5.77344C22.2353 5.77432 22.2377 5.77818 22.2422 5.78711L22.2793 5.85938L22.3359 5.91699C22.3793 5.9604 22.3897 5.98873 22.3955 6.01172C22.4045 6.04783 22.4068 6.09081 22.4072 6.18652L20.668 17.707L20.6621 17.7441V17.7812C20.6619 17.7816 20.659 17.8165 20.6104 17.8604C20.5635 17.9025 20.4907 17.9364 20.3994 17.9365H5.34473C5.34473 17.9365 5.33899 17.9361 5.32812 17.9336C5.31705 17.9311 5.3025 17.9264 5.28516 17.9189C5.24963 17.9036 5.21049 17.8792 5.17578 17.8477C5.10371 17.782 5.08113 17.7175 5.08105 17.6729V17.6455Z" fill="white" stroke="white"/>
+                          <rect x="9" y="11" width="7" height="1" fill="white" stroke="white" stroke-width="0.5"/>
+                          <rect x="12" y="8" width="1" height="7" fill="white" stroke="white" stroke-width="0.5"/>
+                        </svg>
+                      </button>
+                    {%- endform -%}
+                  </div>
+                </div>
+              </div>
+              {% assign product_index = product_index | plus: 1 %}
+              {% assign total_items = total_items | plus: 1 %}
+            {% else %}
+              {% break %}
+            {% endif %}
+          {% else %}
+            {% comment %} 占位符产品 {% endcomment %}
+            <div class="gift-offer-item">
+              <div class="gift-offer-badge">-15%</div>
+              <div
+                class="gift-offer-image"
+                style="background: #f5f5f5; display: flex; align-items: center; justify-content: center;"
+              >
+                <span style="color: #999;">Product {{ current_position }}</span>
+              </div>
+              <div class="gift-offer-content">
+                {% comment %} <span class="gift-offer-brand">NorthSky</span> {% endcomment %}
+                <h3 class="gift-offer-title">Sample Product {{ current_position }} - Gift Offer Special</h3>
+                <div class="gift-offer-price">
+                  <p class="price"><sup>$</sup>15<sup>99</sup></p>
+                </div>
+              </div>
+            </div>
+            {% assign total_items = total_items | plus: 1 %}
+          {% endif %}
+        {% endif %}
+
+        {% comment %} 限制总数 {% endcomment %}
+        {% if total_items >= 20 %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- 分页指示器和左右按钮 -->
+    {% if section.settings.enable_pagination %}
+      <div class="gift-offers-pagination-bar">
+        <!-- 分页指示器 - 动态生成 -->
+        <div class="gift-offers-pagination-dots">
+          <svg xmlns="http://www.w3.org/2000/svg" class="pagination-svg" viewBox="0 0 100 20" fill="none">
+            <rect width="100%" height="20" rx="10" fill="white"/>
+            <!-- 圆点将由JavaScript动态生成 -->
+          </svg>
+        </div>
+
+        <!-- 左右导航按钮 -->
+        <div class="gift-offers-pagination-controls">
+          <!-- 上一页按钮 -->
+          <button class="gift-offers-arrow prev-btn" aria-label="上一页" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <circle cx="18" cy="18" r="18" fill="white"/>
+              <path d="M20 12L14 18L20 24" stroke="#0A2B6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <!-- 下一页按钮 -->
+          <button class="gift-offers-arrow next-btn" aria-label="下一页">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <circle cx="18" cy="18" r="18" fill="white"/>
+              <path d="M16 12L22 18L16 24" stroke="#0A2B6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const grid = document.querySelector('.gift-offers-grid');
+  const prevBtn = document.querySelector('.prev-btn');
+  const nextBtn = document.querySelector('.next-btn');
+  const paginationSvg = document.querySelector('.pagination-svg');
+  
+  // 根据屏幕尺寸获取每页显示数量
+  function getItemsPerPage() {
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) {
+      // Mobile
+      return {{ section.settings.mobile_items_per_page | default: 10 }};
+    } else if (screenWidth <= 1196) {
+      // Tablet
+      return {{ section.settings.tablet_items_per_page | default: 12 }};
+    } else {
+      // Desktop
+      return {{ section.settings.items_per_page | default: 15 }};
+    }
+  }
+
+  
+  let itemsPerPage = getItemsPerPage();
+  let currentPage = 1;
+  let totalPages = 1;
+  
+  function createPaginationDots(pageCount) {
+    if (!paginationSvg) return;
+    
+    // 清除现有的圆点
+    const existingDots = paginationSvg.querySelectorAll('.dot');
+    existingDots.forEach(dot => dot.remove());
+    
+    if (pageCount <= 1) {
+      paginationSvg.style.display = 'none';
+      return;
+    }
+    
+    paginationSvg.style.display = 'block';
+    
+    // 计算SVG宽度和圆点位置
+    const dotRadius = 4;
+    const minGap = 16;
+    const padding = 20;
+    
+    let svgWidth;
+    let dotPositions = [];
+    
+    if (pageCount <= 6) {
+      svgWidth = (pageCount - 1) * minGap + padding * 2 + dotRadius * 2;
+      for (let i = 0; i < pageCount; i++) {
+        dotPositions.push(padding + dotRadius + i * minGap);
+      }
+    } else {
+      const compactGap = 12;
+      svgWidth = (pageCount - 1) * compactGap + padding * 2 + dotRadius * 2;
+      for (let i = 0; i < pageCount; i++) {
+        dotPositions.push(padding + dotRadius + i * compactGap);
+      }
+    }
+    
+    svgWidth = Math.min(svgWidth, 200);
+    
+    if (svgWidth === 200 && pageCount > 6) {
+      const availableWidth = svgWidth - padding * 2 - dotRadius * 2;
+      const actualGap = availableWidth / (pageCount - 1);
+      dotPositions = [];
+      for (let i = 0; i < pageCount; i++) {
+        dotPositions.push(padding + dotRadius + i * actualGap);
+      }
+    }
+    
+    paginationSvg.setAttribute('width', svgWidth);
+    paginationSvg.setAttribute('viewBox', `0 0 ${svgWidth} 20`);
+    
+    const rect = paginationSvg.querySelector('rect');
+    if (rect) {
+      rect.setAttribute('width', svgWidth);
+    }
+    
+    for (let i = 0; i < pageCount; i++) {
+      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('cx', dotPositions[i]);
+      dot.setAttribute('cy', '10');
+      dot.setAttribute('r', '4');
+      dot.setAttribute('fill', i === 0 ? '#0A2B6F' : '#D3DEF1');
+      dot.classList.add('dot');
+      dot.setAttribute('data-page', i + 1);
+      
+      dot.addEventListener('click', () => {
+        currentPage = i + 1;
+        updatePagination();
+      });
+      
+      paginationSvg.appendChild(dot);
+    }
+  }
+  
+  function updatePagination() {
+    if (!grid || !prevBtn || !nextBtn) return;
+    
+    // 重新获取当前屏幕尺寸对应的每页数量
+    itemsPerPage = getItemsPerPage();
+    
+    const allItems = Array.from(grid.children);
+    const promoCount = allItems.filter(item => item.classList.contains('gift-offer-promo')).length;
+    const productCount = allItems.length - promoCount;
+    
+    const firstPageProductCount = itemsPerPage - promoCount;
+    const subsequentPageProductCount = itemsPerPage;
+    
+    if (productCount <= firstPageProductCount) {
+      totalPages = 1;
+    } else {
+      const remainingProducts = productCount - firstPageProductCount;
+      totalPages = 1 + Math.ceil(remainingProducts / subsequentPageProductCount);
+    }
+    
+    const currentDots = paginationSvg.querySelectorAll('.dot');
+    if (currentDots.length !== totalPages) {
+      createPaginationDots(totalPages);
+    }
+    
+    let productIndex = 0;
+    
+    allItems.forEach((item) => {
+      const isPromo = item.classList.contains('gift-offer-promo');
+      
+      if (isPromo) {
+        if (currentPage === 1) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      } else {
+        let shouldShow = false;
+        
+        if (currentPage === 1) {
+          if (productIndex < firstPageProductCount) {
+            shouldShow = true;
+          }
+        } else {
+          const productsBeforeCurrentPage = firstPageProductCount + (currentPage - 2) * subsequentPageProductCount;
+          const productsInCurrentPage = productsBeforeCurrentPage + subsequentPageProductCount;
+          
+          if (productIndex >= productsBeforeCurrentPage && productIndex < productsInCurrentPage) {
+            shouldShow = true;
+          }
+        }
+        
+        item.style.display = shouldShow ? 'flex' : 'none';
+        productIndex++;
+      }
+    });
+    
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+    
+    const dots = paginationSvg.querySelectorAll('.dot');
+    dots.forEach((dot, index) => {
+      const pageNum = index + 1;
+      dot.classList.toggle('active', pageNum === currentPage);
+      dot.setAttribute('fill', pageNum === currentPage ? '#0A2B6F' : '#D3DEF1');
+    });
+    
+    const paginationBar = document.querySelector('.gift-offers-pagination-bar');
+    if (paginationBar) {
+      paginationBar.style.display = totalPages <= 1 ? 'none' : 'flex';
+    }
+  }
+  
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        updatePagination();
+      }
+    });
+  }
+  
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        updatePagination();
+      }
+    });
+  }
+  
+  function repositionPromos() {
+    const promos = document.querySelectorAll('.gift-offer-promo');
+    const allItems = Array.from(grid.children);
+    const screenWidth = window.innerWidth;
+    let targetPositions = [];
+    
+    promos.forEach(promo => {
+      let position;
+      if (screenWidth <= 768) {
+        position = parseInt(promo.dataset.mobilePos) || 1;
+      } else if (screenWidth <= 1196) {
+        position = parseInt(promo.dataset.tabletPos) || 1;
+      } else {
+        position = parseInt(promo.dataset.desktopPos) || 1;
+      }
+      targetPositions.push({element: promo, position: position});
+    });
+    
+    targetPositions.sort((a, b) => a.position - b.position);
+    
+    const products = allItems.filter(item => !item.classList.contains('gift-offer-promo'));
+    let productIndex = 0;
+    let newOrder = [];
+    
+    for (let i = 1; i <= 20; i++) {
+      const promoAtThisPosition = targetPositions.find(p => p.position === i);
+      
+      if (promoAtThisPosition) {
+        newOrder.push(promoAtThisPosition.element);
+      } else if (productIndex < products.length) {
+        newOrder.push(products[productIndex]);
+        productIndex++;
+      }
+    }
+    
+    newOrder.forEach(element => {
+      grid.appendChild(element);
+    });
+    
+    // 重置到第一页并更新分页
+    currentPage = 1;
+    setTimeout(updatePagination, 100);
+  }
+  
+  repositionPromos();
+  
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(repositionPromos, 300);
+  });
+});
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const filledStarSvg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="19" height="17" viewBox="0 0 19 17" fill="none"><path d="M11.0449 6.37305L11.1572 6.71875H16.5215L12.4756 9.6582L12.1816 9.87109L12.2939 10.2168L13.8389 14.9717L9.79395 12.0332L9.5 11.8193L9.20605 12.0332L5.16016 14.9717L6.70605 10.2168L6.81836 9.87109L6.52441 9.6582L2.47852 6.71875H7.84277L7.95508 6.37305L9.5 1.61719L11.0449 6.37305Z" fill="#FABE00" stroke="#FABE00"/></svg>';
+
+    // 空星
+    const emptyStarSvg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="19" height="17" viewBox="0 0 19 17" fill="none"><path d="M11.0449 6.37305L11.1572 6.71875H16.5215L12.4756 9.6582L12.1816 9.87109L12.2939 10.2168L13.8389 14.9717L9.79395 12.0332L9.5 11.8193L9.20605 12.0332L5.16016 14.9717L6.70605 10.2168L6.81836 9.87109L6.52441 9.6582L2.47852 6.71875H7.84277L7.95508 6.37305L9.5 1.61719L11.0449 6.37305Z" fill="none" stroke="#D3DEF1"/></svg>';
+
+    $('.promotional-reviews[data-sku]').each(function () {
+      var $container = $(this);
+      var sku = $container.data('sku');
+
+      if (!sku) return;
+
+      kkAjax
+        .post('/openapi/adlink/product/review', {
+          pageNo: 1,
+          pageSize: 1,
+          orderAndFilter: 1,
+          sku: sku,
+        })
+        .then(function (res) {
+          console.log('Review API response for SKU ' + sku + ':', res);
+          if (res && res.data && res.data.totalReviews > 0) {
+            var score = res.data.totalScore || 0;
+            var total = res.data.totalReviews || 0;
+            // 四舍五入为整数星数
+            var rounded = Math.round(score);
+            var starsHtml = '';
+            for (var i = 1; i <= 5; i++) {
+              starsHtml += i <= rounded ? filledStarSvg : emptyStarSvg;
+            }
+            var html = '<span class="stars">' + starsHtml + '</span> <span class="review-count">(' + total + ')</span>';
+            $container.html(html).removeClass('hidden');
+            console.log('Reviews for SKU ' + sku + ':', html);
+          } else {
+            
+            // $container.removeClass('hidden').html('<span class="no-reviews">No reviews</span>');
+          }
+        })
+        .catch(function (err) {
+          // 请求失败可选处理
+          // $container.removeClass('hidden').html('<span class="no-reviews">No reviews</span>');
+        });
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Gift Offers",
+  "class": "gift-offers-section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "All Sets"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Select a collection to display products from"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Number of products to show",
+      "min": 4,
+      "max": 40,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "show_see_all",
+      "label": "Show 'See All' link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "see_all_text",
+      "label": "See All Text",
+      "default": "See All"
+    },
+    {
+      "type": "url",
+      "id": "see_all_url",
+      "label": "See All URL"
+      
+    },
+    {
+      "type": "header",
+      "content": "Desktop Pagination Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_pagination",
+      "label": "Enable Pagination",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "items_per_page",
+      "label": "Items per Page",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "default": 15
+    },
+
+    {
+      "type": "header",
+      "content": "Mobile Pagination Settingss"
+    },
+    {
+      "type": "range",
+      "id": "mobile_items_per_page",
+      "label": "Items per Page",
+      "min": 4,
+      "max": 30,
+      "step": 2,
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content":"Tablet Pagination Settings",
+    },
+    {
+      "type": "range",
+      "id": "tablet_items_per_page",
+      "label": "Items per Page",
+      "min": 4,
+      "max": 32,
+      "step": 4,
+      "default": 12
+    }
+
+  ],
+  "blocks": [
+    {
+      "type": "promo",
+      "name": "Promotional Card",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Position Settings"
+        },
+        {
+          "type": "paragraph",
+          "content": "Set different positions for each screen size. Position 1 = first item, position 2 = second item, etc."
+        },
+        {
+          "type": "range",
+          "id": "desktop_position",
+          "label": "Desktop Position (4 columns)",
+          "info": "Position in 4-column grid layout (Desktop: >1024px)",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "tablet_position",
+          "label": "Tablet Position (3 columns)",
+          "info": "Position in 3-column grid layout (Tablet: 768px-1024px)",
+          "min": 1,
+          "max": 18,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "mobile_position",
+          "label": "Mobile Position (2 columns)",
+          "info": "Position in 2-column grid layout (Mobile: <768px)",
+          "min": 1,
+          "max": 16,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "header",
+          "content": "Content Settings"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "The Unsung Hero"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Let's be real — gloves aren't glamorous. But they are essential."
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gift Offers"
+    }
+  ]
+}
+{% endschema %}

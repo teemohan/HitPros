@@ -1,0 +1,207 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "seo_h1_title_WrAb9y": {
+      "type": "seo-h1-title",
+      "settings": {
+        "title": "Promotion Page"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_title": false,
+        "page_width": "medium",
+        "secondary-directory": "",
+        "secondary-directory-link": "",
+        "third-directory": ""
+      }
+    },
+    "promotion_banner_ax46bD": {
+      "type": "promotion-banner",
+      "name": "Promotion Banner",
+      "settings": {
+        "banner_image": "shopify://shop_images/Halloween_banner_1.png",
+        "mobile_banner_image": "shopify://shop_images/Halloween_banner_mobile_1.png",
+        "tablet_banner_image": "shopify://shop_images/Halloween_banner_Tablet_1.png",
+        "title": "Gear Up for a Spooky Steal",
+        "subtitle": "High-quality picks you can trust",
+        "flash_label": "FLASH SALE ALERT!",
+        "product_image": "shopify://shop_images/filename_59e3f891-d3b6-4def-8e84-9b0319dc5919.jpg",
+        "save_text": "Save $20$",
+        "product_title": "",
+        "button_link": "ae8285730",
+        "countdown_end_date": "2025-10-31 23:59:59"
+      }
+    },
+    "promotion_specialoffer_qQGdgy": {
+      "type": "promotion-specialoffer",
+      "blocks": {
+        "price_product_group_qRQxph": {
+          "type": "price_product_group",
+          "settings": {
+            "pack_price": "24",
+            "product_tag": "25 set",
+            "collection": "",
+            "product_limit": 12
+          }
+        },
+        "price_product_group2_j8dD7E": {
+          "type": "price_product_group2",
+          "settings": {
+            "pack_price": "49",
+            "product_tag": "50 set",
+            "collection": "",
+            "product_limit": 12
+          }
+        },
+        "price_product_group3_63jeMV": {
+          "type": "price_product_group3",
+          "settings": {
+            "pack_price": "74",
+            "product_tag": "75 set",
+            "collection": "",
+            "product_limit": 12
+          }
+        },
+        "price_product_group4_YkEbGk": {
+          "type": "price_product_group4",
+          "settings": {
+            "pack_price": "99",
+            "product_tag": "75 up set",
+            "collection": "",
+            "product_limit": 12
+          }
+        }
+      },
+      "block_order": [
+        "price_product_group_qRQxph",
+        "price_product_group2_j8dD7E",
+        "price_product_group3_63jeMV",
+        "price_product_group4_YkEbGk"
+      ],
+      "name": "Promotion Special Offer",
+      "settings": {
+        "all_offers_title": "Featured Sets",
+        "all_offers_link_text": "View more",
+        "all_offers_link": "",
+        "title": "Explore Our Sets – Tailored Just for You!",
+        "description": "Whether you're looking for the best deal, a specific style, or a perfectly curated combo, we've got an option to match your needs. Discover your ideal pick below:",
+        "option1_title": "By Price",
+        "option1_subtitle": "Best Deals, No Compromise",
+        "option1_bg_image": "shopify://shop_images/option1.png",
+        "pack1_name": "STARTER PACK",
+        "pack1_price": "24",
+        "pack1_cents": "95",
+        "pack2_name": "PRO ESSENTIALS",
+        "pack2_price": "49",
+        "pack2_cents": "95",
+        "pack3_name": "WORKFORCE PREMIUM",
+        "pack3_price": "74",
+        "pack3_cents": "95",
+        "pack4_name": "ELITE UTILITY KIT",
+        "pack4_price": "74+",
+        "pack4_cents": "95",
+        "option2_title": "Best Seller",
+        "option2_subtitle": "Tailored to Your Taste",
+        "option2_bg_image": "shopify://shop_images/option2.png",
+        "type_product_tag": "best-seller",
+        "type_product_limit": 12,
+        "option3_title": "By Category",
+        "option3_subtitle": "Curated Sets for Every Need",
+        "option3_bg_image": "shopify://shop_images/option3.png",
+        "set_tab1_title": "Knives",
+        "set_tab1_tag": "Knife set",
+        "set_tab1_limit": 12,
+        "set_tab2_title": "Wrenches",
+        "set_tab2_tag": "Wrench set",
+        "set_tab2_limit": 12,
+        "set_tab3_title": "Pliers",
+        "set_tab3_tag": "Plier set",
+        "set_tab3_limit": 12,
+        "set_tab4_title": "Other Sets",
+        "set_tab4_tag": "Other set",
+        "set_tab4_limit": 12
+      }
+    },
+    "gift_offers_section": {
+      "type": "gift-offer",
+      "blocks": {
+        "promo_PMTP84": {
+          "type": "promo",
+          "settings": {
+            "desktop_position": 1,
+            "tablet_position": 1,
+            "mobile_position": 1,
+            "title": "The Unsung Hero of Your Daily Routine",
+            "description": "Let's be real — gloves aren't glamorous. But they are essential.",
+            "button_text": "Shop Now",
+            "link_url": "https://northskysupply.com/collections/safety-personal-protective-equipment-hand-arm-protection-disposable-gloves",
+            "background_image": "shopify://shop_images/promo1.png"
+          }
+        },
+        "promo_UbrVXJ": {
+          "type": "promo",
+          "settings": {
+            "desktop_position": 11,
+            "tablet_position": 1,
+            "mobile_position": 1,
+            "title": "Wildfire Safety: ",
+            "description": "FAQs on Masks and Respiratory Protection.",
+            "button_text": "Read Now",
+            "link_url": "https://northskysupply.com/blogs/industry-insights/wildfire-safety-and-respiratory-protection",
+            "background_image": "shopify://shop_images/promo2.png"
+          }
+        }
+      },
+      "block_order": [
+        "promo_PMTP84",
+        "promo_UbrVXJ"
+      ],
+      "settings": {
+        "title": "All Sets",
+        "collection": "hand-tools",
+        "products_limit": 40,
+        "show_see_all": true,
+        "see_all_text": "See All",
+        "see_all_url": "shopify://collections/all",
+        "enable_pagination": true,
+        "items_per_page": 15,
+        "mobile_items_per_page": 10
+      }
+    },
+    "promotion_allusnow_n9M63w": {
+      "type": "promotion-allusnow",
+      "name": "Promotion Banner - Call Us Now",
+      "settings": {
+        "title": "Bulk Gift Orders for Your Team",
+        "subtitle": "Make Gifting Easy, Thoughtful, and Hassle-Free",
+        "button_text": "Call us now",
+        "mobile_button_text": "Submit now",
+        "button_link": "shopify://pages/contact-us",
+        "background_color": "#ffc107",
+        "title_color": "#000000",
+        "subtitle_color": "#000000",
+        "button_bg_color": "#003d82",
+        "button_text_color": "#ffc107"
+      }
+    }
+  },
+  "order": [
+    "seo_h1_title_WrAb9y",
+    "main",
+    "promotion_banner_ax46bD",
+    "promotion_specialoffer_qQGdgy",
+    "gift_offers_section",
+    "promotion_allusnow_n9M63w"
+  ]
+}
