@@ -53,10 +53,7 @@ $(function () {
       let setSpeed = $(`${_this._Id} .fbHomeImgVideoBanner`).attr("data-speed") || 5;
       setSpeed = parseInt(setSpeed)  * 1000;
       const swiperSingleGoods = new Swiper(swiperName, {
-        autoplay: {
-          delay: setSpeed,
-          disableOnInteraction: false,
-        },
+        autoplay: false,
         loop: true,
         effect: "fade",
         fadeEffect: {
