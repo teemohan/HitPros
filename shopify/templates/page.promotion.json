@@ -36,11 +36,11 @@
         "title": "Gear Up for a Spooky Steal",
         "subtitle": "High-quality picks you can trust",
         "flash_label": "FLASH SALE ALERT!",
-        "product_image": "shopify://shop_images/undefined.png",
-        "save_text": "32% OFF",
+        "product_image": "shopify://shop_images/NSS0881574214_BT-4001_d995e09c-3.jpg",
+        "save_text": "16% OFF",
         "product_title": "",
-        "button_link": "80000015",
-        "countdown_end_date": "2025-10-27 23:59:59"
+        "button_link": "80000018",
+        "countdown_end_date": "2025-10-30 10:00:00"
       }
     },
     "promotion_specialoffer_qQGdgy": {
@@ -130,7 +130,16 @@
         "set_tab3_limit": 12,
         "set_tab4_title": "Other Sets",
         "set_tab4_tag": "Other set",
-        "set_tab4_limit": 12
+        "set_tab4_limit": 12,
+        "price1_collection": "sets-under-26",
+        "price2_collection": "sets-from-25-to-51",
+        "price3_collection": "sets-from-50-to-76",
+        "price4_collection": "sets-above-76",
+        "bestSeller_collection": "best-selling-sets",
+        "set1_collection": "knife_sets",
+        "set2_collection": "wrench_sets",
+        "set3_collection": "plier_sets",
+        "set4_collection": "other_sets"
       }
     },
     "gift_offers_section": {
@@ -182,7 +191,7 @@
       ],
       "settings": {
         "title": "All Sets",
-        "collection": "all-sets",
+        "collection": "all_sets",
         "products_limit": 50,
         "show_see_all": false,
         "see_all_text": "See All",

@@ -23,16 +23,16 @@
         "image_banner_x9bY43": {
           "type": "image_banner",
           "settings": {
-            "link_url": "shopify://collections/tool-storage",
-            "image": "shopify://shop_images/Stock_Up_Get_Organized_HP_1b8ba345-487b-43ab-97e4-6ee077451846.png",
-            "mobile_image": "shopify://shop_images/Stock_Up_Get_Organized_H5_3f49f897-e2d8-4818-bf1d-69215adaed90.png"
+            "link_url": "shopify://products/nss0008310",
+            "image": "shopify://shop_images/Heater_HP.png",
+            "mobile_image": "shopify://shop_images/Heater_H5.png"
           }
         },
         "image_banner_P9LUty": {
           "type": "image_banner",
           "settings": {
-            "link_url": "https://northskysupply.com/collections/hand-tools",
-            "image": "shopify://shop_images/Gift_sets_promo_HP_0462cfce-b704-4c35-8120-a6a766509289.png",
+            "link_url": "shopify://pages/halloween-2025",
+            "image": "shopify://shop_images/Gift_sets_promo_HP_359b6d7c-8578-47a0-825f-66a72221344a.png",
             "mobile_image": "shopify://shop_images/Gift_sets_promo_H5.png"
           }
         }
