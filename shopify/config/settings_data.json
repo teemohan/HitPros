@@ -12,7 +12,7 @@
     "open_convert": false,
     "button_border_radius": 0,
     "block_border_radius": "none",
-    "heading_color": "#000000",
+    "heading_color": "#020202",
     "text_color": "#000000",
     "secondary_background": "#f4f5f5",
     "success_color": "#2e9e7b",
@@ -71,6 +71,16 @@
       "header": {
         "type": "header",
         "blocks": {
+          "menu_link_Tma3Pw": {
+            "type": "menu_link",
+            "settings": {
+              "title": "Halloween Special",
+              "link_url": "shopify://pages/halloween-2025",
+              "isBrand": false,
+              "new_window": false,
+              "icon": ""
+            }
+          },
           "menu_link_U9ip6g": {
             "type": "menu_link",
             "settings": {
@@ -113,6 +123,7 @@
           }
         },
         "block_order": [
+          "menu_link_Tma3Pw",
           "menu_link_U9ip6g",
           "menu_link_DhWq6Q",
           "menu_link_PUDeUG",
