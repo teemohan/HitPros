@@ -1,0 +1,2838 @@
+<div class="promotion-special-offer" style="visibility:hidden; pointer-events:none;">
+  <div class="pso-container">
+    <!-- Breadcrumb -->
+    <nav
+      aria-label="{{ 'general.breadcrumb.title' | t }}"
+      class="breadcrumb breadcrumb--floating text--xsmall hidden-phone"
+    >
+      <ol class="breadcrumb__list" role="list">
+        <li class="breadcrumb__item">
+          <a class="breadcrumb__link" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+        </li>
+        <li class="breadcrumb__item">
+          <span class="breadcrumb__link" aria-current="page">Promotional Page</span>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Header -->
+    <div class="section-header">
+      <h2>{{ section.settings.title }}</h2>
+      <p>{{ section.settings.description }}</p>
+    </div>
+
+    <!-- Three Options -->
+    <div class="offer-options">
+      <div
+        class="option-card"
+        data-type="price"
+        {% if section.settings.option1_bg_image %}
+          style="background: url('{{ section.settings.option1_bg_image | image_url }}') lightgray 50% / cover no-repeat;"
+        {% endif %}
+      >
+        {% comment %} <div class="option-card-overlay"></div> {% endcomment %}
+        <h3>{{ section.settings.option1_title }}</h3>
+        {% comment %} <p>{{ section.settings.option1_subtitle }}</p> {% endcomment %}
+        <a href="{{ section.settings.option1_link }}">View All</a>
+      </div>
+
+      <div
+        class="option-card"
+        data-type="type"
+        {% if section.settings.option2_bg_image %}
+          style="background: url('{{ section.settings.option2_bg_image | image_url }}') lightgray 50% / cover no-repeat;"
+        {% endif %}
+      >
+        <h3>{{ section.settings.option2_title }}</h3>
+        {% comment %} <p>{{ section.settings.option2_subtitle }}</p> {% endcomment %}
+        <a href="{{ section.settings.option2_link }}">View All</a>
+      </div>
+
+      <div
+        class="option-card"
+        data-type="set"
+        {% if section.settings.option3_bg_image %}
+          style="background: url('{{ section.settings.option3_bg_image | image_url }}') lightgray 50% / cover no-repeat;"
+        {% endif %}
+      >
+        <h3>{{ section.settings.option3_title }}</h3>
+        {% comment %} <p>{{ section.settings.option3_subtitle }}</p> {% endcomment %}
+        <a href="{{ section.settings.option3_link }}">View All</a>
+      </div>
+    </div>
+
+    <div class="offer-content">
+      <!-- By Price Content -->
+      <div class="content-panel" data-content="price">
+        <!-- Pricing Packs - Settings  -->
+        <div class="pricing-packs">
+          {% for i in (1..4) %}
+            {% assign pack_price = 'pack' | append: i | append: '_price' %}
+            {% assign pack_name = 'pack' | append: i | append: '_name' %}
+            {% assign pack_cents = 'pack' | append: i | append: '_cents' %}
+
+            {% if section.settings[pack_price] != blank %}
+              <div class="pack-item" data-price="{{ section.settings[pack_price] }}">
+                <div class="pack-price">
+                  
+                  {% assign price_value = section.settings[pack_price] %}
+                  {% if price_value == "24" %}
+                      Under $25
+                    {% elsif price_value == "49" %}
+                      $25 - $50
+                    {% elsif price_value == "74" %}
+                      $50 - $75
+                    {% else %}
+                      $75+
+                  {% endif %}
+
+
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- By Category Content - 新增 -->
+      <div class="content-panel" data-content="set">
+        <!-- Tab Navigation -->
+        <div class="set-tabs">
+          <button class="set-tab active" data-tab="screwdrivers">
+            {{ section.settings.set_tab1_title | default: 'Screwdrivers' }}
+          </button>
+          <button class="set-tab" data-tab="wrenches">
+            {{ section.settings.set_tab2_title | default: 'Wrenches' }}
+          </button>
+          <button class="set-tab" data-tab="pliers">
+            {{ section.settings.set_tab3_title | default: 'Pliers' }}
+          </button>
+          <button class="set-tab" data-tab="other-sets">
+            {{ section.settings.set_tab4_title | default: 'Other Sets' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-display">
+    <div class="product-display-container">
+      <div class="content-panel active" data-content="all">
+        <div class="type-header">
+          <h3>Best Selling Sets</h3>
+          {% comment %} <a href="{{ section.settings.all_offers_link | default: '#' }}" class="view-more">
+            {{ section.settings.all_offers_link_text | default: 'View more' }}
+          </a> {% endcomment %}
+        </div>
+        <div class="product-grid">
+
+          {% if section.settings.bestSeller_collection %}
+            <div class="swiper special-offers-swiper">
+              <div class="swiper-wrapper">
+                {% assign _limit = section.settings.type_product_limit | default: 12 %}
+                {% for product in section.settings.bestSeller_collection.products  %}
+                  <div class="swiper-slide">
+                    <a href="{{ product.url }}" class="product-link">
+                      <div class="product-card">
+                        {% if product.featured_image %}
+                          {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
+                        {% else %}
+                          <div class="placeholder-image" style="width:224px;height:224px;background:#f5f5f5;"></div>
+                        {% endif %}
+                        <h4>{{ product.title }}</h4>
+                        {% if product.price %}
+                          {% assign price_in_cents = product.price | divided_by: 1 %}
+                          {% assign dollars = price_in_cents | divided_by: 100 | floor %}
+                          {% assign cents = price_in_cents | modulo: 100 | floor %}
+                          {% assign cents = cents | prepend: '00' | slice: -2, 2 %}
+
+                          <p class="price">
+                            <sup>$</sup>{{ dollars }}<sup>{{ cents }}</sup>
+                          </p>
+                        {% endif %}
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+
+              <div class="swiper-pagination">
+
+                <div class="swiper-scrollbar"></div>
+                <div class="swiper-button-prev">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M5.32465 9.86762L10.5195 15.1939L8.74107 17L0.51953 8.6323L8.69391 0.0398215C8.76609 -0.0256578 8.81036 0.000728458 8.88446 0.0398215C9.30502 0.259716 10.0528 1.39046 10.5195 1.70711L5.22841 7.32662L4.15602 8.49987L5.32465 9.86762Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+                <div class="swiper-button-next">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M6.12101 7.18019L0.847656 1.87943L2.65298 0.0820312L10.9987 8.40958L2.70085 16.9608C2.62758 17.026 2.58265 16.9997 2.50742 16.9608C2.08052 16.742 1.32146 15.6167 0.847656 15.3015L6.2187 9.70899L7.3073 8.54137L6.12101 7.18019Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+            {% comment %} <div class="swiper special-offers-swiper">
+              <div class="swiper-wrapper">
+                {%- assign max_total = 200 -%}
+                {%- assign shown = 0 -%}
+                {%- assign seen = '' -%}
+
+                {%- assign handles = '' -%}
+                {%- if section.settings.set1_collection -%}{% assign handles = handles | append: section.settings.set1_collection.handle | append: ',' %}{%- endif -%}
+                {%- if section.settings.set2_collection -%}{% assign handles = handles | append: section.settings.set2_collection.handle | append: ',' %}{%- endif -%}
+                {%- if section.settings.set3_collection -%}{% assign handles = handles | append: section.settings.set3_collection.handle | append: ',' %}{%- endif -%}
+                {%- if section.settings.set4_collection -%}{% assign handles = handles | append: section.settings.set4_collection.handle | append: ',' %}{%- endif -%}
+                {%- if section.settings.bestSeller_collection -%}{% assign handles = handles | append: section.settings.bestSeller_collection.handle | append: ',' %}{%- endif -%}
+                {%- if section.settings.price1_collection -%}{% assign handles = handles | append: section.settings.price1_collection.handle | append: ',' %}{%- endif -%}
+                {%- if section.settings.price2_collection -%}{% assign handles = handles | append: section.settings.price2_collection.handle | append: ',' %}{%- endif -%}
+                {%- if section.settings.price3_collection -%}{% assign handles = handles | append: section.settings.price3_collection.handle | append: ',' %}{%- endif -%}
+                {%- if section.settings.price4_collection -%}{% assign handles = handles | append: section.settings.price4_collection.handle -%}{%- endif -%}
+
+
+
+                
+                {%- assign handle_list = handles | split: ',' -%}
+
+                {%- for h in handle_list -%}
+                    {% comment %} {%- if h == '' or shown >= max_total -%}{% break %}{%- endif -%} {% endcomment %}
+                    {%- assign coll = collections[h] -%}
+
+                    {% assign _limit = 200 %}
+                    {% for product in coll.products limit: _limit %}
+                      <div class="swiper-slide">
+                        <a href="{{ product.url }}" class="product-link">
+                          <div class="product-card">
+                            {% if product.featured_image %}
+                              {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
+                            {% else %}
+                              <div class="placeholder-image" style="width:224px;height:224px;background:#f5f5f5;"></div>
+                            {% endif %}
+                            <h4>{{ product.title }}</h4>
+                            {% if product.price %}
+                              {% assign price_in_cents = product.price | divided_by: 1 %}
+                              {% assign dollars = price_in_cents | divided_by: 100 | floor %}
+                              {% assign cents = price_in_cents | modulo: 100 | floor %}
+                              {% assign cents = cents | prepend: '00' | slice: -2, 2 %}
+
+                              <p class="price">
+                                <sup>$</sup>{{ dollars }}<sup>{{ cents }}</sup>
+                              </p>
+                            {% endif %}
+                          </div>
+                        </a>
+                      </div>
+                    {% endfor %}
+                {%- endfor -%}
+
+              </div>
+
+              <div class="swiper-pagination">
+
+                <div class="swiper-scrollbar"></div>
+                <div class="swiper-button-prev">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M5.32465 9.86762L10.5195 15.1939L8.74107 17L0.51953 8.6323L8.69391 0.0398215C8.76609 -0.0256578 8.81036 0.000728458 8.88446 0.0398215C9.30502 0.259716 10.0528 1.39046 10.5195 1.70711L5.22841 7.32662L4.15602 8.49987L5.32465 9.86762Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+                <div class="swiper-button-next">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M6.12101 7.18019L0.847656 1.87943L2.65298 0.0820312L10.9987 8.40958L2.70085 16.9608C2.62758 17.026 2.58265 16.9997 2.50742 16.9608C2.08052 16.742 1.32146 15.6167 0.847656 15.3015L6.2187 9.70899L7.3073 8.54137L6.12101 7.18019Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+              </div>
+            </div> {% endcomment %}
+
+
+
+
+
+
+          
+        </div>
+      </div>
+      {% comment %} all product container end {% endcomment %}
+
+      {% comment %} 分开显示的 {% endcomment %}
+
+      <!-- By Price - 从 Blocks 读取 - 使用 TAG -->
+      <div class="content-panel" data-content="price2">
+        <div class="price-products-container">
+          {% assign pack_configs = 'pack1_price,price_product_group,pack-24|pack2_price,price_product_group2,pack-49|pack3_price,price_product_group3,pack-74|pack4_price,price_product_group4,pack-99'
+            | split: '|'
+          %}
+
+          {% for config in pack_configs %}
+            {% assign config_parts = config | split: ',' %}
+            {% assign price_setting = config_parts[0] %}
+            {% assign block_type = config_parts[1] %}
+            {% assign default_tag = config_parts[2] %}
+            {% assign pack_price = section.settings[price_setting] %}
+
+            {% if pack_price != blank %}
+              <div class="price-products" data-price="{{ pack_price }}">
+                <div class="type-header">
+                  <h3>
+                    {% assign price_value = pack_price  %}
+                    
+                    {% if price_value == "24" %}
+                      Sets Under $25
+                    {% elsif price_value == "49" %}
+                      Sets for $25 - $50
+                    {% elsif price_value == "74" %}
+                      Sets for $50 - $75
+                    {% else %}
+                       Sets for $75+
+                    {% endif %}
+                  </h3>
+                </div>
+                <div class="product-grid">
+                  {% for block in section.blocks %}
+                    {% if block.type == block_type %}
+                      {% assign product_tag = block.settings.product_tag | default: default_tag %}
+                      {% assign product_limit = block.settings.product_limit | default: 5 %}
+
+                      {% if product_tag == "25 set" %}
+                        {% assign block_coll = section.settings.price1_collection %}
+                      {% elsif product_tag == "50 set" %}
+                        {% assign block_coll = section.settings.price2_collection %}
+                      {% elsif product_tag == "75 set" %}
+                        {% assign block_coll = section.settings.price3_collection %}
+                      {% elsif product_tag == "75 up set" %}
+                        {% assign block_coll = section.settings.price4_collection %}
+                      {% endif %}
+
+                      {% if block_coll %}
+                        <div class="swiper special-offers-swiper">
+                          <div class="swiper-wrapper">
+                            {% assign _limit = section.settings.type_product_limit | default: 12 %}
+                            {% for product in block_coll.products  %}
+                              <div class="swiper-slide">
+                                <a href="{{ product.url }}" class="product-link">
+                                  <div class="product-card">
+                                    {% if product.featured_image %}
+                                      {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
+                                    {% else %}
+                                      <div class="placeholder-image" style="width:224px;height:224px;background:#f5f5f5;"></div>
+                                    {% endif %}
+                                    <h4>{{ product.title }}</h4>
+                                    {% if product.price %}
+                                      {% assign price_in_cents = product.price | divided_by: 1 %}
+                                      {% assign dollars = price_in_cents | divided_by: 100 | floor %}
+                                      {% assign cents = price_in_cents | modulo: 100 | floor %}
+                                      {% assign cents = cents | prepend: '00' | slice: -2, 2 %}
+
+                                      <p class="price">
+                                        <sup>$</sup>{{ dollars }}<sup>{{ cents }}</sup>
+                                      </p>
+                                    {% endif %}
+                                  </div>
+                                </a>
+                              </div>
+                            {% endfor %}
+                          </div>
+
+                          <div class="swiper-pagination">
+
+                            <div class="swiper-scrollbar"></div>
+                            <div class="swiper-button-prev">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                                <path d="M5.32465 9.86762L10.5195 15.1939L8.74107 17L0.51953 8.6323L8.69391 0.0398215C8.76609 -0.0256578 8.81036 0.000728458 8.88446 0.0398215C9.30502 0.259716 10.0528 1.39046 10.5195 1.70711L5.22841 7.32662L4.15602 8.49987L5.32465 9.86762Z" fill="#0A2B6F"/>
+                              </svg>
+                            </div>
+                            <div class="swiper-button-next">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                                <path d="M6.12101 7.18019L0.847656 1.87943L2.65298 0.0820312L10.9987 8.40958L2.70085 16.9608C2.62758 17.026 2.58265 16.9997 2.50742 16.9608C2.08052 16.742 1.32146 15.6167 0.847656 15.3015L6.2187 9.70899L7.3073 8.54137L6.12101 7.18019Z" fill="#0A2B6F"/>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Best Selling Content -->
+      <div class="content-panel" data-content="type">
+        <div class="type-header">
+          <h3>Best Selling Sets</h3>
+        </div>
+        <div class="product-grid">
+          {% if section.settings.bestSeller_collection %}
+            <div class="swiper special-offers-swiper">
+              <div class="swiper-wrapper">
+                {% assign _limit = section.settings.type_product_limit | default: 12 %}
+                {% for product in section.settings.bestSeller_collection.products  %}
+                  <div class="swiper-slide">
+                    <a href="{{ product.url }}" class="product-link">
+                      <div class="product-card">
+                        {% if product.featured_image %}
+                          {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
+                        {% else %}
+                          <div class="placeholder-image" style="width:224px;height:224px;background:#f5f5f5;"></div>
+                        {% endif %}
+                        <h4>{{ product.title }}</h4>
+                        {% if product.price %}
+                          {% assign price_in_cents = product.price | divided_by: 1 %}
+                          {% assign dollars = price_in_cents | divided_by: 100 | floor %}
+                          {% assign cents = price_in_cents | modulo: 100 | floor %}
+                          {% assign cents = cents | prepend: '00' | slice: -2, 2 %}
+
+                          <p class="price">
+                            <sup>$</sup>{{ dollars }}<sup>{{ cents }}</sup>
+                          </p>
+                        {% endif %}
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+
+              <div class="swiper-pagination">
+
+                <div class="swiper-scrollbar"></div>
+                <div class="swiper-button-prev">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M5.32465 9.86762L10.5195 15.1939L8.74107 17L0.51953 8.6323L8.69391 0.0398215C8.76609 -0.0256578 8.81036 0.000728458 8.88446 0.0398215C9.30502 0.259716 10.0528 1.39046 10.5195 1.70711L5.22841 7.32662L4.15602 8.49987L5.32465 9.86762Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+                <div class="swiper-button-next">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M6.12101 7.18019L0.847656 1.87943L2.65298 0.0820312L10.9987 8.40958L2.70085 16.9608C2.62758 17.026 2.58265 16.9997 2.50742 16.9608C2.08052 16.742 1.32146 15.6167 0.847656 15.3015L6.2187 9.70899L7.3073 8.54137L6.12101 7.18019Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- By Category Content -->
+      <div class="content-panel" data-content="set2">
+        {% comment %}
+          <!-- Tab Navigation -->
+          <div class="set-tabs">
+            <button class="set-tab active" data-tab="screwdrivers">
+              {{ section.settings.set_tab1_title | default: 'Screwdrivers' }}
+            </button>
+            <button class="set-tab" data-tab="wrenches">
+              {{ section.settings.set_tab2_title | default: 'Wrenches' }}
+            </button>
+            <button class="set-tab" data-tab="pliers">
+              {{ section.settings.set_tab3_title | default: 'Pliers' }}
+            </button>
+            <button class="set-tab" data-tab="other-sets">
+              {{ section.settings.set_tab4_title | default: 'Other Sets' }}
+            </button>
+          </div>
+        {% endcomment %}
+
+        <!-- Tab Contents -->
+        <div class="set-tab-content active" data-tab-content="screwdrivers">
+          <div class="type-header">
+            <h3>Knife Sets</h3>
+          </div>
+          <div class="product-grid">
+          {% if section.settings.set1_collection %}
+            <div class="swiper special-offers-swiper">
+              <div class="swiper-wrapper">
+                {% assign _limit = section.settings.type_product_limit | default: 12 %}
+                {% for product in section.settings.set1_collection.products %}
+                  <div class="swiper-slide">
+                    <a href="{{ product.url }}" class="product-link">
+                      <div class="product-card">
+                        {% if product.featured_image %}
+                          {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
+                        {% else %}
+                          <div class="placeholder-image" style="width:224px;height:224px;background:#f5f5f5;"></div>
+                        {% endif %}
+                        <h4>{{ product.title }}</h4>
+                        {% if product.price %}
+                          {% assign price_in_cents = product.price | divided_by: 1 %}
+                          {% assign dollars = price_in_cents | divided_by: 100 | floor %}
+                          {% assign cents = price_in_cents | modulo: 100 | floor %}
+                          {% assign cents = cents | prepend: '00' | slice: -2, 2 %}
+
+                          <p class="price">
+                            <sup>$</sup>{{ dollars }}<sup>{{ cents }}</sup>
+                          </p>
+                        {% endif %}
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+
+              <div class="swiper-pagination">
+
+                <div class="swiper-scrollbar"></div>
+                <div class="swiper-button-prev">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M5.32465 9.86762L10.5195 15.1939L8.74107 17L0.51953 8.6323L8.69391 0.0398215C8.76609 -0.0256578 8.81036 0.000728458 8.88446 0.0398215C9.30502 0.259716 10.0528 1.39046 10.5195 1.70711L5.22841 7.32662L4.15602 8.49987L5.32465 9.86762Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+                <div class="swiper-button-next">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M6.12101 7.18019L0.847656 1.87943L2.65298 0.0820312L10.9987 8.40958L2.70085 16.9608C2.62758 17.026 2.58265 16.9997 2.50742 16.9608C2.08052 16.742 1.32146 15.6167 0.847656 15.3015L6.2187 9.70899L7.3073 8.54137L6.12101 7.18019Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+          </div>
+        </div>
+
+        <div class="set-tab-content" data-tab-content="wrenches">
+          <div class="type-header">
+            <h3>Wrench Sets</h3>
+          </div>
+          <div class="product-grid">
+          {% if section.settings.set2_collection %}
+            <div class="swiper special-offers-swiper">
+              <div class="swiper-wrapper">
+                {% assign _limit = section.settings.type_product_limit | default: 12 %}
+                {% for product in section.settings.set2_collection.products  %}
+                  <div class="swiper-slide">
+                    <a href="{{ product.url }}" class="product-link">
+                      <div class="product-card">
+                        {% if product.featured_image %}
+                          {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
+                        {% else %}
+                          <div class="placeholder-image" style="width:224px;height:224px;background:#f5f5f5;"></div>
+                        {% endif %}
+                        <h4>{{ product.title }}</h4>
+                        {% if product.price %}
+                          {% assign price_in_cents = product.price | divided_by: 1 %}
+                          {% assign dollars = price_in_cents | divided_by: 100 | floor %}
+                          {% assign cents = price_in_cents | modulo: 100 | floor %}
+                          {% assign cents = cents | prepend: '00' | slice: -2, 2 %}
+
+                          <p class="price">
+                            <sup>$</sup>{{ dollars }}<sup>{{ cents }}</sup>
+                          </p>
+                        {% endif %}
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+
+              <div class="swiper-pagination">
+
+                <div class="swiper-scrollbar"></div>
+                <div class="swiper-button-prev">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M5.32465 9.86762L10.5195 15.1939L8.74107 17L0.51953 8.6323L8.69391 0.0398215C8.76609 -0.0256578 8.81036 0.000728458 8.88446 0.0398215C9.30502 0.259716 10.0528 1.39046 10.5195 1.70711L5.22841 7.32662L4.15602 8.49987L5.32465 9.86762Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+                <div class="swiper-button-next">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M6.12101 7.18019L0.847656 1.87943L2.65298 0.0820312L10.9987 8.40958L2.70085 16.9608C2.62758 17.026 2.58265 16.9997 2.50742 16.9608C2.08052 16.742 1.32146 15.6167 0.847656 15.3015L6.2187 9.70899L7.3073 8.54137L6.12101 7.18019Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+          </div>
+        </div>
+
+        <div class="set-tab-content" data-tab-content="pliers">
+          <div class="type-header">
+            <h3>Plier Sets</h3>
+          </div>
+          <div class="product-grid">
+          {% if section.settings.set3_collection %}
+            <div class="swiper special-offers-swiper">
+              <div class="swiper-wrapper">
+                {% assign _limit = section.settings.type_product_limit | default: 12 %}
+                {% for product in section.settings.set3_collection.products  %}
+                  <div class="swiper-slide">
+                    <a href="{{ product.url }}" class="product-link">
+                      <div class="product-card">
+                        {% if product.featured_image %}
+                          {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
+                        {% else %}
+                          <div class="placeholder-image" style="width:224px;height:224px;background:#f5f5f5;"></div>
+                        {% endif %}
+                        <h4>{{ product.title }}</h4>
+                        {% if product.price %}
+                          {% assign price_in_cents = product.price | divided_by: 1 %}
+                          {% assign dollars = price_in_cents | divided_by: 100 | floor %}
+                          {% assign cents = price_in_cents | modulo: 100 | floor %}
+                          {% assign cents = cents | prepend: '00' | slice: -2, 2 %}
+
+                          <p class="price">
+                            <sup>$</sup>{{ dollars }}<sup>{{ cents }}</sup>
+                          </p>
+                        {% endif %}
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+
+              <div class="swiper-pagination">
+
+                <div class="swiper-scrollbar"></div>
+                <div class="swiper-button-prev">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M5.32465 9.86762L10.5195 15.1939L8.74107 17L0.51953 8.6323L8.69391 0.0398215C8.76609 -0.0256578 8.81036 0.000728458 8.88446 0.0398215C9.30502 0.259716 10.0528 1.39046 10.5195 1.70711L5.22841 7.32662L4.15602 8.49987L5.32465 9.86762Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+                <div class="swiper-button-next">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M6.12101 7.18019L0.847656 1.87943L2.65298 0.0820312L10.9987 8.40958L2.70085 16.9608C2.62758 17.026 2.58265 16.9997 2.50742 16.9608C2.08052 16.742 1.32146 15.6167 0.847656 15.3015L6.2187 9.70899L7.3073 8.54137L6.12101 7.18019Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+          </div>
+        </div>
+
+        <div class="set-tab-content" data-tab-content="other-sets">
+          <div class="type-header">
+            <h3>{{ section.settings.set_tab4_title | default: 'Other Sets' }}</h3>
+          </div>
+          <div class="product-grid">
+          {% if section.settings.set4_collection %}
+            <div class="swiper special-offers-swiper">
+              <div class="swiper-wrapper">
+                {% assign _limit = section.settings.type_product_limit | default: 12 %}
+                {% for product in section.settings.set4_collection.products %}
+                  <div class="swiper-slide">
+                    <a href="{{ product.url }}" class="product-link">
+                      <div class="product-card">
+                        {% if product.featured_image %}
+                          {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
+                        {% else %}
+                          <div class="placeholder-image" style="width:224px;height:224px;background:#f5f5f5;"></div>
+                        {% endif %}
+                        <h4>{{ product.title }}</h4>
+                        {% if product.price %}
+                          {% assign price_in_cents = product.price | divided_by: 1 %}
+                          {% assign dollars = price_in_cents | divided_by: 100 | floor %}
+                          {% assign cents = price_in_cents | modulo: 100 | floor %}
+                          {% assign cents = cents | prepend: '00' | slice: -2, 2 %}
+
+                          <p class="price">
+                            <sup>$</sup>{{ dollars }}<sup>{{ cents }}</sup>
+                          </p>
+                        {% endif %}
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+
+              <div class="swiper-pagination">
+
+                <div class="swiper-scrollbar"></div>
+                <div class="swiper-button-prev">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M5.32465 9.86762L10.5195 15.1939L8.74107 17L0.51953 8.6323L8.69391 0.0398215C8.76609 -0.0256578 8.81036 0.000728458 8.88446 0.0398215C9.30502 0.259716 10.0528 1.39046 10.5195 1.70711L5.22841 7.32662L4.15602 8.49987L5.32465 9.86762Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+                <div class="swiper-button-next">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+                    <path d="M6.12101 7.18019L0.847656 1.87943L2.65298 0.0820312L10.9987 8.40958L2.70085 16.9608C2.62758 17.026 2.58265 16.9997 2.50742 16.9608C2.08052 16.742 1.32146 15.6167 0.847656 15.3015L6.2187 9.70899L7.3073 8.54137L6.12101 7.18019Z" fill="#0A2B6F"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script>
+  {% comment %} function getProductMinPriceCents(product) {
+    const centsList = (product.variants || [])
+      // 有些主题里 variants 可能没有 available 字段，这里只屏蔽明确为 false 的
+      .filter(v => v && v.available !== false && v.price != null)
+      .map(v => Math.round(parseFloat(v.price) * 100))
+      .filter(n => Number.isFinite(n) && n >= 0);
+
+    return centsList.length ? Math.min(...centsList) : null;
+  } {% endcomment %}
+  {% comment %} async function loadProductsByTag() {
+    const allProducts = await fetchAllProducts();
+
+    document.querySelectorAll('.js-product-container').forEach((container) => {
+      const tags = container.dataset.tag.split(',').map((t) => t.trim()); // 支持多标签
+      const limit = parseInt(container.dataset.limit);
+
+      {% comment %} const filtered = allProducts
+        .filter((p) => tags.some((tag) => p.tags.includes(tag))) // 产品包含任意一个标签即可
+        .slice(0, limit); {% endcomment %}
+
+      const filtered = allProducts
+        .filter((p) => tags.some((tag) => p.tags.includes(tag)));
+
+      const sortMode = (container.dataset.sort || 'price-asc').toLowerCase(); // 可选：data-sort 控制
+      filtered.sort((a, b) => getProductMinPriceCents(a) - getProductMinPriceCents(b));
+      if (sortMode === 'price-desc') filtered.reverse();
+
+      const sliced = filtered.slice(0, limit);
+
+
+
+      {% comment %} console.log(`Tags: ${tags.join(', ')}, Found: ${filtered.length} products`); // 🔥 调试用 {% endcomment %}
+
+      // 使用现成的 special-offers-swiper 类名
+      container.innerHTML = `
+      <div class="swiper special-offers-swiper">
+        <div class="swiper-wrapper">
+          ${sliced
+            .map((product) => {
+              const priceInCents = Math.round(parseFloat(product.variants[0].price) * 100);
+              const cents = (priceInCents % 100).toString().padStart(2, '0');
+              const dollars = Math.floor(priceInCents / 100);
+
+              return `
+              <div class="swiper-slide">
+                <a href="/products/${product.handle}" class="product-link">
+                  <div class="product-card">
+                    <img src="${product.images[0]?.src}" alt="${product.title}" width="300" height="300" loading="lazy">
+                    <h4>${product.title}</h4>
+                    <p class="price"><sup>$</sup>${dollars}<sup>${cents}</sup></p>
+                  </div>
+                </a>
+              </div>
+            `;
+            })
+            .join('')}
+        </div>
+        
+        <div class="swiper-pagination">
+
+          <div class="swiper-scrollbar"></div>
+          <div class="swiper-button-prev">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+              <path d="M5.32465 9.86762L10.5195 15.1939L8.74107 17L0.51953 8.6323L8.69391 0.0398215C8.76609 -0.0256578 8.81036 0.000728458 8.88446 0.0398215C9.30502 0.259716 10.0528 1.39046 10.5195 1.70711L5.22841 7.32662L4.15602 8.49987L5.32465 9.86762Z" fill="#0A2B6F"/>
+            </svg>
+          </div>
+          <div class="swiper-button-next">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="17" viewBox="0 0 11 17" fill="none">
+              <path d="M6.12101 7.18019L0.847656 1.87943L2.65298 0.0820312L10.9987 8.40958L2.70085 16.9608C2.62758 17.026 2.58265 16.9997 2.50742 16.9608C2.08052 16.742 1.32146 15.6167 0.847656 15.3015L6.2187 9.70899L7.3073 8.54137L6.12101 7.18019Z" fill="#0A2B6F"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    `;
+
+      // 延迟初始化，确保 DOM 渲染完成
+      setTimeout(() => {
+        initializeSwiperForContainer(container);
+      }, 10);
+    });
+  } {% endcomment %}
+
+      // 复用 Swiper 配置
+    function initializeSwiperForContainer() {
+      document.querySelectorAll('.special-offers-swiper').forEach(swiperElement => {
+        // 避免重复初始化
+        if (swiperElement._inited) return;
+        swiperElement._inited = true;
+
+        new Swiper(swiperElement, {
+          slidesPerView: 'auto',
+          spaceBetween: 20,
+          observer: true,
+          watchOverflow: true,
+          observeParents: true,
+          centerInsufficientSlides: false, 
+          scrollbar: {
+            el: swiperElement.querySelector('.swiper-scrollbar'),
+            draggable: true,
+            dragSize: 100,
+          },
+          navigation: {
+            nextEl: swiperElement.querySelector('.swiper-button-next'),
+            prevEl: swiperElement.querySelector('.swiper-button-prev'),
+          },
+          breakpoints: {
+            320: { slidesPerView: 2, spaceBetween: 2 },
+            640: { slidesPerView: 2, spaceBetween: 2 },
+            728: { slidesPerView: 4, spaceBetween: 15 },
+            1196: { slidesPerView: 5, spaceBetween: 20 },
+            1280: { slidesPerView: 5, spaceBetween: 20 },
+          },
+        });
+      });
+    }
+
+  {% comment %} async function fetchAllProducts() {
+    let allProducts = [];
+    let page = 1;
+    const limit = 250;
+
+    while (true) {
+      const response = await fetch(`/collections/all/products.json?limit=${limit}&page=${page}`);
+      const data = await response.json();
+
+      if (!data.products || data.products.length === 0) {
+        break;
+      }
+
+      allProducts = allProducts.concat(data.products);
+
+      if (data.products.length < limit) {
+        break;
+      }
+
+      page++;
+    }
+
+    return allProducts;
+  } {% endcomment %}
+
+  // Set Tabs Switching
+  document.addEventListener('DOMContentLoaded', function () {
+    const setTabs = document.querySelectorAll('.set-tab');
+    const setTabContents = document.querySelectorAll('.set-tab-content');
+
+    setTabs.forEach((tab) => {
+      tab.addEventListener('click', function () {
+        const targetTab = this.dataset.tab;
+
+        // Remove active class from all tabs
+        setTabs.forEach((t) => t.classList.remove('active'));
+        setTabContents.forEach((c) => c.classList.remove('active'));
+
+        // Add active class to clicked tab
+        this.classList.add('active');
+        document.querySelector(`[data-tab-content="${targetTab}"]`).classList.add('active');
+      });
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', initializeSwiperForContainer);
+</script>
+
+<style>
+    .promotion-special-offer {
+      padding-top: 40px;
+      background: var(--BG, #F4F7F9);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .promotion-special-offer .breadcrumb--floating {
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      z-index: 1 !important;
+      margin-bottom: 20px;
+    }
+
+    .pso-container {
+      width: 1196px;
+      padding: 0 0px;
+    }
+    .product-display {
+      height: 605px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      background: var(--NS-blue-gradient, linear-gradient(180deg, var(--BG, #F4F7F9) 0%, var(--Blue-1, #D3DEF1) 100%));
+    }
+    .product-display-container {
+      width: 1196px;
+      padding: 0 0px;
+      box-sizing: border-box;
+    }
+
+    .breadcrumb {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-header {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-header h2 {
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      text-align: center;
+      font-family: Inter;
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 120%;
+      width: 999px;
+    }
+
+    .section-header p {
+      color: #000;
+      text-align: center;
+      font-family: Inter;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 120%;
+      width: 999px;
+    }
+
+    .offer-options {
+      display: flex;
+      gap: 1px;
+      padding-top: 24px;
+    }
+
+    .option-card {
+      width: 398px;
+      height: 320px;
+      background: linear-gradient(0deg, #D9D9D9 0%, #D9D9D9 100%), linear-gradient(0deg, #FFF 0%, var(--Blue-1, #D3DEF1) 90.27%);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 172px;
+      transition: all 0.3s ease;
+      position: relative; /* 添加 */
+      cursor: pointer;
+    }
+    /* 添加伪元素遮罩 */
+    .option-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.60);
+      pointer-events: none;
+    }
+
+    .option-card:hover {
+      {% comment %} transform: translateY(-5px); {% endcomment %}
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .option-card.active::before {
+      background: rgba(0, 0, 0, 0.30);
+    }
+
+    .option-card.active h3,
+    .option-card.active p,
+    .option-card.active a {
+      {% comment %} color: white; {% endcomment %}
+      position: relative;
+      z-index: 1;
+    }
+
+    .option-card h3 {
+      color: var(--White, #FFF);
+      text-align: center;
+      font-family: Inter;
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: 120%; /* 38.4px */
+        position: relative;
+      z-index: 1;
+    }
+
+    .option-card p {
+      color: var(--Deep-blue-Dark, #202427);
+      text-align: center;
+      font-family: Barlow;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 120%;
+      padding-top: 8px;
+        position: relative;
+      z-index: 1;
+    }
+
+    .option-card a {
+      color: var(--White, #FFF);
+      text-align: center;
+      font-family: Barlow;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 120%; /* 28.8px */
+      text-decoration-line: underline;
+      text-decoration-style: solid;
+      text-decoration-skip-ink: auto;
+      text-decoration-thickness: auto;
+      text-underline-offset: auto;
+      text-underline-position: from-font;
+      text-transform: capitalize;
+      padding-top: 51px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .offer-content {
+      position: relative;
+    }
+
+    .content-panel {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .content-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+
+    {% comment %} price pack begin {% endcomment %}
+
+    .pricing-packs {
+      padding-top: 24px;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+      gap: 7px;
+    }
+
+    .pack-item {
+      width: 294px;
+      height: 120px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    border-radius: 2px;
+    border: 1px solid var(--Blue-1, #D3DEF1);
+    background: linear-gradient(0deg, var(--BG, #F4F7F9) 0%, var(--BG, #F4F7F9) 100%), linear-gradient(0deg, #FFF 0%, var(--Blue-1, #D3DEF1) 90.27%);
+    }
+
+    .pack-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .pack-item.active {
+      width: 294px;
+      height: 120px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    border-radius: 2px;
+    border: 1px solid var(--Core-Primary-Deep-Blue, #0A2B6F);
+    background: rgba(10, 43, 111, 0.10);
+    }
+
+    .pack-label {
+      color: var(--White, #FFF);
+      text-align: center;
+      font-family: Barlow;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 120%;
+      text-transform: uppercase;
+      border-radius: 2px;
+      background: linear-gradient(0deg, var(--Gray, #808080) 0%, var(--Gray, #808080) 100%), linear-gradient(0deg, #FFF 0%, var(--Blue-1, #D3DEF1) 90.27%);
+    }
+
+    .pack-item.active .pack-label {
+      background: #1a1a4d;
+    }
+
+    .pack-price {
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      text-align: center;
+      font-family: Inter;
+      font-size: 36px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: 120%; /* 57.6px */
+      padding-top: 31px;
+    }
+
+    .pack-price sup {
+      font-size: 24px;
+      top: -.8em;
+    }
+
+    {% comment %} price pack end {% endcomment %}
+
+
+
+
+
+    .price-products-container {
+      position: relative;
+      min-height: 300px;
+    }
+
+    .price-products {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .price-products.active {
+      display: block;
+    }
+
+
+    .product-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+
+    .product-grid {
+      width: 100%;
+      display: flex;
+      {% comment %} grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        {% endcomment %}
+      justify-content: space-between;
+      align-items: flex-end;
+      {% comment %} background: #D3DEF1; {% endcomment %}
+    }
+
+
+
+
+
+    .product-card {
+      width: 224px;
+      height: 360px;
+      border-radius: 2px;
+      background: var(--Gray-Scale-White, #FFF);
+      transition: transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .product-card img,
+    .placeholder-image {
+      width: 224px;
+      height: 224px;
+      aspect-ratio: 1/1;
+    }
+
+    .placeholder-image svg {
+      display: block;
+      margin: 0 auto;
+    }
+
+    .product-card h4 {
+      color: #121212;
+      font-family: Inter;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px; /* 142.857% */
+      padding-top: 16px;
+      height: 76px;
+      width: 184px;
+      display: -webkit-box;         /* ✅ 必须 */
+      overflow: hidden;             /* ✅ 必须 */
+      text-overflow: ellipsis;   
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .product-card .price {
+      color: #0A2B6F;
+      font-family: Inter;
+      font-size: 28px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 100%; /* 28px */
+      text-align: left;
+      padding-top: 12px;
+      padding-left: 20px;
+      align-self: flex-start;
+    }
+
+    .product-card .price sup {
+      font-size: 14px;
+      top: -.8em;
+    }
+
+
+
+
+
+
+
+
+    /* Swiper 容器样式 */
+    .swiper-pagination{
+      width: 100%;
+      display: flex;
+      {% comment %} justify-content: center;
+        {% endcomment %}
+      align-items: center;
+      {% comment %} margin-top: 18px; {% endcomment %}
+    }
+    .special-offers-swiper {
+      position: relative;
+      padding: 20px 0 50px;
+    }
+
+.promotion-special-offer .special-offers-swiper,
+.promotion-special-offer .special-offers-swiper.swiper,
+.promotion-special-offer .special-offers-swiper.swiper-container{
+  margin-left: 0 ;
+  margin-right: 0 ;
+}
+
+
+
+    .special-offers-swiper .swiper-slide {
+    width: 224px !important;
+    flex-shrink: 0; 
+    height: auto;
+    scroll-snap-align: start;
+    }
+
+
+    /* 导航按钮样式 */
+    .swiper-button-next,
+    .swiper-button-prev {
+
+
+       position: relative !important;
+       left: auto !important;
+       right: auto !important;
+       margin-left: auto;
+
+    }
+
+    .swiper-button-next:after,
+    .swiper-button-prev:after {
+      display: none !important;  /* 完全隐藏默认箭头 */
+      content: none !important;  /* 移除默认内容 */
+    }
+
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+
+    }
+
+    .swiper-button-next:hover:after,
+    .swiper-button-prev:hover:after {
+      color: #fff;
+    }
+
+    /* 滚动条样式 */
+     .swiper-scrollbar.swiper-scrollbar-horizontal {
+      background: #e5e5e5;
+      width: 1088.926px;
+      height: 4px;
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      bottom: auto !important;
+      right: auto !important;
+
+      {% comment %} padding-top: 18px; {% endcomment %}
+      border-radius: 3px !important;
+    }
+
+    .swiper-scrollbar-drag {
+
+      border-radius: 3px !important;
+      background: #0A2B6F !important;
+    }
+
+
+    /* 标题栏样式 */
+    .type-header {
+      width: 100%;
+      height: 38px;
+      margin-top: 48px;
+      margin-bottom: 24px;
+      display: flex;
+
+    }
+
+    .type-header h3 {
+    color: var(--Deep-blue-Dark, #202427);
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%; /* 38.4px */
+    }
+
+    .type-header .view-more {
+      margin-left: auto;
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      text-align: right;
+      font-family: Inter;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 120%; /* 24px */
+      text-decoration-line: underline;
+      text-decoration-style: solid;
+      text-decoration-skip-ink: none;
+      text-decoration-thickness: auto;
+      text-underline-offset: auto;
+      text-underline-position: from-font;
+    }
+
+    .type-header .view-more:hover {
+      text-decoration: underline;
+    }
+
+
+
+
+
+
+
+    {% comment %} new category {% endcomment %}
+    /* Set Tabs Navigation */
+    .set-tabs {
+      display: flex;
+      flex-direction: row;
+      gap: 7px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #e5e5e5;
+      margin-top: 0px;
+      padding-top: 24px;
+    }
+
+    .set-tab {
+      flex: 1;
+      height: 120px;
+      border-radius: 2px;
+      border: 1px solid var(--Blue-1, #D3DEF1);
+      background: linear-gradient(0deg, var(--BG, #F4F7F9) 0%, var(--BG, #F4F7F9) 100%), linear-gradient(0deg, #FFF 0%, var(--Blue-1, #D3DEF1) 90.27%);
+
+    color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+    text-align: center;
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%; /* 38.4px */
+
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .set-tab:hover {
+      background: #f0f0f0;
+    }
+
+    .set-tab.active {
+      border: 1px solid var(--Core-Primary-Deep-Blue, #0A2B6F);
+      background: rgba(10, 43, 111, 0.10)
+    }
+
+    .set-tab-content {
+      display: none;
+    }
+
+    .set-tab-content.active {
+      display: block;
+    }
+
+
+
+
+    {% comment %} new products container {% endcomment %}
+    .js-product-container{
+      width: 100%;
+    }
+
+  @media screen and (min-width: 769px) and (max-width: 1196px) {
+    .breadcrumb{
+      display: none !important;
+    }
+    .pso-container {
+      width: 728px;
+      padding: 0 0px;
+    }
+    .product-display {
+      height: 450px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      background: var(--NS-blue-gradient, linear-gradient(180deg, var(--BG, #F4F7F9) 0%, var(--Blue-1, #D3DEF1) 100%));
+    }
+    .product-display-container {
+      width: 728px;
+      padding: 0 0px;
+      box-sizing: border-box;
+    }
+    .section-header h2 {
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      text-align: center;
+      font-family: Inter;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 120%;
+      width: 728px;
+    }
+
+    .section-header p {
+      color: #000;
+      text-align: center;
+      font-family: Inter;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 120%;
+      width: 728px;
+    }
+
+        .option-card {
+      width: 243px;
+      height: 240px;
+      background: linear-gradient(0deg, #D9D9D9 0%, #D9D9D9 100%), linear-gradient(0deg, #FFF 0%, var(--Blue-1, #D3DEF1) 90.27%);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 103px;
+      transition: all 0.3s ease;
+      position: relative; /* 添加 */
+      cursor: pointer;
+    }
+        .option-card h3 {
+      color: var(--White, #FFF);
+      text-align: center;
+      font-family: Inter;
+      font-size: 28px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: 120%; /* 38.4px */
+        position: relative;
+      z-index: 1;
+    }
+      .option-card a {
+      color: var(--White, #FFF);
+      text-align: center;
+      font-family: Barlow;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 120%; /* 28.8px */
+      text-decoration-line: underline;
+      text-decoration-style: solid;
+      text-decoration-skip-ink: auto;
+      text-decoration-thickness: auto;
+      text-underline-offset: auto;
+      text-underline-position: from-font;
+      text-transform: capitalize;
+      padding-top: 58px;
+      position: relative;
+      z-index: 1;
+    }
+    .offer-options {
+      display: flex;
+      justify-content: center;
+      gap: 1px;
+      padding-top: 24px;
+    }
+
+.pricing-packs {
+      padding-top: 24px;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+      gap: 7px;
+    }
+
+    .pack-item {
+      width: 179px;
+      height: 60px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    border-radius: 2px;
+    border: 1px solid var(--Blue-1, #D3DEF1);
+    background: linear-gradient(0deg, var(--BG, #F4F7F9) 0%, var(--BG, #F4F7F9) 100%), linear-gradient(0deg, #FFF 0%, var(--Blue-1, #D3DEF1) 90.27%);
+    }
+
+    .pack-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .pack-item.active {
+      width: 179px;
+      height: 60px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    border-radius: 2px;
+    border: 1px solid var(--Core-Primary-Deep-Blue, #0A2B6F);
+    background: rgba(10, 43, 111, 0.10);
+    }
+
+
+    .pack-price {
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      text-align: center;
+      font-family: Inter;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 120%; /* 57.6px */
+      padding-top: 17px;
+    }
+
+    .pack-price sup {
+      font-size: 18px;
+      top: -.8em;
+    }
+
+
+    {% comment %} new category {% endcomment %}
+    /* Set Tabs Navigation */
+    .set-tabs {
+      display: flex;
+      flex-direction: row;
+      gap: 4px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #e5e5e5;
+      margin-top: 0px;
+      padding-top: 24px;
+    }
+
+    .set-tab {
+      flex: 1;
+      height: 60px;
+      border-radius: 2px;
+      border: 1px solid var(--Blue-1, #D3DEF1);
+      background: linear-gradient(0deg, var(--BG, #F4F7F9) 0%, var(--BG, #F4F7F9) 100%), linear-gradient(0deg, #FFF 0%, var(--Blue-1, #D3DEF1) 90.27%);
+
+    color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+    text-align: center;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%; /* 24px */
+
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .set-tab:hover {
+      background: #f0f0f0;
+    }
+
+    .set-tab.active {
+      border: 1px solid var(--Core-Primary-Deep-Blue, #0A2B6F);
+      background: rgba(10, 43, 111, 0.10)
+    }
+
+    .set-tab-content {
+      display: none;
+    }
+
+    .set-tab-content.active {
+      display: block;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+      display: none !important;
+    }
+
+        .swiper-scrollbar.swiper-scrollbar-horizontal {
+      margin-top: 13px;
+    }
+      .special-offers-swiper .swiper-slide {
+    width: 168px !important; /* 跟你的 .product-card 平板宽度保持一致 */
+  }
+    .product-card {
+      width: 168px;
+      height: 280px;
+      border-radius: 2px;
+      background: var(--Gray-Scale-White, #FFF);
+      transition: transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .product-card img,
+    .placeholder-image {
+      width: 168px;
+      height: 168px;
+      aspect-ratio: 1/1;
+    }
+    .product-card h4 {
+      color: #121212;
+      font-family: Inter;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%; /* 15.6px */
+      padding-top: 16px;
+      height: 64px;
+      width: 140px;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .product-card .price {
+      color: #0A2B6F;
+      font-family: Inter;
+      font-size: 28px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 100%; /* 28px */
+      text-align: left;
+      padding-top: 12px;
+      padding-left: 20px;
+      align-self: flex-start;
+    }
+
+    .product-card .price sup {
+      font-size: 14px;
+      top: -.8em;
+    }
+
+  }
+
+    @media (max-width: 768px) {
+
+      .promotion-special-offer {
+        padding-top: 40px;
+        background: var(--BG, #F4F7F9);
+        width: 100%;
+      }
+
+      .promotion-special-offer .breadcrumb--floating {
+        display: none !important;
+      }
+
+      .pso-container {
+        width: 342px;
+        padding: 0 0px;
+      }
+
+      .section-header {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .section-header h2 {
+        color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+        text-align: center;
+        font-family: Inter;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 120%; /* 24px */
+        width: 342px;
+        height: 48px;
+      }
+
+      .section-header p {
+        color: #000;
+        text-align: center;
+        font-family: Inter;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 120%; /* 16.8px */
+        width: 342px;
+        height: 68px;
+      }
+
+
+
+
+
+      .offer-options {
+        display: flex;
+        gap: 0px;
+        padding-top: 24px;
+      }
+
+      .option-card {
+        width: 114px;
+        height: 160px;
+        background: linear-gradient(0deg, #D9D9D9 0%, #D9D9D9 100%), linear-gradient(0deg, #FFF 0%, var(--Blue-1, #D3DEF1) 90.27%);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-top: 0px;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .option-card:nth-child(2) {
+        background: linear-gradient(0deg, #D0CFCF 0%, #D0CFCF 100%), linear-gradient(0deg, var(--Blue-1, #D3DEF1) 0%, #FFF 90.27%);
+      }
+
+
+      .option-card:hover {
+        transform: none;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
+
+      .option-card.active {
+        {% comment %} transform: translateY(-5px); {% endcomment %}
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: linear-gradient(0deg, var(--Blue-2, #EAEEF1) 0%, var(--Blue-2, #EAEEF1) 100%), linear-gradient(0deg, var(--Blue-1, #D3DEF1) 0%, #FFF 90.27%);
+      }
+
+      .option-card.active h3,
+      .option-card.active p,
+      .option-card.active a {
+        {% comment %} color: white; {% endcomment %}
+               position: absolute;
+
+      }
+
+      .option-card h3 {
+        color: var(--White, #FFF);
+        text-align: center;
+        font-family: Inter;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 900;
+        line-height: 120%; /* 24px */
+        width: 105px;
+        height: 48px;
+          display: flex;
+    align-items: center;
+    justify-content: center;
+
+      }
+
+      .option-card p {
+        color: var(--Deep-blue-Dark, #202427);
+        text-align: center;
+        font-family: Barlow;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 120%; /* 14.4px */
+        width: 100px;
+        height: 36px;
+        padding-top: 8px;
+        white-space: normal;
+        text-wrap: balance;
+      }
+
+      .option-card a {
+        color: var(--White, #FFF);
+        text-align: center;
+        font-family: Barlow;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 120%; /* 16.8px */
+        text-decoration-line: underline;
+        text-decoration-style: solid;
+        text-decoration-skip-ink: auto;
+        text-decoration-thickness: auto;
+        text-underline-offset: auto;
+        text-underline-position: from-font;
+        text-transform: capitalize;
+        width: 114px;
+        height: 16px;
+        padding-top: 0px;
+        bottom:14px;
+        position: absolute;
+
+      }
+
+
+
+
+
+
+
+      {% comment %} price pack begin {% endcomment %}
+
+      .pricing-packs {
+        padding-top: 24px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+      }
+
+      .pack-item {
+        width: 166px;
+        height: 40px;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+        border: 1px solid var(--Blue-1, #D3DEF1);
+        background: var(--BG, #F4F7F9);
+      }
+
+      .pack-item:hover {
+        transform: translateY(0px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
+
+      .pack-item.active {
+        width: 166px;
+        height: 40px;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+        border: 1px solid var(--Core-Primary-Deep-Blue, #0A2B6F);
+        background: rgba(10, 43, 111, 0.10);
+      }
+
+      .pack-label {
+        color: var(--White, #FFF);
+        text-align: center;
+        font-family: Barlow;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 120%; /* 19.2px */
+        text-transform: uppercase;
+        border-radius: 2px;
+        background: linear-gradient(0deg, var(--Gray, #808080) 0%, var(--Gray, #808080) 100%), linear-gradient(0deg, #FFF 0%, var(--Blue-1, #D3DEF1) 90.27%);
+      }
+
+      .pack-item.active .pack-label {
+        background: #1a1a4d;
+      }
+
+      .pack-price {
+        color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+        text-align: center;
+        font-family: Inter;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 120%; /* 24px */
+        padding-top: 10px;
+
+
+      }
+
+      .pack-price sup {
+        font-size: 10px;
+        top: -.8em;
+      }
+
+      {% comment %} price pack end {% endcomment %}
+    .set-tabs {
+        padding-top: 24px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #e5e5e5;
+      margin-top: 0px;
+    }
+
+    .set-tab {
+      flex: 1;
+      height: 40px;
+      border-radius: 2px;
+      border: 1px solid var(--Blue-1, #D3DEF1);
+      background: linear-gradient(0deg, var(--BG, #F4F7F9) 0%, var(--BG, #F4F7F9) 100%), linear-gradient(0deg, #FFF 0%, var(--Blue-1, #D3DEF1) 90.27%);
+
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      text-align: center;
+      font-family: Inter;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 120%; /* 19.2px */
+
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+
+
+    {% comment %} price product display {% endcomment %}
+    .price-products-container {
+      position: relative;
+      height: 270px;
+    }
+
+
+    {% comment %} .product-grid {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      margin-left: -50vw; 
+      padding-left: calc((100vw - 342px) / 2); 
+      padding-right: calc((100vw - 342px) / 2);
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;  
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 10px;
+      /* 添加滚动吸附 */
+      scroll-snap-type: x mandatory; /* 水平方向强制吸附 */
+      scroll-padding-left: calc((100vw - 342px) / 2);
+
+    } {% endcomment %}
+
+  .product-grid{
+    overflow: visible;        /* 关掉外层横向滚动 */
+    scroll-snap-type: none;   /* 去掉吸附 */
+    width: auto;
+    left: 0;
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+
+
+      /* 让每个产品卡片成为吸附点 */
+      .product-card,
+      .product-link {
+        scroll-snap-align: start; /* 卡片左边对齐吸附点 */
+        scroll-snap-stop: normal; /* 允许快速滑动跳过多个卡片 */
+      }
+      .product-grid::-webkit-scrollbar {
+
+    height: 4px;
+    flex-shrink: 0;
+
+      }
+
+        .special-offers-swiper .swiper-slide {
+    width: 166px !important;
+    flex-shrink: 0; 
+    height: auto;
+    scroll-snap-align: start;
+  }
+      .product-grid::-webkit-scrollbar-track {
+          margin-left: calc((100vw - 342px) / 2); 
+      margin-right: calc((100vw - 342px) / 2); 
+      background: #e5e5e5; 
+      border-radius: 3px;
+    }
+      .product-grid::-webkit-scrollbar-thumb {
+      background: #0A2B6F; /* 滑块设置为蓝色 */
+      border-radius: 3px;
+    }
+
+    .product-display {
+      height: 436px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      background: var(--NS-blue-gradient, linear-gradient(180deg, var(--BG, #F4F7F9) 0%, var(--Blue-1, #D3DEF1) 100%));
+    }
+    .product-display-container {
+      width: 342px;
+      padding: 0 0px;
+      box-sizing: border-box;
+
+      overflow: visible;
+    }
+
+
+
+
+
+
+      /* Swiper 容器全屏 */
+      .special-offers-swiper {
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        margin-left: -50vw !important; 
+      } 
+
+
+  {% comment %} .special-offers-swiper{
+    width: 100%;
+    left: 0;
+    margin-left: 0 !important;
+  } {% endcomment %}
+
+
+      /* Swiper wrapper 全屏 */
+      .special-offers-swiper .swiper-wrapper {
+        padding-left: calc((100vw - 342px) / 2); /* 初始位置与container对齐 */
+        padding-right: calc((100vw - 342px) / 2); 
+
+        /* 添加滚动吸附 */
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: calc((100vw - 342px) / 2);
+
+
+      }
+
+      /* Swiper slide 作为吸附点 */
+      .special-offers-swiper .swiper-slide {
+        width: auto;
+        height: auto;
+        scroll-snap-align: start;
+      }
+
+      /* Swiper 滚动条居中，与 container 同宽 */
+      .swiper-scrollbar.swiper-scrollbar-horizontal {
+        width: 342px !important;
+        left: 50% !important;
+        transform: translateX(-50%);
+        background: #e5e5e5;
+        height: 4px;
+        position: relative !important;
+        top: auto !important;
+        bottom: auto !important;
+        right: auto !important;
+        border-radius: 3px !important;
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* 标题栏样式 */
+    .type-header {
+      width: 100%;
+      height: 24px;
+      margin-top: 48px;
+      margin-bottom: 24px;
+      display: flex;
+
+
+    }
+
+    .type-header h3 {
+    color: var(--Deep-blue-Dark, #202427);
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%; /* 24px */
+    }
+
+    .type-header .view-more {
+      display: none;
+      margin-left: auto;
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      text-align: right;
+      font-family: Inter;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 120%; /* 24px */
+      text-decoration-line: underline;
+      text-decoration-style: solid;
+      text-decoration-skip-ink: none;
+      text-decoration-thickness: auto;
+      text-underline-offset: auto;
+      text-underline-position: from-font;
+    }
+
+    .type-header .view-more:hover {
+      text-decoration: underline;
+    }
+
+
+    .product-card {
+      width: 166px;
+      height: 270px;
+      border-radius: 2px;
+      background: var(--Gray-Scale-White, #FFF);
+      transition: transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .product-card:hover {
+      transform: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .product-card img,
+    .placeholder-image {
+      width: 166px;
+      height: 166px;
+      aspect-ratio: 1/1;
+    }
+
+    .placeholder-image svg {
+      display: block;
+      margin: 0 auto;
+    }
+
+    .product-card h4 {
+      color: #121212;
+      font-family: Inter;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px; /* 133.333% */
+      padding-top: 10px;
+      height: 58px;
+      width: 146px;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .product-card .price {
+      color: #0A2B6F;
+      font-family: Inter;
+      font-size: 22px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 100%; /* 28px */
+      text-align: left;
+      padding-top: 12px;
+      padding-left: 18px;
+      align-self: flex-start;
+    }
+
+    .product-card .price sup {
+      font-size: 11px;
+      top: -.8em;
+    }
+
+
+    .swiper-button-prev,
+    .swiper-button-next {
+      display: none !important;
+    }
+
+    .swiper-scrollbar.swiper-scrollbar-horizontal {
+      margin-top: 13px;
+    }
+</style>
+{% comment %} <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // 初始化 Swiper
+    const specialOffersSwiper = new Swiper('.special-offers-swiper', {
+      slidesPerView: 'auto',
+      spaceBetween: 2,
+      scrollbar: {
+        el: '.swiper-scrollbar',
+        draggable: true,
+        dragSize: 100,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 15,
+        },
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 15,
+        },
+        1024: {
+          slidesPerView: 5,
+          spaceBetween: 20,
+        },
+        1280: {
+          slidesPerView: 5,
+          spaceBetween: 20,
+        },
+      },
+    });
+  });
+</script> {% endcomment %}
+<script>
+(function() {
+  function initPromotionOffer() {
+    const optionCards = document.querySelectorAll('.promotion-special-offer .option-card');
+    const contentPanels = document.querySelectorAll('.promotion-special-offer .content-panel');
+    const packItems = document.querySelectorAll('.promotion-special-offer .pack-item');
+    const priceProducts = document.querySelectorAll('.promotion-special-offer .price-products');
+
+    optionCards.forEach(card => {
+      card.addEventListener('click', function(e) {
+        e.preventDefault();
+        const type = this.getAttribute('data-type');
+        
+        optionCards.forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        
+        contentPanels.forEach(panel => {
+          panel.classList.remove('active');
+        });
+        
+        const targetPanel = document.querySelector(`.promotion-special-offer .content-panel[data-content="${type}"]`);
+        
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+          
+          if (type === 'price') {
+            document.querySelector(`.promotion-special-offer .content-panel[data-content="price2"]`).classList.add('active');
+            const firstPackItem = document.querySelector('.promotion-special-offer .pack-item');
+            const firstPrice = firstPackItem ? firstPackItem.getAttribute('data-price') : '24';
+            showPriceProducts(firstPrice);
+          }
+                // 🔥 新增：当点击 set 时，同时显示 set2
+          if (type === 'set') {
+            const set2Panel = document.querySelector(`.promotion-special-offer .content-panel[data-content="set2"]`);
+            if (set2Panel) {
+              set2Panel.classList.add('active');
+            }
+          }
+        }
+      });
+    });
+
+    packItems.forEach(pack => {
+      pack.addEventListener('click', function(e) {
+        e.preventDefault();
+        const price = this.getAttribute('data-price');
+        showPriceProducts(price);
+      });
+    });
+
+    function showPriceProducts(price) {
+      packItems.forEach(p => p.classList.remove('active'));
+      
+      const currentPack = document.querySelector(`.promotion-special-offer .pack-item[data-price="${price}"]`);
+      if (currentPack) {
+        currentPack.classList.add('active');
+      }
+      
+      priceProducts.forEach(pp => pp.classList.remove('active'));
+      
+      const targetProducts = document.querySelector(`.promotion-special-offer .price-products[data-price="${price}"]`);
+      if (targetProducts) {
+        targetProducts.classList.add('active');
+      }
+    }
+    const defaultCard = document.querySelector('.promotion-special-offer .option-card[data-type="type"]');
+    if (defaultCard) {
+      defaultCard.click();
+    }
+    document.querySelector('.promotion-special-offer').style.visibility = 'visible';
+    document.querySelector('.promotion-special-offer').style.pointerEvents = 'auto';
+    {% comment %} if (optionCards.length > 0) {
+      const firstType = optionCards[0].getAttribute('data-type');
+      const firstPanel = document.querySelector(`.promotion-special-offer .content-panel[data-content="${firstType}"]`);
+      if (firstPanel) {
+        firstPanel.classList.add('active');
+        
+        if (firstType === 'price' && packItems.length > 0) {
+          const firstPrice = packItems[0].getAttribute('data-price');
+          showPriceProducts(firstPrice);
+        }
+      }
+    } {% endcomment %}
+  }
+
+
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPromotionOffer);
+  } else {
+    initPromotionOffer();
+  }
+
+  {% comment %} setTimeout(initPromotionOffer, 500); {% endcomment %}
+
+  document.addEventListener('shopify:section:load', function(event) {
+    if (event.target.querySelector('.promotion-special-offer')) {
+      {% comment %} setTimeout(initPromotionOffer, 100); {% endcomment %}
+       initPromotionOffer();
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Promotion Special Offer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📄 Basic Page Information"
+    },
+    {
+      "type": "header",
+      "content": "🎁 Featured Offers Section"
+    },
+    {
+      "type": "text",
+      "id": "all_offers_title",
+      "label": "Section Title",
+      "default": "Featured Sets"
+    },
+    {
+      "type": "text",
+      "id": "all_offers_link_text",
+      "label": "View More Link Text",
+      "default": "View more"
+    },
+    {
+      "type": "url",
+      "id": "all_offers_link",
+      "label": "View More Link URL",
+      "info": "Leave empty to disable the link"
+    },
+
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Page Title",
+      "default": "Explore Our Sets – Tailored Just for You!"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Page Description",
+      "default": "Whether you're looking for the best deal, a specific style, or a perfectly curated combo, we've got an option to match your needs. Discover your ideal pick below:"
+    },
+
+    {
+      "type": "header",
+      "content": "🏷️ Option Card 1 - By Price"
+    },
+    {
+      "type": "text",
+      "id": "option1_title",
+      "label": "Title",
+      "default": "By Price"
+    },
+    {
+      "type": "text",
+      "id": "option1_subtitle",
+      "label": "Subtitle",
+      "default": "Best Deals, No Compromise"
+    },
+    {
+      "type": "image_picker",
+      "id": "option1_bg_image",
+      "label": "Background Image"
+    },
+
+    {
+      "type": "header",
+      "content": "💰 Price Pack 1"
+    },
+    {
+      "type": "text",
+      "id": "pack1_name",
+      "label": "Pack Name",
+      "default": "STARTER PACK"
+    },
+    {
+      "type": "text",
+      "id": "pack1_price",
+      "label": "Price (Integer Part)",
+      "default": "24"
+    },
+    {
+      "type": "text",
+      "id": "pack1_cents",
+      "label": "Price (Decimal Part)",
+      "default": "95"
+    },
+
+    {
+      "type": "header",
+      "content": "💰 Price Pack 2"
+    },
+    {
+      "type": "text",
+      "id": "pack2_name",
+      "label": "Pack Name",
+      "default": "PRO ESSENTIALS"
+    },
+    {
+      "type": "text",
+      "id": "pack2_price",
+      "label": "Price (Integer Part)",
+      "default": "49"
+    },
+    {
+      "type": "text",
+      "id": "pack2_cents",
+      "label": "Price (Decimal Part)",
+      "default": "95"
+    },
+
+    {
+      "type": "header",
+      "content": "💰 Price Pack 3"
+    },
+    {
+      "type": "text",
+      "id": "pack3_name",
+      "label": "Pack Name",
+      "default": "WORKFORCE PREMIUM"
+    },
+    {
+      "type": "text",
+      "id": "pack3_price",
+      "label": "Price (Integer Part)",
+      "default": "74"
+    },
+    {
+      "type": "text",
+      "id": "pack3_cents",
+      "label": "Price (Decimal Part)",
+      "default": "95"
+    },
+
+    {
+      "type": "header",
+      "content": "💰 Price Pack 4"
+    },
+    {
+      "type": "text",
+      "id": "pack4_name",
+      "label": "Pack Name",
+      "default": "ELITE UTILITY KIT"
+    },
+    {
+      "type": "text",
+      "id": "pack4_price",
+      "label": "Price (Integer Part)",
+      "default": "74+"
+    },
+    {
+      "type": "text",
+      "id": "pack4_cents",
+      "label": "Price (Decimal Part)",
+      "default": "95"
+    },
+
+    {
+      "type": "header",
+      "content": "🔧 Best Selling Products Settings"
+    },
+
+    {
+      "type": "text",
+      "id": "option2_title",
+      "label": "Title",
+      "default": "Best Seller"
+    },
+    {
+      "type": "text",
+      "id": "option2_subtitle",
+      "label": "Subtitle",
+      "default": "Tailored to Your Taste"
+    },
+    {
+      "type": "image_picker",
+      "id": "option2_bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "type_product_tag",
+      "label": "Product Tag",
+      "default": "best-seller",
+      "info": "Enter the tag to filter best selling products"
+    },
+    {
+      "type": "range",
+      "id": "type_product_limit",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Maximum Products to Display",
+      "default": 12
+    },
+
+    {
+      "type": "header",
+      "content": "📦 Option Card 3 - By Category"
+    },
+    {
+      "type": "text",
+      "id": "option3_title",
+      "label": "Title",
+      "default": "By Category"
+    },
+    {
+      "type": "text",
+      "id": "option3_subtitle",
+      "label": "Subtitle",
+      "default": "Curated Sets for Every Need"
+    },
+    {
+      "type": "image_picker",
+      "id": "option3_bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "set_tab1_title",
+      "label": "Tab 1 Title",
+      "default": "Knives"
+    },
+    {
+      "type": "text",
+      "id": "set_tab1_tag",
+      "label": "Tab 1 Product Tag",
+      "default": "Knife set"
+    },
+    {
+      "type": "range",
+      "id": "set_tab1_limit",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Tab 1 Product Limit",
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "set_tab2_title",
+      "label": "Tab 2 Title",
+      "default": "Wrenches"
+    },
+    {
+      "type": "text",
+      "id": "set_tab2_tag",
+      "label": "Tab 2 Product Tag",
+      "default": "Wrench set"
+    },
+    {
+      "type": "range",
+      "id": "set_tab2_limit",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Tab 2 Product Limit",
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "set_tab3_title",
+      "label": "Tab 3 Title",
+      "default": "Pliers"
+    },
+    {
+      "type": "text",
+      "id": "set_tab3_tag",
+      "label": "Tab 3 Product Tag",
+      "default": "Plier set"
+    },
+    {
+      "type": "range",
+      "id": "set_tab3_limit",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Tab 3 Product Limit",
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "set_tab4_title",
+      "label": "Tab 4 Title",
+      "default": "Other Sets"
+    },
+    {
+      "type": "text",
+      "id": "set_tab4_tag",
+      "label": "Tab 4 Product Tag",
+      "default": "Other set"
+    },
+    {
+      "type": "range",
+      "id": "set_tab4_limit",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Tab 4 Product Limit",
+      "default": 12
+    },
+        {
+      "type": "collection",
+      "id": "price1_collection",
+      "label": "price1_Collection",
+      "info": "Select a collection to display products from"
+    },
+        {
+      "type": "collection",
+      "id": "price2_collection",
+      "label": "price2_Collection",
+      "info": "Select a collection to display products from"
+    },
+    {
+      "type": "collection",
+      "id": "price3_collection",
+      "label": "price3_Collection",
+      "info": "Select a collection to display products from"
+    },
+        {
+      "type": "collection",
+      "id": "price4_collection",
+      "label": "price4_Collection",
+      "info": "Select a collection to display products from"
+    },
+        {
+      "type": "collection",
+      "id": "bestSeller_collection",
+      "label": "bestSeller_Collection",
+      "info": "Select a collection to display products from"
+    },
+        {
+      "type": "collection",
+      "id": "set1_collection",
+      "label": "set1_Collection",
+      "info": "Select a collection to display products from"
+    },
+            {
+      "type": "collection",
+      "id": "set2_collection",
+      "label": "set2_Collection",
+      "info": "Select a collection to display products from"
+    },
+            {
+      "type": "collection",
+      "id": "set3_collection",
+      "label": "set3_Collection",
+      "info": "Select a collection to display products from"
+    },
+            {
+      "type": "collection",
+      "id": "set4_collection",
+      "label": "set4_Collection",
+      "info": "Select a collection to display products from"
+    },
+  ],
+
+  "blocks": [
+    {
+      "type": "price_product_group",
+      "name": "🏷️ $24.95 products",
+      "settings": [
+        {
+          "type": "text",
+          "id": "pack_price",
+          "label": "Associated Pack Price",
+          "default": "24",
+          "info": "Must match the price of a Price Pack"
+        },
+        {
+          "type": "text",
+          "id": "product_tag",
+          "label": "Product Tag",
+          "default": "25 set",
+          "info": "Enter the tag to filter products (e.g., 'pack-24', 'special-offer-24')"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Source Collection (Optional)",
+          "info": "Select a collection to search products from. Leave empty to search all products."
+        },
+        {
+          "type": "range",
+          "id": "product_limit",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "label": "Maximum Products to Display",
+          "default": 12
+        }
+      ]
+    },
+    {
+      "type": "price_product_group2",
+      "name": "🏷️ $49.95 products",
+      "settings": [
+        {
+          "type": "text",
+          "id": "pack_price",
+          "label": "Associated Pack Price",
+          "default": "49",
+          "info": "Must match the price of a Price Pack"
+        },
+        {
+          "type": "text",
+          "id": "product_tag",
+          "label": "Product Tag",
+          "default": "50 set",
+          "info": "Enter the tag to filter products (e.g., 'pack-49', 'special-offer-49')"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Source Collection (Optional)",
+          "info": "Select a collection to search products from. Leave empty to search all products."
+        },
+        {
+          "type": "range",
+          "id": "product_limit",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "label": "Maximum Products to Display",
+          "default": 12
+        }
+      ]
+    },
+    {
+      "type": "price_product_group3",
+      "name": "🏷️ $74.95 products",
+      "settings": [
+        {
+          "type": "text",
+          "id": "pack_price",
+          "label": "Associated Pack Price",
+          "default": "74",
+          "info": "Must match the price of a Price Pack"
+        },
+        {
+          "type": "text",
+          "id": "product_tag",
+          "label": "Product Tag",
+          "default": "75 set",
+          "info": "Enter the tag to filter products (e.g., 'pack-74', 'special-offer-74')"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Source Collection (Optional)",
+          "info": "Select a collection to search products from. Leave empty to search all products."
+        },
+        {
+          "type": "range",
+          "id": "product_limit",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "label": "Maximum Products to Display",
+          "default": 12
+        }
+      ]
+    },
+    {
+      "type": "price_product_group4",
+      "name": "🏷️ $74.95+ products",
+      "settings": [
+        {
+          "type": "text",
+          "id": "pack_price",
+          "label": "Associated Pack Price",
+          "default": "74+",
+          "info": "Must match the price of a Price Pack"
+        },
+        {
+          "type": "text",
+          "id": "product_tag",
+          "label": "Product Tag",
+          "default": "75 up set",
+          "info": "Enter the tag to filter products (e.g., 'pack-99', 'special-offer-99')"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Source Collection (Optional)",
+          "info": "Select a collection to search products from. Leave empty to search all products."
+        },
+        {
+          "type": "range",
+          "id": "product_limit",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "label": "Maximum Products to Display",
+          "default": 12
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotion Special Offer",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "price_product_group",
+          "settings": {
+            "pack_price": "24"
+          }
+        },
+        {
+          "type": "price_product_group2",
+          "settings": {
+            "pack_price": "49"
+          }
+        },
+        {
+          "type": "price_product_group3",
+          "settings": {
+            "pack_price": "74"
+          }
+        },
+        {
+          "type": "price_product_group4",
+          "settings": {
+            "pack_price": "99"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

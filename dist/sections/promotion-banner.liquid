@@ -1,0 +1,732 @@
+<style>
+  .promotion-banner{
+      position: relative;
+      width: 100%;
+      height: 320px;
+      overflow: hidden;
+      background: #ff7901;
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  .promotion-banner-image{
+      width: 1440px;
+      height:320px;
+      {% if section.settings.banner_image %}
+          background-image: url({{ section.settings.banner_image | image_url: width: 1440 }});
+      {% endif %}
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .promotion-banner-content{
+      width: 1196px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+  }
+
+
+
+  .promotion-text-content{
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      height: 100%;
+      margin-top: 0px;  
+      padding-top: 102px;
+      {% comment %} transform: translateX(-22px); {% endcomment %}
+       margin-left: 564px;
+      width: 411px;
+  }
+
+  .promotion-banner-title{
+      color: var(--White, #FFF);
+      font-family: Inter;
+      font-size: 48px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: normal;
+      width: 411px;
+      text-shadow:  4px 4px 14px #3A0606;
+  }
+
+  .promotion-banner-subtitle{
+      margin-top: 18px;
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      font-family: Inter;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      width: 411px;
+      display: none;
+
+  }
+
+  .promotion-flash-sale{
+      border-radius: 4px;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding-top: 14px;
+      flex-shrink: 0;
+      width: 224px;
+      height: 288px;
+
+
+  }
+
+  .flash-sale-header{
+      {% comment %} text-align: center; {% endcomment %}
+  }
+
+  .flash-sale-label{
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      text-align: center;
+      font-family: Inter;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 100%; /* 20px */
+  }
+
+  .flash-sale-product-image{
+      width: 108px;
+      height: 108px;
+      object-fit: cover;
+      margin-bottom: 0px;
+  }
+
+  .flash-sale-save{
+      color: var(--Core-Secondary-Yellow, #FABE00);
+      text-align: center;
+      font-family: Inter;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 100%; /* 20px */
+
+      width: 176px;
+      height: 38px;
+      border-radius: 4px;
+      background: var(--Color, #0A2B6F);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+  }
+
+  .flash-sale-button{
+      display: flex;
+      width: 195px;
+      height: 30px;
+      padding: 0px 0px;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      {% comment %} border-radius: 4px; {% endcomment %}
+      {% comment %} background: var(--Color, #0A2B6F); {% endcomment %}
+  }
+  .flash-sale-button-text{
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      width: 195px;
+      font-family: Inter;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      letter-spacing: 0.24px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
+  .flash-sale-button:hover{
+      {% comment %} background: #0d0d26; {% endcomment %}
+  }
+
+  .countdown-timer{
+      display: flex;
+      gap: 2px;
+      align-items: center;
+  }
+
+  .countdown-box{
+      display: flex;
+      width: 44px;
+      height: 32px;
+      padding: 8px 12px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border-radius: 4px;
+      background: var(--Deep-blue-Dark, #202427);
+  }
+  .countdown-box-text{
+      color: var(--White, #FFF);
+      text-align: center;
+      font-family: Inter;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      letter-spacing: 0.24px;
+  }
+
+  .countdown-separator{
+      width: 18px;
+      height: 28px;
+      color: var(--Deep-blue-Dark, #202427);
+      text-align: center;
+      font-family: Inter;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      letter-spacing: 0.288px;
+  }
+  .mobile-flash-sale{
+      display: none;
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 1196px) {
+      .promotion-banner{
+      position: relative;
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      background: #ff7901;
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+        }
+  .promotion-banner-image{
+      width: 728px;
+      height:220px;
+      {% if section.settings.tablet_banner_image %}
+          background-image: url({{ section.settings.tablet_banner_image | image_url: width: 768 }});
+      {% endif %}
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .promotion-banner-content{
+      width: 728px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+  }
+
+
+
+  .promotion-text-content{
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      height: 100%;
+      margin-top: 0px;  
+      padding-top: 91px;
+      {% comment %} transform: translateX(-22px); {% endcomment %}
+       margin-left: 366px;
+      width: 226px;
+  }
+
+  .promotion-banner-title{
+        color: var(--White, #FFF);
+        font-family: Inter;
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 900;
+        line-height: normal;
+      width: 226px;
+      text-shadow:  4px 4px 14px #3A0606;
+  }
+
+  .promotion-banner-subtitle{
+      margin-top: 18px;
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      font-family: Inter;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      width: 411px;
+      display: none;
+
+  }
+
+  .promotion-flash-sale{
+      border-radius: 4px;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding-top: 9px;
+      flex-shrink: 0;
+      width: 168px;
+      height: 204px;
+
+
+  }
+
+  .flash-sale-header{
+      {% comment %} text-align: center; {% endcomment %}
+  }
+
+  .flash-sale-label{
+    color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+    text-align: center;
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 100%; /* 15px */
+  }
+
+  .flash-sale-product-image{
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      margin-bottom: 0px;
+  }
+
+  .flash-sale-save{
+        color: var(--Core-Secondary-Yellow, #FABE00);
+        text-align: center;
+        font-family: Inter;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 800;
+        line-height: 100%; /* 16px */
+        width: 120px;
+        height: 26px;
+        border-radius: 4px;
+        background: var(--Color, #0A2B6F);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+  }
+
+  .flash-sale-button{
+      display: flex;
+        width: 150px;
+        height: 26px;
+      padding: 0px 0px;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      {% comment %} border-radius: 4px; {% endcomment %}
+      {% comment %} background: var(--Color, #0A2B6F); {% endcomment %}
+  }
+  .flash-sale-button-text{
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      font-family: Inter;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      letter-spacing: 0.18px;
+  }
+  .flash-sale-button:hover{
+      {% comment %} background: #0d0d26; {% endcomment %}
+  }
+
+  .countdown-timer{
+display: flex;
+width: 120px;
+justify-content: space-between;
+align-items: center;
+  }
+
+  .countdown-box{
+      display: flex;
+      width: 25px;
+      height: 26px;
+      padding: 4px 4px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border-radius: 4px;
+      background: var(--Deep-blue-Dark, #202427);
+  }
+  .countdown-box-text{
+      color: var(--White, #FFF);
+      text-align: center;
+      font-family: Inter;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      letter-spacing: 0.18px;
+  }
+
+  .countdown-separator{
+      width: 5px;
+      height: 18px;
+      color: var(--Deep-blue-Dark, #202427);
+      text-align: center;
+      font-family: Inter;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      letter-spacing: 0.18px;
+  }
+  .mobile-flash-sale{
+      display: none;
+  }
+
+
+  }
+
+  @media (max-width: 768px) {
+
+      .promotion-banner{
+          position: relative;
+          width: 100%;
+          height: auto;
+          overflow: hidden;
+          background: #ff7901;
+          backdrop-filter: blur(8px);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+      }
+      .promotion-banner-content{
+          width: 375px;
+          height: 220px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-left: 0px;
+      }
+
+      .promotion-banner-image{
+          width: 100%;             
+          {% comment %} max-width: 414px;    {% endcomment %}
+          aspect-ratio: 375 / 220;  
+          height: auto;            
+
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;   /* 填满且不拉伸变形 */
+          flex-shrink: 0;
+
+          {% if section.settings.mobile_banner_image %}
+            background-image: url({{ section.settings.mobile_banner_image | image_url: width: 800 }});
+          {% endif %}
+      }
+      .promotion-text-content{
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          height: 100%;
+          margin-top: 136px;  
+          padding-top: 0px;
+          transform: translateX(0px);
+          width: 362px;
+          margin-left: 0px;
+      }
+
+      .promotion-banner-title{
+            color: var(--White, #FFF);
+            text-align: center;
+            font-family: Inter;
+            font-size: 28px;
+            font-style: normal;
+            font-weight: 900;
+            line-height: normal;
+          width: 100%;
+      }
+
+      .promotion-banner-subtitle{
+          color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+          text-align: center;
+          font-family: Inter;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+          width: 100%;
+          margin-top: 0px;
+
+      }
+      .mobile-flash-sale{
+          display: flex;
+          width: 100%;
+          height: 320px;
+          background: var(--BG, #F4F7F9);
+          flex-direction: column;
+          align-items: center;
+          padding-top: 24px;
+      }
+      .promotion-flash-sale{
+          display: none;
+      }
+      .mobile-promotion-flash-sale{
+          border-radius: 4px;
+        border: 1px solid var(--Blue-1, #D3DEF1);
+        background: var(--BG, #FFFFFF);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          padding-top: 14px;
+          flex-shrink: 0;
+          width: 224px;
+          height: 288px;
+
+
+      }
+
+
+  }
+</style>
+
+<section class="promotion-banner">
+  <div class="promotion-banner-image">
+    <div class="promotion-banner-content">
+      <div class="promotion-text-content">
+        <h2 class="promotion-banner-title">{{ section.settings.title }}</h2>
+        <p class="promotion-banner-subtitle">{{ section.settings.subtitle }}</p>
+      </div>
+
+      <a href="{{ section.settings.button_link.url }}" class="promotion-flash-sale">
+        <span class="flash-sale-label">{{ section.settings.flash_label }}</span>
+
+        {% if section.settings.product_image %}
+          <img
+            src="{{ section.settings.product_image | image_url: width: 108 }}"
+            alt="{{ section.settings.product_title }}"
+            class="flash-sale-product-image"
+            width="108"
+            height="108"
+            loading="lazy"
+          >
+        {% endif %}
+
+        <div class="flash-sale-save">{{ section.settings.save_text }}</div>
+
+        
+        {% if section.settings.product_title != blank %}
+        <div class="flash-sale-button">
+            <span class="flash-sale-button-text">{{ section.settings.product_title }}</span>
+        </div>
+        {% elsif section.settings.button_link != blank %}
+        <div class="flash-sale-button">
+            <span class="flash-sale-button-text">{{ section.settings.button_link.title }}</span>
+        </div>
+        {% endif %}
+
+        <div class="countdown-timer" data-end-date="{{ section.settings.countdown_end_date }}">
+          <div class="countdown-box" data-time="hours"><p class="countdown-box-text">12</p></div>
+          <span class="countdown-separator">:</span>
+          <div class="countdown-box" data-time="minutes"><p class="countdown-box-text">00</p></div>
+          <span class="countdown-separator">:</span>
+          <div class="countdown-box" data-time="seconds"><p class="countdown-box-text">00</p></div>
+        </div>
+      </a>
+    </div>
+  </div>
+      <div class="mobile-flash-sale">
+      <a  href="{{ section.settings.button_link.url }}" class="mobile-promotion-flash-sale">
+        <span class="flash-sale-label">{{ section.settings.flash_label }}</span>
+
+        {% if section.settings.product_image %}
+          <img
+            src="{{ section.settings.product_image | image_url: width: 108 }}"
+            alt="{{ section.settings.product_title }}"
+            class="flash-sale-product-image"
+            width="108"
+            height="108"
+            loading="lazy"
+          >
+        {% endif %}
+
+        <div class="flash-sale-save">{{ section.settings.save_text }}</div>
+
+        {% if section.settings.product_title != blank %}
+        <div class="flash-sale-button">
+            <span class="flash-sale-button-text">{{ section.settings.product_title }}</span>
+        </div>
+        {% elsif section.settings.button_link != blank %}
+        <div class="flash-sale-button">
+            <span class="flash-sale-button-text">{{ section.settings.button_link.title }}</span>
+        </div>
+        {% endif %}
+
+        <div class="countdown-timer" data-end-date="{{ section.settings.countdown_end_date }}">
+          <div class="countdown-box" data-time="hours"><p class="countdown-box-text">12</p></div>
+          <span class="countdown-separator">:</span>
+          <div class="countdown-box" data-time="minutes"><p class="countdown-box-text">00</p></div>
+          <span class="countdown-separator">:</span>
+          <div class="countdown-box" data-time="seconds"><p class="countdown-box-text">00</p></div>
+        </div>
+      </a>
+    </div>
+</section>
+
+<script>
+  (function () {
+    function initCountdown() {
+      // 查找所有的倒计时元素（包括PC和移动端）
+      const timers = document.querySelectorAll(
+        '.promotion-banner .countdown-timer, .mobile-flash-sale .countdown-timer'
+      );
+      if (!timers || timers.length === 0) return;
+
+      timers.forEach(function (timer) {
+        const endDateStr = timer.getAttribute('data-end-date');
+        if (!endDateStr) return;
+
+        const endDate = new Date(endDateStr).getTime();
+        let intervalId = null;
+
+        function updateCountdown() {
+          const now = new Date().getTime();
+          const distance = endDate - now;
+
+          if (distance < 0) {
+            // 清除定时器
+            if (intervalId !== null) {
+              clearInterval(intervalId);
+              intervalId = null;
+            }
+
+            // 设置倒计时为 00:00:00
+            const hEl = timer.querySelector('[data-time="hours"] .countdown-box-text');
+            const mEl = timer.querySelector('[data-time="minutes"] .countdown-box-text');
+            const sEl = timer.querySelector('[data-time="seconds"] .countdown-box-text');
+            if (hEl) hEl.textContent = '00';
+            if (mEl) mEl.textContent = '00';
+            if (sEl) sEl.textContent = '00';
+
+            // 隐藏对应的 flash sale 元素
+            const flashSaleElement = timer.closest('.promotion-flash-sale, .mobile-promotion-flash-sale');
+            if (flashSaleElement && !flashSaleElement.classList.contains('hidden')) {
+              flashSaleElement.style.display = 'none';
+            }
+
+            if (flashSaleElement.classList.contains('mobile-promotion-flash-sale')) {
+              const mobileContainer = flashSaleElement.parentElement;
+              if (mobileContainer && mobileContainer.classList.contains('mobile-flash-sale')) {
+                mobileContainer.style.display = 'none';
+              }
+            }
+            return;
+          }
+
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          const hEl = timer.querySelector('[data-time="hours"] .countdown-box-text');
+          const mEl = timer.querySelector('[data-time="minutes"] .countdown-box-text');
+          const sEl = timer.querySelector('[data-time="seconds"] .countdown-box-text');
+          if (hEl) hEl.textContent = String(hours).padStart(2, '0');
+          if (mEl) mEl.textContent = String(minutes).padStart(2, '0');
+          if (sEl) sEl.textContent = String(seconds).padStart(2, '0');
+        }
+
+        // 立即执行一次
+        updateCountdown();
+        // 然后设置定时器
+        intervalId = setInterval(updateCountdown, 1000);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCountdown);
+    } else {
+      initCountdown();
+    }
+
+    document.addEventListener('shopify:section:load', function (event) {
+      if (event.target.querySelector('.promotion-banner')) {
+        setTimeout(initCountdown, 100);
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Promotion Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_banner_image",
+      "label": "Mobile Banner Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "tablet_banner_image",
+      "label": "Tablet Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Gear Up for a Spooky Steal"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "High-quality picks you can trust"
+    },
+    {
+      "type": "text",
+      "id": "flash_label",
+      "label": "Flash Sale Label",
+      "default": "FLASH SALE ALERT!"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product Image"
+    },
+    {
+      "type": "text",
+      "id": "save_text",
+      "label": "Save Text",
+      "default": "Save $20$"
+    },
+    {
+      "type": "text",
+      "id": "product_title",
+      "label": "Product Title",
+
+      "info": "If left blank, the original product title will be displayed"
+    },
+    {
+      "type": "product",
+      "id": "button_link",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "countdown_end_date",
+      "label": "Countdown End Date",
+      "info": "Format: YYYY-MM-DD HH:MM:SS (e.g., 2025-10-31 23:59:59)",
+      "default": "2025-10-31 23:59:59"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotion Banner"
+    }
+  ]
+}
+{% endschema %}
