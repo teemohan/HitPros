@@ -2,26 +2,29 @@
   .promotion-banner{
       position: relative;
       width: 100%;
-      height: 320px;
+      {% comment %} height: 320px; {% endcomment %}
       overflow: hidden;
       background: #ff7901;
-      backdrop-filter: blur(8px);
+      {% comment %} backdrop-filter: blur(8px); {% endcomment %}
       display: flex;
       justify-content: center;
       align-items: center;
   }
   .promotion-banner-image{
-      width: 1440px;
-      height:320px;
+      width: 100%;
+      aspect-ratio: 1440 / 320;
       {% if section.settings.banner_image %}
           background-image: url({{ section.settings.banner_image | image_url: width: 1440 }});
       {% endif %}
+      background-size: cover;        /* 让图片等比例放大填满容器 */
+      background-position: center;   /* 居中显示 */
+      background-repeat: no-repeat;  
       display: flex;
       align-items: center;
       justify-content: center;
   }
   .promotion-banner-content{
-      width: 1196px;
+      width: 1440px;
       height: 100%;
       display: flex;
       align-items: center;
@@ -32,36 +35,38 @@
   .promotion-text-content{
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
       height: 100%;
-      margin-top: 0px;  
-      padding-top: 102px;
+      {% comment %} margin-top: 0px;   {% endcomment %}
+      {% comment %} padding-top: 102px; {% endcomment %}
       {% comment %} transform: translateX(-22px); {% endcomment %}
        margin-left: 564px;
-      width: 411px;
+      width: 761px;
   }
 
   .promotion-banner-title{
       color: var(--White, #FFF);
+      text-shadow: 0 4px 10px rgba(64, 18, 1, 0.70);
       font-family: Inter;
       font-size: 48px;
       font-style: normal;
       font-weight: 900;
-      line-height: normal;
-      width: 411px;
-      text-shadow:  4px 4px 14px #3A0606;
+      line-height: 110%; /* 52.8px */
+      width: 761px;
+
   }
 
   .promotion-banner-subtitle{
       margin-top: 18px;
-      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      color: var(--White, #FFF);
+      text-shadow: 0 2px 6px rgba(64, 18, 1, 0.80);
       font-family: Inter;
       font-size: 24px;
       font-style: normal;
-      font-weight: 400;
+      font-weight: 500;
       line-height: normal;
-      width: 411px;
-      display: none;
+      width: 761px;
+      {% comment %} display: none; {% endcomment %}
 
   }
 
@@ -196,20 +201,23 @@
       .promotion-banner{
       position: relative;
       width: 100%;
-      height: 220px;
+      {% comment %} height: 220px; {% endcomment %}
       overflow: hidden;
       background: #ff7901;
-      backdrop-filter: blur(8px);
+      {% comment %} backdrop-filter: blur(8px); {% endcomment %}
       display: flex;
       justify-content: center;
       align-items: center;
         }
   .promotion-banner-image{
-      width: 728px;
-      height:220px;
+      width: 100%;
+      aspect-ratio: 768 / 220;
       {% if section.settings.tablet_banner_image %}
           background-image: url({{ section.settings.tablet_banner_image | image_url: width: 768 }});
       {% endif %}
+      background-size: cover;        /* 让图片等比例放大填满容器 */
+      background-position: center;   /* 居中显示 */
+      background-repeat: no-repeat;  
       display: flex;
       align-items: center;
       justify-content: center;
@@ -226,13 +234,13 @@
   .promotion-text-content{
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
       height: 100%;
       margin-top: 0px;  
-      padding-top: 91px;
+      {% comment %} padding-top: 91px; {% endcomment %}
       {% comment %} transform: translateX(-22px); {% endcomment %}
        margin-left: 366px;
-      width: 226px;
+      width: 350px;
   }
 
   .promotion-banner-title{
@@ -242,20 +250,20 @@
         font-style: normal;
         font-weight: 900;
         line-height: normal;
-      width: 226px;
+      width: 350px;
       text-shadow:  4px 4px 14px #3A0606;
   }
 
   .promotion-banner-subtitle{
-      margin-top: 18px;
-      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      margin-top: 12px;
+      color: var(--White, #FFF);
       font-family: Inter;
-      font-size: 24px;
+      font-size: 16px;
       font-style: normal;
-      font-weight: 400;
+      font-weight: 500;
       line-height: normal;
-      width: 411px;
-      display: none;
+      width: 350px;
+      {% comment %} display: none; {% endcomment %}
 
   }
 
@@ -384,6 +392,12 @@ align-items: center;
 
   }
 
+
+  .promotion-flash-sale,
+  .mobile-flash-sale {
+    display: none;
+  }
+
   @media (max-width: 768px) {
 
       .promotion-banner{
@@ -425,9 +439,9 @@ align-items: center;
       .promotion-text-content{
           display: flex;
           flex-direction: column;
-          justify-content: flex-start;
+          justify-content: flex-end;
           height: 100%;
-          margin-top: 136px;  
+          {% comment %} margin-top: 136px;   {% endcomment %}
           padding-top: 0px;
           transform: translateX(0px);
           width: 362px;
@@ -435,26 +449,31 @@ align-items: center;
       }
 
       .promotion-banner-title{
-            color: var(--White, #FFF);
-            text-align: center;
-            font-family: Inter;
-            font-size: 28px;
-            font-style: normal;
-            font-weight: 900;
-            line-height: normal;
+          color: var(--White, #FFF);
+          text-align: center;
+          text-shadow: 0 4px 6px rgba(64, 18, 1, 0.70);
+          font-family: Inter;
+          font-size: 26px;
+          font-style: normal;
+          font-weight: 900;
+          line-height: 100%; /* 26px */
+
           width: 100%;
       }
 
       .promotion-banner-subtitle{
-          color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+          color: var(--White, #FFF);
           text-align: center;
+          text-shadow: 0 2px 4px rgba(64, 18, 1, 0.70);
           font-family: Inter;
-          font-size: 16px;
+          font-size: 13px;
           font-style: normal;
-          font-weight: 400;
+          font-weight: 500;
           line-height: normal;
+
           width: 100%;
-          margin-top: 0px;
+          margin-top: 8px;
+          padding-bottom: 18px;
 
       }
       .mobile-flash-sale{
@@ -591,6 +610,28 @@ align-items: center;
         function updateCountdown() {
           const now = new Date().getTime();
           const distance = endDate - now;
+
+const desktopCard = timer.closest('.promotion-flash-sale');
+const mobileCard  = timer.closest('.mobile-promotion-flash-sale');
+const mobileWrap  = mobileCard ? mobileCard.parentElement : null; // .mobile-flash-sale
+
+const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+if (distance > 0) {
+  if (isMobile) {
+    if (mobileWrap) mobileWrap.style.display = 'flex';   // 只展示移动容器
+    if (desktopCard) desktopCard.style.display = 'none'; // 隐藏桌面容器
+  } else {
+    if (desktopCard) desktopCard.style.display = 'flex'; // 只展示桌面容器
+    if (mobileWrap) mobileWrap.style.display = 'none';   // 隐藏移动容器
+  }
+} else {
+  // 已到期：两套都隐藏
+  if (desktopCard) desktopCard.style.display = 'none';
+  if (mobileWrap) mobileWrap.style.display = 'none';
+}
+
+
 
           if (distance < 0) {
             // 清除定时器
