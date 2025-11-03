@@ -74,8 +74,8 @@
           "menu_link_Tma3Pw": {
             "type": "menu_link",
             "settings": {
-              "title": "Halloween Special",
-              "link_url": "shopify://pages/halloween-2025",
+              "title": "Holiday Special",
+              "link_url": "shopify://pages/holiday-2025",
               "isBrand": false,
               "new_window": false,
               "icon": ""
