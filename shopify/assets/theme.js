@@ -6560,7 +6560,10 @@ $(function () {
           animation.play();
           await animation.finished;
         }
-        this.innerHTML = fakeDiv.querySelector('cart-drawer').innerHTML;
+
+       if(fakeDiv.querySelector('cart-drawer') && fakeDiv.querySelector('cart-drawer').innerHTML) {
+           this.innerHTML = fakeDiv.querySelector('cart-drawer').innerHTML;
+        }
 
         // 重新获取更新后的元素并添加安全检查
         const newDrawerContent = this.querySelector('.js-drawer__content');
