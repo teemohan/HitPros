@@ -6368,6 +6368,10 @@ $(function () {
       });
       this.rootDelegate.on('cart:refresh', (event) => {
         let cart_count;
+         if (!event.detail || !event.detail.cart || typeof event.detail.cart.item_count === 'undefined') {
+          console.warn('Cart data is missing or incomplete in cart:refresh event');
+          return;
+        }
         if (+event.detail.cart['item_count'] > 0) {
           $(this).removeClass('!hidden');
         }
