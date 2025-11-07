@@ -2,32 +2,41 @@
   .promotion-banner{
       position: relative;
       width: 100%;
-      {% comment %} height: 320px; {% endcomment %}
+      height: 320px;
       overflow: hidden;
-      background: #ff7901;
+      background: transparent;
       {% comment %} backdrop-filter: blur(8px); {% endcomment %}
       display: flex;
       justify-content: center;
       align-items: center;
   }
   .promotion-banner-image{
-      width: 100%;
-      aspect-ratio: 1440 / 320;
+      {% comment %} width: 100%;
+      aspect-ratio: 1440 / 320; {% endcomment %}
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 100%;
+      height: 320px;
       {% if section.settings.banner_image %}
-          background-image: url({{ section.settings.banner_image | image_url: width: 1440 }});
+          background-image: url({{ section.settings.banner_image | image_url: width: 3820 }});
       {% endif %}
-      background-size: cover;        /* 让图片等比例放大填满容器 */
-      background-position: center;   /* 居中显示 */
+      background-size: cover;        
+      background-position: center;   
       background-repeat: no-repeat;  
       display: flex;
       align-items: center;
       justify-content: center;
   }
   .promotion-banner-content{
-      width: 1440px;
+      position: relative;
+      width: 100%;
       height: 100%;
       display: flex;
+      flex-direction: row;
       align-items: center;
+      justify-content: center;
   }
 
 
@@ -36,39 +45,54 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      height: 100%;
+      {% comment %} height: 100%; {% endcomment %}
       {% comment %} margin-top: 0px;   {% endcomment %}
       {% comment %} padding-top: 102px; {% endcomment %}
       {% comment %} transform: translateX(-22px); {% endcomment %}
-       margin-left: 564px;
-      width: 761px;
+      {% comment %} margin-left: 564px; {% endcomment %}
+      {% comment %} width: 761px; {% endcomment %}
+       
+      {% comment %} opacity: 0.8; {% endcomment %}
+      background: radial-gradient(50% 50% at 50% 50%, #126DA5 0%, #126DA4 100%);
+      padding: 18px;
   }
 
   .promotion-banner-title{
       color: var(--White, #FFF);
-      text-shadow: 0 4px 10px rgba(64, 18, 1, 0.70);
+      text-shadow: 0 4px 10px #0A2B6F;
       font-family: Inter;
-      font-size: 48px;
+      font-size: 64px;
       font-style: normal;
       font-weight: 900;
       line-height: 110%; /* 52.8px */
-      width: 761px;
+      {% comment %} width: 761px; {% endcomment %}
+
+
 
   }
 
   .promotion-banner-subtitle{
       margin-top: 18px;
       color: var(--White, #FFF);
-      text-shadow: 0 2px 6px rgba(64, 18, 1, 0.80);
+      {% comment %} text-shadow: 0 2px 6px rgba(64, 18, 1, 0.80); {% endcomment %}
       font-family: Inter;
       font-size: 24px;
       font-style: normal;
       font-weight: 500;
       line-height: normal;
-      width: 761px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      {% comment %} width: 761px; {% endcomment %}
       {% comment %} display: none; {% endcomment %}
 
+
   }
+  .highlight {
+      color: #FABE00;
+      font-weight: 900;
+  }
+
 
   .promotion-flash-sale{
       border-radius: 4px;
@@ -213,7 +237,7 @@
       width: 100%;
       aspect-ratio: 768 / 220;
       {% if section.settings.tablet_banner_image %}
-          background-image: url({{ section.settings.tablet_banner_image | image_url: width: 768 }});
+          background-image: url({{ section.settings.tablet_banner_image | image_url: width: 3072 }});
       {% endif %}
       background-size: cover;        /* 让图片等比例放大填满容器 */
       background-position: center;   /* 居中显示 */
@@ -235,23 +259,25 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      height: 100%;
+      {% comment %} height: 100%; {% endcomment %}
       margin-top: 0px;  
       {% comment %} padding-top: 91px; {% endcomment %}
       {% comment %} transform: translateX(-22px); {% endcomment %}
-       margin-left: 366px;
-      width: 350px;
+       {% comment %} margin-left: 366px; {% endcomment %}
+      {% comment %} width: 350px; {% endcomment %}
   }
 
   .promotion-banner-title{
         color: var(--White, #FFF);
         font-family: Inter;
-        font-size: 28px;
+        font-size: 32px;
         font-style: normal;
         font-weight: 900;
         line-height: normal;
-      width: 350px;
-      text-shadow:  4px 4px 14px #3A0606;
+        text-shadow: 0 4px 10px #0A2B6F;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
   }
 
   .promotion-banner-subtitle{
@@ -262,7 +288,7 @@
       font-style: normal;
       font-weight: 500;
       line-height: normal;
-      width: 350px;
+      {% comment %} width: 350px; {% endcomment %}
       {% comment %} display: none; {% endcomment %}
 
   }
@@ -287,13 +313,13 @@
   }
 
   .flash-sale-label{
-    color: var(--Core-Primary-Deep-Blue, #0A2B6F);
-    text-align: center;
-    font-family: Inter;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 100%; /* 15px */
+      color: var(--Core-Primary-Deep-Blue, #0A2B6F);
+      text-align: center;
+      font-family: Inter;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 100%; /* 15px */
   }
 
   .flash-sale-product-image{
@@ -304,26 +330,26 @@
   }
 
   .flash-sale-save{
-        color: var(--Core-Secondary-Yellow, #FABE00);
-        text-align: center;
-        font-family: Inter;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 800;
-        line-height: 100%; /* 16px */
-        width: 120px;
-        height: 26px;
-        border-radius: 4px;
-        background: var(--Color, #0A2B6F);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      color: var(--Core-Secondary-Yellow, #FABE00);
+      text-align: center;
+      font-family: Inter;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 100%; /* 16px */
+      width: 120px;
+      height: 26px;
+      border-radius: 4px;
+      background: var(--Color, #0A2B6F);
+      display: flex;
+      align-items: center;
+      justify-content: center;
   }
 
   .flash-sale-button{
       display: flex;
-        width: 150px;
-        height: 26px;
+      width: 150px;
+      height: 26px;
       padding: 0px 0px;
       justify-content: center;
       align-items: center;
@@ -346,9 +372,9 @@
 
   .countdown-timer{
 display: flex;
-width: 120px;
-justify-content: space-between;
-align-items: center;
+      width: 120px;
+      justify-content: space-between;
+      align-items: center;
   }
 
   .countdown-box{
@@ -417,11 +443,17 @@ align-items: center;
           height: 220px;
           display: flex;
           flex-direction: column;
+          justify-content: flex-end;
           align-items: center;
           padding-left: 0px;
       }
 
       .promotion-banner-image{
+          position: relative;    
+          left: auto;
+          top: auto;
+          transform: none;
+
           width: 100%;             
           {% comment %} max-width: 414px;    {% endcomment %}
           aspect-ratio: 375 / 220;  
@@ -433,40 +465,40 @@ align-items: center;
           flex-shrink: 0;
 
           {% if section.settings.mobile_banner_image %}
-            background-image: url({{ section.settings.mobile_banner_image | image_url: width: 800 }});
+            background-image: url({{ section.settings.mobile_banner_image | image_url: width: 1500 }});
           {% endif %}
       }
       .promotion-text-content{
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          height: 100%;
+          {% comment %} height: 100%; {% endcomment %}
           {% comment %} margin-top: 136px;   {% endcomment %}
           padding-top: 0px;
           transform: translateX(0px);
-          width: 362px;
+          {% comment %} width: 362px; {% endcomment %}
           margin-left: 0px;
+          background: transparent;
       }
 
       .promotion-banner-title{
           color: var(--White, #FFF);
           text-align: center;
-          text-shadow: 0 4px 6px rgba(64, 18, 1, 0.70);
+          text-shadow: 0 4px 10px #0A2B6F;
           font-family: Inter;
-          font-size: 26px;
+          font-size: 28px;
           font-style: normal;
           font-weight: 900;
           line-height: 100%; /* 26px */
 
-          width: 100%;
+          {% comment %} width: 100%; {% endcomment %}
       }
 
       .promotion-banner-subtitle{
           color: var(--White, #FFF);
           text-align: center;
-          text-shadow: 0 2px 4px rgba(64, 18, 1, 0.70);
           font-family: Inter;
-          font-size: 13px;
+          font-size: 14px;
           font-style: normal;
           font-weight: 500;
           line-height: normal;
@@ -490,8 +522,8 @@ align-items: center;
       }
       .mobile-promotion-flash-sale{
           border-radius: 4px;
-        border: 1px solid var(--Blue-1, #D3DEF1);
-        background: var(--BG, #FFFFFF);
+          border: 1px solid var(--Blue-1, #D3DEF1);
+          background: var(--BG, #FFFFFF);
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -512,7 +544,9 @@ align-items: center;
   <div class="promotion-banner-image">
     <div class="promotion-banner-content">
       <div class="promotion-text-content">
-        <h2 class="promotion-banner-title">{{ section.settings.title }}</h2>
+        {% assign highlighted_title = section.settings.title | replace: 'Get Value', '<span class="highlight">Get Value</span>' %}
+        <h2 class="promotion-banner-title">{{ highlighted_title }}</h2>
+
         <p class="promotion-banner-subtitle">{{ section.settings.subtitle }}</p>
       </div>
 
@@ -611,25 +645,25 @@ align-items: center;
           const now = new Date().getTime();
           const distance = endDate - now;
 
-const desktopCard = timer.closest('.promotion-flash-sale');
-const mobileCard  = timer.closest('.mobile-promotion-flash-sale');
-const mobileWrap  = mobileCard ? mobileCard.parentElement : null; // .mobile-flash-sale
+          const desktopCard = timer.closest('.promotion-flash-sale');
+          const mobileCard  = timer.closest('.mobile-promotion-flash-sale');
+          const mobileWrap  = mobileCard ? mobileCard.parentElement : null; // .mobile-flash-sale
 
-const isMobile = window.matchMedia('(max-width: 768px)').matches;
+          const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-if (distance > 0) {
-  if (isMobile) {
-    if (mobileWrap) mobileWrap.style.display = 'flex';   // 只展示移动容器
-    if (desktopCard) desktopCard.style.display = 'none'; // 隐藏桌面容器
-  } else {
-    if (desktopCard) desktopCard.style.display = 'flex'; // 只展示桌面容器
-    if (mobileWrap) mobileWrap.style.display = 'none';   // 隐藏移动容器
-  }
-} else {
-  // 已到期：两套都隐藏
-  if (desktopCard) desktopCard.style.display = 'none';
-  if (mobileWrap) mobileWrap.style.display = 'none';
-}
+          if (distance > 0) {
+            if (isMobile) {
+              if (mobileWrap) mobileWrap.style.display = 'flex';   // 只展示移动容器
+              if (desktopCard) desktopCard.style.display = 'none'; // 隐藏桌面容器
+            } else {
+              if (desktopCard) desktopCard.style.display = 'flex'; // 只展示桌面容器
+              if (mobileWrap) mobileWrap.style.display = 'none';   // 隐藏移动容器
+            }
+          } else {
+            // 已到期：两套都隐藏
+            if (desktopCard) desktopCard.style.display = 'none';
+            if (mobileWrap) mobileWrap.style.display = 'none';
+          }
 
 
 
