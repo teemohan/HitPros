@@ -3,12 +3,9 @@
     {%- if section.settings.banner_image or section.settings.mobile_banner_image -%}
       {%- if section.settings.banner_image -%}
         <img 
-          src="{{ section.settings.banner_image | image_url: width: 1920 }}"
-          srcset="{{ section.settings.banner_image | image_url: width: 768 }} 768w,
-                  {{ section.settings.banner_image | image_url: width: 1024 }} 1024w,
-                  {{ section.settings.banner_image | image_url: width: 1440 }} 1440w,
-                  {{ section.settings.banner_image | image_url: width: 1920 }} 1920w"
-          sizes="100vw"
+          src="{{ section.settings.banner_image | image_url }}"
+          width="100%"
+          height="auto"
           alt="{{ section.settings.banner_image.alt | default: 'Banner Image' }}"
           class="w-full h-auto object-cover hidden fb-md:block"
           loading="lazy"
@@ -16,22 +13,18 @@
       {%- endif -%}
       {%- if section.settings.mobile_banner_image -%}
         <img 
-          src="{{ section.settings.mobile_banner_image | image_url: width: 768 }}"
-          srcset="{{ section.settings.mobile_banner_image | image_url: width: 375 }} 375w,
-                  {{ section.settings.mobile_banner_image | image_url: width: 414 }} 414w,
-                  {{ section.settings.mobile_banner_image | image_url: width: 768 }} 768w"
-          sizes="100vw"
+          src="{{ section.settings.mobile_banner_image | image_url }}"
+          width="100%"
+          height="auto"
           alt="{{ section.settings.mobile_banner_image.alt | default: 'Mobile Banner Image' }}"
           class="w-full h-auto object-cover block fb-md:hidden"
           loading="lazy"
         >
       {%- elsif section.settings.banner_image -%}
         <img 
-          src="{{ section.settings.banner_image | image_url: width: 768 }}"
-          srcset="{{ section.settings.banner_image | image_url: width: 375 }} 375w,
-                  {{ section.settings.banner_image | image_url: width: 414 }} 414w,
-                  {{ section.settings.banner_image | image_url: width: 768 }} 768w"
-          sizes="100vw"
+          src="{{ section.settings.banner_image | image_url }}"
+          width="100%"
+          height="auto"
           alt="{{ section.settings.banner_image.alt | default: 'Banner Image' }}"
           class="w-full h-auto object-cover block fb-md:hidden"
           loading="lazy"
