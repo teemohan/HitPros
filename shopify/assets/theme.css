@@ -13,7 +13,11 @@ img:not([src]) {
   user-select: none;
   
 }
-
+@media screen and (min-width: 741px) {
+  html{
+    scrollbar-gutter: stable;
+  }
+}
 @media screen and (max-width: 740px) {
   .hidden-phone {
     display: none !important;

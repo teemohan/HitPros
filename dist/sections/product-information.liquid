@@ -160,7 +160,9 @@ $(function() {
     productFeaturesElements.forEach(productFeatures => {
       const productListDesc = productFeatures.querySelector('.product-list-desc');
       const skeletonLoader = productFeatures.querySelector('.skeleton-loader');
-      
+      if(!productListDesc) {
+        return;
+      }
       // 不展示 
       if(productCharacter && productCharacter instanceof Array && productCharacter.length > 0) {
         productCharacter.forEach(item => {

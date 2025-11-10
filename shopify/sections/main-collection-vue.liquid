@@ -55,7 +55,7 @@
             <div class="flex-col space-y-5 fb-sm:space-y-6 hidden fb-sm:flex w-full">
               <div class="fb-sm:bg-white fb-sm:py-6 fb-sm:px-7 fb-sm:w-full fb-sm:rounded-sm" :data-spu="item.spu" v-for="(item, itemindex) in spuData" :key="item.spu">
                 <div class="w-full p-4 bg-white rounded-sm mb-5 fb-sm:rounded-none fb-sm:p-0 fb-sm:bg-transparent hidden fb-sm:block">
-                  <a :href="'/products/' + item.skus[0].skuCode">
+                  <a :href="'/products/' + item.skus[0].skuCode.toLowerCase()">
                     <h4 :title="item.spuTitle" class="block fb-sm:hidden">
                       <span class="text-main text-13 font-bold">[[item.spuTitle]]</span>
                       <span class="text-666666 text-xs ml-1">([[item.skus.length]] [[item.skus.length > 1 ? 'products' : 'product']])</span>
@@ -113,7 +113,7 @@
                       <div class="w-full hidden fb-sm:block " v-for="(lib, libindex) in getPaginatedSkus(item.spu)" :key="lib.skuCode">
                         <div class="text-16 text-121212 justify-between min-h-10 items-center hidden py-2 fb-sm:flex w-full hover:bg-D3DEF1 hover:rounded-sm group" :data-sku="lib.skuCode">
                             <div class="flex-1 w-full h-full flex items-center justify-between cursor-pointer">
-                              <a class="flex-1 flex items-center justify-center text-center px-1 text-14" :href="'/products/' + lib.skuCode"  v-for="(item2, item2index) in item.spuKey" :key="item2">
+                              <a class="flex-1 flex items-center justify-center text-center px-1 text-14" :href="'/products/' + lib.skuCode.toLowerCase()"  v-for="(item2, item2index) in item.spuKey" :key="item2">
                                 [[ lib.attrMap[item2index][item2] ]]
                               </a>
                               <div class="flex-1 flex items-center justify-center px-1">
@@ -198,7 +198,7 @@
                         </svg>
                       </button>
                     </div> {% endcomment %}
-                      <a :href="'/products/' + lib.skuCode" class="w-full  text-center flex items-center justify-center" style="height: 166px;" >
+                      <a :href="'/products/' + lib.skuCode.toLowerCase()" class="w-full  text-center flex items-center justify-center" style="height: 166px;" >
                         <img 
                           width="130px" 
                           height="166px" 
@@ -221,7 +221,7 @@
                         {% comment %} <span class="text-10 text-666666"> [[lib.model]]</span> {% endcomment %}
                       </div>
                       <div class="w-full mt-1">
-                        <a :href="'/products/' + lib.skuCode" :title="lib.title" class="text-14 text-333333 mt-2 line-clamp-3 h-16 fb-sm:h-auto">
+                        <a :href="'/products/' + lib.skuCode.toLowerCase()" :title="lib.title" class="text-14 text-333333 mt-2 line-clamp-3 h-16 fb-sm:h-auto">
                           [[lib.title]] 
                       </a>
                       </div>

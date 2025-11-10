@@ -6368,6 +6368,10 @@ $(function () {
       });
       this.rootDelegate.on('cart:refresh', (event) => {
         let cart_count;
+         if (!event.detail || !event.detail.cart || typeof event.detail.cart.item_count === 'undefined') {
+          console.warn('Cart data is missing or incomplete in cart:refresh event');
+          return;
+        }
         if (+event.detail.cart['item_count'] > 0) {
           $(this).removeClass('!hidden');
         }
@@ -6560,7 +6564,10 @@ $(function () {
           animation.play();
           await animation.finished;
         }
-        this.innerHTML = fakeDiv.querySelector('cart-drawer').innerHTML;
+
+       if(fakeDiv.querySelector('cart-drawer') && fakeDiv.querySelector('cart-drawer').innerHTML) {
+           this.innerHTML = fakeDiv.querySelector('cart-drawer').innerHTML;
+        }
 
         // 重新获取更新后的元素并添加安全检查
         const newDrawerContent = this.querySelector('.js-drawer__content');

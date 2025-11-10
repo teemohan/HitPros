@@ -12,12 +12,12 @@
     "fb_img_video_banner_Uy7weH": {
       "type": "fb-img-video-banner",
       "blocks": {
-        "image_banner_jk7jKr": {
+        "image_banner_P9LUty": {
           "type": "image_banner",
           "settings": {
-            "link_url": "shopify://collections/electrical",
-            "image": "shopify://shop_images/Batteries_HP_0d596b93-f81e-4d34-984c-27727da32884.png",
-            "mobile_image": "shopify://shop_images/Batteries_H5.png"
+            "link_url": "shopify://pages/holiday-2025",
+            "image": "shopify://shop_images/November_3_HP.png",
+            "mobile_image": "shopify://shop_images/HP_November_3_H5_fa020a82-3187-4a32-b4a7-2a123877e46c.png"
           }
         },
         "image_banner_x9bY43": {
@@ -28,19 +28,19 @@
             "mobile_image": "shopify://shop_images/Heater_H5.png"
           }
         },
-        "image_banner_P9LUty": {
+        "image_banner_jk7jKr": {
           "type": "image_banner",
           "settings": {
-            "link_url": "shopify://pages/halloween-2025",
-            "image": "shopify://shop_images/Gift_sets_promo_HP_359b6d7c-8578-47a0-825f-66a72221344a.png",
-            "mobile_image": "shopify://shop_images/Gift_sets_promo_H5.png"
+            "link_url": "shopify://collections/electrical",
+            "image": "shopify://shop_images/Batteries_HP_0d596b93-f81e-4d34-984c-27727da32884.png",
+            "mobile_image": "shopify://shop_images/Batteries_H5.png"
           }
         }
       },
       "block_order": [
-        "image_banner_jk7jKr",
+        "image_banner_P9LUty",
         "image_banner_x9bY43",
-        "image_banner_P9LUty"
+        "image_banner_jk7jKr"
       ],
       "name": "fb-img-video-banner",
       "settings": {

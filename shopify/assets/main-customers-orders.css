@@ -362,7 +362,7 @@
   height: auto;
   border: 1px solid var(--my-border);
 }
-.order-main .order-main-detail.hidden {
+.order-main .order-main-detail.lesshidden {
   height: 250px;
   overflow: hidden;
 }

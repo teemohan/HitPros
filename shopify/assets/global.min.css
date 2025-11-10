@@ -37,6 +37,7 @@
 }
 .header--zindex{
   z-index: -2!important;
+  opacity: 0;
 }
 #shopify-section-header{
   transition: transform 0.1s ease-in-out;
