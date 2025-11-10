@@ -62,8 +62,8 @@
       "type": "markting-commom-banner",
       "name": "Marketing Commom Banner",
       "settings": {
-        "banner_image": "shopify://shop_images/Frame_970.webp",
-        "mobile_banner_image": "shopify://shop_images/image_149.webp",
+        "banner_image": "shopify://shop_images/Frame_970.jpg",
+        "mobile_banner_image": "shopify://shop_images/Frame_970mob_2.jpg",
         "banner_link": ""
       }
     },
