@@ -52,7 +52,7 @@
       </div>
     {%- endif -%}
     {%- if section.blocks.size > 0 -%}
-      <div class="collection-nav-tabs mb-2.5 fb-md:mb-5 -mx-4 px-4 fb-md:mx-0 fb-md:px-0">
+      <div class="collection-nav-tabs mb-6 fb-md:mb-8 -mx-4 px-4 fb-md:mx-0 fb-md:px-0">
         <div class="collection-nav-container relative  fb-md:flex fb-md:items-center fb-md:justify-between border-b border-D9D9D9">
           <div class="collection-tabs-swiper  pb-0 swiper w-full fb-md:flex-1">
             <div class="swiper-wrapper">
@@ -73,7 +73,7 @@
                 -%}
                 <div class="swiper-slide" style="width: auto">
                   <button 
-                    class="{% if forloop.first %}active{% endif %} collection-tab hover:text-main hover:bg-F3F8FC text-121212 font-medium transition-all duration-200 px-4 py-2.5 text-18 fb-md:text-18 fb-md:text-666666"
+                    class="{% if forloop.first %}active{% endif %} collection-tab hover:text-main hover:bg-F3F8FC text-121212 font-medium transition-all duration-200 px-4 py-2.5 text-18 fb-md:text-18 fb-md:text-666666 "
                     data-collection-id="{{ block.id }}"
                     data-collection-handle="{{ block_collection.handle }}"
                   >

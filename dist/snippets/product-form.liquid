@@ -22,6 +22,10 @@
     background-color: unset;
     box-shadow: unset;
   }
+  .underline{
+    text-decoration: underline;
+    cursor: pointer;
+  }
   @media screen and (max-width: 740px) {
     .globo-form-control label {
       font-size: 14px !important;
@@ -638,9 +642,9 @@
           </div>
         </div>
         {% if product.metafields.product.shipping_charge_policy == '0' %}
-          {%- assign shipping_text = "Free shipping on orders of $75+" -%}
+          {%- assign shipping_text = "Free Shipping on Orders Over $75." -%}
         {%- else -%}
-          {%- assign shipping_text = "Requires special shipping, additional charges calculated at check-out" -%}
+          {%- assign shipping_text = "Requires special shipping, additional charges calculated at check-out." -%}
         {% endif %}
         <div class="w-full pt-0 pb-2" >
           <ul class="w-full">
@@ -667,14 +671,18 @@
               </el-form-item>
               <el-button :loading="loading" @click="handleComputedDeleveryDate" class="w-1/2 fb-md:w-12.5r !border-main text-main !rounded-sm flex items-center h-9 fb-md:h-full justify-center font-bold fb-max-sm:text-14 fb-max-sm:text-14 text-16">Submit</el-button>
             </el-form>
-            <div class="text-121212 text-14 flex flex-col items-start fb-md:items-center fb-md:flex-row justify-start fb-md:space-x-10" v-if="isEstimateShow && deleveryRes">
-              <div class="px-4 h-10 bg-F3F8FC flex items-center justify-start rounded-sm space-x-4 shrink-0 cursor-pointer" @click="gobackzip">
+            {% comment %} fb-md:space-x-10 {% endcomment %}
+            <div class="text-121212 text-14 flex flex-col mt-3 items-start fb-md:items-center fb-md:flex-row justify-start " v-if="isEstimateShow && deleveryRes ">
+              {% comment %} <div class="px-4 h-10 bg-F3F8FC flex items-center justify-start rounded-sm space-x-4 shrink-0 cursor-pointer" @click="gobackzip">
                 <span class="text-142A6B fb-max-sm:text-14 fb-max-sm:text-14  text-16 font-bold">Ship to ${ruleForm.zipCode}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="10" viewBox="0 0 17 10" fill="none">
                   <path d="M9.86762 5.19488L15.1939 -7.89455e-08L17 1.77846L8.6323 10L0.0398216 1.82562C-0.0256596 1.75344 0.000728607 1.70917 0.0398216 1.63507C0.259714 1.21451 1.39046 0.466749 1.70711 -6.68474e-07L7.32662 5.29112L8.49988 6.36352L9.86762 5.19488Z" fill="#F9BE00"/>
                 </svg>
+              </div> {% endcomment %}
+              <div class=" text-16 fb-max-sm:text-14  text-121212  font-medium">
+                Ship to <a  class="underline text-main" @click="gobackzip" >${ruleForm.zipCode}</a> <span class="mr-1">.</span>
               </div>
-              <div class="w-full fb-md:flex-1 fb-max-sm:text-14 fb-max-sm:text-14  text-16 fb-md:w-auto mt-4 fb-md:mt-0">
+              <div class="w-full fb-md:flex-1 fb-max-sm:text-14 fb-max-sm:text-14  text-16 fb-md:w-auto mt-4 fb-md:mt-0 font-medium">
                 <template v-if="deleveryRes.availableInventoryCount == 0">
                   <div>Expected to arrive between <span class="font-bold">${formatDate(stockDateStart)}</span> and <span class="font-bold">${formatDate(stockDateEnd)}</span>.</div>
                 </template>
