@@ -46,10 +46,10 @@
             <div class="main-title text-16 font-bold text-121212 text-left mb-5">${ getCurrentTitle() }</div>
             <ul v-if="!isLastLevel()" class="flex flex-col space-y-4 break-words">
               <li v-for="(menu, idx) in getCurrentMenuData()" 
-                  :key="idx" 
+                  :key="menu.name" 
                   @click="handleMenuClick(menu)" 
                   class="text-121212 flex items-center space-x-4 cursor-pointer">
-                <img v-if="menu.img" :data-src="menu.img" :title="menu.name" width="24" height="24" class="lazyload w-9 h-9 object-contain" />
+                <img v-if="menu.img" :key="menu.name"  :data-src="menu.img" :title="menu.name" width="24" height="24" class="lazyload w-9 h-9 object-contain" />
                 <span class="text-14 text-121212">${ menu.name }</span>
                 <span class="arrow ml-auto flex-1 flex self-stretch items-center justify-end" v-if="hasChildren(menu)">
                   {%- render 'icon' with 'menu-arrow-right' -%}
@@ -58,7 +58,7 @@
             </ul>
             <div v-if="isLastLevel()" class="grid grid-cols-3 gap-x-2.5 gap-y-3">
               <div v-for="(menu, idx) in getCurrentMenuData()" 
-                   :key="idx" 
+                   :key="menu.name + idx" 
                    @click="handleMenuClick(menu)" 
                    class="text-121212 flex flex-col items-center text-center cursor-pointer p-2">
                 <div class="w-27 h-27 relative">
@@ -68,7 +68,7 @@
                       <rect x="-26" y="48.9998" width="104.538" height="30" transform="rotate(-45 -26 48.9998)" fill="#ED0006"/>
                     </svg>
                   </div>
-                  <img :data-src="menu.img" :title="menu.name" width="108" height="108" class="lazyload w-27 h-27 object-contain" />
+                  <img :data-src="menu.img" :key="menu.name + idx"  :title="menu.name" width="108" height="108" class="lazyload w-27 h-27 object-contain" />
                 </div>
                 <div class="mt-1.5 w-full text-center text-12 font-medium text-121212 h-8 line-clamp-2">${ menu.name }</div>
               </div>
