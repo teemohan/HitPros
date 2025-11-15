@@ -370,7 +370,18 @@
                 {% assign _limit = section.settings.type_product_limit | default: 12 %}
                 {% for product in section.settings.bestSeller_collection.products  %}
                   <div class="swiper-slide">
-                    <a href="{{ product.url }}" class="product-link">
+                    <a href="{{ product.url }}" class="product-link relative">
+                      {% if product.compare_at_price > product.price %}
+                        <div class="gift-offer-badge">
+                          {% assign discount_percentage = product.compare_at_price
+                            | minus: product.price
+                            | times: 100.0
+                            | divided_by: product.compare_at_price
+                            | round
+                          %}
+                          -{{ discount_percentage }}%
+                        </div>
+                      {% endif %}
                       <div class="product-card">
                         {% if product.featured_image %}
                           {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
@@ -445,7 +456,18 @@
                 {% assign _limit = section.settings.type_product_limit | default: 12 %}
                 {% for product in section.settings.set1_collection.products %}
                   <div class="swiper-slide">
-                    <a href="{{ product.url }}" class="product-link">
+                    <a href="{{ product.url }}" class="product-link relative">
+                      {% if product.compare_at_price > product.price %}
+                        <div class="gift-offer-badge">
+                          {% assign discount_percentage = product.compare_at_price
+                            | minus: product.price
+                            | times: 100.0
+                            | divided_by: product.compare_at_price
+                            | round
+                          %}
+                          -{{ discount_percentage }}%
+                        </div>
+                      {% endif %}
                       <div class="product-card">
                         {% if product.featured_image %}
                           {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
@@ -498,8 +520,19 @@
               <div class="swiper-wrapper">
                 {% assign _limit = section.settings.type_product_limit | default: 12 %}
                 {% for product in section.settings.set2_collection.products  %}
-                  <div class="swiper-slide">
+                  <div class="swiper-slide relative">
                     <a href="{{ product.url }}" class="product-link">
+                       {% if product.compare_at_price > product.price %}
+                        <div class="gift-offer-badge">
+                          {% assign discount_percentage = product.compare_at_price
+                            | minus: product.price
+                            | times: 100.0
+                            | divided_by: product.compare_at_price
+                            | round
+                          %}
+                          -{{ discount_percentage }}%
+                        </div>
+                      {% endif %}
                       <div class="product-card">
                         {% if product.featured_image %}
                           {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
@@ -552,8 +585,19 @@
               <div class="swiper-wrapper">
                 {% assign _limit = section.settings.type_product_limit | default: 12 %}
                 {% for product in section.settings.set3_collection.products  %}
-                  <div class="swiper-slide">
+                  <div class="swiper-slide relative">
                     <a href="{{ product.url }}" class="product-link">
+                       {% if product.compare_at_price > product.price %}
+                        <div class="gift-offer-badge">
+                          {% assign discount_percentage = product.compare_at_price
+                            | minus: product.price
+                            | times: 100.0
+                            | divided_by: product.compare_at_price
+                            | round
+                          %}
+                          -{{ discount_percentage }}%
+                        </div>
+                      {% endif %}
                       <div class="product-card">
                         {% if product.featured_image %}
                           {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
@@ -607,7 +651,18 @@
                 {% assign _limit = section.settings.type_product_limit | default: 12 %}
                 {% for product in section.settings.set4_collection.products %}
                   <div class="swiper-slide">
-                    <a href="{{ product.url }}" class="product-link">
+                    <a href="{{ product.url }}" class="product-link relative">
+                       {% if product.compare_at_price > product.price %}
+                        <div class="gift-offer-badge">
+                          {% assign discount_percentage = product.compare_at_price
+                            | minus: product.price
+                            | times: 100.0
+                            | divided_by: product.compare_at_price
+                            | round
+                          %}
+                          -{{ discount_percentage }}%
+                        </div>
+                      {% endif %}
                       <div class="product-card">
                         {% if product.featured_image %}
                           {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
