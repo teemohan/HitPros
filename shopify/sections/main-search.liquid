@@ -666,7 +666,7 @@ $(function() {
                 product.favorited = false;
                 if(product.compareAtPrice && +product.compareAtPrice > +product.price) {
                   product.compareAtPriceFormat = zkhFormatMoney(+(product.compareAtPrice || 0) * 100);
-                  product.discountPercentage = Math.ceil(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100);
+                  product.discountPercentage = Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100.0);
                 }
                 return product;
               });
