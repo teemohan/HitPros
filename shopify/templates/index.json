@@ -93,18 +93,18 @@
     "collection_featured_product_iNBpjq": {
       "type": "collection-featured-product",
       "blocks": {
-        "collection_BBNJye": {
-          "type": "collection",
-          "settings": {
-            "name": "Safety",
-            "collection": "safety-1"
-          }
-        },
         "collection_KfNRPm": {
           "type": "collection",
           "settings": {
             "name": "HVAC",
             "collection": "hvac-1"
+          }
+        },
+        "collection_BBNJye": {
+          "type": "collection",
+          "settings": {
+            "name": "Safety",
+            "collection": "safety-1"
           }
         },
         "collection_UHnqiF": {
@@ -137,8 +137,8 @@
         }
       },
       "block_order": [
-        "collection_BBNJye",
         "collection_KfNRPm",
+        "collection_BBNJye",
         "collection_UHnqiF",
         "collection_L36E3z",
         "collection_cxbtcF",
