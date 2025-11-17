@@ -110,7 +110,7 @@
             | times: 1
           %}
           {% assign discount_difference = compare_at_price | minus: price %}
-          {% assign discount_percentage = discount_difference | divided_by: compare_at_price | times: 100 | ceil %}
+          {% assign discount_percentage = discount_difference | divided_by: compare_at_price | times: 100.0 | round %}
         {% endif %}
         <div class="price-list price-list--centered">
           {% if product.price < product.compare_at_price -%}
