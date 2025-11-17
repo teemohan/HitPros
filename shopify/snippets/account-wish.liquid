@@ -317,7 +317,7 @@ $(function() {
               availableForSale: graphqlVariant.availableForSale,
               isSelected: false
             }
-            resData.discountPercent = Math.ceil(resData.compareAtPrice? ((resData.compareAtPrice - resData.price) / resData.compareAtPrice) * 100 : 0)
+            resData.discountPercent = Math.round(resData.compareAtPrice? ((resData.compareAtPrice - resData.price) / resData.compareAtPrice) * 100.0 : 0)
             return resData
           } catch (error) {
           }
