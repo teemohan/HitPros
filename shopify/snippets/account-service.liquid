@@ -416,7 +416,7 @@ $(function() {
         async navToOrderDetail(orderName) {
           event.stopPropagation();
           try {
-            const res = await fetch(`${window.northsky.api}/order?orderName=`+orderName, {
+            const res = await fetch(`${window.northsky.api}/order?orderName=${encodeURIComponent(orderName)}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
