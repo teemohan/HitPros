@@ -56,7 +56,7 @@
             <header>
               <div class="cus-price-list">
                 <div class="price">$${ item.price }</div>
-                <div v-if="item.compareAtPrice" class="discount-price">
+                <div v-if="item.discountPercent > 0" class="discount-price">
                   <span>$${ item.compareAtPrice }</span>
                   <span>${item.discountPercent}%OFF</span>
                 </div>
@@ -118,7 +118,7 @@
                     </template>
                   </div>
                 </div>
-                <div v-if="item.compareAtPrice" class="discount-price">
+                <div v-if="item.discountPercent > 0" class="discount-price">
                   <span>$${ item.compareAtPrice }</span>
                   <span>${item.discountPercent}%OFF</span>
                 </div>
