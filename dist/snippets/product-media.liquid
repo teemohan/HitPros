@@ -107,6 +107,7 @@
           <native-video
             class="video-wrapper video-wrapper--native"
             style="--aspect-ratio: 1"
+            data-media-type="video"
           >
             {%- unless section.settings.enable_video_autoplay -%}
               <div class="video-wrapper__poster">
@@ -129,6 +130,7 @@
                     type="button"
                     class="video-wrapper__play-button"
                     title="{{ 'general.accessibility.play_video' | t | escape }}"
+                    data-action="play-video"
                   >
                     {%- render 'icon' with 'play', width: 72, height: 72 -%}
                   </button>
@@ -401,30 +403,58 @@
         <div class="w-full justify-center flex items-center fb-md:hidden">
           <div class=" dots-nav dots-nav--centered">
             
+          {%- comment -%}First, show dots for videos{%- endcomment -%}
+          {%- for media in product.media -%}
+            {% if media.media_type == 'video' %}
+              {%- assign is_media_filtered = false -%}
+              {%- assign media_id_as_string = media.id | append: '' -%}
+
+              {%- if filtered_media_ids contains media_id_as_string -%}
+                {%- assign is_media_filtered = true -%}
+              {%- endif -%}
+
+              <button
+                type="button"
+                tabindex="-1"
+                class="dots-nav__item {% if is_media_filtered %}is-filtered{% endif %} tap-area"
+                {% if selected_media.id == media.id %}
+                  aria-current="true"
+                {% endif %}
+                aria-controls="product-{{ section.id }}-{{ media.id }}"
+                data-media-id="{{ media.id }}"
+                data-action="select"
+                style="border-radius:50%;width:8px;height:8px;"
+              >
+                <span  class="visually-hidden">{{ 'general.accessibility.go_to_slide' | t: num: forloop.index }}</span>
+              </button>
+            {% endif %}
+          {%- endfor -%}
+          
+          {%- comment -%}Then, show dots for other media types{%- endcomment -%}
           {%- for media in product.media -%}
             {% unless media.media_type == 'video' %}
-            {%- assign is_media_filtered = false -%}
-            {%- assign media_id_as_string = media.id | append: '' -%}
+              {%- assign is_media_filtered = false -%}
+              {%- assign media_id_as_string = media.id | append: '' -%}
 
-            {%- if filtered_media_ids contains media_id_as_string -%}
-              {%- assign is_media_filtered = true -%}
-            {%- endif -%}
+              {%- if filtered_media_ids contains media_id_as_string -%}
+                {%- assign is_media_filtered = true -%}
+              {%- endif -%}
 
-            <button
-              type="button"
-              tabindex="-1"
-              class="dots-nav__item {% if is_media_filtered %}is-filtered{% endif %} tap-area"
-              {% if selected_media.id == media.id %}
-                aria-current="true"
-              {% endif %}
-              aria-controls="product-{{ section.id }}-{{ media.id }}"
-              data-media-id="{{ media.id }}"
-              data-action="select"
-              style="border-radius:50%;width:8px;height:8px;"
-            >
-              <span  class="visually-hidden">{{ 'general.accessibility.go_to_slide' | t: num: forloop.index }}</span>
-            </button>
-          {% endunless %}
+              <button
+                type="button"
+                tabindex="-1"
+                class="dots-nav__item {% if is_media_filtered %}is-filtered{% endif %} tap-area"
+                {% if selected_media.id == media.id %}
+                  aria-current="true"
+                {% endif %}
+                aria-controls="product-{{ section.id }}-{{ media.id }}"
+                data-media-id="{{ media.id }}"
+                data-action="select"
+                style="border-radius:50%;width:8px;height:8px;"
+              >
+                <span  class="visually-hidden">{{ 'general.accessibility.go_to_slide' | t: num: forloop.index }}</span>
+              </button>
+            {% endunless %}
           {%- endfor -%}
         </div>
         </div>
