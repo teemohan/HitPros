@@ -80,7 +80,7 @@
                                 {% assign price = product.price | money_without_currency | replace: ',', '' | times: 1 %}
                                 {% assign compare_at_price = product.compare_at_price | money_without_currency | replace: ',', '' | times: 1 %}
                                 {% assign discount_difference = compare_at_price | minus: price %}
-                                {% assign discount_percentage = discount_difference | divided_by: compare_at_price | times: 100 | ceil %}
+                                {% assign discount_percentage = discount_difference | divided_by: compare_at_price | times: 100.0 | round %}
                                 <div class="flex justify-start items-center gap-2">
                                   <div class="mr-1">
                                     {% render 'format-price', price: product.price, text_size:'text-24' %}

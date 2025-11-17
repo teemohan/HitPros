@@ -371,7 +371,18 @@
                 {% for product in section.settings.bestSeller_collection.products  %}
                   <div class="swiper-slide">
                     <a href="{{ product.url }}" class="product-link">
-                      <div class="product-card">
+                      <div class="product-card relative">
+                        {% if product.compare_at_price > product.price %}
+                          <div class="gift-offer-badge">
+                            {% assign discount_percentage = product.compare_at_price
+                              | minus: product.price
+                              | times: 100.0
+                              | divided_by: product.compare_at_price
+                              | round
+                            %}
+                            -{{ discount_percentage }}%
+                          </div>
+                        {% endif %}
                         {% if product.featured_image %}
                           {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
                         {% else %}
@@ -446,7 +457,18 @@
                 {% for product in section.settings.set1_collection.products %}
                   <div class="swiper-slide">
                     <a href="{{ product.url }}" class="product-link">
-                      <div class="product-card">
+                      <div class="product-card relative">
+                        {% if product.compare_at_price > product.price %}
+                          <div class="gift-offer-badge">
+                            {% assign discount_percentage = product.compare_at_price
+                              | minus: product.price
+                              | times: 100.0
+                              | divided_by: product.compare_at_price
+                              | round
+                            %}
+                            -{{ discount_percentage }}%
+                          </div>
+                        {% endif %}
                         {% if product.featured_image %}
                           {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
                         {% else %}
@@ -500,7 +522,18 @@
                 {% for product in section.settings.set2_collection.products  %}
                   <div class="swiper-slide">
                     <a href="{{ product.url }}" class="product-link">
-                      <div class="product-card">
+                      <div class="product-card relative">
+                        {% if product.compare_at_price > product.price %}
+                          <div class="gift-offer-badge">
+                            {% assign discount_percentage = product.compare_at_price
+                              | minus: product.price
+                              | times: 100.0
+                              | divided_by: product.compare_at_price
+                              | round
+                            %}
+                            -{{ discount_percentage }}%
+                          </div>
+                        {% endif %}
                         {% if product.featured_image %}
                           {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
                         {% else %}
@@ -554,7 +587,18 @@
                 {% for product in section.settings.set3_collection.products  %}
                   <div class="swiper-slide">
                     <a href="{{ product.url }}" class="product-link">
-                      <div class="product-card">
+                      <div class="product-card relative">
+                        {% if product.compare_at_price > product.price %}
+                          <div class="gift-offer-badge">
+                            {% assign discount_percentage = product.compare_at_price
+                              | minus: product.price
+                              | times: 100.0
+                              | divided_by: product.compare_at_price
+                              | round
+                            %}
+                            -{{ discount_percentage }}%
+                          </div>
+                        {% endif %}
                         {% if product.featured_image %}
                           {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
                         {% else %}
@@ -608,7 +652,18 @@
                 {% for product in section.settings.set4_collection.products %}
                   <div class="swiper-slide">
                     <a href="{{ product.url }}" class="product-link">
-                      <div class="product-card">
+                      <div class="product-card relative">
+                        {% if product.compare_at_price > product.price %}
+                          <div class="gift-offer-badge">
+                            {% assign discount_percentage = product.compare_at_price
+                              | minus: product.price
+                              | times: 100.0
+                              | divided_by: product.compare_at_price
+                              | round
+                            %}
+                            -{{ discount_percentage }}%
+                          </div>
+                        {% endif %}
                         {% if product.featured_image %}
                           {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', height: 300 }}
                         {% else %}
@@ -845,7 +900,7 @@
       width: 1196px;
       padding: 0 0px;
     }
-    .product-display {
+    .product-display { 
       height: 605px;
       display: flex;
       flex-direction: column;

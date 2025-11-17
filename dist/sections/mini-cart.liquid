@@ -298,7 +298,7 @@
                             {% assign discount_percentage = discount_difference
                               | divided_by: compare_at_price
                               | times: 100
-                              | ceil
+                              | round
                             %}
                             <div class="flex items-center justify-end flex-col text-xs pr-2">
                               <s class="text-999999 line-through font-medium">
