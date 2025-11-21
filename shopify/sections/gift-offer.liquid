@@ -688,7 +688,11 @@
   }
 
 </style>
-
+{% assign products_array = section.settings.collection.products %}
+{% assign products_array_2 = section.settings.collection_2.products %}
+{% assign size_1 = section.settings.collection.products.size %}
+{% assign size_2 = section.settings.collection_2.products.size %}
+{% assign sky_total_size = size_1 | plus: size_2 %}
 <section class="gift-offers-section">
   <div class="container">
     <div class="gift-offers-header">
@@ -788,12 +792,14 @@
         {% else %}
           {% comment %} 显示产品 {% endcomment %}
           {% if section.settings.collection != blank %}
-            {% assign products_array = section.settings.collection.products %}
-            {% if section.settings.collection_2.products.size > 0 %}
-              {% assign products_array = products_array | concat: section.settings.collection_2.products %}
-            {% endif %}
-            {% if product_index < products_array.size and product_index < 1000 %}
-              {% assign product = products_array[product_index] %}
+            {% if product_index < sky_total_size and product_index < 1000 %}
+                {% if product_index < size_1 %}
+                  {% assign product = products_array[product_index] %}
+                {% else %}
+                  {% assign adjusted_index = product_index | minus: size_1 %}
+                  {% assign product = products_array_2[adjusted_index] %}
+                {% endif %}
+              
               {% comment %}
                 <a href="{{ product.url }}" class="gift-offer-item">
                   {% if product.compare_at_price > product.price %}
