@@ -737,7 +737,7 @@
       {% assign mobile_positions_array = mobile_promo_positions | split: ',' %}
 
       {% comment %} 生成混合内容 {% endcomment %}
-      {% for i in (1..section.settings.products_limit) %}
+      {% for i in (1..1000) %}
         {% assign current_position = total_items | plus: 1 %}
         {% assign show_promo = false %}
         {% assign promo_block_to_show = null %}
@@ -789,7 +789,10 @@
           {% comment %} 显示产品 {% endcomment %}
           {% if section.settings.collection != blank %}
             {% assign products_array = section.settings.collection.products %}
-            {% if product_index < products_array.size and product_index < section.settings.products_limit %}
+            {% if section.settings.collection_2.products.size > 0 %}
+              {% assign products_array = products_array | concat: section.settings.collection_2.products %}
+            {% endif %}
+            {% if product_index < products_array.size and product_index < 1000 %}
               {% assign product = products_array[product_index] %}
               {% comment %}
                 <a href="{{ product.url }}" class="gift-offer-item">
@@ -981,7 +984,7 @@
         {% endif %}
 
         {% comment %} 限制总数 {% endcomment %}
-        {% if total_items >= 50  %}
+        {% if total_items >= 1000  %}
           {% break %}
         {% endif %}
       {% endfor %}
@@ -1250,7 +1253,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let productIndex = 0;
     let newOrder = [];
     
-    for (let i = 1; i <= 50; i++) {
+    for (let i = 1; i <= 1000; i++) {
       const promoAtThisPosition = targetPositions.find(p => p.position === i);
       
       if (promoAtThisPosition) {
@@ -1348,16 +1351,13 @@ document.addEventListener('DOMContentLoaded', function() {
       "type": "collection",
       "id": "collection",
       "label": "Collection",
-      "info": "Select a collection to display products from"
-    },
+      "info": "Maximum 50 products"
+    },  
     {
-      "type": "range",
-      "id": "products_limit",
-      "label": "Number of products to show",
-      "min": 4,
-      "max": 50,
-      "step": 1,
-      "default": 16
+      "type": "collection",
+      "id": "collection_2",
+      "label": "Collection 2",
+      "info": "Maximum 50 products"
     },
     {
       "type": "checkbox",
