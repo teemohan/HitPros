@@ -741,7 +741,7 @@
       {% assign mobile_positions_array = mobile_promo_positions | split: ',' %}
 
       {% comment %} 生成混合内容 {% endcomment %}
-      {% for i in (1..1000) %}
+      {% for i in (1..200) %}
         {% assign current_position = total_items | plus: 1 %}
         {% assign show_promo = false %}
         {% assign promo_block_to_show = null %}
@@ -792,7 +792,7 @@
         {% else %}
           {% comment %} 显示产品 {% endcomment %}
           {% if section.settings.collection != blank %}
-            {% if product_index < sky_total_size and product_index < 1000 %}
+            {% if product_index < sky_total_size and product_index < 200 %}
                 {% if product_index < size_1 %}
                   {% assign product = products_array[product_index] %}
                 {% else %}
@@ -990,7 +990,7 @@
         {% endif %}
 
         {% comment %} 限制总数 {% endcomment %}
-        {% if total_items >= 1000  %}
+        {% if total_items >= 200  %}
           {% break %}
         {% endif %}
       {% endfor %}
@@ -1259,7 +1259,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let productIndex = 0;
     let newOrder = [];
     
-    for (let i = 1; i <= 1000; i++) {
+    for (let i = 1; i <= 200; i++) {
       const promoAtThisPosition = targetPositions.find(p => p.position === i);
       
       if (promoAtThisPosition) {

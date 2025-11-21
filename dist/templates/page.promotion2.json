@@ -192,7 +192,7 @@
       "settings": {
         "title": "All Sets",
         "collection": "all_sets",
-        "products_limit": 50,
+        "collection_2": "all_sets_2",
         "show_see_all": false,
         "see_all_text": "See All",
         "see_all_url": "shopify://collections/all",
