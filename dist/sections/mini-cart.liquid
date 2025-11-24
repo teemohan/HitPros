@@ -394,7 +394,7 @@
     {%- if section.settings.show_checkout_button -%}
       {% if customer %}
         <button is="loader-button" form="mini-cart-form" type="submit" class="cart-checkout-button cart-button checkout-button w-full h-10 fb-flex-center bg-button text-main font-bold text-16 fb-md:text-14 fb-max-sm:text-14" name="checkout">
-          Checkout out
+          Proceed to Checkout
         </button>
       {% else %}
         <div class="flex items-center justify-center">
@@ -411,7 +411,7 @@
       {% endif %}
     {%- else -%}
       <a href="{{ routes.cart_url }}" class="w-full h-10 fb-flex-center bg-button text-main font-bold text-16 fb-md:text-14 fb-max-sm:text-14" data-no-instant>
-          Checkout out
+          Proceed to Checkout
       </a>
     {%- endif -%}
   {%- endif -%}
