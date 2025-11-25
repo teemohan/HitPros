@@ -1,0 +1,342 @@
+<section id="flash-sales-{{ section.id }}" class="js-promotion-flash-sale container mx-auto px-4 py-10 overflow-hidden">
+  <div class="w-full">
+      {%- comment -%} Section Header {%- endcomment -%}
+      <div class="w-full flex items-center justify-center min-h-10 fb-sm:space-x-6 mb-8 fb-sm:mb-11">
+        <div class="js-coming-soon-status hidden">
+          <div class="w-full flex items-center justify-center fb-sm:space-x-6">
+            <h2 class="w-1/2 text-121212 text-20 font-bold shrink-0 text-center fb-sm:text-right fb-sm:text-32 fb-sm:w-auto">
+              {{ section.settings.flash_starts_on }}
+            </h2>
+            <div class="js-countdown-coming-soon w-1/2 shrink-0 fb-sm:w-auto">
+              <div class="w-full flex items-center justify-end h-12 fb-sm:justify-start fb-sm:w-auto" >
+                <div class="text-white rounded w-11 h-full flex flex-col justify-center items-center" style="background: #202427;">
+                  <div class="js-coming-hours text-20 font-bold leading-none">00</div>
+                  <div class="text-10 mt-1">Hours</div>
+                </div>
+                <span class="text-202427 text-24 w-2.5 h-full text-center font-bold fb-flex-center">:</span>
+                <div class="text-white rounded w-11 h-full flex flex-col justify-center items-center" style="background: #202427;">
+                  <div class="js-coming-mins text-20 font-bold leading-none">00</div>
+                  <div class="text-10 mt-1">Min</div>
+                </div>
+                <span class="text-202427 text-24 w-2.5 h-full text-center font-bold fb-flex-center">:</span>
+                <div class="text-white rounded w-11 h-full flex flex-col justify-center items-center" style="background: #202427;">
+                  <div class="js-coming-secs text-20 font-bold leading-none">00</div>
+                  <div class="text-10 mt-1">Sec</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="js-active-status w-full hidden">
+          <div class="w-full flex items-center justify-center fb-sm:space-x-6">
+            <h2 class="w-1/2 text-121212 text-20 font-bold shrink-0 text-center fb-sm:text-right fb-sm:text-32 fb-sm:w-auto">
+              {{ section.settings.flash_active_desc }}
+            </h2>
+          </div>
+        </div>
+        <div class="js-ended-status w-full hidden">
+          <div class="w-full flex items-center justify-center fb-sm:space-x-6">
+            <h2 class="text-121212 text-20 font-bold text-center fb-sm:text-32">
+              <span>{{ section.settings.flash_end_desc }}</span> <span class="js-promotion-end-time text-666666"></span>
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="IndexBestswiper hover-list js-swiper-scope">
+        <div class="swiper {{ section.id }}-IndexBestswiper">
+          <div class="swiper-wrapper">
+            {% if section.settings.collection %}
+              {% for product in section.settings.collection.products %}
+                <div class="swiper-slide max-w-[250px]">
+                  {%- render 'promotion-item-product', product: product, type:'item' -%}
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        <div class="mt-4 fb-sm:mt-6 flex items-center justify-between gap-4 relative z-10">
+          <div class="swiper-scrollbar !static flex w-full fb-sm:flex-1"></div>
+          {%- render 'northsky-prev-next' -%}
+        </div>
+      </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "promotion-flash-sale",
+    "tag": "section",
+    "class": "promotion-flash-sale",
+    "settings": [
+          {
+            "type": "text",
+            "id": "flash_starts_on",
+            "label": "Starts on Desc",
+            "default": "Our Flash Sales Starts on"
+          },
+          {
+            "type": "text",
+            "id": "flash_active_desc",
+            "label": "Active Desc",
+            "default": "Our Flash Sales Limited Time"
+          },
+           {
+            "type": "text",
+            "id": "flash_end_desc",
+            "label": "Ends on Desc",
+            "default": "Our Flash Sales Ended on"
+          },
+          {
+            "type": "text",
+            "id": "discount_id",
+            "label": "Discount ID",
+            "default": "1562736361779"
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Products collection"
+          }
+    ],
+    "presets": [
+      {
+        "name": "promotion-flash-sale",
+      }
+    ]
+  }
+{% endschema %}
+<script>
+$(function() {
+    const getFlashSales =  {
+      elements: {},
+      state: {
+        countdownInterval: null,
+        statusCheckInterval: null,
+        isDiscountTextUpdated: false,
+        currentStatus: 'pending' // pending, coming-soon, active, ended
+      },
+      config: {
+        title: "", 
+        discountId: "", 
+        startsAt: 0,
+        endsAt: 0,
+        discountContent: "",
+        discountDetailDTO: {
+          type: 0,
+          value: "0.2",
+          currencyCode: null
+        }
+      },
+      discountId: {{ section.settings.discount_id | json }},
+      init: function() {
+        this.cacheElements();
+        this.initSwiper();
+        this.getDiscount();
+        this.bindEvents();
+      },
+      cacheElements: function() {
+        const sectionId = '.js-promotion-flash-sale';
+        this.elements = {
+          scope: $(`${sectionId} .js-swiper-scope`),
+          countdownBox: $(`${sectionId} .js-countdown-flash`),
+          rangeEl: $(`${sectionId} .js-flash-range`),
+          comingSoonStatus: $(`${sectionId} .js-coming-soon-status`),
+          activeStatus: $(`${sectionId} .js-active-status`),
+          endedStatus: $(`${sectionId} .js-ended-status`),
+          comingHours: $(`${sectionId} .js-coming-hours`),
+          comingMins: $(`${sectionId} .js-coming-mins`),
+          comingSecs: $(`${sectionId} .js-coming-secs`),
+          flashHours: $(`${sectionId} .js-flash-hours`),
+          flashMins: $(`${sectionId} .js-flash-mins`),
+          flashSecs: $(`${sectionId} .js-flash-secs`),
+          promotionEndTime: $(`${sectionId} .js-promotion-end-time`),
+          promotionCart: $(`${sectionId} .js-promotion-cart`),
+          promotionEnd: $(`${sectionId} .js-promotion-end`)
+        };
+      },
+      bindEvents: function() {
+      },
+      getDiscount: async function() {
+        try {
+          const res = await kkAjax.get(`/discount/detail?discountId=${this.discountId}`);
+          if (res?.code === 200) {
+            this.config = Object.assign(this.config, res.data);
+            this.initCountdown();
+          } else {
+            console.warn('error:', res?.message || 'unknown error');
+          }
+        } catch (error) {
+          console.error('error:', error);
+        }
+      },
+      hideFlashRange: function() {
+        this.elements.countdownBox.hide();
+        this.elements.rangeEl.hide();
+      },
+      showComingSoonStatus: function() {
+        this.setState('coming-soon');
+        this.elements.comingSoonStatus.show();
+        this.elements.activeStatus.hide();
+        this.elements.endedStatus.hide();
+      },
+      showActiveStatus: function() {
+        this.setState('active');
+        this.elements.comingSoonStatus.hide();
+        this.elements.activeStatus.show();
+        this.elements.endedStatus.hide();
+      },
+      showEndedStatus: function() {
+        this.setState('ended');
+        this.elements.comingSoonStatus.hide();
+        this.elements.activeStatus.hide();
+        this.elements.endedStatus.show();
+        this.elements.rangeEl.hide();
+        this.elements.promotionCart.addClass('hidden');
+        this.elements.promotionEnd.removeClass('hidden').addClass('flex');
+      },
+      setState: function(newState) {
+        this.state.currentStatus = newState;
+      },
+      stopCountdown: function() {
+        if (this.state.countdownInterval) {
+          clearInterval(this.state.countdownInterval);
+          this.state.countdownInterval = null;
+        }
+        if (this.state.statusCheckInterval) {
+          clearInterval(this.state.statusCheckInterval);
+          this.state.statusCheckInterval = null;
+        }
+      },
+      updateDiscountText: function() {
+        const { rangeEl } = this.elements;
+        const { discountDetailDTO } = this.config;
+        
+        if (!discountDetailDTO) return;
+        const { type, value } = discountDetailDTO;
+        if (type == 1) {
+          const percentageValue = parseFloat(value) * 100;
+          const discountPercentage = Math.round(percentageValue);
+          rangeEl.text(`${discountPercentage}% Off`);
+        } else if (type == 0) {
+          const discountAmount = parseFloat(value);
+          rangeEl.each(function() {
+            const $el = $(this);
+            const originalPrice = parseFloat($el.data('price') || 0);
+            
+            if (originalPrice > 0 && discountAmount > 0) {
+              const discountPercentage = Math.round((discountAmount / originalPrice) * 100);
+              $el.text(`${discountPercentage}% Off`);
+            } else {
+              $el.text(`-$${discountAmount} Off`);
+            }
+          });
+        }
+        
+        rangeEl.show();
+      },
+      showFlashRange: function() {
+        this.elements.countdownBox.show();
+        this.elements.rangeEl.show();
+      },
+      formatDate: function(timestamp) {
+        const date = new Date(timestamp);
+        const monthNames = [
+          "January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+        ];
+        return `${monthNames[date.getMonth()]}, ${date.getDate()}`;
+      },
+      
+      initCountdown: function() {
+        const { startsAt, endsAt } = this.config;
+        if (!startsAt || !endsAt) {
+          console.warn('error: missing start or end time');
+          return;
+        }
+        this.stopCountdown();
+        this.state.isDiscountTextUpdated = false;
+        if (!this.state.isDiscountTextUpdated) {
+          this.updateDiscountText();
+          this.state.isDiscountTextUpdated = true;
+        }
+        const updateCountdown = () => {
+          const now = Date.now();
+          if (now < startsAt) {
+            this.handleComingSoonState(startsAt, now);
+          } else if (now > endsAt) {
+            this.handleEndedState(endsAt);
+          } else {
+            this.handleActiveState(endsAt, now);
+          }
+        };
+        updateCountdown();
+        this.state.countdownInterval = setInterval(updateCountdown, 1000);
+      },
+      handleComingSoonState: function(startTime, currentTime) {
+        this.showComingSoonStatus();
+        const timeDiff = Math.max(0, startTime - currentTime);
+        const { hours, minutes, seconds } = this.calculateTimeDiff(timeDiff);
+        
+        this.updateComingSoonDisplay(hours, minutes, seconds);
+      },
+      handleActiveState: function(endTime, currentTime) {
+        this.showActiveStatus();
+        this.showFlashRange();
+        const timeDiff = Math.max(0, endTime - currentTime);
+        const { hours, minutes, seconds } = this.calculateTimeDiff(timeDiff);
+        
+        this.updateActiveDisplay(hours, minutes, seconds);
+      },
+      handleEndedState: function(endTime) {
+        this.showEndedStatus();
+        this.stopCountdown();
+        this.elements.promotionEndTime.text(this.formatDate(endTime));
+        this.state.isDiscountTextUpdated = false;
+      },
+      calculateTimeDiff: function(timeDiffMs) {
+        return {
+          hours: Math.floor(timeDiffMs / 3600000),
+          minutes: Math.floor((timeDiffMs % 3600000) / 60000),
+          seconds: Math.floor((timeDiffMs % 60000) / 1000)
+        };
+      },
+      updateComingSoonDisplay: function(hours, minutes, seconds) {
+        const { comingHours, comingMins, comingSecs } = this.elements;
+        comingHours.text(String(hours).padStart(2, '0'));
+        comingMins.text(String(minutes).padStart(2, '0'));
+        comingSecs.text(String(seconds).padStart(2, '0'));
+      },
+      
+      updateActiveDisplay: function(hours, minutes, seconds) {
+        const { flashHours, flashMins, flashSecs } = this.elements;
+        flashHours.text(String(hours).padStart(2, '0'));
+        flashMins.text(String(minutes).padStart(2, '0'));
+        flashSecs.text(String(seconds).padStart(2, '0'));
+      },
+      initSwiper: function() {
+        const sectionId = '#flash-sales-{{ section.id }}';
+        new Swiper(`${sectionId} .{{ section.id }}-IndexBestswiper`, {
+          slidesPerView: 2,
+          spaceBetween: 12,
+          scrollbar: {
+            el: `${sectionId} .swiper-scrollbar`,
+            draggable: true,
+          },
+          navigation: {
+            nextEl: `${sectionId} .northsky-button-next`,
+            prevEl: `${sectionId} .northsky-button-prev`,
+          },
+          breakpoints: {
+            320: { slidesPerView: 2, spaceBetween: 2 },
+            640: { slidesPerView: 2, spaceBetween: 2 },
+            728: { slidesPerView: 4, spaceBetween: 15 },
+            1196: { slidesPerView: 5, spaceBetween: 20 },
+            1280: { slidesPerView: 5, spaceBetween: 20 },
+          }
+        });
+      }
+    }
+    getFlashSales.init()
+})
+
+</script>

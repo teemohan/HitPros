@@ -1,7 +1,7 @@
 <div class="promotion-special-offer" style="visibility:hidden; pointer-events:none;">
   <div class="container">
     <!-- Breadcrumb -->
-    <nav
+    {% comment %} <nav
       aria-label="{{ 'general.breadcrumb.title' | t }}"
       class="breadcrumb breadcrumb--floating text--xsmall hidden-phone"
     >
@@ -13,7 +13,7 @@
           <span class="breadcrumb__link" aria-current="page">Promotional Page</span>
         </li>
       </ol>
-    </nav>
+    </nav> {% endcomment %}
 
     <!-- Header -->
     <div class="section-header">
@@ -895,6 +895,7 @@
       z-index: 1 !important;
       margin-bottom: 20px;
     }
+
     .product-display { 
       height: 605px;
       display: flex;
@@ -1695,6 +1696,7 @@
       .promotion-special-offer .breadcrumb--floating {
         display: none !important;
       }
+
       .section-header {
         display: flex;
         width: 100%;
@@ -2344,7 +2346,7 @@
 
 {% schema %}
 {
-  "name": "Promotion Special Offer",
+  "name": "Promotion New Offer",
   "settings": [
     {
       "type": "header",
@@ -2699,7 +2701,7 @@
       "info": "Select a collection to display products from"
     },
   ],
-
+ 
   "blocks": [
     {
       "type": "price_product_group",
@@ -2844,7 +2846,7 @@
   ],
   "presets": [
     {
-      "name": "Promotion Special Offer",
+      "name": "promotion-new-offer",
       "category": "Custom",
       "blocks": [
         {

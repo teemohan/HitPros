@@ -537,7 +537,7 @@ async function doSetDeliveryNum(){
   const cartData = await getCartData();
   try{
     const data = await getShippingCost(cartData)
-    const balanceFreeShipping = data.balanceFreeShipping
+    const balanceFreeShipping = data?.balanceFreeShipping || 0
     $('.free-add-num').removeClass('hidden')
     if(balanceFreeShipping==0){
       $('.free-add-num').find('.add-item').addClass('hidden')

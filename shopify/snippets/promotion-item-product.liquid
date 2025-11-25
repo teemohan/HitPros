@@ -1,0 +1,143 @@
+{%- assign mobile_limit = mobile_limit | default: 10 -%}
+{%- assign pad_limit = pad_limit | default: 8 -%}
+{%- assign desktop_limit = desktop_limit | default: 15 -%}
+
+{%- capture item_classes -%}
+  {%- if forloop.index > desktop_limit -%}
+    hidden
+  {%- elsif forloop.index > pad_limit -%}
+    hidden fb-md:block
+  {%- elsif forloop.index > mobile_limit -%}
+    hidden fb-sm:block
+  {%- endif -%}
+{%- endcapture -%}
+{%- assign show_cart_button = show_cart_button | default: true -%}
+<div class="product-item {{ item_classes }} flex flex-col justify-between bg-white">
+  <div class="relative overflow-hidden h-10r fb-md:h-14r w-full">
+    <a href="{{ product.url }}"
+      data-sku="{{ product.selected_or_first_available_variant.sku }}"
+      datalayer-link
+      class="relative h-full flex items-center justify-center"
+      >
+      {%- if product.tags contains '000-newTag' -%}
+        <div class="z-2 absolute left-0 top-0 fb-flex-center">
+          <span class="absolute font-bold text-sm leading-[150%] text-white left-1.5 top-3 -rotate-45">NEW</span>
+          <svg class="w-auto h-auto" width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="-26" y="48.9998" width="104.538" height="30" transform="rotate(-45 -26 48.9998)" fill="#ED0006"/>
+          </svg>
+        </div>
+      {%- endif -%}
+      
+      {%- if product.featured_image -%}
+        <img 
+          class="h-full w-auto fb-md:w-auto object-contain lazyload"
+          loading="lazy"
+          data-media-id="{{ product.featured_image.id }}"
+          data-src="{{ product.featured_image | image_url: width: 300 }}"
+          src="{{ product.featured_image | image_url: width: 300 }}"
+          srcset="{{ product.featured_image | image_url: width: 150 }} 150w,
+                  {{ product.featured_image | image_url: width: 300 }} 300w,
+                  {{ product.featured_image | image_url: width: 450 }} 450w"
+          sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 20vw"
+          width="300"
+          height="300"
+          alt="{{ product.title | escape }}"
+        >
+      {%- else -%}
+        <div class="w-full h-full bg-F5F5F5 fb-flex-center">
+          <span class="text-121212 font-bold text-14">No Image</span>
+        </div>
+      {%- endif -%}
+    </a>
+  </div>
+  <div class="js-flash-range w-full h-7 hidden fb-flex-center text-button text-center font-extrabold text-20" 
+    data-price="{{ product.price | money_without_currency | replace: ',', '' | times: 1 }}"
+    style="background: radial-gradient(67.52% 246.88% at 50% 50%, #0A2B6F 27.53%, #2758B2 69.3%, #4484F5 80.06%);">
+  </div>
+  <div class="w-full mt-2.5 px-2 flex flex-col grow justify-between fb-md:px-5 pb-3 fb-md:pb-5">
+    <a 
+      href="{{ product.url }}"
+      datalayer-link=""
+      data-sku="{{ product.selected_or_first_available_variant.sku }}"
+      title="{{ product.title | escape }}"
+      class="w-full fb-max-sm:text-14 fb-max-sm:min-h-16  min-h-18 text-16 text-121212 line-clamp-3 fb-md:text-16 group-hover:underline"
+    >
+      {{ product.title }}
+    </a>
+    <div
+      class="promotional-reviews h-5 cursor-pointer my-1.5 fb-sm:my-2.5"
+      data-sku="{{ product.variants.first.sku }}"
+    ></div>
+    {% comment %} {%- assign product_rate = product.metafields.reviews.rating.value -%} {% endcomment %}
+    {% comment %} {%- if product_rate != blank -%}
+    <div class="star w-full h-4 min-h-4 items-center justify-start mb-4 fb-md:mb-5">
+      <div class="rating flex items-center gap-1  ">
+        <div class="rating__stars flex items-center text-14" role="img" aria-label="{{ 'general.accessibility.star_reviews_info' | t: rating_value: product.metafields.reviews.rating.value, rating_max: product.metafields.reviews.rating.value.scale_max }}">
+          {%- render 'rate-computed', rate_value: product_rate, type: 'google'-%}
+          <span class="rating__caption text-12 text-gray-500 ml-1">
+            ({{ product.metafields.reviews.rating_count.value | default: 0 }})
+          </span>
+        </div>
+      </div>
+    </div>
+  {%- else  -%}
+  <div class="star w-full h-4 min-h-4 items-center justify-start mb-4 fb-md:mb-5"></div>
+    {%- endif -%} {% endcomment %}
+    {% comment %} <div class="star w-full h-4 min-h-4 items-center justify-start mb-4 fb-md:mb-5"></div> {% endcomment %}
+    <div class="js-promotion-cart flex items-center justify-between">
+      <div class="text-left font-bold  text-22 fb-md:text-28">
+        {%- if product.compare_at_price > product.price -%}
+          {% assign price = product.price | money_without_currency | replace: ',', '' | times: 1 %}
+          {% assign compare_at_price = product.compare_at_price | money_without_currency | replace: ',', '' | times: 1 %}
+          {% assign discount_difference = compare_at_price | minus: price %}
+          {% assign discount_percentage = discount_difference | divided_by: compare_at_price | times: 100.0 | round %}
+          <div class="flex justify-start items-center gap-2">
+            <div>
+               {% render 'format-price', price: product.price, text_size:'text-22 fb-md:text-28' %}
+            </div>
+            <div class="flex items-start mb-1 ml-2 flex-col justify-start">
+              <s class="text-12 text-999999 font-medium line-through text-left">
+                {{- product.compare_at_price | money -}}
+              </s>
+              {% comment %} <span class="text-12 text-F74747 font-bold text-left">{{ discount_percentage }}% OFF</span> {% endcomment %}
+            </div>
+          </div>
+        {%- else -%}
+          {% render 'format-price', price: product.price, text_size:'text-22 fb-md:text-28' %}
+        {%- endif -%}
+      </div>
+      
+      <div class="">
+        {%- capture form_id -%}product_form_{{ type }}_{{ section.id }}_{{ block.id }}_{{ product.id }}_{% increment product_form_index %}{%- endcapture -%}
+        {%- form 'product', product, is: 'product-form', id: form_id -%}
+            <input type="hidden" name="quantity" value="{% if product.metafields.product.moq != blank %}{{ product.metafields.product.moq }}{% else %}1{% endif %}">
+            <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+            <input type="hidden" disabled name="sku" value="{{ product.selected_or_first_available_variant.sku }}">
+            <button is="loader-button" class= " relative border-none w-7 h-7 fb-flex-center bg-button rounded-sm text-white fb-md:bg-white fb-md:text-main fb-md:group-hover:bg-button fb-md:group-hover:text-white {%- if show_cart_button -%} hidden {%- endif -%} " type="submit" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+              <span class="flex items-center justify-center px-0.5 fb-md:hidden">
+                {%- render 'icon' with 'add-cart' -%}
+              </span>
+              <span class="hidden fb-md:flex items-center justify-center ">
+                {%- render 'icon' with 'add-cart' -%}
+              </span>
+              <span class="hidden" hidden>
+                <div class="inline-block">
+                  <svg focusable="false" width="20" height="20" class="animate-spin" viewBox="20 20 40 40">
+                    <circle cx="40" cy="40" r="20" fill="none" stroke="currentColor" stroke-width="5"/>
+                  </svg>
+                </div>
+              </span>
+            </button>
+        {%- endform -%}
+      </div>
+    </div>
+    <div class="js-promotion-end space-x-1 fb-sm:space-x-2.5 items-center justify-start fb-sm:justify-center hidden mt-3">
+      <span class="text-121212  text-12 fb-sm:text-14 font-bold">
+        Ended on 
+      </span> 
+      <span class="js-promotion-end-time text-808080  text-12 fb-sm:text-14 font-bold">
+      </span>
+    </div>
+  </div>
+</div>
+

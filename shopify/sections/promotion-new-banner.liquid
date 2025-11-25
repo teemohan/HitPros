@@ -1,0 +1,157 @@
+{{ 'index-product-item.css' | asset_url | stylesheet_tag }}
+
+<section id="flash-banner-{{ section.id }}" class="js-promotion-flash-sale w-full">
+    <div class="w-full relative flex flex-col fb-sm:h-[320px]">
+      <div class="w-full h-14r fb-sm:h-full">
+        {% if section.settings.banner_bg_pc %}
+          <img 
+            width="1920" 
+            height="500" 
+            src="{{ section.settings.banner_bg_pc | image_url }}" 
+            alt=""
+            class="w-full h-full object-cover hidden fb-sm:block"
+          >
+        {% endif %}
+        {% if section.settings.banner_bg_mob %}
+          <img 
+            width="750" 
+            height="400" 
+            src="{{ section.settings.banner_bg_mob | image_url }}" 
+            alt=""
+            class="w-full h-full object-cover block fb-sm:hidden"
+          >
+        {% endif %}
+      </div>
+      <div class="w-full h-18r fb-sm:absolute fb-sm:top-0 fb-sm:left-0 fb-sm:z-1 fb-sm:h-full">
+        <a href="{{ section.settings.cta_url }}" class="w-full cursor-pointer h-full flex fb-sm:justify-end fb-sm:px-10 mx-auto fb-md:px-5 fb-sm:items-center fb-md:max-w-80r">
+          <div class="bg-white w-full h-full fb-sm:w-30r fb-sm:h-[288px] rounded flex flex-col">
+            <div class="w-full flex-1 h-full flex justify-between items-center">
+              <div class="w-1/2 h-full bg-button py-5 px-4 flex items-center flex-col justify-center">
+                <div class="w-full h-12.5 fb-flex-center">
+                  <img width="100" height="100" src="https://cdn.shopify.com/s/files/1/0871/4056/5299/files/a55d4520e1ff85dbf38cbd600e8e2318.png?v=1763530956" class="h-full w-auto max-w-auto" >
+                </div>
+                <div class="js-coming-soon-status w-full text-center hidden">
+                  <div class="font-bold text-202427 mt-9 text-24 leading-[150%]">Coming<br/>Soon</div>
+                </div>
+                <div class="js-active-status w-full hidden">
+                  <div class="js-countdown-flash w-full flex items-start justify-center mt-6 h-12">
+                    <div class="bg-202427 text-white rounded w-11 h-full flex flex-col justify-center items-center">
+                      <div class="js-flash-hours text-20 font-bold leading-none">00</div>
+                      <div class="text-10 mt-1">Hours</div>
+                    </div>
+                    <span class="text-202427 text-24 w-2.5 h-full text-center font-bold fb-flex-center">:</span>
+                    <div class="bg-202427 text-white rounded w-11 h-full flex flex-col justify-center items-center">
+                      <div class="js-flash-mins text-20 font-bold leading-none">00</div>
+                      <div class="text-10 mt-1">Min</div>
+                    </div>
+                    <span class="text-202427 text-24 w-2.5 h-full text-center font-bold fb-flex-center">:</span>
+                    <div class="bg-202427 text-white rounded w-11 h-full flex flex-col justify-center items-center">
+                      <div class="js-flash-secs text-20 font-bold leading-none">00</div>
+                      <div class="text-10 mt-1">Sec</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="js-ended-status w-full text-center hidden">
+                  <div class="text-20 font-bold text-202427 mt-6 leading-[150%]">
+                    {{ section.settings.expired_text }}
+                  </div>
+                </div>
+                <div class="js-countdown-product-title w-full text-center text-[13px] leading-[14px] text-202427 font-medium mt-6 fb-sm:text-14 hidden">
+                   {{ section.settings.product_title }}
+                </div>
+              </div>
+              <div class="w-1/2 h-full p-4 bg-white">
+                {% if section.settings.glove_image %}
+                  <div class="w-full h-full flex items-center justify-center">
+                    <img 
+                      width="160" 
+                      height="160" 
+                      src="{{ section.settings.glove_image | image_url }}" 
+                      class="object-contain"
+                    />
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="w-full h-16 shrink-0 space-x-4.5 flex justify-center items-center" style="background: radial-gradient(67.52% 246.88% at 50% 50%, #0A2B6F 27.53%, #2758B2 69.3%, #4484F5 80.06%);">
+              {% if section.settings.off_text %}
+                <div class="text-36 text-button font-extrabold">
+                  {{ section.settings.off_text }}
+                </div>
+              {% endif %}
+              {% if section.settings.cta_url != blank %}
+                <div 
+                  class="px-4 py-2 text-121212 text-16 font-bold bg-button flex rounded"
+                >
+                  Buy Now
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+</section>
+{% schema %}
+{
+  "name": "Promotion New Banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_bg_pc",
+      "label": "Banner background (PC)"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_bg_mob",
+      "label": "Banner background (Mobile)"
+    },
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "glove_image",
+      "label": "Product image"
+    },
+    {
+      "type": "richtext",
+      "id": "product_title",
+      "label": "Product title",
+      "default": "<p>5-Piece Screwdriver Set with Standard Grip...</p>"
+    },
+    {
+      "type": "text",
+      "id": "off_text",
+      "label": "Discount text",
+      "default": "32% OFF"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link"
+    },
+    {
+      "type": "header",
+      "content": "Expired Text"
+    },
+    {
+      "type": "text",
+      "id": "expired_text",
+      "label": "Expired text",
+      "default": "This Offer Has Expired. Shop Our New Arrivals!"
+    }
+  ],
+  "presets": [
+    {
+      "name": "promotion-new-banner"
+    }
+  ]
+}
+{% endschema %}
+
