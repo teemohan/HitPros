@@ -87,8 +87,7 @@ $(function () {
           try {
             this.deleveryRes = null;
             if (!number) {
-              const quantitySelector = '.js-quantity-input';
-              quantity = +$('.js-quantity-input').attr('data-demand') || 1
+              quantity = +$('.js-zkh-input').attr('data-demand') || 1
             } else {
               quantity = +number
             }
