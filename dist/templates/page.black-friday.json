@@ -32,20 +32,21 @@
       "settings": {
         "banner_bg_pc": "shopify://shop_images/coming_2.png",
         "banner_bg_mob": "shopify://shop_images/PP_Halloween_H5.jpg",
-        "start_time": "2025-11-24T06:30:00-05:00",
-        "end_time": "2025-11-24T07:00:00-05:00",
         "glove_image": "shopify://shop_images/NSS0733823940_BT-1202_3ecffa1d-1.jpg",
         "product_title": "<p>5-Piece Screwdriver Set with Standard Grip...</p>",
         "off_text": "32% OFF",
-        "cta_url": "shopify://products/ae8068736"
+        "cta_url": "shopify://products/ae8068736",
+        "expired_text": "This Offer Has Expired. Shop Our New Arrivals!"
       }
     },
     "promotion_flash_sale_Vxxfpa": {
       "type": "promotion-flash-sale",
       "name": "promotion-flash-sale",
       "settings": {
-        "flash_title": "Our Flash Sales Limited Time",
-        "discount_id": "1562736361779",
+        "flash_starts_on": "Our Flash Sales Starts in",
+        "flash_active_desc": "Our Flash Sales Limited Time",
+        "flash_end_desc": "Our Flash Sales Ended on",
+        "discount_id": "1829738217842",
         "collection": "blackfriday"
       }
     },
