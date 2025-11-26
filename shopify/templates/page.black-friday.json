@@ -43,10 +43,10 @@
       "type": "promotion-flash-sale",
       "name": "promotion-flash-sale",
       "settings": {
-        "flash_starts_on": "Our Flash Sales Starts on",
+        "flash_starts_on": "Our Flash Sales Starts in",
         "flash_active_desc": "Our Flash Sales Limited Time",
         "flash_end_desc": "Our Flash Sales Ended on",
-        "discount_id": "1829702173042",
+        "discount_id": "1829738217842",
         "collection": "blackfriday"
       }
     },
