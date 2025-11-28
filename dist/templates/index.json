@@ -12,20 +12,20 @@
     "fb_img_video_banner_Uy7weH": {
       "type": "fb-img-video-banner",
       "blocks": {
+        "image_banner_P9LUty": {
+          "type": "image_banner",
+          "settings": {
+            "link_url": "shopify://pages/black-friday",
+            "image": "shopify://shop_images/Pre_Black_Friday2_HP.png",
+            "mobile_image": "shopify://shop_images/HP_Pre_Black_Friday2_H5.png"
+          }
+        },
         "image_banner_jk7jKr": {
           "type": "image_banner",
           "settings": {
             "link_url": "shopify://collections/hvac-heaters",
             "image": "shopify://shop_images/Heaters_HP_7d8506b3-a762-4cf0-a2da-43c4e138c4ae.png",
             "mobile_image": "shopify://shop_images/HP_Heaters_H5.png"
-          }
-        },
-        "image_banner_P9LUty": {
-          "type": "image_banner",
-          "settings": {
-            "link_url": "shopify://pages/holiday-2025",
-            "image": "shopify://shop_images/Pre_Black_Friday_HP_0479f9d3-b879-44b1-92bb-18eb2dbbb258.png",
-            "mobile_image": "shopify://shop_images/HP_Pre_Black_Friday_H5_4a951b97-9ae9-4b55-a69d-46e9abd4a66f.png"
           }
         },
         "image_banner_x9bY43": {
@@ -38,8 +38,8 @@
         }
       },
       "block_order": [
-        "image_banner_jk7jKr",
         "image_banner_P9LUty",
+        "image_banner_jk7jKr",
         "image_banner_x9bY43"
       ],
       "name": "fb-img-video-banner",

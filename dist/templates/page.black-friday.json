@@ -30,12 +30,12 @@
       "type": "promotion-new-banner",
       "name": "Promotion New Banner",
       "settings": {
-        "banner_bg_pc": "shopify://shop_images/coming_2.png",
-        "banner_bg_mob": "shopify://shop_images/PP_Halloween_H5.jpg",
-        "glove_image": "shopify://shop_images/NSS0733823940_BT-1202_3ecffa1d-1.jpg",
+        "banner_bg_pc": "shopify://shop_images/PP_Bunner_area_desktop_BLACK_FRIDAY_9035fdf6-8e3e-4c06-a54e-58e858e71eba.png",
+        "banner_bg_mob": "shopify://shop_images/PP_BLACK_FRIDAY_H5_8ea5cda5-6bc3-418e-8a5e-dc30b84b042a.png",
+        "glove_image": "shopify://shop_images/NSS1113910339_1.jpg",
         "product_title": "<p>5-Piece Screwdriver Set with Standard Grip...</p>",
-        "off_text": "32% OFF",
-        "cta_url": "shopify://products/ae8068736",
+        "off_text": "20% OFF",
+        "cta_url": "shopify://products/nss0008427",
         "expired_text": "This Offer Has Expired. Shop Our New Arrivals!"
       }
     },
@@ -101,8 +101,8 @@
         "all_offers_title": "Featured Sets",
         "all_offers_link_text": "View more",
         "all_offers_link": "shopify://collections/all",
-        "title": "Your Perfect Set, Your Smartest Save!",
-        "description": "Discover affordable style with our value sets and curated bundles. Each set is designed to help you save more while getting the products you love. Shop our best-value combos today and find the perfect match for your look.",
+        "title": "Black Friday Black Canyon Collection",
+        "description": "Discover exceptional value this Black Friday with the Black Canyon Collection — industrial tools and supplies built for reliability, precision, and long-lasting performance. Upgrade your workspace with rugged equipment engineered to handle demanding jobs and deliver consistent results.",
         "option1_title": "By Price",
         "option1_subtitle": "Best Deals, No Compromise",
         "option1_bg_image": "shopify://shop_images/option1.png",
@@ -120,7 +120,7 @@
         "pack4_cents": "95",
         "option2_title": "Best Seller",
         "option2_subtitle": "Tailored to Your Taste",
-        "option2_bg_image": "shopify://shop_images/option2.png",
+        "option2_bg_image": "shopify://shop_images/2U4A2636-2.jpg",
         "type_product_tag": "best-seller",
         "type_product_limit": 12,
         "option3_title": "By Category",
@@ -158,11 +158,11 @@
             "desktop_position": 1,
             "tablet_position": 1,
             "mobile_position": 1,
-            "title": "The Unsung Hero of Your Daily Routine",
-            "description": "Let's be real — gloves aren't glamorous. But they are essential.",
+            "title": "Safe, powerful, and built for everyday comfort.",
+            "description": "Get premium heaters with quick heat-up, low noise, and energy-saving performance.",
             "button_text": "Shop Now",
-            "link_url": "https://northskysupply.com/collections/safety-personal-protective-equipment-hand-arm-protection-disposable-gloves",
-            "background_image": "shopify://shop_images/promo1.png"
+            "link_url": "shopify://collections/hvac-heaters",
+            "background_image": "shopify://shop_images/640X1080_Heaters_92b419eb-aa82-4e15-9527-cc981d6e77d2.png"
           }
         },
         "promo_UbrVXJ": {
@@ -171,11 +171,11 @@
             "desktop_position": 11,
             "tablet_position": 9,
             "mobile_position": 2,
-            "title": "Wildfire Safety: ",
-            "description": "FAQs on Masks and Respiratory Protection.",
+            "title": "Pro-grade tools at unbeatable prices.",
+            "description": "NorthSky was built on a simple idea: deliver pro-grade tools without the inflated markups.",
             "button_text": "Read Now",
-            "link_url": "https://northskysupply.com/blogs/industry-insights/wildfire-safety-and-respiratory-protection",
-            "background_image": "shopify://shop_images/promo2.png"
+            "link_url": "https://northskysupply.com/blogs/industry-insights/world-class-tools-at-the-lowest-prices-possible",
+            "background_image": "shopify://shop_images/640X1080_Brad_blog_fce4aba9-cdb4-4224-8e44-cd34cdd9a476.png"
           }
         },
         "promo_8ycmxP": {
@@ -197,7 +197,7 @@
         "promo_8ycmxP"
       ],
       "settings": {
-        "title": "All Sets",
+        "title": "All Collection",
         "collection": "all_sets",
         "collection_2": "all_sets_2",
         "show_see_all": false,
