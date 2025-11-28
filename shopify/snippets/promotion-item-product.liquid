@@ -95,8 +95,8 @@
             <div>
                {% render 'format-price', price: product.price, text_size:'text-22 fb-md:text-28' %}
             </div>
-            <div class="flex items-start mb-1 ml-2 flex-col justify-start">
-              <s class="text-12 text-999999 font-medium line-through text-left">
+            <div class="flex ml-3 flex-col justify-center">
+              <s class="text-12 text-999999 font-medium line-through text-left pt-1">
                 {{- product.compare_at_price | money -}}
               </s>
               {% comment %} <span class="text-12 text-F74747 font-bold text-left">{{ discount_percentage }}% OFF</span> {% endcomment %}
