@@ -89,7 +89,7 @@
     <div class="flex items-center " >
       <span class="text-16 font-bold  text-main"> 
         {%- if cart.item_count != 0 -%}
-          {{ cart.original_total_price | money }} 
+          {{ cart.items_subtotal_price | money }} 
         {%- endif -%}
       </span>
       <button type="button" class="w-6 h-6 text-main font-bold pl-4" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
@@ -344,7 +344,7 @@
         Subtotal ({{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}):
       </div>
       <div class="text-main text-22 font-bold">
-        {{ cart.original_total_price | money }}
+        {{ cart.items_subtotal_price | money }}
       </div>
     </div>
     {% assign total_savings = 0 %}

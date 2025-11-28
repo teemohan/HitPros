@@ -633,7 +633,9 @@
                         <div class="w-full flex flex-col space-y-2 mb-7 fb-md:mb-4r" {{ block.shopify_attributes }}>
                           <div class="js-cart-total-container w-full flex justify-between items-center">
                             <div class="text-sm text-575757">Subtotal</div>
-                            <div class="js-computed-subtotal font-medium text-sm text-1E1E1E" data-price="{{ cart.original_total_price }}">{{ cart.original_total_price | money }}</div>
+                            <div class="js-computed-subtotal font-medium text-sm text-1E1E1E" data-price="{{ cart.items_subtotal_price }}">
+                              {{ cart.items_subtotal_price | money }}
+                            </div>
                           </div>
                           {% assign total_savings = 0 %}
                           {% for line_item in cart.items %}
