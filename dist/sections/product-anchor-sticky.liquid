@@ -64,11 +64,15 @@
         <div class="w-10 h-full shrink-0 hidden fb-sm:block fb-1700:hidden">
         </div>
       </div>
+      {%- assign b2b_catalog = false -%}
+      {% if customer and customer.current_company and customer.current_company.metafields.b2b.show_catalog_price %}
+        {%- assign b2b_catalog = customer.current_company.metafields.b2b.show_catalog_price -%}
+      {% endif %}
       <div
         id="js-nav-quick"
         data-variant-id="{{ product.selected_or_first_available_variant.id }}"
         data-price="{{ product.price | money_without_currency }}"
-        {% if product.metafields.product.quantity_discount != blank %}
+        {% if product.metafields.product.quantity_discount != blank and b2b_catalog == false %}
           data-discount="{{- product.metafields.product.quantity_discount | replace: '"', "'" -}}"
         {% else %}
           data-discount="[]"

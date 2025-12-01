@@ -46,9 +46,12 @@
     {% comment %} discount block - table style {% endcomment %}
     <div class="mb-4 w-full">
       <div class="overflow-x-auto grary-scrollerbar overflow-y-hidden pb-4 fb-sm:pb-0">
-        
+        {%- assign b2b_catalog = false -%}
+        {% if customer and customer.current_company and customer.current_company.metafields.b2b.show_catalog_price %}
+          {%- assign b2b_catalog = customer.current_company.metafields.b2b.show_catalog_price -%}
+        {% endif %}
         {%- assign moq = product.metafields.product.moq | default: 1 | plus:0   -%}
-        {% if product.metafields.product.quantity_discount != blank and product.metafields.product.quantity_discount.value.size != 0 %}
+        {% if product.metafields.product.quantity_discount != blank and product.metafields.product.quantity_discount.value.size != 0 and b2b_catalog == false %}
           <table class="w-full border-collapse rounded-sm relative z-1">
             <thead class="border border-main">
               <tr class="bg-main h-10 font-bold text-14 fb-md:text-14 text-white">
