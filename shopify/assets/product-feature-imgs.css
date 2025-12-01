@@ -125,7 +125,9 @@
 .feature-imgs-item.type-78.flag .img-text-wrapper {
   flex-direction: column-reverse;
 }
-
+.feature-imgs-item.type-78 .img-text-wrapper {
+  justify-content: space-between;
+}
 .feature-imgs-item.type-78 .img-text-wrapper .text-container {
   text-align: center;
   padding: 40px 75px;
