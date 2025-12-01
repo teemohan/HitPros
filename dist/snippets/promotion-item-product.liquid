@@ -54,10 +54,6 @@
     data-price="{{ product.price | money_without_currency | replace: ',', '' | times: 1 }}"
     style="background: radial-gradient(67.52% 246.88% at 50% 50%, #0A2B6F 27.53%, #2758B2 69.3%, #4484F5 80.06%);">
   </div>
-  <div class="js-flash-range-other w-full h-7 hidden fb-flex-center text-button text-center font-extrabold text-20" 
-    data-price="{{ product.price | money_without_currency | replace: ',', '' | times: 1 }}"
-    style="background: radial-gradient(67.52% 246.88% at 50% 50%, #0A2B6F 27.53%, #2758B2 69.3%, #4484F5 80.06%);">
-  </div>
   <div class="w-full mt-2.5 px-2 flex flex-col grow justify-between fb-md:px-5 pb-3 fb-md:pb-5">
     <a 
       href="{{ product.url }}"
