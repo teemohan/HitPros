@@ -52,6 +52,13 @@
                 </div>
               {% endfor %}
             {% endif %}
+            {% if section.settings.collection_other %}
+              {% for product in section.settings.collection_other.products %}
+                <div class="swiper-slide max-w-[250px]">
+                  {%- render 'promotion-item-product', product: product, type:'item2' -%}
+                </div>
+              {% endfor %}
+            {% endif %}
           </div>
         </div>
         <div class="mt-4 fb-sm:mt-6 flex items-center justify-between gap-4 relative z-10">
@@ -95,6 +102,11 @@
           {
             "type": "collection",
             "id": "collection",
+            "label": "Products collection"
+          },
+          {
+            "type": "collection",
+            "id": "collection_other",
             "label": "Products collection"
           }
     ],
@@ -140,6 +152,7 @@ $(function() {
           scope: $(`${sectionId} .js-swiper-scope`),
           countdownBox: $(`${sectionId} .js-countdown-flash`),
           rangeEl: $(`${sectionId} .js-flash-range`),
+          rangeOtherEl: $(`${sectionId} .js-flash-range-other`),
           comingSoonStatus: $(`${sectionId} .js-coming-soon-status`),
           activeStatus: $(`${sectionId} .js-active-status`),
           endedStatus: $(`${sectionId} .js-ended-status`),
@@ -172,6 +185,7 @@ $(function() {
       hideFlashRange: function() {
         this.elements.countdownBox.hide();
         this.elements.rangeEl.hide();
+        this.elements.rangeOtherEl.hide();
       },
       showComingSoonStatus: function() {
         this.setState('coming-soon');
@@ -191,6 +205,7 @@ $(function() {
         this.elements.activeStatus.hide();
         this.elements.endedStatus.show();
         this.elements.rangeEl.hide();
+        this.elements.rangeOtherEl.hide();
         this.elements.promotionCart.addClass('hidden');
         this.elements.promotionEnd.removeClass('hidden').addClass('flex');
       },
