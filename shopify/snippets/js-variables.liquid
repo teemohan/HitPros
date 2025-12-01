@@ -1,5 +1,9 @@
 {%- capture search_mode -%}{% if settings.search_enable_products %},product{% endif %}{% if settings.search_enable_blog_posts %},article{% endif %}{% if settings.search_enable_pages %},page{% endif %}{% if settings.search_enable_collections %},collection{% endif %}{%- endcapture -%}
-
+{% comment %} big b2b {% endcomment %}
+{%- assign b2b_catalog = false -%}
+{% if customer and customer.current_company and customer.current_company.metafields.b2b.show_catalog_price %}
+  {%- assign b2b_catalog = customer.current_company.metafields.b2b.show_catalog_price -%}
+{% endif %}
 <script>
   // This allows to expose several variables to the global scope, to be used in scripts
   window.themeVariables = {
@@ -7,8 +11,9 @@
     userCompany: {
       isB2b: '{{ customer.b2b? }}',
       name: '{{ customer.current_company.name }}',
-      zip: "{{ customer.current_location.shipping_address.zip }}"
-    }, 
+      zip: "{{ customer.current_location.shipping_address.zip }}",
+      showCatalogPrice: {{ b2b_catalog | json }},
+    },
 
     settings: {
       direction: {{ direction | json }},

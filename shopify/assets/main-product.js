@@ -297,7 +297,10 @@ $(function () {
     const shouldShowQuickBuy = window.innerWidth > 1700 && !isMainPaymentVisible;
     const tidioChat = $("#tidio-chat");
     if (shouldShowQuickBuy) {
-      quickBuyElement.removeClass('hidden');
+      // big b2b
+      if (!window.themeVariables.userCompany.showCatalogPrice) {
+        quickBuyElement.removeClass('hidden');
+      }
       tidioChat.fadeOut();
       if (!isInitialized) {
         // quickBuy.init();

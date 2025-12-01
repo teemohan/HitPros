@@ -264,5 +264,8 @@ $(function () {
       });
     }
   }
-  newQuickBuy();
+  // big b2b
+  if (!window.themeVariables.userCompany.showCatalogPrice) {
+    newQuickBuy();
+  }
 })
