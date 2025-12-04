@@ -539,7 +539,7 @@
         this.$refs.dropdownRef.hide();
       },
       formatDate(timestamp, timezoneOffset = -5) {
-        return formatDateZip(timestamp, timezoneOffset);
+        return northSkyformatDate(timestamp, timezoneOffset);
       },
       async handleComputedDeleveryDate() {
         if (!this.ruleForm.zipCode) {

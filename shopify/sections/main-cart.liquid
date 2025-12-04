@@ -355,7 +355,7 @@
                                     <span class="text-xs fb-md:text-sm text-575757 " style="padding:3px;">
                                       Required special shipping at ${{line_item.product.metafields.product.shipping_charge_policy}} each.
                                     </span>
-                                  {%- endif -%}
+                                  {%- endif -%} 
                                   <span class="loading-container">
                                     {% render 'icon' with 'loading' %}
                                   </span>
@@ -913,32 +913,6 @@ $(function() {
         console.error(err)
       }
     }
-
-    function formatDate(timestamp, timezoneOffset = -5) {
-      const date = new Date(+timestamp);
-      const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
-      const year = localTime.getFullYear();
-      const monthNames = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-      ];
-      const month = monthNames[localTime.getMonth()];
-      const day = localTime.getDate();
-      let suffix = '';
-      if (day >= 11 && day <= 13) {
-        suffix = 'th';
-      } else {
-        switch (day % 10) {
-          case 1: suffix = 'st'; break; 
-          case 2: suffix = 'nd'; break; 
-          case 3: suffix = 'rd'; break;
-          default: suffix = 'th'; break;
-        }
-      }
-      return `${month} ${day}${suffix}, ${year}`;
-    }
-
-
     async function initDeleveryDate(line_item_delivery) {
       if(line_item_delivery.length == 0) return
       $('.js-line-item-table .line-item .loading-container').show(); 
@@ -978,16 +952,16 @@ $(function() {
           }
           if(line_item.availableInventoryCount == 0) {
             $deliveryTime = $(`
-              <span>Expected to arrive between <b>${formatDate(stockDateStart)} </b> and <b>${formatDate(stockDateEnd)}</b>.</span>
+              <span>Expected to arrive between <b>${northSkyformatDate(stockDateStart)} </b> and <b>${northSkyformatDate(stockDateEnd)}</b>.</span>
             `);
           } else if(line_item.availableInventoryCount >= line_item.demandQuantity) { // Available stock is greater than 0 and available stock >= demand
             $deliveryTime = $(`
-              <span>Expected to arrive on <b>${formatDate(line_item.availableInventoryDeliveryTimeStamp)}</b>. </span>
+              <span>Expected to arrive on <b>${northSkyformatDate(line_item.availableInventoryDeliveryTimeStamp)}</b>. </span>
             `);
           } else { // Stock is greater than 0, and demand exceeds available stock
             $deliveryTime = $(`
-              <span>Partial expected to arrive on <b>${formatDate(line_item.availableInventoryDeliveryTimeStamp)}</b>.</span>
-              <span>The remaining balance is expected to arrive between <b>${formatDate(stockDateStart)}</b> and <b>${formatDate(stockDateEnd)}</b>.</span>
+              <span>Partial expected to arrive on <b>${northSkyformatDate(line_item.availableInventoryDeliveryTimeStamp)}</b>.</span>
+              <span>The remaining balance is expected to arrive between <b>${northSkyformatDate(stockDateStart)}</b> and <b>${northSkyformatDate(stockDateEnd)}</b>.</span>
             `);
           }
           $lineItem.find('.loading-container').hide();

@@ -20,48 +20,6 @@ const currencySymbols = {
   BRL: 'R$',
   ZAR: 'R',
 }
-const formatDateZip = (timestamp, timezoneOffset = -5) => {
-  const date = new Date(+timestamp);
-  const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
-  const year = localTime.getFullYear();
-  const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  const month = monthNames[localTime.getMonth()];
-  const day = localTime.getDate();
-
-  let suffix = '';
-  if (day >= 11 && day <= 13) {
-    suffix = 'th';
-  } else {
-    switch (day % 10) {
-      case 1:
-        suffix = 'st';
-        break;
-      case 2:
-        suffix = 'nd';
-        break;
-      case 3:
-        suffix = 'rd';
-        break;
-      default:
-        suffix = 'th';
-        break;
-    }
-  }
-  return `${month} ${day}${suffix}, ${year}`;
-}
 class Ajax {
   constructor() {
     this.baseURL = window.northsky.api;
@@ -620,16 +578,15 @@ const skyFormatPriceDisplay = (price) => {
     <span class="absolute top-0 -right-2 text-12 font-bold">${cents}</span>
   </div>`;
 }
-const northSkyformatDate = (timestamp, timezoneOffset = -5) => {
+const northSkyformatDate = (timestamp) => {
   const date = new Date(+timestamp);
-  const localTime = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
-  const year = localTime.getFullYear();
+  const year = date.getFullYear();
   const monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
-  const month = monthNames[localTime.getMonth()];
-  const day = localTime.getDate();
+  const month = monthNames[date.getMonth()];
+  const day = date.getDate();
   let suffix = '';
   if (day >= 11 && day <= 13) {
     suffix = 'th';
