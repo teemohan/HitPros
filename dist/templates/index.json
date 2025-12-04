@@ -15,9 +15,9 @@
         "image_banner_P9LUty": {
           "type": "image_banner",
           "settings": {
-            "link_url": "shopify://pages/black-friday",
-            "image": "shopify://shop_images/Pre_Black_Friday2_HP.png",
-            "mobile_image": "shopify://shop_images/HP_Pre_Black_Friday2_H5.png"
+            "link_url": "shopify://products/nss0007767",
+            "image": "shopify://shop_images/HP_desktop_Multitul.png",
+            "mobile_image": "shopify://shop_images/HP_Multitul_H5.png"
           }
         },
         "image_banner_jk7jKr": {

@@ -33,7 +33,7 @@
         "banner_image": "shopify://shop_images/PP_November_3_desktop_4K_full_1.png",
         "mobile_banner_image": "shopify://shop_images/PP_November_3_H5_blue_mobile.png",
         "tablet_banner_image": "shopify://shop_images/PP_November_3_Tablet_blue.png",
-        "title": "Why wait for Black Friday?",
+        "title": "Stock up for 2025",
         "subtitle": "",
         "flash_label": "FLASH SALE ALERT!",
         "product_image": "shopify://shop_images/NSS0733823940_BT-1202_3ecffa1d-1.jpg",
@@ -151,11 +151,11 @@
             "desktop_position": 1,
             "tablet_position": 1,
             "mobile_position": 1,
-            "title": "The Unsung Hero of Your Daily Routine",
-            "description": "Let's be real — gloves aren't glamorous. But they are essential.",
+            "title": "Energy Efficiency Certificate",
+            "description": "Tested. Trusted. Safe. Rigorous safety standards met so you can heat with complete peace of mind.",
             "button_text": "Shop Now",
-            "link_url": "https://northskysupply.com/collections/safety-personal-protective-equipment-hand-arm-protection-disposable-gloves",
-            "background_image": "shopify://shop_images/promo1.png"
+            "link_url": "shopify://collections/hvac-heaters",
+            "background_image": "shopify://shop_images/640X1080_Heaters_92b419eb-aa82-4e15-9527-cc981d6e77d2.png"
           }
         },
         "promo_UbrVXJ": {
