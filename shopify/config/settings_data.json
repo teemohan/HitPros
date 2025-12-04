@@ -75,7 +75,7 @@
             "type": "menu_link",
             "settings": {
               "title": "Holiday Special",
-              "link_url": "shopify://pages/black-friday",
+              "link_url": "shopify://pages/holiday-2025",
               "isBrand": false,
               "new_window": false,
               "icon": ""

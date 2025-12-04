@@ -71,6 +71,26 @@
         "name": "file_reference",
         "category": "REFERENCE"
       }
+    },
+    {
+      "key": "isfeatured",
+      "namespace": "custom",
+      "name": "isFeatured",
+      "description": "判断是否特征产品系列",
+      "type": {
+        "name": "boolean",
+        "category": "TRUE_FALSE"
+      }
+    },
+    {
+      "key": "featured_product",
+      "namespace": "custom",
+      "name": "featured",
+      "description": "",
+      "type": {
+        "name": "number_integer",
+        "category": "NUMBER"
+      }
     }
   ],
   "company": [
@@ -102,6 +122,16 @@
       "type": {
         "name": "single_line_text_field",
         "category": "TEXT"
+      }
+    },
+    {
+      "key": "show_catalog_price",
+      "namespace": "b2b",
+      "name": "show_catalog_price",
+      "description": "为true 的情况下， 配置了 catalog，隐藏阶梯价功能",
+      "type": {
+        "name": "boolean",
+        "category": "TRUE_FALSE"
       }
     }
   ],
