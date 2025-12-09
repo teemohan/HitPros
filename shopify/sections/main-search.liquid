@@ -201,7 +201,8 @@
                             />
                           </template>
                           <div class="w-full text-main text-16 fb-sm:text-18 pt-8 fb-sm:pt-2 h-10r fb-sm:h-20r text-left" v-if="!products.length && !pageLoading">
-                              No results found.
+                            <p>No results found.</p>  
+                            <p v-if="showErrorStr" v-html="showErrorStr"></p>
                           </div>
                         </div>
 
@@ -227,7 +228,8 @@
                             <product-item-card v-for="(product, index) in products" :key="`grid-${product.productId}-${index}`" :data-layer-form="dataLayerForm" :product="product"  :current-style="currentStyle"/>
                           </template>
                            <div class="w-full text-main text-16 fb-sm:text-18  pt-8 fb-sm:pt-2 h-10r fb-sm:h-20r text-left" v-if="!products.length && !pageLoading">
-                              No results found.
+                              <p> No results found.</p>
+                               <p v-if="showErrorStr" v-html="showErrorStr"></p>
                           </div>
                         </div>
                         <div class="zkh-pagination w-full bg-F9F9F9" v-if="currentStyle != 'recommend'"  v-loading="otherLoading">
@@ -344,7 +346,8 @@ $(function() {
           ],
           currentSort: 'Relevance',
           facetSearchHandler: null,
-          customerZipCode: window.northsky.customerZipCode
+          customerZipCode: window.northsky.customerZipCode,
+          showErrorStr: "",
         }
       },
       created() {
@@ -637,6 +640,7 @@ $(function() {
             this.queryParam.sortField = this.currentSort != 'Relevance' ? 'PRICE' : undefined;
             const res = await kkAjax.post('/openapi/search/v2',this.queryParam)
              if (res.code === 200 && res.data.brand.length) {
+              this.showErrorStr = res.msg || ''
               this.total = +res.data.totalNum;
               if(this.total == 1 && res.data.searchHitType == 'skuNo') {
                 window.location.href = res.data.skuInfos[0].productUrl;
@@ -681,11 +685,12 @@ $(function() {
               }
             } else {
               this.products = [];
+              this.showErrorStr = res?.msg || 'API request failed, please try again later';
               showEmtpy();
             }
           } catch (error) {
             this.products = [];
-            console.error(error)
+            this.showErrorStr = error || 'API request failed, please try again later';
           } finally {
             this.pageLoading = false;
             {% comment %} this.loadingBar?.hideLoadingBar(); {% endcomment %}

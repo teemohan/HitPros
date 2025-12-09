@@ -99,7 +99,7 @@ class Ajax {
       };
 
       xhr.onerror = () => {
-        reject(new Error('Please check your network and retry.'));
+        reject(new Error('Network request failed. Please retry.'));
       };
 
       xhr.ontimeout = () => {
