@@ -166,7 +166,7 @@
       "key": "queries",
       "namespace": "shopify--discovery--product_search_boost",
       "name": "搜索产品提升",
-      "description": "产品可在搜索结果中获得更高排名的搜索查询的列表",
+      "description": "产品在搜索结果中获得更高排名的搜索查询列表",
       "type": {
         "name": "list.single_line_text_field",
         "category": "TEXT"
@@ -186,7 +186,7 @@
       "key": "related_products_display",
       "namespace": "shopify--discovery--product_recommendation",
       "name": "相关产品设置",
-      "description": "确定如何显示相关产品以及算法产品推荐",
+      "description": "确定相关产品如何与算法产品推荐一起显示",
       "type": {
         "name": "single_line_text_field",
         "category": "TEXT"
@@ -2655,8 +2655,8 @@
     {
       "key": "rating_count",
       "namespace": "reviews",
-      "name": "产品评分数量",
-      "description": "客户评分总数",
+      "name": "产品评分计数",
+      "description": "客户的总评分数",
       "type": {
         "name": "number_integer",
         "category": "NUMBER"

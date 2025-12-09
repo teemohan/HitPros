@@ -20,6 +20,14 @@
             "mobile_image": "shopify://shop_images/HP_Multitul_H5.png"
           }
         },
+        "image_banner_x9bY43": {
+          "type": "image_banner",
+          "settings": {
+            "link_url": "shopify://products/80000044",
+            "image": "shopify://shop_images/HP_desktop_Batteries_Holiday_1b07bfb7-26a2-44f9-9339-65f8590f9f9a.png",
+            "mobile_image": "shopify://shop_images/HP_Batteries_Holiday_H5_ddceed85-3504-481a-a200-99dcbe1b7d0e.png"
+          }
+        },
         "image_banner_jk7jKr": {
           "type": "image_banner",
           "settings": {
@@ -27,20 +35,12 @@
             "image": "shopify://shop_images/Heaters_HP_7d8506b3-a762-4cf0-a2da-43c4e138c4ae.png",
             "mobile_image": "shopify://shop_images/HP_Heaters_H5.png"
           }
-        },
-        "image_banner_x9bY43": {
-          "type": "image_banner",
-          "settings": {
-            "link_url": "shopify://collections/electrical-batteries",
-            "image": "shopify://shop_images/Batteries_HP_0d596b93-f81e-4d34-984c-27727da32884.png",
-            "mobile_image": "shopify://shop_images/Batteries_H5.png"
-          }
         }
       },
       "block_order": [
         "image_banner_P9LUty",
-        "image_banner_jk7jKr",
-        "image_banner_x9bY43"
+        "image_banner_x9bY43",
+        "image_banner_jk7jKr"
       ],
       "name": "fb-img-video-banner",
       "settings": {
