@@ -3391,11 +3391,6 @@ video {
   color: rgb(250 204 21 / var(--tw-text-opacity, 1));
 }
 
-.text-red-500 {
-  --tw-text-opacity: 1;
-  color: rgb(239 68 68 / var(--tw-text-opacity, 1));
-}
-
 .underline {
   text-decoration-line: underline;
 }
@@ -4069,6 +4064,10 @@ video {
 
   .fb-sm\:h-10 {
     height: 40px;
+  }
+
+  .fb-sm\:h-10r {
+    height: 166px;
   }
 
   .fb-sm\:h-12 {
@@ -4825,10 +4824,6 @@ video {
 
   .fb-md\:h-12\.5 {
     height: 50px;
-  }
-
-  .fb-md\:h-12r {
-    height: 12rem;
   }
 
   .fb-md\:h-14 {
@@ -5734,6 +5729,10 @@ video {
 }
 
 @media (min-width: 1504px) {
+  .fb-lg\:h-12r {
+    height: 12rem;
+  }
+
   .fb-lg\:w-\[360px\] {
     width: 360px;
   }
