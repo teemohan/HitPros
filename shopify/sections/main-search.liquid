@@ -691,6 +691,9 @@ $(function() {
           } catch (error) {
             this.products = [];
             this.showErrorStr = error || 'API request failed, please try again later';
+            if (typeof Sentry !== 'undefined') {
+              Sentry.captureException(error || 'API request failed, please try again later');
+            }
           } finally {
             this.pageLoading = false;
             {% comment %} this.loadingBar?.hideLoadingBar(); {% endcomment %}
